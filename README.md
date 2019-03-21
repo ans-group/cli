@@ -1,7 +1,5 @@
 # UKFast CLI
 
-[![pipeline status](https://github.com/ukfast/cli/badges/master/pipeline.svg)](https://github.com/ukfast/cli/commits/master) [![coverage report](https://github.com/ukfast/cli/badges/master/coverage.svg)](https://github.com/ukfast/cli/commits/master)
-
 This is the official UKFast command-line client, allowing for querying and controlling
 supported UKFast services.
 
@@ -14,6 +12,8 @@ proceeding below
 The CLI is distributed as a single binary, and is available for Windows, Linux and Mac. This binary 
 should be downloaded and placed into a directory included in your `PATH`. This would typically 
 be `/usr/local/bin` on most Linux distributions
+
+Pre-compiled binaries are available at [Releases](https://github.com/ukfast/cli/releases)
 
 ## Getting started
 
