@@ -204,24 +204,24 @@ func ParseACLIPMode(s string) (ACLIPMode, error) {
 	return "", errors.New("Invalid ACL IP mode")
 }
 
-type ACLGeoIPRulesFilteringMode string
+type ACLGeoIPRulesMode string
 
-func (s ACLGeoIPRulesFilteringMode) String() string {
+func (s ACLGeoIPRulesMode) String() string {
 	return string(s)
 }
 
 const (
-	ACLGeoIPRulesFilteringModeWhitelist ACLGeoIPRulesFilteringMode = "Whitelist"
-	ACLGeoIPRulesFilteringModeBlacklist ACLGeoIPRulesFilteringMode = "Blacklist"
+	ACLGeoIPRulesModeWhitelist ACLGeoIPRulesMode = "Whitelist"
+	ACLGeoIPRulesModeBlacklist ACLGeoIPRulesMode = "Blacklist"
 )
 
-// ParseACLGeoIPRulesFilteringMode attempts to parse a ACLGeoIPRulesFilteringMode from string
-func ParseACLGeoIPRulesFilteringMode(s string) (ACLGeoIPRulesFilteringMode, error) {
+// ParseACLGeoIPRulesMode attempts to parse a ACLGeoIPRulesMode from string
+func ParseACLGeoIPRulesMode(s string) (ACLGeoIPRulesMode, error) {
 	switch strings.ToUpper(s) {
 	case "WHITELIST":
-		return ACLGeoIPRulesFilteringModeWhitelist, nil
+		return ACLGeoIPRulesModeWhitelist, nil
 	case "BLACKLIST":
-		return ACLGeoIPRulesFilteringModeBlacklist, nil
+		return ACLGeoIPRulesModeBlacklist, nil
 	}
 
 	return "", errors.New("Invalid ACL GeoIP rules filtering mode")
@@ -324,9 +324,4 @@ type ACLIPRule struct {
 	IP   connection.IPAddress `json:"ip"`
 	URI  string               `json:"uri"`
 	Mode ACLIPMode            `json:"mode"`
-}
-
-// ACLGeoIPRulesMode represents a DDoSX overall GeoIP ACL rule mode
-type ACLGeoIPRulesMode struct {
-	Mode ACLGeoIPRulesFilteringMode `json:"mode"`
 }

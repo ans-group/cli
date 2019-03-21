@@ -153,5 +153,7 @@ type GetACLIPRuleResponseBody struct {
 type GetACLGeoIPRulesModeResponseBody struct {
 	connection.APIResponseBody
 
-	Data ACLGeoIPRulesMode `json:"data"`
+	Data struct {
+		Mode ACLGeoIPRulesMode `json:"mode"`
+	} `json:"data"`
 }

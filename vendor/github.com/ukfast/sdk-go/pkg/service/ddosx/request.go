@@ -106,7 +106,7 @@ func (c *PatchACLIPRuleRequest) Validate() *connection.ValidationError {
 
 // PatchACLGeoIPRulesModeRequest represents a DDoSX IP ACL rule mode patch request
 type PatchACLGeoIPRulesModeRequest struct {
-	Mode ACLGeoIPRulesFilteringMode `json:"mode,omitempty"`
+	Mode ACLGeoIPRulesMode `json:"mode,omitempty"`
 }
 
 // Validate returns an error if struct properties are missing/invalid
