@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/spf13/cobra"
 	"github.com/ukfast/sdk-go/pkg/service/registrar"
@@ -20,7 +21,7 @@ func registrarWhoisRootCmd() *cobra.Command {
 }
 
 func registrarWhoisShowCmd() *cobra.Command {
-	return &cobra.Command{
+	cmd := &cobra.Command{
 		Use:     "show <domain: name>...",
 		Short:   "Shows whois for a domain",
 		Long:    "This command shows whois for one or more domains",
@@ -33,9 +34,18 @@ func registrarWhoisShowCmd() *cobra.Command {
 			return nil
 		},
 		Run: func(cmd *cobra.Command, args []string) {
-			registrarWhoisShow(getClient().RegistrarService(), cmd, args)
+			raw, _ := cmd.Flags().GetBool("raw")
+			if raw {
+				registrarWhoisShowRaw(getClient().RegistrarService(), cmd, args)
+			} else {
+				registrarWhoisShow(getClient().RegistrarService(), cmd, args)
+			}
 		},
 	}
+
+	cmd.Flags().Bool("raw", false, "Specifies that whois content should be returned raw")
+
+	return cmd
 }
 
 func registrarWhoisShow(service registrar.RegistrarService, cmd *cobra.Command, args []string) {
@@ -51,4 +61,16 @@ func registrarWhoisShow(service registrar.RegistrarService, cmd *cobra.Command, 
 	}
 
 	outputRegistrarWhois(whoisArr)
+}
+
+func registrarWhoisShowRaw(service registrar.RegistrarService, cmd *cobra.Command, args []string) {
+	for _, arg := range args {
+		whois, err := service.GetWhoisRaw(arg)
+		if err != nil {
+			OutputWithErrorLevelf("Error retrieving raw whois for domain [%s]: %s", arg, err)
+			continue
+		}
+
+		fmt.Println(whois)
+	}
 }

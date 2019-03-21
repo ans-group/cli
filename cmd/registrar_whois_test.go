@@ -68,3 +68,31 @@ func Test_registrarWhoisShow(t *testing.T) {
 		assert.Equal(t, "Error retrieving whois for domain [testdomain1.co.uk]: test error\n", output)
 	})
 }
+
+func Test_registrarWhoisShowRaw(t *testing.T) {
+	t.Run("Default_Success", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockRegistrarService(mockCtrl)
+
+		service.EXPECT().GetWhoisRaw("testdomain1.co.uk").Return("examplewhois", nil).Times(1)
+
+		registrarWhoisShowRaw(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
+	})
+
+	t.Run("GetWhoisRawError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockRegistrarService(mockCtrl)
+
+		service.EXPECT().GetWhoisRaw("testdomain1.co.uk").Return("", errors.New("test error"))
+
+		output := test.CatchStdErr(t, func() {
+			registrarWhoisShowRaw(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
+		})
+
+		assert.Equal(t, "Error retrieving raw whois for domain [testdomain1.co.uk]: test error\n", output)
+	})
+}
