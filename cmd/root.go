@@ -126,6 +126,7 @@ func getClient() apiclient.Client {
 	apiDebug := viper.GetBool("api_debug")
 
 	conn := connection.NewAPIConnection(&connection.APIKeyCredentials{APIKey: apiKey})
+	conn.UserAgent = "ukfast-cli"
 	if apiURI != "" {
 		conn.APIURI = apiURI
 	}
