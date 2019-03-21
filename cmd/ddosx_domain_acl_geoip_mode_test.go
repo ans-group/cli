@@ -35,7 +35,7 @@ func Test_ddosxDomainACLGeoIPRulesModeShow(t *testing.T) {
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
 
-		service.EXPECT().GetDomainACLGeoIPRulesMode("testdomain1.co.uk").Return(ddosx.ACLGeoIPRulesMode{}, nil).Times(1)
+		service.EXPECT().GetDomainACLGeoIPRulesMode("testdomain1.co.uk").Return(ddosx.ACLGeoIPRulesMode(""), nil).Times(1)
 
 		ddosxDomainACLGeoIPRulesModeShow(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 	})
@@ -47,8 +47,8 @@ func Test_ddosxDomainACLGeoIPRulesModeShow(t *testing.T) {
 		service := mocks.NewMockDDoSXService(mockCtrl)
 
 		gomock.InOrder(
-			service.EXPECT().GetDomainACLGeoIPRulesMode("testdomain1.co.uk").Return(ddosx.ACLGeoIPRulesMode{}, nil),
-			service.EXPECT().GetDomainACLGeoIPRulesMode("testdomain2.co.uk").Return(ddosx.ACLGeoIPRulesMode{}, nil),
+			service.EXPECT().GetDomainACLGeoIPRulesMode("testdomain1.co.uk").Return(ddosx.ACLGeoIPRulesMode(""), nil),
+			service.EXPECT().GetDomainACLGeoIPRulesMode("testdomain2.co.uk").Return(ddosx.ACLGeoIPRulesMode(""), nil),
 		)
 
 		ddosxDomainACLGeoIPRulesModeShow(service, &cobra.Command{}, []string{"testdomain1.co.uk", "testdomain2.co.uk"})
@@ -60,7 +60,7 @@ func Test_ddosxDomainACLGeoIPRulesModeShow(t *testing.T) {
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
 
-		service.EXPECT().GetDomainACLGeoIPRulesMode("testdomain1.co.uk").Return(ddosx.ACLGeoIPRulesMode{}, errors.New("test error"))
+		service.EXPECT().GetDomainACLGeoIPRulesMode("testdomain1.co.uk").Return(ddosx.ACLGeoIPRulesMode(""), errors.New("test error"))
 
 		output := test.CatchStdErr(t, func() {
 			ddosxDomainACLGeoIPRulesModeShow(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
@@ -97,12 +97,12 @@ func Test_ddosxDomainACLGeoIPRulesModeUpdate(t *testing.T) {
 		cmd.Flags().Set("mode", "whitelist")
 
 		expectedRequest := ddosx.PatchACLGeoIPRulesModeRequest{
-			Mode: ddosx.ACLGeoIPRulesFilteringModeWhitelist,
+			Mode: ddosx.ACLGeoIPRulesModeWhitelist,
 		}
 
 		gomock.InOrder(
 			service.EXPECT().PatchDomainACLGeoIPRulesMode("testdomain1.co.uk", gomock.Eq(expectedRequest)).Return(nil),
-			service.EXPECT().GetDomainACLGeoIPRulesMode("testdomain1.co.uk").Return(ddosx.ACLGeoIPRulesMode{}, nil),
+			service.EXPECT().GetDomainACLGeoIPRulesMode("testdomain1.co.uk").Return(ddosx.ACLGeoIPRulesMode(""), nil),
 		)
 
 		ddosxDomainACLGeoIPRulesModeUpdate(service, cmd, []string{"testdomain1.co.uk"})
@@ -166,7 +166,7 @@ func Test_ddosxDomainACLGeoIPRulesModeUpdate(t *testing.T) {
 
 		gomock.InOrder(
 			service.EXPECT().PatchDomainACLGeoIPRulesMode("testdomain1.co.uk", gomock.Any()).Return(nil),
-			service.EXPECT().GetDomainACLGeoIPRulesMode("testdomain1.co.uk").Return(ddosx.ACLGeoIPRulesMode{}, errors.New("test error")),
+			service.EXPECT().GetDomainACLGeoIPRulesMode("testdomain1.co.uk").Return(ddosx.ACLGeoIPRulesMode(""), errors.New("test error")),
 		)
 
 		output := test.CatchStdErr(t, func() {
