@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"strconv"
+	"strings"
 
 	"github.com/spf13/cobra"
 	"github.com/ukfast/cli/internal/pkg/output"
@@ -16,6 +17,7 @@ func registrarRootCmd() *cobra.Command {
 
 	// Child root commands
 	cmd.AddCommand(registrarDomainRootCmd())
+	cmd.AddCommand(registrarWhoisRootCmd())
 
 	return cmd
 }
@@ -69,7 +71,7 @@ type OutputRegistrarNameservers struct {
 func outputRegistrarNameservers(domains []registrar.Nameserver) {
 	err := Output(&OutputRegistrarNameservers{Nameservers: domains})
 	if err != nil {
-		output.Fatalf("Failed to output domains: %s", err)
+		output.Fatalf("Failed to output nameservers: %s", err)
 	}
 }
 
@@ -92,6 +94,44 @@ func (o *OutputRegistrarNameservers) getOrderedFields(domain registrar.Nameserve
 
 	fields.Set("host", output.NewFieldValue(domain.Host, true))
 	fields.Set("ip", output.NewFieldValue(domain.IP.String(), true))
+
+	return fields
+}
+
+// OutputRegistrarWhois implements OutputDataProvider for outputting an array of Whois
+type OutputRegistrarWhois struct {
+	Whois []registrar.Whois
+}
+
+func outputRegistrarWhois(whois []registrar.Whois) {
+	err := Output(&OutputRegistrarWhois{Whois: whois})
+	if err != nil {
+		output.Fatalf("Failed to output whois: %s", err)
+	}
+}
+
+func (o *OutputRegistrarWhois) GetData() interface{} {
+	return o.Whois
+}
+
+func (o *OutputRegistrarWhois) GetFieldData() ([]*output.OrderedFields, error) {
+	var data []*output.OrderedFields
+	for _, whois := range o.Whois {
+		fields := o.getOrderedFields(whois)
+		data = append(data, fields)
+	}
+
+	return data, nil
+}
+
+func (o *OutputRegistrarWhois) getOrderedFields(whois registrar.Whois) *output.OrderedFields {
+	fields := output.NewOrderedFields()
+
+	fields.Set("name", output.NewFieldValue(whois.Name, true))
+	fields.Set("status", output.NewFieldValue(strings.Join(whois.Status, ", "), true))
+	fields.Set("created_at", output.NewFieldValue(whois.CreatedAt.String(), true))
+	fields.Set("updated_at", output.NewFieldValue(whois.UpdatedAt.String(), true))
+	fields.Set("expires_at", output.NewFieldValue(whois.ExpiresAt.String(), true))
 
 	return fields
 }
