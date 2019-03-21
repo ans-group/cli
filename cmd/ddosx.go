@@ -6,8 +6,8 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/ukfast/sdk-go/pkg/service/ddosx"
 	"github.com/ukfast/cli/internal/pkg/output"
+	"github.com/ukfast/sdk-go/pkg/service/ddosx"
 )
 
 func ddosxRootCmd() *cobra.Command {
@@ -473,7 +473,7 @@ func (o *OutputDDoSXACLGeoIPRulesModes) GetFieldData() ([]*output.OrderedFields,
 func (o *OutputDDoSXACLGeoIPRulesModes) getOrderedFields(mode ddosx.ACLGeoIPRulesMode) *output.OrderedFields {
 	fields := output.NewOrderedFields()
 
-	fields.Set("mode", output.NewFieldValue(mode.Mode.String(), true))
+	fields.Set("mode", output.NewFieldValue(mode.String(), true))
 
 	return fields
 }

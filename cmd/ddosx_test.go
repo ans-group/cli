@@ -569,27 +569,21 @@ func TestOutputDDoSXACLGeoIPRulesModes_GetData(t *testing.T) {
 	t.Run("Single_ExpectedData", func(t *testing.T) {
 		o := OutputDDoSXACLGeoIPRulesModes{
 			ACLGeoIPRulesModes: []ddosx.ACLGeoIPRulesMode{
-				ddosx.ACLGeoIPRulesMode{
-					Mode: ddosx.ACLGeoIPRulesFilteringModeWhitelist,
-				},
+				ddosx.ACLGeoIPRulesModeWhitelist,
 			},
 		}
 
 		data := o.GetData()
 
 		assert.IsType(t, []ddosx.ACLGeoIPRulesMode{}, data)
-		assert.Equal(t, ddosx.ACLGeoIPRulesFilteringModeWhitelist, data.([]ddosx.ACLGeoIPRulesMode)[0].Mode)
+		assert.Equal(t, ddosx.ACLGeoIPRulesModeWhitelist, data.([]ddosx.ACLGeoIPRulesMode)[0])
 	})
 
 	t.Run("Multiple_ExpectedData", func(t *testing.T) {
 		o := OutputDDoSXACLGeoIPRulesModes{
 			ACLGeoIPRulesModes: []ddosx.ACLGeoIPRulesMode{
-				ddosx.ACLGeoIPRulesMode{
-					Mode: ddosx.ACLGeoIPRulesFilteringModeWhitelist,
-				},
-				ddosx.ACLGeoIPRulesMode{
-					Mode: ddosx.ACLGeoIPRulesFilteringModeBlacklist,
-				},
+				ddosx.ACLGeoIPRulesModeWhitelist,
+				ddosx.ACLGeoIPRulesModeBlacklist,
 			},
 		}
 
@@ -597,8 +591,8 @@ func TestOutputDDoSXACLGeoIPRulesModes_GetData(t *testing.T) {
 
 		assert.IsType(t, []ddosx.ACLGeoIPRulesMode{}, data)
 		assert.Len(t, data, 2)
-		assert.Equal(t, ddosx.ACLGeoIPRulesFilteringModeWhitelist, data.([]ddosx.ACLGeoIPRulesMode)[0].Mode)
-		assert.Equal(t, ddosx.ACLGeoIPRulesFilteringModeBlacklist, data.([]ddosx.ACLGeoIPRulesMode)[1].Mode)
+		assert.Equal(t, ddosx.ACLGeoIPRulesModeWhitelist, data.([]ddosx.ACLGeoIPRulesMode)[0])
+		assert.Equal(t, ddosx.ACLGeoIPRulesModeBlacklist, data.([]ddosx.ACLGeoIPRulesMode)[1])
 	})
 }
 
@@ -606,9 +600,7 @@ func TestOutputDDoSXACLGeoIPRulesModes_GetFieldData(t *testing.T) {
 	t.Run("Single_ExpectedFieldData", func(t *testing.T) {
 		o := OutputDDoSXACLGeoIPRulesModes{
 			ACLGeoIPRulesModes: []ddosx.ACLGeoIPRulesMode{
-				ddosx.ACLGeoIPRulesMode{
-					Mode: ddosx.ACLGeoIPRulesFilteringModeWhitelist,
-				},
+				ddosx.ACLGeoIPRulesModeWhitelist,
 			},
 		}
 
@@ -622,12 +614,8 @@ func TestOutputDDoSXACLGeoIPRulesModes_GetFieldData(t *testing.T) {
 	t.Run("Multiple_ExpectedFieldData", func(t *testing.T) {
 		o := OutputDDoSXACLGeoIPRulesModes{
 			ACLGeoIPRulesModes: []ddosx.ACLGeoIPRulesMode{
-				ddosx.ACLGeoIPRulesMode{
-					Mode: ddosx.ACLGeoIPRulesFilteringModeWhitelist,
-				},
-				ddosx.ACLGeoIPRulesMode{
-					Mode: ddosx.ACLGeoIPRulesFilteringModeBlacklist,
-				},
+				ddosx.ACLGeoIPRulesModeWhitelist,
+				ddosx.ACLGeoIPRulesModeBlacklist,
 			},
 		}
 

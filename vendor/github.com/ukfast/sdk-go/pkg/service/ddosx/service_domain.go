@@ -50,7 +50,7 @@ func (s *Service) getDomainsPaginatedResponseBody(parameters connection.APIReque
 	return body, response.HandleResponse([]int{200}, body)
 }
 
-// GetDomain retrieves a single domain by id
+// GetDomain retrieves a single domain by name
 func (s *Service) GetDomain(domainName string) (Domain, error) {
 	body, err := s.getDomainResponseBody(domainName)
 
@@ -974,7 +974,7 @@ func (s *Service) deleteDomainACLGeoIPRuleResponseBody(domainName string, ruleID
 func (s *Service) GetDomainACLGeoIPRulesMode(domainName string) (ACLGeoIPRulesMode, error) {
 	body, err := s.getDomainACLGeoIPRulesModeResponseBody(domainName)
 
-	return body.Data, err
+	return body.Data.Mode, err
 }
 
 func (s *Service) getDomainACLGeoIPRulesModeResponseBody(domainName string) (*GetACLGeoIPRulesModeResponseBody, error) {

@@ -83,7 +83,7 @@ func ddosxDomainACLGeoIPRulesModeUpdate(service ddosx.DDoSXService, cmd *cobra.C
 
 	if cmd.Flags().Changed("mode") {
 		mode, _ := cmd.Flags().GetString("mode")
-		parsedMode, err := ddosx.ParseACLGeoIPRulesFilteringMode(mode)
+		parsedMode, err := ddosx.ParseACLGeoIPRulesMode(mode)
 		if err != nil {
 			output.Fatal(err.Error())
 			return
