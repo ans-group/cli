@@ -1,0 +1,747 @@
+package cmd
+
+import (
+	"errors"
+	"testing"
+
+	gomock "github.com/golang/mock/gomock"
+	"github.com/spf13/cobra"
+	"github.com/stretchr/testify/assert"
+	"github.com/ukfast/cli/internal/pkg/output"
+	"github.com/ukfast/cli/test"
+	"github.com/ukfast/cli/test/mocks"
+	"github.com/ukfast/sdk-go/pkg/connection"
+	"github.com/ukfast/sdk-go/pkg/ptr"
+	"github.com/ukfast/sdk-go/pkg/service/safedns"
+)
+
+func Test_safednsTemplateRecordListCmd_Args(t *testing.T) {
+	t.Run("ValidArgs_NoError", func(t *testing.T) {
+		cmd := safednsTemplateRecordListCmd()
+		err := cmd.Args(nil, []string{"123"})
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("MissingTemplate_Error", func(t *testing.T) {
+		cmd := safednsTemplateRecordListCmd()
+		err := cmd.Args(nil, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing template", err.Error())
+	})
+}
+
+func Test_safednsTemplateRecordList(t *testing.T) {
+	t.Run("Retrieve_ByTemplateID", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+
+		service.EXPECT().GetTemplateRecords(123, gomock.Any()).Return([]safedns.Record{}, nil).Times(1)
+
+		safednsTemplateRecordList(service, &cobra.Command{}, []string{"123"})
+	})
+
+	t.Run("Retrieve_ByTemplateName", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+
+		expectedParameters := connection.APIRequestParameters{
+			Filtering: []connection.APIRequestFiltering{
+				connection.APIRequestFiltering{
+					Property: "name",
+					Operator: connection.EQOperator,
+					Value:    []string{"test template 1"},
+				},
+			},
+		}
+
+		gomock.InOrder(
+			service.EXPECT().GetTemplates(gomock.Eq(expectedParameters)).Return([]safedns.Template{safedns.Template{ID: 123}}, nil),
+			service.EXPECT().GetTemplateRecords(123, gomock.Any()).Return([]safedns.Record{}, nil).Times(1),
+		)
+
+		safednsTemplateRecordList(service, &cobra.Command{}, []string{"test template 1"})
+	})
+
+	t.Run("ExpectedFilterFromFlags", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+		cmd := safednsTemplateRecordListCmd()
+		cmd.Flags().Set("name", "test.testdomain1.co.uk")
+		cmd.Flags().Set("type", "A")
+		cmd.Flags().Set("content", "1.2.3.4")
+
+		expectedParameters := connection.APIRequestParameters{
+			Filtering: []connection.APIRequestFiltering{
+				connection.APIRequestFiltering{
+					Property: "name",
+					Operator: connection.EQOperator,
+					Value:    []string{"test.testdomain1.co.uk"},
+				},
+				connection.APIRequestFiltering{
+					Property: "type",
+					Operator: connection.EQOperator,
+					Value:    []string{"A"},
+				},
+				connection.APIRequestFiltering{
+					Property: "content",
+					Operator: connection.EQOperator,
+					Value:    []string{"1.2.3.4"},
+				},
+			},
+		}
+
+		service.EXPECT().GetTemplateRecords(123, gomock.Eq(expectedParameters)).Return([]safedns.Record{}, nil)
+
+		safednsTemplateRecordList(service, cmd, []string{"123"})
+	})
+
+	t.Run("MalformedFlag_OutputsFatal", func(t *testing.T) {
+		code := 0
+		oldOutputExit := output.SetOutputExit(func(c int) {
+			code = c
+		})
+		defer func() { output.SetOutputExit(oldOutputExit) }()
+		defer func() { flagFilter = nil }()
+
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+		flagFilter = []string{"invalidfilter"}
+
+		output := test.CatchStdErr(t, func() {
+			safednsTemplateRecordList(service, &cobra.Command{}, []string{"123"})
+		})
+
+		assert.Equal(t, 1, code)
+		assert.Equal(t, "Missing value for filtering\n", output)
+	})
+
+	t.Run("GetTemplatesError_OutputsFatal", func(t *testing.T) {
+		code := 0
+		oldOutputExit := output.SetOutputExit(func(c int) {
+			code = c
+		})
+		defer func() { output.SetOutputExit(oldOutputExit) }()
+
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+
+		service.EXPECT().GetTemplates(gomock.Any()).Return([]safedns.Template{}, errors.New("test error")).Times(1)
+
+		output := test.CatchStdErr(t, func() {
+			safednsTemplateRecordList(service, &cobra.Command{}, []string{"test template 1"})
+		})
+
+		assert.Equal(t, 1, code)
+		assert.Equal(t, "Error locating template [test template 1]: Error retrieving items: test error\n", output)
+	})
+
+	t.Run("GetTemplateRecordsError_OutputsFatal", func(t *testing.T) {
+		code := 0
+		oldOutputExit := output.SetOutputExit(func(c int) {
+			code = c
+		})
+		defer func() { output.SetOutputExit(oldOutputExit) }()
+
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+
+		service.EXPECT().GetTemplateRecords(123, gomock.Any()).Return([]safedns.Record{}, errors.New("test error")).Times(1)
+
+		output := test.CatchStdErr(t, func() {
+			safednsTemplateRecordList(service, &cobra.Command{}, []string{"123"})
+		})
+
+		assert.Equal(t, 1, code)
+		assert.Equal(t, "Error retrieving records for template: test error\n", output)
+	})
+}
+
+func Test_safednsTemplateRecordShowCmd_Args(t *testing.T) {
+	t.Run("ValidArgs_NoError", func(t *testing.T) {
+		cmd := safednsTemplateRecordShowCmd()
+		err := cmd.Args(nil, []string{"123", "456"})
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("MissingTemplate_Error", func(t *testing.T) {
+		cmd := safednsTemplateRecordShowCmd()
+		err := cmd.Args(nil, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing template", err.Error())
+	})
+
+	t.Run("MissingRecord_Error", func(t *testing.T) {
+		cmd := safednsTemplateRecordShowCmd()
+		err := cmd.Args(nil, []string{"123"})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing record", err.Error())
+	})
+}
+
+func Test_safednsTemplateRecordShow(t *testing.T) {
+	t.Run("RetrieveSingle_ByTemplateID", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+
+		service.EXPECT().GetTemplateRecord(123, 456).Return(safedns.Record{}, nil).Times(1)
+
+		safednsTemplateRecordShow(service, &cobra.Command{}, []string{"123", "456"})
+	})
+
+	t.Run("RetrieveMultiple_ByTemplateID", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().GetTemplateRecord(123, 456).Return(safedns.Record{}, nil).Times(1),
+			service.EXPECT().GetTemplateRecord(123, 789).Return(safedns.Record{}, nil).Times(1),
+		)
+
+		safednsTemplateRecordShow(service, &cobra.Command{}, []string{"123", "456", "789"})
+	})
+
+	t.Run("Retrieve_ByTemplateName", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+
+		expectedParameters := connection.APIRequestParameters{
+			Filtering: []connection.APIRequestFiltering{
+				connection.APIRequestFiltering{
+					Property: "name",
+					Operator: connection.EQOperator,
+					Value:    []string{"test template 1"},
+				},
+			},
+		}
+
+		gomock.InOrder(
+			service.EXPECT().GetTemplates(gomock.Eq(expectedParameters)).Return([]safedns.Template{safedns.Template{ID: 123}}, nil),
+			service.EXPECT().GetTemplateRecord(123, 456).Return(safedns.Record{}, nil).Times(1),
+		)
+
+		safednsTemplateRecordShow(service, &cobra.Command{}, []string{"test template 1", "456"})
+	})
+
+	t.Run("GetTemplatesError_OutputsFatal", func(t *testing.T) {
+		code := 0
+		oldOutputExit := output.SetOutputExit(func(c int) {
+			code = c
+		})
+		defer func() { output.SetOutputExit(oldOutputExit) }()
+
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+
+		service.EXPECT().GetTemplates(gomock.Any()).Return([]safedns.Template{}, errors.New("test error")).Times(1)
+
+		output := test.CatchStdErr(t, func() {
+			safednsTemplateRecordShow(service, &cobra.Command{}, []string{"test template 1"})
+		})
+
+		assert.Equal(t, 1, code)
+		assert.Equal(t, "Error locating template [test template 1]: Error retrieving items: test error\n", output)
+	})
+
+	t.Run("InvalidRecordID_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+
+		output := test.CatchStdErr(t, func() {
+			safednsTemplateRecordShow(service, &cobra.Command{}, []string{"123", "abc"})
+		})
+
+		assert.Equal(t, "Invalid record ID [abc]\n", output)
+	})
+
+	t.Run("GetTemplateRecordError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+
+		service.EXPECT().GetTemplateRecord(123, 456).Return(safedns.Record{}, errors.New("test error")).Times(1)
+
+		output := test.CatchStdErr(t, func() {
+			safednsTemplateRecordShow(service, &cobra.Command{}, []string{"123", "456"})
+		})
+
+		assert.Equal(t, "Error retrieving record [456]: test error\n", output)
+	})
+}
+
+func Test_safednsTemplateRecordCreateCmd_Args(t *testing.T) {
+	t.Run("ValidArgs_NoError", func(t *testing.T) {
+		cmd := safednsTemplateRecordCreateCmd()
+		err := cmd.Args(nil, []string{"123", "456"})
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("MissingTemplate_Error", func(t *testing.T) {
+		cmd := safednsTemplateRecordCreateCmd()
+		err := cmd.Args(nil, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing template", err.Error())
+	})
+}
+
+func Test_safednsTemplateRecordCreate(t *testing.T) {
+	t.Run("DefaultCreate_ByTemplateID", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+		cmd := safednsTemplateRecordCreateCmd()
+		cmd.Flags().Set("name", "test.testdomain.co.uk")
+		cmd.Flags().Set("type", "A")
+		cmd.Flags().Set("content", "1.2.3.4")
+
+		expectedRequest := safedns.CreateRecordRequest{
+			Name:    "test.testdomain.co.uk",
+			Type:    "A",
+			Content: "1.2.3.4",
+		}
+
+		gomock.InOrder(
+			service.EXPECT().CreateTemplateRecord(123, expectedRequest).Return(456, nil),
+			service.EXPECT().GetTemplateRecord(123, 456).Return(safedns.Record{}, nil),
+		)
+
+		safednsTemplateRecordCreate(service, cmd, []string{"123"})
+	})
+
+	t.Run("DefaultCreate_ByTemplateName", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+		cmd := safednsTemplateRecordCreateCmd()
+		cmd.Flags().Set("name", "test.testdomain.co.uk")
+		cmd.Flags().Set("type", "A")
+		cmd.Flags().Set("content", "1.2.3.4")
+		cmd.Flags().Set("priority", "0")
+
+		expectedRequest := safedns.CreateRecordRequest{
+			Name:     "test.testdomain.co.uk",
+			Type:     "A",
+			Content:  "1.2.3.4",
+			Priority: ptr.Int(0),
+		}
+
+		gomock.InOrder(
+			service.EXPECT().GetTemplates(gomock.Eq(
+				connection.APIRequestParameters{
+					Filtering: []connection.APIRequestFiltering{
+						connection.APIRequestFiltering{
+							Property: "name",
+							Operator: connection.EQOperator,
+							Value:    []string{"test template 1"},
+						},
+					},
+				}),
+			).Return([]safedns.Template{safedns.Template{ID: 123}}, nil),
+			service.EXPECT().CreateTemplateRecord(123, expectedRequest).Return(456, nil),
+			service.EXPECT().GetTemplateRecord(123, 456).Return(safedns.Record{}, nil),
+		)
+
+		safednsTemplateRecordCreate(service, cmd, []string{"test template 1"})
+	})
+
+	t.Run("GetTemplatesError_OutputsFatal", func(t *testing.T) {
+		code := 0
+		oldOutputExit := output.SetOutputExit(func(c int) {
+			code = c
+		})
+		defer func() { output.SetOutputExit(oldOutputExit) }()
+
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+
+		service.EXPECT().GetTemplates(gomock.Any()).Return([]safedns.Template{}, errors.New("test error")).Times(1)
+
+		output := test.CatchStdErr(t, func() {
+			safednsTemplateRecordCreate(service, &cobra.Command{}, []string{"test template 1"})
+		})
+
+		assert.Equal(t, 1, code)
+		assert.Equal(t, "Error locating template [test template 1]: Error retrieving items: test error\n", output)
+	})
+
+	t.Run("CreateTemplateRecordError_OutputsFatal", func(t *testing.T) {
+		code := 0
+		oldOutputExit := output.SetOutputExit(func(c int) {
+			code = c
+		})
+		defer func() { output.SetOutputExit(oldOutputExit) }()
+
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().CreateTemplateRecord(123, gomock.Any()).Return(456, errors.New("test error")),
+		)
+
+		output := test.CatchStdErr(t, func() {
+			safednsTemplateRecordCreate(service, &cobra.Command{}, []string{"123"})
+		})
+
+		assert.Equal(t, 1, code)
+		assert.Equal(t, "Error creating record: test error\n", output)
+	})
+
+	t.Run("GetTemplateRecordError_OutputsFatal", func(t *testing.T) {
+		code := 0
+		oldOutputExit := output.SetOutputExit(func(c int) {
+			code = c
+		})
+		defer func() { output.SetOutputExit(oldOutputExit) }()
+
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().CreateTemplateRecord(123, gomock.Any()).Return(456, nil),
+			service.EXPECT().GetTemplateRecord(123, 456).Return(safedns.Record{}, errors.New("test error")),
+		)
+
+		output := test.CatchStdErr(t, func() {
+			safednsTemplateRecordCreate(service, &cobra.Command{}, []string{"123"})
+		})
+
+		assert.Equal(t, 1, code)
+		assert.Equal(t, "Error retrieving new record: test error\n", output)
+	})
+}
+
+func Test_safednsTemplateRecordUpdateCmd_Args(t *testing.T) {
+	t.Run("ValidArgs_NoError", func(t *testing.T) {
+		cmd := safednsTemplateRecordUpdateCmd()
+		err := cmd.Args(nil, []string{"123", "456"})
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("MissingTemplate_Error", func(t *testing.T) {
+		cmd := safednsTemplateRecordUpdateCmd()
+		err := cmd.Args(nil, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing template", err.Error())
+	})
+
+	t.Run("MissingRecord_Error", func(t *testing.T) {
+		cmd := safednsTemplateRecordUpdateCmd()
+		err := cmd.Args(nil, []string{"123"})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing record", err.Error())
+	})
+}
+
+func Test_safednsTemplateRecordUpdate(t *testing.T) {
+	t.Run("UpdateSingle_ByTemplateID", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().PatchTemplateRecord(123, 456, gomock.Any()),
+			service.EXPECT().GetTemplateRecord(123, 456).Return(safedns.Record{}, nil),
+		)
+
+		safednsTemplateRecordUpdate(service, &cobra.Command{}, []string{"123", "456"})
+	})
+
+	t.Run("UpdateMultiple_ByTemplateID", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().PatchTemplateRecord(123, 456, gomock.Any()).Return(456, nil),
+			service.EXPECT().GetTemplateRecord(123, 456).Return(safedns.Record{}, nil),
+			service.EXPECT().PatchTemplateRecord(123, 789, gomock.Any()).Return(789, nil),
+			service.EXPECT().GetTemplateRecord(123, 789).Return(safedns.Record{}, nil),
+		)
+
+		safednsTemplateRecordUpdate(service, &cobra.Command{}, []string{"123", "456", "789"})
+	})
+
+	t.Run("ExpectedFlags", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+		cmd := safednsTemplateRecordUpdateCmd()
+		cmd.Flags().Set("name", "test.testdomain.co.uk")
+		cmd.Flags().Set("type", "A")
+		cmd.Flags().Set("content", "1.2.3.4")
+		cmd.Flags().Set("priority", "0")
+
+		expectedRequest := safedns.PatchRecordRequest{
+			Name:     "test.testdomain.co.uk",
+			Type:     "A",
+			Content:  "1.2.3.4",
+			Priority: ptr.Int(0),
+		}
+
+		gomock.InOrder(
+			service.EXPECT().PatchTemplateRecord(123, 456, expectedRequest),
+			service.EXPECT().GetTemplateRecord(123, 456).Return(safedns.Record{}, nil),
+		)
+
+		safednsTemplateRecordUpdate(service, cmd, []string{"123", "456"})
+	})
+
+	t.Run("UpdateSingle_ByTemplateName", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+		gomock.InOrder(
+			service.EXPECT().GetTemplates(gomock.Eq(connection.APIRequestParameters{
+				Filtering: []connection.APIRequestFiltering{
+					connection.APIRequestFiltering{
+						Property: "name",
+						Operator: connection.EQOperator,
+						Value:    []string{"test template 1"},
+					},
+				},
+			})).Return([]safedns.Template{safedns.Template{ID: 123}}, nil),
+			service.EXPECT().PatchTemplateRecord(123, 456, gomock.Any()),
+			service.EXPECT().GetTemplateRecord(123, 456).Return(safedns.Record{}, nil),
+		)
+
+		safednsTemplateRecordUpdate(service, &cobra.Command{}, []string{"test template 1", "456"})
+	})
+
+	t.Run("GetTemplatesError_OutputsFatal", func(t *testing.T) {
+		code := 0
+		oldOutputExit := output.SetOutputExit(func(c int) {
+			code = c
+		})
+		defer func() { output.SetOutputExit(oldOutputExit) }()
+
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+
+		service.EXPECT().GetTemplates(gomock.Any()).Return([]safedns.Template{}, errors.New("test error")).Times(1)
+
+		output := test.CatchStdErr(t, func() {
+			safednsTemplateRecordUpdate(service, &cobra.Command{}, []string{"test template 1"})
+		})
+
+		assert.Equal(t, 1, code)
+		assert.Equal(t, "Error locating template [test template 1]: Error retrieving items: test error\n", output)
+	})
+
+	t.Run("InvalidRecordID_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+
+		output := test.CatchStdErr(t, func() {
+			safednsTemplateRecordUpdate(service, &cobra.Command{}, []string{"123", "abc"})
+		})
+
+		assert.Equal(t, "Invalid record ID [abc]\n", output)
+	})
+
+	t.Run("PatchTemplateRecordError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+
+		service.EXPECT().PatchTemplateRecord(123, 456, gomock.Any()).Return(0, errors.New("test error"))
+
+		output := test.CatchStdErr(t, func() {
+			safednsTemplateRecordUpdate(service, &cobra.Command{}, []string{"123", "456"})
+		})
+
+		assert.Equal(t, "Error updating record [456]: test error\n", output)
+	})
+
+	t.Run("GetTemplateRecordError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().PatchTemplateRecord(123, 456, gomock.Any()),
+			service.EXPECT().GetTemplateRecord(123, 456).Return(safedns.Record{}, errors.New("test error")),
+		)
+
+		output := test.CatchStdErr(t, func() {
+			safednsTemplateRecordUpdate(service, &cobra.Command{}, []string{"123", "456"})
+		})
+
+		assert.Equal(t, "Error retrieving updated record [456]: test error\n", output)
+	})
+}
+
+func Test_safednsTemplateRecordDeleteCmd_Args(t *testing.T) {
+	t.Run("ValidArgs_NoError", func(t *testing.T) {
+		cmd := safednsTemplateRecordDeleteCmd()
+		err := cmd.Args(nil, []string{"123", "456"})
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("MissingTemplate_Error", func(t *testing.T) {
+		cmd := safednsTemplateRecordDeleteCmd()
+		err := cmd.Args(nil, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing template", err.Error())
+	})
+
+	t.Run("MissingRecord_Error", func(t *testing.T) {
+		cmd := safednsTemplateRecordDeleteCmd()
+		err := cmd.Args(nil, []string{"123"})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing record", err.Error())
+	})
+}
+
+func Test_safednsTemplateRecordDelete(t *testing.T) {
+	t.Run("RetrieveSingle_ByTemplateID", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+
+		service.EXPECT().DeleteTemplateRecord(123, 456).Return(nil).Times(1)
+
+		safednsTemplateRecordDelete(service, &cobra.Command{}, []string{"123", "456"})
+	})
+
+	t.Run("RetrieveMultiple_ByTemplateID", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().DeleteTemplateRecord(123, 456).Return(nil).Times(1),
+			service.EXPECT().DeleteTemplateRecord(123, 789).Return(nil).Times(1),
+		)
+
+		safednsTemplateRecordDelete(service, &cobra.Command{}, []string{"123", "456", "789"})
+	})
+
+	t.Run("Retrieve_ByTemplateName", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().GetTemplates(gomock.Eq(
+				connection.APIRequestParameters{
+					Filtering: []connection.APIRequestFiltering{
+						connection.APIRequestFiltering{
+							Property: "name",
+							Operator: connection.EQOperator,
+							Value:    []string{"test template 1"},
+						},
+					},
+				}),
+			).Return([]safedns.Template{safedns.Template{ID: 123}}, nil),
+			service.EXPECT().DeleteTemplateRecord(123, 456).Return(nil).Times(1),
+		)
+
+		safednsTemplateRecordDelete(service, &cobra.Command{}, []string{"test template 1", "456"})
+	})
+
+	t.Run("GetTemplatesError_OutputsFatal", func(t *testing.T) {
+		code := 0
+		oldOutputExit := output.SetOutputExit(func(c int) {
+			code = c
+		})
+		defer func() { output.SetOutputExit(oldOutputExit) }()
+
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+
+		service.EXPECT().GetTemplates(gomock.Any()).Return([]safedns.Template{}, errors.New("test error")).Times(1)
+
+		output := test.CatchStdErr(t, func() {
+			safednsTemplateRecordDelete(service, &cobra.Command{}, []string{"test template 1"})
+		})
+
+		assert.Equal(t, 1, code)
+		assert.Equal(t, "Error locating template [test template 1]: Error retrieving items: test error\n", output)
+	})
+
+	// t.Run("InvalidRecordID_OutputsError", func(t *testing.T) {
+	// 	mockCtrl := gomock.NewController(t)
+	// 	defer mockCtrl.Finish()
+
+	// 	service := mocks.NewMockSafeDNSService(mockCtrl)
+
+	// 	output := test.CatchStdErr(t, func() {
+	// 		safednsTemplateRecordDelete(service, &cobra.Command{}, []string{"123", "abc"})
+	// 	})
+
+	// 	assert.Equal(t, "Invalid record ID [abc]\n", output)
+	// })
+
+	// t.Run("GetTemplateRecordError_OutputsError", func(t *testing.T) {
+	// 	mockCtrl := gomock.NewController(t)
+	// 	defer mockCtrl.Finish()
+
+	// 	service := mocks.NewMockSafeDNSService(mockCtrl)
+
+	// 	service.EXPECT().GetTemplateRecord(123, 456).Return(safedns.Record{}, errors.New("test error")).Times(1)
+
+	// 	output := test.CatchStdErr(t, func() {
+	// 		safednsTemplateRecordDelete(service, &cobra.Command{}, []string{"123", "456"})
+	// 	})
+
+	// 	assert.Equal(t, "Error retrieving record [456]: test error\n", output)
+	// })
+}

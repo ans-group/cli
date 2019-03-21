@@ -1,0 +1,6 @@
+/debug
+.vscode/
+*.test
+/ukfast.exe
+/ukfast
+cover.out
