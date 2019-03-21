@@ -18,7 +18,6 @@ func ecloudRootCmd() *cobra.Command {
 
 	// Child root commands
 	cmd.AddCommand(ecloudVirtualMachineRootCmd())
-	cmd.AddCommand(ecloudTemplateRootCmd())
 	cmd.AddCommand(ecloudSolutionRootCmd())
 	cmd.AddCommand(ecloudSiteRootCmd())
 	cmd.AddCommand(ecloudHostRootCmd())

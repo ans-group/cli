@@ -67,13 +67,6 @@ type ECloudService interface {
 	GetDatastoresPaginated(parameters connection.APIRequestParameters) ([]Datastore, error)
 	GetDatastore(datastoreID int) (Datastore, error)
 
-	// Template
-	GetTemplates(parameters connection.APIRequestParameters) ([]Template, error)
-	GetTemplatesPaginated(parameters connection.APIRequestParameters) ([]Template, error)
-	GetTemplate(templateName string) (Template, error)
-	RenameTemplate(templateName string, req RenameTemplateRequest) error
-	DeleteTemplate(templateName string) error
-
 	// Firewall
 	GetFirewalls(parameters connection.APIRequestParameters) ([]Firewall, error)
 	GetFirewallsPaginated(parameters connection.APIRequestParameters) ([]Firewall, error)

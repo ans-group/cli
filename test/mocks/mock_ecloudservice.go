@@ -106,20 +106,6 @@ func (mr *MockECloudServiceMockRecorder) DeleteSolutionTag(arg0, arg1 interface{
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteSolutionTag", reflect.TypeOf((*MockECloudService)(nil).DeleteSolutionTag), arg0, arg1)
 }
 
-// DeleteTemplate mocks base method
-func (m *MockECloudService) DeleteTemplate(arg0 string) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteTemplate", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// DeleteTemplate indicates an expected call of DeleteTemplate
-func (mr *MockECloudServiceMockRecorder) DeleteTemplate(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteTemplate", reflect.TypeOf((*MockECloudService)(nil).DeleteTemplate), arg0)
-}
-
 // DeleteVirtualMachine mocks base method
 func (m *MockECloudService) DeleteVirtualMachine(arg0 int) error {
 	m.ctrl.T.Helper()
@@ -718,51 +704,6 @@ func (mr *MockECloudServiceMockRecorder) GetSolutionsPaginated(arg0 interface{})
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSolutionsPaginated", reflect.TypeOf((*MockECloudService)(nil).GetSolutionsPaginated), arg0)
 }
 
-// GetTemplate mocks base method
-func (m *MockECloudService) GetTemplate(arg0 string) (ecloud.Template, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetTemplate", arg0)
-	ret0, _ := ret[0].(ecloud.Template)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetTemplate indicates an expected call of GetTemplate
-func (mr *MockECloudServiceMockRecorder) GetTemplate(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTemplate", reflect.TypeOf((*MockECloudService)(nil).GetTemplate), arg0)
-}
-
-// GetTemplates mocks base method
-func (m *MockECloudService) GetTemplates(arg0 connection.APIRequestParameters) ([]ecloud.Template, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetTemplates", arg0)
-	ret0, _ := ret[0].([]ecloud.Template)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetTemplates indicates an expected call of GetTemplates
-func (mr *MockECloudServiceMockRecorder) GetTemplates(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTemplates", reflect.TypeOf((*MockECloudService)(nil).GetTemplates), arg0)
-}
-
-// GetTemplatesPaginated mocks base method
-func (m *MockECloudService) GetTemplatesPaginated(arg0 connection.APIRequestParameters) ([]ecloud.Template, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetTemplatesPaginated", arg0)
-	ret0, _ := ret[0].([]ecloud.Template)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetTemplatesPaginated indicates an expected call of GetTemplatesPaginated
-func (mr *MockECloudServiceMockRecorder) GetTemplatesPaginated(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTemplatesPaginated", reflect.TypeOf((*MockECloudService)(nil).GetTemplatesPaginated), arg0)
-}
-
 // GetVirtualMachine mocks base method
 func (m *MockECloudService) GetVirtualMachine(arg0 int) (ecloud.VirtualMachine, error) {
 	m.ctrl.T.Helper()
@@ -978,18 +919,4 @@ func (m *MockECloudService) PowerShutdownVirtualMachine(arg0 int) error {
 func (mr *MockECloudServiceMockRecorder) PowerShutdownVirtualMachine(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PowerShutdownVirtualMachine", reflect.TypeOf((*MockECloudService)(nil).PowerShutdownVirtualMachine), arg0)
-}
-
-// RenameTemplate mocks base method
-func (m *MockECloudService) RenameTemplate(arg0 string, arg1 ecloud.RenameTemplateRequest) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "RenameTemplate", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// RenameTemplate indicates an expected call of RenameTemplate
-func (mr *MockECloudServiceMockRecorder) RenameTemplate(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RenameTemplate", reflect.TypeOf((*MockECloudService)(nil).RenameTemplate), arg0, arg1)
 }
