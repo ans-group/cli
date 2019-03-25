@@ -104,3 +104,87 @@ func Test_ecloudSolutionTemplateList(t *testing.T) {
 		assert.Equal(t, "Error retrieving solution templates: test error 1\n", output)
 	})
 }
+
+func Test_ecloudSolutionTemplateShowCmd_Args(t *testing.T) {
+	t.Run("ValidArgs_NoError", func(t *testing.T) {
+		err := ecloudSolutionTemplateShowCmd().Args(nil, []string{"123", "testtemplate1"})
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("MissingSolution_Error", func(t *testing.T) {
+		err := ecloudSolutionTemplateShowCmd().Args(nil, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing solution", err.Error())
+	})
+
+	t.Run("MissingTemplate_Error", func(t *testing.T) {
+		err := ecloudSolutionTemplateShowCmd().Args(nil, []string{"123"})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing template", err.Error())
+	})
+}
+
+func Test_ecloudSolutionTemplateShow(t *testing.T) {
+	t.Run("RetrieveSingle", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		service.EXPECT().GetSolutionTemplate(123, "testtemplate1").Return(ecloud.Template{}, nil).Times(1)
+
+		ecloudSolutionTemplateShow(service, &cobra.Command{}, []string{"123", "testtemplate1"})
+	})
+
+	t.Run("RetrieveMultiple", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().GetSolutionTemplate(123, "testtemplate1").Return(ecloud.Template{}, nil),
+			service.EXPECT().GetSolutionTemplate(123, "testtemplate2").Return(ecloud.Template{}, nil),
+		)
+
+		ecloudSolutionTemplateShow(service, &cobra.Command{}, []string{"123", "testtemplate1", "testtemplate2"})
+	})
+
+	t.Run("InvalidSolutionID_OutputsFatal", func(t *testing.T) {
+		code := 0
+		oldOutputExit := output.SetOutputExit(func(c int) {
+			code = c
+		})
+		defer func() { output.SetOutputExit(oldOutputExit) }()
+
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		output := test.CatchStdErr(t, func() {
+			ecloudSolutionTemplateShow(service, &cobra.Command{}, []string{"abc", "testtemplate1"})
+		})
+
+		assert.Equal(t, "Invalid solution ID [abc]\n", output)
+		assert.Equal(t, 1, code)
+	})
+
+	t.Run("GetSolutionTemplateError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		service.EXPECT().GetSolutionTemplate(123, "testtemplate1").Return(ecloud.Template{}, errors.New("test error 1")).Times(1)
+
+		output := test.CatchStdErr(t, func() {
+			ecloudSolutionTemplateShow(service, &cobra.Command{}, []string{"123", "testtemplate1"})
+		})
+
+		assert.Equal(t, "Error retrieving solution template [testtemplate1]: test error 1\n", output)
+	})
+}
