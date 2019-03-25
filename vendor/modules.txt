@@ -53,7 +53,7 @@ github.com/spf13/pflag
 github.com/spf13/viper
 # github.com/stretchr/testify v1.3.0
 github.com/stretchr/testify/assert
-# github.com/ukfast/sdk-go v1.0.6
+# github.com/ukfast/sdk-go v1.0.7
 github.com/ukfast/sdk-go/pkg/client
 github.com/ukfast/sdk-go/pkg/connection
 github.com/ukfast/sdk-go/pkg/logging

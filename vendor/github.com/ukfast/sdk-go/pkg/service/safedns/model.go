@@ -24,6 +24,26 @@ func (r RecordTTL) String() string {
 	return strconv.Itoa(int(r))
 }
 
+type RecordType string
+
+func (s RecordType) String() string {
+	return string(s)
+}
+
+const (
+	RecordTypeA     RecordType = "A"
+	RecordTypeAAAA  RecordType = "AAAA"
+	RecordTypeCAA   RecordType = "CAA"
+	RecordTypeCNAME RecordType = "CNAME"
+	RecordTypeMX    RecordType = "MX"
+	RecordTypeSPF   RecordType = "SPF"
+	RecordTypeSRV   RecordType = "SRV"
+	RecordTypeTXT   RecordType = "TXT"
+	RecordTypeNS    RecordType = "NS"
+	RecordTypeSOA   RecordType = "SOA"
+	RecordTypeAXFR  RecordType = "AXFR"
+)
+
 // Zone represents a SafeDNS zone
 type Zone struct {
 	Name        string `json:"name"`
@@ -37,7 +57,7 @@ type Record struct {
 	ID         int                 `json:"id"`
 	TemplateID int                 `json:"template_id"`
 	Name       string              `json:"name" validate:"required"`
-	Type       string              `json:"type"`
+	Type       RecordType          `json:"type"`
 	Content    string              `json:"content" validate:"required"`
 	UpdatedAt  connection.DateTime `json:"updated_at"`
 	TTL        RecordTTL           `json:"ttl"`
