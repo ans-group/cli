@@ -20,6 +20,7 @@ func ecloudSolutionTemplateRootCmd() *cobra.Command {
 	cmd.AddCommand(ecloudSolutionTemplateShowCmd())
 	cmd.AddCommand(ecloudSolutionTemplateUpdateCmd())
 	cmd.AddCommand(ecloudSolutionTemplateDeleteCmd())
+	cmd.AddCommand(ecloudSolutionTemplateCreateCmd())
 
 	return cmd
 }
@@ -111,7 +112,7 @@ func ecloudSolutionTemplateShow(service ecloud.ECloudService, cmd *cobra.Command
 
 func ecloudSolutionTemplateUpdateCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "update <solution: id> <template: template>...",
+		Use:     "update <solution: id> <template: name>...",
 		Short:   "Updates a solution template",
 		Long:    "This command updates a solution template",
 		Example: "ukfast ecloud solution template update 123 foo --name \"bar\"",
@@ -174,9 +175,50 @@ func ecloudSolutionTemplateUpdate(service ecloud.ECloudService, cmd *cobra.Comma
 	outputECloudTemplates([]ecloud.Template{template})
 }
 
+func ecloudSolutionTemplateCreateCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:     "create <solution: id> <virtualmachine: id>",
+		Short:   "Creates a solution template",
+		Long:    "This command creates a solution template",
+		Example: "ukfast ecloud solution template create 123 foo --name \"foo\"",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Missing solution")
+			}
+
+			return nil
+		},
+		Run: func(cmd *cobra.Command, args []string) {
+			ecloudSolutionTemplateCreate(getClient().ECloudService(), cmd, args)
+		},
+	}
+
+	cmd.Flags().Int("vm", 0, "ID of source VM for template")
+	cmd.MarkFlagRequired("vm")
+	cmd.Flags().String("name", "", "Name for new template")
+	cmd.MarkFlagRequired("name")
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the template has been completely created before continuing on")
+
+	return cmd
+}
+
+func ecloudSolutionTemplateCreate(service ecloud.ECloudService, cmd *cobra.Command, args []string) {
+	solutionID, err := strconv.Atoi(args[0])
+	if err != nil {
+		output.Fatalf("Invalid solution ID [%s]", args[0])
+		return
+	}
+
+	vmID, _ := cmd.Flags().GetInt("vm")
+	name, _ := cmd.Flags().GetString("name")
+	// TODO: call ecloudVirtualMachineTemplateCreate()
+
+	outputECloudTemplates([]ecloud.Template{template})
+}
+
 func ecloudSolutionTemplateDeleteCmd() *cobra.Command {
 	return &cobra.Command{
-		Use:     "delete <solution: id> <template: template>...",
+		Use:     "delete <solution: id> <template: name>...",
 		Short:   "Removes a solution template ",
 		Long:    "This command removes one or more solution templates",
 		Example: "ukfast ecloud solution template delete 123 foo",

@@ -106,6 +106,20 @@ func (mr *MockECloudServiceMockRecorder) CreateVirtualMachineTemplate(arg0, arg1
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateVirtualMachineTemplate", reflect.TypeOf((*MockECloudService)(nil).CreateVirtualMachineTemplate), arg0, arg1)
 }
 
+// DeletePodTemplate mocks base method
+func (m *MockECloudService) DeletePodTemplate(arg0 int, arg1 string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeletePodTemplate", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeletePodTemplate indicates an expected call of DeletePodTemplate
+func (mr *MockECloudServiceMockRecorder) DeletePodTemplate(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeletePodTemplate", reflect.TypeOf((*MockECloudService)(nil).DeletePodTemplate), arg0, arg1)
+}
+
 // DeleteSolutionTag mocks base method
 func (m *MockECloudService) DeleteSolutionTag(arg0 int, arg1 string) error {
 	m.ctrl.T.Helper()
@@ -325,6 +339,21 @@ func (m *MockECloudService) GetPod(arg0 int) (ecloud.Pod, error) {
 func (mr *MockECloudServiceMockRecorder) GetPod(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPod", reflect.TypeOf((*MockECloudService)(nil).GetPod), arg0)
+}
+
+// GetPodTemplate mocks base method
+func (m *MockECloudService) GetPodTemplate(arg0 int, arg1 string) (ecloud.Template, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetPodTemplate", arg0, arg1)
+	ret0, _ := ret[0].(ecloud.Template)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetPodTemplate indicates an expected call of GetPodTemplate
+func (mr *MockECloudServiceMockRecorder) GetPodTemplate(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPodTemplate", reflect.TypeOf((*MockECloudService)(nil).GetPodTemplate), arg0, arg1)
 }
 
 // GetPodTemplates mocks base method
@@ -962,6 +991,20 @@ func (m *MockECloudService) PowerShutdownVirtualMachine(arg0 int) error {
 func (mr *MockECloudServiceMockRecorder) PowerShutdownVirtualMachine(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PowerShutdownVirtualMachine", reflect.TypeOf((*MockECloudService)(nil).PowerShutdownVirtualMachine), arg0)
+}
+
+// RenamePodTemplate mocks base method
+func (m *MockECloudService) RenamePodTemplate(arg0 int, arg1 string, arg2 ecloud.RenameTemplateRequest) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RenamePodTemplate", arg0, arg1, arg2)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// RenamePodTemplate indicates an expected call of RenamePodTemplate
+func (mr *MockECloudServiceMockRecorder) RenamePodTemplate(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RenamePodTemplate", reflect.TypeOf((*MockECloudService)(nil).RenamePodTemplate), arg0, arg1, arg2)
 }
 
 // RenameSolutionTemplate mocks base method

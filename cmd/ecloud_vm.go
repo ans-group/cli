@@ -31,6 +31,7 @@ func ecloudVirtualMachineRootCmd() *cobra.Command {
 	// Child root commands
 	cmd.AddCommand(ecloudVirtualMachineTagRootCmd())
 	cmd.AddCommand(ecloudVirtualMachineDiskRootCmd())
+	cmd.AddCommand(ecloudVirtualMachineTemplateRootCmd())
 
 	return cmd
 }

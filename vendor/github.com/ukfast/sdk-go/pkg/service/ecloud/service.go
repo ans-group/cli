@@ -83,6 +83,9 @@ type ECloudService interface {
 	GetPod(podID int) (Pod, error)
 	GetPodTemplates(podID int, parameters connection.APIRequestParameters) ([]Template, error)
 	GetPodTemplatesPaginated(podID int, parameters connection.APIRequestParameters) ([]Template, error)
+	GetPodTemplate(podID int, templateName string) (Template, error)
+	RenamePodTemplate(podID int, templateName string, req RenameTemplateRequest) error
+	DeletePodTemplate(podID int, templateName string) error
 }
 
 // Service implements ECloudService for managing
