@@ -7,9 +7,8 @@ import (
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/cli/test"
 	"github.com/ukfast/cli/test/mocks"
+	"github.com/ukfast/cli/test/test_output"
 	"github.com/ukfast/sdk-go/pkg/service/registrar"
 )
 
@@ -41,11 +40,6 @@ func Test_registrarDomainNameserverList(t *testing.T) {
 	})
 
 	t.Run("GetDomainNameserversError_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -54,11 +48,8 @@ func Test_registrarDomainNameserverList(t *testing.T) {
 
 		service.EXPECT().GetDomainNameservers(gomock.Any()).Return([]registrar.Nameserver{}, errors.New("test error")).Times(1)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error retrieving domain nameservers: test error\n", func() {
 			registrarDomainNameserverList(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error retrieving domain nameservers: test error\n", output)
 	})
 }

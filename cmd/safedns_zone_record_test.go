@@ -7,9 +7,8 @@ import (
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/cli/test"
 	"github.com/ukfast/cli/test/mocks"
+	"github.com/ukfast/cli/test/test_output"
 	"github.com/ukfast/sdk-go/pkg/connection"
 	"github.com/ukfast/sdk-go/pkg/service/safedns"
 )
@@ -79,11 +78,6 @@ func Test_safednsZoneRecordList(t *testing.T) {
 	})
 
 	t.Run("MalformedFlag_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 		defer func() { flagFilter = nil }()
 
 		mockCtrl := gomock.NewController(t)
@@ -92,20 +86,12 @@ func Test_safednsZoneRecordList(t *testing.T) {
 		service := mocks.NewMockSafeDNSService(mockCtrl)
 		flagFilter = []string{"invalidfilter"}
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Missing value for filtering\n", func() {
 			safednsZoneRecordList(service, &cobra.Command{}, []string{"123"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Missing value for filtering\n", output)
 	})
 
 	t.Run("GetZonesError_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -114,12 +100,9 @@ func Test_safednsZoneRecordList(t *testing.T) {
 
 		service.EXPECT().GetZoneRecords("testdomain1.com", gomock.Any()).Return([]safedns.Record{}, errors.New("test error")).Times(1)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error retrieving records for zone: test error\n", func() {
 			safednsZoneRecordList(service, &cobra.Command{}, []string{"testdomain1.com"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error retrieving records for zone: test error\n", output)
 	})
 }
 
@@ -180,11 +163,9 @@ func Test_safednsZoneRecordShow(t *testing.T) {
 
 		service := mocks.NewMockSafeDNSService(mockCtrl)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Invalid record ID [abc]\n", func() {
 			safednsZoneRecordShow(service, &cobra.Command{}, []string{"testdomain1.com", "abc"})
 		})
-
-		assert.Equal(t, "Invalid record ID [abc]\n", output)
 	})
 
 	t.Run("GetZoneRecordError_OutputsError", func(t *testing.T) {
@@ -195,11 +176,9 @@ func Test_safednsZoneRecordShow(t *testing.T) {
 
 		service.EXPECT().GetZoneRecord("testdomain1.com", 123).Return(safedns.Record{}, errors.New("test error")).Times(1)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error retrieving record [123]: test error\n", func() {
 			safednsZoneRecordShow(service, &cobra.Command{}, []string{"testdomain1.com", "123"})
 		})
-
-		assert.Equal(t, "Error retrieving record [123]: test error\n", output)
 	})
 }
 
@@ -269,11 +248,6 @@ func Test_safednsZoneRecordCreate(t *testing.T) {
 	})
 
 	t.Run("CreateZoneRecordError_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -282,22 +256,12 @@ func Test_safednsZoneRecordCreate(t *testing.T) {
 
 		service.EXPECT().CreateZoneRecord("testdomain1.com", gomock.Any()).Return(0, errors.New("test error")).Times(1)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error creating record: test error\n", func() {
 			safednsZoneRecordCreate(service, &cobra.Command{}, []string{"testdomain1.com"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error creating record: test error\n", output)
 	})
 
 	t.Run("GetZoneRecordError_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-
-		defer func() { output.SetOutputExit(oldOutputExit) }()
-
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -308,12 +272,9 @@ func Test_safednsZoneRecordCreate(t *testing.T) {
 			service.EXPECT().GetZoneRecord("testdomain1.com", 123).Return(safedns.Record{}, errors.New("test error")),
 		)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error retrieving new record: test error\n", func() {
 			safednsZoneRecordCreate(service, &cobra.Command{}, []string{"testdomain1.com"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error retrieving new record: test error\n", output)
 	})
 }
 
@@ -419,11 +380,9 @@ func Test_safednsZoneRecordUpdate(t *testing.T) {
 
 		service := mocks.NewMockSafeDNSService(mockCtrl)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Invalid record ID [abc]\n", func() {
 			safednsZoneRecordUpdate(service, &cobra.Command{}, []string{"testdomain1.com", "abc"})
 		})
-
-		assert.Equal(t, "Invalid record ID [abc]\n", output)
 	})
 
 	t.Run("PatchZoneRecordError_OutputsError", func(t *testing.T) {
@@ -434,11 +393,9 @@ func Test_safednsZoneRecordUpdate(t *testing.T) {
 
 		service.EXPECT().PatchZoneRecord("testdomain1.com", 123, gomock.Any()).Return(0, errors.New("test error")).Times(1)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error updating record [123]: test error\n", func() {
 			safednsZoneRecordUpdate(service, &cobra.Command{}, []string{"testdomain1.com", "123"})
 		})
-
-		assert.Equal(t, "Error updating record [123]: test error\n", output)
 	})
 
 	t.Run("GetZoneRecordError_OutputsError", func(t *testing.T) {
@@ -452,11 +409,9 @@ func Test_safednsZoneRecordUpdate(t *testing.T) {
 			service.EXPECT().GetZoneRecord("testdomain1.com", 123).Return(safedns.Record{}, errors.New("test error")),
 		)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error retrieving updated record [123]: test error\n", func() {
 			safednsZoneRecordUpdate(service, &cobra.Command{}, []string{"testdomain1.com", "123"})
 		})
-
-		assert.Equal(t, "Error retrieving updated record [123]: test error\n", output)
 	})
 }
 
@@ -517,11 +472,9 @@ func Test_safednsZoneRecordDelete(t *testing.T) {
 
 		service := mocks.NewMockSafeDNSService(mockCtrl)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Invalid record ID [abc]\n", func() {
 			safednsZoneRecordDelete(service, &cobra.Command{}, []string{"testdomain1.com", "abc"})
 		})
-
-		assert.Equal(t, "Invalid record ID [abc]\n", output)
 	})
 
 	t.Run("DeleteZoneRecordError_OutputsError", func(t *testing.T) {
@@ -532,10 +485,8 @@ func Test_safednsZoneRecordDelete(t *testing.T) {
 
 		service.EXPECT().DeleteZoneRecord("testdomain1.com", 123).Return(errors.New("test error")).Times(1)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error removing record [123]: test error\n", func() {
 			safednsZoneRecordDelete(service, &cobra.Command{}, []string{"testdomain1.com", "123"})
 		})
-
-		assert.Equal(t, "Error removing record [123]: test error\n", output)
 	})
 }

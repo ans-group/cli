@@ -7,9 +7,8 @@ import (
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/cli/test"
 	"github.com/ukfast/cli/test/mocks"
+	"github.com/ukfast/cli/test/test_output"
 	"github.com/ukfast/sdk-go/pkg/service/ddosx"
 )
 
@@ -62,11 +61,9 @@ func Test_ddosxDomainACLGeoIPRulesModeShow(t *testing.T) {
 
 		service.EXPECT().GetDomainACLGeoIPRulesMode("testdomain1.co.uk").Return(ddosx.ACLGeoIPRulesMode(""), errors.New("test error"))
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error retrieving domain [testdomain1.co.uk] ACL GeoIP rules mode: test error\n", func() {
 			ddosxDomainACLGeoIPRulesModeShow(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 		})
-
-		assert.Equal(t, "Error retrieving domain [testdomain1.co.uk] ACL GeoIP rules mode: test error\n", output)
 	})
 }
 
@@ -109,12 +106,6 @@ func Test_ddosxDomainACLGeoIPRulesModeUpdate(t *testing.T) {
 	})
 
 	t.Run("InvalidMode_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
-
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -122,21 +113,12 @@ func Test_ddosxDomainACLGeoIPRulesModeUpdate(t *testing.T) {
 		cmd := ddosxDomainACLGeoIPRulesModeUpdateCmd()
 		cmd.Flags().Set("mode", "invalidmode")
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Invalid ACL GeoIP rules filtering mode\n", func() {
 			ddosxDomainACLGeoIPRulesModeUpdate(service, cmd, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Invalid ACL GeoIP rules filtering mode\n", output)
 	})
 
 	t.Run("PatchDomainACLGeoIPRulesMode_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
-
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -144,20 +126,12 @@ func Test_ddosxDomainACLGeoIPRulesModeUpdate(t *testing.T) {
 
 		service.EXPECT().PatchDomainACLGeoIPRulesMode("testdomain1.co.uk", gomock.Any()).Return(errors.New("test error"))
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error updating domain ACL GeoIP rule filtering mode: test error\n", func() {
 			ddosxDomainACLGeoIPRulesModeUpdate(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error updating domain ACL GeoIP rule filtering mode: test error\n", output)
 	})
 
 	t.Run("GetDomainACLGeoIPRulesMode_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -169,11 +143,8 @@ func Test_ddosxDomainACLGeoIPRulesModeUpdate(t *testing.T) {
 			service.EXPECT().GetDomainACLGeoIPRulesMode("testdomain1.co.uk").Return(ddosx.ACLGeoIPRulesMode(""), errors.New("test error")),
 		)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error retrieving updated domain ACL GeoIP rule filtering mode: test error\n", func() {
 			ddosxDomainACLGeoIPRulesModeUpdate(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error retrieving updated domain ACL GeoIP rule filtering mode: test error\n", output)
 	})
 }

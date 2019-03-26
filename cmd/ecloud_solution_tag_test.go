@@ -7,9 +7,8 @@ import (
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/cli/test"
 	"github.com/ukfast/cli/test/mocks"
+	"github.com/ukfast/cli/test/test_output"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
@@ -41,31 +40,18 @@ func Test_ecloudSolutionTagList(t *testing.T) {
 	})
 
 	t.Run("InvalidSolutionID_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Invalid solution ID [abc]\n", func() {
 			ecloudSolutionTagList(service, &cobra.Command{}, []string{"abc"})
 		})
-
-		assert.Equal(t, "Invalid solution ID [abc]\n", output)
-		assert.Equal(t, 1, code)
 	})
 
 	t.Run("MalformedFlag_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 		defer func() { flagFilter = nil }()
 
 		mockCtrl := gomock.NewController(t)
@@ -74,20 +60,12 @@ func Test_ecloudSolutionTagList(t *testing.T) {
 		service := mocks.NewMockECloudService(mockCtrl)
 		flagFilter = []string{"invalidfilter"}
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Missing value for filtering\n", func() {
 			ecloudSolutionTagList(service, &cobra.Command{}, []string{"123"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Missing value for filtering\n", output)
 	})
 
 	t.Run("GetSolutionTagsError_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -96,12 +74,9 @@ func Test_ecloudSolutionTagList(t *testing.T) {
 
 		service.EXPECT().GetSolutionTags(123, gomock.Any()).Return([]ecloud.Tag{}, errors.New("test error 1")).Times(1)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error retrieving solution tags: test error 1\n", func() {
 			ecloudSolutionTagList(service, &cobra.Command{}, []string{"123"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error retrieving solution tags: test error 1\n", output)
 	})
 }
 
@@ -154,23 +129,15 @@ func Test_ecloudSolutionTagShow(t *testing.T) {
 	})
 
 	t.Run("InvalidSolutionID_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Invalid solution ID [abc]\n", func() {
 			ecloudSolutionTagShow(service, &cobra.Command{}, []string{"abc", "testkey1"})
 		})
-
-		assert.Equal(t, "Invalid solution ID [abc]\n", output)
-		assert.Equal(t, 1, code)
 	})
 
 	t.Run("GetSolutionTagError_OutputsError", func(t *testing.T) {
@@ -181,11 +148,9 @@ func Test_ecloudSolutionTagShow(t *testing.T) {
 
 		service.EXPECT().GetSolutionTag(123, "testkey1").Return(ecloud.Tag{}, errors.New("test error 1")).Times(1)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error retrieving solution tag [testkey1]: test error 1\n", func() {
 			ecloudSolutionTagShow(service, &cobra.Command{}, []string{"123", "testkey1"})
 		})
-
-		assert.Equal(t, "Error retrieving solution tag [testkey1]: test error 1\n", output)
 	})
 }
 
@@ -228,31 +193,18 @@ func Test_ecloudSolutionTagCreate(t *testing.T) {
 	})
 
 	t.Run("InvalidSolutionID_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Invalid solution ID [abc]\n", func() {
 			ecloudSolutionTagCreate(service, &cobra.Command{}, []string{"abc"})
 		})
-
-		assert.Equal(t, "Invalid solution ID [abc]\n", output)
-		assert.Equal(t, 1, code)
 	})
 
 	t.Run("CreateSolutionTagError_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -261,20 +213,12 @@ func Test_ecloudSolutionTagCreate(t *testing.T) {
 
 		service.EXPECT().CreateSolutionTag(123, gomock.Any()).Return(errors.New("test error 1")).Times(1)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error creating solution tag: test error 1\n", func() {
 			ecloudSolutionTagCreate(service, &cobra.Command{}, []string{"123"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error creating solution tag: test error 1\n", output)
 	})
 
 	t.Run("GetSolutionTagError_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -289,12 +233,9 @@ func Test_ecloudSolutionTagCreate(t *testing.T) {
 			service.EXPECT().GetSolutionTag(123, "testkey1").Return(ecloud.Tag{}, errors.New("test error 1")),
 		)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error retrieving new solution tag: test error 1\n", func() {
 			ecloudSolutionTagCreate(service, cmd, []string{"123"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error retrieving new solution tag: test error 1\n", output)
 	})
 }
 
@@ -364,23 +305,15 @@ func Test_ecloudSolutionTagUpdate(t *testing.T) {
 	})
 
 	t.Run("InvalidSolutionID_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Invalid solution ID [abc]\n", func() {
 			ecloudSolutionTagUpdate(service, &cobra.Command{}, []string{"abc"})
 		})
-
-		assert.Equal(t, "Invalid solution ID [abc]\n", output)
-		assert.Equal(t, 1, code)
 	})
 
 	t.Run("PatchSolutionTag_OutputsError", func(t *testing.T) {
@@ -393,11 +326,9 @@ func Test_ecloudSolutionTagUpdate(t *testing.T) {
 			service.EXPECT().PatchSolutionTag(123, "testkey1", gomock.Any()).Return(errors.New("test error 1")),
 		)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error updating solution tag [testkey1]: test error 1\n", func() {
 			ecloudSolutionTagUpdate(service, &cobra.Command{}, []string{"123", "testkey1"})
 		})
-
-		assert.Equal(t, "Error updating solution tag [testkey1]: test error 1\n", output)
 	})
 
 	t.Run("GetSolutionTagError_OutputsError", func(t *testing.T) {
@@ -413,11 +344,9 @@ func Test_ecloudSolutionTagUpdate(t *testing.T) {
 			service.EXPECT().GetSolutionTag(123, "testkey1").Return(ecloud.Tag{}, errors.New("test error 1")),
 		)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error retrieving updated solution tag [testkey1]: test error 1\n", func() {
 			ecloudSolutionTagUpdate(service, cmd, []string{"123", "testkey1"})
 		})
-
-		assert.Equal(t, "Error retrieving updated solution tag [testkey1]: test error 1\n", output)
 	})
 }
 
@@ -470,23 +399,15 @@ func Test_ecloudSolutionTagDelete(t *testing.T) {
 	})
 
 	t.Run("InvalidSolutionID_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Invalid solution ID [abc]\n", func() {
 			ecloudSolutionTagDelete(service, &cobra.Command{}, []string{"abc", "testkey1"})
 		})
-
-		assert.Equal(t, "Invalid solution ID [abc]\n", output)
-		assert.Equal(t, 1, code)
 	})
 
 	t.Run("DeleteSolutionTagError_OutputsError", func(t *testing.T) {
@@ -497,10 +418,8 @@ func Test_ecloudSolutionTagDelete(t *testing.T) {
 
 		service.EXPECT().DeleteSolutionTag(123, "testkey1").Return(errors.New("test error 1")).Times(1)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error removing solution tag [testkey1]: test error 1\n", func() {
 			ecloudSolutionTagDelete(service, &cobra.Command{}, []string{"123", "testkey1"})
 		})
-
-		assert.Equal(t, "Error removing solution tag [testkey1]: test error 1\n", output)
 	})
 }

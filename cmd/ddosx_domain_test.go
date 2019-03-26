@@ -8,9 +8,8 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/cli/test"
 	"github.com/ukfast/cli/test/mocks"
+	"github.com/ukfast/cli/test/test_output"
 	"github.com/ukfast/sdk-go/pkg/service/ddosx"
 )
 
@@ -27,11 +26,6 @@ func Test_ddosxDomainList(t *testing.T) {
 	})
 
 	t.Run("MalformedFlag_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 		defer func() { flagFilter = nil }()
 
 		mockCtrl := gomock.NewController(t)
@@ -40,20 +34,12 @@ func Test_ddosxDomainList(t *testing.T) {
 		service := mocks.NewMockDDoSXService(mockCtrl)
 		flagFilter = []string{"invalidfilter"}
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Missing value for filtering\n", func() {
 			ddosxDomainList(service, &cobra.Command{}, []string{})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Missing value for filtering\n", output)
 	})
 
 	t.Run("GetDomainsError_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -62,12 +48,9 @@ func Test_ddosxDomainList(t *testing.T) {
 
 		service.EXPECT().GetDomains(gomock.Any()).Return([]ddosx.Domain{}, errors.New("test error")).Times(1)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error retrieving domains: test error\n", func() {
 			ddosxDomainList(service, &cobra.Command{}, []string{})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error retrieving domains: test error\n", output)
 	})
 }
 
@@ -120,11 +103,9 @@ func Test_ddosxDomainShow(t *testing.T) {
 
 		service.EXPECT().GetDomain("testdomain1.co.uk").Return(ddosx.Domain{}, errors.New("test error"))
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error retrieving domain [testdomain1.co.uk]: test error\n", func() {
 			ddosxDomainShow(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 		})
-
-		assert.Equal(t, "Error retrieving domain [testdomain1.co.uk]: test error\n", output)
 	})
 }
 
@@ -150,11 +131,6 @@ func Test_ddosxDomainCreate(t *testing.T) {
 	})
 
 	t.Run("CreateDomain_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -163,20 +139,12 @@ func Test_ddosxDomainCreate(t *testing.T) {
 
 		service.EXPECT().CreateDomain(gomock.Any()).Return(errors.New("test error")).Times(1)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error creating domain: test error\n", func() {
 			ddosxDomainCreate(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error creating domain: test error\n", output)
 	})
 
 	t.Run("CreateDomain_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -190,12 +158,9 @@ func Test_ddosxDomainCreate(t *testing.T) {
 			service.EXPECT().GetDomain("testdomain1.co.uk").Return(ddosx.Domain{}, errors.New("test error")),
 		)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error retrieving new domain: test error\n", func() {
 			ddosxDomainCreate(service, cmd, []string{"testdomain1.co.uk"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error retrieving new domain: test error\n", output)
 	})
 }
 
@@ -283,11 +248,9 @@ func Test_ddosxDomainDeploy(t *testing.T) {
 			service.EXPECT().GetDomain("testdomain1.co.uk").Return(ddosx.Domain{Status: ddosx.DomainStatusFailed}, nil),
 		)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error deploying domain [testdomain1.co.uk]: Error waiting for command: Domain [testdomain1.co.uk] in [Failed] state\n", func() {
 			ddosxDomainDeploy(service, cmd, []string{"testdomain1.co.uk"})
 		})
-
-		assert.Equal(t, "Error deploying domain [testdomain1.co.uk]: Error waiting for command: Domain [testdomain1.co.uk] in [Failed] state\n", output)
 	})
 
 	t.Run("DeployDomainError_OutputsError", func(t *testing.T) {
@@ -298,11 +261,9 @@ func Test_ddosxDomainDeploy(t *testing.T) {
 
 		service.EXPECT().DeployDomain("testdomain1.co.uk").Return(errors.New("test error"))
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error deploying domain [testdomain1.co.uk]: test error\n", func() {
 			ddosxDomainDeploy(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 		})
-
-		assert.Equal(t, "Error deploying domain [testdomain1.co.uk]: test error\n", output)
 	})
 
 	t.Run("GetDomainError_OutputsError", func(t *testing.T) {
@@ -316,11 +277,9 @@ func Test_ddosxDomainDeploy(t *testing.T) {
 			service.EXPECT().GetDomain("testdomain1.co.uk").Return(ddosx.Domain{}, errors.New("test error")),
 		)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error retrieving domain [testdomain1.co.uk]: test error\n", func() {
 			ddosxDomainDeploy(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 		})
-
-		assert.Equal(t, "Error retrieving domain [testdomain1.co.uk]: test error\n", output)
 	})
 }
 

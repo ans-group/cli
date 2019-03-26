@@ -7,8 +7,8 @@ import (
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/test"
 	"github.com/ukfast/cli/test/mocks"
+	"github.com/ukfast/cli/test/test_output"
 	"github.com/ukfast/sdk-go/pkg/service/registrar"
 )
 
@@ -61,11 +61,9 @@ func Test_registrarWhoisShow(t *testing.T) {
 
 		service.EXPECT().GetWhois("testdomain1.co.uk").Return(registrar.Whois{}, errors.New("test error"))
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error retrieving whois for domain [testdomain1.co.uk]: test error\n", func() {
 			registrarWhoisShow(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 		})
-
-		assert.Equal(t, "Error retrieving whois for domain [testdomain1.co.uk]: test error\n", output)
 	})
 }
 
@@ -89,10 +87,8 @@ func Test_registrarWhoisShowRaw(t *testing.T) {
 
 		service.EXPECT().GetWhoisRaw("testdomain1.co.uk").Return("", errors.New("test error"))
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error retrieving raw whois for domain [testdomain1.co.uk]: test error\n", func() {
 			registrarWhoisShowRaw(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 		})
-
-		assert.Equal(t, "Error retrieving raw whois for domain [testdomain1.co.uk]: test error\n", output)
 	})
 }

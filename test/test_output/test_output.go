@@ -1,4 +1,4 @@
-package output_helper
+package test_output
 
 import (
 	"testing"

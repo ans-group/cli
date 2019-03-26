@@ -4,14 +4,13 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/connection"
 
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/test"
 	"github.com/ukfast/cli/test/mocks"
+	"github.com/ukfast/cli/test/test_output"
 	"github.com/ukfast/sdk-go/pkg/service/safedns"
 )
 
@@ -51,11 +50,6 @@ func Test_safednsZoneList(t *testing.T) {
 	})
 
 	t.Run("MalformedFlag_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 		defer func() { flagFilter = nil }()
 
 		mockCtrl := gomock.NewController(t)
@@ -64,22 +58,12 @@ func Test_safednsZoneList(t *testing.T) {
 		service := mocks.NewMockSafeDNSService(mockCtrl)
 		flagFilter = []string{"invalidfilter"}
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Missing value for filtering\n", func() {
 			safednsZoneList(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Missing value for filtering\n", output)
 	})
 
 	t.Run("GetZonesError_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-
-		defer func() { output.SetOutputExit(oldOutputExit) }()
-
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -87,12 +71,9 @@ func Test_safednsZoneList(t *testing.T) {
 
 		service.EXPECT().GetZones(gomock.Any()).Return([]safedns.Zone{}, errors.New("test error")).Times(1)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error retrieving zones: test error\n", func() {
 			safednsZoneList(service, &cobra.Command{}, []string{})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error retrieving zones: test error\n", output)
 	})
 }
 
@@ -145,11 +126,9 @@ func Test_safednsZoneShow(t *testing.T) {
 
 		service.EXPECT().GetZone("testdomain1.com").Return(safedns.Zone{}, errors.New("test error"))
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error retrieving zone [testdomain1.com]: test error\n", func() {
 			safednsZoneShow(service, &cobra.Command{}, []string{"testdomain1.com"})
 		})
-
-		assert.Equal(t, "Error retrieving zone [testdomain1.com]: test error\n", output)
 	})
 }
 
@@ -177,13 +156,6 @@ func Test_safednsZoneCreate(t *testing.T) {
 	})
 
 	t.Run("CreateZoneError_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-
-		defer func() { output.SetOutputExit(oldOutputExit) }()
-
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -199,22 +171,12 @@ func Test_safednsZoneCreate(t *testing.T) {
 
 		service.EXPECT().CreateZone(expectedRequest).Return(errors.New("test error")).Times(1)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error creating zone: test error\n", func() {
 			safednsZoneCreate(service, cmd, []string{})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error creating zone: test error\n", output)
 	})
 
 	t.Run("GetZoneError_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-
-		defer func() { output.SetOutputExit(oldOutputExit) }()
-
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -233,12 +195,9 @@ func Test_safednsZoneCreate(t *testing.T) {
 			service.EXPECT().GetZone("testdomain1.com").Return(safedns.Zone{}, errors.New("test error")),
 		)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error retrieving new zone: test error\n", func() {
 			safednsZoneCreate(service, cmd, []string{})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error retrieving new zone: test error\n", output)
 	})
 }
 
@@ -291,10 +250,8 @@ func Test_safednsZoneDelete(t *testing.T) {
 
 		service.EXPECT().DeleteZone("testdomain1.com").Return(errors.New("test error")).Times(1)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error removing zone [testdomain1.com]: test error\n", func() {
 			safednsZoneDelete(service, &cobra.Command{}, []string{"testdomain1.com"})
 		})
-
-		assert.Equal(t, "Error removing zone [testdomain1.com]: test error\n", output)
 	})
 }

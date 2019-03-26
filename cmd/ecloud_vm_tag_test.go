@@ -7,9 +7,8 @@ import (
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/cli/test"
 	"github.com/ukfast/cli/test/mocks"
+	"github.com/ukfast/cli/test/test_output"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
@@ -41,31 +40,18 @@ func Test_ecloudVirtualMachineTagList(t *testing.T) {
 	})
 
 	t.Run("InvalidVirtualMachineID_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Invalid virtual machine ID [abc]\n", func() {
 			ecloudVirtualMachineTagList(service, &cobra.Command{}, []string{"abc"})
 		})
-
-		assert.Equal(t, "Invalid virtual machine ID [abc]\n", output)
-		assert.Equal(t, 1, code)
 	})
 
 	t.Run("MalformedFlag_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 		defer func() { flagFilter = nil }()
 
 		mockCtrl := gomock.NewController(t)
@@ -74,20 +60,12 @@ func Test_ecloudVirtualMachineTagList(t *testing.T) {
 		service := mocks.NewMockECloudService(mockCtrl)
 		flagFilter = []string{"invalidfilter"}
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Missing value for filtering\n", func() {
 			ecloudVirtualMachineTagList(service, &cobra.Command{}, []string{"123"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Missing value for filtering\n", output)
 	})
 
 	t.Run("GetVirtualMachineTagsError_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -96,12 +74,9 @@ func Test_ecloudVirtualMachineTagList(t *testing.T) {
 
 		service.EXPECT().GetVirtualMachineTags(123, gomock.Any()).Return([]ecloud.Tag{}, errors.New("test error 1")).Times(1)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error retrieving virtual machine tags: test error 1\n", func() {
 			ecloudVirtualMachineTagList(service, &cobra.Command{}, []string{"123"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error retrieving virtual machine tags: test error 1\n", output)
 	})
 }
 
@@ -154,23 +129,14 @@ func Test_ecloudVirtualMachineTagShow(t *testing.T) {
 	})
 
 	t.Run("InvalidVirtualMachineID_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
-
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Invalid virtual machine ID [abc]\n", func() {
 			ecloudVirtualMachineTagShow(service, &cobra.Command{}, []string{"abc", "testkey1"})
 		})
-
-		assert.Equal(t, "Invalid virtual machine ID [abc]\n", output)
-		assert.Equal(t, 1, code)
 	})
 
 	t.Run("GetVirtualMachineTagError_OutputsError", func(t *testing.T) {
@@ -181,11 +147,9 @@ func Test_ecloudVirtualMachineTagShow(t *testing.T) {
 
 		service.EXPECT().GetVirtualMachineTag(123, "testkey1").Return(ecloud.Tag{}, errors.New("test error 1")).Times(1)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error retrieving virtual machine tag [testkey1]: test error 1\n", func() {
 			ecloudVirtualMachineTagShow(service, &cobra.Command{}, []string{"123", "testkey1"})
 		})
-
-		assert.Equal(t, "Error retrieving virtual machine tag [testkey1]: test error 1\n", output)
 	})
 }
 
@@ -228,31 +192,18 @@ func Test_ecloudVirtualMachineTagCreate(t *testing.T) {
 	})
 
 	t.Run("InvalidVirtualMachineID_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Invalid virtual machine ID [abc]\n", func() {
 			ecloudVirtualMachineTagCreate(service, &cobra.Command{}, []string{"abc"})
 		})
-
-		assert.Equal(t, "Invalid virtual machine ID [abc]\n", output)
-		assert.Equal(t, 1, code)
 	})
 
 	t.Run("CreateVirtualMachineTagError_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -261,20 +212,12 @@ func Test_ecloudVirtualMachineTagCreate(t *testing.T) {
 
 		service.EXPECT().CreateVirtualMachineTag(123, gomock.Any()).Return(errors.New("test error 1")).Times(1)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error creating virtual machine tag: test error 1\n", func() {
 			ecloudVirtualMachineTagCreate(service, &cobra.Command{}, []string{"123"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error creating virtual machine tag: test error 1\n", output)
 	})
 
 	t.Run("GetVirtualMachineTagError_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -289,12 +232,9 @@ func Test_ecloudVirtualMachineTagCreate(t *testing.T) {
 			service.EXPECT().GetVirtualMachineTag(123, "testkey1").Return(ecloud.Tag{}, errors.New("test error 1")),
 		)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error retrieving new virtual machine tag: test error 1\n", func() {
 			ecloudVirtualMachineTagCreate(service, cmd, []string{"123"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error retrieving new virtual machine tag: test error 1\n", output)
 	})
 }
 
@@ -364,23 +304,15 @@ func Test_ecloudVirtualMachineTagUpdate(t *testing.T) {
 	})
 
 	t.Run("InvalidVirtualMachineID_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Invalid virtual machine ID [abc]\n", func() {
 			ecloudVirtualMachineTagUpdate(service, &cobra.Command{}, []string{"abc"})
 		})
-
-		assert.Equal(t, "Invalid virtual machine ID [abc]\n", output)
-		assert.Equal(t, 1, code)
 	})
 
 	t.Run("PatchVirtualMachineTag_OutputsError", func(t *testing.T) {
@@ -393,11 +325,9 @@ func Test_ecloudVirtualMachineTagUpdate(t *testing.T) {
 			service.EXPECT().PatchVirtualMachineTag(123, "testkey1", gomock.Any()).Return(errors.New("test error 1")),
 		)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error updating virtual machine tag [testkey1]: test error 1\n", func() {
 			ecloudVirtualMachineTagUpdate(service, &cobra.Command{}, []string{"123", "testkey1"})
 		})
-
-		assert.Equal(t, "Error updating virtual machine tag [testkey1]: test error 1\n", output)
 	})
 
 	t.Run("GetVirtualMachineTagError_OutputsError", func(t *testing.T) {
@@ -413,11 +343,9 @@ func Test_ecloudVirtualMachineTagUpdate(t *testing.T) {
 			service.EXPECT().GetVirtualMachineTag(123, "testkey1").Return(ecloud.Tag{}, errors.New("test error 1")),
 		)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error retrieving updated virtual machine tag [testkey1]: test error 1\n", func() {
 			ecloudVirtualMachineTagUpdate(service, cmd, []string{"123", "testkey1"})
 		})
-
-		assert.Equal(t, "Error retrieving updated virtual machine tag [testkey1]: test error 1\n", output)
 	})
 }
 
@@ -470,23 +398,15 @@ func Test_ecloudVirtualMachineTagDelete(t *testing.T) {
 	})
 
 	t.Run("InvalidVirtualMachineID_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Invalid virtual machine ID [abc]\n", func() {
 			ecloudVirtualMachineTagDelete(service, &cobra.Command{}, []string{"abc", "testkey1"})
 		})
-
-		assert.Equal(t, "Invalid virtual machine ID [abc]\n", output)
-		assert.Equal(t, 1, code)
 	})
 
 	t.Run("DeleteVirtualMachineTagError_OutputsError", func(t *testing.T) {
@@ -497,10 +417,8 @@ func Test_ecloudVirtualMachineTagDelete(t *testing.T) {
 
 		service.EXPECT().DeleteVirtualMachineTag(123, "testkey1").Return(errors.New("test error 1")).Times(1)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error removing virtual machine tag [testkey1]: test error 1\n", func() {
 			ecloudVirtualMachineTagDelete(service, &cobra.Command{}, []string{"123", "testkey1"})
 		})
-
-		assert.Equal(t, "Error removing virtual machine tag [testkey1]: test error 1\n", output)
 	})
 }

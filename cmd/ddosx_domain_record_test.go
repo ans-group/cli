@@ -7,9 +7,8 @@ import (
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/cli/test"
 	"github.com/ukfast/cli/test/mocks"
+	"github.com/ukfast/cli/test/test_output"
 	"github.com/ukfast/sdk-go/pkg/service/ddosx"
 )
 
@@ -43,11 +42,6 @@ func Test_ddosxDomainRecordList(t *testing.T) {
 	})
 
 	t.Run("MalformedFlag_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 		defer func() { flagFilter = nil }()
 
 		mockCtrl := gomock.NewController(t)
@@ -56,20 +50,12 @@ func Test_ddosxDomainRecordList(t *testing.T) {
 		service := mocks.NewMockDDoSXService(mockCtrl)
 		flagFilter = []string{"invalidfilter"}
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Missing value for filtering\n", func() {
 			ddosxDomainRecordList(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Missing value for filtering\n", output)
 	})
 
 	t.Run("GetDomainRecordsError_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -78,12 +64,9 @@ func Test_ddosxDomainRecordList(t *testing.T) {
 
 		service.EXPECT().GetDomainRecords("testdomain1.co.uk", gomock.Any()).Return([]ddosx.Record{}, errors.New("test error")).Times(1)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error retrieving domain records: test error\n", func() {
 			ddosxDomainRecordList(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error retrieving domain records: test error\n", output)
 	})
 }
 
@@ -123,11 +106,6 @@ func Test_ddosxDomainRecordCreate(t *testing.T) {
 	})
 
 	t.Run("CreateDomainRecord_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -136,12 +114,9 @@ func Test_ddosxDomainRecordCreate(t *testing.T) {
 
 		service.EXPECT().CreateDomainRecord("testdomain1.co.uk", gomock.Any()).Return("00000000-0000-0000-0000-000000000000", errors.New("test error")).Times(1)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error creating domain record: test error\n", func() {
 			ddosxDomainRecordCreate(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error creating domain record: test error\n", output)
 	})
 }
 
@@ -221,11 +196,9 @@ func Test_ddosxDomainRecordUpdate(t *testing.T) {
 
 		service.EXPECT().PatchDomainRecord("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Any()).Return(errors.New("test error"))
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error updating domain record [00000000-0000-0000-0000-000000000000]: test error\n", func() {
 			ddosxDomainRecordUpdate(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 		})
-
-		assert.Equal(t, "Error updating domain record [00000000-0000-0000-0000-000000000000]: test error\n", output)
 	})
 }
 
@@ -274,10 +247,8 @@ func Test_ddosxDomainRecordDelete(t *testing.T) {
 
 		service.EXPECT().DeleteDomainRecord("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(errors.New("test error"))
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error removing domain record [00000000-0000-0000-0000-000000000000]: test error\n", func() {
 			ddosxDomainRecordDelete(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 		})
-
-		assert.Equal(t, "Error removing domain record [00000000-0000-0000-0000-000000000000]: test error\n", output)
 	})
 }

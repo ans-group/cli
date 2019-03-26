@@ -7,9 +7,8 @@ import (
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/cli/test"
 	"github.com/ukfast/cli/test/mocks"
+	"github.com/ukfast/cli/test/test_output"
 	"github.com/ukfast/sdk-go/pkg/connection"
 	"github.com/ukfast/sdk-go/pkg/service/safedns"
 )
@@ -67,11 +66,6 @@ func Test_safednsZoneNoteList(t *testing.T) {
 	})
 
 	t.Run("MalformedFlag_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 		defer func() { flagFilter = nil }()
 
 		mockCtrl := gomock.NewController(t)
@@ -80,20 +74,12 @@ func Test_safednsZoneNoteList(t *testing.T) {
 		service := mocks.NewMockSafeDNSService(mockCtrl)
 		flagFilter = []string{"invalidfilter"}
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Missing value for filtering\n", func() {
 			safednsZoneNoteList(service, &cobra.Command{}, []string{"123"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Missing value for filtering\n", output)
 	})
 
 	t.Run("GetZonesError_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -102,12 +88,9 @@ func Test_safednsZoneNoteList(t *testing.T) {
 
 		service.EXPECT().GetZoneNotes("testdomain1.com", gomock.Any()).Return([]safedns.Note{}, errors.New("test error")).Times(1)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error retrieving notes for zone: test error\n", func() {
 			safednsZoneNoteList(service, &cobra.Command{}, []string{"testdomain1.com"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error retrieving notes for zone: test error\n", output)
 	})
 }
 
@@ -168,11 +151,9 @@ func Test_safednsZoneNoteShow(t *testing.T) {
 
 		service := mocks.NewMockSafeDNSService(mockCtrl)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Invalid note ID [abc]\n", func() {
 			safednsZoneNoteShow(service, &cobra.Command{}, []string{"testdomain1.com", "abc"})
 		})
-
-		assert.Equal(t, "Invalid note ID [abc]\n", output)
 	})
 
 	t.Run("GetZoneNoteError_OutputsError", func(t *testing.T) {
@@ -183,11 +164,9 @@ func Test_safednsZoneNoteShow(t *testing.T) {
 
 		service.EXPECT().GetZoneNote("testdomain1.com", 123).Return(safedns.Note{}, errors.New("test error")).Times(1)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error retrieving note [123]: test error\n", func() {
 			safednsZoneNoteShow(service, &cobra.Command{}, []string{"testdomain1.com", "123"})
 		})
-
-		assert.Equal(t, "Error retrieving note [123]: test error\n", output)
 	})
 }
 
@@ -232,11 +211,6 @@ func Test_safednsZoneNoteCreate(t *testing.T) {
 	})
 
 	t.Run("CreateZoneNoteError_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -245,22 +219,12 @@ func Test_safednsZoneNoteCreate(t *testing.T) {
 
 		service.EXPECT().CreateZoneNote("testdomain1.com", gomock.Any()).Return(0, errors.New("test error")).Times(1)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error creating note: test error\n", func() {
 			safednsZoneNoteCreate(service, &cobra.Command{}, []string{"testdomain1.com"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error creating note: test error\n", output)
 	})
 
 	t.Run("GetZoneNoteError_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-
-		defer func() { output.SetOutputExit(oldOutputExit) }()
-
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -271,11 +235,8 @@ func Test_safednsZoneNoteCreate(t *testing.T) {
 			service.EXPECT().GetZoneNote("testdomain1.com", 123).Return(safedns.Note{}, errors.New("test error")),
 		)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error retrieving new note: test error\n", func() {
 			safednsZoneNoteCreate(service, &cobra.Command{}, []string{"testdomain1.com"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error retrieving new note: test error\n", output)
 	})
 }

@@ -7,8 +7,8 @@ import (
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/test"
 	"github.com/ukfast/cli/test/mocks"
+	"github.com/ukfast/cli/test/test_output"
 	"github.com/ukfast/sdk-go/pkg/service/ddosx"
 )
 
@@ -61,10 +61,8 @@ func Test_ddosxSSLContent(t *testing.T) {
 
 		service.EXPECT().GetSSLContent("00000000-0000-0000-0000-000000000000").Return(ddosx.SSLContent{}, errors.New("test error"))
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error retrieving ssl [00000000-0000-0000-0000-000000000000]: test error\n", func() {
 			ddosxSSLContentShow(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000"})
 		})
-
-		assert.Equal(t, "Error retrieving ssl [00000000-0000-0000-0000-000000000000]: test error\n", output)
 	})
 }
