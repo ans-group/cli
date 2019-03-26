@@ -12,4 +12,5 @@ require (
 	github.com/spf13/viper v1.3.1
 	github.com/stretchr/testify v1.3.0
 	github.com/ukfast/sdk-go v1.0.7
+	gopkg.in/go-playground/assert.v1 v1.2.1
 )

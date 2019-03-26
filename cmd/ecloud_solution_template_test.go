@@ -188,3 +188,193 @@ func Test_ecloudSolutionTemplateShow(t *testing.T) {
 		assert.Equal(t, "Error retrieving solution template [testtemplate1]: test error 1\n", output)
 	})
 }
+
+func Test_ecloudSolutionTemplateUpdateCmd_Args(t *testing.T) {
+	t.Run("ValidArgs_NoError", func(t *testing.T) {
+		err := ecloudSolutionTemplateUpdateCmd().Args(nil, []string{"123", "testname1"})
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("MissingSolution_Error", func(t *testing.T) {
+		err := ecloudSolutionTemplateUpdateCmd().Args(nil, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing solution", err.Error())
+	})
+
+	t.Run("MissingTemplate_Error", func(t *testing.T) {
+		err := ecloudSolutionTemplateUpdateCmd().Args(nil, []string{"123"})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing template", err.Error())
+	})
+}
+
+func Test_ecloudSolutionTemplateUpdate(t *testing.T) {
+	t.Run("UpdateSingle", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudSolutionTemplateUpdateCmd()
+		cmd.Flags().Set("name", "newname")
+
+		expectedPatch := ecloud.RenameTemplateRequest{
+			NewTemplateName: "newname",
+		}
+
+		gomock.InOrder(
+			service.EXPECT().RenameSolutionTemplate(123, "testname1", gomock.Eq(expectedPatch)).Return(nil),
+			service.EXPECT().GetSolutionTemplate(123, "testname1").Return(ecloud.Template{}, nil),
+		)
+
+		ecloudSolutionTemplateUpdate(service, cmd, []string{"123", "testname1"})
+	})
+
+	t.Run("InvalidSolutionID_OutputsFatal", func(t *testing.T) {
+		code := 0
+		oldOutputExit := output.SetOutputExit(func(c int) {
+			code = c
+		})
+		defer func() { output.SetOutputExit(oldOutputExit) }()
+
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		output := test.CatchStdErr(t, func() {
+			ecloudSolutionTemplateUpdate(service, &cobra.Command{}, []string{"abc"})
+		})
+
+		assert.Equal(t, "Invalid solution ID [abc]\n", output)
+		assert.Equal(t, 1, code)
+	})
+
+	t.Run("RenameSolutionTemplate_OutputsFatal", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().RenameSolutionTemplate(123, "testname1", gomock.Any()).Return(errors.New("test error 1")),
+		)
+
+		test.FatalOutput(t, "Error updating solution template: test error 1\n", func() {
+			ecloudSolutionTemplateUpdate(service, &cobra.Command{}, []string{"123", "testname1"})
+		})
+	})
+
+	t.Run("GetSolutionTemplateError_OutputsError", func(t *testing.T) {
+		code := 0
+		oldOutputExit := output.SetOutputExit(func(c int) {
+			code = c
+		})
+		defer func() { output.SetOutputExit(oldOutputExit) }()
+
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudSolutionTemplateUpdateCmd()
+		cmd.Flags().Set("name", "newname")
+
+		gomock.InOrder(
+			service.EXPECT().RenameSolutionTemplate(123, "testname1", gomock.Any()).Return(nil),
+			service.EXPECT().GetSolutionTemplate(123, "testname1").Return(ecloud.Template{}, errors.New("test error 1")),
+		)
+
+		output := test.CatchStdErr(t, func() {
+			ecloudSolutionTemplateUpdate(service, cmd, []string{"123", "testname1"})
+		})
+
+		assert.Equal(t, "Error retrieving updated solution template [testname1]: test error 1\n", output)
+		assert.Equal(t, 1, code)
+	})
+}
+
+func Test_ecloudSolutionTemplateDeleteCmd_Args(t *testing.T) {
+	t.Run("ValidArgs_NoError", func(t *testing.T) {
+		err := ecloudSolutionTemplateDeleteCmd().Args(nil, []string{"123", "testname1"})
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("MissingSolution_Error", func(t *testing.T) {
+		err := ecloudSolutionTemplateDeleteCmd().Args(nil, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing solution", err.Error())
+	})
+
+	t.Run("MissingTemplate_Error", func(t *testing.T) {
+		err := ecloudSolutionTemplateDeleteCmd().Args(nil, []string{"123"})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing template", err.Error())
+	})
+}
+
+func Test_ecloudSolutionTemplateDelete(t *testing.T) {
+	t.Run("RetrieveSingle", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		service.EXPECT().DeleteSolutionTemplate(123, "testname1").Return(nil).Times(1)
+
+		ecloudSolutionTemplateDelete(service, &cobra.Command{}, []string{"123", "testname1"})
+	})
+
+	t.Run("RetrieveMultiple", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().DeleteSolutionTemplate(123, "testname1").Return(nil),
+			service.EXPECT().DeleteSolutionTemplate(123, "testname2").Return(nil),
+		)
+
+		ecloudSolutionTemplateDelete(service, &cobra.Command{}, []string{"123", "testname1", "testname2"})
+	})
+
+	t.Run("InvalidSolutionID_OutputsFatal", func(t *testing.T) {
+		code := 0
+		oldOutputExit := output.SetOutputExit(func(c int) {
+			code = c
+		})
+		defer func() { output.SetOutputExit(oldOutputExit) }()
+
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		output := test.CatchStdErr(t, func() {
+			ecloudSolutionTemplateDelete(service, &cobra.Command{}, []string{"abc", "testname1"})
+		})
+
+		assert.Equal(t, "Invalid solution ID [abc]\n", output)
+		assert.Equal(t, 1, code)
+	})
+
+	t.Run("DeleteSolutionTemplateError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		service.EXPECT().DeleteSolutionTemplate(123, "testname1").Return(errors.New("test error 1")).Times(1)
+
+		output := test.CatchStdErr(t, func() {
+			ecloudSolutionTemplateDelete(service, &cobra.Command{}, []string{"123", "testname1"})
+		})
+
+		assert.Equal(t, "Error removing solution template [testname1]: test error 1\n", output)
+	})
+}
