@@ -10,6 +10,7 @@ import (
 	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/cli/test"
 	"github.com/ukfast/cli/test/mocks"
+	"github.com/ukfast/cli/test/output_helper"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
@@ -262,7 +263,7 @@ func Test_ecloudSolutionTemplateUpdate(t *testing.T) {
 			service.EXPECT().RenameSolutionTemplate(123, "testname1", gomock.Any()).Return(errors.New("test error 1")),
 		)
 
-		test.FatalOutput(t, "Error updating solution template: test error 1\n", func() {
+		output_helper.AssertFatalOutput(t, "Error updating solution template: test error 1\n", func() {
 			ecloudSolutionTemplateUpdate(service, &cobra.Command{}, []string{"123", "testname1"})
 		})
 	})
@@ -290,7 +291,7 @@ func Test_ecloudSolutionTemplateUpdate(t *testing.T) {
 			ecloudSolutionTemplateUpdate(service, cmd, []string{"123", "testname1"})
 		})
 
-		assert.Equal(t, "Error retrieving updated solution template [testname1]: test error 1\n", output)
+		assert.Equal(t, "Error retrieving updated solution template: test error 1\n", output)
 		assert.Equal(t, 1, code)
 	})
 }
