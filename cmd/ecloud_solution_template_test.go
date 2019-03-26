@@ -186,7 +186,7 @@ func Test_ecloudSolutionTemplateUpdate(t *testing.T) {
 		cmd.Flags().Set("name", "newname")
 
 		expectedPatch := ecloud.RenameTemplateRequest{
-			NewTemplateName: "newname",
+			Destination: "newname",
 		}
 
 		gomock.InOrder(

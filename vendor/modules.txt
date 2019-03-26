@@ -53,7 +53,7 @@ github.com/spf13/pflag
 github.com/spf13/viper
 # github.com/stretchr/testify v1.3.0
 github.com/stretchr/testify/assert
-# github.com/ukfast/sdk-go v1.0.7
+# github.com/ukfast/sdk-go v1.0.8
 github.com/ukfast/sdk-go/pkg/client
 github.com/ukfast/sdk-go/pkg/connection
 github.com/ukfast/sdk-go/pkg/logging
@@ -69,6 +69,8 @@ golang.org/x/sys/unix
 # golang.org/x/text v0.3.0
 golang.org/x/text/transform
 golang.org/x/text/unicode/norm
+# gopkg.in/go-playground/assert.v1 v1.2.1
+gopkg.in/go-playground/assert.v1
 # gopkg.in/go-playground/validator.v9 v9.27.0
 gopkg.in/go-playground/validator.v9
 # gopkg.in/yaml.v2 v2.2.2

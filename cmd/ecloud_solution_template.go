@@ -18,6 +18,8 @@ func ecloudSolutionTemplateRootCmd() *cobra.Command {
 	// Child commands
 	cmd.AddCommand(ecloudSolutionTemplateListCmd())
 	cmd.AddCommand(ecloudSolutionTemplateShowCmd())
+	cmd.AddCommand(ecloudSolutionTemplateUpdateCmd())
+	cmd.AddCommand(ecloudSolutionTemplateDeleteCmd())
 
 	return cmd
 }
@@ -140,17 +142,17 @@ func ecloudSolutionTemplateUpdate(service ecloud.ECloudService, cmd *cobra.Comma
 		return
 	}
 
-	patchRequest := ecloud.RenameTemplateRequest{}
-
 	if cmd.Flags().Changed("name") {
 		name, _ := cmd.Flags().GetString("name")
-		patchRequest.NewTemplateName = name
-	}
+		patchRequest := ecloud.RenameTemplateRequest{
+			Destination: name,
+		}
 
-	err = service.RenameSolutionTemplate(solutionID, args[1], patchRequest)
-	if err != nil {
-		output.Fatalf("Error updating solution template: %s", err)
-		return
+		err = service.RenameSolutionTemplate(solutionID, args[1], patchRequest)
+		if err != nil {
+			output.Fatalf("Error updating solution template: %s", err)
+			return
+		}
 	}
 
 	template, err := service.GetSolutionTemplate(solutionID, args[1])

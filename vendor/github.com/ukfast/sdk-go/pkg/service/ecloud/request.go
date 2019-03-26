@@ -86,8 +86,7 @@ func (c *PatchSolutionRequest) Validate() *connection.ValidationError {
 type RenameTemplateRequest struct {
 	connection.APIRequestBodyDefaultValidator
 
-	NewTemplateName string `json:"new_template_name" validate:"required"`
-	SolutionID      *int   `json:"solution_id,omitempty"`
+	Destination string `json:"destination" validate:"required"`
 }
 
 // Validate returns an error if struct properties are missing/invalid
