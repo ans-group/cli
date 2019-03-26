@@ -86,8 +86,7 @@ func (c *PatchSolutionRequest) Validate() *connection.ValidationError {
 type RenameTemplateRequest struct {
 	connection.APIRequestBodyDefaultValidator
 
-	NewTemplateName string `json:"new_template_name" validate:"required"`
-	SolutionID      *int   `json:"solution_id,omitempty"`
+	Destination string `json:"destination" validate:"required"`
 }
 
 // Validate returns an error if struct properties are missing/invalid
@@ -140,4 +139,17 @@ type PatchVirtualMachineRequestDisk struct {
 	// Size in GB
 	Capacity int                                 `json:"capacity,omitempty"`
 	State    PatchVirtualMachineRequestDiskState `json:"state,omitempty"`
+}
+
+// CreateVirtualMachineTemplateRequest represents a request to clone an eCloud virtual machine template
+type CreateVirtualMachineTemplateRequest struct {
+	connection.APIRequestBodyDefaultValidator
+
+	TemplateName string `json:"template_name" validate:"required"`
+	TemplateType string `json:"template_type"`
+}
+
+// Validate returns an error if struct properties are missing/invalid
+func (c *CreateVirtualMachineTemplateRequest) Validate() *connection.ValidationError {
+	return c.APIRequestBodyDefaultValidator.Validate(c)
 }

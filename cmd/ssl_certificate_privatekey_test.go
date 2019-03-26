@@ -7,8 +7,8 @@ import (
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/test"
 	"github.com/ukfast/cli/test/mocks"
+	"github.com/ukfast/cli/test/test_output"
 	"github.com/ukfast/sdk-go/pkg/service/ssl"
 )
 
@@ -59,11 +59,9 @@ func Test_sslCertificatePrivateKeyShow(t *testing.T) {
 
 		service := mocks.NewMockSSLService(mockCtrl)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Invalid certificate ID [abc]\n", func() {
 			sslCertificatePrivateKeyShow(service, &cobra.Command{}, []string{"abc"})
 		})
-
-		assert.Equal(t, "Invalid certificate ID [abc]\n", output)
 	})
 
 	t.Run("GetCertificatePrivateKeyError_OutputsError", func(t *testing.T) {
@@ -74,10 +72,8 @@ func Test_sslCertificatePrivateKeyShow(t *testing.T) {
 
 		service.EXPECT().GetCertificatePrivateKey(123).Return(ssl.CertificatePrivateKey{}, errors.New("test error"))
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error retrieving certificate private key [123]: test error\n", func() {
 			sslCertificatePrivateKeyShow(service, &cobra.Command{}, []string{"123"})
 		})
-
-		assert.Equal(t, "Error retrieving certificate private key [123]: test error\n", output)
 	})
 }

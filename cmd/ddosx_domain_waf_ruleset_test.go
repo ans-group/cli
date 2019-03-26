@@ -7,9 +7,8 @@ import (
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/cli/test"
 	"github.com/ukfast/cli/test/mocks"
+	"github.com/ukfast/cli/test/test_output"
 	"github.com/ukfast/sdk-go/pkg/ptr"
 	"github.com/ukfast/sdk-go/pkg/service/ddosx"
 )
@@ -44,11 +43,6 @@ func Test_ddosxDomainWAFRuleSetList(t *testing.T) {
 	})
 
 	t.Run("MalformedFlag_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 		defer func() { flagFilter = nil }()
 
 		mockCtrl := gomock.NewController(t)
@@ -57,20 +51,12 @@ func Test_ddosxDomainWAFRuleSetList(t *testing.T) {
 		service := mocks.NewMockDDoSXService(mockCtrl)
 		flagFilter = []string{"invalidfilter"}
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Missing value for filtering\n", func() {
 			ddosxDomainWAFRuleSetList(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Missing value for filtering\n", output)
 	})
 
 	t.Run("GetDomainsError_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -79,12 +65,9 @@ func Test_ddosxDomainWAFRuleSetList(t *testing.T) {
 
 		service.EXPECT().GetDomainWAFRuleSets("testdomain1.co.uk", gomock.Any()).Return([]ddosx.WAFRuleSet{}, errors.New("test error")).Times(1)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error retrieving domain waf rule sets: test error\n", func() {
 			ddosxDomainWAFRuleSetList(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error retrieving domain waf rule sets: test error\n", output)
 	})
 }
 
@@ -133,11 +116,9 @@ func Test_ddosxDomainWAFRuleSetShow(t *testing.T) {
 
 		service.EXPECT().GetDomainWAFRuleSet("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Any()).Return(ddosx.WAFRuleSet{}, errors.New("test error"))
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error retrieving domain WAF rule set [00000000-0000-0000-0000-000000000000]: test error\n", func() {
 			ddosxDomainWAFRuleSetShow(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 		})
-
-		assert.Equal(t, "Error retrieving domain WAF rule set [00000000-0000-0000-0000-000000000000]: test error\n", output)
 	})
 }
 
@@ -195,11 +176,9 @@ func Test_ddosxDomainWAFRuleSetUpdate(t *testing.T) {
 
 		service.EXPECT().PatchDomainWAFRuleSet("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Any()).Return(errors.New("test error"))
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error updating domain WAF rule set [00000000-0000-0000-0000-000000000000]: test error\n", func() {
 			ddosxDomainWAFRuleSetUpdate(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 		})
-
-		assert.Equal(t, "Error updating domain WAF rule set [00000000-0000-0000-0000-000000000000]: test error\n", output)
 	})
 
 	t.Run("GetDomainWAFRuleSet_OutputsError", func(t *testing.T) {
@@ -213,10 +192,8 @@ func Test_ddosxDomainWAFRuleSetUpdate(t *testing.T) {
 			service.EXPECT().GetDomainWAFRuleSet("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Any()).Return(ddosx.WAFRuleSet{}, errors.New("test error")),
 		)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error retrieving updated domain WAF rule set [00000000-0000-0000-0000-000000000000]: test error\n", func() {
 			ddosxDomainWAFRuleSetUpdate(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 		})
-
-		assert.Equal(t, "Error retrieving updated domain WAF rule set [00000000-0000-0000-0000-000000000000]: test error\n", output)
 	})
 }

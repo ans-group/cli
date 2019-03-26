@@ -7,9 +7,8 @@ import (
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/cli/test"
 	"github.com/ukfast/cli/test/mocks"
+	"github.com/ukfast/cli/test/test_output"
 	"github.com/ukfast/sdk-go/pkg/service/ddosx"
 )
 
@@ -26,11 +25,6 @@ func Test_ddosxSSLList(t *testing.T) {
 	})
 
 	t.Run("MalformedFlag_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 		defer func() { flagFilter = nil }()
 
 		mockCtrl := gomock.NewController(t)
@@ -39,20 +33,12 @@ func Test_ddosxSSLList(t *testing.T) {
 		service := mocks.NewMockDDoSXService(mockCtrl)
 		flagFilter = []string{"invalidfilter"}
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Missing value for filtering\n", func() {
 			ddosxSSLList(service, &cobra.Command{}, []string{})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Missing value for filtering\n", output)
 	})
 
 	t.Run("GetSSLsError_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -61,12 +47,9 @@ func Test_ddosxSSLList(t *testing.T) {
 
 		service.EXPECT().GetSSLs(gomock.Any()).Return([]ddosx.SSL{}, errors.New("test error")).Times(1)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error retrieving ssls: test error\n", func() {
 			ddosxSSLList(service, &cobra.Command{}, []string{})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error retrieving ssls: test error\n", output)
 	})
 }
 
@@ -119,11 +102,9 @@ func Test_ddosxSSLShow(t *testing.T) {
 
 		service.EXPECT().GetSSL("00000000-0000-0000-0000-000000000000").Return(ddosx.SSL{}, errors.New("test error"))
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error retrieving ssl [00000000-0000-0000-0000-000000000000]: test error\n", func() {
 			ddosxSSLShow(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000"})
 		})
-
-		assert.Equal(t, "Error retrieving ssl [00000000-0000-0000-0000-000000000000]: test error\n", output)
 	})
 }
 
@@ -177,11 +158,6 @@ func Test_ddosxSSLCreate(t *testing.T) {
 	})
 
 	t.Run("CreateSSLError_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -194,20 +170,12 @@ func Test_ddosxSSLCreate(t *testing.T) {
 			service.EXPECT().CreateSSL(gomock.Any()).Return("00000000-0000-0000-0000-000000000000", errors.New("test error")),
 		)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error creating ssl: test error\n", func() {
 			ddosxSSLCreate(service, cmd, []string{})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error creating ssl: test error\n", output)
 	})
 
 	t.Run("GetSSLError_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -221,12 +189,9 @@ func Test_ddosxSSLCreate(t *testing.T) {
 			service.EXPECT().GetSSL("00000000-0000-0000-0000-000000000000").Return(ddosx.SSL{}, errors.New("test error")),
 		)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error retrieving new ssl [00000000-0000-0000-0000-000000000000]: test error\n", func() {
 			ddosxSSLCreate(service, cmd, []string{})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error retrieving new ssl [00000000-0000-0000-0000-000000000000]: test error\n", output)
 	})
 }
 
@@ -295,11 +260,6 @@ func Test_ddosxSSLUpdate(t *testing.T) {
 	})
 
 	t.Run("UpdateSSLError_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -312,20 +272,12 @@ func Test_ddosxSSLUpdate(t *testing.T) {
 			service.EXPECT().PatchSSL("00000000-0000-0000-0000-000000000000", gomock.Any()).Return("00000000-0000-0000-0000-000000000000", errors.New("test error")),
 		)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error updating ssl: test error\n", func() {
 			ddosxSSLUpdate(service, cmd, []string{"00000000-0000-0000-0000-000000000000"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error updating ssl: test error\n", output)
 	})
 
 	t.Run("GetSSLError_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -339,12 +291,9 @@ func Test_ddosxSSLUpdate(t *testing.T) {
 			service.EXPECT().GetSSL("00000000-0000-0000-0000-000000000000").Return(ddosx.SSL{}, errors.New("test error")),
 		)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error retrieving updated ssl: test error\n", func() {
 			ddosxSSLUpdate(service, cmd, []string{"00000000-0000-0000-0000-000000000000"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error retrieving updated ssl: test error\n", output)
 	})
 }
 
@@ -397,10 +346,8 @@ func Test_ddosxSSLDelete(t *testing.T) {
 
 		service.EXPECT().DeleteSSL("00000000-0000-0000-0000-000000000000").Return(errors.New("test error"))
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error removing ssl [00000000-0000-0000-0000-000000000000]: test error\n", func() {
 			ddosxSSLDelete(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000"})
 		})
-
-		assert.Equal(t, "Error removing ssl [00000000-0000-0000-0000-000000000000]: test error\n", output)
 	})
 }

@@ -146,7 +146,7 @@ func (o *OutputSafeDNSRecords) getOrderedFields(record safedns.Record) *output.O
 	fields := output.NewOrderedFields()
 	fields.Set("id", output.NewFieldValue(strconv.Itoa(record.ID), true))
 	fields.Set("name", output.NewFieldValue(record.Name, true))
-	fields.Set("type", output.NewFieldValue(record.Type, true))
+	fields.Set("type", output.NewFieldValue(record.Type.String(), true))
 	fields.Set("content", output.NewFieldValue(record.Content, true))
 	fields.Set("updated_at", output.NewFieldValue(record.UpdatedAt.String(), true))
 	fields.Set("priority", output.NewFieldValue(strconv.Itoa(record.Priority), true))

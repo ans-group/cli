@@ -7,9 +7,8 @@ import (
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/cli/test"
 	"github.com/ukfast/cli/test/mocks"
+	"github.com/ukfast/cli/test/test_output"
 	"github.com/ukfast/sdk-go/pkg/service/ddosx"
 )
 
@@ -62,11 +61,9 @@ func Test_ddosxDomainWAFShow(t *testing.T) {
 
 		service.EXPECT().GetDomainWAF("testdomain1.co.uk").Return(ddosx.WAF{}, errors.New("test error"))
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error retrieving domain waf [testdomain1.co.uk]: test error\n", func() {
 			ddosxDomainWAFShow(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 		})
-
-		assert.Equal(t, "Error retrieving domain waf [testdomain1.co.uk]: test error\n", output)
 	})
 }
 
@@ -109,11 +106,6 @@ func Test_ddosxDomainWAFCreate(t *testing.T) {
 	})
 
 	t.Run("InvalidMode_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -123,20 +115,12 @@ func Test_ddosxDomainWAFCreate(t *testing.T) {
 		cmd.Flags().Set("mode", "invalidmode")
 		cmd.Flags().Set("paranoia-level", "high")
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Invalid WAF mode\n", func() {
 			ddosxDomainWAFCreate(service, cmd, []string{"testdomain1.co.uk"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Invalid WAF mode\n", output)
 	})
 
 	t.Run("InvalidParanoiaLevel_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -146,20 +130,12 @@ func Test_ddosxDomainWAFCreate(t *testing.T) {
 		cmd.Flags().Set("mode", "on")
 		cmd.Flags().Set("paranoia-level", "invalidparanoialevel")
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Invalid WAF paranoia level\n", func() {
 			ddosxDomainWAFCreate(service, cmd, []string{"testdomain1.co.uk"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Invalid WAF paranoia level\n", output)
 	})
 
 	t.Run("CreateDomainWAFError_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -171,20 +147,12 @@ func Test_ddosxDomainWAFCreate(t *testing.T) {
 
 		service.EXPECT().CreateDomainWAF("testdomain1.co.uk", gomock.Any()).Return(errors.New("test error"))
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error creating domain waf: test error\n", func() {
 			ddosxDomainWAFCreate(service, cmd, []string{"testdomain1.co.uk"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error creating domain waf: test error\n", output)
 	})
 
 	t.Run("GetDomainWAFError_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -199,12 +167,9 @@ func Test_ddosxDomainWAFCreate(t *testing.T) {
 			service.EXPECT().GetDomainWAF("testdomain1.co.uk").Return(ddosx.WAF{}, errors.New("test error")),
 		)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error retrieving domain waf: test error\n", func() {
 			ddosxDomainWAFCreate(service, cmd, []string{"testdomain1.co.uk"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error retrieving domain waf: test error\n", output)
 	})
 }
 
@@ -247,11 +212,6 @@ func Test_ddosxDomainWAFUpdate(t *testing.T) {
 	})
 
 	t.Run("InvalidMode_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -261,20 +221,12 @@ func Test_ddosxDomainWAFUpdate(t *testing.T) {
 		cmd.Flags().Set("mode", "invalidmode")
 		cmd.Flags().Set("paranoia-level", "high")
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Invalid WAF mode\n", func() {
 			ddosxDomainWAFUpdate(service, cmd, []string{"testdomain1.co.uk"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Invalid WAF mode\n", output)
 	})
 
 	t.Run("InvalidParanoiaLevel_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -284,12 +236,9 @@ func Test_ddosxDomainWAFUpdate(t *testing.T) {
 		cmd.Flags().Set("mode", "on")
 		cmd.Flags().Set("paranoia-level", "invalidparanoialevel")
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Invalid WAF paranoia level\n", func() {
 			ddosxDomainWAFUpdate(service, cmd, []string{"testdomain1.co.uk"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Invalid WAF paranoia level\n", output)
 	})
 
 	t.Run("UpdateDomainWAFError_OutputsError", func(t *testing.T) {
@@ -303,11 +252,9 @@ func Test_ddosxDomainWAFUpdate(t *testing.T) {
 
 		service.EXPECT().PatchDomainWAF("testdomain1.co.uk", gomock.Any()).Return(errors.New("test error"))
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error updating domain waf [testdomain1.co.uk]: test error\n", func() {
 			ddosxDomainWAFUpdate(service, cmd, []string{"testdomain1.co.uk"})
 		})
-
-		assert.Equal(t, "Error updating domain waf [testdomain1.co.uk]: test error\n", output)
 	})
 
 	t.Run("GetDomainWAFError_OutputsError", func(t *testing.T) {
@@ -324,11 +271,9 @@ func Test_ddosxDomainWAFUpdate(t *testing.T) {
 			service.EXPECT().GetDomainWAF("testdomain1.co.uk").Return(ddosx.WAF{}, errors.New("test error")),
 		)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error retrieving updated domain waf [testdomain1.co.uk]: test error\n", func() {
 			ddosxDomainWAFUpdate(service, cmd, []string{"testdomain1.co.uk"})
 		})
-
-		assert.Equal(t, "Error retrieving updated domain waf [testdomain1.co.uk]: test error\n", output)
 	})
 }
 
@@ -381,10 +326,8 @@ func Test_ddosxDomainWAFDelete(t *testing.T) {
 
 		service.EXPECT().DeleteDomainWAF("testdomain1.co.uk").Return(errors.New("test error"))
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error removing domain waf [testdomain1.co.uk]: test error\n", func() {
 			ddosxDomainWAFDelete(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 		})
-
-		assert.Equal(t, "Error removing domain waf [testdomain1.co.uk]: test error\n", output)
 	})
 }

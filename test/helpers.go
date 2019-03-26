@@ -48,8 +48,7 @@ func CatchStdOut(t *testing.T, f func()) string {
 }
 
 // CatchStdOutStdErr returns output to `os.Stdout` and `os.Stderr` from `f` as strings
-func CatchStdOutStdErr(t *testing.T, f func()) (string, string) {
-	var stdOut, stdErr string
+func CatchStdOutStdErr(t *testing.T, f func()) (stdOut string, stdErr string) {
 	stdErr = CatchStdErr(t, func() {
 		stdOut = CatchStdOut(t, f)
 	})

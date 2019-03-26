@@ -299,6 +299,32 @@ func (s *Service) powerRestartVirtualMachineResponseBody(vmID int) (*connection.
 	return body, response.HandleResponse([]int{200}, body)
 }
 
+// CreateVirtualMachineTemplate creates a virtual machine template
+func (s *Service) CreateVirtualMachineTemplate(vmID int, req CreateVirtualMachineTemplateRequest) error {
+	_, err := s.createVirtualMachineTemplateResponseBody(vmID, req)
+
+	return err
+}
+
+func (s *Service) createVirtualMachineTemplateResponseBody(vmID int, req CreateVirtualMachineTemplateRequest) (*connection.APIResponseBody, error) {
+	body := &connection.APIResponseBody{}
+
+	if vmID < 1 {
+		return body, fmt.Errorf("invalid virtual machine id")
+	}
+
+	response, err := s.connection.Post(fmt.Sprintf("/ecloud/v1/vms/%d/clone-to-template", vmID), &req)
+	if err != nil {
+		return body, err
+	}
+
+	if response.StatusCode == 404 {
+		return body, &VirtualMachineNotFoundError{ID: vmID}
+	}
+
+	return body, response.HandleResponse([]int{202}, body)
+}
+
 // GetVirtualMachineTags retrieves a list of tags for a virtual machine
 func (s *Service) GetVirtualMachineTags(vmID int, parameters connection.APIRequestParameters) ([]Tag, error) {
 	r := connection.RequestAll{}

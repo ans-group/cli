@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -482,4 +483,20 @@ func GetCreateTagRequestFromStringFlag(tagFlag string) (ecloud.CreateTagRequest,
 		Key:   tagParts[0],
 		Value: tagParts[1],
 	}, nil
+}
+
+// SolutionTemplateExistsWaitFunc returns WaitFunc for waiting for a template to exist
+func SolutionTemplateExistsWaitFunc(service ecloud.ECloudService, solutionID int, templateName string, exists bool) WaitFunc {
+	return func() (finished bool, err error) {
+		_, err = service.GetSolutionTemplate(solutionID, templateName)
+		if err != nil {
+			if _, ok := err.(*ecloud.TemplateNotFoundError); ok {
+				return (exists == false), nil
+			}
+
+			return false, fmt.Errorf("Failed to retrieve solution template [%s]: %s", templateName, err.Error())
+		}
+
+		return (exists == true), nil
+	}
 }

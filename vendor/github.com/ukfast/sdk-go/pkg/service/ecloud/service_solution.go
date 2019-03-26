@@ -442,6 +442,93 @@ func (s *Service) getSolutionTemplatesPaginatedResponseBody(solutionID int, para
 	return body, response.HandleResponse([]int{200}, body)
 }
 
+// GetSolutionTemplate retrieves a single solution template by name
+func (s *Service) GetSolutionTemplate(solutionID int, templateName string) (Template, error) {
+	body, err := s.getSolutionTemplateResponseBody(solutionID, templateName)
+
+	return body.Data, err
+}
+
+func (s *Service) getSolutionTemplateResponseBody(solutionID int, templateName string) (*GetTemplateResponseBody, error) {
+	body := &GetTemplateResponseBody{}
+
+	if solutionID < 1 {
+		return body, fmt.Errorf("invalid solution id")
+	}
+	if templateName == "" {
+		return body, fmt.Errorf("invalid template name")
+	}
+
+	response, err := s.connection.Get(fmt.Sprintf("/ecloud/v1/solutions/%d/templates/%s", solutionID, templateName), connection.APIRequestParameters{})
+	if err != nil {
+		return body, err
+	}
+
+	if response.StatusCode == 404 {
+		return body, &TemplateNotFoundError{Name: templateName}
+	}
+
+	return body, response.HandleResponse([]int{200}, body)
+}
+
+// RenameSolutionTemplate renames a solution template
+func (s *Service) RenameSolutionTemplate(solutionID int, templateName string, req RenameTemplateRequest) error {
+	_, err := s.renameSolutionTemplateResponseBody(solutionID, templateName, req)
+
+	return err
+}
+
+func (s *Service) renameSolutionTemplateResponseBody(solutionID int, templateName string, req RenameTemplateRequest) (*connection.APIResponseBody, error) {
+	body := &connection.APIResponseBody{}
+
+	if solutionID < 1 {
+		return body, fmt.Errorf("invalid solution id")
+	}
+	if templateName == "" {
+		return body, fmt.Errorf("invalid template name")
+	}
+
+	response, err := s.connection.Post(fmt.Sprintf("/ecloud/v1/solutions/%d/templates/%s/move", solutionID, templateName), &req)
+	if err != nil {
+		return body, err
+	}
+
+	if response.StatusCode == 404 {
+		return body, &TemplateNotFoundError{Name: templateName}
+	}
+
+	return body, response.HandleResponse([]int{202}, body)
+}
+
+// DeleteSolutionTemplate removes a solution template
+func (s *Service) DeleteSolutionTemplate(solutionID int, templateName string) error {
+	_, err := s.deleteSolutionTemplateResponseBody(solutionID, templateName)
+
+	return err
+}
+
+func (s *Service) deleteSolutionTemplateResponseBody(solutionID int, templateName string) (*connection.APIResponseBody, error) {
+	body := &connection.APIResponseBody{}
+
+	if solutionID < 1 {
+		return body, fmt.Errorf("invalid solution id")
+	}
+	if templateName == "" {
+		return body, fmt.Errorf("invalid template name")
+	}
+
+	response, err := s.connection.Delete(fmt.Sprintf("/ecloud/v1/solutions/%d/templates/%s", solutionID, templateName), nil)
+	if err != nil {
+		return body, err
+	}
+
+	if response.StatusCode == 404 {
+		return body, &TemplateNotFoundError{Name: templateName}
+	}
+
+	return body, response.HandleResponse([]int{202}, body)
+}
+
 // GetSolutionTags retrieves a list of tags for a solution
 func (s *Service) GetSolutionTags(solutionID int, parameters connection.APIRequestParameters) ([]Tag, error) {
 	r := connection.RequestAll{}

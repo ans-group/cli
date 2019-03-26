@@ -9,9 +9,8 @@ import (
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/cli/test"
 	"github.com/ukfast/cli/test/mocks"
+	"github.com/ukfast/cli/test/test_output"
 	"github.com/ukfast/sdk-go/pkg/service/ddosx"
 )
 
@@ -68,11 +67,6 @@ func Test_ddosxDomainPropertyList(t *testing.T) {
 	})
 
 	t.Run("MalformedFlag_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 		defer func() { flagFilter = nil }()
 
 		mockCtrl := gomock.NewController(t)
@@ -81,20 +75,12 @@ func Test_ddosxDomainPropertyList(t *testing.T) {
 		service := mocks.NewMockDDoSXService(mockCtrl)
 		flagFilter = []string{"invalidfilter"}
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Missing value for filtering\n", func() {
 			ddosxDomainPropertyList(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Missing value for filtering\n", output)
 	})
 
 	t.Run("GetDomainPropertiesError_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -103,12 +89,9 @@ func Test_ddosxDomainPropertyList(t *testing.T) {
 
 		service.EXPECT().GetDomainProperties("testdomain1.co.uk", gomock.Any()).Return([]ddosx.DomainProperty{}, errors.New("test error")).Times(1)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error retrieving domain properties: test error\n", func() {
 			ddosxDomainPropertyList(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error retrieving domain properties: test error\n", output)
 	})
 }
 
@@ -168,11 +151,9 @@ func Test_ddosxDomainPropertyShow(t *testing.T) {
 
 		service.EXPECT().GetDomainProperty("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.DomainProperty{}, errors.New("test error"))
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error retrieving domain property [00000000-0000-0000-0000-000000000000]: test error\n", func() {
 			ddosxDomainPropertyShow(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 		})
-
-		assert.Equal(t, "Error retrieving domain property [00000000-0000-0000-0000-000000000000]: test error\n", output)
 	})
 }
 
@@ -227,11 +208,9 @@ func Test_ddosxDomainPropertyUpdate(t *testing.T) {
 
 		service.EXPECT().PatchDomainProperty("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Any()).Return(errors.New("test error"))
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error updating domain property [00000000-0000-0000-0000-000000000000]: test error\n", func() {
 			ddosxDomainPropertyUpdate(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 		})
-
-		assert.Equal(t, "Error updating domain property [00000000-0000-0000-0000-000000000000]: test error\n", output)
 	})
 
 	t.Run("GetDomainPropertyError_OutputsError", func(t *testing.T) {
@@ -245,10 +224,8 @@ func Test_ddosxDomainPropertyUpdate(t *testing.T) {
 			service.EXPECT().GetDomainProperty("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.DomainProperty{}, errors.New("test error")),
 		)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error retrieving updated domain property [00000000-0000-0000-0000-000000000000]: test error\n", func() {
 			ddosxDomainPropertyUpdate(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 		})
-
-		assert.Equal(t, "Error retrieving updated domain property [00000000-0000-0000-0000-000000000000]: test error\n", output)
 	})
 }

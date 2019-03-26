@@ -11,9 +11,9 @@ import (
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/cli/test"
 	"github.com/ukfast/cli/test/mocks"
+	"github.com/ukfast/cli/test/test_output"
 
 	"github.com/spf13/afero"
 )
@@ -67,11 +67,9 @@ func Test_ddosxDomainVerificationFileUploadShow(t *testing.T) {
 
 		service.EXPECT().DownloadDomainVerificationFile("testdomain1.co.uk").Return("testfilecontent", "testfilename", errors.New("test error"))
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error retrieving domain verification file [testdomain1.co.uk]: test error\n", func() {
 			ddosxDomainVerificationFileUploadShow(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 		})
-
-		assert.Equal(t, "Error retrieving domain verification file [testdomain1.co.uk]: test error\n", output)
 	})
 }
 
@@ -117,11 +115,6 @@ func Test_ddosxDomainVerificationFileUploadDownload(t *testing.T) {
 	})
 
 	t.Run("FileExists_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		appFilesystem = afero.NewMemMapFs()
 		afero.WriteFile(appFilesystem, "/tmp/testfilename.txt", []byte{}, 0644)
@@ -135,22 +128,13 @@ func Test_ddosxDomainVerificationFileUploadDownload(t *testing.T) {
 
 		service.EXPECT().DownloadDomainVerificationFile("testdomain1.co.uk").Return("testfilecontent", "testfilename.txt", nil)
 
-		output := test.CatchStdErr(t, func() {
+		filename := filepath.Join("/tmp", "testfilename.txt")
+		test_output.AssertFatalOutput(t, fmt.Sprintf("Destination file [%s] exists\n", filename), func() {
 			ddosxDomainVerificationFileUploadDownload(service, cmd, []string{"testdomain1.co.uk"})
 		})
-
-		filename := filepath.Join("/tmp", "testfilename.txt")
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, fmt.Sprintf("Destination file [%s] exists\n", filename), output)
 	})
 
 	t.Run("WriteFileError_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		appFilesystem = afero.NewRegexpFs(afero.NewMemMapFs(), regexp.MustCompile(`\.invalid$`))
 
@@ -163,22 +147,13 @@ func Test_ddosxDomainVerificationFileUploadDownload(t *testing.T) {
 
 		service.EXPECT().DownloadDomainVerificationFile("testdomain1.co.uk").Return("testfilecontent", "testfilename.txt", nil)
 
-		output := test.CatchStdErr(t, func() {
+		filename := filepath.Join("/tmp", "testfilename.txt")
+		test_output.AssertFatalOutput(t, fmt.Sprintf("Error writing domain verification file to [%s]: open %s: file does not exist\n", filename, filename), func() {
 			ddosxDomainVerificationFileUploadDownload(service, cmd, []string{"testdomain1.co.uk"})
 		})
-
-		filename := filepath.Join("/tmp", "testfilename.txt")
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, fmt.Sprintf("Error writing domain verification file to [%s]: open %s: file does not exist\n", filename, filename), output)
 	})
 
 	t.Run("DownloadDomainVerificationFileError_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -187,11 +162,8 @@ func Test_ddosxDomainVerificationFileUploadDownload(t *testing.T) {
 
 		service.EXPECT().DownloadDomainVerificationFile("testdomain1.co.uk").Return("testfilecontent", "testfilename", errors.New("test error"))
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error retrieving domain verification file: test error\n", func() {
 			ddosxDomainVerificationFileUploadDownload(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error retrieving domain verification file: test error\n", output)
 	})
 }

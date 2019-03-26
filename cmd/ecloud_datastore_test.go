@@ -7,9 +7,8 @@ import (
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/cli/test"
 	"github.com/ukfast/cli/test/mocks"
+	"github.com/ukfast/cli/test/test_output"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
@@ -26,11 +25,6 @@ func Test_ecloudDatastoreList(t *testing.T) {
 	})
 
 	t.Run("MalformedFlag_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 		defer func() { flagFilter = nil }()
 
 		mockCtrl := gomock.NewController(t)
@@ -39,20 +33,12 @@ func Test_ecloudDatastoreList(t *testing.T) {
 		service := mocks.NewMockECloudService(mockCtrl)
 		flagFilter = []string{"invalidfilter"}
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Missing value for filtering\n", func() {
 			ecloudDatastoreList(service, &cobra.Command{}, []string{})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Missing value for filtering\n", output)
 	})
 
 	t.Run("GetDatastoresError_OutputsFatal", func(t *testing.T) {
-		code := 0
-		oldOutputExit := output.SetOutputExit(func(c int) {
-			code = c
-		})
-		defer func() { output.SetOutputExit(oldOutputExit) }()
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -61,12 +47,9 @@ func Test_ecloudDatastoreList(t *testing.T) {
 
 		service.EXPECT().GetDatastores(gomock.Any()).Return([]ecloud.Datastore{}, errors.New("test error")).Times(1)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertFatalOutput(t, "Error retrieving datastores: test error\n", func() {
 			ecloudDatastoreList(service, &cobra.Command{}, []string{})
 		})
-
-		assert.Equal(t, 1, code)
-		assert.Equal(t, "Error retrieving datastores: test error\n", output)
 	})
 }
 
@@ -117,11 +100,9 @@ func Test_ecloudDatastoreShow(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Invalid datastore ID [abc]\n", func() {
 			ecloudDatastoreShow(service, &cobra.Command{}, []string{"abc"})
 		})
-
-		assert.Equal(t, "Invalid datastore ID [abc]\n", output)
 	})
 
 	t.Run("GetDatastoreError_OutputsError", func(t *testing.T) {
@@ -132,10 +113,8 @@ func Test_ecloudDatastoreShow(t *testing.T) {
 
 		service.EXPECT().GetDatastore(123).Return(ecloud.Datastore{}, errors.New("test error"))
 
-		output := test.CatchStdErr(t, func() {
+		test_output.AssertErrorOutput(t, "Error retrieving datastore [123]: test error\n", func() {
 			ecloudDatastoreShow(service, &cobra.Command{}, []string{"123"})
 		})
-
-		assert.Equal(t, "Error retrieving datastore [123]: test error\n", output)
 	})
 }
