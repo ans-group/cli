@@ -115,7 +115,6 @@ func Test_ecloudVirtualMachineDiskUpdate(t *testing.T) {
 	})
 
 	t.Run("InvalidVirtualMachineID_OutputsFatal", func(t *testing.T) {
-
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -127,7 +126,6 @@ func Test_ecloudVirtualMachineDiskUpdate(t *testing.T) {
 	})
 
 	t.Run("PatchVirtualMachineError_OutputsFatal", func(t *testing.T) {
-
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -141,9 +139,12 @@ func Test_ecloudVirtualMachineDiskUpdate(t *testing.T) {
 	})
 
 	t.Run("WaitGetVirtualMachineError_OutputsFatal", func(t *testing.T) {
-
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
+
+		viper.SetDefault("command_wait_timeout_seconds", 1200)
+		viper.SetDefault("command_wait_sleep_seconds", 1)
+		defer testResetViper()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 

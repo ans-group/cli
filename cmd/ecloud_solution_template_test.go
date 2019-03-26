@@ -41,7 +41,6 @@ func Test_ecloudSolutionTemplateList(t *testing.T) {
 	})
 
 	t.Run("InvalidSolutionID_OutputsFatal", func(t *testing.T) {
-
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -67,7 +66,6 @@ func Test_ecloudSolutionTemplateList(t *testing.T) {
 	})
 
 	t.Run("GetTemplatesError_OutputsFatal", func(t *testing.T) {
-
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -130,7 +128,6 @@ func Test_ecloudSolutionTemplateShow(t *testing.T) {
 	})
 
 	t.Run("InvalidSolutionID_OutputsFatal", func(t *testing.T) {
-
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -204,7 +201,6 @@ func Test_ecloudSolutionTemplateUpdate(t *testing.T) {
 	})
 
 	t.Run("InvalidSolutionID_OutputsFatal", func(t *testing.T) {
-
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -235,6 +231,10 @@ func Test_ecloudSolutionTemplateUpdate(t *testing.T) {
 	t.Run("WaitForCommandError_OutputsFatal", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
+
+		viper.SetDefault("command_wait_timeout_seconds", 1200)
+		viper.SetDefault("command_wait_sleep_seconds", 1)
+		defer testResetViper()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 		cmd := ecloudSolutionTemplateUpdateCmd()
