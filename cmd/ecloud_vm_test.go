@@ -245,7 +245,7 @@ func Test_ecloudVirtualMachineCreate(t *testing.T) {
 			service.EXPECT().GetVirtualMachine(123).Return(ecloud.VirtualMachine{}, errors.New("test error 1")),
 		)
 
-		test_output.AssertFatalOutput(t, "Error waiting for command: Failed to retrieve solution template [newname]: test error 1\n", func() {
+		test_output.AssertFatalOutput(t, "Error waiting for command: Failed to retrieve virtual machine [123]: test error 1\n", func() {
 			ecloudVirtualMachineCreate(service, cmd, []string{"123"})
 		})
 	})
