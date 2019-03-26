@@ -142,20 +142,30 @@ func ecloudSolutionTemplateUpdate(service ecloud.ECloudService, cmd *cobra.Comma
 		return
 	}
 
+	templateName := args[1]
+
 	if cmd.Flags().Changed("name") {
 		name, _ := cmd.Flags().GetString("name")
 		patchRequest := ecloud.RenameTemplateRequest{
 			Destination: name,
 		}
 
-		err = service.RenameSolutionTemplate(solutionID, args[1], patchRequest)
+		err = service.RenameSolutionTemplate(solutionID, templateName, patchRequest)
 		if err != nil {
 			output.Fatalf("Error updating solution template: %s", err)
 			return
 		}
+
+		err := WaitForCommand(SolutionTemplateExistsWaitFunc(service, solutionID, name, true))
+		if err != nil {
+			output.Fatalf("Error waiting for solution template update: %s", err)
+			return
+		}
+
+		templateName = name
 	}
 
-	template, err := service.GetSolutionTemplate(solutionID, args[1])
+	template, err := service.GetSolutionTemplate(solutionID, templateName)
 	if err != nil {
 		output.Fatalf("Error retrieving updated solution template: %s", err)
 		return

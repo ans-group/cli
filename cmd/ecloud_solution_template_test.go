@@ -6,6 +6,7 @@ import (
 
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 	"github.com/ukfast/cli/test/mocks"
 	"github.com/ukfast/cli/test/test_output"
@@ -181,6 +182,10 @@ func Test_ecloudSolutionTemplateUpdate(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
+		viper.SetDefault("command_wait_timeout_seconds", 1200)
+		viper.SetDefault("command_wait_sleep_seconds", 1)
+		defer testResetViper()
+
 		service := mocks.NewMockECloudService(mockCtrl)
 		cmd := ecloudSolutionTemplateUpdateCmd()
 		cmd.Flags().Set("name", "newname")
@@ -191,7 +196,8 @@ func Test_ecloudSolutionTemplateUpdate(t *testing.T) {
 
 		gomock.InOrder(
 			service.EXPECT().RenameSolutionTemplate(123, "testname1", gomock.Eq(expectedPatch)).Return(nil),
-			service.EXPECT().GetSolutionTemplate(123, "testname1").Return(ecloud.Template{}, nil),
+			service.EXPECT().GetSolutionTemplate(123, "newname").Return(ecloud.Template{}, nil),
+			service.EXPECT().GetSolutionTemplate(123, "newname").Return(ecloud.Template{}, nil),
 		)
 
 		ecloudSolutionTemplateUpdate(service, cmd, []string{"123", "testname1"})
@@ -209,22 +215,24 @@ func Test_ecloudSolutionTemplateUpdate(t *testing.T) {
 		})
 	})
 
-	t.Run("RenameSolutionTemplate_OutputsFatal", func(t *testing.T) {
+	t.Run("RenameSolutionTemplateError_OutputsFatal", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudSolutionTemplateUpdateCmd()
+		cmd.Flags().Set("name", "newname")
 
 		gomock.InOrder(
 			service.EXPECT().RenameSolutionTemplate(123, "testname1", gomock.Any()).Return(errors.New("test error 1")),
 		)
 
 		test_output.AssertFatalOutput(t, "Error updating solution template: test error 1\n", func() {
-			ecloudSolutionTemplateUpdate(service, &cobra.Command{}, []string{"123", "testname1"})
+			ecloudSolutionTemplateUpdate(service, cmd, []string{"123", "testname1"})
 		})
 	})
 
-	t.Run("GetSolutionTemplateError_OutputsError", func(t *testing.T) {
+	t.Run("WaitForCommandError_OutputsFatal", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -234,11 +242,26 @@ func Test_ecloudSolutionTemplateUpdate(t *testing.T) {
 
 		gomock.InOrder(
 			service.EXPECT().RenameSolutionTemplate(123, "testname1", gomock.Any()).Return(nil),
+			service.EXPECT().GetSolutionTemplate(123, "newname").Return(ecloud.Template{}, errors.New("test error 1")),
+		)
+
+		test_output.AssertFatalOutput(t, "Error waiting for solution template update: Error waiting for command: Failed to retrieve solution template [newname]: test error 1\n", func() {
+			ecloudSolutionTemplateUpdate(service, cmd, []string{"123", "testname1"})
+		})
+	})
+
+	t.Run("GetSolutionTemplateError_OutputsFatal", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		gomock.InOrder(
 			service.EXPECT().GetSolutionTemplate(123, "testname1").Return(ecloud.Template{}, errors.New("test error 1")),
 		)
 
 		test_output.AssertFatalOutput(t, "Error retrieving updated solution template: test error 1\n", func() {
-			ecloudSolutionTemplateUpdate(service, cmd, []string{"123", "testname1"})
+			ecloudSolutionTemplateUpdate(service, &cobra.Command{}, []string{"123", "testname1"})
 		})
 	})
 }
