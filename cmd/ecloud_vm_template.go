@@ -36,7 +36,7 @@ func ecloudVirtualMachineTemplateCreateCmd() *cobra.Command {
 			return nil
 		},
 		Run: func(cmd *cobra.Command, args []string) {
-			ecloudSolutionTemplateCreate(getClient().ECloudService(), cmd, args)
+			ecloudVirtualMachineTemplateCreate(getClient().ECloudService(), cmd, args)
 		},
 	}
 
@@ -89,20 +89,32 @@ func ecloudVirtualMachineTemplateCreate(service ecloud.ECloudService, cmd *cobra
 	case ecloud.TemplateTypePod:
 		template, err = getPodTemplate(service, vmID, templateName)
 		if err != nil {
-			output.Fatalf("Error retrieving new virtual machine (pod) template: %s", err)
+			output.Fatalf(getTemplateFailureError(err))
 			return
 		}
 		break
 	case ecloud.TemplateTypeSolution:
 		template, err = getSolutionTemplate(service, vmID, templateName)
 		if err != nil {
-			output.Fatalf("Error retrieving new virtual machine (solution) template: %s", err)
+			output.Fatalf(getTemplateFailureError(err))
 			return
 		}
 		break
 	}
 
 	outputECloudTemplates([]ecloud.Template{template})
+}
+
+func getTemplateFailureError(err error) string {
+	if err != nil {
+		if _, ok := err.(*ecloud.TemplateNotFoundError); ok {
+			return fmt.Sprintf("Error creating virtual machine template (unknown failure)")
+		}
+
+		return fmt.Sprintf("Error retrieving new virtual machine (pod) template: %s", err)
+	}
+
+	return ""
 }
 
 func getPodTemplate(service ecloud.ECloudService, vmID int, templateName string) (ecloud.Template, error) {
