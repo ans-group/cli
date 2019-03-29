@@ -84,32 +84,32 @@ func ecloudVirtualMachineTemplateCreate(service ecloud.ECloudService, cmd *cobra
 		}
 	}
 
-	template, err := getTemplate(service, vmID, templateName, parsedTemplateType)
+	template, err := getVMTemplate(service, vmID, templateName, parsedTemplateType)
 	if err != nil {
 		if _, ok := err.(*ecloud.TemplateNotFoundError); ok {
 			output.Fatalf("Error creating virtual machine template (unknown failure)")
 			return
 		}
 
-		output.Fatalf("Error retrieving new virtual machine (pod) template: %s", err)
+		output.Fatalf("Error retrieving new virtual machine template: %s", err)
 		return
 	}
 
 	outputECloudTemplates([]ecloud.Template{template})
 }
 
-func getTemplate(service ecloud.ECloudService, vmID int, templateName string, templateType ecloud.TemplateType) (ecloud.Template, error) {
+func getVMTemplate(service ecloud.ECloudService, vmID int, templateName string, templateType ecloud.TemplateType) (ecloud.Template, error) {
 	switch templateType {
 	case ecloud.TemplateTypePod:
-		return getPodTemplate(service, vmID, templateName)
+		return getPodVMTemplate(service, vmID, templateName)
 	case ecloud.TemplateTypeSolution:
-		return getSolutionTemplate(service, vmID, templateName)
+		return getSolutionVMTemplate(service, vmID, templateName)
 	}
 
 	return ecloud.Template{}, errors.New("unknown template type")
 }
 
-func getPodTemplate(service ecloud.ECloudService, vmID int, templateName string) (ecloud.Template, error) {
+func getPodVMTemplate(service ecloud.ECloudService, vmID int, templateName string) (ecloud.Template, error) {
 	vm, err := service.GetVirtualMachine(vmID)
 	if err != nil {
 		return ecloud.Template{}, fmt.Errorf("Error retrieving virtual machine: %s", err)
@@ -123,7 +123,7 @@ func getPodTemplate(service ecloud.ECloudService, vmID int, templateName string)
 	return service.GetPodTemplate(solution.PodID, templateName)
 }
 
-func getSolutionTemplate(service ecloud.ECloudService, vmID int, templateName string) (ecloud.Template, error) {
+func getSolutionVMTemplate(service ecloud.ECloudService, vmID int, templateName string) (ecloud.Template, error) {
 	vm, err := service.GetVirtualMachine(vmID)
 	if err != nil {
 		return ecloud.Template{}, fmt.Errorf("Error retrieving virtual machine: %s", err)
