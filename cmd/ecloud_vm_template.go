@@ -84,37 +84,29 @@ func ecloudVirtualMachineTemplateCreate(service ecloud.ECloudService, cmd *cobra
 		}
 	}
 
-	var template ecloud.Template
-	switch parsedTemplateType {
-	case ecloud.TemplateTypePod:
-		template, err = getPodTemplate(service, vmID, templateName)
-		if err != nil {
-			output.Fatalf(getTemplateFailureError(err))
+	template, err := getTemplate(service, vmID, templateName, parsedTemplateType)
+	if err != nil {
+		if _, ok := err.(*ecloud.TemplateNotFoundError); ok {
+			output.Fatalf("Error creating virtual machine template (unknown failure)")
 			return
 		}
-		break
-	case ecloud.TemplateTypeSolution:
-		template, err = getSolutionTemplate(service, vmID, templateName)
-		if err != nil {
-			output.Fatalf(getTemplateFailureError(err))
-			return
-		}
-		break
+
+		output.Fatalf("Error retrieving new virtual machine (pod) template: %s", err)
+		return
 	}
 
 	outputECloudTemplates([]ecloud.Template{template})
 }
 
-func getTemplateFailureError(err error) string {
-	if err != nil {
-		if _, ok := err.(*ecloud.TemplateNotFoundError); ok {
-			return fmt.Sprintf("Error creating virtual machine template (unknown failure)")
-		}
-
-		return fmt.Sprintf("Error retrieving new virtual machine (pod) template: %s", err)
+func getTemplate(service ecloud.ECloudService, vmID int, templateName string, templateType ecloud.TemplateType) (ecloud.Template, error) {
+	switch templateType {
+	case ecloud.TemplateTypePod:
+		return getPodTemplate(service, vmID, templateName)
+	case ecloud.TemplateTypeSolution:
+		return getSolutionTemplate(service, vmID, templateName)
 	}
 
-	return ""
+	return ecloud.Template{}, errors.New("unknown template type")
 }
 
 func getPodTemplate(service ecloud.ECloudService, vmID int, templateName string) (ecloud.Template, error) {
