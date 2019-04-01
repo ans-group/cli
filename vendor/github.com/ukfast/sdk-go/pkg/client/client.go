@@ -5,6 +5,7 @@ import (
 	"github.com/ukfast/sdk-go/pkg/service/account"
 	"github.com/ukfast/sdk-go/pkg/service/ddosx"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
+	"github.com/ukfast/sdk-go/pkg/service/pss"
 	"github.com/ukfast/sdk-go/pkg/service/registrar"
 	"github.com/ukfast/sdk-go/pkg/service/safedns"
 	"github.com/ukfast/sdk-go/pkg/service/ssl"
@@ -17,6 +18,7 @@ type Client interface {
 	DDoSXService() ddosx.DDoSXService
 	AccountService() account.AccountService
 	RegistrarService() registrar.RegistrarService
+	PSSService() pss.PSSService
 }
 
 type UKFastClient struct {
@@ -51,4 +53,8 @@ func (c *UKFastClient) AccountService() account.AccountService {
 
 func (c *UKFastClient) RegistrarService() registrar.RegistrarService {
 	return registrar.NewService(c.connection)
+}
+
+func (c *UKFastClient) PSSService() pss.PSSService {
+	return pss.NewService(c.connection)
 }
