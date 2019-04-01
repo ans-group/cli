@@ -22,7 +22,7 @@ func TestOutputPSSRequests_GetData_ExpectedData(t *testing.T) {
 	assert.Equal(t, 123, data.([]pss.Request)[0].ID)
 }
 
-func TestOutputPSSRequests_GetFieldData_ExpectedFieldData(t *testing.T) {
+func TestOutputPSSRequests_GetFieldData(t *testing.T) {
 	t.Run("ExpectedFieldData", func(t *testing.T) {
 		o := OutputPSSRequests{
 			Requests: []pss.Request{
@@ -56,4 +56,35 @@ func TestOutputPSSRequests_GetFieldData_ExpectedFieldData(t *testing.T) {
 		assert.True(t, data[0].Exists("assignee_name"))
 		assert.Equal(t, "test a", data[0].Get("assignee_name").Value)
 	})
+}
+
+func TestOutputPSSRequestReplies_GetData_ExpectedData(t *testing.T) {
+	o := OutputPSSReplies{
+		Replies: []pss.Reply{
+			pss.Reply{
+				Description: "test reply",
+			},
+		},
+	}
+
+	data := o.GetData()
+
+	assert.IsType(t, []pss.Reply{}, data)
+	assert.Equal(t, "test reply", data.([]pss.Reply)[0].Description)
+}
+
+func TestOutputPSSReplies_GetFieldData_ExpectedFieldData(t *testing.T) {
+	o := OutputPSSReplies{
+		Replies: []pss.Reply{
+			pss.Reply{
+				Description: "test reply",
+			},
+		},
+	}
+
+	data, err := o.GetFieldData()
+
+	assert.Nil(t, err)
+	assert.True(t, data[0].Exists("description"))
+	assert.Equal(t, "test reply", data[0].Get("description").Value)
 }

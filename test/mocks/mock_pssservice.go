@@ -50,18 +50,33 @@ func (mr *MockPSSServiceMockRecorder) GetRequest(arg0 interface{}) *gomock.Call 
 }
 
 // GetRequestConversation mocks base method
-func (m *MockPSSService) GetRequestConversation(arg0 int) ([]pss.Reply, error) {
+func (m *MockPSSService) GetRequestConversation(arg0 int, arg1 connection.APIRequestParameters) ([]pss.Reply, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetRequestConversation", arg0)
+	ret := m.ctrl.Call(m, "GetRequestConversation", arg0, arg1)
 	ret0, _ := ret[0].([]pss.Reply)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetRequestConversation indicates an expected call of GetRequestConversation
-func (mr *MockPSSServiceMockRecorder) GetRequestConversation(arg0 interface{}) *gomock.Call {
+func (mr *MockPSSServiceMockRecorder) GetRequestConversation(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRequestConversation", reflect.TypeOf((*MockPSSService)(nil).GetRequestConversation), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRequestConversation", reflect.TypeOf((*MockPSSService)(nil).GetRequestConversation), arg0, arg1)
+}
+
+// GetRequestConversationPaginated mocks base method
+func (m *MockPSSService) GetRequestConversationPaginated(arg0 int, arg1 connection.APIRequestParameters) ([]pss.Reply, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetRequestConversationPaginated", arg0, arg1)
+	ret0, _ := ret[0].([]pss.Reply)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetRequestConversationPaginated indicates an expected call of GetRequestConversationPaginated
+func (mr *MockPSSServiceMockRecorder) GetRequestConversationPaginated(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRequestConversationPaginated", reflect.TypeOf((*MockPSSService)(nil).GetRequestConversationPaginated), arg0, arg1)
 }
 
 // GetRequests mocks base method

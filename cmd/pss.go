@@ -68,3 +68,38 @@ func (o *OutputPSSRequests) getOrderedFields(request pss.Request) *output.Ordere
 
 	return fields
 }
+
+// OutputPSSReplies implements OutputDataProvider for outputting an array of Replies
+type OutputPSSReplies struct {
+	Replies []pss.Reply
+}
+
+func outputPSSReplies(replies []pss.Reply) {
+	err := Output(&OutputPSSReplies{Replies: replies})
+	if err != nil {
+		output.Fatalf("Failed to output replies: %s", err)
+	}
+}
+
+func (o *OutputPSSReplies) GetData() interface{} {
+	return o.Replies
+}
+
+func (o *OutputPSSReplies) GetFieldData() ([]*output.OrderedFields, error) {
+	var data []*output.OrderedFields
+	for _, reply := range o.Replies {
+		fields := o.getOrderedFields(reply)
+		data = append(data, fields)
+	}
+
+	return data, nil
+}
+
+func (o *OutputPSSReplies) getOrderedFields(reply pss.Reply) *output.OrderedFields {
+	fields := output.NewOrderedFields()
+	fields.Set("author_name", output.NewFieldValue(reply.Author.Name, true))
+	fields.Set("description", output.NewFieldValue(reply.Description, false))
+	fields.Set("created_at", output.NewFieldValue(reply.CreatedAt.String(), true))
+
+	return fields
+}

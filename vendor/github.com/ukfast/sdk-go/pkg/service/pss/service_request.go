@@ -73,21 +73,44 @@ func (s *Service) getRequestResponseBody(requestID int) (*GetRequestResponseBody
 	return body, response.HandleResponse([]int{200}, body)
 }
 
-// GetRequestConversation retrieves the conversation for a request
-func (s *Service) GetRequestConversation(requestID int) ([]Reply, error) {
-	body, err := s.getRequestConversationResponseBody(requestID)
+// GetRequestConversation retrieves a conversation for a request
+func (s *Service) GetRequestConversation(requestID int, parameters connection.APIRequestParameters) ([]Reply, error) {
+	r := connection.RequestAll{}
+
+	var replies []Reply
+	r.GetNext = func(parameters connection.APIRequestParameters) (connection.ResponseBody, error) {
+		response, err := s.getRequestConversationPaginatedResponseBody(requestID, parameters)
+		if err != nil {
+			return nil, err
+		}
+
+		for _, reply := range response.Data {
+			replies = append(replies, reply)
+		}
+
+		return response, nil
+	}
+
+	err := r.Invoke(parameters)
+
+	return replies, err
+}
+
+// GetRequestConversationPaginated retrieves a paginated conversation for a request
+func (s *Service) GetRequestConversationPaginated(requestID int, parameters connection.APIRequestParameters) ([]Reply, error) {
+	body, err := s.getRequestConversationPaginatedResponseBody(requestID, parameters)
 
 	return body.Data, err
 }
 
-func (s *Service) getRequestConversationResponseBody(requestID int) (*GetRepliesResponseBody, error) {
+func (s *Service) getRequestConversationPaginatedResponseBody(requestID int, parameters connection.APIRequestParameters) (*GetRepliesResponseBody, error) {
 	body := &GetRepliesResponseBody{}
 
 	if requestID < 1 {
 		return body, fmt.Errorf("invalid request id")
 	}
 
-	response, err := s.connection.Get(fmt.Sprintf("/pss/v1/requests/%d/conversation", requestID), connection.APIRequestParameters{})
+	response, err := s.connection.Get(fmt.Sprintf("/pss/v1/requests/%d/conversation", requestID), parameters)
 	if err != nil {
 		return body, err
 	}
