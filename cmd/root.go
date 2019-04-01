@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	homedir "github.com/mitchellh/go-homedir"
@@ -186,41 +187,78 @@ type OutputDataProvider interface {
 	GetFieldData() ([]*output.OrderedFields, error)
 }
 
-// Output calls the relevant OutputProvider data retrieval methods for given value
-// in global variable 'format'
-func Output(out OutputDataProvider) error {
-	format := flagFormat
+type OutputHandler struct {
+	Format                   string
+	Provider                 OutputDataProvider
+	SupportedFormats         []string
+	UnsupportedFormatHandler func()
+}
+
+func NewOutputHandler(out OutputDataProvider, format string) *OutputHandler {
 	if format == "" {
 		format = "table"
 	}
 
-	switch format {
+	return &OutputHandler{
+		Provider: out,
+		Format:   format,
+	}
+}
+
+// Handle calls the relevant OutputProvider data retrieval methods for given value
+// in global variable 'format'
+func (o *OutputHandler) Handle() error {
+	if !o.supportedFormat() && o.UnsupportedFormatHandler != nil {
+		return fmt.Errorf("Unsupported output format [%s], supported formats: %s", o.Format, strings.Join(o.SupportedFormats, ", "))
+	}
+
+	switch o.Format {
 	case "json":
-		return output.JSON(out.GetData())
+		return output.JSON(o.Provider.GetData())
 	case "template":
-		return output.Template(flagOutputTemplate, out.GetData())
+		return output.Template(flagOutputTemplate, o.Provider.GetData())
 	case "value":
-		d, err := out.GetFieldData()
+		d, err := o.Provider.GetFieldData()
 		if err != nil {
 			return err
 		}
 		return output.Value(flagProperty, d)
 	case "csv":
-		d, err := out.GetFieldData()
+		d, err := o.Provider.GetFieldData()
 		if err != nil {
 			return err
 		}
 		return output.CSV(flagProperty, d)
 	default:
-		output.Errorf("Invalid output format [%s], defaulting to 'table'", format)
+		output.Errorf("Invalid output format [%s], defaulting to 'table'", o.Format)
 		fallthrough
 	case "table":
-		d, err := out.GetFieldData()
+		d, err := o.Provider.GetFieldData()
 		if err != nil {
 			return err
 		}
 		return output.Table(flagProperty, d)
 	}
+}
+
+func (o *OutputHandler) supportedFormat() bool {
+	if o.SupportedFormats == nil {
+		return true
+	}
+
+	for _, supportedFormat := range o.SupportedFormats {
+		if strings.ToLower(supportedFormat) == o.Format {
+			return true
+		}
+	}
+
+	return false
+}
+
+// Output calls the relevant OutputProvider data retrieval methods for given value
+// in global variable 'flagFormat'
+func Output(out OutputDataProvider) error {
+	return NewOutputHandler(out, flagFormat).Handle()
 }
 
 type APIListParameters struct {
