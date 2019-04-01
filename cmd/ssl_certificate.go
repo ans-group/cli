@@ -17,6 +17,7 @@ func sslCertificateRootCmd() *cobra.Command {
 
 	// Child commands
 	cmd.AddCommand(sslCertificateListCmd())
+	cmd.AddCommand(sslCertificateShowCmd())
 
 	// Child root commands
 
