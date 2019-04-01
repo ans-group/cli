@@ -117,3 +117,90 @@ func (s *Service) getPodTemplatesPaginatedResponseBody(podID int, parameters con
 
 	return body, response.HandleResponse([]int{200}, body)
 }
+
+// GetPodTemplate retrieves a single pod template by name
+func (s *Service) GetPodTemplate(podID int, templateName string) (Template, error) {
+	body, err := s.getPodTemplateResponseBody(podID, templateName)
+
+	return body.Data, err
+}
+
+func (s *Service) getPodTemplateResponseBody(podID int, templateName string) (*GetTemplateResponseBody, error) {
+	body := &GetTemplateResponseBody{}
+
+	if podID < 1 {
+		return body, fmt.Errorf("invalid pod id")
+	}
+	if templateName == "" {
+		return body, fmt.Errorf("invalid template name")
+	}
+
+	response, err := s.connection.Get(fmt.Sprintf("/ecloud/v1/pods/%d/templates/%s", podID, templateName), connection.APIRequestParameters{})
+	if err != nil {
+		return body, err
+	}
+
+	if response.StatusCode == 404 {
+		return body, &TemplateNotFoundError{Name: templateName}
+	}
+
+	return body, response.HandleResponse([]int{200}, body)
+}
+
+// RenamePodTemplate renames a pod template
+func (s *Service) RenamePodTemplate(podID int, templateName string, req RenameTemplateRequest) error {
+	_, err := s.renamePodTemplateResponseBody(podID, templateName, req)
+
+	return err
+}
+
+func (s *Service) renamePodTemplateResponseBody(podID int, templateName string, req RenameTemplateRequest) (*connection.APIResponseBody, error) {
+	body := &connection.APIResponseBody{}
+
+	if podID < 1 {
+		return body, fmt.Errorf("invalid pod id")
+	}
+	if templateName == "" {
+		return body, fmt.Errorf("invalid template name")
+	}
+
+	response, err := s.connection.Post(fmt.Sprintf("/ecloud/v1/pods/%d/templates/%s/move", podID, templateName), &req)
+	if err != nil {
+		return body, err
+	}
+
+	if response.StatusCode == 404 {
+		return body, &TemplateNotFoundError{Name: templateName}
+	}
+
+	return body, response.HandleResponse([]int{202}, body)
+}
+
+// DeletePodTemplate removes a pod template
+func (s *Service) DeletePodTemplate(podID int, templateName string) error {
+	_, err := s.deletePodTemplateResponseBody(podID, templateName)
+
+	return err
+}
+
+func (s *Service) deletePodTemplateResponseBody(podID int, templateName string) (*connection.APIResponseBody, error) {
+	body := &connection.APIResponseBody{}
+
+	if podID < 1 {
+		return body, fmt.Errorf("invalid pod id")
+	}
+	if templateName == "" {
+		return body, fmt.Errorf("invalid template name")
+	}
+
+	response, err := s.connection.Delete(fmt.Sprintf("/ecloud/v1/pods/%d/templates/%s", podID, templateName), nil)
+	if err != nil {
+		return body, err
+	}
+
+	if response.StatusCode == 404 {
+		return body, &TemplateNotFoundError{Name: templateName}
+	}
+
+	return body, response.HandleResponse([]int{202}, body)
+}

@@ -112,6 +112,12 @@ const (
 	LTOperator
 	// INOperator - in set
 	INOperator
+	// NEQOperator - not equal
+	NEQOperator
+	// NINOperator - not in set
+	NINOperator
+	// NLKOperator - not like
+	NLKOperator
 )
 
 func (o APIRequestFilteringOperator) String() string {
@@ -121,9 +127,12 @@ func (o APIRequestFilteringOperator) String() string {
 		"gt",
 		"lt",
 		"in",
+		"neq",
+		"nin",
+		"nlk",
 	}
 
-	if o < EQOperator || o > INOperator {
+	if o < EQOperator || o > NLKOperator {
 		return "Unknown"
 	}
 
@@ -143,6 +152,12 @@ func ParseOperator(o string) (APIRequestFilteringOperator, error) {
 		return LTOperator, nil
 	case "IN":
 		return INOperator, nil
+	case "NEQ":
+		return NEQOperator, nil
+	case "NIN":
+		return NINOperator, nil
+	case "NLK":
+		return NLKOperator, nil
 	}
 
 	return 0, errors.New("Invalid filtering operator")
