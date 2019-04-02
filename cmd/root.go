@@ -182,19 +182,23 @@ func OutputWithErrorLevel(str string) {
 	OutputWithCustomErrorLevel(1, str)
 }
 
-type OutputDataProvider interface {
+type OutputHandlerProvider interface {
 	GetData() interface{}
 	GetFieldData() ([]*output.OrderedFields, error)
 }
 
+type UnsupportedFormatHandler func() error
+
 type OutputHandler struct {
 	Format                   string
-	Provider                 OutputDataProvider
+	Provider                 OutputHandlerProvider
+	Properties               []string
+	Template                 string
 	SupportedFormats         []string
-	UnsupportedFormatHandler func()
+	UnsupportedFormatHandler UnsupportedFormatHandler
 }
 
-func NewOutputHandler(out OutputDataProvider, format string) *OutputHandler {
+func NewOutputHandler(out OutputHandlerProvider, format string) *OutputHandler {
 	if format == "" {
 		format = "table"
 	}
@@ -206,9 +210,13 @@ func NewOutputHandler(out OutputDataProvider, format string) *OutputHandler {
 }
 
 // Handle calls the relevant OutputProvider data retrieval methods for given value
-// in global variable 'format'
+// in struct property 'Format'
 func (o *OutputHandler) Handle() error {
-	if !o.supportedFormat() && o.UnsupportedFormatHandler != nil {
+	if !o.supportedFormat() {
+		if o.UnsupportedFormatHandler != nil {
+			return o.UnsupportedFormatHandler()
+		}
+
 		return fmt.Errorf("Unsupported output format [%s], supported formats: %s", o.Format, strings.Join(o.SupportedFormats, ", "))
 	}
 
@@ -216,19 +224,19 @@ func (o *OutputHandler) Handle() error {
 	case "json":
 		return output.JSON(o.Provider.GetData())
 	case "template":
-		return output.Template(flagOutputTemplate, o.Provider.GetData())
+		return output.Template(o.Template, o.Provider.GetData())
 	case "value":
 		d, err := o.Provider.GetFieldData()
 		if err != nil {
 			return err
 		}
-		return output.Value(flagProperty, d)
+		return output.Value(o.Properties, d)
 	case "csv":
 		d, err := o.Provider.GetFieldData()
 		if err != nil {
 			return err
 		}
-		return output.CSV(flagProperty, d)
+		return output.CSV(o.Properties, d)
 	default:
 		output.Errorf("Invalid output format [%s], defaulting to 'table'", o.Format)
 		fallthrough
@@ -237,7 +245,7 @@ func (o *OutputHandler) Handle() error {
 		if err != nil {
 			return err
 		}
-		return output.Table(flagProperty, d)
+		return output.Table(o.Properties, d)
 	}
 }
 
@@ -257,8 +265,12 @@ func (o *OutputHandler) supportedFormat() bool {
 
 // Output calls the relevant OutputProvider data retrieval methods for given value
 // in global variable 'flagFormat'
-func Output(out OutputDataProvider) error {
-	return NewOutputHandler(out, flagFormat).Handle()
+func Output(out OutputHandlerProvider) error {
+	handler := NewOutputHandler(out, flagFormat)
+	handler.Properties = flagProperty
+	handler.Template = flagOutputTemplate
+
+	return handler.Handle()
 }
 
 type APIListParameters struct {
