@@ -47,15 +47,8 @@ func (o *OutputPSSRequests) GetFieldData() ([]*output.OrderedFields, error) {
 }
 
 func (o *OutputPSSRequests) getOrderedFields(request pss.Request) *output.OrderedFields {
-
-	var assigneeName string
-	if request.Assignee != nil {
-		assigneeName = request.Assignee.Name
-	}
-
 	fields := output.NewOrderedFields()
 	fields.Set("id", output.NewFieldValue(strconv.Itoa(request.ID), true))
-	fields.Set("assignee_name", output.NewFieldValue(assigneeName, true))
 	fields.Set("author_name", output.NewFieldValue(request.Author.Name, true))
 	fields.Set("type", output.NewFieldValue(request.Type, true))
 	fields.Set("secure", output.NewFieldValue(strconv.FormatBool(request.Secure), false))
