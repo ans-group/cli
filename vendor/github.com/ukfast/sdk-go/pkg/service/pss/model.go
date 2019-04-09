@@ -42,7 +42,6 @@ const (
 // Request represents a PSS request
 type Request struct {
 	ID         int                 `json:"id"`
-	Assignee   *SupportUser        `json:"assignee"`
 	Author     Author              `json:"author"`
 	Type       string              `json:"type"`
 	Secure     bool                `json:"secure"`
@@ -52,12 +51,6 @@ type Request struct {
 	Archived   bool                `json:"archived"`
 	Status     RequestStatus       `json:"status"`
 	RequestSMS bool                `json:"request_sms"`
-}
-
-// SupportUser represents a PSS support user
-type SupportUser struct {
-	ID   *int   `json:"id"`
-	Name string `json:"name"`
 }
 
 // Author represents a PSS request author

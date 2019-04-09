@@ -501,7 +501,7 @@ func (s *Service) getDomainWAFRuleSetsPaginatedResponseBody(domainName string, p
 		return body, fmt.Errorf("invalid domain name")
 	}
 
-	response, err := s.connection.Get(fmt.Sprintf("/ddosx/v1/domains/%s/waf/rulesets", domainName), connection.APIRequestParameters{})
+	response, err := s.connection.Get(fmt.Sprintf("/ddosx/v1/domains/%s/waf/rulesets", domainName), parameters)
 	if err != nil {
 		return body, err
 	}
@@ -514,13 +514,13 @@ func (s *Service) getDomainWAFRuleSetsPaginatedResponseBody(domainName string, p
 }
 
 // GetDomainWAFRuleSet retrieves a waf advanced rule set for a domain
-func (s *Service) GetDomainWAFRuleSet(domainName string, ruleSetID string, parameters connection.APIRequestParameters) (WAFRuleSet, error) {
-	body, err := s.getDomainWAFRuleSetResponseBody(domainName, ruleSetID, parameters)
+func (s *Service) GetDomainWAFRuleSet(domainName string, ruleSetID string) (WAFRuleSet, error) {
+	body, err := s.getDomainWAFRuleSetResponseBody(domainName, ruleSetID)
 
 	return body.Data, err
 }
 
-func (s *Service) getDomainWAFRuleSetResponseBody(domainName string, ruleSetID string, parameters connection.APIRequestParameters) (*GetWAFRuleSetResponseBody, error) {
+func (s *Service) getDomainWAFRuleSetResponseBody(domainName string, ruleSetID string) (*GetWAFRuleSetResponseBody, error) {
 	body := &GetWAFRuleSetResponseBody{}
 
 	if domainName == "" {
@@ -608,7 +608,7 @@ func (s *Service) getDomainWAFRulesPaginatedResponseBody(domainName string, para
 		return body, fmt.Errorf("invalid domain name")
 	}
 
-	response, err := s.connection.Get(fmt.Sprintf("/ddosx/v1/domains/%s/waf/rules", domainName), connection.APIRequestParameters{})
+	response, err := s.connection.Get(fmt.Sprintf("/ddosx/v1/domains/%s/waf/rules", domainName), parameters)
 	if err != nil {
 		return body, err
 	}
@@ -741,7 +741,7 @@ func (s *Service) getDomainWAFAdvancedRulesPaginatedResponseBody(domainName stri
 		return body, fmt.Errorf("invalid domain name")
 	}
 
-	response, err := s.connection.Get(fmt.Sprintf("/ddosx/v1/domains/%s/waf/advanced-rules", domainName), connection.APIRequestParameters{})
+	response, err := s.connection.Get(fmt.Sprintf("/ddosx/v1/domains/%s/waf/advanced-rules", domainName), parameters)
 	if err != nil {
 		return body, err
 	}
@@ -874,7 +874,7 @@ func (s *Service) getDomainACLGeoIPRulesPaginatedResponseBody(domainName string,
 		return body, fmt.Errorf("invalid domain name")
 	}
 
-	response, err := s.connection.Get(fmt.Sprintf("/ddosx/v1/domains/%s/acls/geo-ips", domainName), connection.APIRequestParameters{})
+	response, err := s.connection.Get(fmt.Sprintf("/ddosx/v1/domains/%s/acls/geo-ips", domainName), parameters)
 	if err != nil {
 		return body, err
 	}
@@ -1059,7 +1059,7 @@ func (s *Service) getDomainACLIPRulesPaginatedResponseBody(domainName string, pa
 		return body, fmt.Errorf("invalid domain name")
 	}
 
-	response, err := s.connection.Get(fmt.Sprintf("/ddosx/v1/domains/%s/acls/ips", domainName), connection.APIRequestParameters{})
+	response, err := s.connection.Get(fmt.Sprintf("/ddosx/v1/domains/%s/acls/ips", domainName), parameters)
 	if err != nil {
 		return body, err
 	}
@@ -1205,4 +1205,270 @@ func (s *Service) downloadDomainVerificationFileResponse(domainName string) (*co
 	}
 
 	return response, response.ValidateStatusCode([]int{200}, body)
+}
+
+// AddDomainCDNConfiguration adds CDN configuration to a domain
+func (s *Service) AddDomainCDNConfiguration(domainName string) error {
+	_, err := s.addDomainCDNConfigurationResponseBody(domainName)
+
+	return err
+}
+
+func (s *Service) addDomainCDNConfigurationResponseBody(domainName string) (*connection.APIResponseBody, error) {
+	body := &connection.APIResponseBody{}
+
+	if domainName == "" {
+		return body, fmt.Errorf("invalid domain name")
+	}
+
+	response, err := s.connection.Post(fmt.Sprintf("/ddosx/v1/domains/%s/cdn", domainName), nil)
+	if err != nil {
+		return body, err
+	}
+
+	if response.StatusCode == 404 {
+		return body, &DomainNotFoundError{Name: domainName}
+	}
+
+	return body, response.HandleResponse([]int{201}, body)
+}
+
+// DeleteDomainCDNConfiguration removes CDN configuration from a domain
+func (s *Service) DeleteDomainCDNConfiguration(domainName string) error {
+	_, err := s.deleteDomainCDNConfigurationResponseBody(domainName)
+
+	return err
+}
+
+func (s *Service) deleteDomainCDNConfigurationResponseBody(domainName string) (*connection.APIResponseBody, error) {
+	body := &connection.APIResponseBody{}
+
+	if domainName == "" {
+		return body, fmt.Errorf("invalid domain name")
+	}
+
+	response, err := s.connection.Delete(fmt.Sprintf("/ddosx/v1/domains/%s/cdn", domainName), nil)
+	if err != nil {
+		return body, err
+	}
+
+	if response.StatusCode == 404 {
+		return body, &DomainCDNConfigurationNotFoundError{DomainName: domainName}
+	}
+
+	return body, response.HandleResponse([]int{204}, body)
+}
+
+// CreateDomainCDNRule creates a CDN rule
+func (s *Service) CreateDomainCDNRule(domainName string, req CreateCDNRuleRequest) (string, error) {
+	body, err := s.createDomainCDNRuleResponseBody(domainName, req)
+
+	return body.Data.ID, err
+}
+
+func (s *Service) createDomainCDNRuleResponseBody(domainName string, req CreateCDNRuleRequest) (*GetCDNRuleResponseBody, error) {
+	body := &GetCDNRuleResponseBody{}
+
+	if domainName == "" {
+		return body, fmt.Errorf("invalid domain name")
+	}
+
+	response, err := s.connection.Post(fmt.Sprintf("/ddosx/v1/domains/%s/cdn/rules", domainName), &req)
+	if err != nil {
+		return body, err
+	}
+
+	if response.StatusCode == 404 {
+		return body, &DomainCDNConfigurationNotFoundError{DomainName: domainName}
+	}
+
+	return body, response.HandleResponse([]int{201}, body)
+}
+
+// GetDomainCDNRules retrieves a list of IP ACLs for a domain
+func (s *Service) GetDomainCDNRules(domainName string, parameters connection.APIRequestParameters) ([]CDNRule, error) {
+	r := connection.RequestAll{}
+
+	var rules []CDNRule
+	r.GetNext = func(parameters connection.APIRequestParameters) (connection.ResponseBody, error) {
+		response, err := s.getDomainCDNRulesPaginatedResponseBody(domainName, parameters)
+		if err != nil {
+			return nil, err
+		}
+
+		for _, rule := range response.Data {
+			rules = append(rules, rule)
+		}
+
+		return response, nil
+	}
+
+	err := r.Invoke(parameters)
+
+	return rules, err
+}
+
+// GetDomainCDNRulesPaginated retrieves paginated list of waf advanced rules for a domain
+func (s *Service) GetDomainCDNRulesPaginated(domainName string, parameters connection.APIRequestParameters) ([]CDNRule, error) {
+	body, err := s.getDomainCDNRulesPaginatedResponseBody(domainName, parameters)
+
+	return body.Data, err
+}
+
+func (s *Service) getDomainCDNRulesPaginatedResponseBody(domainName string, parameters connection.APIRequestParameters) (*GetCDNRulesResponseBody, error) {
+	body := &GetCDNRulesResponseBody{}
+
+	if domainName == "" {
+		return body, fmt.Errorf("invalid domain name")
+	}
+
+	response, err := s.connection.Get(fmt.Sprintf("/ddosx/v1/domains/%s/cdn/rules", domainName), parameters)
+	if err != nil {
+		return body, err
+	}
+
+	if response.StatusCode == 404 {
+		return body, &DomainCDNConfigurationNotFoundError{DomainName: domainName}
+	}
+
+	return body, response.HandleResponse([]int{200}, body)
+}
+
+// GetDomainCDNRule retrieves a CDN rule
+func (s *Service) GetDomainCDNRule(domainName string, ruleID string) (CDNRule, error) {
+	body, err := s.getDomainCDNRuleResponseBody(domainName, ruleID)
+
+	return body.Data, err
+}
+
+func (s *Service) getDomainCDNRuleResponseBody(domainName string, ruleID string) (*GetCDNRuleResponseBody, error) {
+	body := &GetCDNRuleResponseBody{}
+
+	if domainName == "" {
+		return body, fmt.Errorf("invalid domain name")
+	}
+	if ruleID == "" {
+		return body, fmt.Errorf("invalid rule ID")
+	}
+
+	response, err := s.connection.Get(fmt.Sprintf("/ddosx/v1/domains/%s/cdn/rules/%s", domainName, ruleID), connection.APIRequestParameters{})
+	if err != nil {
+		return body, err
+	}
+
+	if response.StatusCode == 404 {
+		return body, &CDNRuleNotFoundError{ID: ruleID}
+	}
+
+	return body, response.HandleResponse([]int{200}, body)
+}
+
+// PatchDomainCDNRule patches a CDN rule
+func (s *Service) PatchDomainCDNRule(domainName string, ruleID string, req PatchCDNRuleRequest) error {
+	_, err := s.patchDomainCDNRuleResponseBody(domainName, ruleID, req)
+
+	return err
+}
+
+func (s *Service) patchDomainCDNRuleResponseBody(domainName string, ruleID string, req PatchCDNRuleRequest) (*connection.APIResponseBody, error) {
+	body := &connection.APIResponseBody{}
+
+	if domainName == "" {
+		return body, fmt.Errorf("invalid domain name")
+	}
+	if ruleID == "" {
+		return body, fmt.Errorf("invalid rule ID")
+	}
+
+	response, err := s.connection.Patch(fmt.Sprintf("/ddosx/v1/domains/%s/cdn/rules/%s", domainName, ruleID), &req)
+	if err != nil {
+		return body, err
+	}
+
+	if response.StatusCode == 404 {
+		return body, &CDNRuleNotFoundError{ID: ruleID}
+	}
+
+	return body, response.HandleResponse([]int{200}, body)
+}
+
+// DeleteDomainCDNRule removes a CDN rule
+func (s *Service) DeleteDomainCDNRule(domainName string, ruleID string) error {
+	_, err := s.deleteDomainCDNRuleResponseBody(domainName, ruleID)
+
+	return err
+}
+
+func (s *Service) deleteDomainCDNRuleResponseBody(domainName string, ruleID string) (*connection.APIResponseBody, error) {
+	body := &connection.APIResponseBody{}
+
+	if domainName == "" {
+		return body, fmt.Errorf("invalid domain name")
+	}
+	if ruleID == "" {
+		return body, fmt.Errorf("invalid rule ID")
+	}
+
+	response, err := s.connection.Delete(fmt.Sprintf("/ddosx/v1/domains/%s/cdn/rules/%s", domainName, ruleID), nil)
+	if err != nil {
+		return body, err
+	}
+
+	if response.StatusCode == 404 {
+		return body, &CDNRuleNotFoundError{ID: ruleID}
+	}
+
+	return body, response.HandleResponse([]int{204}, body)
+}
+
+// AddDomainHSTSConfiguration adds HSTS headers to a domain
+func (s *Service) AddDomainHSTSConfiguration(domainName string) error {
+	_, err := s.addDomainHSTSConfigurationResponseBody(domainName)
+
+	return err
+}
+
+func (s *Service) addDomainHSTSConfigurationResponseBody(domainName string) (*connection.APIResponseBody, error) {
+	body := &connection.APIResponseBody{}
+
+	if domainName == "" {
+		return body, fmt.Errorf("invalid domain name")
+	}
+
+	response, err := s.connection.Post(fmt.Sprintf("/ddosx/v1/domains/%s/hsts", domainName), nil)
+	if err != nil {
+		return body, err
+	}
+
+	if response.StatusCode == 404 {
+		return body, &DomainNotFoundError{Name: domainName}
+	}
+
+	return body, response.HandleResponse([]int{200}, body)
+}
+
+// DeleteDomainHSTSConfiguration removes HSTS headers to a domain
+func (s *Service) DeleteDomainHSTSConfiguration(domainName string) error {
+	_, err := s.deleteDomainHSTSConfigurationResponseBody(domainName)
+
+	return err
+}
+
+func (s *Service) deleteDomainHSTSConfigurationResponseBody(domainName string) (*connection.APIResponseBody, error) {
+	body := &connection.APIResponseBody{}
+
+	if domainName == "" {
+		return body, fmt.Errorf("invalid domain name")
+	}
+
+	response, err := s.connection.Delete(fmt.Sprintf("/ddosx/v1/domains/%s/hsts", domainName), nil)
+	if err != nil {
+		return body, err
+	}
+
+	if response.StatusCode == 404 {
+		return body, &HSTSConfigurationNotFoundError{DomainName: domainName}
+	}
+
+	return body, response.HandleResponse([]int{200}, body)
 }
