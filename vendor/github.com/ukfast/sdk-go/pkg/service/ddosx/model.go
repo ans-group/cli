@@ -5,6 +5,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/ukfast/sdk-go/internal/pkg/elapsed"
 	"github.com/ukfast/sdk-go/pkg/connection"
 )
 
@@ -424,15 +425,23 @@ type CDNRuleCacheControlDuration struct {
 	Minutes int `json:"minutes"`
 }
 
+// NewCDNRuleCacheControlDurationFromDuration returns a new instance of CDNRuleCacheControlDuration, initialized
+// from provided duration d
+func NewCDNRuleCacheControlDurationFromDuration(d time.Duration) *CDNRuleCacheControlDuration {
+	years, months, days, hours, minutes, _, _ := elapsed.ParseDuration(d)
+
+	return &CDNRuleCacheControlDuration{
+		Years:   years,
+		Months:  months,
+		Days:    days,
+		Hours:   hours,
+		Minutes: minutes,
+	}
+}
+
 // Duration returns the cache control duration as time.Duration
 func (d *CDNRuleCacheControlDuration) Duration() time.Duration {
-	now := time.Now().UTC()
-	t := time.Now().UTC()
-	t = t.AddDate(d.Years, d.Months, d.Days)
-	t = t.Add(time.Duration(d.Hours) * time.Hour)
-	t = t.Add(time.Duration(d.Minutes) * time.Minute)
-
-	return t.Sub(now)
+	return elapsed.NewDuration(d.Years, d.Months, d.Days, d.Hours, d.Minutes, 0, 0)
 }
 
 func (d *CDNRuleCacheControlDuration) String() string {

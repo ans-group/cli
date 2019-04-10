@@ -53,7 +53,7 @@ github.com/spf13/pflag
 github.com/spf13/viper
 # github.com/stretchr/testify v1.3.0
 github.com/stretchr/testify/assert
-# github.com/ukfast/sdk-go v1.0.19
+# github.com/ukfast/sdk-go v1.0.21
 github.com/ukfast/sdk-go/pkg/client
 github.com/ukfast/sdk-go/pkg/connection
 github.com/ukfast/sdk-go/pkg/logging
@@ -65,6 +65,7 @@ github.com/ukfast/sdk-go/pkg/service/pss
 github.com/ukfast/sdk-go/pkg/service/registrar
 github.com/ukfast/sdk-go/pkg/service/safedns
 github.com/ukfast/sdk-go/pkg/service/ssl
+github.com/ukfast/sdk-go/internal/pkg/elapsed
 # golang.org/x/sys v0.0.0-20181205085412-a5c9d58dba9a
 golang.org/x/sys/unix
 # golang.org/x/text v0.3.0
