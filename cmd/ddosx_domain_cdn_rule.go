@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
+	"github.com/ukfast/cli/internal/pkg/clierrors"
 	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/ddosx"
 )
@@ -119,7 +120,7 @@ func ddosxDomainCDNRuleCreateCmd() *cobra.Command {
 	cmd.MarkFlagRequired("uri")
 	cmd.Flags().String("cache-control", "", "Cache control configuration for rule")
 	cmd.MarkFlagRequired("cache-control")
-	cmd.Flags().String("cache-control-duration", "", "Cache control duration for rule")
+	cmd.Flags().String("cache-control-duration", "", "Cache control duration for rule (applicable with 'Custom' cache control), e.g. 4h")
 	cmd.Flags().StringSlice("mime-type", []string{}, "Mime type for rule, can be repeated")
 	cmd.MarkFlagRequired("mime-type")
 	cmd.Flags().String("type", "", "Type of rule")
@@ -132,14 +133,14 @@ func ddosxDomainCDNRuleCreate(service ddosx.DDoSXService, cmd *cobra.Command, ar
 	cacheControl, _ := cmd.Flags().GetString("cache-control")
 	parsedCacheControl, err := ddosx.ParseCDNRuleCacheControl(cacheControl)
 	if err != nil {
-		output.Fatal(err.Error())
+		output.Fatal(clierrors.InvalidFlagValueString("cache-control", cacheControl, err))
 		return
 	}
 
 	ruleType, _ := cmd.Flags().GetString("type")
 	parsedRuleType, err := ddosx.ParseCDNRuleType(ruleType)
 	if err != nil {
-		output.Fatal(err.Error())
+		output.Fatal(clierrors.InvalidFlagValueString("type", ruleType, err))
 		return
 	}
 
@@ -153,7 +154,7 @@ func ddosxDomainCDNRuleCreate(service ddosx.DDoSXService, cmd *cobra.Command, ar
 		cacheControlDuration, _ := cmd.Flags().GetString("cache-control-duration")
 		parsedCacheControlDuration, err := time.ParseDuration(cacheControlDuration)
 		if err != nil {
-			output.Fatal(err.Error())
+			output.Fatal(clierrors.InvalidFlagValueString("cache-control-duration", cacheControlDuration, err))
 			return
 		}
 

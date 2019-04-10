@@ -176,6 +176,54 @@ func Test_ddosxDomainCDNRuleCreate(t *testing.T) {
 		ddosxDomainCDNRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
 	})
 
+	t.Run("ParseCDNRuleCacheControlError_OutputsFatal", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockDDoSXService(mockCtrl)
+		cmd := ddosxDomainCDNRuleCreateCmd()
+		cmd.Flags().Set("cache-control", "invalid")
+
+		test_output.AssertFatalOutputFunc(t, func() {
+			ddosxDomainCDNRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
+		}, func(stdErr string) {
+			assert.Contains(t, stdErr, "Invalid value 'invalid' provided for 'cache-control'")
+		})
+	})
+
+	t.Run("ParseCDNRuleTypeError_OutputsFatal", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockDDoSXService(mockCtrl)
+		cmd := ddosxDomainCDNRuleCreateCmd()
+		cmd.Flags().Set("cache-control", "custom")
+		cmd.Flags().Set("type", "invalid")
+
+		test_output.AssertFatalOutputFunc(t, func() {
+			ddosxDomainCDNRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
+		}, func(stdErr string) {
+			assert.Contains(t, stdErr, "Invalid value 'invalid' provided for 'type'")
+		})
+	})
+
+	t.Run("ParseDurationError_OutputsFatal", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockDDoSXService(mockCtrl)
+		cmd := ddosxDomainCDNRuleCreateCmd()
+		cmd.Flags().Set("cache-control", "custom")
+		cmd.Flags().Set("type", "per-uri")
+		cmd.Flags().Set("cache-control-duration", "invalid")
+
+		test_output.AssertFatalOutputFunc(t, func() {
+			ddosxDomainCDNRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
+		}, func(stdErr string) {
+			assert.Contains(t, stdErr, "Invalid value 'invalid' provided for 'cache-control-duration'")
+		})
+	})
+
 	t.Run("CreateDomainCDNRuleError_OutputsFatal", func(t *testing.T) {
 
 		mockCtrl := gomock.NewController(t)
