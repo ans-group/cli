@@ -107,7 +107,6 @@ func Table(includeColumns []string, rows []*OrderedFields) error {
 	}
 
 	table := tablewriter.NewWriter(os.Stdout)
-	table.SetAutoWrapText(false)
 
 	// columns will hold our header values, and will be used to determine required fields
 	// when iterating over rows to add data to table

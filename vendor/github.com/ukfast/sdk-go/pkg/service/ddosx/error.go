@@ -101,3 +101,30 @@ type WAFAdvancedRuleNotFoundError struct {
 func (e *WAFAdvancedRuleNotFoundError) Error() string {
 	return fmt.Sprintf("WAF rule not found with id [%s]", e.ID)
 }
+
+// DomainCDNConfigurationNotFoundError indicates CDN configuration was not found for domain
+type DomainCDNConfigurationNotFoundError struct {
+	DomainName string
+}
+
+func (e *DomainCDNConfigurationNotFoundError) Error() string {
+	return fmt.Sprintf("CDN configuration not found for domain [%s]", e.DomainName)
+}
+
+// CDNRuleNotFoundError indicates a CDN rule was not found
+type CDNRuleNotFoundError struct {
+	ID string
+}
+
+func (e *CDNRuleNotFoundError) Error() string {
+	return fmt.Sprintf("CDN rule not found with id [%s]", e.ID)
+}
+
+// HSTSConfigurationNotFoundError indicates HSTS configuration was not found for domain
+type HSTSConfigurationNotFoundError struct {
+	DomainName string
+}
+
+func (e *HSTSConfigurationNotFoundError) Error() string {
+	return fmt.Sprintf("HSTS configuration not found for domain [%s]", e.DomainName)
+}

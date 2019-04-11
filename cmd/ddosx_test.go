@@ -629,3 +629,34 @@ func TestOutputDDoSXACLGeoIPRulesModes_GetFieldData(t *testing.T) {
 		assert.Equal(t, "Blacklist", data[1].Get("mode").Value)
 	})
 }
+
+func TestOutputDDoSXCDNRules_GetData_ExpectedData(t *testing.T) {
+	o := OutputDDoSXCDNRules{
+		CDNRules: []ddosx.CDNRule{
+			ddosx.CDNRule{
+				ID: "00000000-0000-0000-0000-000000000000",
+			},
+		},
+	}
+
+	data := o.GetData()
+
+	assert.IsType(t, []ddosx.CDNRule{}, data)
+	assert.Equal(t, "00000000-0000-0000-0000-000000000000", data.([]ddosx.CDNRule)[0].ID)
+}
+
+func TestOutputDDoSXCDNRules_GetFieldData_ExpectedFieldData(t *testing.T) {
+	o := OutputDDoSXCDNRules{
+		CDNRules: []ddosx.CDNRule{
+			ddosx.CDNRule{
+				ID: "00000000-0000-0000-0000-000000000000",
+			},
+		},
+	}
+
+	data, err := o.GetFieldData()
+
+	assert.Nil(t, err)
+	assert.True(t, data[0].Exists("id"))
+	assert.Equal(t, "00000000-0000-0000-0000-000000000000", data[0].Get("id").Value)
+}

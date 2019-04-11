@@ -508,7 +508,7 @@ func (o *OutputDDoSXDomainProperties) getOrderedFields(property ddosx.DomainProp
 	fields := output.NewOrderedFields()
 
 	fields.Set("id", output.NewFieldValue(property.ID, true))
-	fields.Set("name", output.NewFieldValue(property.Name, true))
+	fields.Set("name", output.NewFieldValue(property.Name.String(), true))
 	fields.Set("value", output.NewFieldValue(fmt.Sprintf("%v", property.Value), true))
 
 	return fields
@@ -550,6 +550,45 @@ func (o *OutputDDoSXDomainVerificationFiles) getOrderedFields(file OutputDDoSXDo
 
 	fields.Set("name", output.NewFieldValue(file.Name, true))
 	fields.Set("content", output.NewFieldValue(file.Content, true))
+
+	return fields
+}
+
+// OutputDDoSXCDNRules implements OutputDataProvider for outputting an array of CDNRules
+type OutputDDoSXCDNRules struct {
+	CDNRules []ddosx.CDNRule
+}
+
+func outputDDoSXCDNRules(rules []ddosx.CDNRule) {
+	err := Output(&OutputDDoSXCDNRules{CDNRules: rules})
+	if err != nil {
+		output.Fatalf("Failed to output domain ACL GeoIP rules: %s", err)
+	}
+}
+
+func (o *OutputDDoSXCDNRules) GetData() interface{} {
+	return o.CDNRules
+}
+
+func (o *OutputDDoSXCDNRules) GetFieldData() ([]*output.OrderedFields, error) {
+	var data []*output.OrderedFields
+	for _, rule := range o.CDNRules {
+		fields := o.getOrderedFields(rule)
+		data = append(data, fields)
+	}
+
+	return data, nil
+}
+
+func (o *OutputDDoSXCDNRules) getOrderedFields(rule ddosx.CDNRule) *output.OrderedFields {
+	fields := output.NewOrderedFields()
+
+	fields.Set("id", output.NewFieldValue(rule.ID, true))
+	fields.Set("uri", output.NewFieldValue(rule.URI, true))
+	fields.Set("cache_control", output.NewFieldValue(rule.CacheControl.String(), true))
+	fields.Set("cache_control_duration", output.NewFieldValue(rule.CacheControlDuration.String(), true))
+	fields.Set("mime_types", output.NewFieldValue(strings.Join(rule.MimeTypes, ", "), true))
+	fields.Set("type", output.NewFieldValue(rule.Type.String(), true))
 
 	return fields
 }

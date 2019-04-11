@@ -35,6 +35,34 @@ func (m *MockDDoSXService) EXPECT() *MockDDoSXServiceMockRecorder {
 	return m.recorder
 }
 
+// AddDomainCDNConfiguration mocks base method
+func (m *MockDDoSXService) AddDomainCDNConfiguration(arg0 string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "AddDomainCDNConfiguration", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// AddDomainCDNConfiguration indicates an expected call of AddDomainCDNConfiguration
+func (mr *MockDDoSXServiceMockRecorder) AddDomainCDNConfiguration(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddDomainCDNConfiguration", reflect.TypeOf((*MockDDoSXService)(nil).AddDomainCDNConfiguration), arg0)
+}
+
+// AddDomainHSTSConfiguration mocks base method
+func (m *MockDDoSXService) AddDomainHSTSConfiguration(arg0 string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "AddDomainHSTSConfiguration", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// AddDomainHSTSConfiguration indicates an expected call of AddDomainHSTSConfiguration
+func (mr *MockDDoSXServiceMockRecorder) AddDomainHSTSConfiguration(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddDomainHSTSConfiguration", reflect.TypeOf((*MockDDoSXService)(nil).AddDomainHSTSConfiguration), arg0)
+}
+
 // CreateDomain mocks base method
 func (m *MockDDoSXService) CreateDomain(arg0 ddosx.CreateDomainRequest) error {
 	m.ctrl.T.Helper()
@@ -77,6 +105,21 @@ func (m *MockDDoSXService) CreateDomainACLIPRule(arg0 string, arg1 ddosx.CreateA
 func (mr *MockDDoSXServiceMockRecorder) CreateDomainACLIPRule(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateDomainACLIPRule", reflect.TypeOf((*MockDDoSXService)(nil).CreateDomainACLIPRule), arg0, arg1)
+}
+
+// CreateDomainCDNRule mocks base method
+func (m *MockDDoSXService) CreateDomainCDNRule(arg0 string, arg1 ddosx.CreateCDNRuleRequest) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateDomainCDNRule", arg0, arg1)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateDomainCDNRule indicates an expected call of CreateDomainCDNRule
+func (mr *MockDDoSXServiceMockRecorder) CreateDomainCDNRule(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateDomainCDNRule", reflect.TypeOf((*MockDDoSXService)(nil).CreateDomainCDNRule), arg0, arg1)
 }
 
 // CreateDomainRecord mocks base method
@@ -179,6 +222,48 @@ func (m *MockDDoSXService) DeleteDomainACLIPRule(arg0, arg1 string) error {
 func (mr *MockDDoSXServiceMockRecorder) DeleteDomainACLIPRule(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteDomainACLIPRule", reflect.TypeOf((*MockDDoSXService)(nil).DeleteDomainACLIPRule), arg0, arg1)
+}
+
+// DeleteDomainCDNConfiguration mocks base method
+func (m *MockDDoSXService) DeleteDomainCDNConfiguration(arg0 string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteDomainCDNConfiguration", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteDomainCDNConfiguration indicates an expected call of DeleteDomainCDNConfiguration
+func (mr *MockDDoSXServiceMockRecorder) DeleteDomainCDNConfiguration(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteDomainCDNConfiguration", reflect.TypeOf((*MockDDoSXService)(nil).DeleteDomainCDNConfiguration), arg0)
+}
+
+// DeleteDomainCDNRule mocks base method
+func (m *MockDDoSXService) DeleteDomainCDNRule(arg0, arg1 string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteDomainCDNRule", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteDomainCDNRule indicates an expected call of DeleteDomainCDNRule
+func (mr *MockDDoSXServiceMockRecorder) DeleteDomainCDNRule(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteDomainCDNRule", reflect.TypeOf((*MockDDoSXService)(nil).DeleteDomainCDNRule), arg0, arg1)
+}
+
+// DeleteDomainHSTSConfiguration mocks base method
+func (m *MockDDoSXService) DeleteDomainHSTSConfiguration(arg0 string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteDomainHSTSConfiguration", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteDomainHSTSConfiguration indicates an expected call of DeleteDomainHSTSConfiguration
+func (mr *MockDDoSXServiceMockRecorder) DeleteDomainHSTSConfiguration(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteDomainHSTSConfiguration", reflect.TypeOf((*MockDDoSXService)(nil).DeleteDomainHSTSConfiguration), arg0)
 }
 
 // DeleteDomainRecord mocks base method
@@ -387,6 +472,51 @@ func (mr *MockDDoSXServiceMockRecorder) GetDomainACLIPRulesPaginated(arg0, arg1 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDomainACLIPRulesPaginated", reflect.TypeOf((*MockDDoSXService)(nil).GetDomainACLIPRulesPaginated), arg0, arg1)
 }
 
+// GetDomainCDNRule mocks base method
+func (m *MockDDoSXService) GetDomainCDNRule(arg0, arg1 string) (ddosx.CDNRule, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetDomainCDNRule", arg0, arg1)
+	ret0, _ := ret[0].(ddosx.CDNRule)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetDomainCDNRule indicates an expected call of GetDomainCDNRule
+func (mr *MockDDoSXServiceMockRecorder) GetDomainCDNRule(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDomainCDNRule", reflect.TypeOf((*MockDDoSXService)(nil).GetDomainCDNRule), arg0, arg1)
+}
+
+// GetDomainCDNRules mocks base method
+func (m *MockDDoSXService) GetDomainCDNRules(arg0 string, arg1 connection.APIRequestParameters) ([]ddosx.CDNRule, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetDomainCDNRules", arg0, arg1)
+	ret0, _ := ret[0].([]ddosx.CDNRule)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetDomainCDNRules indicates an expected call of GetDomainCDNRules
+func (mr *MockDDoSXServiceMockRecorder) GetDomainCDNRules(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDomainCDNRules", reflect.TypeOf((*MockDDoSXService)(nil).GetDomainCDNRules), arg0, arg1)
+}
+
+// GetDomainCDNRulesPaginated mocks base method
+func (m *MockDDoSXService) GetDomainCDNRulesPaginated(arg0 string, arg1 connection.APIRequestParameters) ([]ddosx.CDNRule, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetDomainCDNRulesPaginated", arg0, arg1)
+	ret0, _ := ret[0].([]ddosx.CDNRule)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetDomainCDNRulesPaginated indicates an expected call of GetDomainCDNRulesPaginated
+func (mr *MockDDoSXServiceMockRecorder) GetDomainCDNRulesPaginated(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDomainCDNRulesPaginated", reflect.TypeOf((*MockDDoSXService)(nil).GetDomainCDNRulesPaginated), arg0, arg1)
+}
+
 // GetDomainProperties mocks base method
 func (m *MockDDoSXService) GetDomainProperties(arg0 string, arg1 connection.APIRequestParameters) ([]ddosx.DomainProperty, error) {
 	m.ctrl.T.Helper()
@@ -508,18 +638,18 @@ func (mr *MockDDoSXServiceMockRecorder) GetDomainWAFAdvancedRulesPaginated(arg0,
 }
 
 // GetDomainWAFRuleSet mocks base method
-func (m *MockDDoSXService) GetDomainWAFRuleSet(arg0, arg1 string, arg2 connection.APIRequestParameters) (ddosx.WAFRuleSet, error) {
+func (m *MockDDoSXService) GetDomainWAFRuleSet(arg0, arg1 string) (ddosx.WAFRuleSet, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetDomainWAFRuleSet", arg0, arg1, arg2)
+	ret := m.ctrl.Call(m, "GetDomainWAFRuleSet", arg0, arg1)
 	ret0, _ := ret[0].(ddosx.WAFRuleSet)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetDomainWAFRuleSet indicates an expected call of GetDomainWAFRuleSet
-func (mr *MockDDoSXServiceMockRecorder) GetDomainWAFRuleSet(arg0, arg1, arg2 interface{}) *gomock.Call {
+func (mr *MockDDoSXServiceMockRecorder) GetDomainWAFRuleSet(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDomainWAFRuleSet", reflect.TypeOf((*MockDDoSXService)(nil).GetDomainWAFRuleSet), arg0, arg1, arg2)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDomainWAFRuleSet", reflect.TypeOf((*MockDDoSXService)(nil).GetDomainWAFRuleSet), arg0, arg1)
 }
 
 // GetDomainWAFRuleSets mocks base method
@@ -757,6 +887,20 @@ func (m *MockDDoSXService) PatchDomainACLIPRule(arg0, arg1 string, arg2 ddosx.Pa
 func (mr *MockDDoSXServiceMockRecorder) PatchDomainACLIPRule(arg0, arg1, arg2 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchDomainACLIPRule", reflect.TypeOf((*MockDDoSXService)(nil).PatchDomainACLIPRule), arg0, arg1, arg2)
+}
+
+// PatchDomainCDNRule mocks base method
+func (m *MockDDoSXService) PatchDomainCDNRule(arg0, arg1 string, arg2 ddosx.PatchCDNRuleRequest) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PatchDomainCDNRule", arg0, arg1, arg2)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchDomainCDNRule indicates an expected call of PatchDomainCDNRule
+func (mr *MockDDoSXServiceMockRecorder) PatchDomainCDNRule(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchDomainCDNRule", reflect.TypeOf((*MockDDoSXService)(nil).PatchDomainCDNRule), arg0, arg1, arg2)
 }
 
 // PatchDomainProperty mocks base method
