@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ukfast/sdk-go/internal/pkg/elapsed"
+	"github.com/ukfast/go-durationstring"
 	"github.com/ukfast/sdk-go/pkg/connection"
 )
 
@@ -425,10 +425,27 @@ type CDNRuleCacheControlDuration struct {
 	Minutes int `json:"minutes"`
 }
 
-// NewCDNRuleCacheControlDurationFromDuration returns a new instance of CDNRuleCacheControlDuration, initialized
-// from provided duration d
-func NewCDNRuleCacheControlDurationFromDuration(d time.Duration) *CDNRuleCacheControlDuration {
-	years, months, days, hours, minutes, _, _ := elapsed.ParseDuration(d)
+// Duration returns the cache control duration as time.Duration
+func (d *CDNRuleCacheControlDuration) Duration() time.Duration {
+	day := time.Hour * 24
+	td := time.Duration(d.Years) * day * 365
+	td = td + time.Duration(d.Months)*day*30
+	td = td + time.Duration(d.Days)*day
+	td = td + time.Duration(d.Hours)*time.Hour
+	return td + time.Duration(d.Minutes)*time.Minute
+}
+
+func (d *CDNRuleCacheControlDuration) String() string {
+	return durationstring.String(d.Years, d.Months, d.Days, d.Hours, d.Minutes, 0, 0, 0, 0)
+}
+
+// ParseCDNRuleCacheControlDuration parses string s and returns a pointer to an
+// initialised CDNRuleCacheControlDuration
+func ParseCDNRuleCacheControlDuration(s string) (*CDNRuleCacheControlDuration, error) {
+	years, months, days, hours, minutes, _, _, _, _, err := durationstring.Parse(s)
+	if err != nil {
+		return nil, err
+	}
 
 	return &CDNRuleCacheControlDuration{
 		Years:   years,
@@ -436,14 +453,5 @@ func NewCDNRuleCacheControlDurationFromDuration(d time.Duration) *CDNRuleCacheCo
 		Days:    days,
 		Hours:   hours,
 		Minutes: minutes,
-	}
-}
-
-// Duration returns the cache control duration as time.Duration
-func (d *CDNRuleCacheControlDuration) Duration() time.Duration {
-	return elapsed.NewDuration(d.Years, d.Months, d.Days, d.Hours, d.Minutes, 0, 0)
-}
-
-func (d *CDNRuleCacheControlDuration) String() string {
-	return d.Duration().Round(time.Minute).String()
+	}, nil
 }

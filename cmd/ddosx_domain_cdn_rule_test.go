@@ -298,10 +298,16 @@ func Test_ddosxDomainCDNRuleUpdate(t *testing.T) {
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
 		cmd := ddosxDomainCDNRuleUpdateCmd()
-		cmd.Flags().Set("mime-type", "image/*")
+		cmd.Flags().Set("uri", "test.html")
+		cmd.Flags().Set("cache-control", "custom")
+		cmd.Flags().Set("mime-type", "test/*")
+		cmd.Flags().Set("type", "global")
 
 		expectedRequest := ddosx.PatchCDNRuleRequest{
-			MimeTypes: []string{"image/*"},
+			URI:          "test.html",
+			CacheControl: ddosx.CDNRuleCacheControlCustom,
+			MimeTypes:    []string{"test/*"},
+			Type:         ddosx.CDNRuleTypeGlobal,
 		}
 
 		gomock.InOrder(
@@ -310,6 +316,51 @@ func Test_ddosxDomainCDNRuleUpdate(t *testing.T) {
 		)
 
 		ddosxDomainCDNRuleUpdate(service, cmd, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
+	})
+
+	t.Run("ParseCDNRuleCacheControlError_OutputsFatal", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockDDoSXService(mockCtrl)
+		cmd := ddosxDomainCDNRuleUpdateCmd()
+		cmd.Flags().Set("cache-control", "invalid")
+
+		test_output.AssertFatalOutputFunc(t, func() {
+			ddosxDomainCDNRuleUpdate(service, cmd, []string{"testdomain1.co.uk"})
+		}, func(stdErr string) {
+			assert.Contains(t, stdErr, "Invalid value 'invalid' provided for 'cache-control'")
+		})
+	})
+
+	t.Run("ParseCDNRuleTypeError_OutputsFatal", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockDDoSXService(mockCtrl)
+		cmd := ddosxDomainCDNRuleUpdateCmd()
+		cmd.Flags().Set("type", "invalid")
+
+		test_output.AssertFatalOutputFunc(t, func() {
+			ddosxDomainCDNRuleUpdate(service, cmd, []string{"testdomain1.co.uk"})
+		}, func(stdErr string) {
+			assert.Contains(t, stdErr, "Invalid value 'invalid' provided for 'type'")
+		})
+	})
+
+	t.Run("ParseDurationError_OutputsFatal", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockDDoSXService(mockCtrl)
+		cmd := ddosxDomainCDNRuleUpdateCmd()
+		cmd.Flags().Set("cache-control-duration", "invalid")
+
+		test_output.AssertFatalOutputFunc(t, func() {
+			ddosxDomainCDNRuleUpdate(service, cmd, []string{"testdomain1.co.uk"})
+		}, func(stdErr string) {
+			assert.Contains(t, stdErr, "Invalid value 'invalid' provided for 'cache-control-duration'")
+		})
 	})
 
 	t.Run("PatchDomainCDNRuleError_OutputsError", func(t *testing.T) {
