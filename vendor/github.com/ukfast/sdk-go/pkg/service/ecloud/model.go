@@ -229,7 +229,7 @@ type Appliance struct {
 	Description      string              `json:"description"`
 	DocumentationURI string              `json:"documentation_uri"`
 	Publisher        string              `json:"publisher"`
-	CreateAt         connection.DateTime `json:"create_at"`
+	CreatedAt        connection.DateTime `json:"created_at"`
 }
 
 // ApplianceParameter represents an eCloud appliance parameter

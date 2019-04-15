@@ -176,6 +176,21 @@ func (mr *MockECloudServiceMockRecorder) DeleteVirtualMachineTag(arg0, arg1 inte
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteVirtualMachineTag", reflect.TypeOf((*MockECloudService)(nil).DeleteVirtualMachineTag), arg0, arg1)
 }
 
+// GetAppliance mocks base method
+func (m *MockECloudService) GetAppliance(arg0 string) (ecloud.Appliance, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetAppliance", arg0)
+	ret0, _ := ret[0].(ecloud.Appliance)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAppliance indicates an expected call of GetAppliance
+func (mr *MockECloudServiceMockRecorder) GetAppliance(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAppliance", reflect.TypeOf((*MockECloudService)(nil).GetAppliance), arg0)
+}
+
 // GetApplianceParameters mocks base method
 func (m *MockECloudService) GetApplianceParameters(arg0 string, arg1 connection.APIRequestParameters) ([]ecloud.ApplianceParameter, error) {
 	m.ctrl.T.Helper()

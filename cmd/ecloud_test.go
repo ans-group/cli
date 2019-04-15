@@ -7,53 +7,53 @@ import (
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
-func TestGetCreateTagRequestFromStringFlag(t *testing.T) {
+func TestGetKeyValueFromStringFlag(t *testing.T) {
 	t.Run("Valid_NoError", func(t *testing.T) {
-		tagFlag := "testkey=testvalue"
+		flag := "testkey=testvalue"
 
-		r, err := GetCreateTagRequestFromStringFlag(tagFlag)
+		key, value, err := GetKeyValueFromStringFlag(flag)
 
 		assert.Nil(t, err)
-		assert.Equal(t, "testkey", r.Key)
-		assert.Equal(t, "testvalue", r.Value)
+		assert.Equal(t, "testkey", key)
+		assert.Equal(t, "testvalue", value)
 	})
 
 	t.Run("Empty_Error", func(t *testing.T) {
-		tagFlag := ""
+		flag := ""
 
-		_, err := GetCreateTagRequestFromStringFlag(tagFlag)
+		_, _, err := GetKeyValueFromStringFlag(flag)
 
 		assert.NotNil(t, err)
 	})
 
 	t.Run("OnlyKey_Error", func(t *testing.T) {
-		tagFlag := "testkey"
+		flag := "testkey"
 
-		_, err := GetCreateTagRequestFromStringFlag(tagFlag)
+		_, _, err := GetKeyValueFromStringFlag(flag)
 
 		assert.NotNil(t, err)
 	})
 
 	t.Run("MissingValue_Error", func(t *testing.T) {
-		tagFlag := "testkey="
+		flag := "testkey="
 
-		_, err := GetCreateTagRequestFromStringFlag(tagFlag)
+		_, _, err := GetKeyValueFromStringFlag(flag)
 
 		assert.NotNil(t, err)
 	})
 
 	t.Run("MissingKey_Error", func(t *testing.T) {
-		tagFlag := "=testvalue"
+		flag := "=testvalue"
 
-		_, err := GetCreateTagRequestFromStringFlag(tagFlag)
+		_, _, err := GetKeyValueFromStringFlag(flag)
 
 		assert.NotNil(t, err)
 	})
 
 	t.Run("MultiValue_Error", func(t *testing.T) {
-		tagFlag := "testkey=testvalue1=testvalue2"
+		flag := "testkey=testvalue1=testvalue2"
 
-		_, err := GetCreateTagRequestFromStringFlag(tagFlag)
+		_, _, err := GetKeyValueFromStringFlag(flag)
 
 		assert.NotNil(t, err)
 	})
@@ -102,7 +102,7 @@ func TestGetCreateTagRequestFromStringArrayFlag(t *testing.T) {
 		_, err := GetCreateTagRequestFromStringArrayFlag(tagFlags)
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Invalid tag format, expecting: key=value", err.Error())
+		assert.Equal(t, "Invalid format, expecting: key=value", err.Error())
 	})
 }
 

@@ -25,6 +25,7 @@ func ecloudRootCmd() *cobra.Command {
 	cmd.AddCommand(ecloudFirewallRootCmd())
 	cmd.AddCommand(ecloudPodRootCmd())
 	cmd.AddCommand(ecloudDatastoreRootCmd())
+	cmd.AddCommand(ecloudApplianceRootCmd())
 
 	return cmd
 }
@@ -443,6 +444,45 @@ func (o *OutputECloudPods) getOrderedFields(pod ecloud.Pod) *output.OrderedField
 	fields := output.NewOrderedFields()
 	fields.Set("id", output.NewFieldValue(strconv.Itoa(pod.ID), true))
 	fields.Set("name", output.NewFieldValue(pod.Name, true))
+
+	return fields
+}
+
+// OutputECloudAppliances implements OutputDataProvider for outputting an array of appliances
+type OutputECloudAppliances struct {
+	Appliances []ecloud.Appliance
+}
+
+func outputECloudAppliances(appliances []ecloud.Appliance) {
+	err := Output(&OutputECloudAppliances{Appliances: appliances})
+	if err != nil {
+		output.Fatalf("Failed to output appliances: %s", err)
+	}
+}
+
+func (o *OutputECloudAppliances) GetData() interface{} {
+	return o.Appliances
+}
+
+func (o *OutputECloudAppliances) GetFieldData() ([]*output.OrderedFields, error) {
+	var data []*output.OrderedFields
+	for _, appliance := range o.Appliances {
+		fields := o.getOrderedFields(appliance)
+		data = append(data, fields)
+	}
+
+	return data, nil
+}
+
+func (o *OutputECloudAppliances) getOrderedFields(appliance ecloud.Appliance) *output.OrderedFields {
+	fields := output.NewOrderedFields()
+	fields.Set("id", output.NewFieldValue(appliance.ID, true))
+	fields.Set("name", output.NewFieldValue(appliance.Name, true))
+	fields.Set("logo_uri", output.NewFieldValue(appliance.LogoURI, false))
+	fields.Set("description", output.NewFieldValue(appliance.Description, false))
+	fields.Set("documentation_uri", output.NewFieldValue(appliance.DocumentationURI, false))
+	fields.Set("publisher", output.NewFieldValue(appliance.Publisher, true))
+	fields.Set("created_at", output.NewFieldValue(appliance.CreatedAt.String(), true))
 
 	return fields
 }

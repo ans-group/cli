@@ -90,6 +90,7 @@ type ECloudService interface {
 	// Appliance
 	GetAppliances(parameters connection.APIRequestParameters) ([]Appliance, error)
 	GetAppliancesPaginated(parameters connection.APIRequestParameters) ([]Appliance, error)
+	GetAppliance(applianceID string) (Appliance, error)
 	GetApplianceParameters(applianceID string, reqParameters connection.APIRequestParameters) ([]ApplianceParameter, error)
 	GetApplianceParametersPaginated(applianceID string, parameters connection.APIRequestParameters) ([]ApplianceParameter, error)
 }
