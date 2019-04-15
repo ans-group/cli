@@ -127,7 +127,7 @@ func ecloudVirtualMachineCreateCmd() *cobra.Command {
 	cmd.Flags().String("environment", "", "Environment for virtual machine (Public, Hybrid, Private)")
 	cmd.MarkFlagRequired("environment")
 	cmd.Flags().String("template", "", "Template to use for virtual machine. Must be specified if appliance-id is omitted")
-	cmd.Flags().String("appliance-id", "", "Appliance ID to use for virtual machine. Must be specified if template is omitted")
+	cmd.Flags().String("appliance", "", "Appliance ID to use for virtual machine. Must be specified if template is omitted")
 	cmd.Flags().Int("cpu", 0, "Amount of CPU cores for virtual machine")
 	cmd.MarkFlagRequired("cpu")
 	cmd.Flags().Int("ram", 0, "Amount of RAM (GB) for virtual machine")
@@ -156,7 +156,7 @@ func ecloudVirtualMachineCreateCmd() *cobra.Command {
 func ecloudVirtualMachineCreate(service ecloud.ECloudService, cmd *cobra.Command, args []string) {
 	environment, _ := cmd.Flags().GetString("environment")
 	template, _ := cmd.Flags().GetString("template")
-	applianceID, _ := cmd.Flags().GetString("appliance-id")
+	applianceID, _ := cmd.Flags().GetString("appliance")
 	cpu, _ := cmd.Flags().GetInt("cpu")
 	ram, _ := cmd.Flags().GetInt("ram")
 	hdd, _ := cmd.Flags().GetInt("hdd")

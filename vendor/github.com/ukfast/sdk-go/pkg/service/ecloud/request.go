@@ -35,8 +35,8 @@ type CreateVirtualMachineRequest struct {
 	connection.APIRequestBodyDefaultValidator
 
 	Environment      string `json:"environment" validate:"required"`
-	Template         string `json:"template"`
-	ApplianceID      string `json:"appliance_id"`
+	Template         string `json:"template,omitempty"`
+	ApplianceID      string `json:"appliance_id,omitempty"`
 	TemplatePassword string `json:"template_password,omitempty"`
 	// Count in Cores
 	CPU int `json:"cpu" validate:"required"`
