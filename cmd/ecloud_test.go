@@ -106,6 +106,53 @@ func TestGetCreateTagRequestFromStringArrayFlag(t *testing.T) {
 	})
 }
 
+func TestGetCreateVirtualMachineRequestParameterFromStringArrayFlag(t *testing.T) {
+	t.Run("None_NoError", func(t *testing.T) {
+		var parameterFlags []string
+
+		r, err := GetCreateVirtualMachineRequestParameterFromStringArrayFlag(parameterFlags)
+
+		assert.Nil(t, err)
+		assert.Len(t, r, 0)
+	})
+
+	t.Run("Single", func(t *testing.T) {
+		var parameterFlags []string
+		parameterFlags = append(parameterFlags, "testkey1=testvalue1")
+
+		r, err := GetCreateVirtualMachineRequestParameterFromStringArrayFlag(parameterFlags)
+
+		assert.Nil(t, err)
+		assert.Len(t, r, 1)
+		assert.Equal(t, "testkey1", r[0].Key)
+		assert.Equal(t, "testvalue1", r[0].Value)
+	})
+
+	t.Run("Multiple", func(t *testing.T) {
+		var parameterFlags []string
+		parameterFlags = append(parameterFlags, "testkey1=testvalue1")
+		parameterFlags = append(parameterFlags, "testkey2=testvalue2")
+
+		r, err := GetCreateVirtualMachineRequestParameterFromStringArrayFlag(parameterFlags)
+
+		assert.Nil(t, err)
+		assert.Len(t, r, 2)
+		assert.Equal(t, "testkey1", r[0].Key)
+		assert.Equal(t, "testvalue1", r[0].Value)
+		assert.Equal(t, "testkey2", r[1].Key)
+		assert.Equal(t, "testvalue2", r[1].Value)
+	})
+
+	t.Run("Invalid_ReturnsError", func(t *testing.T) {
+		parameterFlags := []string{"invalid"}
+
+		_, err := GetCreateVirtualMachineRequestParameterFromStringArrayFlag(parameterFlags)
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Invalid format, expecting: key=value", err.Error())
+	})
+}
+
 func TestOutputECloudVirtualMachines_GetData(t *testing.T) {
 	t.Run("Single_ExpectedData", func(t *testing.T) {
 		o := OutputECloudVirtualMachines{
