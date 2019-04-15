@@ -176,6 +176,66 @@ func (mr *MockECloudServiceMockRecorder) DeleteVirtualMachineTag(arg0, arg1 inte
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteVirtualMachineTag", reflect.TypeOf((*MockECloudService)(nil).DeleteVirtualMachineTag), arg0, arg1)
 }
 
+// GetApplianceParameters mocks base method
+func (m *MockECloudService) GetApplianceParameters(arg0 string, arg1 connection.APIRequestParameters) ([]ecloud.ApplianceParameter, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetApplianceParameters", arg0, arg1)
+	ret0, _ := ret[0].([]ecloud.ApplianceParameter)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetApplianceParameters indicates an expected call of GetApplianceParameters
+func (mr *MockECloudServiceMockRecorder) GetApplianceParameters(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetApplianceParameters", reflect.TypeOf((*MockECloudService)(nil).GetApplianceParameters), arg0, arg1)
+}
+
+// GetApplianceParametersPaginated mocks base method
+func (m *MockECloudService) GetApplianceParametersPaginated(arg0 string, arg1 connection.APIRequestParameters) ([]ecloud.ApplianceParameter, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetApplianceParametersPaginated", arg0, arg1)
+	ret0, _ := ret[0].([]ecloud.ApplianceParameter)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetApplianceParametersPaginated indicates an expected call of GetApplianceParametersPaginated
+func (mr *MockECloudServiceMockRecorder) GetApplianceParametersPaginated(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetApplianceParametersPaginated", reflect.TypeOf((*MockECloudService)(nil).GetApplianceParametersPaginated), arg0, arg1)
+}
+
+// GetAppliances mocks base method
+func (m *MockECloudService) GetAppliances(arg0 connection.APIRequestParameters) ([]ecloud.Appliance, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetAppliances", arg0)
+	ret0, _ := ret[0].([]ecloud.Appliance)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAppliances indicates an expected call of GetAppliances
+func (mr *MockECloudServiceMockRecorder) GetAppliances(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAppliances", reflect.TypeOf((*MockECloudService)(nil).GetAppliances), arg0)
+}
+
+// GetAppliancesPaginated mocks base method
+func (m *MockECloudService) GetAppliancesPaginated(arg0 connection.APIRequestParameters) ([]ecloud.Appliance, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetAppliancesPaginated", arg0)
+	ret0, _ := ret[0].([]ecloud.Appliance)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAppliancesPaginated indicates an expected call of GetAppliancesPaginated
+func (mr *MockECloudServiceMockRecorder) GetAppliancesPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAppliancesPaginated", reflect.TypeOf((*MockECloudService)(nil).GetAppliancesPaginated), arg0)
+}
+
 // GetDatastore mocks base method
 func (m *MockECloudService) GetDatastore(arg0 int) (ecloud.Datastore, error) {
 	m.ctrl.T.Helper()

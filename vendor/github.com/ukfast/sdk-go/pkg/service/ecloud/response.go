@@ -148,3 +148,24 @@ type GetPodResponseBody struct {
 
 	Data Pod `json:"data"`
 }
+
+// GetAppliancesResponseBody represents the API response body from the GetAppliances resource
+type GetAppliancesResponseBody struct {
+	connection.APIResponseBody
+
+	Data []Appliance `json:"data"`
+}
+
+// GetApplianceResponseBody represents the API response body from the GetAppliance resource
+type GetApplianceResponseBody struct {
+	connection.APIResponseBody
+
+	Data Appliance `json:"data"`
+}
+
+// GetApplianceParametersResponseBody represents the API response body from the GetApplianceParameters resource
+type GetApplianceParametersResponseBody struct {
+	connection.APIResponseBody
+
+	Data []ApplianceParameter `json:"data"`
+}

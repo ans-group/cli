@@ -245,7 +245,7 @@ type CreateCDNRuleRequest struct {
 
 	URI                  string                       `json:"uri" validate:"required"`
 	CacheControl         CDNRuleCacheControl          `json:"cache_control" validate:"required"`
-	CacheControlDuration *CDNRuleCacheControlDuration `json:"cache_control_duration"`
+	CacheControlDuration *CDNRuleCacheControlDuration `json:"cache_control_duration,omitempty"`
 	MimeTypes            []string                     `json:"mime_types" validate:"required"`
 	Type                 CDNRuleType                  `json:"type" validate:"required"`
 }

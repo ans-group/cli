@@ -82,3 +82,12 @@ type PodNotFoundError struct {
 func (e *PodNotFoundError) Error() string {
 	return fmt.Sprintf("pod not found with ID [%d]", e.ID)
 }
+
+// ApplianceNotFoundError indicates an appliance was not found within eCloud
+type ApplianceNotFoundError struct {
+	ID string
+}
+
+func (e *ApplianceNotFoundError) Error() string {
+	return fmt.Sprintf("appliance not found with ID [%s]", e.ID)
+}

@@ -451,38 +451,50 @@ func (o *OutputECloudPods) getOrderedFields(pod ecloud.Pod) *output.OrderedField
 func GetCreateTagRequestFromStringArrayFlag(tagsFlag []string) ([]ecloud.CreateTagRequest, error) {
 	var tags []ecloud.CreateTagRequest
 	for _, tagFlag := range tagsFlag {
-		tag, err := GetCreateTagRequestFromStringFlag(tagFlag)
+		key, value, err := GetKeyValueFromStringFlag(tagFlag)
 		if err != nil {
 			return tags, err
 		}
 
-		tags = append(tags, tag)
+		tags = append(tags, ecloud.CreateTagRequest{Key: key, Value: value})
 	}
 
 	return tags, nil
 }
 
-// GetCreateTagRequestFromStringFlag returns a CreateTagRequest struct from given tag string flag
-func GetCreateTagRequestFromStringFlag(tagFlag string) (ecloud.CreateTagRequest, error) {
-	if tagFlag == "" {
-		return ecloud.CreateTagRequest{}, errors.New("Missing tag key/value")
+// GetCreateVirtualMachineRequestParameterFromStringArrayFlag returns an array of CreateVirtualMachineRequestParameter structs from given string array flag
+func GetCreateVirtualMachineRequestParameterFromStringArrayFlag(parametersFlag []string) ([]ecloud.CreateVirtualMachineRequestParameter, error) {
+	var parameters []ecloud.CreateVirtualMachineRequestParameter
+	for _, parameterFlag := range parametersFlag {
+		key, value, err := GetKeyValueFromStringFlag(parameterFlag)
+		if err != nil {
+			return parameters, err
+		}
+
+		parameters = append(parameters, ecloud.CreateVirtualMachineRequestParameter{Key: key, Value: value})
 	}
 
-	tagParts := strings.Split(tagFlag, "=")
-	if len(tagParts) < 2 || len(tagParts) > 2 {
-		return ecloud.CreateTagRequest{}, errors.New("Invalid tag format, expecting: key=value")
-	}
-	if tagParts[0] == "" {
-		return ecloud.CreateTagRequest{}, errors.New("Missing tag key")
-	}
-	if tagParts[1] == "" {
-		return ecloud.CreateTagRequest{}, errors.New("Missing tag value")
+	return parameters, nil
+}
+
+// GetKeyValueFromStringFlag returns a string map from given string flag. Expects format 'key=value'
+func GetKeyValueFromStringFlag(flag string) (key, value string, err error) {
+	if flag == "" {
+		return key, value, errors.New("Missing key/value")
 	}
 
-	return ecloud.CreateTagRequest{
-		Key:   tagParts[0],
-		Value: tagParts[1],
-	}, nil
+	parts := strings.Split(flag, "=")
+	if len(parts) < 2 || len(parts) > 2 {
+		return key, value, errors.New("Invalid format, expecting: key=value")
+	}
+	if parts[0] == "" {
+		return key, value, errors.New("Missing key")
+	}
+	if parts[1] == "" {
+		return key, value, errors.New("Missing value")
+	}
+
+	return parts[0], parts[1], nil
 }
 
 // SolutionTemplateExistsWaitFunc returns WaitFunc for waiting for a template to exist
