@@ -234,6 +234,11 @@ type Appliance struct {
 
 // ApplianceParameter represents an eCloud appliance parameter
 type ApplianceParameter struct {
-	Key   string `json:"key"`
-	Value string `json:"value"`
+	ID             string `json:"id"`
+	Name           string `json:"name"`
+	Key            string `json:"key"`
+	Type           string `json:"type"`
+	Description    string `json:"description"`
+	Required       bool   `json:"required"`
+	ValidationRule string `json:"validation_rule"`
 }

@@ -19,7 +19,7 @@ func ecloudApplianceRootCmd() *cobra.Command {
 	cmd.AddCommand(ecloudApplianceShowCmd())
 
 	// Child root commands
-	// cmd.AddCommand(ecloudApplianceTemplateRootCmd())
+	cmd.AddCommand(ecloudApplianceParameterRootCmd())
 
 	return cmd
 }

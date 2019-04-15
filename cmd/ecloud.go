@@ -487,6 +487,45 @@ func (o *OutputECloudAppliances) getOrderedFields(appliance ecloud.Appliance) *o
 	return fields
 }
 
+// OutputECloudApplianceParameters implements OutputDataProvider for outputting an array of appliance parameters
+type OutputECloudApplianceParameters struct {
+	ApplianceParameters []ecloud.ApplianceParameter
+}
+
+func outputECloudApplianceParameters(parameters []ecloud.ApplianceParameter) {
+	err := Output(&OutputECloudApplianceParameters{ApplianceParameters: parameters})
+	if err != nil {
+		output.Fatalf("Failed to output appliance parameters: %s", err)
+	}
+}
+
+func (o *OutputECloudApplianceParameters) GetData() interface{} {
+	return o.ApplianceParameters
+}
+
+func (o *OutputECloudApplianceParameters) GetFieldData() ([]*output.OrderedFields, error) {
+	var data []*output.OrderedFields
+	for _, parameter := range o.ApplianceParameters {
+		fields := o.getOrderedFields(parameter)
+		data = append(data, fields)
+	}
+
+	return data, nil
+}
+
+func (o *OutputECloudApplianceParameters) getOrderedFields(parameter ecloud.ApplianceParameter) *output.OrderedFields {
+	fields := output.NewOrderedFields()
+	fields.Set("id", output.NewFieldValue(parameter.ID, true))
+	fields.Set("name", output.NewFieldValue(parameter.Name, true))
+	fields.Set("key", output.NewFieldValue(parameter.Key, true))
+	fields.Set("type", output.NewFieldValue(parameter.Type, true))
+	fields.Set("description", output.NewFieldValue(parameter.Description, true))
+	fields.Set("required", output.NewFieldValue(strconv.FormatBool(parameter.Required), true))
+	fields.Set("validation_rule", output.NewFieldValue(parameter.ValidationRule, false))
+
+	return fields
+}
+
 // GetCreateTagRequestFromStringArrayFlag returns an array of CreateTagRequest structs from given tag string array flag
 func GetCreateTagRequestFromStringArrayFlag(tagsFlag []string) ([]ecloud.CreateTagRequest, error) {
 	var tags []ecloud.CreateTagRequest
