@@ -126,8 +126,8 @@ func ecloudVirtualMachineCreateCmd() *cobra.Command {
 	// Setup flags
 	cmd.Flags().String("environment", "", "Environment for virtual machine (Public, Hybrid, Private)")
 	cmd.MarkFlagRequired("environment")
-	cmd.Flags().String("template", "", "Template to use for virtual machine")
-	cmd.MarkFlagRequired("template")
+	cmd.Flags().String("template", "", "Template to use for virtual machine. Must be specified if appliance-id is omitted")
+	cmd.Flags().String("appliance", "", "Appliance ID to use for virtual machine. Must be specified if template is omitted")
 	cmd.Flags().Int("cpu", 0, "Amount of CPU cores for virtual machine")
 	cmd.MarkFlagRequired("cpu")
 	cmd.Flags().Int("ram", 0, "Amount of RAM (GB) for virtual machine")
@@ -147,6 +147,7 @@ func ecloudVirtualMachineCreateCmd() *cobra.Command {
 	cmd.Flags().Bool("external-ip", false, "Specifies an external IP address should be created for virtual machine")
 	cmd.Flags().StringSlice("tag", []string{}, "Tag for virtual machine, can be repeated, e.g. key=value")
 	cmd.Flags().StringSlice("ssh-key", []string{}, "SSH public key for virtual machine, can be repeated")
+	cmd.Flags().StringSlice("parameter", []string{}, "Parameters for virtual machine, can be repeated, e.g. key=value")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the VM has been completely created before continuing on")
 
 	return cmd
@@ -155,6 +156,7 @@ func ecloudVirtualMachineCreateCmd() *cobra.Command {
 func ecloudVirtualMachineCreate(service ecloud.ECloudService, cmd *cobra.Command, args []string) {
 	environment, _ := cmd.Flags().GetString("environment")
 	template, _ := cmd.Flags().GetString("template")
+	applianceID, _ := cmd.Flags().GetString("appliance")
 	cpu, _ := cmd.Flags().GetInt("cpu")
 	ram, _ := cmd.Flags().GetInt("ram")
 	hdd, _ := cmd.Flags().GetInt("hdd")
@@ -173,6 +175,7 @@ func ecloudVirtualMachineCreate(service ecloud.ECloudService, cmd *cobra.Command
 	createRequest := ecloud.CreateVirtualMachineRequest{
 		Environment:        environment,
 		Template:           template,
+		ApplianceID:        applianceID,
 		CPU:                cpu,
 		RAM:                ram,
 		HDD:                hdd,
@@ -198,6 +201,17 @@ func ecloudVirtualMachineCreate(service ecloud.ECloudService, cmd *cobra.Command
 		}
 
 		createRequest.Tags = tagsReq
+	}
+
+	if cmd.Flags().Changed("parameter") {
+		parametersFlag, _ := cmd.Flags().GetStringSlice("parameter")
+		parametersReq, err := GetCreateVirtualMachineRequestParameterFromStringArrayFlag(parametersFlag)
+		if err != nil {
+			output.Fatalf("Invalid parameter data: %s", err)
+			return
+		}
+
+		createRequest.Parameters = parametersReq
 	}
 
 	if cmd.Flags().Changed("ssh-key") {

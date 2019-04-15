@@ -220,3 +220,25 @@ type Pod struct {
 	ID   int    `json:"id"`
 	Name string `json:"name"`
 }
+
+// Appliance represents an eCloud appliance
+type Appliance struct {
+	ID               string              `json:"id"`
+	Name             string              `json:"name"`
+	LogoURI          string              `json:"logo_uri"`
+	Description      string              `json:"description"`
+	DocumentationURI string              `json:"documentation_uri"`
+	Publisher        string              `json:"publisher"`
+	CreatedAt        connection.DateTime `json:"created_at"`
+}
+
+// ApplianceParameter represents an eCloud appliance parameter
+type ApplianceParameter struct {
+	ID             string `json:"id"`
+	Name           string `json:"name"`
+	Key            string `json:"key"`
+	Type           string `json:"type"`
+	Description    string `json:"description"`
+	Required       bool   `json:"required"`
+	ValidationRule string `json:"validation_rule"`
+}

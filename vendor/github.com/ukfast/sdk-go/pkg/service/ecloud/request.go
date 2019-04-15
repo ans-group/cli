@@ -35,28 +35,30 @@ type CreateVirtualMachineRequest struct {
 	connection.APIRequestBodyDefaultValidator
 
 	Environment      string `json:"environment" validate:"required"`
-	Template         string `json:"template" validate:"required"`
+	Template         string `json:"template,omitempty"`
+	ApplianceID      string `json:"appliance_id,omitempty"`
 	TemplatePassword string `json:"template_password,omitempty"`
 	// Count in Cores
 	CPU int `json:"cpu" validate:"required"`
 	// Size in GB
 	RAM int `json:"ram" validate:"required"`
 	// Size in GB
-	HDD                int                               `json:"hdd,omitempty"`
-	Disks              []CreateVirtualMachineRequestDisk `json:"hdd_disks,omitempty"`
-	Name               string                            `json:"name,omitempty"`
-	ComputerName       string                            `json:"computername,omitempty"`
-	Tags               []CreateTagRequest                `json:"tags,omitempty"`
-	Backup             bool                              `json:"backup"`
-	Support            bool                              `json:"support"`
-	Monitoring         bool                              `json:"monitoring"`
-	MonitoringContacts []int                             `json:"monitoring_contacts"`
-	SolutionID         int                               `json:"solution_id,omitempty"`
-	DatastoreID        int                               `json:"datastore_id,omitempty"`
-	SiteID             int                               `json:"site_id,omitempty"`
-	NetworkID          int                               `json:"network_id,omitempty"`
-	ExternalIPRequired bool                              `json:"external_ip_required"`
-	SSHKeys            []string                          `json:"ssh_keys,omitempty"`
+	HDD                int                                    `json:"hdd,omitempty"`
+	Disks              []CreateVirtualMachineRequestDisk      `json:"hdd_disks,omitempty"`
+	Name               string                                 `json:"name,omitempty"`
+	ComputerName       string                                 `json:"computername,omitempty"`
+	Tags               []CreateTagRequest                     `json:"tags,omitempty"`
+	Backup             bool                                   `json:"backup"`
+	Support            bool                                   `json:"support"`
+	Monitoring         bool                                   `json:"monitoring"`
+	MonitoringContacts []int                                  `json:"monitoring_contacts"`
+	SolutionID         int                                    `json:"solution_id,omitempty"`
+	DatastoreID        int                                    `json:"datastore_id,omitempty"`
+	SiteID             int                                    `json:"site_id,omitempty"`
+	NetworkID          int                                    `json:"network_id,omitempty"`
+	ExternalIPRequired bool                                   `json:"external_ip_required"`
+	SSHKeys            []string                               `json:"ssh_keys,omitempty"`
+	Parameters         []CreateVirtualMachineRequestParameter `json:"parameters,omitempty"`
 }
 
 // CreateVirtualMachineRequestDisk represents a request to create an eCloud virtual machine disk
@@ -66,10 +68,22 @@ type CreateVirtualMachineRequestDisk struct {
 	Capacity int `json:"capacity" validate:"required"`
 }
 
+// CreateVirtualMachineRequestParameter represents an eCloud virtual machine parameter
+type CreateVirtualMachineRequestParameter struct {
+	connection.APIRequestBodyDefaultValidator
+
+	Key   string `json:"key" validate:"required"`
+	Value string `json:"value" validate:"required"`
+}
+
 // Validate returns an error if struct properties are missing/invalid
 func (c *CreateVirtualMachineRequest) Validate() *connection.ValidationError {
 	if c.HDD == 0 && (c.Disks == nil || len(c.Disks) < 1) {
 		return connection.NewValidationError("HDD or Disks must be provided")
+	}
+
+	if c.Template == "" && c.ApplianceID == "" {
+		return connection.NewValidationError("Template or ApplianceID must be provided")
 	}
 
 	return c.APIRequestBodyDefaultValidator.Validate(c)
