@@ -591,3 +591,19 @@ func SolutionTemplateExistsWaitFunc(service ecloud.ECloudService, solutionID int
 		return (exists == true), nil
 	}
 }
+
+// PodTemplateExistsWaitFunc returns WaitFunc for waiting for a template to exist
+func PodTemplateExistsWaitFunc(service ecloud.ECloudService, podID int, templateName string, exists bool) WaitFunc {
+	return func() (finished bool, err error) {
+		_, err = service.GetPodTemplate(podID, templateName)
+		if err != nil {
+			if _, ok := err.(*ecloud.TemplateNotFoundError); ok {
+				return (exists == false), nil
+			}
+
+			return false, fmt.Errorf("Failed to retrieve pod template [%s]: %s", templateName, err.Error())
+		}
+
+		return (exists == true), nil
+	}
+}

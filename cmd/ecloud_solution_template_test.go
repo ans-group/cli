@@ -289,7 +289,7 @@ func Test_ecloudSolutionTemplateDeleteCmd_Args(t *testing.T) {
 }
 
 func Test_ecloudSolutionTemplateDelete(t *testing.T) {
-	t.Run("RetrieveSingle", func(t *testing.T) {
+	t.Run("DeleteSingle", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -300,7 +300,7 @@ func Test_ecloudSolutionTemplateDelete(t *testing.T) {
 		ecloudSolutionTemplateDelete(service, &cobra.Command{}, []string{"123", "testname1"})
 	})
 
-	t.Run("RetrieveMultiple", func(t *testing.T) {
+	t.Run("DeleteMultiple", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -312,6 +312,26 @@ func Test_ecloudSolutionTemplateDelete(t *testing.T) {
 		)
 
 		ecloudSolutionTemplateDelete(service, &cobra.Command{}, []string{"123", "testname1", "testname2"})
+	})
+
+	t.Run("WithWait", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		viper.SetDefault("command_wait_timeout_seconds", 1200)
+		viper.SetDefault("command_wait_sleep_seconds", 1)
+		defer testResetViper()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudSolutionTemplateDeleteCmd()
+		cmd.Flags().Set("wait", "true")
+
+		gomock.InOrder(
+			service.EXPECT().DeleteSolutionTemplate(123, "testname1").Return(nil),
+			service.EXPECT().GetSolutionTemplate(123, "testname1").Return(ecloud.Template{}, &ecloud.TemplateNotFoundError{}),
+		)
+
+		ecloudSolutionTemplateDelete(service, cmd, []string{"123", "testname1"})
 	})
 
 	t.Run("InvalidSolutionID_OutputsFatal", func(t *testing.T) {
@@ -335,6 +355,28 @@ func Test_ecloudSolutionTemplateDelete(t *testing.T) {
 
 		test_output.AssertErrorOutput(t, "Error removing solution template [testname1]: test error 1\n", func() {
 			ecloudSolutionTemplateDelete(service, &cobra.Command{}, []string{"123", "testname1"})
+		})
+	})
+
+	t.Run("WaitForCommandError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		viper.SetDefault("command_wait_timeout_seconds", 1200)
+		viper.SetDefault("command_wait_sleep_seconds", 1)
+		defer testResetViper()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudSolutionTemplateDeleteCmd()
+		cmd.Flags().Set("wait", "true")
+
+		gomock.InOrder(
+			service.EXPECT().DeleteSolutionTemplate(123, "testname1").Return(nil),
+			service.EXPECT().GetSolutionTemplate(123, "testname1").Return(ecloud.Template{}, errors.New("test error 1")),
+		)
+
+		test_output.AssertErrorOutput(t, "Error removing solution template [testname1]: Error waiting for command: Failed to retrieve solution template [testname1]: test error 1\n", func() {
+			ecloudSolutionTemplateDelete(service, cmd, []string{"123", "testname1"})
 		})
 	})
 }

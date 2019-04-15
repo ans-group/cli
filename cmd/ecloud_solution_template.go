@@ -175,7 +175,7 @@ func ecloudSolutionTemplateUpdate(service ecloud.ECloudService, cmd *cobra.Comma
 }
 
 func ecloudSolutionTemplateDeleteCmd() *cobra.Command {
-	return &cobra.Command{
+	cmd := &cobra.Command{
 		Use:     "delete <solution: id> <template: name>...",
 		Short:   "Removes a solution template ",
 		Long:    "This command removes one or more solution templates",
@@ -194,6 +194,10 @@ func ecloudSolutionTemplateDeleteCmd() *cobra.Command {
 			ecloudSolutionTemplateDelete(getClient().ECloudService(), cmd, args)
 		},
 	}
+
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the template has been completely created before continuing on")
+
+	return cmd
 }
 
 func ecloudSolutionTemplateDelete(service ecloud.ECloudService, cmd *cobra.Command, args []string) {
@@ -207,6 +211,15 @@ func ecloudSolutionTemplateDelete(service ecloud.ECloudService, cmd *cobra.Comma
 		err = service.DeleteSolutionTemplate(solutionID, arg)
 		if err != nil {
 			OutputWithErrorLevelf("Error removing solution template [%s]: %s", arg, err)
+			continue
+		}
+
+		waitFlag, _ := cmd.Flags().GetBool("wait")
+		if waitFlag {
+			err := WaitForCommand(SolutionTemplateExistsWaitFunc(service, solutionID, arg, false))
+			if err != nil {
+				OutputWithErrorLevelf("Error removing solution template [%s]: %s", arg, err)
+			}
 		}
 	}
 }
