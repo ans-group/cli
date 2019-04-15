@@ -5,7 +5,6 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/sdk-go/pkg/connection"
 	"github.com/ukfast/sdk-go/pkg/ptr"
 	"github.com/ukfast/sdk-go/pkg/service/ddosx"
 )
@@ -83,7 +82,7 @@ func ddosxDomainWAFRuleSetShowCmd() *cobra.Command {
 func ddosxDomainWAFRuleSetShow(service ddosx.DDoSXService, cmd *cobra.Command, args []string) {
 	var rulesets []ddosx.WAFRuleSet
 	for _, arg := range args[1:] {
-		ruleset, err := service.GetDomainWAFRuleSet(args[0], arg, connection.APIRequestParameters{})
+		ruleset, err := service.GetDomainWAFRuleSet(args[0], arg)
 		if err != nil {
 			OutputWithErrorLevelf("Error retrieving domain WAF rule set [%s]: %s", arg, err)
 			continue
@@ -137,7 +136,7 @@ func ddosxDomainWAFRuleSetUpdate(service ddosx.DDoSXService, cmd *cobra.Command,
 			continue
 		}
 
-		ruleset, err := service.GetDomainWAFRuleSet(args[0], arg, connection.APIRequestParameters{})
+		ruleset, err := service.GetDomainWAFRuleSet(args[0], arg)
 		if err != nil {
 			OutputWithErrorLevelf("Error retrieving updated domain WAF rule set [%s]: %s", arg, err)
 			continue

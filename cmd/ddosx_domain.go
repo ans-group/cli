@@ -27,6 +27,7 @@ func ddosxDomainRootCmd() *cobra.Command {
 	cmd.AddCommand(ddosxDomainACLRootCmd())
 	cmd.AddCommand(ddosxDomainPropertyRootCmd())
 	cmd.AddCommand(ddosxDomainVerificationRootCmd())
+	cmd.AddCommand(ddosxDomainCDNRootCmd())
 
 	return cmd
 }

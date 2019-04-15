@@ -7,53 +7,53 @@ import (
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
-func TestGetCreateTagRequestFromStringFlag(t *testing.T) {
+func TestGetKeyValueFromStringFlag(t *testing.T) {
 	t.Run("Valid_NoError", func(t *testing.T) {
-		tagFlag := "testkey=testvalue"
+		flag := "testkey=testvalue"
 
-		r, err := GetCreateTagRequestFromStringFlag(tagFlag)
+		key, value, err := GetKeyValueFromStringFlag(flag)
 
 		assert.Nil(t, err)
-		assert.Equal(t, "testkey", r.Key)
-		assert.Equal(t, "testvalue", r.Value)
+		assert.Equal(t, "testkey", key)
+		assert.Equal(t, "testvalue", value)
 	})
 
 	t.Run("Empty_Error", func(t *testing.T) {
-		tagFlag := ""
+		flag := ""
 
-		_, err := GetCreateTagRequestFromStringFlag(tagFlag)
+		_, _, err := GetKeyValueFromStringFlag(flag)
 
 		assert.NotNil(t, err)
 	})
 
 	t.Run("OnlyKey_Error", func(t *testing.T) {
-		tagFlag := "testkey"
+		flag := "testkey"
 
-		_, err := GetCreateTagRequestFromStringFlag(tagFlag)
+		_, _, err := GetKeyValueFromStringFlag(flag)
 
 		assert.NotNil(t, err)
 	})
 
 	t.Run("MissingValue_Error", func(t *testing.T) {
-		tagFlag := "testkey="
+		flag := "testkey="
 
-		_, err := GetCreateTagRequestFromStringFlag(tagFlag)
+		_, _, err := GetKeyValueFromStringFlag(flag)
 
 		assert.NotNil(t, err)
 	})
 
 	t.Run("MissingKey_Error", func(t *testing.T) {
-		tagFlag := "=testvalue"
+		flag := "=testvalue"
 
-		_, err := GetCreateTagRequestFromStringFlag(tagFlag)
+		_, _, err := GetKeyValueFromStringFlag(flag)
 
 		assert.NotNil(t, err)
 	})
 
 	t.Run("MultiValue_Error", func(t *testing.T) {
-		tagFlag := "testkey=testvalue1=testvalue2"
+		flag := "testkey=testvalue1=testvalue2"
 
-		_, err := GetCreateTagRequestFromStringFlag(tagFlag)
+		_, _, err := GetKeyValueFromStringFlag(flag)
 
 		assert.NotNil(t, err)
 	})
@@ -102,7 +102,54 @@ func TestGetCreateTagRequestFromStringArrayFlag(t *testing.T) {
 		_, err := GetCreateTagRequestFromStringArrayFlag(tagFlags)
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Invalid tag format, expecting: key=value", err.Error())
+		assert.Equal(t, "Invalid format, expecting: key=value", err.Error())
+	})
+}
+
+func TestGetCreateVirtualMachineRequestParameterFromStringArrayFlag(t *testing.T) {
+	t.Run("None_NoError", func(t *testing.T) {
+		var parameterFlags []string
+
+		r, err := GetCreateVirtualMachineRequestParameterFromStringArrayFlag(parameterFlags)
+
+		assert.Nil(t, err)
+		assert.Len(t, r, 0)
+	})
+
+	t.Run("Single", func(t *testing.T) {
+		var parameterFlags []string
+		parameterFlags = append(parameterFlags, "testkey1=testvalue1")
+
+		r, err := GetCreateVirtualMachineRequestParameterFromStringArrayFlag(parameterFlags)
+
+		assert.Nil(t, err)
+		assert.Len(t, r, 1)
+		assert.Equal(t, "testkey1", r[0].Key)
+		assert.Equal(t, "testvalue1", r[0].Value)
+	})
+
+	t.Run("Multiple", func(t *testing.T) {
+		var parameterFlags []string
+		parameterFlags = append(parameterFlags, "testkey1=testvalue1")
+		parameterFlags = append(parameterFlags, "testkey2=testvalue2")
+
+		r, err := GetCreateVirtualMachineRequestParameterFromStringArrayFlag(parameterFlags)
+
+		assert.Nil(t, err)
+		assert.Len(t, r, 2)
+		assert.Equal(t, "testkey1", r[0].Key)
+		assert.Equal(t, "testvalue1", r[0].Value)
+		assert.Equal(t, "testkey2", r[1].Key)
+		assert.Equal(t, "testvalue2", r[1].Value)
+	})
+
+	t.Run("Invalid_ReturnsError", func(t *testing.T) {
+		parameterFlags := []string{"invalid"}
+
+		_, err := GetCreateVirtualMachineRequestParameterFromStringArrayFlag(parameterFlags)
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Invalid format, expecting: key=value", err.Error())
 	})
 }
 

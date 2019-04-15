@@ -157,3 +157,17 @@ type GetACLGeoIPRulesModeResponseBody struct {
 		Mode ACLGeoIPRulesMode `json:"mode"`
 	} `json:"data"`
 }
+
+// GetCDNRulesResponseBody represents an API response body containing []CDNRule data
+type GetCDNRulesResponseBody struct {
+	connection.APIResponseBody
+
+	Data []CDNRule `json:"data"`
+}
+
+// GetCDNRuleResponseBody represents an API response body containing CDNRule data
+type GetCDNRuleResponseBody struct {
+	connection.APIResponseBody
+
+	Data CDNRule `json:"data"`
+}

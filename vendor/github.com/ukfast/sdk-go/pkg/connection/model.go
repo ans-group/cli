@@ -1,7 +1,10 @@
 package connection
 
 import (
+	"errors"
+	"fmt"
 	"net"
+	"strings"
 	"time"
 )
 
@@ -42,4 +45,26 @@ func (i IPAddress) IP() net.IP {
 
 func (i IPAddress) String() string {
 	return string(i)
+}
+
+type Enum interface {
+	String() string
+}
+
+// ParseEnum parses string s against array of enums, returning parsed enum and nil error, or nil with error
+func ParseEnum(s string, enums []Enum) (Enum, error) {
+	if len(enums) < 1 {
+		return nil, errors.New("Must provide at least one enum")
+	}
+
+	var validValues []string
+	for _, e := range enums {
+		if strings.ToUpper(s) == strings.ToUpper(e.String()) {
+			return e, nil
+		}
+
+		validValues = append(validValues, e.String())
+	}
+
+	return nil, fmt.Errorf("Invalid %T. Valid values: %s", enums[0], strings.Join(validValues, ", "))
 }

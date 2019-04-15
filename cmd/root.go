@@ -1,17 +1,3 @@
-// Copyright © 2018 NAME HERE <EMAIL ADDRESS>
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package cmd
 
 import (
@@ -20,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	homedir "github.com/mitchellh/go-homedir"
@@ -82,6 +69,7 @@ func init() {
 	rootCmd.AddCommand(ddosxRootCmd())
 	rootCmd.AddCommand(accountRootCmd())
 	rootCmd.AddCommand(registrarRootCmd())
+	rootCmd.AddCommand(pssRootCmd())
 
 	appFilesystem = afero.NewOsFs()
 }
@@ -180,46 +168,95 @@ func OutputWithErrorLevel(str string) {
 	OutputWithCustomErrorLevel(1, str)
 }
 
-type OutputDataProvider interface {
+type OutputHandlerProvider interface {
 	GetData() interface{}
 	GetFieldData() ([]*output.OrderedFields, error)
 }
 
-// Output calls the relevant OutputProvider data retrieval methods for given value
-// in global variable 'format'
-func Output(out OutputDataProvider) error {
-	format := flagFormat
+type UnsupportedFormatHandler func() error
+
+type OutputHandler struct {
+	Format                   string
+	Provider                 OutputHandlerProvider
+	Properties               []string
+	Template                 string
+	SupportedFormats         []string
+	UnsupportedFormatHandler UnsupportedFormatHandler
+}
+
+func NewOutputHandler(out OutputHandlerProvider, format string) *OutputHandler {
 	if format == "" {
 		format = "table"
 	}
 
-	switch format {
+	return &OutputHandler{
+		Provider: out,
+		Format:   format,
+	}
+}
+
+// Handle calls the relevant OutputProvider data retrieval methods for given value
+// in struct property 'Format'
+func (o *OutputHandler) Handle() error {
+	if !o.supportedFormat() {
+		if o.UnsupportedFormatHandler != nil {
+			return o.UnsupportedFormatHandler()
+		}
+
+		return fmt.Errorf("Unsupported output format [%s], supported formats: %s", o.Format, strings.Join(o.SupportedFormats, ", "))
+	}
+
+	switch o.Format {
 	case "json":
-		return output.JSON(out.GetData())
+		return output.JSON(o.Provider.GetData())
 	case "template":
-		return output.Template(flagOutputTemplate, out.GetData())
+		return output.Template(o.Template, o.Provider.GetData())
 	case "value":
-		d, err := out.GetFieldData()
+		d, err := o.Provider.GetFieldData()
 		if err != nil {
 			return err
 		}
-		return output.Value(flagProperty, d)
+		return output.Value(o.Properties, d)
 	case "csv":
-		d, err := out.GetFieldData()
+		d, err := o.Provider.GetFieldData()
 		if err != nil {
 			return err
 		}
-		return output.CSV(flagProperty, d)
+		return output.CSV(o.Properties, d)
 	default:
-		output.Errorf("Invalid output format [%s], defaulting to 'table'", format)
+		output.Errorf("Invalid output format [%s], defaulting to 'table'", o.Format)
 		fallthrough
 	case "table":
-		d, err := out.GetFieldData()
+		d, err := o.Provider.GetFieldData()
 		if err != nil {
 			return err
 		}
-		return output.Table(flagProperty, d)
+		return output.Table(o.Properties, d)
 	}
+}
+
+func (o *OutputHandler) supportedFormat() bool {
+	if o.SupportedFormats == nil {
+		return true
+	}
+
+	for _, supportedFormat := range o.SupportedFormats {
+		if strings.ToLower(supportedFormat) == o.Format {
+			return true
+		}
+	}
+
+	return false
+}
+
+// Output calls the relevant OutputProvider data retrieval methods for given value
+// in global variable 'flagFormat'
+func Output(out OutputHandlerProvider) error {
+	handler := NewOutputHandler(out, flagFormat)
+	handler.Properties = flagProperty
+	handler.Template = flagOutputTemplate
+
+	return handler.Handle()
 }
 
 type APIListParameters struct {

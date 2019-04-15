@@ -25,6 +25,7 @@ func ecloudRootCmd() *cobra.Command {
 	cmd.AddCommand(ecloudFirewallRootCmd())
 	cmd.AddCommand(ecloudPodRootCmd())
 	cmd.AddCommand(ecloudDatastoreRootCmd())
+	cmd.AddCommand(ecloudApplianceRootCmd())
 
 	return cmd
 }
@@ -447,42 +448,132 @@ func (o *OutputECloudPods) getOrderedFields(pod ecloud.Pod) *output.OrderedField
 	return fields
 }
 
+// OutputECloudAppliances implements OutputDataProvider for outputting an array of appliances
+type OutputECloudAppliances struct {
+	Appliances []ecloud.Appliance
+}
+
+func outputECloudAppliances(appliances []ecloud.Appliance) {
+	err := Output(&OutputECloudAppliances{Appliances: appliances})
+	if err != nil {
+		output.Fatalf("Failed to output appliances: %s", err)
+	}
+}
+
+func (o *OutputECloudAppliances) GetData() interface{} {
+	return o.Appliances
+}
+
+func (o *OutputECloudAppliances) GetFieldData() ([]*output.OrderedFields, error) {
+	var data []*output.OrderedFields
+	for _, appliance := range o.Appliances {
+		fields := o.getOrderedFields(appliance)
+		data = append(data, fields)
+	}
+
+	return data, nil
+}
+
+func (o *OutputECloudAppliances) getOrderedFields(appliance ecloud.Appliance) *output.OrderedFields {
+	fields := output.NewOrderedFields()
+	fields.Set("id", output.NewFieldValue(appliance.ID, true))
+	fields.Set("name", output.NewFieldValue(appliance.Name, true))
+	fields.Set("logo_uri", output.NewFieldValue(appliance.LogoURI, false))
+	fields.Set("description", output.NewFieldValue(appliance.Description, false))
+	fields.Set("documentation_uri", output.NewFieldValue(appliance.DocumentationURI, false))
+	fields.Set("publisher", output.NewFieldValue(appliance.Publisher, true))
+	fields.Set("created_at", output.NewFieldValue(appliance.CreatedAt.String(), true))
+
+	return fields
+}
+
+// OutputECloudApplianceParameters implements OutputDataProvider for outputting an array of appliance parameters
+type OutputECloudApplianceParameters struct {
+	ApplianceParameters []ecloud.ApplianceParameter
+}
+
+func outputECloudApplianceParameters(parameters []ecloud.ApplianceParameter) {
+	err := Output(&OutputECloudApplianceParameters{ApplianceParameters: parameters})
+	if err != nil {
+		output.Fatalf("Failed to output appliance parameters: %s", err)
+	}
+}
+
+func (o *OutputECloudApplianceParameters) GetData() interface{} {
+	return o.ApplianceParameters
+}
+
+func (o *OutputECloudApplianceParameters) GetFieldData() ([]*output.OrderedFields, error) {
+	var data []*output.OrderedFields
+	for _, parameter := range o.ApplianceParameters {
+		fields := o.getOrderedFields(parameter)
+		data = append(data, fields)
+	}
+
+	return data, nil
+}
+
+func (o *OutputECloudApplianceParameters) getOrderedFields(parameter ecloud.ApplianceParameter) *output.OrderedFields {
+	fields := output.NewOrderedFields()
+	fields.Set("id", output.NewFieldValue(parameter.ID, true))
+	fields.Set("name", output.NewFieldValue(parameter.Name, true))
+	fields.Set("key", output.NewFieldValue(parameter.Key, true))
+	fields.Set("type", output.NewFieldValue(parameter.Type, true))
+	fields.Set("description", output.NewFieldValue(parameter.Description, true))
+	fields.Set("required", output.NewFieldValue(strconv.FormatBool(parameter.Required), true))
+	fields.Set("validation_rule", output.NewFieldValue(parameter.ValidationRule, false))
+
+	return fields
+}
+
 // GetCreateTagRequestFromStringArrayFlag returns an array of CreateTagRequest structs from given tag string array flag
 func GetCreateTagRequestFromStringArrayFlag(tagsFlag []string) ([]ecloud.CreateTagRequest, error) {
 	var tags []ecloud.CreateTagRequest
 	for _, tagFlag := range tagsFlag {
-		tag, err := GetCreateTagRequestFromStringFlag(tagFlag)
+		key, value, err := GetKeyValueFromStringFlag(tagFlag)
 		if err != nil {
 			return tags, err
 		}
 
-		tags = append(tags, tag)
+		tags = append(tags, ecloud.CreateTagRequest{Key: key, Value: value})
 	}
 
 	return tags, nil
 }
 
-// GetCreateTagRequestFromStringFlag returns a CreateTagRequest struct from given tag string flag
-func GetCreateTagRequestFromStringFlag(tagFlag string) (ecloud.CreateTagRequest, error) {
-	if tagFlag == "" {
-		return ecloud.CreateTagRequest{}, errors.New("Missing tag key/value")
+// GetCreateVirtualMachineRequestParameterFromStringArrayFlag returns an array of CreateVirtualMachineRequestParameter structs from given string array flag
+func GetCreateVirtualMachineRequestParameterFromStringArrayFlag(parametersFlag []string) ([]ecloud.CreateVirtualMachineRequestParameter, error) {
+	var parameters []ecloud.CreateVirtualMachineRequestParameter
+	for _, parameterFlag := range parametersFlag {
+		key, value, err := GetKeyValueFromStringFlag(parameterFlag)
+		if err != nil {
+			return parameters, err
+		}
+
+		parameters = append(parameters, ecloud.CreateVirtualMachineRequestParameter{Key: key, Value: value})
 	}
 
-	tagParts := strings.Split(tagFlag, "=")
-	if len(tagParts) < 2 || len(tagParts) > 2 {
-		return ecloud.CreateTagRequest{}, errors.New("Invalid tag format, expecting: key=value")
-	}
-	if tagParts[0] == "" {
-		return ecloud.CreateTagRequest{}, errors.New("Missing tag key")
-	}
-	if tagParts[1] == "" {
-		return ecloud.CreateTagRequest{}, errors.New("Missing tag value")
+	return parameters, nil
+}
+
+// GetKeyValueFromStringFlag returns a string map from given string flag. Expects format 'key=value'
+func GetKeyValueFromStringFlag(flag string) (key, value string, err error) {
+	if flag == "" {
+		return key, value, errors.New("Missing key/value")
 	}
 
-	return ecloud.CreateTagRequest{
-		Key:   tagParts[0],
-		Value: tagParts[1],
-	}, nil
+	parts := strings.Split(flag, "=")
+	if len(parts) < 2 || len(parts) > 2 {
+		return key, value, errors.New("Invalid format, expecting: key=value")
+	}
+	if parts[0] == "" {
+		return key, value, errors.New("Missing key")
+	}
+	if parts[1] == "" {
+		return key, value, errors.New("Missing value")
+	}
+
+	return parts[0], parts[1], nil
 }
 
 // SolutionTemplateExistsWaitFunc returns WaitFunc for waiting for a template to exist

@@ -103,7 +103,7 @@ func Test_ddosxDomainWAFRuleSetShow(t *testing.T) {
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
 
-		service.EXPECT().GetDomainWAFRuleSet("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Any()).Return(ddosx.WAFRuleSet{}, nil)
+		service.EXPECT().GetDomainWAFRuleSet("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.WAFRuleSet{}, nil)
 
 		ddosxDomainWAFRuleSetShow(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 	})
@@ -114,7 +114,7 @@ func Test_ddosxDomainWAFRuleSetShow(t *testing.T) {
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
 
-		service.EXPECT().GetDomainWAFRuleSet("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Any()).Return(ddosx.WAFRuleSet{}, errors.New("test error"))
+		service.EXPECT().GetDomainWAFRuleSet("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.WAFRuleSet{}, errors.New("test error"))
 
 		test_output.AssertErrorOutput(t, "Error retrieving domain WAF rule set [00000000-0000-0000-0000-000000000000]: test error\n", func() {
 			ddosxDomainWAFRuleSetShow(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
@@ -162,7 +162,7 @@ func Test_ddosxDomainWAFRuleSetUpdate(t *testing.T) {
 
 		gomock.InOrder(
 			service.EXPECT().PatchDomainWAFRuleSet("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Eq(expectedRequest)).Return(nil),
-			service.EXPECT().GetDomainWAFRuleSet("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Any()).Return(ddosx.WAFRuleSet{}, nil),
+			service.EXPECT().GetDomainWAFRuleSet("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.WAFRuleSet{}, nil),
 		)
 
 		ddosxDomainWAFRuleSetUpdate(service, cmd, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
@@ -189,7 +189,7 @@ func Test_ddosxDomainWAFRuleSetUpdate(t *testing.T) {
 
 		gomock.InOrder(
 			service.EXPECT().PatchDomainWAFRuleSet("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Any()).Return(nil),
-			service.EXPECT().GetDomainWAFRuleSet("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Any()).Return(ddosx.WAFRuleSet{}, errors.New("test error")),
+			service.EXPECT().GetDomainWAFRuleSet("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.WAFRuleSet{}, errors.New("test error")),
 		)
 
 		test_output.AssertErrorOutput(t, "Error retrieving updated domain WAF rule set [00000000-0000-0000-0000-000000000000]: test error\n", func() {
