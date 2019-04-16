@@ -21,6 +21,7 @@ func ecloudPodRootCmd() *cobra.Command {
 
 	// Child root commands
 	cmd.AddCommand(ecloudPodTemplateRootCmd())
+	cmd.AddCommand(ecloudPodApplianceRootCmd())
 
 	return cmd
 }
