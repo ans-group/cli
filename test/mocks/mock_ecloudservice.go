@@ -416,6 +416,36 @@ func (mr *MockECloudServiceMockRecorder) GetPod(arg0 interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPod", reflect.TypeOf((*MockECloudService)(nil).GetPod), arg0)
 }
 
+// GetPodAppliances mocks base method
+func (m *MockECloudService) GetPodAppliances(arg0 int, arg1 connection.APIRequestParameters) ([]ecloud.Appliance, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetPodAppliances", arg0, arg1)
+	ret0, _ := ret[0].([]ecloud.Appliance)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetPodAppliances indicates an expected call of GetPodAppliances
+func (mr *MockECloudServiceMockRecorder) GetPodAppliances(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPodAppliances", reflect.TypeOf((*MockECloudService)(nil).GetPodAppliances), arg0, arg1)
+}
+
+// GetPodAppliancesPaginated mocks base method
+func (m *MockECloudService) GetPodAppliancesPaginated(arg0 int, arg1 connection.APIRequestParameters) ([]ecloud.Appliance, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetPodAppliancesPaginated", arg0, arg1)
+	ret0, _ := ret[0].([]ecloud.Appliance)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetPodAppliancesPaginated indicates an expected call of GetPodAppliancesPaginated
+func (mr *MockECloudServiceMockRecorder) GetPodAppliancesPaginated(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPodAppliancesPaginated", reflect.TypeOf((*MockECloudService)(nil).GetPodAppliancesPaginated), arg0, arg1)
+}
+
 // GetPodTemplate mocks base method
 func (m *MockECloudService) GetPodTemplate(arg0 int, arg1 string) (ecloud.Template, error) {
 	m.ctrl.T.Helper()

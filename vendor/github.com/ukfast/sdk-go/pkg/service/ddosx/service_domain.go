@@ -1421,6 +1421,32 @@ func (s *Service) deleteDomainCDNRuleResponseBody(domainName string, ruleID stri
 	return body, response.HandleResponse([]int{204}, body)
 }
 
+// PurgeDomainCDN purges cached content
+func (s *Service) PurgeDomainCDN(domainName string, req PurgeCDNRequest) error {
+	_, err := s.purgeDomainCDNRuleResponseBody(domainName, req)
+
+	return err
+}
+
+func (s *Service) purgeDomainCDNRuleResponseBody(domainName string, req PurgeCDNRequest) (*connection.APIResponseBody, error) {
+	body := &connection.APIResponseBody{}
+
+	if domainName == "" {
+		return body, fmt.Errorf("invalid domain name")
+	}
+
+	response, err := s.connection.Post(fmt.Sprintf("/ddosx/v1/domains/%s/cdn/purge", domainName), &req)
+	if err != nil {
+		return body, err
+	}
+
+	if response.StatusCode == 404 {
+		return body, &DomainCDNConfigurationNotFoundError{DomainName: domainName}
+	}
+
+	return body, response.HandleResponse([]int{204}, body)
+}
+
 // AddDomainHSTSConfiguration adds HSTS headers to a domain
 func (s *Service) AddDomainHSTSConfiguration(domainName string) error {
 	_, err := s.addDomainHSTSConfigurationResponseBody(domainName)
