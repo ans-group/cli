@@ -1001,3 +1001,17 @@ func (mr *MockDDoSXServiceMockRecorder) PatchSSL(arg0, arg1 interface{}) *gomock
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchSSL", reflect.TypeOf((*MockDDoSXService)(nil).PatchSSL), arg0, arg1)
 }
+
+// PurgeDomainCDN mocks base method
+func (m *MockDDoSXService) PurgeDomainCDN(arg0 string, arg1 ddosx.PurgeCDNRequest) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PurgeDomainCDN", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PurgeDomainCDN indicates an expected call of PurgeDomainCDN
+func (mr *MockDDoSXServiceMockRecorder) PurgeDomainCDN(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PurgeDomainCDN", reflect.TypeOf((*MockDDoSXService)(nil).PurgeDomainCDN), arg0, arg1)
+}

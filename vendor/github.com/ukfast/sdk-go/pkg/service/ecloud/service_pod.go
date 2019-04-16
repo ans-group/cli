@@ -204,3 +204,48 @@ func (s *Service) deletePodTemplateResponseBody(podID int, templateName string) 
 
 	return body, response.HandleResponse([]int{202}, body)
 }
+
+// GetPodAppliances retrieves a list of appliances for pod
+func (s *Service) GetPodAppliances(podID int, parameters connection.APIRequestParameters) ([]Appliance, error) {
+	r := connection.RequestAll{}
+
+	var appliances []Appliance
+	r.GetNext = func(parameters connection.APIRequestParameters) (connection.ResponseBody, error) {
+		response, err := s.getPodAppliancesPaginatedResponseBody(podID, parameters)
+		if err != nil {
+			return nil, err
+		}
+
+		for _, appliance := range response.Data {
+			appliances = append(appliances, appliance)
+		}
+
+		return response, nil
+	}
+
+	err := r.Invoke(parameters)
+
+	return appliances, err
+}
+
+// GetPodAppliancesPaginated retrieves a paginated list of appliances for pod
+func (s *Service) GetPodAppliancesPaginated(podID int, parameters connection.APIRequestParameters) ([]Appliance, error) {
+	body, err := s.getPodAppliancesPaginatedResponseBody(podID, parameters)
+
+	return body.Data, err
+}
+
+func (s *Service) getPodAppliancesPaginatedResponseBody(podID int, parameters connection.APIRequestParameters) (*GetAppliancesResponseBody, error) {
+	body := &GetAppliancesResponseBody{}
+
+	if podID < 1 {
+		return body, fmt.Errorf("invalid pod id")
+	}
+
+	response, err := s.connection.Get(fmt.Sprintf("/ecloud/v1/pods/%d/appliances", podID), parameters)
+	if err != nil {
+		return body, err
+	}
+
+	return body, response.HandleResponse([]int{200}, body)
+}

@@ -268,3 +268,16 @@ type PatchCDNRuleRequest struct {
 func (c *PatchCDNRuleRequest) Validate() *connection.ValidationError {
 	return nil
 }
+
+// PurgeCDNRequest represents a DDoSX CDN purge request
+type PurgeCDNRequest struct {
+	connection.APIRequestBodyDefaultValidator
+
+	RecordName string `json:"record_name" validate:"required"`
+	URI        string `json:"uri" validate:"required"`
+}
+
+// Validate returns an error if struct properties are missing/invalid
+func (c *PurgeCDNRequest) Validate() *connection.ValidationError {
+	return c.APIRequestBodyDefaultValidator.Validate(c)
+}

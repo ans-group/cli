@@ -86,6 +86,8 @@ type ECloudService interface {
 	GetPodTemplate(podID int, templateName string) (Template, error)
 	RenamePodTemplate(podID int, templateName string, req RenameTemplateRequest) error
 	DeletePodTemplate(podID int, templateName string) error
+	GetPodAppliances(podID int, parameters connection.APIRequestParameters) ([]Appliance, error)
+	GetPodAppliancesPaginated(podID int, parameters connection.APIRequestParameters) ([]Appliance, error)
 
 	// Appliance
 	GetAppliances(parameters connection.APIRequestParameters) ([]Appliance, error)
