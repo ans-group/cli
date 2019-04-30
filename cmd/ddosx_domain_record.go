@@ -143,13 +143,19 @@ func ddosxDomainRecordCreate(service ddosx.DDoSXService, cmd *cobra.Command, arg
 		SafeDNSRecordID: safednsRecordID,
 	}
 
-	_, err := service.CreateDomainRecord(args[0], createRequest)
+	id, err := service.CreateDomainRecord(args[0], createRequest)
 	if err != nil {
 		output.Fatalf("Error creating domain record: %s", err)
 		return
 	}
 
-	// TODO: Add record retrieval
+	record, err := service.GetDomainRecord(args[0], id)
+	if err != nil {
+		output.Fatalf("Error retrieving new domain record [%s]: %s", id, err)
+		return
+	}
+
+	outputDDoSXRecords([]ddosx.Record{record})
 }
 
 func ddosxDomainRecordUpdateCmd() *cobra.Command {
@@ -203,15 +209,24 @@ func ddosxDomainRecordUpdate(service ddosx.DDoSXService, cmd *cobra.Command, arg
 		patchRequest.SafeDNSRecordID, _ = cmd.Flags().GetInt("safedns-record-id")
 	}
 
+	var records []ddosx.Record
 	for _, arg := range args[1:] {
 		err := service.PatchDomainRecord(args[0], arg, patchRequest)
 		if err != nil {
 			OutputWithErrorLevelf("Error updating domain record [%s]: %s", arg, err.Error())
 			continue
 		}
+
+		record, err := service.GetDomainRecord(args[0], arg)
+		if err != nil {
+			OutputWithErrorLevelf("Error retrieving updated domain record [%s]: %s", arg, err)
+			continue
+		}
+
+		records = append(records, record)
 	}
 
-	// TODO: add record retrieval
+	outputDDoSXRecords(records)
 }
 
 func ddosxDomainRecordDeleteCmd() *cobra.Command {

@@ -156,7 +156,10 @@ func Test_ddosxDomainACLIPRuleCreate(t *testing.T) {
 			URI:  "testuri",
 		}
 
-		service.EXPECT().CreateDomainACLIPRule("testdomain1.co.uk", gomock.Eq(expectedRequest)).Return("00000000-0000-0000-0000-000000000000", nil).Times(1)
+		gomock.InOrder(
+			service.EXPECT().CreateDomainACLIPRule("testdomain1.co.uk", gomock.Eq(expectedRequest)).Return("00000000-0000-0000-0000-000000000000", nil),
+			service.EXPECT().GetDomainACLIPRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.ACLIPRule{}, nil),
+		)
 
 		ddosxDomainACLIPRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
 	})
@@ -177,7 +180,7 @@ func Test_ddosxDomainACLIPRuleCreate(t *testing.T) {
 		})
 	})
 
-	t.Run("CreateDomainACLIPRule_OutputsFatal", func(t *testing.T) {
+	t.Run("CreateDomainACLIPRuleError_OutputsFatal", func(t *testing.T) {
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -191,6 +194,27 @@ func Test_ddosxDomainACLIPRuleCreate(t *testing.T) {
 		service.EXPECT().CreateDomainACLIPRule("testdomain1.co.uk", gomock.Any()).Return("00000000-0000-0000-0000-000000000000", errors.New("test error")).Times(1)
 
 		test_output.AssertFatalOutput(t, "Error creating domain ACL IP rule: test error\n", func() {
+			ddosxDomainACLIPRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
+		})
+	})
+
+	t.Run("CreateDomainACLIPRuleError_OutputsFatal", func(t *testing.T) {
+
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockDDoSXService(mockCtrl)
+		cmd := ddosxDomainACLIPRuleCreateCmd()
+		cmd.Flags().Set("ip", "1.2.3.4")
+		cmd.Flags().Set("uri", "testuri")
+		cmd.Flags().Set("mode", "allow")
+
+		gomock.InOrder(
+			service.EXPECT().CreateDomainACLIPRule("testdomain1.co.uk", gomock.Any()).Return("00000000-0000-0000-0000-000000000000", nil),
+			service.EXPECT().GetDomainACLIPRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.ACLIPRule{}, errors.New("test error")),
+		)
+
+		test_output.AssertFatalOutput(t, "Error retrieving new domain ACL IP rule [00000000-0000-0000-0000-000000000000]: test error\n", func() {
 			ddosxDomainACLIPRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
 		})
 	})
@@ -238,7 +262,10 @@ func Test_ddosxDomainACLIPRuleUpdate(t *testing.T) {
 			IP:   "1.2.3.4",
 		}
 
-		service.EXPECT().PatchDomainACLIPRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Eq(expectedRequest)).Return(nil)
+		gomock.InOrder(
+			service.EXPECT().PatchDomainACLIPRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Eq(expectedRequest)).Return(nil),
+			service.EXPECT().GetDomainACLIPRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.ACLIPRule{}, nil),
+		)
 
 		ddosxDomainACLIPRuleUpdate(service, cmd, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 	})
@@ -257,7 +284,7 @@ func Test_ddosxDomainACLIPRuleUpdate(t *testing.T) {
 		})
 	})
 
-	t.Run("UpdateDomainACLIPRule_OutputsError", func(t *testing.T) {
+	t.Run("UpdateDomainACLIPRuleError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -266,6 +293,22 @@ func Test_ddosxDomainACLIPRuleUpdate(t *testing.T) {
 		service.EXPECT().PatchDomainACLIPRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Any()).Return(errors.New("test error"))
 
 		test_output.AssertErrorOutput(t, "Error updating domain ACL IP rule [00000000-0000-0000-0000-000000000000]: test error\n", func() {
+			ddosxDomainACLIPRuleUpdate(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
+		})
+	})
+
+	t.Run("GetDomainACLIPRuleError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockDDoSXService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().PatchDomainACLIPRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Any()).Return(nil),
+			service.EXPECT().GetDomainACLIPRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.ACLIPRule{}, errors.New("test error")),
+		)
+
+		test_output.AssertErrorOutput(t, "Error retrieving updated domain ACL IP rule [00000000-0000-0000-0000-000000000000]: test error\n", func() {
 			ddosxDomainACLIPRuleUpdate(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 		})
 	})
@@ -308,7 +351,7 @@ func Test_ddosxDomainACLIPRuleDelete(t *testing.T) {
 		ddosxDomainACLIPRuleDelete(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 	})
 
-	t.Run("DeleteDomainACLIPRule_OutputsError", func(t *testing.T) {
+	t.Run("DeleteDomainACLIPRuleError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

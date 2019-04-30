@@ -143,13 +143,19 @@ func ddosxDomainACLIPRuleCreate(service ddosx.DDoSXService, cmd *cobra.Command, 
 	createRequest.URI, _ = cmd.Flags().GetString("uri")
 	createRequest.Mode = parsedMode
 
-	_, err = service.CreateDomainACLIPRule(args[0], createRequest)
+	id, err := service.CreateDomainACLIPRule(args[0], createRequest)
 	if err != nil {
 		output.Fatalf("Error creating domain ACL IP rule: %s", err)
 		return
 	}
 
-	// TODO: add rule retrieval
+	rule, err := service.GetDomainACLIPRule(args[0], id)
+	if err != nil {
+		output.Fatalf("Error retrieving new domain ACL IP rule [%s]: %s", id, err)
+		return
+	}
+
+	outputDDoSXACLIPRules([]ddosx.ACLIPRule{rule})
 }
 
 func ddosxDomainACLIPRuleUpdateCmd() *cobra.Command {
@@ -203,6 +209,7 @@ func ddosxDomainACLIPRuleUpdate(service ddosx.DDoSXService, cmd *cobra.Command, 
 		patchRequest.Mode = parsedMode
 	}
 
+	var rules []ddosx.ACLIPRule
 	for _, arg := range args[1:] {
 		err := service.PatchDomainACLIPRule(args[0], arg, patchRequest)
 		if err != nil {
@@ -210,8 +217,16 @@ func ddosxDomainACLIPRuleUpdate(service ddosx.DDoSXService, cmd *cobra.Command, 
 			continue
 		}
 
-		// TODO: add rule retrieval
+		rule, err := service.GetDomainACLIPRule(args[0], arg)
+		if err != nil {
+			OutputWithErrorLevelf("Error retrieving updated domain ACL IP rule [%s]: %s", arg, err)
+			continue
+		}
+
+		rules = append(rules, rule)
 	}
+
+	outputDDoSXACLIPRules(rules)
 }
 
 func ddosxDomainACLIPRuleDeleteCmd() *cobra.Command {

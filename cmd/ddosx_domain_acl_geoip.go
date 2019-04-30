@@ -130,13 +130,19 @@ func ddosxDomainACLGeoIPRuleCreate(service ddosx.DDoSXService, cmd *cobra.Comman
 	createRequest := ddosx.CreateACLGeoIPRuleRequest{}
 	createRequest.Code, _ = cmd.Flags().GetString("code")
 
-	_, err := service.CreateDomainACLGeoIPRule(args[0], createRequest)
+	id, err := service.CreateDomainACLGeoIPRule(args[0], createRequest)
 	if err != nil {
 		output.Fatalf("Error creating domain ACL GeoIP rule: %s", err)
 		return
 	}
 
-	// TODO: add rule retrieval
+	rule, err := service.GetDomainACLGeoIPRule(args[0], id)
+	if err != nil {
+		output.Fatalf("Error retrieving new domain ACL GeoIP rule [%s]: %s", id, err)
+		return
+	}
+
+	outputDDoSXACLGeoIPRules([]ddosx.ACLGeoIPRule{rule})
 }
 
 func ddosxDomainACLGeoIPRuleUpdateCmd() *cobra.Command {
@@ -172,6 +178,7 @@ func ddosxDomainACLGeoIPRuleUpdate(service ddosx.DDoSXService, cmd *cobra.Comman
 		patchRequest.Code, _ = cmd.Flags().GetString("code")
 	}
 
+	var rules []ddosx.ACLGeoIPRule
 	for _, arg := range args[1:] {
 		err := service.PatchDomainACLGeoIPRule(args[0], arg, patchRequest)
 		if err != nil {
@@ -179,8 +186,16 @@ func ddosxDomainACLGeoIPRuleUpdate(service ddosx.DDoSXService, cmd *cobra.Comman
 			continue
 		}
 
-		// TODO: add rule retrieval
+		rule, err := service.GetDomainACLGeoIPRule(args[0], arg)
+		if err != nil {
+			OutputWithErrorLevelf("Error retrieving updated domain ACL GeoIP rule [%s]: %s", arg, err)
+			continue
+		}
+
+		rules = append(rules, rule)
 	}
+
+	outputDDoSXACLGeoIPRules(rules)
 }
 
 func ddosxDomainACLGeoIPRuleDeleteCmd() *cobra.Command {

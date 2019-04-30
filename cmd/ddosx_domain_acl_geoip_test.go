@@ -151,12 +151,15 @@ func Test_ddosxDomainACLGeoIPRuleCreate(t *testing.T) {
 			Code: "GB",
 		}
 
-		service.EXPECT().CreateDomainACLGeoIPRule("testdomain1.co.uk", gomock.Eq(expectedRequest)).Return("00000000-0000-0000-0000-000000000000", nil).Times(1)
+		gomock.InOrder(
+			service.EXPECT().CreateDomainACLGeoIPRule("testdomain1.co.uk", gomock.Eq(expectedRequest)).Return("00000000-0000-0000-0000-000000000000", nil),
+			service.EXPECT().GetDomainACLGeoIPRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.ACLGeoIPRule{}, nil),
+		)
 
 		ddosxDomainACLGeoIPRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
 	})
 
-	t.Run("CreateDomainACLGeoIPRule_OutputsFatal", func(t *testing.T) {
+	t.Run("CreateDomainACLGeoIPRuleError_OutputsFatal", func(t *testing.T) {
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -166,6 +169,24 @@ func Test_ddosxDomainACLGeoIPRuleCreate(t *testing.T) {
 		service.EXPECT().CreateDomainACLGeoIPRule("testdomain1.co.uk", gomock.Any()).Return("00000000-0000-0000-0000-000000000000", errors.New("test error")).Times(1)
 
 		test_output.AssertFatalOutput(t, "Error creating domain ACL GeoIP rule: test error\n", func() {
+			ddosxDomainACLGeoIPRuleCreate(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
+		})
+	})
+
+	t.Run("GetDomainACLGeoIPRuleError_OutputsFatal", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockDDoSXService(mockCtrl)
+		cmd := ddosxDomainACLGeoIPRuleCreateCmd()
+		cmd.Flags().Set("code", "GB")
+
+		gomock.InOrder(
+			service.EXPECT().CreateDomainACLGeoIPRule("testdomain1.co.uk", gomock.Any()).Return("00000000-0000-0000-0000-000000000000", nil),
+			service.EXPECT().GetDomainACLGeoIPRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.ACLGeoIPRule{}, errors.New("test error")),
+		)
+
+		test_output.AssertFatalOutput(t, "Error retrieving new domain ACL GeoIP rule [00000000-0000-0000-0000-000000000000]: test error\n", func() {
 			ddosxDomainACLGeoIPRuleCreate(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 		})
 	})
@@ -209,12 +230,15 @@ func Test_ddosxDomainACLGeoIPRuleUpdate(t *testing.T) {
 			Code: "GB",
 		}
 
-		service.EXPECT().PatchDomainACLGeoIPRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Eq(expectedRequest)).Return(nil).Times(1)
+		gomock.InOrder(
+			service.EXPECT().PatchDomainACLGeoIPRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Eq(expectedRequest)).Return(nil),
+			service.EXPECT().GetDomainACLGeoIPRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.ACLGeoIPRule{}, nil),
+		)
 
 		ddosxDomainACLGeoIPRuleUpdate(service, cmd, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 	})
 
-	t.Run("PatchDomainACLGeoIPRule_OutputsError", func(t *testing.T) {
+	t.Run("PatchDomainACLGeoIPRuleError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -223,6 +247,22 @@ func Test_ddosxDomainACLGeoIPRuleUpdate(t *testing.T) {
 		service.EXPECT().PatchDomainACLGeoIPRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Any()).Return(errors.New("test error"))
 
 		test_output.AssertErrorOutput(t, "Error updating domain ACL GeoIP rule [00000000-0000-0000-0000-000000000000]: test error\n", func() {
+			ddosxDomainACLGeoIPRuleUpdate(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
+		})
+	})
+
+	t.Run("GetDomainACLGeoIPRuleError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockDDoSXService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().PatchDomainACLGeoIPRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Any()).Return(nil),
+			service.EXPECT().GetDomainACLGeoIPRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.ACLGeoIPRule{}, errors.New("test error")),
+		)
+
+		test_output.AssertErrorOutput(t, "Error retrieving updated domain ACL GeoIP rule [00000000-0000-0000-0000-000000000000]: test error\n", func() {
 			ddosxDomainACLGeoIPRuleUpdate(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 		})
 	})

@@ -151,12 +151,15 @@ func Test_ddosxDomainRecordCreate(t *testing.T) {
 			Name: "sub.testdomain1.co.uk",
 		}
 
-		service.EXPECT().CreateDomainRecord("testdomain1.co.uk", gomock.Eq(expectedRequest)).Return("00000000-0000-0000-0000-000000000000", nil).Times(1)
+		gomock.InOrder(
+			service.EXPECT().CreateDomainRecord("testdomain1.co.uk", gomock.Eq(expectedRequest)).Return("00000000-0000-0000-0000-000000000000", nil),
+			service.EXPECT().GetDomainRecord("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.Record{}, nil),
+		)
 
 		ddosxDomainRecordCreate(service, cmd, []string{"testdomain1.co.uk"})
 	})
 
-	t.Run("CreateDomainRecord_OutputsFatal", func(t *testing.T) {
+	t.Run("CreateDomainRecordError_OutputsFatal", func(t *testing.T) {
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -166,6 +169,23 @@ func Test_ddosxDomainRecordCreate(t *testing.T) {
 		service.EXPECT().CreateDomainRecord("testdomain1.co.uk", gomock.Any()).Return("00000000-0000-0000-0000-000000000000", errors.New("test error")).Times(1)
 
 		test_output.AssertFatalOutput(t, "Error creating domain record: test error\n", func() {
+			ddosxDomainRecordCreate(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
+		})
+	})
+
+	t.Run("GetDomainRecordError_OutputsFatal", func(t *testing.T) {
+
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockDDoSXService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().CreateDomainRecord("testdomain1.co.uk", gomock.Any()).Return("00000000-0000-0000-0000-000000000000", nil),
+			service.EXPECT().GetDomainRecord("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.Record{}, errors.New("test error")),
+		)
+
+		test_output.AssertFatalOutput(t, "Error retrieving new domain record [00000000-0000-0000-0000-000000000000]: test error\n", func() {
 			ddosxDomainRecordCreate(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 		})
 	})
@@ -209,7 +229,10 @@ func Test_ddosxDomainRecordUpdate(t *testing.T) {
 			Content: "1.2.3.4",
 		}
 
-		service.EXPECT().PatchDomainRecord("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Eq(expectedRequest)).Return(nil)
+		gomock.InOrder(
+			service.EXPECT().PatchDomainRecord("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Eq(expectedRequest)).Return(nil),
+			service.EXPECT().GetDomainRecord("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.Record{}, nil),
+		)
 
 		ddosxDomainRecordUpdate(service, cmd, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 	})
@@ -234,12 +257,15 @@ func Test_ddosxDomainRecordUpdate(t *testing.T) {
 			SafeDNSRecordID: 123,
 		}
 
-		service.EXPECT().PatchDomainRecord("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Eq(expectedRequest)).Return(nil)
+		gomock.InOrder(
+			service.EXPECT().PatchDomainRecord("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Eq(expectedRequest)).Return(nil),
+			service.EXPECT().GetDomainRecord("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.Record{}, nil),
+		)
 
 		ddosxDomainRecordUpdate(service, cmd, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 	})
 
-	t.Run("UpdateDomainRecord_OutputsFatal", func(t *testing.T) {
+	t.Run("UpdateDomainRecordError_OutputsFatal", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -248,6 +274,22 @@ func Test_ddosxDomainRecordUpdate(t *testing.T) {
 		service.EXPECT().PatchDomainRecord("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Any()).Return(errors.New("test error"))
 
 		test_output.AssertErrorOutput(t, "Error updating domain record [00000000-0000-0000-0000-000000000000]: test error\n", func() {
+			ddosxDomainRecordUpdate(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
+		})
+	})
+
+	t.Run("GetDomainRecordError_OutputsFatal", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockDDoSXService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().PatchDomainRecord("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Any()).Return(nil),
+			service.EXPECT().GetDomainRecord("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.Record{}, errors.New("test error")),
+		)
+
+		test_output.AssertErrorOutput(t, "Error retrieving updated domain record [00000000-0000-0000-0000-000000000000]: test error\n", func() {
 			ddosxDomainRecordUpdate(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 		})
 	})

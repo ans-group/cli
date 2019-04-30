@@ -146,13 +146,19 @@ func ddosxDomainWAFAdvancedRuleCreate(service ddosx.DDoSXService, cmd *cobra.Com
 	ip, _ := cmd.Flags().GetString("ip")
 	createRequest.IP = connection.IPAddress(ip)
 
-	_, err = service.CreateDomainWAFAdvancedRule(args[0], createRequest)
+	id, err := service.CreateDomainWAFAdvancedRule(args[0], createRequest)
 	if err != nil {
 		output.Fatalf("Error creating domain WAF advanced rule: %s", err)
 		return
 	}
 
-	// TODO: add advancedrule retrieval
+	rule, err := service.GetDomainWAFAdvancedRule(args[0], id)
+	if err != nil {
+		output.Fatalf("Error retrieving new domain WAF advanced rule [%s]: %s", id, err)
+		return
+	}
+
+	outputDDoSXWAFAdvancedRules([]ddosx.WAFAdvancedRule{rule})
 }
 
 func ddosxDomainWAFAdvancedRuleUpdateCmd() *cobra.Command {
@@ -208,6 +214,7 @@ func ddosxDomainWAFAdvancedRuleUpdate(service ddosx.DDoSXService, cmd *cobra.Com
 		patchRequest.IP = connection.IPAddress(ip)
 	}
 
+	var rules []ddosx.WAFAdvancedRule
 	for _, arg := range args[1:] {
 		err := service.PatchDomainWAFAdvancedRule(args[0], arg, patchRequest)
 		if err != nil {
@@ -215,8 +222,16 @@ func ddosxDomainWAFAdvancedRuleUpdate(service ddosx.DDoSXService, cmd *cobra.Com
 			continue
 		}
 
-		// TODO: add advancedrule retrieval
+		rule, err := service.GetDomainWAFAdvancedRule(args[0], arg)
+		if err != nil {
+			OutputWithErrorLevelf("Error retrieving updated domain WAF advanced rule [%s]: %s", arg, err)
+			continue
+		}
+
+		rules = append(rules, rule)
 	}
+
+	outputDDoSXWAFAdvancedRules(rules)
 }
 
 func ddosxDomainWAFAdvancedRuleDeleteCmd() *cobra.Command {

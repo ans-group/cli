@@ -151,12 +151,15 @@ func Test_ddosxDomainWAFRuleCreate(t *testing.T) {
 			URI: "test.html",
 		}
 
-		service.EXPECT().CreateDomainWAFRule("testdomain1.co.uk", gomock.Eq(expectedRequest)).Return("00000000-0000-0000-0000-000000000000", nil).Times(1)
+		gomock.InOrder(
+			service.EXPECT().CreateDomainWAFRule("testdomain1.co.uk", gomock.Eq(expectedRequest)).Return("00000000-0000-0000-0000-000000000000", nil),
+			service.EXPECT().GetDomainWAFRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.WAFRule{}, nil),
+		)
 
 		ddosxDomainWAFRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
 	})
 
-	t.Run("CreateDomainWAFRule_OutputsFatal", func(t *testing.T) {
+	t.Run("CreateDomainWAFRuleError_OutputsFatal", func(t *testing.T) {
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -166,6 +169,23 @@ func Test_ddosxDomainWAFRuleCreate(t *testing.T) {
 		service.EXPECT().CreateDomainWAFRule("testdomain1.co.uk", gomock.Any()).Return("00000000-0000-0000-0000-000000000000", errors.New("test error")).Times(1)
 
 		test_output.AssertFatalOutput(t, "Error creating domain WAF rule: test error\n", func() {
+			ddosxDomainWAFRuleCreate(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
+		})
+	})
+
+	t.Run("GetDomainWAFRuleError_OutputsFatal", func(t *testing.T) {
+
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockDDoSXService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().CreateDomainWAFRule("testdomain1.co.uk", gomock.Any()).Return("00000000-0000-0000-0000-000000000000", nil),
+			service.EXPECT().GetDomainWAFRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.WAFRule{}, errors.New("test error")),
+		)
+
+		test_output.AssertFatalOutput(t, "Error retrieving new domain WAF rule [00000000-0000-0000-0000-000000000000]: test error\n", func() {
 			ddosxDomainWAFRuleCreate(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 		})
 	})
@@ -211,12 +231,15 @@ func Test_ddosxDomainWAFRuleUpdate(t *testing.T) {
 			IP:  "1.2.3.4",
 		}
 
-		service.EXPECT().PatchDomainWAFRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Eq(expectedRequest)).Return(nil).Times(1)
+		gomock.InOrder(
+			service.EXPECT().PatchDomainWAFRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Eq(expectedRequest)).Return(nil),
+			service.EXPECT().GetDomainWAFRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.WAFRule{}, nil),
+		)
 
 		ddosxDomainWAFRuleUpdate(service, cmd, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 	})
 
-	t.Run("PatchDomainWAFRule_OutputsError", func(t *testing.T) {
+	t.Run("PatchDomainWAFRuleError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -225,6 +248,22 @@ func Test_ddosxDomainWAFRuleUpdate(t *testing.T) {
 		service.EXPECT().PatchDomainWAFRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Any()).Return(errors.New("test error"))
 
 		test_output.AssertErrorOutput(t, "Error updating domain WAF rule [00000000-0000-0000-0000-000000000000]: test error\n", func() {
+			ddosxDomainWAFRuleUpdate(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
+		})
+	})
+
+	t.Run("GetDomainWAFRuleError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockDDoSXService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().PatchDomainWAFRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Any()).Return(nil),
+			service.EXPECT().GetDomainWAFRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.WAFRule{}, errors.New("test error")),
+		)
+
+		test_output.AssertErrorOutput(t, "Error retrieving updated domain WAF rule [00000000-0000-0000-0000-000000000000]: test error\n", func() {
 			ddosxDomainWAFRuleUpdate(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 		})
 	})
