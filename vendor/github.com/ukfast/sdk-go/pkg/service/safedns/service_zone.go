@@ -44,7 +44,7 @@ func (s *Service) getZonesPaginatedResponseBody(parameters connection.APIRequest
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetZone retrieves a single zone by name
@@ -70,7 +70,7 @@ func (s *Service) getZoneResponseBody(zoneName string) (*GetZoneResponseBody, er
 		return body, &ZoneNotFoundError{ZoneName: zoneName}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // CreateZone creates a new SafeDNS zone
@@ -88,7 +88,29 @@ func (s *Service) createZoneResponseBody(req CreateZoneRequest) (*connection.API
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{201}, body)
+	return body, response.HandleResponse([]int{}, body)
+}
+
+// PatchZone patches a SafeDNS zone
+func (s *Service) PatchZone(zoneName string, req PatchZoneRequest) error {
+	_, err := s.patchZoneResponseBody(zoneName, req)
+
+	return err
+}
+
+func (s *Service) patchZoneResponseBody(zoneName string, req PatchZoneRequest) (*connection.APIResponseBody, error) {
+	body := &connection.APIResponseBody{}
+
+	if zoneName == "" {
+		return body, fmt.Errorf("invalid zone name")
+	}
+
+	response, err := s.connection.Patch(fmt.Sprintf("/safedns/v1/zones/%s", zoneName), &req)
+	if err != nil {
+		return body, err
+	}
+
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // DeleteZone removes a SafeDNS zone
@@ -114,7 +136,7 @@ func (s *Service) deleteZoneResponseBody(zoneName string) (*connection.APIRespon
 		return body, &ZoneNotFoundError{ZoneName: zoneName}
 	}
 
-	return body, response.HandleResponse([]int{204}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetZoneRecords retrieves a list of records
@@ -163,7 +185,7 @@ func (s *Service) getZoneRecordsPaginatedResponseBody(zoneName string, parameter
 		return body, &ZoneNotFoundError{ZoneName: zoneName}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetZoneRecord retrieves a single zone record by ID
@@ -192,7 +214,7 @@ func (s *Service) getZoneRecordResponseBody(zoneName string, recordID int) (*Get
 		return body, &ZoneRecordNotFoundError{ZoneName: zoneName, RecordID: recordID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // CreateZoneRecord creates a new SafeDNS zone record
@@ -218,7 +240,7 @@ func (s *Service) createZoneRecordResponseBody(zoneName string, req CreateRecord
 		return body, &ZoneNotFoundError{ZoneName: zoneName}
 	}
 
-	return body, response.HandleResponse([]int{201}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // UpdateZoneRecord updates a SafeDNS zone record
@@ -247,7 +269,7 @@ func (s *Service) updateZoneRecordResponseBody(zoneName string, record Record) (
 		return body, &ZoneRecordNotFoundError{ZoneName: zoneName, RecordID: record.ID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // PatchZoneRecord patches a SafeDNS zone record
@@ -276,7 +298,7 @@ func (s *Service) patchZoneRecordResponseBody(zoneName string, recordID int, pat
 		return body, &ZoneRecordNotFoundError{ZoneName: zoneName, RecordID: recordID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // DeleteZoneRecord removes a SafeDNS zone record
@@ -305,7 +327,7 @@ func (s *Service) deleteZoneRecordResponseBody(zoneName string, recordID int) (*
 		return body, &ZoneRecordNotFoundError{ZoneName: zoneName, RecordID: recordID}
 	}
 
-	return body, response.HandleResponse([]int{204}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetZoneNotes retrieves a list of zone notes
@@ -354,7 +376,7 @@ func (s *Service) getZoneNotesPaginatedResponseBody(zoneName string, parameters 
 		return body, &ZoneNotFoundError{ZoneName: zoneName}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetZoneNote retrieves a single zone note by ID
@@ -383,7 +405,7 @@ func (s *Service) getZoneNoteResponseBody(zoneName string, noteID int) (*GetZone
 		return body, &ZoneNoteNotFoundError{ZoneName: zoneName, NoteID: noteID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // CreateZoneNote creates a new SafeDNS zone note
@@ -409,5 +431,5 @@ func (s *Service) createZoneNote(zoneName string, req CreateNoteRequest) (*GetZo
 		return body, &ZoneNotFoundError{ZoneName: zoneName}
 	}
 
-	return body, response.HandleResponse([]int{201}, body)
+	return body, response.HandleResponse([]int{}, body)
 }

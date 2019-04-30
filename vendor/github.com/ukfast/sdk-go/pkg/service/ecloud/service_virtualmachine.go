@@ -44,7 +44,7 @@ func (s *Service) getVirtualMachinesPaginatedResponseBody(parameters connection.
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetVirtualMachine retrieves a single virtual machine by ID
@@ -70,7 +70,7 @@ func (s *Service) getVirtualMachineResponseBody(vmID int) (*GetVirtualMachineRes
 		return body, &VirtualMachineNotFoundError{ID: vmID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // DeleteVirtualMachine removes a virtual machine
@@ -96,7 +96,7 @@ func (s *Service) deleteVirtualMachineResponseBody(vmID int) (*connection.APIRes
 		return body, &VirtualMachineNotFoundError{ID: vmID}
 	}
 
-	return body, response.HandleResponse([]int{202}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // CreateVirtualMachine creates a new virtual machine
@@ -114,7 +114,7 @@ func (s *Service) createVirtualMachineResponseBody(req CreateVirtualMachineReque
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{202}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // PatchVirtualMachine patches an eCloud virtual machine
@@ -166,7 +166,7 @@ func (s *Service) cloneVirtualMachineResponseBody(vmID int, req CloneVirtualMach
 		return body, &VirtualMachineNotFoundError{ID: vmID}
 	}
 
-	return body, response.HandleResponse([]int{202}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // PowerOnVirtualMachine powers on a virtual machine
@@ -192,7 +192,7 @@ func (s *Service) powerOnVirtualMachineResponseBody(vmID int) (*connection.APIRe
 		return body, &VirtualMachineNotFoundError{ID: vmID}
 	}
 
-	return body, response.HandleResponse([]int{204}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // PowerOffVirtualMachine powers off a virtual machine
@@ -218,7 +218,7 @@ func (s *Service) powerOffVirtualMachineResponseBody(vmID int) (*connection.APIR
 		return body, &VirtualMachineNotFoundError{ID: vmID}
 	}
 
-	return body, response.HandleResponse([]int{204}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // PowerResetVirtualMachine resets a virtual machine (hard power off)
@@ -244,7 +244,7 @@ func (s *Service) powerResetVirtualMachineResponseBody(vmID int) (*connection.AP
 		return body, &VirtualMachineNotFoundError{ID: vmID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // PowerShutdownVirtualMachine shuts down a virtual machine
@@ -270,7 +270,7 @@ func (s *Service) powerShutdownVirtualMachineResponseBody(vmID int) (*connection
 		return body, &VirtualMachineNotFoundError{ID: vmID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // PowerRestartVirtualMachine resets a virtual machine (graceful power off)
@@ -296,7 +296,7 @@ func (s *Service) powerRestartVirtualMachineResponseBody(vmID int) (*connection.
 		return body, &VirtualMachineNotFoundError{ID: vmID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // CreateVirtualMachineTemplate creates a virtual machine template
@@ -322,7 +322,7 @@ func (s *Service) createVirtualMachineTemplateResponseBody(vmID int, req CreateV
 		return body, &VirtualMachineNotFoundError{ID: vmID}
 	}
 
-	return body, response.HandleResponse([]int{202}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetVirtualMachineTags retrieves a list of tags for a virtual machine
@@ -371,7 +371,7 @@ func (s *Service) getVirtualMachineTagsPaginatedResponseBody(vmID int, parameter
 		return body, &VirtualMachineNotFoundError{ID: vmID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetVirtualMachineTag retrieves a single virtual machine tag by key
@@ -400,7 +400,7 @@ func (s *Service) getVirtualMachineTagResponseBody(vmID int, tagKey string) (*Ge
 		return body, &TagNotFoundError{Key: tagKey}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // CreateVirtualMachineTag creates a new virtual machine tag
@@ -426,7 +426,7 @@ func (s *Service) createVirtualMachineTagResponseBody(vmID int, req CreateTagReq
 		return body, &VirtualMachineNotFoundError{ID: vmID}
 	}
 
-	return body, response.HandleResponse([]int{201}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // PatchVirtualMachineTag patches an eCloud virtual machine tag
@@ -454,7 +454,7 @@ func (s *Service) patchVirtualMachineTagResponseBody(vmID int, tagKey string, pa
 	if response.StatusCode == 404 {
 		return body, &TagNotFoundError{Key: tagKey}
 	}
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // DeleteVirtualMachineTag removes a virtual machine tag
@@ -483,5 +483,5 @@ func (s *Service) deleteVirtualMachineTagResponseBody(vmID int, tagKey string) (
 		return body, &TagNotFoundError{Key: tagKey}
 	}
 
-	return body, response.HandleResponse([]int{204}, body)
+	return body, response.HandleResponse([]int{}, body)
 }

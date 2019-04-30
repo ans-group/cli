@@ -70,6 +70,57 @@ func Test_ddosxDomainRecordList(t *testing.T) {
 	})
 }
 
+func Test_ddosxDomainRecordShowCmd_Args(t *testing.T) {
+	t.Run("ValidArgs_NoError", func(t *testing.T) {
+		cmd := ddosxDomainRecordShowCmd()
+		err := cmd.Args(nil, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("MissingDomain_Error", func(t *testing.T) {
+		cmd := ddosxDomainRecordShowCmd()
+		err := cmd.Args(nil, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing domain", err.Error())
+	})
+
+	t.Run("MissingRecord_Error", func(t *testing.T) {
+		cmd := ddosxDomainRecordShowCmd()
+		err := cmd.Args(nil, []string{"testdomain1.co.uk"})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing record", err.Error())
+	})
+}
+
+func Test_ddosxDomainRecordShow(t *testing.T) {
+	t.Run("Success", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockDDoSXService(mockCtrl)
+
+		service.EXPECT().GetDomainRecord("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.Record{}, nil)
+
+		ddosxDomainRecordShow(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
+	})
+
+	t.Run("GetDomainRecord_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockDDoSXService(mockCtrl)
+
+		service.EXPECT().GetDomainRecord("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.Record{}, errors.New("test error"))
+
+		test_output.AssertErrorOutput(t, "Error retrieving domain record [00000000-0000-0000-0000-000000000000]: test error\n", func() {
+			ddosxDomainRecordShow(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
+		})
+	})
+}
+
 func Test_ddosxDomainRecordCreateCmd_Args(t *testing.T) {
 	t.Run("ValidArgs_NoError", func(t *testing.T) {
 		cmd := ddosxDomainRecordCreateCmd()

@@ -44,7 +44,7 @@ func (s *Service) getTemplatesPaginatedResponseBody(parameters connection.APIReq
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetTemplate retrieves a single template by ID
@@ -70,7 +70,7 @@ func (s *Service) getTemplateResponseBody(templateID int) (*GetTemplateResponseB
 		return body, &TemplateNotFoundError{TemplateID: templateID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // CreateTemplate creates a new SafeDNS template
@@ -88,7 +88,7 @@ func (s *Service) createTemplateResponseBody(req CreateTemplateRequest) (*GetTem
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{201}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // UpdateTemplate updates a SafeDNS template
@@ -114,7 +114,7 @@ func (s *Service) updateTemplateResponseBody(template Template) (*GetTemplateRes
 		return body, &TemplateNotFoundError{TemplateID: template.ID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // PatchTemplate patches a SafeDNS template
@@ -141,7 +141,7 @@ func (s *Service) patchTemplateResponseBody(templateID int, patch PatchTemplateR
 		return body, &TemplateNotFoundError{TemplateID: templateID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // DeleteTemplate removes a SafeDNS template
@@ -167,7 +167,7 @@ func (s *Service) deleteTemplateResponseBody(templateID int) (*connection.APIRes
 		return body, &TemplateNotFoundError{TemplateID: templateID}
 	}
 
-	return body, response.HandleResponse([]int{204}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetTemplateRecords retrieves a list of records
@@ -216,7 +216,7 @@ func (s *Service) getTemplateRecordsPaginatedResponseBody(templateID int, parame
 		return body, &TemplateNotFoundError{TemplateID: templateID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetTemplateRecord retrieves a single zone record by ID
@@ -245,7 +245,7 @@ func (s *Service) getTemplateRecordResponseBody(templateID int, recordID int) (*
 		return body, &TemplateRecordNotFoundError{TemplateID: templateID, RecordID: recordID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // CreateTemplateRecord creates a new SafeDNS zone record
@@ -271,7 +271,7 @@ func (s *Service) createTemplateRecordResponseBody(templateID int, req CreateRec
 		return body, &TemplateNotFoundError{TemplateID: templateID}
 	}
 
-	return body, response.HandleResponse([]int{201}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // UpdateTemplateRecord updates a SafeDNS template record
@@ -300,7 +300,7 @@ func (s *Service) updateTemplateRecordResponseBody(templateID int, record Record
 		return body, &TemplateRecordNotFoundError{TemplateID: templateID, RecordID: record.ID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // PatchTemplateRecord patches a SafeDNS template record
@@ -330,7 +330,7 @@ func (s *Service) patchTemplateRecordResponseBody(templateID int, recordID int, 
 		return body, &TemplateRecordNotFoundError{TemplateID: templateID, RecordID: recordID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // DeleteTemplateRecord removes a SafeDNS template record
@@ -359,5 +359,5 @@ func (s *Service) deleteTemplateRecordResponseBody(templateID int, recordID int)
 		return body, &TemplateRecordNotFoundError{TemplateID: templateID, RecordID: recordID}
 	}
 
-	return body, response.HandleResponse([]int{204}, body)
+	return body, response.HandleResponse([]int{}, body)
 }

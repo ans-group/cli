@@ -419,6 +419,20 @@ func (mr *MockSafeDNSServiceMockRecorder) PatchTemplateRecord(arg0, arg1, arg2 i
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchTemplateRecord", reflect.TypeOf((*MockSafeDNSService)(nil).PatchTemplateRecord), arg0, arg1, arg2)
 }
 
+// PatchZone mocks base method
+func (m *MockSafeDNSService) PatchZone(arg0 string, arg1 safedns.PatchZoneRequest) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PatchZone", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchZone indicates an expected call of PatchZone
+func (mr *MockSafeDNSServiceMockRecorder) PatchZone(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchZone", reflect.TypeOf((*MockSafeDNSService)(nil).PatchZone), arg0, arg1)
+}
+
 // PatchZoneRecord mocks base method
 func (m *MockSafeDNSService) PatchZoneRecord(arg0 string, arg1 int, arg2 safedns.PatchRecordRequest) (int, error) {
 	m.ctrl.T.Helper()

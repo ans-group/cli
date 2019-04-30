@@ -10,6 +10,7 @@ type SafeDNSService interface {
 	GetZonesPaginated(parameters connection.APIRequestParameters) ([]Zone, error)
 	GetZone(zoneName string) (Zone, error)
 	CreateZone(req CreateZoneRequest) error
+	PatchZone(zoneName string, req PatchZoneRequest) error
 	DeleteZone(zoneName string) error
 	GetZoneRecords(zoneName string, parameters connection.APIRequestParameters) ([]Record, error)
 	GetZoneRecordsPaginated(zoneName string, parameters connection.APIRequestParameters) ([]Record, error)

@@ -77,12 +77,14 @@ func (r *APIResponse) DeserializeResponseBody(out interface{}) error {
 
 // ValidateStatusCode validates the API response
 func (r *APIResponse) ValidateStatusCode(codes []int, respBody ResponseBody) error {
-	if len(codes) < 1 {
-		return nil
-	}
-
-	for _, code := range codes {
-		if r.StatusCode == code {
+	if len(codes) > 0 {
+		for _, code := range codes {
+			if r.StatusCode == code {
+				return nil
+			}
+		}
+	} else {
+		if r.StatusCode >= 200 && r.StatusCode <= 299 {
 			return nil
 		}
 	}

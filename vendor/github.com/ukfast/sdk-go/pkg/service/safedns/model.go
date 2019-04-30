@@ -72,7 +72,7 @@ func (c *Record) Validate() *connection.ValidationError {
 // Note represents a SafeDNS note
 type Note struct {
 	ID        int                  `json:"id"`
-	ContactID int                  `json:"user_id"`
+	ContactID int                  `json:"contact_id"`
 	Notes     string               `json:"notes"`
 	CreatedAt connection.DateTime  `json:"created_at"`
 	IP        connection.IPAddress `json:"ip"`

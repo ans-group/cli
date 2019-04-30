@@ -16,6 +16,7 @@ func ddosxDomainRecordRootCmd() *cobra.Command {
 
 	// Child commands
 	cmd.AddCommand(ddosxDomainRecordListCmd())
+	cmd.AddCommand(ddosxDomainRecordShowCmd())
 	cmd.AddCommand(ddosxDomainRecordCreateCmd())
 	cmd.AddCommand(ddosxDomainRecordUpdateCmd())
 
@@ -52,6 +53,45 @@ func ddosxDomainRecordList(service ddosx.DDoSXService, cmd *cobra.Command, args 
 	if err != nil {
 		output.Fatalf("Error retrieving domain records: %s", err)
 		return
+	}
+
+	outputDDoSXRecords(records)
+}
+
+func ddosxDomainRecordShowCmd() *cobra.Command {
+	return &cobra.Command{
+		Use:     "show <domain: name> <record: id>...",
+		Short:   "Shows domain records",
+		Long:    "This command shows a domain record",
+		Example: "ukfast ddosx domain record show example.com 00000000-0000-0000-0000-000000000000",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Missing domain")
+			}
+			if len(args) < 2 {
+				return errors.New("Missing record")
+			}
+
+			return nil
+		},
+		Run: func(cmd *cobra.Command, args []string) {
+			ddosxDomainRecordShow(getClient().DDoSXService(), cmd, args)
+		},
+	}
+}
+
+func ddosxDomainRecordShow(service ddosx.DDoSXService, cmd *cobra.Command, args []string) {
+
+	var records []ddosx.Record
+
+	for _, arg := range args[1:] {
+		record, err := service.GetDomainRecord(args[0], arg)
+		if err != nil {
+			OutputWithErrorLevelf("Error retrieving domain record [%s]: %s", arg, err.Error())
+			continue
+		}
+
+		records = append(records, record)
 	}
 
 	outputDDoSXRecords(records)

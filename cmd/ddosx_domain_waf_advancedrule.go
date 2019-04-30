@@ -18,6 +18,7 @@ func ddosxDomainWAFAdvancedRuleRootCmd() *cobra.Command {
 
 	// Child commands
 	cmd.AddCommand(ddosxDomainWAFAdvancedRuleListCmd())
+	cmd.AddCommand(ddosxDomainWAFAdvancedRuleShowCmd())
 	cmd.AddCommand(ddosxDomainWAFAdvancedRuleCreateCmd())
 	cmd.AddCommand(ddosxDomainWAFAdvancedRuleUpdateCmd())
 	cmd.AddCommand(ddosxDomainWAFAdvancedRuleDeleteCmd())
@@ -58,6 +59,45 @@ func ddosxDomainWAFAdvancedRuleList(service ddosx.DDoSXService, cmd *cobra.Comma
 	}
 
 	outputDDoSXWAFAdvancedRules(domains)
+}
+
+func ddosxDomainWAFAdvancedRuleShowCmd() *cobra.Command {
+	return &cobra.Command{
+		Use:     "show <domain: name> <rule: id>...",
+		Short:   "Shows domain WAF advanced rules",
+		Long:    "This command shows a WAF advanced rule",
+		Example: "ukfast ddosx domain waf advancedrule show example.com 00000000-0000-0000-0000-000000000000",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Missing domain")
+			}
+			if len(args) < 2 {
+				return errors.New("Missing rule")
+			}
+
+			return nil
+		},
+		Run: func(cmd *cobra.Command, args []string) {
+			ddosxDomainWAFAdvancedRuleShow(getClient().DDoSXService(), cmd, args)
+		},
+	}
+}
+
+func ddosxDomainWAFAdvancedRuleShow(service ddosx.DDoSXService, cmd *cobra.Command, args []string) {
+
+	var rules []ddosx.WAFAdvancedRule
+
+	for _, arg := range args[1:] {
+		rule, err := service.GetDomainWAFAdvancedRule(args[0], arg)
+		if err != nil {
+			OutputWithErrorLevelf("Error retrieving domain WAF advanced rule [%s]: %s", arg, err.Error())
+			continue
+		}
+
+		rules = append(rules, rule)
+	}
+
+	outputDDoSXWAFAdvancedRules(rules)
 }
 
 func ddosxDomainWAFAdvancedRuleCreateCmd() *cobra.Command {

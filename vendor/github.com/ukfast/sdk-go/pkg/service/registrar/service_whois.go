@@ -29,7 +29,7 @@ func (s *Service) getWhoisResponseBody(domainName string) (*GetWhoisResponseBody
 		return body, &DomainNotFoundError{Name: domainName}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetWhoisRaw retrieves raw WHOIS information for a single domain
@@ -55,5 +55,5 @@ func (s *Service) getWhoisRawResponseBody(domainName string) (*GetWhoisRawRespon
 		return body, &DomainNotFoundError{Name: domainName}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }

@@ -8,6 +8,9 @@ import (
 
 // DDoSXService is an interface for managing the DDoSX service
 type DDoSXService interface {
+	GetRecords(parameters connection.APIRequestParameters) ([]Record, error)
+	GetRecordsPaginated(parameters connection.APIRequestParameters) ([]Record, error)
+
 	GetDomains(parameters connection.APIRequestParameters) ([]Domain, error)
 	GetDomainsPaginated(parameters connection.APIRequestParameters) ([]Domain, error)
 	GetDomain(domainName string) (Domain, error)
@@ -16,8 +19,7 @@ type DDoSXService interface {
 
 	GetDomainRecords(domainName string, parameters connection.APIRequestParameters) ([]Record, error)
 	GetDomainRecordsPaginated(domainName string, parameters connection.APIRequestParameters) ([]Record, error)
-	GetRecords(parameters connection.APIRequestParameters) ([]Record, error)
-	GetRecordsPaginated(parameters connection.APIRequestParameters) ([]Record, error)
+	GetDomainRecord(domainName string, recordID string) (Record, error)
 	CreateDomainRecord(domainName string, req CreateRecordRequest) (string, error)
 	PatchDomainRecord(domainName string, recordID string, req PatchRecordRequest) error
 	DeleteDomainRecord(domainName string, recordID string) error
@@ -39,12 +41,14 @@ type DDoSXService interface {
 
 	GetDomainWAFRules(domainName string, parameters connection.APIRequestParameters) ([]WAFRule, error)
 	GetDomainWAFRulesPaginated(domainName string, parameters connection.APIRequestParameters) ([]WAFRule, error)
+	GetDomainWAFRule(domainName string, ruleID string) (WAFRule, error)
 	CreateDomainWAFRule(domainName string, req CreateWAFRuleRequest) (string, error)
 	PatchDomainWAFRule(domainName string, ruleSetID string, req PatchWAFRuleRequest) error
 	DeleteDomainWAFRule(domainName string, ruleID string) error
 
 	GetDomainWAFAdvancedRules(domainName string, parameters connection.APIRequestParameters) ([]WAFAdvancedRule, error)
 	GetDomainWAFAdvancedRulesPaginated(domainName string, parameters connection.APIRequestParameters) ([]WAFAdvancedRule, error)
+	GetDomainWAFAdvancedRule(domainName string, ruleID string) (WAFAdvancedRule, error)
 	CreateDomainWAFAdvancedRule(domainName string, req CreateWAFAdvancedRuleRequest) (string, error)
 	PatchDomainWAFAdvancedRule(domainName string, ruleID string, req PatchWAFAdvancedRuleRequest) error
 	DeleteDomainWAFAdvancedRule(domainName string, ruleID string) error
@@ -60,6 +64,7 @@ type DDoSXService interface {
 
 	GetDomainACLGeoIPRules(domainName string, parameters connection.APIRequestParameters) ([]ACLGeoIPRule, error)
 	GetDomainACLGeoIPRulesPaginated(domainName string, parameters connection.APIRequestParameters) ([]ACLGeoIPRule, error)
+	GetDomainACLGeoIPRule(domainName string, ruleID string) (ACLGeoIPRule, error)
 	CreateDomainACLGeoIPRule(domainName string, req CreateACLGeoIPRuleRequest) (string, error)
 	PatchDomainACLGeoIPRule(domainName string, ruleID string, req PatchACLGeoIPRuleRequest) error
 	DeleteDomainACLGeoIPRule(domainName string, ruleID string) error
@@ -68,6 +73,7 @@ type DDoSXService interface {
 
 	GetDomainACLIPRules(domainName string, parameters connection.APIRequestParameters) ([]ACLIPRule, error)
 	GetDomainACLIPRulesPaginated(domainName string, parameters connection.APIRequestParameters) ([]ACLIPRule, error)
+	GetDomainACLIPRule(domainName string, ruleID string) (ACLIPRule, error)
 	CreateDomainACLIPRule(domainName string, req CreateACLIPRuleRequest) (string, error)
 	PatchDomainACLIPRule(domainName string, ruleID string, req PatchACLIPRuleRequest) error
 	DeleteDomainACLIPRule(domainName string, ruleID string) error

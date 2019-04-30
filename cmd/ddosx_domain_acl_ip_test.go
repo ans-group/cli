@@ -71,6 +71,57 @@ func Test_ddosxDomainACLIPRuleList(t *testing.T) {
 	})
 }
 
+func Test_ddosxDomainACLIPRuleShowCmd_Args(t *testing.T) {
+	t.Run("ValidArgs_NoError", func(t *testing.T) {
+		cmd := ddosxDomainACLIPRuleShowCmd()
+		err := cmd.Args(nil, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("MissingDomain_Error", func(t *testing.T) {
+		cmd := ddosxDomainACLIPRuleShowCmd()
+		err := cmd.Args(nil, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing domain", err.Error())
+	})
+
+	t.Run("MissingRule_Error", func(t *testing.T) {
+		cmd := ddosxDomainACLIPRuleShowCmd()
+		err := cmd.Args(nil, []string{"testdomain1.co.uk"})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing rule", err.Error())
+	})
+}
+
+func Test_ddosxDomainACLIPRuleShow(t *testing.T) {
+	t.Run("Success", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockDDoSXService(mockCtrl)
+
+		service.EXPECT().GetDomainACLIPRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.ACLIPRule{}, nil)
+
+		ddosxDomainACLIPRuleShow(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
+	})
+
+	t.Run("GetDomainACLIPRule_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockDDoSXService(mockCtrl)
+
+		service.EXPECT().GetDomainACLIPRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.ACLIPRule{}, errors.New("test error"))
+
+		test_output.AssertErrorOutput(t, "Error retrieving domain ACL IP rule [00000000-0000-0000-0000-000000000000]: test error\n", func() {
+			ddosxDomainACLIPRuleShow(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
+		})
+	})
+}
+
 func Test_ddosxDomainACLIPRuleCreateCmd_Args(t *testing.T) {
 	t.Run("ValidArgs_NoError", func(t *testing.T) {
 		cmd := ddosxDomainACLIPRuleCreateCmd()
