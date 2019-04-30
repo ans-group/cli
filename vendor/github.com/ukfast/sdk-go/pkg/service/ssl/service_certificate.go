@@ -44,7 +44,7 @@ func (s *Service) getCertificatesPaginatedResponseBody(parameters connection.API
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetCertificate retrieves a single certificate by id
@@ -70,7 +70,7 @@ func (s *Service) getCertificateResponseBody(certificateID int) (*GetCertificate
 		return body, &CertificateNotFoundError{ID: certificateID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetCertificateContent retrieves the content of an SSL certificate
@@ -96,7 +96,7 @@ func (s *Service) getCertificateContentResponseBody(certificateID int) (*GetCert
 		return body, &CertificateNotFoundError{ID: certificateID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetCertificatePrivateKey retrieves an SSL certificate private key
@@ -122,5 +122,5 @@ func (s *Service) getCertificatePrivateKeyResponseBody(certificateID int) (*GetC
 		return body, &CertificateNotFoundError{ID: certificateID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }

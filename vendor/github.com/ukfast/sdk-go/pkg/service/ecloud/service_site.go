@@ -44,7 +44,7 @@ func (s *Service) getSitesPaginatedResponseBody(parameters connection.APIRequest
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetSite retrieves a single site by ID
@@ -70,5 +70,5 @@ func (s *Service) getSiteResponseBody(siteID int) (*GetSiteResponseBody, error) 
 		return body, &SiteNotFoundError{ID: siteID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }

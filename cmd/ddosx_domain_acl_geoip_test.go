@@ -70,6 +70,57 @@ func Test_ddosxDomainACLGeoIPRuleList(t *testing.T) {
 	})
 }
 
+func Test_ddosxDomainACLGeoIPRuleShowCmd_Args(t *testing.T) {
+	t.Run("ValidArgs_NoError", func(t *testing.T) {
+		cmd := ddosxDomainACLGeoIPRuleShowCmd()
+		err := cmd.Args(nil, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("MissingDomain_Error", func(t *testing.T) {
+		cmd := ddosxDomainACLGeoIPRuleShowCmd()
+		err := cmd.Args(nil, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing domain", err.Error())
+	})
+
+	t.Run("MissingRule_Error", func(t *testing.T) {
+		cmd := ddosxDomainACLGeoIPRuleShowCmd()
+		err := cmd.Args(nil, []string{"testdomain1.co.uk"})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing rule", err.Error())
+	})
+}
+
+func Test_ddosxDomainACLGeoIPRuleShow(t *testing.T) {
+	t.Run("Success", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockDDoSXService(mockCtrl)
+
+		service.EXPECT().GetDomainACLGeoIPRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.ACLGeoIPRule{}, nil)
+
+		ddosxDomainACLGeoIPRuleShow(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
+	})
+
+	t.Run("GetDomainACLGeoIPRule_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockDDoSXService(mockCtrl)
+
+		service.EXPECT().GetDomainACLGeoIPRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.ACLGeoIPRule{}, errors.New("test error"))
+
+		test_output.AssertErrorOutput(t, "Error retrieving domain ACL GeoIP rule [00000000-0000-0000-0000-000000000000]: test error\n", func() {
+			ddosxDomainACLGeoIPRuleShow(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
+		})
+	})
+}
+
 func Test_ddosxDomainACLGeoIPRuleCreateCmd_Args(t *testing.T) {
 	t.Run("ValidArgs_NoError", func(t *testing.T) {
 		cmd := ddosxDomainACLGeoIPRuleCreateCmd()

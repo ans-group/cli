@@ -44,7 +44,7 @@ func (s *Service) getDomainsPaginatedResponseBody(parameters connection.APIReque
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetDomain retrieves a single domain by name
@@ -70,7 +70,7 @@ func (s *Service) getDomainResponseBody(domainName string) (*GetDomainResponseBo
 		return body, &DomainNotFoundError{Name: domainName}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetDomainNameservers retrieves the nameservers for a domain
@@ -96,5 +96,5 @@ func (s *Service) getDomainNameserversResponseBody(domainName string) (*GetNames
 		return body, &DomainNotFoundError{Name: domainName}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }

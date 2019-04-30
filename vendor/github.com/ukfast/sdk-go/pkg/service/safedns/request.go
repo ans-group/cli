@@ -15,6 +15,16 @@ func (c *CreateZoneRequest) Validate() *connection.ValidationError {
 	return c.APIRequestBodyDefaultValidator.Validate(c)
 }
 
+// PatchZoneRequest represents a SafeDNS zone patch request
+type PatchZoneRequest struct {
+	Description string `json:"default,omitempty"`
+}
+
+// Validate returns an error if struct properties are missing/invalid
+func (c *PatchZoneRequest) Validate() *connection.ValidationError {
+	return nil
+}
+
 // PatchRecordRequest represents a SafeDNS record patch request
 type PatchRecordRequest struct {
 	Name     string     `json:"name,omitempty"`

@@ -44,7 +44,7 @@ func (s *Service) getHostsPaginatedResponseBody(parameters connection.APIRequest
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetHost retrieves a single host by ID
@@ -70,5 +70,5 @@ func (s *Service) getHostResponseBody(hostID int) (*GetHostResponseBody, error) 
 		return body, &HostNotFoundError{ID: hostID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }

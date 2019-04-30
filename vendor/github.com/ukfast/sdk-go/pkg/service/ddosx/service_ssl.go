@@ -44,7 +44,7 @@ func (s *Service) getSSLsPaginatedResponseBody(parameters connection.APIRequestP
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetSSL retrieves a single ssl by id
@@ -70,7 +70,7 @@ func (s *Service) getSSLResponseBody(sslID string) (*GetSSLResponseBody, error) 
 		return body, &SSLNotFoundError{ID: sslID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // CreateSSL retrieves creates an SSL
@@ -88,7 +88,7 @@ func (s *Service) createSSLResponseBody(req CreateSSLRequest) (*GetSSLResponseBo
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{201}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // PatchSSL retrieves patches an SSL
@@ -114,7 +114,7 @@ func (s *Service) patchSSLResponseBody(sslID string, req PatchSSLRequest) (*GetS
 		return body, &SSLNotFoundError{ID: sslID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // DeleteSSL deletes patches an SSL
@@ -140,7 +140,7 @@ func (s *Service) deleteSSLResponseBody(sslID string) (*connection.APIResponseBo
 		return body, &SSLNotFoundError{ID: sslID}
 	}
 
-	return body, response.HandleResponse([]int{204}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetSSLContent retrieves a single ssl by id
@@ -166,7 +166,7 @@ func (s *Service) getSSLContentResponseBody(sslID string) (*GetSSLContentRespons
 		return body, &SSLNotFoundError{ID: sslID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetSSLPrivateKey retrieves a single ssl by id
@@ -192,5 +192,5 @@ func (s *Service) getSSLPrivateKeyResponseBody(sslID string) (*GetSSLPrivateKeyR
 		return body, &SSLNotFoundError{ID: sslID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }

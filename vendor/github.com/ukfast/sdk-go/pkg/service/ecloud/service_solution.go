@@ -44,7 +44,7 @@ func (s *Service) getSolutionsPaginatedResponseBody(parameters connection.APIReq
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetSolution retrieves a single Solution by ID
@@ -70,7 +70,7 @@ func (s *Service) getSolutionResponseBody(solutionID int) (*GetSolutionResponseB
 		return body, &SolutionNotFoundError{ID: solutionID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // PatchSolution patches an eCloud solution
@@ -96,7 +96,7 @@ func (s *Service) patchSolutionResponseBody(solutionID int, patch PatchSolutionR
 		return body, &SolutionNotFoundError{ID: solutionID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetSolutionVirtualMachines retrieves a list of virtual machines within a solution
@@ -145,7 +145,7 @@ func (s *Service) getSolutionVirtualMachinesPaginatedResponseBody(solutionID int
 		return body, &SolutionNotFoundError{ID: solutionID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetSolutionSites retrieves a list of virtual machines within a solution
@@ -194,7 +194,7 @@ func (s *Service) getSolutionSitesPaginatedResponseBody(solutionID int, paramete
 		return body, &SolutionNotFoundError{ID: solutionID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetSolutionDatastores retrieves a list of datastores within a solution
@@ -243,7 +243,7 @@ func (s *Service) getSolutionDatastoresPaginatedResponseBody(solutionID int, par
 		return body, &SolutionNotFoundError{ID: solutionID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetSolutionHosts retrieves a list of hosts within a solution
@@ -292,7 +292,7 @@ func (s *Service) getSolutionHostsPaginatedResponseBody(solutionID int, paramete
 		return body, &SolutionNotFoundError{ID: solutionID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetSolutionNetworks retrieves a list of networks within a solution
@@ -341,7 +341,7 @@ func (s *Service) getSolutionNetworksPaginatedResponseBody(solutionID int, param
 		return body, &SolutionNotFoundError{ID: solutionID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetSolutionFirewalls retrieves a list of firewalls within a solution
@@ -390,7 +390,7 @@ func (s *Service) getSolutionFirewallsPaginatedResponseBody(solutionID int, para
 		return body, &SolutionNotFoundError{ID: solutionID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetSolutionTemplates retrieves a list of virtual machines within a solution
@@ -439,7 +439,7 @@ func (s *Service) getSolutionTemplatesPaginatedResponseBody(solutionID int, para
 		return body, &SolutionNotFoundError{ID: solutionID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetSolutionTemplate retrieves a single solution template by name
@@ -468,7 +468,7 @@ func (s *Service) getSolutionTemplateResponseBody(solutionID int, templateName s
 		return body, &TemplateNotFoundError{Name: templateName}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // RenameSolutionTemplate renames a solution template
@@ -497,7 +497,7 @@ func (s *Service) renameSolutionTemplateResponseBody(solutionID int, templateNam
 		return body, &TemplateNotFoundError{Name: templateName}
 	}
 
-	return body, response.HandleResponse([]int{202}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // DeleteSolutionTemplate removes a solution template
@@ -526,7 +526,7 @@ func (s *Service) deleteSolutionTemplateResponseBody(solutionID int, templateNam
 		return body, &TemplateNotFoundError{Name: templateName}
 	}
 
-	return body, response.HandleResponse([]int{202}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetSolutionTags retrieves a list of tags for a solution
@@ -575,7 +575,7 @@ func (s *Service) getSolutionTagsPaginatedResponseBody(solutionID int, parameter
 		return body, &SolutionNotFoundError{ID: solutionID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetSolutionTag retrieves a single solution tag by key
@@ -604,7 +604,7 @@ func (s *Service) getSolutionTagResponseBody(solutionID int, tagKey string) (*Ge
 		return body, &TagNotFoundError{Key: tagKey}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // CreateSolutionTag creates a new solution tag
@@ -630,7 +630,7 @@ func (s *Service) createSolutionTagResponseBody(solutionID int, req CreateTagReq
 		return body, &SolutionNotFoundError{ID: solutionID}
 	}
 
-	return body, response.HandleResponse([]int{201}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // PatchSolutionTag patches an eCloud solution tag
@@ -659,7 +659,7 @@ func (s *Service) patchSolutionTagResponseBody(solutionID int, tagKey string, pa
 		return body, &TagNotFoundError{Key: tagKey}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // DeleteSolutionTag removes a solution tag
@@ -688,5 +688,5 @@ func (s *Service) deleteSolutionTagResponseBody(solutionID int, tagKey string) (
 		return body, &TagNotFoundError{Key: tagKey}
 	}
 
-	return body, response.HandleResponse([]int{204}, body)
+	return body, response.HandleResponse([]int{}, body)
 }

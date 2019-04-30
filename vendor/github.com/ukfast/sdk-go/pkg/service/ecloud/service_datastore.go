@@ -44,7 +44,7 @@ func (s *Service) getDatastoresPaginatedResponseBody(parameters connection.APIRe
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }
 
 // GetDatastore retrieves a single datastore by ID
@@ -70,5 +70,5 @@ func (s *Service) getDatastoreResponseBody(datastoreID int) (*GetDatastoreRespon
 		return body, &DatastoreNotFoundError{ID: datastoreID}
 	}
 
-	return body, response.HandleResponse([]int{200}, body)
+	return body, response.HandleResponse([]int{}, body)
 }

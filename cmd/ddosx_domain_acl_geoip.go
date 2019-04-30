@@ -16,6 +16,7 @@ func ddosxDomainACLGeoIPRuleRootCmd() *cobra.Command {
 
 	// Child commands
 	cmd.AddCommand(ddosxDomainACLGeoIPRuleListCmd())
+	cmd.AddCommand(ddosxDomainACLGeoIPRuleShowCmd())
 	cmd.AddCommand(ddosxDomainACLGeoIPRuleCreateCmd())
 	cmd.AddCommand(ddosxDomainACLGeoIPRuleUpdateCmd())
 	cmd.AddCommand(ddosxDomainACLGeoIPRuleDeleteCmd())
@@ -59,6 +60,45 @@ func ddosxDomainACLGeoIPRuleList(service ddosx.DDoSXService, cmd *cobra.Command,
 	}
 
 	outputDDoSXACLGeoIPRules(domains)
+}
+
+func ddosxDomainACLGeoIPRuleShowCmd() *cobra.Command {
+	return &cobra.Command{
+		Use:     "show <domain: name> <rule: id>...",
+		Short:   "Shows domain ACL GeoIP rules",
+		Long:    "This command shows an ACL GeoIP rule",
+		Example: "ukfast ddosx domain acl geoip show example.com 00000000-0000-0000-0000-000000000000",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Missing domain")
+			}
+			if len(args) < 2 {
+				return errors.New("Missing rule")
+			}
+
+			return nil
+		},
+		Run: func(cmd *cobra.Command, args []string) {
+			ddosxDomainACLGeoIPRuleShow(getClient().DDoSXService(), cmd, args)
+		},
+	}
+}
+
+func ddosxDomainACLGeoIPRuleShow(service ddosx.DDoSXService, cmd *cobra.Command, args []string) {
+
+	var rules []ddosx.ACLGeoIPRule
+
+	for _, arg := range args[1:] {
+		rule, err := service.GetDomainACLGeoIPRule(args[0], arg)
+		if err != nil {
+			OutputWithErrorLevelf("Error retrieving domain ACL GeoIP rule [%s]: %s", arg, err.Error())
+			continue
+		}
+
+		rules = append(rules, rule)
+	}
+
+	outputDDoSXACLGeoIPRules(rules)
 }
 
 func ddosxDomainACLGeoIPRuleCreateCmd() *cobra.Command {
