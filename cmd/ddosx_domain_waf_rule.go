@@ -133,13 +133,19 @@ func ddosxDomainWAFRuleCreate(service ddosx.DDoSXService, cmd *cobra.Command, ar
 	ip, _ := cmd.Flags().GetString("ip")
 	createRequest.IP = connection.IPAddress(ip)
 
-	_, err := service.CreateDomainWAFRule(args[0], createRequest)
+	id, err := service.CreateDomainWAFRule(args[0], createRequest)
 	if err != nil {
 		output.Fatalf("Error creating domain WAF rule: %s", err)
 		return
 	}
 
-	// TODO: add rule retrieval
+	rule, err := service.GetDomainWAFRule(args[0], id)
+	if err != nil {
+		output.Fatalf("Error retrieving new domain WAF rule [%s]: %s", id, err)
+		return
+	}
+
+	outputDDoSXWAFRules([]ddosx.WAFRule{rule})
 }
 
 func ddosxDomainWAFRuleUpdateCmd() *cobra.Command {
@@ -181,6 +187,7 @@ func ddosxDomainWAFRuleUpdate(service ddosx.DDoSXService, cmd *cobra.Command, ar
 		patchRequest.IP = connection.IPAddress(ip)
 	}
 
+	var rules []ddosx.WAFRule
 	for _, arg := range args[1:] {
 		err := service.PatchDomainWAFRule(args[0], arg, patchRequest)
 		if err != nil {
@@ -188,8 +195,16 @@ func ddosxDomainWAFRuleUpdate(service ddosx.DDoSXService, cmd *cobra.Command, ar
 			continue
 		}
 
-		// TODO: add rule retrieval
+		rule, err := service.GetDomainWAFRule(args[0], arg)
+		if err != nil {
+			OutputWithErrorLevelf("Error retrieving updated domain WAF rule [%s]: %s", arg, err)
+			continue
+		}
+
+		rules = append(rules, rule)
 	}
+
+	outputDDoSXWAFRules(rules)
 }
 
 func ddosxDomainWAFRuleDeleteCmd() *cobra.Command {

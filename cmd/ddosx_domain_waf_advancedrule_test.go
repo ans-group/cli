@@ -157,7 +157,10 @@ func Test_ddosxDomainWAFAdvancedRuleCreate(t *testing.T) {
 			IP:       "1.2.3.4",
 		}
 
-		service.EXPECT().CreateDomainWAFAdvancedRule("testdomain1.co.uk", gomock.Eq(expectedRequest)).Return("00000000-0000-0000-0000-000000000000", nil).Times(1)
+		gomock.InOrder(
+			service.EXPECT().CreateDomainWAFAdvancedRule("testdomain1.co.uk", gomock.Eq(expectedRequest)).Return("00000000-0000-0000-0000-000000000000", nil),
+			service.EXPECT().GetDomainWAFAdvancedRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.WAFAdvancedRule{}, nil),
+		)
 
 		ddosxDomainWAFAdvancedRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
 	})
@@ -179,7 +182,7 @@ func Test_ddosxDomainWAFAdvancedRuleCreate(t *testing.T) {
 		})
 	})
 
-	t.Run("CreateDomainWAFAdvancedRule_OutputsFatal", func(t *testing.T) {
+	t.Run("CreateDomainWAFAdvancedRuleError_OutputsFatal", func(t *testing.T) {
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -194,6 +197,28 @@ func Test_ddosxDomainWAFAdvancedRuleCreate(t *testing.T) {
 		service.EXPECT().CreateDomainWAFAdvancedRule("testdomain1.co.uk", gomock.Any()).Return("00000000-0000-0000-0000-000000000000", errors.New("test error")).Times(1)
 
 		test_output.AssertFatalOutput(t, "Error creating domain WAF advanced rule: test error\n", func() {
+			ddosxDomainWAFAdvancedRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
+		})
+	})
+
+	t.Run("GetDomainWAFAdvancedRuleError_OutputsFatal", func(t *testing.T) {
+
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockDDoSXService(mockCtrl)
+		cmd := ddosxDomainWAFAdvancedRuleCreateCmd()
+		cmd.Flags().Set("section", "REQUEST_URI")
+		cmd.Flags().Set("modifier", "contains")
+		cmd.Flags().Set("phrase", "testphrase")
+		cmd.Flags().Set("ip", "1.2.3.4")
+
+		gomock.InOrder(
+			service.EXPECT().CreateDomainWAFAdvancedRule("testdomain1.co.uk", gomock.Any()).Return("00000000-0000-0000-0000-000000000000", nil),
+			service.EXPECT().GetDomainWAFAdvancedRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.WAFAdvancedRule{}, errors.New("test error")),
+		)
+
+		test_output.AssertFatalOutput(t, "Error retrieving new domain WAF advanced rule [00000000-0000-0000-0000-000000000000]: test error\n", func() {
 			ddosxDomainWAFAdvancedRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
 		})
 	})
@@ -243,7 +268,10 @@ func Test_ddosxDomainWAFAdvancedRuleUpdate(t *testing.T) {
 			IP:       "1.2.3.4",
 		}
 
-		service.EXPECT().PatchDomainWAFAdvancedRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Eq(expectedRequest)).Return(nil)
+		gomock.InOrder(
+			service.EXPECT().PatchDomainWAFAdvancedRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Eq(expectedRequest)).Return(nil),
+			service.EXPECT().GetDomainWAFAdvancedRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.WAFAdvancedRule{}, nil),
+		)
 
 		ddosxDomainWAFAdvancedRuleUpdate(service, cmd, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 	})
@@ -265,7 +293,7 @@ func Test_ddosxDomainWAFAdvancedRuleUpdate(t *testing.T) {
 		})
 	})
 
-	t.Run("PatchDomainWAFAdvancedRule_OutputsError", func(t *testing.T) {
+	t.Run("PatchDomainWAFAdvancedRuleError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -274,6 +302,22 @@ func Test_ddosxDomainWAFAdvancedRuleUpdate(t *testing.T) {
 		service.EXPECT().PatchDomainWAFAdvancedRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Any()).Return(errors.New("test error"))
 
 		test_output.AssertErrorOutput(t, "Error updating domain WAF advanced rule [00000000-0000-0000-0000-000000000000]: test error\n", func() {
+			ddosxDomainWAFAdvancedRuleUpdate(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
+		})
+	})
+
+	t.Run("GetDomainWAFAdvancedRuleError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockDDoSXService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().PatchDomainWAFAdvancedRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Any()).Return(nil),
+			service.EXPECT().GetDomainWAFAdvancedRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.WAFAdvancedRule{}, errors.New("test error")),
+		)
+
+		test_output.AssertErrorOutput(t, "Error retrieving updated domain WAF advanced rule [00000000-0000-0000-0000-000000000000]: test error\n", func() {
 			ddosxDomainWAFAdvancedRuleUpdate(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 		})
 	})
