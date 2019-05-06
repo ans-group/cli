@@ -55,7 +55,7 @@ github.com/spf13/viper
 github.com/stretchr/testify/assert
 # github.com/ukfast/go-durationstring v1.0.0
 github.com/ukfast/go-durationstring
-# github.com/ukfast/sdk-go v1.0.31
+# github.com/ukfast/sdk-go v1.0.32
 github.com/ukfast/sdk-go/pkg/client
 github.com/ukfast/sdk-go/pkg/connection
 github.com/ukfast/sdk-go/pkg/logging

@@ -120,11 +120,20 @@ func (e *CDNRuleNotFoundError) Error() string {
 	return fmt.Sprintf("CDN rule not found with id [%s]", e.ID)
 }
 
-// HSTSConfigurationNotFoundError indicates HSTS configuration was not found for domain
-type HSTSConfigurationNotFoundError struct {
+// DomainHSTSConfigurationNotFoundError indicates HSTS configuration was not found for domain
+type DomainHSTSConfigurationNotFoundError struct {
 	DomainName string
 }
 
-func (e *HSTSConfigurationNotFoundError) Error() string {
+func (e *DomainHSTSConfigurationNotFoundError) Error() string {
 	return fmt.Sprintf("HSTS configuration not found for domain [%s]", e.DomainName)
+}
+
+// HSTSRuleNotFoundError indicates a HSTS rule was not found
+type HSTSRuleNotFoundError struct {
+	ID string
+}
+
+func (e *HSTSRuleNotFoundError) Error() string {
+	return fmt.Sprintf("HSTS rule not found with id [%s]", e.ID)
 }

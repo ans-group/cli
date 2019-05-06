@@ -306,6 +306,29 @@ func ParseCDNRuleType(s string) (CDNRuleType, error) {
 	return "", err
 }
 
+type HSTSRuleType string
+
+func (e HSTSRuleType) String() string {
+	return string(e)
+}
+
+const (
+	HSTSRuleTypeDomain HSTSRuleType = "domain"
+	HSTSRuleTypeRecord HSTSRuleType = "record"
+)
+
+var HSTSRuleTypeEnum = []connection.Enum{HSTSRuleTypeDomain, HSTSRuleTypeRecord}
+
+// ParseHSTSRuleType attempts to parse a HSTSRuleType from string
+func ParseHSTSRuleType(s string) (HSTSRuleType, error) {
+	e, err := connection.ParseEnum(s, HSTSRuleTypeEnum)
+	if e != nil {
+		return e.(HSTSRuleType), err
+	}
+
+	return "", err
+}
+
 // Domain represents a DDoSX domain
 type Domain struct {
 	SafeDNSZoneID *int               `json:"safedns_zone_id"`
@@ -454,4 +477,19 @@ func ParseCDNRuleCacheControlDuration(s string) (*CDNRuleCacheControlDuration, e
 		Hours:   hours,
 		Minutes: minutes,
 	}, nil
+}
+
+// HSTSConfiguration represents HSTS configuration for a DDoSX domain
+type HSTSConfiguration struct {
+	Enabled bool `json:"enabled"`
+}
+
+// HSTSRule represents HSTS rule for a DDoSX domain
+type HSTSRule struct {
+	ID                string       `json:"id"`
+	MaxAge            int          `json:"max_age"`
+	Preload           bool         `json:"preload"`
+	IncludeSubdomains bool         `json:"include_subdomains"`
+	RuleType          HSTSRuleType `json:"rule_type"`
+	RecordName        *string      `json:"record_name"`
 }

@@ -44,7 +44,7 @@ func (s *Service) getSitesPaginatedResponseBody(parameters connection.APIRequest
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{}, body)
+	return body, response.HandleResponse(body, nil)
 }
 
 // GetSite retrieves a single site by ID
@@ -66,9 +66,11 @@ func (s *Service) getSiteResponseBody(siteID int) (*GetSiteResponseBody, error) 
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &SiteNotFoundError{ID: siteID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &SiteNotFoundError{ID: siteID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }

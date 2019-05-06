@@ -44,7 +44,7 @@ func (s *Service) getSolutionsPaginatedResponseBody(parameters connection.APIReq
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{}, body)
+	return body, response.HandleResponse(body, nil)
 }
 
 // GetSolution retrieves a single Solution by ID
@@ -66,11 +66,13 @@ func (s *Service) getSolutionResponseBody(solutionID int) (*GetSolutionResponseB
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &SolutionNotFoundError{ID: solutionID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &SolutionNotFoundError{ID: solutionID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // PatchSolution patches an eCloud solution
@@ -92,11 +94,13 @@ func (s *Service) patchSolutionResponseBody(solutionID int, patch PatchSolutionR
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &SolutionNotFoundError{ID: solutionID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &SolutionNotFoundError{ID: solutionID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // GetSolutionVirtualMachines retrieves a list of virtual machines within a solution
@@ -141,11 +145,13 @@ func (s *Service) getSolutionVirtualMachinesPaginatedResponseBody(solutionID int
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &SolutionNotFoundError{ID: solutionID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &SolutionNotFoundError{ID: solutionID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // GetSolutionSites retrieves a list of virtual machines within a solution
@@ -190,11 +196,13 @@ func (s *Service) getSolutionSitesPaginatedResponseBody(solutionID int, paramete
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &SolutionNotFoundError{ID: solutionID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &SolutionNotFoundError{ID: solutionID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // GetSolutionDatastores retrieves a list of datastores within a solution
@@ -239,11 +247,13 @@ func (s *Service) getSolutionDatastoresPaginatedResponseBody(solutionID int, par
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &SolutionNotFoundError{ID: solutionID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &SolutionNotFoundError{ID: solutionID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // GetSolutionHosts retrieves a list of hosts within a solution
@@ -288,11 +298,13 @@ func (s *Service) getSolutionHostsPaginatedResponseBody(solutionID int, paramete
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &SolutionNotFoundError{ID: solutionID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &SolutionNotFoundError{ID: solutionID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // GetSolutionNetworks retrieves a list of networks within a solution
@@ -337,11 +349,13 @@ func (s *Service) getSolutionNetworksPaginatedResponseBody(solutionID int, param
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &SolutionNotFoundError{ID: solutionID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &SolutionNotFoundError{ID: solutionID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // GetSolutionFirewalls retrieves a list of firewalls within a solution
@@ -386,11 +400,13 @@ func (s *Service) getSolutionFirewallsPaginatedResponseBody(solutionID int, para
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &SolutionNotFoundError{ID: solutionID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &SolutionNotFoundError{ID: solutionID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // GetSolutionTemplates retrieves a list of virtual machines within a solution
@@ -435,11 +451,13 @@ func (s *Service) getSolutionTemplatesPaginatedResponseBody(solutionID int, para
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &SolutionNotFoundError{ID: solutionID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &SolutionNotFoundError{ID: solutionID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // GetSolutionTemplate retrieves a single solution template by name
@@ -464,11 +482,13 @@ func (s *Service) getSolutionTemplateResponseBody(solutionID int, templateName s
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &TemplateNotFoundError{Name: templateName}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &TemplateNotFoundError{Name: templateName}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // RenameSolutionTemplate renames a solution template
@@ -493,11 +513,13 @@ func (s *Service) renameSolutionTemplateResponseBody(solutionID int, templateNam
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &TemplateNotFoundError{Name: templateName}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &TemplateNotFoundError{Name: templateName}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // DeleteSolutionTemplate removes a solution template
@@ -522,11 +544,13 @@ func (s *Service) deleteSolutionTemplateResponseBody(solutionID int, templateNam
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &TemplateNotFoundError{Name: templateName}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &TemplateNotFoundError{Name: templateName}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // GetSolutionTags retrieves a list of tags for a solution
@@ -571,11 +595,13 @@ func (s *Service) getSolutionTagsPaginatedResponseBody(solutionID int, parameter
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &SolutionNotFoundError{ID: solutionID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &SolutionNotFoundError{ID: solutionID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // GetSolutionTag retrieves a single solution tag by key
@@ -600,11 +626,13 @@ func (s *Service) getSolutionTagResponseBody(solutionID int, tagKey string) (*Ge
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &TagNotFoundError{Key: tagKey}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &TagNotFoundError{Key: tagKey}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // CreateSolutionTag creates a new solution tag
@@ -626,11 +654,13 @@ func (s *Service) createSolutionTagResponseBody(solutionID int, req CreateTagReq
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &SolutionNotFoundError{ID: solutionID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &SolutionNotFoundError{ID: solutionID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // PatchSolutionTag patches an eCloud solution tag
@@ -655,11 +685,13 @@ func (s *Service) patchSolutionTagResponseBody(solutionID int, tagKey string, pa
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &TagNotFoundError{Key: tagKey}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &TagNotFoundError{Key: tagKey}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // DeleteSolutionTag removes a solution tag
@@ -683,10 +715,11 @@ func (s *Service) deleteSolutionTagResponseBody(solutionID int, tagKey string) (
 	if err != nil {
 		return body, err
 	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &TagNotFoundError{Key: tagKey}
+		}
 
-	if response.StatusCode == 404 {
-		return body, &TagNotFoundError{Key: tagKey}
-	}
-
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }

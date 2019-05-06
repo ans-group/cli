@@ -44,7 +44,7 @@ func (s *Service) getFirewallsPaginatedResponseBody(parameters connection.APIReq
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{}, body)
+	return body, response.HandleResponse(body, nil)
 }
 
 // GetFirewall retrieves a single firewall by ID
@@ -66,11 +66,13 @@ func (s *Service) getFirewallResponseBody(firewallID int) (*GetFirewallResponseB
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &FirewallNotFoundError{ID: firewallID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &FirewallNotFoundError{ID: firewallID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // GetFirewallConfig retrieves a single firewall config by ID
@@ -92,9 +94,11 @@ func (s *Service) getFirewallConfigResponseBody(firewallID int) (*GetFirewallCon
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &FirewallNotFoundError{ID: firewallID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &FirewallNotFoundError{ID: firewallID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }

@@ -592,3 +592,81 @@ func (o *OutputDDoSXCDNRules) getOrderedFields(rule ddosx.CDNRule) *output.Order
 
 	return fields
 }
+
+// OutputDDoSXHSTSConfiguration implements OutputDataProvider for outputting an array of HSTSConfiguration
+type OutputDDoSXHSTSConfiguration struct {
+	HSTSConfiguration []ddosx.HSTSConfiguration
+}
+
+func outputDDoSXHSTSConfiguration(configurations []ddosx.HSTSConfiguration) {
+	err := Output(&OutputDDoSXHSTSConfiguration{HSTSConfiguration: configurations})
+	if err != nil {
+		output.Fatalf("Failed to output domain HSTS configurations: %s", err)
+	}
+}
+
+func (o *OutputDDoSXHSTSConfiguration) GetData() interface{} {
+	return o.HSTSConfiguration
+}
+
+func (o *OutputDDoSXHSTSConfiguration) GetFieldData() ([]*output.OrderedFields, error) {
+	var data []*output.OrderedFields
+	for _, configuration := range o.HSTSConfiguration {
+		fields := o.getOrderedFields(configuration)
+		data = append(data, fields)
+	}
+
+	return data, nil
+}
+
+func (o *OutputDDoSXHSTSConfiguration) getOrderedFields(configuration ddosx.HSTSConfiguration) *output.OrderedFields {
+	fields := output.NewOrderedFields()
+
+	fields.Set("enabled", output.NewFieldValue(strconv.FormatBool(configuration.Enabled), true))
+
+	return fields
+}
+
+// OutputDDoSXHSTSRules implements OutputDataProvider for outputting an array of HSTSRules
+type OutputDDoSXHSTSRules struct {
+	HSTSRules []ddosx.HSTSRule
+}
+
+func outputDDoSXHSTSRules(rules []ddosx.HSTSRule) {
+	err := Output(&OutputDDoSXHSTSRules{HSTSRules: rules})
+	if err != nil {
+		output.Fatalf("Failed to output domain HSTS rules: %s", err)
+	}
+}
+
+func (o *OutputDDoSXHSTSRules) GetData() interface{} {
+	return o.HSTSRules
+}
+
+func (o *OutputDDoSXHSTSRules) GetFieldData() ([]*output.OrderedFields, error) {
+	var data []*output.OrderedFields
+	for _, rule := range o.HSTSRules {
+		fields := o.getOrderedFields(rule)
+		data = append(data, fields)
+	}
+
+	return data, nil
+}
+
+func (o *OutputDDoSXHSTSRules) getOrderedFields(rule ddosx.HSTSRule) *output.OrderedFields {
+	fields := output.NewOrderedFields()
+
+	recordName := ""
+	if rule.RecordName != nil {
+		recordName = *rule.RecordName
+	}
+
+	fields.Set("id", output.NewFieldValue(rule.ID, true))
+	fields.Set("max_age", output.NewFieldValue(strconv.Itoa(rule.MaxAge), true))
+	fields.Set("preload", output.NewFieldValue(strconv.FormatBool(rule.Preload), true))
+	fields.Set("include_subdomains", output.NewFieldValue(strconv.FormatBool(rule.IncludeSubdomains), true))
+	fields.Set("rule_type", output.NewFieldValue(rule.RuleType.String(), true))
+	fields.Set("record_name", output.NewFieldValue(recordName, true))
+
+	return fields
+}

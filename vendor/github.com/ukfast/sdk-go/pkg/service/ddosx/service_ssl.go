@@ -44,7 +44,7 @@ func (s *Service) getSSLsPaginatedResponseBody(parameters connection.APIRequestP
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{}, body)
+	return body, response.HandleResponse(body, nil)
 }
 
 // GetSSL retrieves a single ssl by id
@@ -66,11 +66,13 @@ func (s *Service) getSSLResponseBody(sslID string) (*GetSSLResponseBody, error) 
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &SSLNotFoundError{ID: sslID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &SSLNotFoundError{ID: sslID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // CreateSSL retrieves creates an SSL
@@ -88,7 +90,7 @@ func (s *Service) createSSLResponseBody(req CreateSSLRequest) (*GetSSLResponseBo
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{}, body)
+	return body, response.HandleResponse(body, nil)
 }
 
 // PatchSSL retrieves patches an SSL
@@ -110,11 +112,13 @@ func (s *Service) patchSSLResponseBody(sslID string, req PatchSSLRequest) (*GetS
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &SSLNotFoundError{ID: sslID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &SSLNotFoundError{ID: sslID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // DeleteSSL deletes patches an SSL
@@ -136,11 +140,13 @@ func (s *Service) deleteSSLResponseBody(sslID string) (*connection.APIResponseBo
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &SSLNotFoundError{ID: sslID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &SSLNotFoundError{ID: sslID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // GetSSLContent retrieves a single ssl by id
@@ -162,11 +168,13 @@ func (s *Service) getSSLContentResponseBody(sslID string) (*GetSSLContentRespons
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &SSLNotFoundError{ID: sslID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &SSLNotFoundError{ID: sslID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // GetSSLPrivateKey retrieves a single ssl by id
@@ -188,9 +196,11 @@ func (s *Service) getSSLPrivateKeyResponseBody(sslID string) (*GetSSLPrivateKeyR
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &SSLNotFoundError{ID: sslID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &SSLNotFoundError{ID: sslID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }

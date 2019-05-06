@@ -44,7 +44,7 @@ func (s *Service) getContactsPaginatedResponseBody(parameters connection.APIRequ
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{}, body)
+	return body, response.HandleResponse(body, nil)
 }
 
 // GetContact retrieves a single contact by id
@@ -66,9 +66,11 @@ func (s *Service) getContactResponseBody(contactID int) (*GetContactResponseBody
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &ContactNotFoundError{ID: contactID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &ContactNotFoundError{ID: contactID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
