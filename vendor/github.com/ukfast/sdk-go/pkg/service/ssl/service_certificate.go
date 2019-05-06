@@ -44,7 +44,7 @@ func (s *Service) getCertificatesPaginatedResponseBody(parameters connection.API
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{}, body)
+	return body, response.HandleResponse(body, nil)
 }
 
 // GetCertificate retrieves a single certificate by id
@@ -66,11 +66,13 @@ func (s *Service) getCertificateResponseBody(certificateID int) (*GetCertificate
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &CertificateNotFoundError{ID: certificateID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &CertificateNotFoundError{ID: certificateID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // GetCertificateContent retrieves the content of an SSL certificate
@@ -92,11 +94,13 @@ func (s *Service) getCertificateContentResponseBody(certificateID int) (*GetCert
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &CertificateNotFoundError{ID: certificateID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &CertificateNotFoundError{ID: certificateID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // GetCertificatePrivateKey retrieves an SSL certificate private key
@@ -118,9 +122,11 @@ func (s *Service) getCertificatePrivateKeyResponseBody(certificateID int) (*GetC
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &CertificateNotFoundError{ID: certificateID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &CertificateNotFoundError{ID: certificateID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }

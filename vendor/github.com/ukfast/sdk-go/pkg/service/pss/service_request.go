@@ -44,7 +44,7 @@ func (s *Service) getRequestsPaginatedResponseBody(parameters connection.APIRequ
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{}, body)
+	return body, response.HandleResponse(body, nil)
 }
 
 // GetRequest retrieves a single request by id
@@ -66,11 +66,13 @@ func (s *Service) getRequestResponseBody(requestID int) (*GetRequestResponseBody
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &RequestNotFoundError{ID: requestID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &RequestNotFoundError{ID: requestID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // GetRequestConversation retrieves a conversation for a request
@@ -115,9 +117,11 @@ func (s *Service) getRequestConversationPaginatedResponseBody(requestID int, par
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &RequestNotFoundError{ID: requestID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &RequestNotFoundError{ID: requestID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }

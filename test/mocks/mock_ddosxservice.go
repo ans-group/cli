@@ -122,6 +122,21 @@ func (mr *MockDDoSXServiceMockRecorder) CreateDomainCDNRule(arg0, arg1 interface
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateDomainCDNRule", reflect.TypeOf((*MockDDoSXService)(nil).CreateDomainCDNRule), arg0, arg1)
 }
 
+// CreateDomainHSTSRule mocks base method
+func (m *MockDDoSXService) CreateDomainHSTSRule(arg0 string, arg1 ddosx.CreateHSTSRuleRequest) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateDomainHSTSRule", arg0, arg1)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateDomainHSTSRule indicates an expected call of CreateDomainHSTSRule
+func (mr *MockDDoSXServiceMockRecorder) CreateDomainHSTSRule(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateDomainHSTSRule", reflect.TypeOf((*MockDDoSXService)(nil).CreateDomainHSTSRule), arg0, arg1)
+}
+
 // CreateDomainRecord mocks base method
 func (m *MockDDoSXService) CreateDomainRecord(arg0 string, arg1 ddosx.CreateRecordRequest) (string, error) {
 	m.ctrl.T.Helper()
@@ -264,6 +279,20 @@ func (m *MockDDoSXService) DeleteDomainHSTSConfiguration(arg0 string) error {
 func (mr *MockDDoSXServiceMockRecorder) DeleteDomainHSTSConfiguration(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteDomainHSTSConfiguration", reflect.TypeOf((*MockDDoSXService)(nil).DeleteDomainHSTSConfiguration), arg0)
+}
+
+// DeleteDomainHSTSRule mocks base method
+func (m *MockDDoSXService) DeleteDomainHSTSRule(arg0, arg1 string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteDomainHSTSRule", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteDomainHSTSRule indicates an expected call of DeleteDomainHSTSRule
+func (mr *MockDDoSXServiceMockRecorder) DeleteDomainHSTSRule(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteDomainHSTSRule", reflect.TypeOf((*MockDDoSXService)(nil).DeleteDomainHSTSRule), arg0, arg1)
 }
 
 // DeleteDomainRecord mocks base method
@@ -545,6 +574,66 @@ func (m *MockDDoSXService) GetDomainCDNRulesPaginated(arg0 string, arg1 connecti
 func (mr *MockDDoSXServiceMockRecorder) GetDomainCDNRulesPaginated(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDomainCDNRulesPaginated", reflect.TypeOf((*MockDDoSXService)(nil).GetDomainCDNRulesPaginated), arg0, arg1)
+}
+
+// GetDomainHSTSConfiguration mocks base method
+func (m *MockDDoSXService) GetDomainHSTSConfiguration(arg0 string) (ddosx.HSTSConfiguration, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetDomainHSTSConfiguration", arg0)
+	ret0, _ := ret[0].(ddosx.HSTSConfiguration)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetDomainHSTSConfiguration indicates an expected call of GetDomainHSTSConfiguration
+func (mr *MockDDoSXServiceMockRecorder) GetDomainHSTSConfiguration(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDomainHSTSConfiguration", reflect.TypeOf((*MockDDoSXService)(nil).GetDomainHSTSConfiguration), arg0)
+}
+
+// GetDomainHSTSRule mocks base method
+func (m *MockDDoSXService) GetDomainHSTSRule(arg0, arg1 string) (ddosx.HSTSRule, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetDomainHSTSRule", arg0, arg1)
+	ret0, _ := ret[0].(ddosx.HSTSRule)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetDomainHSTSRule indicates an expected call of GetDomainHSTSRule
+func (mr *MockDDoSXServiceMockRecorder) GetDomainHSTSRule(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDomainHSTSRule", reflect.TypeOf((*MockDDoSXService)(nil).GetDomainHSTSRule), arg0, arg1)
+}
+
+// GetDomainHSTSRules mocks base method
+func (m *MockDDoSXService) GetDomainHSTSRules(arg0 string, arg1 connection.APIRequestParameters) ([]ddosx.HSTSRule, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetDomainHSTSRules", arg0, arg1)
+	ret0, _ := ret[0].([]ddosx.HSTSRule)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetDomainHSTSRules indicates an expected call of GetDomainHSTSRules
+func (mr *MockDDoSXServiceMockRecorder) GetDomainHSTSRules(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDomainHSTSRules", reflect.TypeOf((*MockDDoSXService)(nil).GetDomainHSTSRules), arg0, arg1)
+}
+
+// GetDomainHSTSRulesPaginated mocks base method
+func (m *MockDDoSXService) GetDomainHSTSRulesPaginated(arg0 string, arg1 connection.APIRequestParameters) ([]ddosx.HSTSRule, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetDomainHSTSRulesPaginated", arg0, arg1)
+	ret0, _ := ret[0].([]ddosx.HSTSRule)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetDomainHSTSRulesPaginated indicates an expected call of GetDomainHSTSRulesPaginated
+func (mr *MockDDoSXServiceMockRecorder) GetDomainHSTSRulesPaginated(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDomainHSTSRulesPaginated", reflect.TypeOf((*MockDDoSXService)(nil).GetDomainHSTSRulesPaginated), arg0, arg1)
 }
 
 // GetDomainProperties mocks base method
@@ -976,6 +1065,20 @@ func (m *MockDDoSXService) PatchDomainCDNRule(arg0, arg1 string, arg2 ddosx.Patc
 func (mr *MockDDoSXServiceMockRecorder) PatchDomainCDNRule(arg0, arg1, arg2 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchDomainCDNRule", reflect.TypeOf((*MockDDoSXService)(nil).PatchDomainCDNRule), arg0, arg1, arg2)
+}
+
+// PatchDomainHSTSRule mocks base method
+func (m *MockDDoSXService) PatchDomainHSTSRule(arg0, arg1 string, arg2 ddosx.PatchHSTSRuleRequest) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PatchDomainHSTSRule", arg0, arg1, arg2)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchDomainHSTSRule indicates an expected call of PatchDomainHSTSRule
+func (mr *MockDDoSXServiceMockRecorder) PatchDomainHSTSRule(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchDomainHSTSRule", reflect.TypeOf((*MockDDoSXService)(nil).PatchDomainHSTSRule), arg0, arg1, arg2)
 }
 
 // PatchDomainProperty mocks base method

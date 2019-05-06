@@ -17,5 +17,5 @@ func (s *Service) getDetailsResponseBody() (*GetDetailsResponseBody, error) {
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{}, body)
+	return body, response.HandleResponse(body, nil)
 }

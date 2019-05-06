@@ -44,7 +44,7 @@ func (s *Service) getAppliancesPaginatedResponseBody(parameters connection.APIRe
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{}, body)
+	return body, response.HandleResponse(body, nil)
 }
 
 // GetAppliance retrieves a single Appliance by ID
@@ -66,11 +66,13 @@ func (s *Service) getApplianceResponseBody(applianceID string) (*GetApplianceRes
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &ApplianceNotFoundError{ID: applianceID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &ApplianceNotFoundError{ID: applianceID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // GetApplianceParameters retrieves a list of appliance parameters
@@ -115,9 +117,11 @@ func (s *Service) getApplianceParametersPaginatedResponseBody(applianceID string
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &ApplianceNotFoundError{ID: applianceID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &ApplianceNotFoundError{ID: applianceID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }

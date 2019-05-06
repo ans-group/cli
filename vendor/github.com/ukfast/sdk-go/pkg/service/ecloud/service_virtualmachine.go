@@ -44,7 +44,7 @@ func (s *Service) getVirtualMachinesPaginatedResponseBody(parameters connection.
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{}, body)
+	return body, response.HandleResponse(body, nil)
 }
 
 // GetVirtualMachine retrieves a single virtual machine by ID
@@ -66,11 +66,13 @@ func (s *Service) getVirtualMachineResponseBody(vmID int) (*GetVirtualMachineRes
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &VirtualMachineNotFoundError{ID: vmID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &VirtualMachineNotFoundError{ID: vmID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // DeleteVirtualMachine removes a virtual machine
@@ -92,11 +94,13 @@ func (s *Service) deleteVirtualMachineResponseBody(vmID int) (*connection.APIRes
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &VirtualMachineNotFoundError{ID: vmID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &VirtualMachineNotFoundError{ID: vmID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // CreateVirtualMachine creates a new virtual machine
@@ -114,7 +118,7 @@ func (s *Service) createVirtualMachineResponseBody(req CreateVirtualMachineReque
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{}, body)
+	return body, response.HandleResponse(body, nil)
 }
 
 // PatchVirtualMachine patches an eCloud virtual machine
@@ -136,11 +140,13 @@ func (s *Service) patchVirtualMachineResponseBody(vmID int, patch PatchVirtualMa
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &VirtualMachineNotFoundError{ID: vmID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &VirtualMachineNotFoundError{ID: vmID}
+		}
 
-	return body, response.HandleResponse([]int{200, 202}, body)
+		return nil
+	})
 }
 
 // CloneVirtualMachine clones a virtual machine
@@ -162,11 +168,13 @@ func (s *Service) cloneVirtualMachineResponseBody(vmID int, req CloneVirtualMach
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &VirtualMachineNotFoundError{ID: vmID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &VirtualMachineNotFoundError{ID: vmID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // PowerOnVirtualMachine powers on a virtual machine
@@ -188,11 +196,13 @@ func (s *Service) powerOnVirtualMachineResponseBody(vmID int) (*connection.APIRe
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &VirtualMachineNotFoundError{ID: vmID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &VirtualMachineNotFoundError{ID: vmID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // PowerOffVirtualMachine powers off a virtual machine
@@ -214,11 +224,13 @@ func (s *Service) powerOffVirtualMachineResponseBody(vmID int) (*connection.APIR
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &VirtualMachineNotFoundError{ID: vmID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &VirtualMachineNotFoundError{ID: vmID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // PowerResetVirtualMachine resets a virtual machine (hard power off)
@@ -240,11 +252,13 @@ func (s *Service) powerResetVirtualMachineResponseBody(vmID int) (*connection.AP
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &VirtualMachineNotFoundError{ID: vmID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &VirtualMachineNotFoundError{ID: vmID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // PowerShutdownVirtualMachine shuts down a virtual machine
@@ -266,11 +280,13 @@ func (s *Service) powerShutdownVirtualMachineResponseBody(vmID int) (*connection
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &VirtualMachineNotFoundError{ID: vmID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &VirtualMachineNotFoundError{ID: vmID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // PowerRestartVirtualMachine resets a virtual machine (graceful power off)
@@ -292,11 +308,13 @@ func (s *Service) powerRestartVirtualMachineResponseBody(vmID int) (*connection.
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &VirtualMachineNotFoundError{ID: vmID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &VirtualMachineNotFoundError{ID: vmID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // CreateVirtualMachineTemplate creates a virtual machine template
@@ -318,11 +336,13 @@ func (s *Service) createVirtualMachineTemplateResponseBody(vmID int, req CreateV
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &VirtualMachineNotFoundError{ID: vmID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &VirtualMachineNotFoundError{ID: vmID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // GetVirtualMachineTags retrieves a list of tags for a virtual machine
@@ -367,11 +387,13 @@ func (s *Service) getVirtualMachineTagsPaginatedResponseBody(vmID int, parameter
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &VirtualMachineNotFoundError{ID: vmID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &VirtualMachineNotFoundError{ID: vmID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // GetVirtualMachineTag retrieves a single virtual machine tag by key
@@ -396,11 +418,13 @@ func (s *Service) getVirtualMachineTagResponseBody(vmID int, tagKey string) (*Ge
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &TagNotFoundError{Key: tagKey}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &TagNotFoundError{Key: tagKey}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // CreateVirtualMachineTag creates a new virtual machine tag
@@ -422,11 +446,13 @@ func (s *Service) createVirtualMachineTagResponseBody(vmID int, req CreateTagReq
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &VirtualMachineNotFoundError{ID: vmID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &VirtualMachineNotFoundError{ID: vmID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // PatchVirtualMachineTag patches an eCloud virtual machine tag
@@ -451,10 +477,13 @@ func (s *Service) patchVirtualMachineTagResponseBody(vmID int, tagKey string, pa
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &TagNotFoundError{Key: tagKey}
-	}
-	return body, response.HandleResponse([]int{}, body)
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &TagNotFoundError{Key: tagKey}
+		}
+
+		return nil
+	})
 }
 
 // DeleteVirtualMachineTag removes a virtual machine tag
@@ -479,9 +508,11 @@ func (s *Service) deleteVirtualMachineTagResponseBody(vmID int, tagKey string) (
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &TagNotFoundError{Key: tagKey}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &TagNotFoundError{Key: tagKey}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }

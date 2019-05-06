@@ -25,11 +25,13 @@ func (s *Service) getWhoisResponseBody(domainName string) (*GetWhoisResponseBody
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &DomainNotFoundError{Name: domainName}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &DomainNotFoundError{Name: domainName}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // GetWhoisRaw retrieves raw WHOIS information for a single domain
@@ -51,9 +53,11 @@ func (s *Service) getWhoisRawResponseBody(domainName string) (*GetWhoisRawRespon
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &DomainNotFoundError{Name: domainName}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &DomainNotFoundError{Name: domainName}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }

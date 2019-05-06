@@ -42,5 +42,5 @@ func (s *Service) getRecordsPaginatedResponseBody(parameters connection.APIReque
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{}, body)
+	return body, response.HandleResponse(body, nil)
 }

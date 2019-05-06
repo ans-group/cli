@@ -44,7 +44,7 @@ func (s *Service) getTemplatesPaginatedResponseBody(parameters connection.APIReq
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{}, body)
+	return body, response.HandleResponse(body, nil)
 }
 
 // GetTemplate retrieves a single template by ID
@@ -66,11 +66,13 @@ func (s *Service) getTemplateResponseBody(templateID int) (*GetTemplateResponseB
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &TemplateNotFoundError{TemplateID: templateID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &TemplateNotFoundError{TemplateID: templateID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // CreateTemplate creates a new SafeDNS template
@@ -88,7 +90,7 @@ func (s *Service) createTemplateResponseBody(req CreateTemplateRequest) (*GetTem
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{}, body)
+	return body, response.HandleResponse(body, nil)
 }
 
 // UpdateTemplate updates a SafeDNS template
@@ -110,11 +112,13 @@ func (s *Service) updateTemplateResponseBody(template Template) (*GetTemplateRes
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &TemplateNotFoundError{TemplateID: template.ID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &TemplateNotFoundError{TemplateID: template.ID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // PatchTemplate patches a SafeDNS template
@@ -137,11 +141,13 @@ func (s *Service) patchTemplateResponseBody(templateID int, patch PatchTemplateR
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &TemplateNotFoundError{TemplateID: templateID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &TemplateNotFoundError{TemplateID: templateID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // DeleteTemplate removes a SafeDNS template
@@ -163,11 +169,13 @@ func (s *Service) deleteTemplateResponseBody(templateID int) (*connection.APIRes
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &TemplateNotFoundError{TemplateID: templateID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &TemplateNotFoundError{TemplateID: templateID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // GetTemplateRecords retrieves a list of records
@@ -212,11 +220,13 @@ func (s *Service) getTemplateRecordsPaginatedResponseBody(templateID int, parame
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &TemplateNotFoundError{TemplateID: templateID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &TemplateNotFoundError{TemplateID: templateID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // GetTemplateRecord retrieves a single zone record by ID
@@ -241,11 +251,13 @@ func (s *Service) getTemplateRecordResponseBody(templateID int, recordID int) (*
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &TemplateRecordNotFoundError{TemplateID: templateID, RecordID: recordID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &TemplateRecordNotFoundError{TemplateID: templateID, RecordID: recordID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // CreateTemplateRecord creates a new SafeDNS zone record
@@ -267,11 +279,13 @@ func (s *Service) createTemplateRecordResponseBody(templateID int, req CreateRec
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &TemplateNotFoundError{TemplateID: templateID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &TemplateNotFoundError{TemplateID: templateID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // UpdateTemplateRecord updates a SafeDNS template record
@@ -296,11 +310,13 @@ func (s *Service) updateTemplateRecordResponseBody(templateID int, record Record
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &TemplateRecordNotFoundError{TemplateID: templateID, RecordID: record.ID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &TemplateRecordNotFoundError{TemplateID: templateID, RecordID: record.ID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // PatchTemplateRecord patches a SafeDNS template record
@@ -326,11 +342,13 @@ func (s *Service) patchTemplateRecordResponseBody(templateID int, recordID int, 
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &TemplateRecordNotFoundError{TemplateID: templateID, RecordID: recordID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &TemplateRecordNotFoundError{TemplateID: templateID, RecordID: recordID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // DeleteTemplateRecord removes a SafeDNS template record
@@ -355,9 +373,11 @@ func (s *Service) deleteTemplateRecordResponseBody(templateID int, recordID int)
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &TemplateRecordNotFoundError{TemplateID: templateID, RecordID: recordID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &TemplateRecordNotFoundError{TemplateID: templateID, RecordID: recordID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }

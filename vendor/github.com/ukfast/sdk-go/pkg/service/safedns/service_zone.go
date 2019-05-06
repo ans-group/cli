@@ -44,7 +44,7 @@ func (s *Service) getZonesPaginatedResponseBody(parameters connection.APIRequest
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{}, body)
+	return body, response.HandleResponse(body, nil)
 }
 
 // GetZone retrieves a single zone by name
@@ -66,11 +66,13 @@ func (s *Service) getZoneResponseBody(zoneName string) (*GetZoneResponseBody, er
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &ZoneNotFoundError{ZoneName: zoneName}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &ZoneNotFoundError{ZoneName: zoneName}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // CreateZone creates a new SafeDNS zone
@@ -88,7 +90,7 @@ func (s *Service) createZoneResponseBody(req CreateZoneRequest) (*connection.API
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{}, body)
+	return body, response.HandleResponse(body, nil)
 }
 
 // PatchZone patches a SafeDNS zone
@@ -110,7 +112,7 @@ func (s *Service) patchZoneResponseBody(zoneName string, req PatchZoneRequest) (
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{}, body)
+	return body, response.HandleResponse(body, nil)
 }
 
 // DeleteZone removes a SafeDNS zone
@@ -132,11 +134,13 @@ func (s *Service) deleteZoneResponseBody(zoneName string) (*connection.APIRespon
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &ZoneNotFoundError{ZoneName: zoneName}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &ZoneNotFoundError{ZoneName: zoneName}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // GetZoneRecords retrieves a list of records
@@ -181,11 +185,13 @@ func (s *Service) getZoneRecordsPaginatedResponseBody(zoneName string, parameter
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &ZoneNotFoundError{ZoneName: zoneName}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &ZoneNotFoundError{ZoneName: zoneName}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // GetZoneRecord retrieves a single zone record by ID
@@ -210,11 +216,13 @@ func (s *Service) getZoneRecordResponseBody(zoneName string, recordID int) (*Get
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &ZoneRecordNotFoundError{ZoneName: zoneName, RecordID: recordID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &ZoneRecordNotFoundError{ZoneName: zoneName, RecordID: recordID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // CreateZoneRecord creates a new SafeDNS zone record
@@ -236,11 +244,13 @@ func (s *Service) createZoneRecordResponseBody(zoneName string, req CreateRecord
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &ZoneNotFoundError{ZoneName: zoneName}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &ZoneNotFoundError{ZoneName: zoneName}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // UpdateZoneRecord updates a SafeDNS zone record
@@ -265,11 +275,13 @@ func (s *Service) updateZoneRecordResponseBody(zoneName string, record Record) (
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &ZoneRecordNotFoundError{ZoneName: zoneName, RecordID: record.ID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &ZoneRecordNotFoundError{ZoneName: zoneName, RecordID: record.ID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // PatchZoneRecord patches a SafeDNS zone record
@@ -294,11 +306,13 @@ func (s *Service) patchZoneRecordResponseBody(zoneName string, recordID int, pat
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &ZoneRecordNotFoundError{ZoneName: zoneName, RecordID: recordID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &ZoneRecordNotFoundError{ZoneName: zoneName, RecordID: recordID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // DeleteZoneRecord removes a SafeDNS zone record
@@ -323,11 +337,13 @@ func (s *Service) deleteZoneRecordResponseBody(zoneName string, recordID int) (*
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &ZoneRecordNotFoundError{ZoneName: zoneName, RecordID: recordID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &ZoneRecordNotFoundError{ZoneName: zoneName, RecordID: recordID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // GetZoneNotes retrieves a list of zone notes
@@ -372,11 +388,13 @@ func (s *Service) getZoneNotesPaginatedResponseBody(zoneName string, parameters 
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &ZoneNotFoundError{ZoneName: zoneName}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &ZoneNotFoundError{ZoneName: zoneName}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // GetZoneNote retrieves a single zone note by ID
@@ -401,11 +419,13 @@ func (s *Service) getZoneNoteResponseBody(zoneName string, noteID int) (*GetZone
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &ZoneNoteNotFoundError{ZoneName: zoneName, NoteID: noteID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &ZoneNoteNotFoundError{ZoneName: zoneName, NoteID: noteID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // CreateZoneNote creates a new SafeDNS zone note
@@ -427,9 +447,11 @@ func (s *Service) createZoneNote(zoneName string, req CreateNoteRequest) (*GetZo
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &ZoneNotFoundError{ZoneName: zoneName}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &ZoneNotFoundError{ZoneName: zoneName}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }

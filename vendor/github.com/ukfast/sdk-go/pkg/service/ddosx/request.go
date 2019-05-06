@@ -281,3 +281,31 @@ type PurgeCDNRequest struct {
 func (c *PurgeCDNRequest) Validate() *connection.ValidationError {
 	return c.APIRequestBodyDefaultValidator.Validate(c)
 }
+
+// CreateHSTSRuleRequest represents a DDoSX HSTS rule create request
+type CreateHSTSRuleRequest struct {
+	connection.APIRequestBodyDefaultValidator
+
+	MaxAge            int          `json:"max_age"`
+	Preload           bool         `json:"preload"`
+	IncludeSubdomains bool         `json:"include_subdomains"`
+	RuleType          HSTSRuleType `json:"rule_type" validate:"required"`
+	RecordName        *string       `json:"record_name,omitempty"`
+}
+
+// Validate returns an error if struct properties are missing/invalid
+func (c *CreateHSTSRuleRequest) Validate() *connection.ValidationError {
+	return c.APIRequestBodyDefaultValidator.Validate(c)
+}
+
+// PatchHSTSRuleRequest represents a DDoSX HSTS rule patch request
+type PatchHSTSRuleRequest struct {
+	MaxAge            *int  `json:"max_age,omitempty"`
+	Preload           *bool `json:"preload,omitempty"`
+	IncludeSubdomains *bool `json:"include_subdomains,omitempty"`
+}
+
+// Validate returns an error if struct properties are missing/invalid
+func (c *PatchHSTSRuleRequest) Validate() *connection.ValidationError {
+	return nil
+}

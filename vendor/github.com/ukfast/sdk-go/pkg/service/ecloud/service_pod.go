@@ -44,7 +44,7 @@ func (s *Service) getPodsPaginatedResponseBody(parameters connection.APIRequestP
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{}, body)
+	return body, response.HandleResponse(body, nil)
 }
 
 // GetPod retrieves a single pod by ID
@@ -66,11 +66,13 @@ func (s *Service) getPodResponseBody(podID int) (*GetPodResponseBody, error) {
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &PodNotFoundError{ID: podID}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &PodNotFoundError{ID: podID}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // GetPodTemplates retrieves a list of pod templates
@@ -115,7 +117,7 @@ func (s *Service) getPodTemplatesPaginatedResponseBody(podID int, parameters con
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{}, body)
+	return body, response.HandleResponse(body, nil)
 }
 
 // GetPodTemplate retrieves a single pod template by name
@@ -140,11 +142,13 @@ func (s *Service) getPodTemplateResponseBody(podID int, templateName string) (*G
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &TemplateNotFoundError{Name: templateName}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &TemplateNotFoundError{Name: templateName}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // RenamePodTemplate renames a pod template
@@ -169,11 +173,13 @@ func (s *Service) renamePodTemplateResponseBody(podID int, templateName string, 
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &TemplateNotFoundError{Name: templateName}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &TemplateNotFoundError{Name: templateName}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // DeletePodTemplate removes a pod template
@@ -198,11 +204,13 @@ func (s *Service) deletePodTemplateResponseBody(podID int, templateName string) 
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &TemplateNotFoundError{Name: templateName}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &TemplateNotFoundError{Name: templateName}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // GetPodAppliances retrieves a list of appliances for pod
@@ -247,5 +255,5 @@ func (s *Service) getPodAppliancesPaginatedResponseBody(podID int, parameters co
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{}, body)
+	return body, response.HandleResponse(body, nil)
 }

@@ -44,7 +44,7 @@ func (s *Service) getDomainsPaginatedResponseBody(parameters connection.APIReque
 		return body, err
 	}
 
-	return body, response.HandleResponse([]int{}, body)
+	return body, response.HandleResponse(body, nil)
 }
 
 // GetDomain retrieves a single domain by name
@@ -66,11 +66,13 @@ func (s *Service) getDomainResponseBody(domainName string) (*GetDomainResponseBo
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &DomainNotFoundError{Name: domainName}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &DomainNotFoundError{Name: domainName}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
 
 // GetDomainNameservers retrieves the nameservers for a domain
@@ -92,9 +94,11 @@ func (s *Service) getDomainNameserversResponseBody(domainName string) (*GetNames
 		return body, err
 	}
 
-	if response.StatusCode == 404 {
-		return body, &DomainNotFoundError{Name: domainName}
-	}
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &DomainNotFoundError{Name: domainName}
+		}
 
-	return body, response.HandleResponse([]int{}, body)
+		return nil
+	})
 }
