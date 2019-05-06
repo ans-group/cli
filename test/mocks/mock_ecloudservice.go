@@ -7,6 +7,7 @@ package mocks
 import (
 	gomock "github.com/golang/mock/gomock"
 	connection "github.com/ukfast/sdk-go/pkg/connection"
+	account "github.com/ukfast/sdk-go/pkg/service/account"
 	ecloud "github.com/ukfast/sdk-go/pkg/service/ecloud"
 	reflect "reflect"
 )
@@ -249,6 +250,21 @@ func (m *MockECloudService) GetAppliancesPaginated(arg0 connection.APIRequestPar
 func (mr *MockECloudServiceMockRecorder) GetAppliancesPaginated(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAppliancesPaginated", reflect.TypeOf((*MockECloudService)(nil).GetAppliancesPaginated), arg0)
+}
+
+// GetCredits mocks base method
+func (m *MockECloudService) GetCredits(arg0 connection.APIRequestParameters) ([]account.Credit, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetCredits", arg0)
+	ret0, _ := ret[0].([]account.Credit)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetCredits indicates an expected call of GetCredits
+func (mr *MockECloudServiceMockRecorder) GetCredits(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCredits", reflect.TypeOf((*MockECloudService)(nil).GetCredits), arg0)
 }
 
 // GetDatastore mocks base method

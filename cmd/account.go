@@ -17,6 +17,7 @@ func accountRootCmd() *cobra.Command {
 	// Child root commands
 	cmd.AddCommand(accountContactRootCmd())
 	cmd.AddCommand(accountDetailsRootCmd())
+	cmd.AddCommand(accountCreditRootCmd())
 
 	return cmd
 }
@@ -88,6 +89,41 @@ func (o *OutputAccountDetails) getOrderedFields(details account.Details) *output
 	fields.Set("company_registration_number", output.NewFieldValue(details.CompanyRegistrationNumber, true))
 	fields.Set("vat_identification_number", output.NewFieldValue(details.VATIdentificationNumber, true))
 	fields.Set("primary_contact_id", output.NewFieldValue(strconv.Itoa(details.PrimaryContactID), true))
+
+	return fields
+}
+
+// OutputAccountCredits implements OutputDataProvider for outputting an array of Credits
+type OutputAccountCredits struct {
+	Credits []account.Credit
+}
+
+func outputAccountCredits(credits []account.Credit) {
+	err := Output(&OutputAccountCredits{Credits: credits})
+	if err != nil {
+		output.Fatalf("Failed to output credits: %s", err)
+	}
+}
+
+func (o *OutputAccountCredits) GetData() interface{} {
+	return o.Credits
+}
+
+func (o *OutputAccountCredits) GetFieldData() ([]*output.OrderedFields, error) {
+	var data []*output.OrderedFields
+	for _, credit := range o.Credits {
+		fields := o.getOrderedFields(credit)
+		data = append(data, fields)
+	}
+
+	return data, nil
+}
+
+func (o *OutputAccountCredits) getOrderedFields(credit account.Credit) *output.OrderedFields {
+	fields := output.NewOrderedFields()
+	fields.Set("type", output.NewFieldValue(credit.Type, true))
+	fields.Set("total", output.NewFieldValue(strconv.Itoa(credit.Total), true))
+	fields.Set("remaining", output.NewFieldValue(strconv.Itoa(credit.Remaining), true))
 
 	return fields
 }

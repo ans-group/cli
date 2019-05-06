@@ -26,6 +26,7 @@ func ecloudRootCmd() *cobra.Command {
 	cmd.AddCommand(ecloudPodRootCmd())
 	cmd.AddCommand(ecloudDatastoreRootCmd())
 	cmd.AddCommand(ecloudApplianceRootCmd())
+	cmd.AddCommand(ecloudCreditRootCmd())
 
 	return cmd
 }
