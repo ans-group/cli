@@ -660,3 +660,68 @@ func TestOutputDDoSXCDNRules_GetFieldData_ExpectedFieldData(t *testing.T) {
 	assert.True(t, data[0].Exists("id"))
 	assert.Equal(t, "00000000-0000-0000-0000-000000000000", data[0].Get("id").Value)
 }
+
+func TestOutputDDoSXHSTSConfiguration_GetData_ExpectedData(t *testing.T) {
+	o := OutputDDoSXHSTSConfiguration{
+		HSTSConfiguration: []ddosx.HSTSConfiguration{
+			ddosx.HSTSConfiguration{
+				Enabled: true,
+			},
+		},
+	}
+
+	data := o.GetData()
+
+	assert.IsType(t, []ddosx.HSTSConfiguration{}, data)
+	assert.Equal(t, "true", data.([]ddosx.HSTSConfiguration)[0].Enabled)
+}
+
+func TestOutputDDoSXHSTSConfiguration_GetFieldData_ExpectedFieldData(t *testing.T) {
+	o := OutputDDoSXHSTSConfiguration{
+		HSTSConfiguration: []ddosx.HSTSConfiguration{
+			ddosx.HSTSConfiguration{
+				Enabled: true,
+			},
+		},
+	}
+
+	data, err := o.GetFieldData()
+
+	assert.Nil(t, err)
+	assert.True(t, data[0].Exists("enabled"))
+	assert.Equal(t, "true", data[0].Get("enabled").Value)
+}
+
+func TestOutputDDoSXHSTSRules_GetData_ExpectedData(t *testing.T) {
+	o := OutputDDoSXHSTSRules{
+		HSTSRules: []ddosx.HSTSRule{
+			ddosx.HSTSRule{
+				ID: "00000000-0000-0000-0000-000000000000",
+			},
+		},
+	}
+
+	data := o.GetData()
+
+	assert.IsType(t, []ddosx.HSTSRule{}, data)
+	assert.Equal(t, "00000000-0000-0000-0000-000000000000", data.([]ddosx.HSTSRule)[0].ID)
+}
+
+func TestOutputDDoSXHSTSRules_GetFieldData_ExpectedFieldData(t *testing.T) {
+	o := OutputDDoSXHSTSRules{
+		HSTSRules: []ddosx.HSTSRule{
+			ddosx.HSTSRule{
+				ID:         "00000000-0000-0000-0000-000000000000",
+				RecordName: ptr.String("example.com"),
+			},
+		},
+	}
+
+	data, err := o.GetFieldData()
+
+	assert.Nil(t, err)
+	assert.True(t, data[0].Exists("id"))
+	assert.Equal(t, "00000000-0000-0000-0000-000000000000", data[0].Get("id").Value)
+	assert.True(t, data[0].Exists("record_name"))
+	assert.Equal(t, "example.com", data[0].Get("record_name").Value)
+}
