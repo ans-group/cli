@@ -83,3 +83,40 @@ func TestOutputAccountContacts_GetFieldData(t *testing.T) {
 		assert.Equal(t, "testname2", data[1].Get("first_name").Value)
 	})
 }
+
+func TestOutputAccountDetails_GetData_ExpectedData(t *testing.T) {
+	o := OutputAccountDetails{
+		Details: []account.Details{
+			account.Details{
+				VATIdentificationNumber: "GB123",
+			},
+		},
+	}
+
+	data := o.GetData()
+
+	assert.IsType(t, []account.Details{}, data)
+	assert.Equal(t, "GB123", data.([]account.Details)[0].VATIdentificationNumber)
+}
+
+func TestOutputAccountDetails_GetFieldData_ExpectedFieldData(t *testing.T) {
+	o := OutputAccountDetails{
+		Details: []account.Details{
+			account.Details{
+				VATIdentificationNumber: "GB123",
+			},
+			account.Details{
+				VATIdentificationNumber: "GB456",
+			},
+		},
+	}
+
+	data, err := o.GetFieldData()
+
+	assert.Nil(t, err)
+	assert.Len(t, data, 2)
+	assert.True(t, data[0].Exists("vat_identification_number"))
+	assert.Equal(t, "GB123", data[0].Get("vat_identification_number").Value)
+	assert.True(t, data[1].Exists("vat_identification_number"))
+	assert.Equal(t, "GB456", data[1].Get("vat_identification_number").Value)
+}

@@ -22,3 +22,10 @@ type GetDetailsResponseBody struct {
 
 	Data Details `json:"data"`
 }
+
+// GetCreditsResponseBody represents the API response body from the GetCredits resource
+type GetCreditsResponseBody struct {
+	connection.APIResponseBody
+
+	Data []Credit `json:"data"`
+}

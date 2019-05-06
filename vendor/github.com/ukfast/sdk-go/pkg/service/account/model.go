@@ -28,3 +28,10 @@ type Details struct {
 	VATIdentificationNumber   string `json:"vat_identification_number"`
 	PrimaryContactID          int    `json:"primary_contact_id"`
 }
+
+// Credit represents a UKFast account credit
+type Credit struct {
+	Type      string `json:"type"`
+	Total     int    `json:"total"`
+	Remaining int    `json:"remaining"`
+}
