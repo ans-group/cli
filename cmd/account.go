@@ -16,7 +16,7 @@ func accountRootCmd() *cobra.Command {
 
 	// Child root commands
 	cmd.AddCommand(accountContactRootCmd())
-	cmd.AddCommand(accountDetailRootCmd())
+	cmd.AddCommand(accountDetailsRootCmd())
 
 	return cmd
 }
