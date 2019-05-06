@@ -123,3 +123,57 @@ func Test_ddosxDomainCDNDisable(t *testing.T) {
 		})
 	})
 }
+
+func Test_ddosxDomainCDNPurgeCmd_Args(t *testing.T) {
+	t.Run("ValidArgs_NoError", func(t *testing.T) {
+		err := ddosxDomainCDNPurgeCmd().Args(nil, []string{"testdomain1.co.uk"})
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("MissingDomain_Error", func(t *testing.T) {
+		err := ddosxDomainCDNPurgeCmd().Args(nil, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing domain", err.Error())
+	})
+}
+
+func Test_ddosxDomainCDNPurge(t *testing.T) {
+	t.Run("Valid", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		cmd := ddosxDomainCDNPurgeCmd()
+		cmd.Flags().Set("record-name", "example.com")
+		cmd.Flags().Set("uri", "test.html")
+
+		expectedRequest := ddosx.PurgeCDNRequest{
+			RecordName: "example.com",
+			URI:        "test.html",
+		}
+
+		service := mocks.NewMockDDoSXService(mockCtrl)
+
+		service.EXPECT().PurgeDomainCDN("testdomain1.co.uk", gomock.Eq(expectedRequest)).Return(nil)
+
+		ddosxDomainCDNPurge(service, cmd, []string{"testdomain1.co.uk"})
+	})
+
+	t.Run("DeleteDomainCDNConfiguration_OutputsFatal", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		cmd := ddosxDomainCDNPurgeCmd()
+		cmd.Flags().Set("record-name", "example.com")
+		cmd.Flags().Set("uri", "test.html")
+
+		service := mocks.NewMockDDoSXService(mockCtrl)
+
+		service.EXPECT().PurgeDomainCDN("testdomain1.co.uk", gomock.Any()).Return(errors.New("test error"))
+
+		test_output.AssertFatalOutput(t, "Error purging CDN content for domain: test error\n", func() {
+			ddosxDomainCDNPurge(service, cmd, []string{"testdomain1.co.uk"})
+		})
+	})
+}

@@ -633,32 +633,4 @@ func Test_safednsTemplateRecordDelete(t *testing.T) {
 			safednsTemplateRecordDelete(service, &cobra.Command{}, []string{"test template 1"})
 		})
 	})
-
-	// t.Run("InvalidRecordID_OutputsError", func(t *testing.T) {
-	// 	mockCtrl := gomock.NewController(t)
-	// 	defer mockCtrl.Finish()
-
-	// 	service := mocks.NewMockSafeDNSService(mockCtrl)
-
-	// 	test_output.AssertErrorOutput(t, func() {
-	// 		safednsTemplateRecordDelete(service, &cobra.Command{}, []string{"123", "abc"})
-	// 	})
-
-	// 	assert.Equal(t, "Invalid record ID [abc]\n", output)
-	// })
-
-	// t.Run("GetTemplateRecordError_OutputsError", func(t *testing.T) {
-	// 	mockCtrl := gomock.NewController(t)
-	// 	defer mockCtrl.Finish()
-
-	// 	service := mocks.NewMockSafeDNSService(mockCtrl)
-
-	// 	service.EXPECT().GetTemplateRecord(123, 456).Return(safedns.Record{}, errors.New("test error")).Times(1)
-
-	// 	test_output.AssertErrorOutput(t, func() {
-	// 		safednsTemplateRecordDelete(service, &cobra.Command{}, []string{"123", "456"})
-	// 	})
-
-	// 	assert.Equal(t, "Error retrieving record [456]: test error\n", output)
-	// })
 }
