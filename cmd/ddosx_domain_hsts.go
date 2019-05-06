@@ -14,6 +14,7 @@ func ddosxDomainHSTSRootCmd() *cobra.Command {
 	}
 
 	// Child commands
+	cmd.AddCommand(ddosxDomainHSTSShowCmd())
 	cmd.AddCommand(ddosxDomainHSTSEnableCmd())
 	cmd.AddCommand(ddosxDomainHSTSDisableCmd())
 
@@ -21,6 +22,41 @@ func ddosxDomainHSTSRootCmd() *cobra.Command {
 	cmd.AddCommand(ddosxDomainHSTSRuleRootCmd())
 
 	return cmd
+}
+
+func ddosxDomainHSTSShowCmd() *cobra.Command {
+	return &cobra.Command{
+		Use:     "show <domain: name>...",
+		Short:   "Shows HSTS for a domain",
+		Long:    "This command shows HSTS for one or more domains",
+		Example: "ukfast ddosx domain hsts show example.com",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Missing domain")
+			}
+
+			return nil
+		},
+		Run: func(cmd *cobra.Command, args []string) {
+			ddosxDomainHSTSShow(getClient().DDoSXService(), cmd, args)
+		},
+	}
+}
+
+func ddosxDomainHSTSShow(service ddosx.DDoSXService, cmd *cobra.Command, args []string) {
+	var configurations []ddosx.HSTSConfiguration
+
+	for _, arg := range args {
+		configuration, err := service.GetDomainHSTSConfiguration(arg)
+		if err != nil {
+			OutputWithErrorLevelf("Error retrieving HSTS configuration for domain [%s]: %s", arg, err)
+			continue
+		}
+
+		configurations = append(configurations, configuration)
+	}
+
+	outputDDoSXHSTSConfiguration(configurations)
 }
 
 func ddosxDomainHSTSEnableCmd() *cobra.Command {
@@ -84,7 +120,7 @@ func ddosxDomainHSTSDisableCmd() *cobra.Command {
 }
 
 func ddosxDomainHSTSDisable(service ddosx.DDoSXService, cmd *cobra.Command, args []string) {
-	var domains []ddosx.Domain
+	var configurations []ddosx.HSTSConfiguration
 
 	for _, arg := range args {
 		err := service.DeleteDomainHSTSConfiguration(arg)
@@ -93,14 +129,14 @@ func ddosxDomainHSTSDisable(service ddosx.DDoSXService, cmd *cobra.Command, args
 			continue
 		}
 
-		domain, err := service.GetDomain(arg)
+		configuration, err := service.GetDomainHSTSConfiguration(arg)
 		if err != nil {
 			OutputWithErrorLevelf("Error retrieving updated HSTS configuration for domain [%s]: %s", arg, err)
 			continue
 		}
 
-		domains = append(domains, domain)
+		configurations = append(configurations, configuration)
 	}
 
-	outputDDoSXDomains(domains)
+	outputDDoSXHSTSConfiguration(configurations)
 }

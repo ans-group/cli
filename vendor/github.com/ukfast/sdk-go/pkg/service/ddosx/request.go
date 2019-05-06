@@ -289,8 +289,8 @@ type CreateHSTSRuleRequest struct {
 	MaxAge            int          `json:"max_age"`
 	Preload           bool         `json:"preload"`
 	IncludeSubdomains bool         `json:"include_subdomains"`
-	RuleType          HSTSRuleType `json:"rule_type" validate:"required"`
-	RecordName        *string       `json:"record_name,omitempty"`
+	Type              HSTSRuleType `json:"type" validate:"required"`
+	RecordName        *string      `json:"record_name,omitempty"`
 }
 
 // Validate returns an error if struct properties are missing/invalid

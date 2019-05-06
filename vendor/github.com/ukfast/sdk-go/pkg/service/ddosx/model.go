@@ -490,6 +490,6 @@ type HSTSRule struct {
 	MaxAge            int          `json:"max_age"`
 	Preload           bool         `json:"preload"`
 	IncludeSubdomains bool         `json:"include_subdomains"`
-	RuleType          HSTSRuleType `json:"rule_type"`
+	Type              HSTSRuleType `json:"type"`
 	RecordName        *string      `json:"record_name"`
 }

@@ -137,7 +137,7 @@ func ddosxDomainHSTSRuleCreate(service ddosx.DDoSXService, cmd *cobra.Command, a
 	createRequest.MaxAge, _ = cmd.Flags().GetInt("max-age")
 	createRequest.Preload, _ = cmd.Flags().GetBool("preload")
 	createRequest.IncludeSubdomains, _ = cmd.Flags().GetBool("include-subdomains")
-	createRequest.RuleType = parsedRuleType
+	createRequest.Type = parsedRuleType
 
 	if cmd.Flags().Changed("record-name") {
 		recordName, _ := cmd.Flags().GetString("record-name")

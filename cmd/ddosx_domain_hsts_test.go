@@ -91,7 +91,7 @@ func Test_ddosxDomainHSTSDisable(t *testing.T) {
 		service := mocks.NewMockDDoSXService(mockCtrl)
 
 		service.EXPECT().DeleteDomainHSTSConfiguration("testdomain1.co.uk").Return(nil)
-		service.EXPECT().GetDomain("testdomain1.co.uk").Return(ddosx.Domain{}, nil)
+		service.EXPECT().GetDomainHSTSConfiguration("testdomain1.co.uk").Return(ddosx.HSTSConfiguration{}, nil)
 
 		ddosxDomainHSTSDisable(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 	})
@@ -116,7 +116,7 @@ func Test_ddosxDomainHSTSDisable(t *testing.T) {
 		service := mocks.NewMockDDoSXService(mockCtrl)
 
 		service.EXPECT().DeleteDomainHSTSConfiguration("testdomain1.co.uk").Return(nil)
-		service.EXPECT().GetDomain("testdomain1.co.uk").Return(ddosx.Domain{}, errors.New("test error"))
+		service.EXPECT().GetDomainHSTSConfiguration("testdomain1.co.uk").Return(ddosx.HSTSConfiguration{}, errors.New("test error"))
 
 		test_output.AssertErrorOutput(t, "Error retrieving updated HSTS configuration for domain [testdomain1.co.uk]: test error\n", func() {
 			ddosxDomainHSTSDisable(service, &cobra.Command{}, []string{"testdomain1.co.uk"})

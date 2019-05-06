@@ -665,7 +665,7 @@ func (o *OutputDDoSXHSTSRules) getOrderedFields(rule ddosx.HSTSRule) *output.Ord
 	fields.Set("max_age", output.NewFieldValue(strconv.Itoa(rule.MaxAge), true))
 	fields.Set("preload", output.NewFieldValue(strconv.FormatBool(rule.Preload), true))
 	fields.Set("include_subdomains", output.NewFieldValue(strconv.FormatBool(rule.IncludeSubdomains), true))
-	fields.Set("rule_type", output.NewFieldValue(rule.RuleType.String(), true))
+	fields.Set("type", output.NewFieldValue(rule.Type.String(), true))
 	fields.Set("record_name", output.NewFieldValue(recordName, true))
 
 	return fields
