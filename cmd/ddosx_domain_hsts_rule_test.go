@@ -160,12 +160,15 @@ func Test_ddosxDomainHSTSRuleCreate(t *testing.T) {
 		cmd.Flags().Set("type", "record")
 		cmd.Flags().Set("record-name", "example.com")
 
-		expectedRequest := ddosx.CreateHSTSRuleRequest{
-			RuleType: ddosx.HSTSRuleTypeRecord,
-		}
-
 		gomock.InOrder(
-			service.EXPECT().CreateDomainHSTSRule("testdomain1.co.uk", gomock.Eq(expectedRequest)).Return("00000000-0000-0000-0000-000000000000", nil),
+			service.EXPECT().CreateDomainHSTSRule("testdomain1.co.uk", gomock.Any()).Do(func(id string, req ddosx.CreateHSTSRuleRequest) {
+				if req.RuleType != ddosx.HSTSRuleTypeRecord {
+					t.Fatalf("Expected RuleType 'HSTSRuleTypeRecord', got '%s'", req.RuleType)
+				}
+				if req.RecordName == nil || *req.RecordName != "example.com" {
+					t.Fatal("Expected RecordName 'example.com'")
+				}
+			}).Return("00000000-0000-0000-0000-000000000000", nil),
 			service.EXPECT().GetDomainHSTSRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.HSTSRule{}, nil),
 		)
 

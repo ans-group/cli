@@ -673,7 +673,7 @@ func TestOutputDDoSXHSTSConfiguration_GetData_ExpectedData(t *testing.T) {
 	data := o.GetData()
 
 	assert.IsType(t, []ddosx.HSTSConfiguration{}, data)
-	assert.Equal(t, "true", data.([]ddosx.HSTSConfiguration)[0].Enabled)
+	assert.Equal(t, true, data.([]ddosx.HSTSConfiguration)[0].Enabled)
 }
 
 func TestOutputDDoSXHSTSConfiguration_GetFieldData_ExpectedFieldData(t *testing.T) {

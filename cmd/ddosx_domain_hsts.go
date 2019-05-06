@@ -43,7 +43,7 @@ func ddosxDomainHSTSEnableCmd() *cobra.Command {
 }
 
 func ddosxDomainHSTSEnable(service ddosx.DDoSXService, cmd *cobra.Command, args []string) {
-	var domains []ddosx.Domain
+	var configurations []ddosx.HSTSConfiguration
 
 	for _, arg := range args {
 		err := service.AddDomainHSTSConfiguration(arg)
@@ -52,16 +52,16 @@ func ddosxDomainHSTSEnable(service ddosx.DDoSXService, cmd *cobra.Command, args 
 			continue
 		}
 
-		domain, err := service.GetDomain(arg)
+		configuration, err := service.GetDomainHSTSConfiguration(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving updated HSTS configuration for domain[%s]: %s", arg, err)
+			OutputWithErrorLevelf("Error retrieving updated HSTS configuration for domain [%s]: %s", arg, err)
 			continue
 		}
 
-		domains = append(domains, domain)
+		configurations = append(configurations, configuration)
 	}
 
-	outputDDoSXDomains(domains)
+	outputDDoSXHSTSConfiguration(configurations)
 }
 
 func ddosxDomainHSTSDisableCmd() *cobra.Command {
