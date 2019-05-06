@@ -16,6 +16,7 @@ func accountRootCmd() *cobra.Command {
 
 	// Child root commands
 	cmd.AddCommand(accountContactRootCmd())
+	cmd.AddCommand(accountDetailRootCmd())
 
 	return cmd
 }
@@ -52,6 +53,41 @@ func (o *OutputAccountContacts) getOrderedFields(contact account.Contact) *outpu
 	fields.Set("type", output.NewFieldValue(contact.Type.String(), true))
 	fields.Set("first_name", output.NewFieldValue(contact.FirstName, true))
 	fields.Set("last_name", output.NewFieldValue(contact.LastName, true))
+
+	return fields
+}
+
+// OutputAccountDetails implements OutputDataProvider for outputting an array of Details
+type OutputAccountDetails struct {
+	Details []account.Details
+}
+
+func outputAccountDetails(details []account.Details) {
+	err := Output(&OutputAccountDetails{Details: details})
+	if err != nil {
+		output.Fatalf("Failed to output details: %s", err)
+	}
+}
+
+func (o *OutputAccountDetails) GetData() interface{} {
+	return o.Details
+}
+
+func (o *OutputAccountDetails) GetFieldData() ([]*output.OrderedFields, error) {
+	var data []*output.OrderedFields
+	for _, detail := range o.Details {
+		fields := o.getOrderedFields(detail)
+		data = append(data, fields)
+	}
+
+	return data, nil
+}
+
+func (o *OutputAccountDetails) getOrderedFields(details account.Details) *output.OrderedFields {
+	fields := output.NewOrderedFields()
+	fields.Set("company_registration_number", output.NewFieldValue(details.CompanyRegistrationNumber, true))
+	fields.Set("vat_identification_number", output.NewFieldValue(details.VATIdentificationNumber, true))
+	fields.Set("primary_contact_id", output.NewFieldValue(strconv.Itoa(details.PrimaryContactID), true))
 
 	return fields
 }

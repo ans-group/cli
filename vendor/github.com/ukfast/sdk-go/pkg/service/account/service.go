@@ -9,6 +9,10 @@ type AccountService interface {
 	GetContacts(parameters connection.APIRequestParameters) ([]Contact, error)
 	GetContactsPaginated(parameters connection.APIRequestParameters) ([]Contact, error)
 	GetContact(contactID int) (Contact, error)
+
+	GetDetails() (Details, error)
+
+	GetCredits(parameters connection.APIRequestParameters) ([]Credit, error)
 }
 
 // Service implements AccountService for managing

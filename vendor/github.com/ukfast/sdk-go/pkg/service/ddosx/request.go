@@ -1,6 +1,9 @@
 package ddosx
 
-import "github.com/ukfast/sdk-go/pkg/connection"
+import (
+	"github.com/ukfast/sdk-go/pkg/connection"
+	"github.com/ukfast/sdk-go/pkg/ptr"
+)
 
 // CreateRecordRequest represents a request to create a DDoSX record
 type CreateRecordRequest struct {
@@ -295,6 +298,10 @@ type CreateHSTSRuleRequest struct {
 
 // Validate returns an error if struct properties are missing/invalid
 func (c *CreateHSTSRuleRequest) Validate() *connection.ValidationError {
+	if c.Type == HSTSRuleTypeRecord && ptr.ToStringOrDefault(c.RecordName) == "" {
+		return connection.NewValidationError("RecordName must be specified with Type 'HSTSRuleTypeRecord'")
+	}
+
 	return c.APIRequestBodyDefaultValidator.Validate(c)
 }
 

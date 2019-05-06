@@ -78,3 +78,33 @@ func (mr *MockAccountServiceMockRecorder) GetContactsPaginated(arg0 interface{})
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetContactsPaginated", reflect.TypeOf((*MockAccountService)(nil).GetContactsPaginated), arg0)
 }
+
+// GetCredits mocks base method
+func (m *MockAccountService) GetCredits(arg0 connection.APIRequestParameters) ([]account.Credit, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetCredits", arg0)
+	ret0, _ := ret[0].([]account.Credit)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetCredits indicates an expected call of GetCredits
+func (mr *MockAccountServiceMockRecorder) GetCredits(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCredits", reflect.TypeOf((*MockAccountService)(nil).GetCredits), arg0)
+}
+
+// GetDetails mocks base method
+func (m *MockAccountService) GetDetails() (account.Details, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetDetails")
+	ret0, _ := ret[0].(account.Details)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetDetails indicates an expected call of GetDetails
+func (mr *MockAccountServiceMockRecorder) GetDetails() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDetails", reflect.TypeOf((*MockAccountService)(nil).GetDetails))
+}
