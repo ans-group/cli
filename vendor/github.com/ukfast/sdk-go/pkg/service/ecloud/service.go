@@ -2,6 +2,7 @@ package ecloud
 
 import (
 	"github.com/ukfast/sdk-go/pkg/connection"
+	"github.com/ukfast/sdk-go/pkg/service/account"
 )
 
 // ECloudService is an interface for managing eCloud
@@ -95,6 +96,9 @@ type ECloudService interface {
 	GetAppliance(applianceID string) (Appliance, error)
 	GetApplianceParameters(applianceID string, reqParameters connection.APIRequestParameters) ([]ApplianceParameter, error)
 	GetApplianceParametersPaginated(applianceID string, parameters connection.APIRequestParameters) ([]ApplianceParameter, error)
+
+	// Credit
+	GetCredits(parameters connection.APIRequestParameters) ([]account.Credit, error)
 }
 
 // Service implements ECloudService for managing
