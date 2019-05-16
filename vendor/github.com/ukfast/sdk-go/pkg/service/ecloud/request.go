@@ -152,7 +152,7 @@ func (s PatchVirtualMachineRequestDiskState) String() string {
 
 // PatchVirtualMachineRequestDisk represents an eCloud virtual machine patch request disk
 type PatchVirtualMachineRequestDisk struct {
-	UUID string `json:"uuid" validate:"required"`
+	UUID string `json:"uuid,omitempty"`
 	// Size in GB
 	Capacity int                                 `json:"capacity,omitempty"`
 	State    PatchVirtualMachineRequestDiskState `json:"state,omitempty"`

@@ -112,6 +112,8 @@ func (o *OutputECloudVirtualMachineDisks) getOrderedFields(disk ecloud.VirtualMa
 	fields.Set("name", output.NewFieldValue(disk.Name, true))
 	fields.Set("capacity", output.NewFieldValue(strconv.Itoa(disk.Capacity), true))
 	fields.Set("uuid", output.NewFieldValue(disk.UUID, true))
+	fields.Set("type", output.NewFieldValue(disk.Type.String(), true))
+	fields.Set("key", output.NewFieldValue(strconv.Itoa(disk.Key), false))
 
 	return fields
 }

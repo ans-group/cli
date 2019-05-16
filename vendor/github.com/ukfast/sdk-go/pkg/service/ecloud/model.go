@@ -19,6 +19,17 @@ func (s VirtualMachineStatus) String() string {
 	return string(s)
 }
 
+type VirtualMachineDiskType string
+
+func (e VirtualMachineDiskType) String() string {
+	return string(e)
+}
+
+const (
+	VirtualMachineDiskTypeStandard VirtualMachineDiskType = "Standard"
+	VirtualMachineDiskTypeCluster  VirtualMachineDiskType = "Cluster"
+)
+
 type VirtualMachinePowerStatus string
 
 func (s VirtualMachinePowerStatus) String() string {
@@ -106,8 +117,10 @@ type VirtualMachine struct {
 
 // VirtualMachineDisk represents an eCloud Virtual Machine disk
 type VirtualMachineDisk struct {
-	UUID string `json:"uuid"`
-	Name string `json:"name"`
+	UUID string                 `json:"uuid"`
+	Name string                 `json:"name"`
+	Type VirtualMachineDiskType `json:"type"`
+	Key  int                    `json:"key"`
 
 	// Size in GB
 	Capacity int `json:"capacity"`
