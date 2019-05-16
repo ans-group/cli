@@ -7,6 +7,7 @@ require (
 	github.com/mattn/go-runewidth v0.0.4 // indirect
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/olekukonko/tablewriter v0.0.1
+	github.com/ryanuber/go-glob v1.0.0
 	github.com/spf13/afero v1.2.1
 	github.com/spf13/cobra v0.0.3
 	github.com/spf13/viper v1.3.1

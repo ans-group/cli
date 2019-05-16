@@ -939,4 +939,62 @@ func Test_getColumnsOrDefault_Expected(t *testing.T) {
 		assert.Equal(t, "testkey1", columns[0])
 		assert.Equal(t, "testkey2", columns[1])
 	})
+
+	t.Run("GlobAll_ExpectedColumns", func(t *testing.T) {
+		f := NewOrderedFields()
+		f.Set("testkey1", NewFieldValue("testvalue1", true))
+		f.Set("testkey2", NewFieldValue("testvalue2", false))
+		f.Set("testkey3", NewFieldValue("testvalue3", false))
+
+		columns := getColumnsOrDefault([]string{"*"}, f)
+
+		assert.Len(t, columns, 3)
+		assert.Equal(t, "testkey1", columns[0])
+		assert.Equal(t, "testkey2", columns[1])
+		assert.Equal(t, "testkey3", columns[2])
+	})
+
+	t.Run("GlobStart_ExpectedColumns", func(t *testing.T) {
+		f := NewOrderedFields()
+		f.Set("testkey1", NewFieldValue("testvalue1", true))
+		f.Set("testkey2", NewFieldValue("testvalue2", false))
+		f.Set("testkey3", NewFieldValue("testvalue3", false))
+		f.Set("otherkey", NewFieldValue("othervalue", false))
+
+		columns := getColumnsOrDefault([]string{"*key1"}, f)
+
+		assert.Len(t, columns, 1)
+		assert.Equal(t, "testkey1", columns[0])
+	})
+
+	t.Run("GlobEnd_ExpectedColumns", func(t *testing.T) {
+		f := NewOrderedFields()
+		f.Set("testkey1", NewFieldValue("testvalue1", true))
+		f.Set("testkey2", NewFieldValue("testvalue2", false))
+		f.Set("testkey3", NewFieldValue("testvalue3", false))
+		f.Set("otherkey", NewFieldValue("othervalue", false))
+
+		columns := getColumnsOrDefault([]string{"testkey*"}, f)
+
+		assert.Len(t, columns, 3)
+		assert.Equal(t, "testkey1", columns[0])
+		assert.Equal(t, "testkey2", columns[1])
+		assert.Equal(t, "testkey3", columns[2])
+		f.Set("otherkey", NewFieldValue("othervalue", false))
+	})
+
+	t.Run("GlobStartEnd_ExpectedColumns", func(t *testing.T) {
+		f := NewOrderedFields()
+		f.Set("testkey1", NewFieldValue("testvalue1", true))
+		f.Set("testkey2", NewFieldValue("testvalue2", false))
+		f.Set("testkey3", NewFieldValue("testvalue3", false))
+		f.Set("otherkey", NewFieldValue("othervalue", false))
+
+		columns := getColumnsOrDefault([]string{"*test*"}, f)
+
+		assert.Len(t, columns, 3)
+		assert.Equal(t, "testkey1", columns[0])
+		assert.Equal(t, "testkey2", columns[1])
+		assert.Equal(t, "testkey3", columns[2])
+	})
 }
