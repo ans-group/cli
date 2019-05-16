@@ -171,8 +171,7 @@ The property modifier accepts a comma-delimited list of property names, and is a
 3337874 test.example.co.uk 1.2.3.4
 ```
 
-The property modifier also accepts a single wildcard/glob `*`, which denotes all properties
-should be returned
+The property modifier also accepts globbing e.g. `*`, `some*`, `*thing`
 
 
 ## Filtering
