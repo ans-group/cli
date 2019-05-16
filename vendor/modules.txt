@@ -38,6 +38,8 @@ github.com/olekukonko/tablewriter
 github.com/pelletier/go-toml
 # github.com/pmezard/go-difflib v1.0.0
 github.com/pmezard/go-difflib/difflib
+# github.com/ryanuber/go-glob v1.0.0
+github.com/ryanuber/go-glob
 # github.com/spf13/afero v1.2.1
 github.com/spf13/afero
 github.com/spf13/afero/mem

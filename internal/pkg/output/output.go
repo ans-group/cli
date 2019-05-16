@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/olekukonko/tablewriter"
+	"github.com/ryanuber/go-glob"
 )
 
 var outputExit func(code int) = os.Exit
@@ -159,20 +160,16 @@ func getColumnsOrDefault(includeColumns []string, fields *OrderedFields) []strin
 	var columns []string
 
 	if len(includeColumns) > 0 {
-		if includeColumns[0] == "*" {
-			// Glob, add all fields
+		// For each column in includeColumns, add column to columns array
+		// if that column exists in fields
+		for _, prop := range includeColumns {
 			for _, column := range fields.Keys() {
-				columns = append(columns, column)
-			}
-		} else {
-			// For each defined column, add to columns array if that
-			// column exists in the fields
-			for _, prop := range includeColumns {
-				if fields.Exists(strings.ToLower(prop)) {
-					columns = append(columns, strings.ToLower(prop))
+				if glob.Glob(strings.ToLower(prop), column) {
+					columns = append(columns, column)
 				}
 			}
 		}
+
 	} else {
 		// Use default fields
 		for _, column := range fields.Keys() {
