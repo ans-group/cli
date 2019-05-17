@@ -179,6 +179,46 @@ func Test_ddosxDomainDeployCmd_Args(t *testing.T) {
 	})
 }
 
+func Test_ddosxDomainDelete(t *testing.T) {
+	t.Run("SingleDomain", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockDDoSXService(mockCtrl)
+
+		service.EXPECT().DeleteDomain("testdomain1.co.uk").Return(nil)
+
+		ddosxDomainDelete(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
+	})
+
+	t.Run("MultipleDomains", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockDDoSXService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().DeleteDomain("testdomain1.co.uk").Return(nil),
+			service.EXPECT().DeleteDomain("testdomain2.co.uk").Return(nil),
+		)
+
+		ddosxDomainDelete(service, &cobra.Command{}, []string{"testdomain1.co.uk", "testdomain2.co.uk"})
+	})
+
+	t.Run("DeleteDomainError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockDDoSXService(mockCtrl)
+
+		service.EXPECT().DeleteDomain("testdomain1.co.uk").Return(errors.New("test error"))
+
+		test_output.AssertErrorOutput(t, "Error removing domain [testdomain1.co.uk]: test error\n", func() {
+			ddosxDomainDelete(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
+		})
+	})
+}
+
 func Test_ddosxDomainDeploy(t *testing.T) {
 	t.Run("SingleDomain", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)

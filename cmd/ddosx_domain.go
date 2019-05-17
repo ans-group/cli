@@ -19,6 +19,7 @@ func ddosxDomainRootCmd() *cobra.Command {
 	cmd.AddCommand(ddosxDomainListCmd())
 	cmd.AddCommand(ddosxDomainShowCmd())
 	cmd.AddCommand(ddosxDomainCreateCmd())
+	cmd.AddCommand(ddosxDomainDeleteCmd())
 	cmd.AddCommand(ddosxDomainDeployCmd())
 
 	// Child root commands
@@ -133,6 +134,35 @@ func ddosxDomainCreate(service ddosx.DDoSXService, cmd *cobra.Command, args []st
 	}
 
 	outputDDoSXDomains([]ddosx.Domain{domain})
+}
+
+func ddosxDomainDeleteCmd() *cobra.Command {
+	return &cobra.Command{
+		Use:     "delete <domain: name>...",
+		Short:   "Deletes a domain",
+		Long:    "This command deletes one or more domains",
+		Example: "ukfast ddosx domain delete example.com",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Missing domain")
+			}
+
+			return nil
+		},
+		Run: func(cmd *cobra.Command, args []string) {
+			ddosxDomainDelete(getClient().DDoSXService(), cmd, args)
+		},
+	}
+}
+
+func ddosxDomainDelete(service ddosx.DDoSXService, cmd *cobra.Command, args []string) {
+	for _, arg := range args {
+		err := service.DeleteDomain(arg)
+		if err != nil {
+			OutputWithErrorLevelf("Error removing domain [%s]: %s", arg, err)
+			continue
+		}
+	}
 }
 
 func ddosxDomainDeployCmd() *cobra.Command {

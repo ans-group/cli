@@ -96,6 +96,34 @@ func (s *Service) createDomainResponseBody(req CreateDomainRequest) (*connection
 	return body, response.HandleResponse(body, nil)
 }
 
+// DeleteDomain removes a domain
+func (s *Service) DeleteDomain(domainName string) error {
+	_, err := s.deleteDomainResponseBody(domainName)
+
+	return err
+}
+
+func (s *Service) deleteDomainResponseBody(domainName string) (*connection.APIResponseBody, error) {
+	body := &connection.APIResponseBody{}
+
+	if domainName == "" {
+		return body, fmt.Errorf("invalid domain name")
+	}
+
+	response, err := s.connection.Delete(fmt.Sprintf("/ddosx/v1/domains/%s", domainName), nil)
+	if err != nil {
+		return body, err
+	}
+
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &DomainNotFoundError{Name: domainName}
+		}
+
+		return nil
+	})
+}
+
 // DeployDomain deploys/commits changes to a domain
 func (s *Service) DeployDomain(domainName string) error {
 	_, err := s.deployDomainResponseBody(domainName)

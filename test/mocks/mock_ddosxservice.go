@@ -211,6 +211,20 @@ func (mr *MockDDoSXServiceMockRecorder) CreateSSL(arg0 interface{}) *gomock.Call
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateSSL", reflect.TypeOf((*MockDDoSXService)(nil).CreateSSL), arg0)
 }
 
+// DeleteDomain mocks base method
+func (m *MockDDoSXService) DeleteDomain(arg0 string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteDomain", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteDomain indicates an expected call of DeleteDomain
+func (mr *MockDDoSXServiceMockRecorder) DeleteDomain(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteDomain", reflect.TypeOf((*MockDDoSXService)(nil).DeleteDomain), arg0)
+}
+
 // DeleteDomainACLGeoIPRule mocks base method
 func (m *MockDDoSXService) DeleteDomainACLGeoIPRule(arg0, arg1 string) error {
 	m.ctrl.T.Helper()
