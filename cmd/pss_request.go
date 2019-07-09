@@ -92,3 +92,75 @@ func pssRequestShow(service pss.PSSService, cmd *cobra.Command, args []string) {
 
 	outputPSSRequests(requests)
 }
+
+func pssRequestCreateCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:     "create",
+		Short:   "Creates a request",
+		Long:    "This command creates a new request",
+		Example: "ukfast pss request create --name example.com",
+		Run: func(cmd *cobra.Command, args []string) {
+			pssRequestCreate(getClient().PSSService(), cmd, args)
+		},
+	}
+
+	// Setup flags
+	cmd.Flags().Int("contact", 0, "Contact ID for request")
+	cmd.MarkFlagRequired("contact")
+	cmd.Flags().Bool("secure", false, "Specifies whether request is secure")
+	cmd.Flags().String("priority", "", "Specifies priority for request")
+	cmd.MarkFlagRequired("priority")
+	cmd.Flags().String("subject", "", "Specifies subject for request")
+	cmd.MarkFlagRequired("subject")
+	cmd.Flags().String("details", "", "Specifies details for request")
+	cmd.MarkFlagRequired("details")
+	cmd.Flags().StringSlice("cc", []string{}, "Specifies CC email addresses for request")
+	cmd.Flags().Bool("request-sms", false, "Specifies whether SMS updates are required")
+	cmd.Flags().String("customer-reference", "", "Specifies customer reference for request")
+	cmd.Flags().Int("product-id", 0, "Specifies product ID for request")
+	cmd.Flags().String("product-name", "", "Specifies product name for request")
+	cmd.Flags().String("product-type", "", "Specifies product type for request")
+
+	return cmd
+}
+
+func pssRequestCreate(service pss.PSSService, cmd *cobra.Command, args []string) {
+	createRequest := pss.CreateRequestRequest{}
+
+	priority, _ := cmd.Flags().GetString("priority")
+	parsedPriority, err := pss.ParseRequestPriority(priority)
+	if err != nil {
+		output.Fatal(err.Error())
+		return
+	}
+	createRequest.Priority = parsedPriority
+
+	if cmd.Flags().Changed("product-id") || cmd.Flags().Changed("product-name") || cmd.Flags().Changed("product-type") {
+		createRequest.Product = &pss.Product{}
+		createRequest.Product.ID, _ = cmd.Flags().GetInt("product-id")
+		createRequest.Product.Name, _ = cmd.Flags().GetString("product-name")
+		createRequest.Product.Type, _ = cmd.Flags().GetString("product-type")
+	}
+
+	createRequest.ContactID, _ = cmd.Flags().GetInt("contact")
+	createRequest.Secure, _ = cmd.Flags().GetBool("secure")
+	createRequest.Subject, _ = cmd.Flags().GetString("subject")
+	createRequest.Details, _ = cmd.Flags().GetString("details")
+	createRequest.CC, _ = cmd.Flags().GetStringSlice("cc")
+	createRequest.RequestSMS, _ = cmd.Flags().GetBool("request-sms")
+	createRequest.CustomerReference, _ = cmd.Flags().GetString("customer-reference")
+
+	requestID, err := service.CreateRequest(createRequest)
+	if err != nil {
+		output.Fatalf("Error creating request: %s", err)
+		return
+	}
+
+	request, err := service.GetRequest(requestID)
+	if err != nil {
+		output.Fatalf("Error retrieving new request: %s", err)
+		return
+	}
+
+	outputPSSRequests([]pss.Request{request})
+}

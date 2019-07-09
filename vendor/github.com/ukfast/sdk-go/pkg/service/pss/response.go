@@ -16,6 +16,13 @@ type GetRequestResponseBody struct {
 	Data Request `json:"data"`
 }
 
+// GetReplyResponseBody represents the API response body from the GetReply resource
+type GetReplyResponseBody struct {
+	connection.APIResponseBody
+
+	Data Reply `json:"data"`
+}
+
 // GetRepliesResponseBody represents the API response body from the GetReplies resource
 type GetRepliesResponseBody struct {
 	connection.APIResponseBody

@@ -65,10 +65,10 @@ func (mr *MockAccountServiceMockRecorder) GetContacts(arg0 interface{}) *gomock.
 }
 
 // GetContactsPaginated mocks base method
-func (m *MockAccountService) GetContactsPaginated(arg0 connection.APIRequestParameters) ([]account.Contact, error) {
+func (m *MockAccountService) GetContactsPaginated(arg0 connection.APIRequestParameters) (*account.PaginatedContact, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetContactsPaginated", arg0)
-	ret0, _ := ret[0].([]account.Contact)
+	ret0, _ := ret[0].(*account.PaginatedContact)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

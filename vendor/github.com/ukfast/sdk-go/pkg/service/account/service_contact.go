@@ -8,32 +8,28 @@ import (
 
 // GetContacts retrieves a list of contacts
 func (s *Service) GetContacts(parameters connection.APIRequestParameters) ([]Contact, error) {
-	r := connection.RequestAll{}
-
 	var contacts []Contact
-	r.GetNext = func(parameters connection.APIRequestParameters) (connection.ResponseBody, error) {
-		response, err := s.getContactsPaginatedResponseBody(parameters)
-		if err != nil {
-			return nil, err
-		}
 
-		for _, contact := range response.Data {
-			contacts = append(contacts, contact)
-		}
-
-		return response, nil
+	getFunc := func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetContactsPaginated(p)
 	}
 
-	err := r.Invoke(parameters)
+	responseFunc := func(response connection.Paginated) {
+		for _, contact := range response.(*PaginatedContact).Items {
+			contacts = append(contacts, contact)
+		}
+	}
 
-	return contacts, err
+	return contacts, connection.InvokeRequestAll(getFunc, responseFunc, parameters)
 }
 
 // GetContactsPaginated retrieves a paginated list of contacts
-func (s *Service) GetContactsPaginated(parameters connection.APIRequestParameters) ([]Contact, error) {
+func (s *Service) GetContactsPaginated(parameters connection.APIRequestParameters) (*PaginatedContact, error) {
 	body, err := s.getContactsPaginatedResponseBody(parameters)
 
-	return body.Data, err
+	return NewPaginatedContact(func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetContactsPaginated(p)
+	}, parameters, body.Metadata.Pagination, body.Data), err
 }
 
 func (s *Service) getContactsPaginatedResponseBody(parameters connection.APIRequestParameters) (*GetContactsResponseBody, error) {

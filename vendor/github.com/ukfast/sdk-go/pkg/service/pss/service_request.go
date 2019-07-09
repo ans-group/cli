@@ -6,34 +6,48 @@ import (
 	"github.com/ukfast/sdk-go/pkg/connection"
 )
 
-// GetRequests retrieves a list of requests
-func (s *Service) GetRequests(parameters connection.APIRequestParameters) ([]Request, error) {
-	r := connection.RequestAll{}
+// CreateRequest creates a new request
+func (s *Service) CreateRequest(req CreateRequestRequest) (int, error) {
+	body, err := s.createRequestResponseBody(req)
 
-	var requests []Request
-	r.GetNext = func(parameters connection.APIRequestParameters) (connection.ResponseBody, error) {
-		response, err := s.getRequestsPaginatedResponseBody(parameters)
-		if err != nil {
-			return nil, err
-		}
+	return body.Data.ID, err
+}
 
-		for _, request := range response.Data {
-			requests = append(requests, request)
-		}
+func (s *Service) createRequestResponseBody(req CreateRequestRequest) (*GetRequestResponseBody, error) {
+	body := &GetRequestResponseBody{}
 
-		return response, nil
+	response, err := s.connection.Post("/pss/v1/requests", &req)
+	if err != nil {
+		return body, err
 	}
 
-	err := r.Invoke(parameters)
+	return body, response.HandleResponse(body, nil)
+}
 
-	return requests, err
+// GetRequests retrieves a list of requests
+func (s *Service) GetRequests(parameters connection.APIRequestParameters) ([]Request, error) {
+	var requests []Request
+
+	getFunc := func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetRequestsPaginated(p)
+	}
+
+	responseFunc := func(response connection.Paginated) {
+		for _, request := range response.(*PaginatedRequest).Items {
+			requests = append(requests, request)
+		}
+	}
+
+	return requests, connection.InvokeRequestAll(getFunc, responseFunc, parameters)
 }
 
 // GetRequestsPaginated retrieves a paginated list of requests
-func (s *Service) GetRequestsPaginated(parameters connection.APIRequestParameters) ([]Request, error) {
+func (s *Service) GetRequestsPaginated(parameters connection.APIRequestParameters) (*PaginatedRequest, error) {
 	body, err := s.getRequestsPaginatedResponseBody(parameters)
 
-	return body.Data, err
+	return NewPaginatedRequest(func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetRequestsPaginated(p)
+	}, parameters, body.Metadata.Pagination, body.Data), err
 }
 
 func (s *Service) getRequestsPaginatedResponseBody(parameters connection.APIRequestParameters) (*GetRequestsResponseBody, error) {
@@ -75,34 +89,96 @@ func (s *Service) getRequestResponseBody(requestID int) (*GetRequestResponseBody
 	})
 }
 
-// GetRequestConversation retrieves a conversation for a request
-func (s *Service) GetRequestConversation(requestID int, parameters connection.APIRequestParameters) ([]Reply, error) {
-	r := connection.RequestAll{}
+// PatchRequest patches a request
+func (s *Service) PatchRequest(requestID int, req PatchRequestRequest) error {
+	_, err := s.patchRequestResponseBody(requestID, req)
 
-	var replies []Reply
-	r.GetNext = func(parameters connection.APIRequestParameters) (connection.ResponseBody, error) {
-		response, err := s.getRequestConversationPaginatedResponseBody(requestID, parameters)
-		if err != nil {
-			return nil, err
-		}
-
-		for _, reply := range response.Data {
-			replies = append(replies, reply)
-		}
-
-		return response, nil
-	}
-
-	err := r.Invoke(parameters)
-
-	return replies, err
+	return err
 }
 
-// GetRequestConversationPaginated retrieves a paginated conversation for a request
-func (s *Service) GetRequestConversationPaginated(requestID int, parameters connection.APIRequestParameters) ([]Reply, error) {
-	body, err := s.getRequestConversationPaginatedResponseBody(requestID, parameters)
+func (s *Service) patchRequestResponseBody(requestID int, req PatchRequestRequest) (*connection.APIResponseBody, error) {
+	body := &connection.APIResponseBody{}
 
-	return body.Data, err
+	if requestID < 1 {
+		return body, fmt.Errorf("invalid request id")
+	}
+
+	response, err := s.connection.Patch(fmt.Sprintf("/pss/v1/requests/%d", requestID), &req)
+	if err != nil {
+		return body, err
+	}
+
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &RequestNotFoundError{ID: requestID}
+		}
+
+		return nil
+	})
+}
+
+// CreateRequestReply creates a new request reply
+func (s *Service) CreateRequestReply(requestID int, req CreateReplyRequest) (string, error) {
+	body, err := s.createRequestReplyResponseBody(requestID, req)
+
+	return body.Data.ID, err
+}
+
+func (s *Service) createRequestReplyResponseBody(requestID int, req CreateReplyRequest) (*GetReplyResponseBody, error) {
+	body := &GetReplyResponseBody{}
+
+	if requestID < 1 {
+		return body, fmt.Errorf("invalid request id")
+	}
+
+	response, err := s.connection.Post(fmt.Sprintf("/pss/v1/requests/%d/replies", requestID), &req)
+	if err != nil {
+		return body, err
+	}
+
+	return body, response.HandleResponse(body, func(resp *connection.APIResponse) error {
+		if response.StatusCode == 404 {
+			return &RequestNotFoundError{ID: requestID}
+		}
+
+		return nil
+	})
+}
+
+// GetRequestReplies is an alias for GetRequestConversation
+func (s *Service) GetRequestReplies(solutionID int, parameters connection.APIRequestParameters) ([]Reply, error) {
+	return s.GetRequestConversation(solutionID, parameters)
+}
+
+// GetRequestRepliesPaginated is an alias for GetRequestConversationPaginated
+func (s *Service) GetRequestRepliesPaginated(solutionID int, parameters connection.APIRequestParameters) (*PaginatedReply, error) {
+	return s.GetRequestConversationPaginated(solutionID, parameters)
+}
+
+// GetRequestConversation retrieves a list of replies
+func (s *Service) GetRequestConversation(solutionID int, parameters connection.APIRequestParameters) ([]Reply, error) {
+	var replies []Reply
+
+	getFunc := func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetRequestConversationPaginated(solutionID, p)
+	}
+
+	responseFunc := func(response connection.Paginated) {
+		for _, reply := range response.(*PaginatedReply).Items {
+			replies = append(replies, reply)
+		}
+	}
+
+	return replies, connection.InvokeRequestAll(getFunc, responseFunc, parameters)
+}
+
+// GetRequestConversationPaginated retrieves a paginated list of domains
+func (s *Service) GetRequestConversationPaginated(solutionID int, parameters connection.APIRequestParameters) (*PaginatedReply, error) {
+	body, err := s.getRequestConversationPaginatedResponseBody(solutionID, parameters)
+
+	return NewPaginatedReply(func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetRequestConversationPaginated(solutionID, p)
+	}, parameters, body.Metadata.Pagination, body.Data), err
 }
 
 func (s *Service) getRequestConversationPaginatedResponseBody(requestID int, parameters connection.APIRequestParameters) (*GetRepliesResponseBody, error) {

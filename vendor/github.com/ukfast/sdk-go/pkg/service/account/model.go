@@ -1,3 +1,5 @@
+//go:generate go run ../../gen/model_paginated_gen.go -package account -typename Contact -destination model_paginated.go
+
 package account
 
 type ContactType string

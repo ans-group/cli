@@ -8,32 +8,28 @@ import (
 
 // GetCertificates retrieves a list of certificates
 func (s *Service) GetCertificates(parameters connection.APIRequestParameters) ([]Certificate, error) {
-	r := connection.RequestAll{}
+	var sites []Certificate
 
-	var certificates []Certificate
-	r.GetNext = func(parameters connection.APIRequestParameters) (connection.ResponseBody, error) {
-		response, err := s.getCertificatesPaginatedResponseBody(parameters)
-		if err != nil {
-			return nil, err
-		}
-
-		for _, certificate := range response.Data {
-			certificates = append(certificates, certificate)
-		}
-
-		return response, nil
+	getFunc := func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetCertificatesPaginated(p)
 	}
 
-	err := r.Invoke(parameters)
+	responseFunc := func(response connection.Paginated) {
+		for _, site := range response.(*PaginatedCertificate).Items {
+			sites = append(sites, site)
+		}
+	}
 
-	return certificates, err
+	return sites, connection.InvokeRequestAll(getFunc, responseFunc, parameters)
 }
 
 // GetCertificatesPaginated retrieves a paginated list of certificates
-func (s *Service) GetCertificatesPaginated(parameters connection.APIRequestParameters) ([]Certificate, error) {
+func (s *Service) GetCertificatesPaginated(parameters connection.APIRequestParameters) (*PaginatedCertificate, error) {
 	body, err := s.getCertificatesPaginatedResponseBody(parameters)
 
-	return body.Data, err
+	return NewPaginatedCertificate(func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetCertificatesPaginated(p)
+	}, parameters, body.Metadata.Pagination, body.Data), err
 }
 
 func (s *Service) getCertificatesPaginatedResponseBody(parameters connection.APIRequestParameters) (*GetCertificatesResponseBody, error) {

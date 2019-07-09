@@ -6,32 +6,28 @@ import (
 
 // GetRecords retrieves a list of records
 func (s *Service) GetRecords(parameters connection.APIRequestParameters) ([]Record, error) {
-	r := connection.RequestAll{}
-
 	var records []Record
-	r.GetNext = func(parameters connection.APIRequestParameters) (connection.ResponseBody, error) {
-		response, err := s.getRecordsPaginatedResponseBody(parameters)
-		if err != nil {
-			return nil, err
-		}
 
-		for _, record := range response.Data {
-			records = append(records, record)
-		}
-
-		return response, nil
+	getFunc := func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetRecordsPaginated(p)
 	}
 
-	err := r.Invoke(parameters)
+	responseFunc := func(response connection.Paginated) {
+		for _, record := range response.(*PaginatedRecord).Items {
+			records = append(records, record)
+		}
+	}
 
-	return records, err
+	return records, connection.InvokeRequestAll(getFunc, responseFunc, parameters)
 }
 
-// GetRecordsPaginated retrieves a paginated list of records
-func (s *Service) GetRecordsPaginated(parameters connection.APIRequestParameters) ([]Record, error) {
+// GetRecordsPaginated retrieves a paginated list of domains
+func (s *Service) GetRecordsPaginated(parameters connection.APIRequestParameters) (*PaginatedRecord, error) {
 	body, err := s.getRecordsPaginatedResponseBody(parameters)
 
-	return body.Data, err
+	return NewPaginatedRecord(func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetRecordsPaginated(p)
+	}, parameters, body.Metadata.Pagination, body.Data), err
 }
 
 func (s *Service) getRecordsPaginatedResponseBody(parameters connection.APIRequestParameters) (*GetRecordsResponseBody, error) {

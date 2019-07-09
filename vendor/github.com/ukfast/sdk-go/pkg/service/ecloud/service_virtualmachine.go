@@ -6,34 +6,30 @@ import (
 	"github.com/ukfast/sdk-go/pkg/connection"
 )
 
-// GetVirtualMachines retrieves a list of virtual machines
+// GetVirtualMachines retrieves a list of vms
 func (s *Service) GetVirtualMachines(parameters connection.APIRequestParameters) ([]VirtualMachine, error) {
-	r := connection.RequestAll{}
-
 	var vms []VirtualMachine
-	r.GetNext = func(parameters connection.APIRequestParameters) (connection.ResponseBody, error) {
-		response, err := s.getVirtualMachinesPaginatedResponseBody(parameters)
-		if err != nil {
-			return nil, err
-		}
 
-		for _, virtualMachine := range response.Data {
-			vms = append(vms, virtualMachine)
-		}
-
-		return response, nil
+	getFunc := func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetVirtualMachinesPaginated(p)
 	}
 
-	err := r.Invoke(parameters)
+	responseFunc := func(response connection.Paginated) {
+		for _, vm := range response.(*PaginatedVirtualMachine).Items {
+			vms = append(vms, vm)
+		}
+	}
 
-	return vms, err
+	return vms, connection.InvokeRequestAll(getFunc, responseFunc, parameters)
 }
 
-// GetVirtualMachinesPaginated retrieves a paginated list of virtual machines
-func (s *Service) GetVirtualMachinesPaginated(parameters connection.APIRequestParameters) ([]VirtualMachine, error) {
+// GetVirtualMachinesPaginated retrieves a paginated list of vms
+func (s *Service) GetVirtualMachinesPaginated(parameters connection.APIRequestParameters) (*PaginatedVirtualMachine, error) {
 	body, err := s.getVirtualMachinesPaginatedResponseBody(parameters)
 
-	return body.Data, err
+	return NewPaginatedVirtualMachine(func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetVirtualMachinesPaginated(p)
+	}, parameters, body.Metadata.Pagination, body.Data), err
 }
 
 func (s *Service) getVirtualMachinesPaginatedResponseBody(parameters connection.APIRequestParameters) (*GetVirtualMachinesResponseBody, error) {
@@ -345,34 +341,30 @@ func (s *Service) createVirtualMachineTemplateResponseBody(vmID int, req CreateV
 	})
 }
 
-// GetVirtualMachineTags retrieves a list of tags for a virtual machine
+// GetVirtualMachineTags retrieves a list of tags
 func (s *Service) GetVirtualMachineTags(vmID int, parameters connection.APIRequestParameters) ([]Tag, error) {
-	r := connection.RequestAll{}
+	var tags []Tag
 
-	var vms []Tag
-	r.GetNext = func(parameters connection.APIRequestParameters) (connection.ResponseBody, error) {
-		response, err := s.getVirtualMachineTagsPaginatedResponseBody(vmID, parameters)
-		if err != nil {
-			return nil, err
-		}
-
-		for _, vm := range response.Data {
-			vms = append(vms, vm)
-		}
-
-		return response, nil
+	getFunc := func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetVirtualMachineTagsPaginated(vmID, p)
 	}
 
-	err := r.Invoke(parameters)
+	responseFunc := func(response connection.Paginated) {
+		for _, tag := range response.(*PaginatedTag).Items {
+			tags = append(tags, tag)
+		}
+	}
 
-	return vms, err
+	return tags, connection.InvokeRequestAll(getFunc, responseFunc, parameters)
 }
 
-// GetVirtualMachineTagsPaginated retrieves a paginated list of tags for a virtual machine
-func (s *Service) GetVirtualMachineTagsPaginated(vmID int, parameters connection.APIRequestParameters) ([]Tag, error) {
+// GetVirtualMachineTagsPaginated retrieves a paginated list of domains
+func (s *Service) GetVirtualMachineTagsPaginated(vmID int, parameters connection.APIRequestParameters) (*PaginatedTag, error) {
 	body, err := s.getVirtualMachineTagsPaginatedResponseBody(vmID, parameters)
 
-	return body.Data, err
+	return NewPaginatedTag(func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetVirtualMachineTagsPaginated(vmID, p)
+	}, parameters, body.Metadata.Pagination, body.Data), err
 }
 
 func (s *Service) getVirtualMachineTagsPaginatedResponseBody(vmID int, parameters connection.APIRequestParameters) (*GetTagsResponseBody, error) {

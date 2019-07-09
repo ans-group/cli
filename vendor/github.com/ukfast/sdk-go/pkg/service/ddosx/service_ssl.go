@@ -8,32 +8,28 @@ import (
 
 // GetSSLs retrieves a list of ssls
 func (s *Service) GetSSLs(parameters connection.APIRequestParameters) ([]SSL, error) {
-	r := connection.RequestAll{}
-
 	var ssls []SSL
-	r.GetNext = func(parameters connection.APIRequestParameters) (connection.ResponseBody, error) {
-		response, err := s.getSSLsPaginatedResponseBody(parameters)
-		if err != nil {
-			return nil, err
-		}
 
-		for _, ssl := range response.Data {
-			ssls = append(ssls, ssl)
-		}
-
-		return response, nil
+	getFunc := func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetSSLsPaginated(p)
 	}
 
-	err := r.Invoke(parameters)
+	responseFunc := func(response connection.Paginated) {
+		for _, ssl := range response.(*PaginatedSSL).Items {
+			ssls = append(ssls, ssl)
+		}
+	}
 
-	return ssls, err
+	return ssls, connection.InvokeRequestAll(getFunc, responseFunc, parameters)
 }
 
 // GetSSLsPaginated retrieves a paginated list of ssls
-func (s *Service) GetSSLsPaginated(parameters connection.APIRequestParameters) ([]SSL, error) {
+func (s *Service) GetSSLsPaginated(parameters connection.APIRequestParameters) (*PaginatedSSL, error) {
 	body, err := s.getSSLsPaginatedResponseBody(parameters)
 
-	return body.Data, err
+	return NewPaginatedSSL(func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetSSLsPaginated(p)
+	}, parameters, body.Metadata.Pagination, body.Data), err
 }
 
 func (s *Service) getSSLsPaginatedResponseBody(parameters connection.APIRequestParameters) (*GetSSLsResponseBody, error) {
