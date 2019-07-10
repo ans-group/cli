@@ -6,7 +6,7 @@ import "github.com/ukfast/sdk-go/pkg/connection"
 type CreateRequestRequest struct {
 	connection.APIRequestBodyDefaultValidator
 
-	ContactID         int             `json:"contact_id" validate:"required"`
+	Author            Author          `json:"author" validate:"required"`
 	Secure            bool            `json:"secure"`
 	Priority          RequestPriority `json:"priority" validate:"required"`
 	Subject           string          `json:"subject" validate:"required"`
@@ -27,7 +27,6 @@ type PatchRequestRequest struct {
 	Secure     *bool           `json:"secure,omitempty"`
 	Read       *bool           `json:"read,omitempty"`
 	Priority   RequestPriority `json:"priority,omitempty"`
-	ContactID  int             `json:"contact_id,omitempty"`
 	RequestSMS *bool           `json:"request_sms,omitempty"`
 	Archived   *bool           `json:"archived,omitempty"`
 }

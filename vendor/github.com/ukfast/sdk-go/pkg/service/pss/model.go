@@ -16,6 +16,18 @@ const (
 	AuthorTypeSupport AuthorType = "Support"
 )
 
+var AuthorTypeEnum = []connection.Enum{AuthorTypeClient, AuthorTypeAuto, AuthorTypeSupport}
+
+// ParseAuthorType attempts to parse a AuthorType from string
+func ParseAuthorType(s string) (AuthorType, error) {
+	e, err := connection.ParseEnum(s, AuthorTypeEnum)
+	if err != nil {
+		return "", err
+	}
+
+	return e.(AuthorType), err
+}
+
 type RequestPriority string
 
 func (s RequestPriority) String() string {

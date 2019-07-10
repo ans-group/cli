@@ -100,7 +100,7 @@ func pssRequestCreateCmd() *cobra.Command {
 		Use:     "create",
 		Short:   "Creates a request",
 		Long:    "This command creates a new request",
-		Example: "ukfast pss request create --subject 'example ticket' --details 'example' --contact 123 --priority normal",
+		Example: "ukfast pss request create --subject 'example ticket' --details 'example' --author 123",
 		Run: func(cmd *cobra.Command, args []string) {
 			pssRequestCreate(getClient().PSSService(), cmd, args)
 		},
@@ -111,8 +111,8 @@ func pssRequestCreateCmd() *cobra.Command {
 	cmd.MarkFlagRequired("subject")
 	cmd.Flags().String("details", "", "Specifies details for request")
 	cmd.MarkFlagRequired("details")
-	cmd.Flags().Int("contact", 0, "Specifies Contact ID for request")
-	cmd.MarkFlagRequired("contact")
+	cmd.Flags().Int("author", 0, "Specifies author ID for request")
+	cmd.MarkFlagRequired("author")
 	cmd.Flags().String("priority", "Normal", "Specifies priority for request")
 	cmd.Flags().Bool("secure", false, "Specifies whether request is secure")
 	cmd.Flags().StringSlice("cc", []string{}, "Specifies CC email addresses for request")
@@ -145,7 +145,7 @@ func pssRequestCreate(service pss.PSSService, cmd *cobra.Command, args []string)
 
 	createRequest.Subject, _ = cmd.Flags().GetString("subject")
 	createRequest.Details, _ = cmd.Flags().GetString("details")
-	createRequest.ContactID, _ = cmd.Flags().GetInt("contact")
+	createRequest.Author.ID, _ = cmd.Flags().GetInt("author")
 	createRequest.Secure, _ = cmd.Flags().GetBool("secure")
 	createRequest.CC, _ = cmd.Flags().GetStringSlice("cc")
 	createRequest.RequestSMS, _ = cmd.Flags().GetBool("request-sms")
@@ -172,6 +172,13 @@ func pssRequestUpdateCmd() *cobra.Command {
 		Short:   "Updates requests",
 		Long:    "This command updates one or more requests",
 		Example: "ukfast pss request update 123 --priority high",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Missing request")
+			}
+
+			return nil
+		},
 		Run: func(cmd *cobra.Command, args []string) {
 			pssRequestUpdate(getClient().PSSService(), cmd, args)
 		},
