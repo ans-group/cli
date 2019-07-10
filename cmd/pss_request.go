@@ -181,7 +181,6 @@ func pssRequestUpdateCmd() *cobra.Command {
 	cmd.Flags().String("priority", "", "Specifies priority for request")
 	cmd.Flags().Bool("secure", false, "Specifies whether request is secure")
 	cmd.Flags().Bool("read", false, "Specifies whether request is marked as read")
-	cmd.Flags().Int("contact", 0, "Specifies Contact ID for request")
 	cmd.Flags().Bool("request-sms", false, "Specifies whether SMS updates are required")
 	cmd.Flags().Bool("archived", false, "Specifies whether request is archived")
 
@@ -208,9 +207,6 @@ func pssRequestUpdate(service pss.PSSService, cmd *cobra.Command, args []string)
 	if cmd.Flags().Changed("read") {
 		read, _ := cmd.Flags().GetBool("read")
 		patchRequest.Read = &read
-	}
-	if cmd.Flags().Changed("contact") {
-		patchRequest.ContactID, _ = cmd.Flags().GetInt("contact")
 	}
 	if cmd.Flags().Changed("request-sms") {
 		requestSMS, _ := cmd.Flags().GetBool("request-sms")
