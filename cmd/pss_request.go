@@ -18,6 +18,7 @@ func pssRequestRootCmd() *cobra.Command {
 	// Child commands
 	cmd.AddCommand(pssRequestListCmd())
 	cmd.AddCommand(pssRequestShowCmd())
+	cmd.AddCommand(pssRequestCreateCmd())
 
 	// Child root commands
 	cmd.AddCommand(pssRequestReplyRootCmd())
@@ -98,22 +99,22 @@ func pssRequestCreateCmd() *cobra.Command {
 		Use:     "create",
 		Short:   "Creates a request",
 		Long:    "This command creates a new request",
-		Example: "ukfast pss request create --name example.com",
+		Example: "ukfast pss request create --subject 'example ticket' --details 'example' --contact 123 --priority normal",
 		Run: func(cmd *cobra.Command, args []string) {
 			pssRequestCreate(getClient().PSSService(), cmd, args)
 		},
 	}
 
 	// Setup flags
-	cmd.Flags().Int("contact", 0, "Contact ID for request")
-	cmd.MarkFlagRequired("contact")
-	cmd.Flags().Bool("secure", false, "Specifies whether request is secure")
-	cmd.Flags().String("priority", "", "Specifies priority for request")
-	cmd.MarkFlagRequired("priority")
 	cmd.Flags().String("subject", "", "Specifies subject for request")
 	cmd.MarkFlagRequired("subject")
 	cmd.Flags().String("details", "", "Specifies details for request")
 	cmd.MarkFlagRequired("details")
+	cmd.Flags().Int("contact", 0, "Contact ID for request")
+	cmd.MarkFlagRequired("contact")
+	cmd.Flags().String("priority", "", "Specifies priority for request")
+	cmd.MarkFlagRequired("priority")
+	cmd.Flags().Bool("secure", false, "Specifies whether request is secure")
 	cmd.Flags().StringSlice("cc", []string{}, "Specifies CC email addresses for request")
 	cmd.Flags().Bool("request-sms", false, "Specifies whether SMS updates are required")
 	cmd.Flags().String("customer-reference", "", "Specifies customer reference for request")
@@ -142,10 +143,10 @@ func pssRequestCreate(service pss.PSSService, cmd *cobra.Command, args []string)
 		createRequest.Product.Type, _ = cmd.Flags().GetString("product-type")
 	}
 
-	createRequest.ContactID, _ = cmd.Flags().GetInt("contact")
-	createRequest.Secure, _ = cmd.Flags().GetBool("secure")
 	createRequest.Subject, _ = cmd.Flags().GetString("subject")
 	createRequest.Details, _ = cmd.Flags().GetString("details")
+	createRequest.ContactID, _ = cmd.Flags().GetInt("contact")
+	createRequest.Secure, _ = cmd.Flags().GetBool("secure")
 	createRequest.CC, _ = cmd.Flags().GetStringSlice("cc")
 	createRequest.RequestSMS, _ = cmd.Flags().GetBool("request-sms")
 	createRequest.CustomerReference, _ = cmd.Flags().GetString("customer-reference")
