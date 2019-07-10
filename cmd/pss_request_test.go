@@ -118,3 +118,69 @@ func Test_pssRequestShow(t *testing.T) {
 		})
 	})
 }
+
+func Test_pssRequestCreate(t *testing.T) {
+	t.Run("DefaultCreate", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockPSSService(mockCtrl)
+		cmd := pssRequestCreateCmd()
+		cmd.Flags().Set("subject", "test subject")
+
+		gomock.InOrder(
+			service.EXPECT().CreateRequest(gomock.Any()).Do(func(req pss.CreateRequestRequest) {
+				assert.Equal(t, "test subject", req.Subject)
+			}).Return(123, nil),
+			service.EXPECT().GetRequest(123).Return(pss.Request{}, nil),
+		)
+
+		pssRequestCreate(service, cmd, []string{})
+	})
+
+	t.Run("InvalidPriority_OutputsFatal", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockPSSService(mockCtrl)
+		cmd := pssRequestCreateCmd()
+		cmd.Flags().Set("priority", "invalid")
+
+		test_output.AssertFatalOutputFunc(t, func(stdErr string) {
+			assert.Contains(t, stdErr, "Invalid pss.RequestPriority")
+		}, func() {
+			pssRequestCreate(service, cmd, []string{})
+		})
+	})
+
+	t.Run("CreateRequestError_OutputsFatal", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockPSSService(mockCtrl)
+		cmd := pssRequestCreateCmd()
+
+		service.EXPECT().CreateRequest(gomock.Any()).Return(0, errors.New("test error")).Times(1)
+
+		test_output.AssertFatalOutput(t, "Error creating request: test error\n", func() {
+			pssRequestCreate(service, cmd, []string{})
+		})
+	})
+
+	t.Run("GetRequestError_OutputsFatal", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockPSSService(mockCtrl)
+		cmd := pssRequestCreateCmd()
+
+		gomock.InOrder(
+			service.EXPECT().CreateRequest(gomock.Any()).Return(123, nil),
+			service.EXPECT().GetRequest(123).Return(pss.Request{}, errors.New("test error")),
+		)
+
+		test_output.AssertFatalOutput(t, "Error retrieving new request: test error\n", func() {
+			pssRequestCreate(service, cmd, []string{})
+		})
+	})
+}

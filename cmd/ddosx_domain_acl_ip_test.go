@@ -175,7 +175,9 @@ func Test_ddosxDomainACLIPRuleCreate(t *testing.T) {
 		cmd.Flags().Set("uri", "testuri")
 		cmd.Flags().Set("mode", "invalidmode")
 
-		test_output.AssertFatalOutput(t, "Invalid ACL IP mode\n", func() {
+		test_output.AssertFatalOutputFunc(t, func(stdErr string) {
+			assert.Contains(t, stdErr, "Invalid ddosx.ACLIPMode")
+		}, func() {
 			ddosxDomainACLIPRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
 		})
 	})
@@ -279,7 +281,9 @@ func Test_ddosxDomainACLIPRuleUpdate(t *testing.T) {
 		cmd := ddosxDomainACLIPRuleUpdateCmd()
 		cmd.Flags().Set("mode", "invalidmode")
 
-		test_output.AssertFatalOutput(t, "Invalid ACL IP mode\n", func() {
+		test_output.AssertFatalOutputFunc(t, func(stdErr string) {
+			assert.Contains(t, stdErr, "Invalid ddosx.ACLIPMode")
+		}, func() {
 			ddosxDomainACLIPRuleUpdate(service, cmd, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 		})
 	})

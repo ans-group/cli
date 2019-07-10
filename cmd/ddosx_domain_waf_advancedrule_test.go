@@ -177,7 +177,9 @@ func Test_ddosxDomainWAFAdvancedRuleCreate(t *testing.T) {
 		cmd.Flags().Set("phrase", "testphrase")
 		cmd.Flags().Set("ip", "1.2.3.4")
 
-		test_output.AssertFatalOutput(t, "Invalid advanced rule modifier\n", func() {
+		test_output.AssertFatalOutputFunc(t, func(stdErr string) {
+			assert.Contains(t, stdErr, "Invalid ddosx.WAFAdvancedRuleModifier")
+		}, func() {
 			ddosxDomainWAFAdvancedRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
 		})
 	})
@@ -288,7 +290,9 @@ func Test_ddosxDomainWAFAdvancedRuleUpdate(t *testing.T) {
 		cmd.Flags().Set("phrase", "testphrase")
 		cmd.Flags().Set("ip", "1.2.3.4")
 
-		test_output.AssertFatalOutput(t, "Invalid advanced rule modifier\n", func() {
+		test_output.AssertFatalOutputFunc(t, func(stdErr string) {
+			assert.Contains(t, stdErr, "Invalid ddosx.WAFAdvancedRuleModifier")
+		}, func() {
 			ddosxDomainWAFAdvancedRuleUpdate(service, cmd, []string{"testdomain1.co.uk"})
 		})
 	})
