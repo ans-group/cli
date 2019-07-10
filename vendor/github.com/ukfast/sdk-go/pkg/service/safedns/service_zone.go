@@ -8,32 +8,28 @@ import (
 
 // GetZones retrieves a list of zones
 func (s *Service) GetZones(parameters connection.APIRequestParameters) ([]Zone, error) {
-	r := connection.RequestAll{}
-
 	var zones []Zone
-	r.GetNext = func(parameters connection.APIRequestParameters) (connection.ResponseBody, error) {
-		response, err := s.getZonesPaginatedResponseBody(parameters)
-		if err != nil {
-			return nil, err
-		}
 
-		for _, zone := range response.Data {
-			zones = append(zones, zone)
-		}
-
-		return response, nil
+	getFunc := func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetZonesPaginated(p)
 	}
 
-	err := r.Invoke(parameters)
+	responseFunc := func(response connection.Paginated) {
+		for _, zone := range response.(*PaginatedZone).Items {
+			zones = append(zones, zone)
+		}
+	}
 
-	return zones, err
+	return zones, connection.InvokeRequestAll(getFunc, responseFunc, parameters)
 }
 
 // GetZonesPaginated retrieves a paginated list of zones
-func (s *Service) GetZonesPaginated(parameters connection.APIRequestParameters) ([]Zone, error) {
+func (s *Service) GetZonesPaginated(parameters connection.APIRequestParameters) (*PaginatedZone, error) {
 	body, err := s.getZonesPaginatedResponseBody(parameters)
 
-	return body.Data, err
+	return NewPaginatedZone(func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetZonesPaginated(p)
+	}, parameters, body.Metadata.Pagination, body.Data), err
 }
 
 func (s *Service) getZonesPaginatedResponseBody(parameters connection.APIRequestParameters) (*GetZonesResponseBody, error) {
@@ -145,32 +141,28 @@ func (s *Service) deleteZoneResponseBody(zoneName string) (*connection.APIRespon
 
 // GetZoneRecords retrieves a list of records
 func (s *Service) GetZoneRecords(zoneName string, parameters connection.APIRequestParameters) ([]Record, error) {
-	r := connection.RequestAll{}
-
 	var records []Record
-	r.GetNext = func(parameters connection.APIRequestParameters) (connection.ResponseBody, error) {
-		response, err := s.getZoneRecordsPaginatedResponseBody(zoneName, parameters)
-		if err != nil {
-			return nil, err
-		}
 
-		for _, record := range response.Data {
-			records = append(records, record)
-		}
-
-		return response, nil
+	getFunc := func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetZoneRecordsPaginated(zoneName, p)
 	}
 
-	err := r.Invoke(parameters)
+	responseFunc := func(response connection.Paginated) {
+		for _, record := range response.(*PaginatedRecord).Items {
+			records = append(records, record)
+		}
+	}
 
-	return records, err
+	return records, connection.InvokeRequestAll(getFunc, responseFunc, parameters)
 }
 
 // GetZoneRecordsPaginated retrieves a paginated list of zones
-func (s *Service) GetZoneRecordsPaginated(zoneName string, parameters connection.APIRequestParameters) ([]Record, error) {
+func (s *Service) GetZoneRecordsPaginated(zoneName string, parameters connection.APIRequestParameters) (*PaginatedRecord, error) {
 	body, err := s.getZoneRecordsPaginatedResponseBody(zoneName, parameters)
 
-	return body.Data, err
+	return NewPaginatedRecord(func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetZoneRecordsPaginated(zoneName, p)
+	}, parameters, body.Metadata.Pagination, body.Data), err
 }
 
 func (s *Service) getZoneRecordsPaginatedResponseBody(zoneName string, parameters connection.APIRequestParameters) (*GetRecordsResponseBody, error) {
@@ -346,34 +338,30 @@ func (s *Service) deleteZoneRecordResponseBody(zoneName string, recordID int) (*
 	})
 }
 
-// GetZoneNotes retrieves a list of zone notes
+// GetZoneNotes retrieves a list of notes
 func (s *Service) GetZoneNotes(zoneName string, parameters connection.APIRequestParameters) ([]Note, error) {
-	r := connection.RequestAll{}
-
 	var notes []Note
-	r.GetNext = func(parameters connection.APIRequestParameters) (connection.ResponseBody, error) {
-		response, err := s.getZoneNotesPaginatedResponseBody(zoneName, parameters)
-		if err != nil {
-			return nil, err
-		}
 
-		for _, note := range response.Data {
-			notes = append(notes, note)
-		}
-
-		return response, nil
+	getFunc := func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetZoneNotesPaginated(zoneName, p)
 	}
 
-	err := r.Invoke(parameters)
+	responseFunc := func(response connection.Paginated) {
+		for _, note := range response.(*PaginatedNote).Items {
+			notes = append(notes, note)
+		}
+	}
 
-	return notes, err
+	return notes, connection.InvokeRequestAll(getFunc, responseFunc, parameters)
 }
 
-// GetZoneNotesPaginated retrieves a paginated list of zone notes
-func (s *Service) GetZoneNotesPaginated(zoneName string, parameters connection.APIRequestParameters) ([]Note, error) {
+// GetZoneNotesPaginated retrieves a paginated list of zones
+func (s *Service) GetZoneNotesPaginated(zoneName string, parameters connection.APIRequestParameters) (*PaginatedNote, error) {
 	body, err := s.getZoneNotesPaginatedResponseBody(zoneName, parameters)
 
-	return body.Data, err
+	return NewPaginatedNote(func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetZoneNotesPaginated(zoneName, p)
+	}, parameters, body.Metadata.Pagination, body.Data), err
 }
 
 func (s *Service) getZoneNotesPaginatedResponseBody(zoneName string, parameters connection.APIRequestParameters) (*GetZoneNotesResponseBody, error) {

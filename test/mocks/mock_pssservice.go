@@ -8,6 +8,7 @@ import (
 	gomock "github.com/golang/mock/gomock"
 	connection "github.com/ukfast/sdk-go/pkg/connection"
 	pss "github.com/ukfast/sdk-go/pkg/service/pss"
+	io "io"
 	reflect "reflect"
 )
 
@@ -32,6 +33,80 @@ func NewMockPSSService(ctrl *gomock.Controller) *MockPSSService {
 // EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockPSSService) EXPECT() *MockPSSServiceMockRecorder {
 	return m.recorder
+}
+
+// CreateRequest mocks base method
+func (m *MockPSSService) CreateRequest(arg0 pss.CreateRequestRequest) (int, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateRequest", arg0)
+	ret0, _ := ret[0].(int)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateRequest indicates an expected call of CreateRequest
+func (mr *MockPSSServiceMockRecorder) CreateRequest(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateRequest", reflect.TypeOf((*MockPSSService)(nil).CreateRequest), arg0)
+}
+
+// CreateRequestReply mocks base method
+func (m *MockPSSService) CreateRequestReply(arg0 int, arg1 pss.CreateReplyRequest) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateRequestReply", arg0, arg1)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateRequestReply indicates an expected call of CreateRequestReply
+func (mr *MockPSSServiceMockRecorder) CreateRequestReply(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateRequestReply", reflect.TypeOf((*MockPSSService)(nil).CreateRequestReply), arg0, arg1)
+}
+
+// DeleteReplyAttachment mocks base method
+func (m *MockPSSService) DeleteReplyAttachment(arg0, arg1 string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteReplyAttachment", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteReplyAttachment indicates an expected call of DeleteReplyAttachment
+func (mr *MockPSSServiceMockRecorder) DeleteReplyAttachment(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteReplyAttachment", reflect.TypeOf((*MockPSSService)(nil).DeleteReplyAttachment), arg0, arg1)
+}
+
+// DownloadReplyAttachmentStream mocks base method
+func (m *MockPSSService) DownloadReplyAttachmentStream(arg0, arg1 string) (io.ReadCloser, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DownloadReplyAttachmentStream", arg0, arg1)
+	ret0, _ := ret[0].(io.ReadCloser)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DownloadReplyAttachmentStream indicates an expected call of DownloadReplyAttachmentStream
+func (mr *MockPSSServiceMockRecorder) DownloadReplyAttachmentStream(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DownloadReplyAttachmentStream", reflect.TypeOf((*MockPSSService)(nil).DownloadReplyAttachmentStream), arg0, arg1)
+}
+
+// GetReply mocks base method
+func (m *MockPSSService) GetReply(arg0 string) (pss.Reply, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetReply", arg0)
+	ret0, _ := ret[0].(pss.Reply)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetReply indicates an expected call of GetReply
+func (mr *MockPSSServiceMockRecorder) GetReply(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetReply", reflect.TypeOf((*MockPSSService)(nil).GetReply), arg0)
 }
 
 // GetRequest mocks base method
@@ -65,10 +140,10 @@ func (mr *MockPSSServiceMockRecorder) GetRequestConversation(arg0, arg1 interfac
 }
 
 // GetRequestConversationPaginated mocks base method
-func (m *MockPSSService) GetRequestConversationPaginated(arg0 int, arg1 connection.APIRequestParameters) ([]pss.Reply, error) {
+func (m *MockPSSService) GetRequestConversationPaginated(arg0 int, arg1 connection.APIRequestParameters) (*pss.PaginatedReply, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetRequestConversationPaginated", arg0, arg1)
-	ret0, _ := ret[0].([]pss.Reply)
+	ret0, _ := ret[0].(*pss.PaginatedReply)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -77,6 +152,36 @@ func (m *MockPSSService) GetRequestConversationPaginated(arg0 int, arg1 connecti
 func (mr *MockPSSServiceMockRecorder) GetRequestConversationPaginated(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRequestConversationPaginated", reflect.TypeOf((*MockPSSService)(nil).GetRequestConversationPaginated), arg0, arg1)
+}
+
+// GetRequestReplies mocks base method
+func (m *MockPSSService) GetRequestReplies(arg0 int, arg1 connection.APIRequestParameters) ([]pss.Reply, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetRequestReplies", arg0, arg1)
+	ret0, _ := ret[0].([]pss.Reply)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetRequestReplies indicates an expected call of GetRequestReplies
+func (mr *MockPSSServiceMockRecorder) GetRequestReplies(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRequestReplies", reflect.TypeOf((*MockPSSService)(nil).GetRequestReplies), arg0, arg1)
+}
+
+// GetRequestRepliesPaginated mocks base method
+func (m *MockPSSService) GetRequestRepliesPaginated(arg0 int, arg1 connection.APIRequestParameters) (*pss.PaginatedReply, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetRequestRepliesPaginated", arg0, arg1)
+	ret0, _ := ret[0].(*pss.PaginatedReply)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetRequestRepliesPaginated indicates an expected call of GetRequestRepliesPaginated
+func (mr *MockPSSServiceMockRecorder) GetRequestRepliesPaginated(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRequestRepliesPaginated", reflect.TypeOf((*MockPSSService)(nil).GetRequestRepliesPaginated), arg0, arg1)
 }
 
 // GetRequests mocks base method
@@ -95,10 +200,10 @@ func (mr *MockPSSServiceMockRecorder) GetRequests(arg0 interface{}) *gomock.Call
 }
 
 // GetRequestsPaginated mocks base method
-func (m *MockPSSService) GetRequestsPaginated(arg0 connection.APIRequestParameters) ([]pss.Request, error) {
+func (m *MockPSSService) GetRequestsPaginated(arg0 connection.APIRequestParameters) (*pss.PaginatedRequest, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetRequestsPaginated", arg0)
-	ret0, _ := ret[0].([]pss.Request)
+	ret0, _ := ret[0].(*pss.PaginatedRequest)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -107,4 +212,32 @@ func (m *MockPSSService) GetRequestsPaginated(arg0 connection.APIRequestParamete
 func (mr *MockPSSServiceMockRecorder) GetRequestsPaginated(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRequestsPaginated", reflect.TypeOf((*MockPSSService)(nil).GetRequestsPaginated), arg0)
+}
+
+// PatchRequest mocks base method
+func (m *MockPSSService) PatchRequest(arg0 int, arg1 pss.PatchRequestRequest) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PatchRequest", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchRequest indicates an expected call of PatchRequest
+func (mr *MockPSSServiceMockRecorder) PatchRequest(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchRequest", reflect.TypeOf((*MockPSSService)(nil).PatchRequest), arg0, arg1)
+}
+
+// UploadReplyAttachmentStream mocks base method
+func (m *MockPSSService) UploadReplyAttachmentStream(arg0, arg1 string, arg2 io.Reader) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UploadReplyAttachmentStream", arg0, arg1, arg2)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UploadReplyAttachmentStream indicates an expected call of UploadReplyAttachmentStream
+func (mr *MockPSSServiceMockRecorder) UploadReplyAttachmentStream(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UploadReplyAttachmentStream", reflect.TypeOf((*MockPSSService)(nil).UploadReplyAttachmentStream), arg0, arg1, arg2)
 }

@@ -1,8 +1,8 @@
+//go:generate go run ../../gen/model_paginated_gen.go -package ddosx -typename Domain,DomainProperty,Record,WAFRuleSet,WAFRule,WAFAdvancedRule,SSL,ACLGeoIPRule,ACLIPRule,CDNRule,HSTSRule -destination model_paginated.go
+
 package ddosx
 
 import (
-	"errors"
-	"strings"
 	"time"
 
 	"github.com/ukfast/go-durationstring"
@@ -47,11 +47,11 @@ var DomainPropertyNameEnum = []connection.Enum{
 // ParseDomainPropertyName attempts to parse a DomainPropertyName from string
 func ParseDomainPropertyName(s string) (DomainPropertyName, error) {
 	e, err := connection.ParseEnum(s, DomainPropertyNameEnum)
-	if e != nil {
-		return e.(DomainPropertyName), err
+	if err != nil {
+		return "", err
 	}
 
-	return "", err
+	return e.(DomainPropertyName), err
 }
 
 type RecordType string
@@ -77,18 +77,20 @@ const (
 	WAFModeDetectionOnly WAFMode = "DetectionOnly"
 )
 
+var WAFModeEnum = []connection.Enum{
+	WAFModeOn,
+	WAFModeOff,
+	WAFModeDetectionOnly,
+}
+
 // ParseWAFMode attempts to parse a WAFMode from string
 func ParseWAFMode(s string) (WAFMode, error) {
-	switch strings.ToUpper(s) {
-	case "ON":
-		return WAFModeOn, nil
-	case "OFF":
-		return WAFModeOff, nil
-	case "DETECTIONONLY":
-		return WAFModeDetectionOnly, nil
+	e, err := connection.ParseEnum(s, WAFModeEnum)
+	if err != nil {
+		return "", err
 	}
 
-	return "", errors.New("Invalid WAF mode")
+	return e.(WAFMode), err
 }
 
 type WAFParanoiaLevel string
@@ -104,20 +106,21 @@ const (
 	WAFParanoiaLevelHighest WAFParanoiaLevel = "Highest"
 )
 
-// ParseWAFParanoiaLevel attempts to parse a WAFMode from string
+var WAFParanoiaLevelEnum = []connection.Enum{
+	WAFParanoiaLevelLow,
+	WAFParanoiaLevelMedium,
+	WAFParanoiaLevelHigh,
+	WAFParanoiaLevelHighest,
+}
+
+// ParseWAFParanoiaLevel attempts to parse a WAFParanoiaLevel from string
 func ParseWAFParanoiaLevel(s string) (WAFParanoiaLevel, error) {
-	switch strings.ToUpper(s) {
-	case "LOW":
-		return WAFParanoiaLevelLow, nil
-	case "MEDIUM":
-		return WAFParanoiaLevelMedium, nil
-	case "HIGH":
-		return WAFParanoiaLevelHigh, nil
-	case "HIGHEST":
-		return WAFParanoiaLevelHighest, nil
+	e, err := connection.ParseEnum(s, WAFParanoiaLevelEnum)
+	if err != nil {
+		return "", err
 	}
 
-	return "", errors.New("Invalid WAF paranoia level")
+	return e.(WAFParanoiaLevel), err
 }
 
 type WAFRuleSetName string
@@ -162,26 +165,24 @@ const (
 	WAFAdvancedRuleSectionRequestURI     WAFAdvancedRuleSection = "REQUEST_URI"
 )
 
+var WAFAdvancedRuleSectionEnum = []connection.Enum{
+	WAFAdvancedRuleSectionArgs,
+	WAFAdvancedRuleSectionMatchedVars,
+	WAFAdvancedRuleSectionRemoteHost,
+	WAFAdvancedRuleSectionRequestBody,
+	WAFAdvancedRuleSectionRequestCookies,
+	WAFAdvancedRuleSectionRequestHeaders,
+	WAFAdvancedRuleSectionRequestURI,
+}
+
 // ParseWAFAdvancedRuleSection attempts to parse a WAFAdvancedRuleSection from string
 func ParseWAFAdvancedRuleSection(s string) (WAFAdvancedRuleSection, error) {
-	switch strings.ToUpper(s) {
-	case "ARGS":
-		return WAFAdvancedRuleSectionArgs, nil
-	case "MATCHED_VARS":
-		return WAFAdvancedRuleSectionMatchedVars, nil
-	case "REMOTE_HOST":
-		return WAFAdvancedRuleSectionRemoteHost, nil
-	case "REQUEST_BODY":
-		return WAFAdvancedRuleSectionRequestBody, nil
-	case "REQUEST_COOKIES":
-		return WAFAdvancedRuleSectionRequestCookies, nil
-	case "REQUEST_HEADERS":
-		return WAFAdvancedRuleSectionRequestHeaders, nil
-	case "REQUEST_URI":
-		return WAFAdvancedRuleSectionRequestURI, nil
+	e, err := connection.ParseEnum(s, WAFAdvancedRuleSectionEnum)
+	if err != nil {
+		return "", err
 	}
 
-	return "", errors.New("Invalid advanced rule section")
+	return e.(WAFAdvancedRuleSection), err
 }
 
 type WAFAdvancedRuleModifier string
@@ -197,20 +198,21 @@ const (
 	WAFAdvancedRuleModifierContainsWord WAFAdvancedRuleModifier = "containsWord"
 )
 
+var WAFAdvancedRuleModifierEnum = []connection.Enum{
+	WAFAdvancedRuleModifierBeginsWith,
+	WAFAdvancedRuleModifierEndsWith,
+	WAFAdvancedRuleModifierContains,
+	WAFAdvancedRuleModifierContainsWord,
+}
+
 // ParseWAFAdvancedRuleModifier attempts to parse a WAFAdvancedRuleModifier from string
 func ParseWAFAdvancedRuleModifier(s string) (WAFAdvancedRuleModifier, error) {
-	switch strings.ToUpper(s) {
-	case "BEGINSWITH":
-		return WAFAdvancedRuleModifierBeginsWith, nil
-	case "ENDSWITH":
-		return WAFAdvancedRuleModifierEndsWith, nil
-	case "CONTAINS":
-		return WAFAdvancedRuleModifierContains, nil
-	case "CONTAINSWORD":
-		return WAFAdvancedRuleModifierContainsWord, nil
+	e, err := connection.ParseEnum(s, WAFAdvancedRuleModifierEnum)
+	if err != nil {
+		return "", err
 	}
 
-	return "", errors.New("Invalid advanced rule modifier")
+	return e.(WAFAdvancedRuleModifier), err
 }
 
 type ACLIPMode string
@@ -224,17 +226,19 @@ const (
 	ACLIPModeDeny  ACLIPMode = "Deny"
 )
 
+var ACLIPModeEnum = []connection.Enum{
+	ACLIPModeAllow,
+	ACLIPModeDeny,
+}
+
 // ParseACLIPMode attempts to parse a ACLIPMode from string
 func ParseACLIPMode(s string) (ACLIPMode, error) {
-	switch strings.ToUpper(s) {
-	case "ALLOW":
-		return ACLIPModeAllow, nil
-	case "DENY":
-		return ACLIPModeDeny, nil
+	e, err := connection.ParseEnum(s, ACLIPModeEnum)
+	if err != nil {
+		return "", err
 	}
 
-	return "", errors.New("Invalid ACL IP mode")
-
+	return e.(ACLIPMode), err
 }
 
 type ACLGeoIPRulesMode string
@@ -248,16 +252,19 @@ const (
 	ACLGeoIPRulesModeBlacklist ACLGeoIPRulesMode = "Blacklist"
 )
 
+var ACLGeoIPRulesModeEnum = []connection.Enum{
+	ACLGeoIPRulesModeWhitelist,
+	ACLGeoIPRulesModeBlacklist,
+}
+
 // ParseACLGeoIPRulesMode attempts to parse a ACLGeoIPRulesMode from string
 func ParseACLGeoIPRulesMode(s string) (ACLGeoIPRulesMode, error) {
-	switch strings.ToUpper(s) {
-	case "WHITELIST":
-		return ACLGeoIPRulesModeWhitelist, nil
-	case "BLACKLIST":
-		return ACLGeoIPRulesModeBlacklist, nil
+	e, err := connection.ParseEnum(s, ACLGeoIPRulesModeEnum)
+	if err != nil {
+		return "", err
 	}
 
-	return "", errors.New("Invalid ACL GeoIP rules filtering mode")
+	return e.(ACLGeoIPRulesMode), err
 }
 
 type CDNRuleCacheControl string
@@ -271,16 +278,19 @@ const (
 	CDNRuleCacheControlOrigin CDNRuleCacheControl = "Origin"
 )
 
-var CDNRuleCacheControlEnum = []connection.Enum{CDNRuleCacheControlCustom, CDNRuleCacheControlOrigin}
+var CDNRuleCacheControlEnum = []connection.Enum{
+	CDNRuleCacheControlCustom,
+	CDNRuleCacheControlOrigin,
+}
 
 // ParseCDNRuleCacheControl attempts to parse a CDNRuleCacheControl from string
 func ParseCDNRuleCacheControl(s string) (CDNRuleCacheControl, error) {
 	e, err := connection.ParseEnum(s, CDNRuleCacheControlEnum)
-	if e != nil {
-		return e.(CDNRuleCacheControl), err
+	if err != nil {
+		return "", err
 	}
 
-	return "", err
+	return e.(CDNRuleCacheControl), err
 }
 
 type CDNRuleType string
@@ -299,11 +309,11 @@ var CDNRuleTypeEnum = []connection.Enum{CDNRuleTypeGlobal, CDNRuleTypePerURI}
 // ParseCDNRuleType attempts to parse a CDNRuleType from string
 func ParseCDNRuleType(s string) (CDNRuleType, error) {
 	e, err := connection.ParseEnum(s, CDNRuleTypeEnum)
-	if e != nil {
-		return e.(CDNRuleType), err
+	if err != nil {
+		return "", err
 	}
 
-	return "", err
+	return e.(CDNRuleType), err
 }
 
 type HSTSRuleType string
@@ -322,11 +332,11 @@ var HSTSRuleTypeEnum = []connection.Enum{HSTSRuleTypeDomain, HSTSRuleTypeRecord}
 // ParseHSTSRuleType attempts to parse a HSTSRuleType from string
 func ParseHSTSRuleType(s string) (HSTSRuleType, error) {
 	e, err := connection.ParseEnum(s, HSTSRuleTypeEnum)
-	if e != nil {
-		return e.(HSTSRuleType), err
+	if err != nil {
+		return "", err
 	}
 
-	return "", err
+	return e.(HSTSRuleType), err
 }
 
 // Domain represents a DDoSX domain

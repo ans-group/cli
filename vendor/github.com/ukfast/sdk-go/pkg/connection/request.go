@@ -23,10 +23,6 @@ func (e *ValidationError) Error() string {
 	return e.Message
 }
 
-type RequestBody interface {
-	Validatable
-}
-
 // APIRequestBodyDefaultValidator provides convenience method Validate() for
 // validating a struct/item, utilising the validator.v9 package
 type APIRequestBodyDefaultValidator struct {
@@ -45,7 +41,7 @@ func (a *APIRequestBodyDefaultValidator) Validate(v interface{}) *ValidationErro
 type APIRequest struct {
 	Method     string
 	Resource   string
-	Body       RequestBody
+	Body       interface{}
 	Parameters APIRequestParameters
 }
 
@@ -81,6 +77,15 @@ func (p *APIRequestParameters) WithFilters(filters []APIRequestFiltering) *APIRe
 	}
 
 	return p
+}
+
+func (p *APIRequestParameters) Copy() APIRequestParameters {
+	newParameters := APIRequestParameters{}
+	newParameters.Sorting = p.Sorting
+	newParameters.Pagination = p.Pagination
+	newParameters.Filtering = p.Filtering
+
+	return newParameters
 }
 
 type APIRequestPagination struct {
@@ -163,21 +168,128 @@ func ParseOperator(o string) (APIRequestFilteringOperator, error) {
 	return 0, errors.New("Invalid filtering operator")
 }
 
-type RequestAll struct {
-	GetNext func(parameters APIRequestParameters) (ResponseBody, error)
+// PaginatedGetFunc represents a function which can be called for returning an implementation of Paginated
+type PaginatedGetFunc func(parameters APIRequestParameters) (Paginated, error)
+
+// Paginated represents a paginated API response
+type Paginated interface {
+	TotalPages() int
+	CurrentPage() int
+	Total() int
+	First() (Paginated, error)
+	Previous() (Paginated, error)
+	Next() (Paginated, error)
+	Last() (Paginated, error)
 }
 
+// PaginatedBase implements the Paginated interface, and can be embedded to represent different paginated types
+type PaginatedBase struct {
+	parameters APIRequestParameters
+	pagination APIResponseMetadataPagination
+	getFunc    PaginatedGetFunc
+}
+
+// NewPaginatedBase returns a pointer to an initialised PaginatedBase
+func NewPaginatedBase(parameters APIRequestParameters, pagination APIResponseMetadataPagination, getFunc PaginatedGetFunc) *PaginatedBase {
+	return &PaginatedBase{
+		parameters: parameters,
+		pagination: pagination,
+		getFunc:    getFunc,
+	}
+}
+
+// TotalPages returns the total number of pages
+func (p *PaginatedBase) TotalPages() int {
+	return p.pagination.TotalPages
+}
+
+// CurrentPage returns the current page
+func (p *PaginatedBase) CurrentPage() int {
+	if p.parameters.Pagination.Page > 0 {
+		return p.parameters.Pagination.Page
+	}
+
+	return 1
+}
+
+// Total returns the total number of items for current page
+func (p *PaginatedBase) Total() int {
+	return p.pagination.Total
+}
+
+// First returns the the first page
+func (p *PaginatedBase) First() (Paginated, error) {
+	newParameters := p.parameters.Copy()
+	newParameters.Pagination.Page = 1
+	return p.getFunc(newParameters)
+}
+
+// Previous returns the the previous page, or nil if current page is the first page
+func (p *PaginatedBase) Previous() (Paginated, error) {
+	if p.CurrentPage() <= 1 {
+		return nil, nil
+	}
+
+	newParameters := p.parameters.Copy()
+	newParameters.Pagination.Page = p.CurrentPage() - 1
+	return p.getFunc(newParameters)
+}
+
+// Next returns the the next page, or nil if current page is the last page
+func (p *PaginatedBase) Next() (Paginated, error) {
+	if p.CurrentPage() >= p.TotalPages() {
+		return nil, nil
+	}
+
+	newParameters := p.parameters.Copy()
+	newParameters.Pagination.Page = p.CurrentPage() + 1
+	return p.getFunc(newParameters)
+}
+
+// Last returns the the last page
+func (p *PaginatedBase) Last() (Paginated, error) {
+	newParameters := p.parameters.Copy()
+	newParameters.Pagination.Page = p.TotalPages()
+	return p.getFunc(newParameters)
+}
+
+// RequestAllResponseFunc represents a function which is called after every request within Invoke()
+type RequestAllResponseFunc func(Paginated)
+
+// RequestAll contains a single method Invoke(), which is a convenience method for iterating over paginated API responses
+type RequestAll struct {
+	getFunc      PaginatedGetFunc
+	responseFunc RequestAllResponseFunc
+}
+
+// NewRequestAll returns a pointer to an initialised RequestAll struct
+func NewRequestAll(getFunc PaginatedGetFunc, responseFunc RequestAllResponseFunc) *RequestAll {
+	return &RequestAll{
+		getFunc:      getFunc,
+		responseFunc: responseFunc,
+	}
+}
+
+// Invoke iterates over all pages using provided parameters and the getFunc which RequestAll was intialised with
 func (r *RequestAll) Invoke(parameters APIRequestParameters) error {
 	totalPages := 1
 	for currentPage := 1; currentPage <= totalPages; currentPage++ {
 		parameters.Pagination.Page = currentPage
-		response, err := r.GetNext(parameters)
+		paginated, err := r.getFunc(parameters)
 		if err != nil {
 			return err
 		}
 
-		totalPages = response.Pagination().TotalPages
+		r.responseFunc(paginated)
+		totalPages = paginated.TotalPages()
 	}
 
 	return nil
+}
+
+// InvokeRequestAll is a convenience method for initialising RequestAll and calling Invoke()
+func InvokeRequestAll(getFunc PaginatedGetFunc, responseFunc RequestAllResponseFunc, parameters APIRequestParameters) error {
+	r := NewRequestAll(getFunc, responseFunc)
+
+	return r.Invoke(parameters)
 }

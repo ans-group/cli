@@ -8,32 +8,28 @@ import (
 
 // GetTemplates retrieves a list of templates
 func (s *Service) GetTemplates(parameters connection.APIRequestParameters) ([]Template, error) {
-	r := connection.RequestAll{}
-
 	var templates []Template
-	r.GetNext = func(parameters connection.APIRequestParameters) (connection.ResponseBody, error) {
-		response, err := s.getTemplatesPaginatedResponseBody(parameters)
-		if err != nil {
-			return nil, err
-		}
 
-		for _, template := range response.Data {
-			templates = append(templates, template)
-		}
-
-		return response, nil
+	getFunc := func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetTemplatesPaginated(p)
 	}
 
-	err := r.Invoke(parameters)
+	responseFunc := func(response connection.Paginated) {
+		for _, template := range response.(*PaginatedTemplate).Items {
+			templates = append(templates, template)
+		}
+	}
 
-	return templates, err
+	return templates, connection.InvokeRequestAll(getFunc, responseFunc, parameters)
 }
 
 // GetTemplatesPaginated retrieves a paginated list of templates
-func (s *Service) GetTemplatesPaginated(parameters connection.APIRequestParameters) ([]Template, error) {
+func (s *Service) GetTemplatesPaginated(parameters connection.APIRequestParameters) (*PaginatedTemplate, error) {
 	body, err := s.getTemplatesPaginatedResponseBody(parameters)
 
-	return body.Data, err
+	return NewPaginatedTemplate(func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetTemplatesPaginated(p)
+	}, parameters, body.Metadata.Pagination, body.Data), err
 }
 
 func (s *Service) getTemplatesPaginatedResponseBody(parameters connection.APIRequestParameters) (*GetTemplatesResponseBody, error) {
@@ -180,32 +176,28 @@ func (s *Service) deleteTemplateResponseBody(templateID int) (*connection.APIRes
 
 // GetTemplateRecords retrieves a list of records
 func (s *Service) GetTemplateRecords(templateID int, parameters connection.APIRequestParameters) ([]Record, error) {
-	r := connection.RequestAll{}
-
 	var records []Record
-	r.GetNext = func(parameters connection.APIRequestParameters) (connection.ResponseBody, error) {
-		response, err := s.getTemplateRecordsPaginatedResponseBody(templateID, parameters)
-		if err != nil {
-			return nil, err
-		}
 
-		for _, record := range response.Data {
-			records = append(records, record)
-		}
-
-		return response, nil
+	getFunc := func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetTemplateRecordsPaginated(templateID, p)
 	}
 
-	err := r.Invoke(parameters)
+	responseFunc := func(response connection.Paginated) {
+		for _, record := range response.(*PaginatedRecord).Items {
+			records = append(records, record)
+		}
+	}
 
-	return records, err
+	return records, connection.InvokeRequestAll(getFunc, responseFunc, parameters)
 }
 
-// GetTemplateRecordsPaginated retrieves a paginated list of template records
-func (s *Service) GetTemplateRecordsPaginated(templateID int, parameters connection.APIRequestParameters) ([]Record, error) {
+// GetTemplateRecordsPaginated retrieves a paginated list of templates
+func (s *Service) GetTemplateRecordsPaginated(templateID int, parameters connection.APIRequestParameters) (*PaginatedRecord, error) {
 	body, err := s.getTemplateRecordsPaginatedResponseBody(templateID, parameters)
 
-	return body.Data, err
+	return NewPaginatedRecord(func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetTemplateRecordsPaginated(templateID, p)
+	}, parameters, body.Metadata.Pagination, body.Data), err
 }
 
 func (s *Service) getTemplateRecordsPaginatedResponseBody(templateID int, parameters connection.APIRequestParameters) (*GetRecordsResponseBody, error) {

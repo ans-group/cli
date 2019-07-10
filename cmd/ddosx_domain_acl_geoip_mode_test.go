@@ -113,7 +113,9 @@ func Test_ddosxDomainACLGeoIPRulesModeUpdate(t *testing.T) {
 		cmd := ddosxDomainACLGeoIPRulesModeUpdateCmd()
 		cmd.Flags().Set("mode", "invalidmode")
 
-		test_output.AssertFatalOutput(t, "Invalid ACL GeoIP rules filtering mode\n", func() {
+		test_output.AssertFatalOutputFunc(t, func(stdErr string) {
+			assert.Contains(t, stdErr, "Invalid ddosx.ACLGeoIPRulesMode")
+		}, func() {
 			ddosxDomainACLGeoIPRulesModeUpdate(service, cmd, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 		})
 	})

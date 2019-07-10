@@ -8,32 +8,28 @@ import (
 
 // GetFirewalls retrieves a list of firewalls
 func (s *Service) GetFirewalls(parameters connection.APIRequestParameters) ([]Firewall, error) {
-	r := connection.RequestAll{}
-
 	var firewalls []Firewall
-	r.GetNext = func(parameters connection.APIRequestParameters) (connection.ResponseBody, error) {
-		response, err := s.getFirewallsPaginatedResponseBody(parameters)
-		if err != nil {
-			return nil, err
-		}
 
-		for _, firewall := range response.Data {
-			firewalls = append(firewalls, firewall)
-		}
-
-		return response, nil
+	getFunc := func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetFirewallsPaginated(p)
 	}
 
-	err := r.Invoke(parameters)
+	responseFunc := func(response connection.Paginated) {
+		for _, firewall := range response.(*PaginatedFirewall).Items {
+			firewalls = append(firewalls, firewall)
+		}
+	}
 
-	return firewalls, err
+	return firewalls, connection.InvokeRequestAll(getFunc, responseFunc, parameters)
 }
 
 // GetFirewallsPaginated retrieves a paginated list of firewalls
-func (s *Service) GetFirewallsPaginated(parameters connection.APIRequestParameters) ([]Firewall, error) {
+func (s *Service) GetFirewallsPaginated(parameters connection.APIRequestParameters) (*PaginatedFirewall, error) {
 	body, err := s.getFirewallsPaginatedResponseBody(parameters)
 
-	return body.Data, err
+	return NewPaginatedFirewall(func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetFirewallsPaginated(p)
+	}, parameters, body.Metadata.Pagination, body.Data), err
 }
 
 func (s *Service) getFirewallsPaginatedResponseBody(parameters connection.APIRequestParameters) (*GetFirewallsResponseBody, error) {

@@ -8,32 +8,28 @@ import (
 
 // GetSites retrieves a list of sites
 func (s *Service) GetSites(parameters connection.APIRequestParameters) ([]Site, error) {
-	r := connection.RequestAll{}
-
 	var sites []Site
-	r.GetNext = func(parameters connection.APIRequestParameters) (connection.ResponseBody, error) {
-		response, err := s.getSitesPaginatedResponseBody(parameters)
-		if err != nil {
-			return nil, err
-		}
 
-		for _, site := range response.Data {
-			sites = append(sites, site)
-		}
-
-		return response, nil
+	getFunc := func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetSitesPaginated(p)
 	}
 
-	err := r.Invoke(parameters)
+	responseFunc := func(response connection.Paginated) {
+		for _, site := range response.(*PaginatedSite).Items {
+			sites = append(sites, site)
+		}
+	}
 
-	return sites, err
+	return sites, connection.InvokeRequestAll(getFunc, responseFunc, parameters)
 }
 
 // GetSitesPaginated retrieves a paginated list of sites
-func (s *Service) GetSitesPaginated(parameters connection.APIRequestParameters) ([]Site, error) {
+func (s *Service) GetSitesPaginated(parameters connection.APIRequestParameters) (*PaginatedSite, error) {
 	body, err := s.getSitesPaginatedResponseBody(parameters)
 
-	return body.Data, err
+	return NewPaginatedSite(func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetSitesPaginated(p)
+	}, parameters, body.Metadata.Pagination, body.Data), err
 }
 
 func (s *Service) getSitesPaginatedResponseBody(parameters connection.APIRequestParameters) (*GetSitesResponseBody, error) {

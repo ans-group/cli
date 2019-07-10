@@ -6,6 +6,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -20,10 +21,10 @@ const userAgent = "ukfast-sdk-go"
 
 type Connection interface {
 	Get(resource string, parameters APIRequestParameters) (*APIResponse, error)
-	Post(resource string, body RequestBody) (*APIResponse, error)
-	Put(resource string, body RequestBody) (*APIResponse, error)
-	Patch(resource string, body RequestBody) (*APIResponse, error)
-	Delete(resource string, body RequestBody) (*APIResponse, error)
+	Post(resource string, body interface{}) (*APIResponse, error)
+	Put(resource string, body interface{}) (*APIResponse, error)
+	Patch(resource string, body interface{}) (*APIResponse, error)
+	Delete(resource string, body interface{}) (*APIResponse, error)
 	Invoke(request APIRequest) (*APIResponse, error)
 }
 
@@ -106,7 +107,7 @@ func (c *APIConnection) Get(resource string, parameters APIRequestParameters) (*
 }
 
 // Post invokes a POST request, returning an APIResponse
-func (c *APIConnection) Post(resource string, body RequestBody) (*APIResponse, error) {
+func (c *APIConnection) Post(resource string, body interface{}) (*APIResponse, error) {
 	return c.Invoke(APIRequest{
 		Method:   "POST",
 		Resource: resource,
@@ -115,7 +116,7 @@ func (c *APIConnection) Post(resource string, body RequestBody) (*APIResponse, e
 }
 
 // Put invokes a PUT request, returning an APIResponse
-func (c *APIConnection) Put(resource string, body RequestBody) (*APIResponse, error) {
+func (c *APIConnection) Put(resource string, body interface{}) (*APIResponse, error) {
 	return c.Invoke(APIRequest{
 		Method:   "PUT",
 		Resource: resource,
@@ -124,7 +125,7 @@ func (c *APIConnection) Put(resource string, body RequestBody) (*APIResponse, er
 }
 
 // Patch invokes a PATCH request, returning an APIResponse
-func (c *APIConnection) Patch(resource string, body RequestBody) (*APIResponse, error) {
+func (c *APIConnection) Patch(resource string, body interface{}) (*APIResponse, error) {
 	return c.Invoke(APIRequest{
 		Method:   "PATCH",
 		Resource: resource,
@@ -133,7 +134,7 @@ func (c *APIConnection) Patch(resource string, body RequestBody) (*APIResponse, 
 }
 
 // Delete invokes a DELETE request, returning an APIResponse
-func (c *APIConnection) Delete(resource string, body RequestBody) (*APIResponse, error) {
+func (c *APIConnection) Delete(resource string, body interface{}) (*APIResponse, error) {
 	return c.Invoke(APIRequest{
 		Method:   "DELETE",
 		Resource: resource,
@@ -152,27 +153,42 @@ func (c *APIConnection) Invoke(request APIRequest) (*APIResponse, error) {
 }
 
 // NewRequest generates a new Request from given parameters
-func (c *APIConnection) NewRequest(request APIRequest) (*http.Request, error) {
-	uri := c.composeURI(request.Resource, request.Parameters.Pagination, request.Parameters.Sorting, request.Parameters.Filtering)
-
-	logging.Debugf("Generated URI: %s", uri)
-
+func (c *APIConnection) getBody(request APIRequest) (io.Reader, error) {
 	buf := new(bytes.Buffer)
 	if request.Body != nil {
-		valErr := request.Body.Validate()
-		if valErr != nil {
-			return nil, valErr
+		if reader, ok := request.Body.(io.Reader); ok {
+			return reader, nil
+		}
+
+		if v, ok := request.Body.(Validatable); ok {
+			valErr := v.Validate()
+			if valErr != nil {
+				return nil, valErr
+			}
 		}
 
 		err := json.NewEncoder(buf).Encode(request.Body)
 		if err != nil {
 			return nil, err
 		}
-
 		logging.Tracef("Encoded body: %s", buf)
 	}
 
-	req, err := http.NewRequest(request.Method, uri, buf)
+	return buf, nil
+}
+
+// NewRequest generates a new Request from given parameters
+func (c *APIConnection) NewRequest(request APIRequest) (*http.Request, error) {
+	uri := c.composeURI(request.Resource, request.Parameters.Pagination, request.Parameters.Sorting, request.Parameters.Filtering)
+
+	logging.Debugf("Generated URI: %s", uri)
+
+	body, err := c.getBody(request)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(request.Method, uri, body)
 	if err != nil {
 		return nil, err
 	}

@@ -486,10 +486,10 @@ func (mr *MockDDoSXServiceMockRecorder) GetDomainACLGeoIPRulesMode(arg0 interfac
 }
 
 // GetDomainACLGeoIPRulesPaginated mocks base method
-func (m *MockDDoSXService) GetDomainACLGeoIPRulesPaginated(arg0 string, arg1 connection.APIRequestParameters) ([]ddosx.ACLGeoIPRule, error) {
+func (m *MockDDoSXService) GetDomainACLGeoIPRulesPaginated(arg0 string, arg1 connection.APIRequestParameters) (*ddosx.PaginatedACLGeoIPRule, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetDomainACLGeoIPRulesPaginated", arg0, arg1)
-	ret0, _ := ret[0].([]ddosx.ACLGeoIPRule)
+	ret0, _ := ret[0].(*ddosx.PaginatedACLGeoIPRule)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -531,10 +531,10 @@ func (mr *MockDDoSXServiceMockRecorder) GetDomainACLIPRules(arg0, arg1 interface
 }
 
 // GetDomainACLIPRulesPaginated mocks base method
-func (m *MockDDoSXService) GetDomainACLIPRulesPaginated(arg0 string, arg1 connection.APIRequestParameters) ([]ddosx.ACLIPRule, error) {
+func (m *MockDDoSXService) GetDomainACLIPRulesPaginated(arg0 string, arg1 connection.APIRequestParameters) (*ddosx.PaginatedACLIPRule, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetDomainACLIPRulesPaginated", arg0, arg1)
-	ret0, _ := ret[0].([]ddosx.ACLIPRule)
+	ret0, _ := ret[0].(*ddosx.PaginatedACLIPRule)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -576,10 +576,10 @@ func (mr *MockDDoSXServiceMockRecorder) GetDomainCDNRules(arg0, arg1 interface{}
 }
 
 // GetDomainCDNRulesPaginated mocks base method
-func (m *MockDDoSXService) GetDomainCDNRulesPaginated(arg0 string, arg1 connection.APIRequestParameters) ([]ddosx.CDNRule, error) {
+func (m *MockDDoSXService) GetDomainCDNRulesPaginated(arg0 string, arg1 connection.APIRequestParameters) (*ddosx.PaginatedCDNRule, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetDomainCDNRulesPaginated", arg0, arg1)
-	ret0, _ := ret[0].([]ddosx.CDNRule)
+	ret0, _ := ret[0].(*ddosx.PaginatedCDNRule)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -636,10 +636,10 @@ func (mr *MockDDoSXServiceMockRecorder) GetDomainHSTSRules(arg0, arg1 interface{
 }
 
 // GetDomainHSTSRulesPaginated mocks base method
-func (m *MockDDoSXService) GetDomainHSTSRulesPaginated(arg0 string, arg1 connection.APIRequestParameters) ([]ddosx.HSTSRule, error) {
+func (m *MockDDoSXService) GetDomainHSTSRulesPaginated(arg0 string, arg1 connection.APIRequestParameters) (*ddosx.PaginatedHSTSRule, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetDomainHSTSRulesPaginated", arg0, arg1)
-	ret0, _ := ret[0].([]ddosx.HSTSRule)
+	ret0, _ := ret[0].(*ddosx.PaginatedHSTSRule)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -666,10 +666,10 @@ func (mr *MockDDoSXServiceMockRecorder) GetDomainProperties(arg0, arg1 interface
 }
 
 // GetDomainPropertiesPaginated mocks base method
-func (m *MockDDoSXService) GetDomainPropertiesPaginated(arg0 string, arg1 connection.APIRequestParameters) ([]ddosx.DomainProperty, error) {
+func (m *MockDDoSXService) GetDomainPropertiesPaginated(arg0 string, arg1 connection.APIRequestParameters) (*ddosx.PaginatedDomainProperty, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetDomainPropertiesPaginated", arg0, arg1)
-	ret0, _ := ret[0].([]ddosx.DomainProperty)
+	ret0, _ := ret[0].(*ddosx.PaginatedDomainProperty)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -726,10 +726,10 @@ func (mr *MockDDoSXServiceMockRecorder) GetDomainRecords(arg0, arg1 interface{})
 }
 
 // GetDomainRecordsPaginated mocks base method
-func (m *MockDDoSXService) GetDomainRecordsPaginated(arg0 string, arg1 connection.APIRequestParameters) ([]ddosx.Record, error) {
+func (m *MockDDoSXService) GetDomainRecordsPaginated(arg0 string, arg1 connection.APIRequestParameters) (*ddosx.PaginatedRecord, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetDomainRecordsPaginated", arg0, arg1)
-	ret0, _ := ret[0].([]ddosx.Record)
+	ret0, _ := ret[0].(*ddosx.PaginatedRecord)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -786,10 +786,10 @@ func (mr *MockDDoSXServiceMockRecorder) GetDomainWAFAdvancedRules(arg0, arg1 int
 }
 
 // GetDomainWAFAdvancedRulesPaginated mocks base method
-func (m *MockDDoSXService) GetDomainWAFAdvancedRulesPaginated(arg0 string, arg1 connection.APIRequestParameters) ([]ddosx.WAFAdvancedRule, error) {
+func (m *MockDDoSXService) GetDomainWAFAdvancedRulesPaginated(arg0 string, arg1 connection.APIRequestParameters) (*ddosx.PaginatedWAFAdvancedRule, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetDomainWAFAdvancedRulesPaginated", arg0, arg1)
-	ret0, _ := ret[0].([]ddosx.WAFAdvancedRule)
+	ret0, _ := ret[0].(*ddosx.PaginatedWAFAdvancedRule)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -846,10 +846,10 @@ func (mr *MockDDoSXServiceMockRecorder) GetDomainWAFRuleSets(arg0, arg1 interfac
 }
 
 // GetDomainWAFRuleSetsPaginated mocks base method
-func (m *MockDDoSXService) GetDomainWAFRuleSetsPaginated(arg0 string, arg1 connection.APIRequestParameters) ([]ddosx.WAFRuleSet, error) {
+func (m *MockDDoSXService) GetDomainWAFRuleSetsPaginated(arg0 string, arg1 connection.APIRequestParameters) (*ddosx.PaginatedWAFRuleSet, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetDomainWAFRuleSetsPaginated", arg0, arg1)
-	ret0, _ := ret[0].([]ddosx.WAFRuleSet)
+	ret0, _ := ret[0].(*ddosx.PaginatedWAFRuleSet)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -876,10 +876,10 @@ func (mr *MockDDoSXServiceMockRecorder) GetDomainWAFRules(arg0, arg1 interface{}
 }
 
 // GetDomainWAFRulesPaginated mocks base method
-func (m *MockDDoSXService) GetDomainWAFRulesPaginated(arg0 string, arg1 connection.APIRequestParameters) ([]ddosx.WAFRule, error) {
+func (m *MockDDoSXService) GetDomainWAFRulesPaginated(arg0 string, arg1 connection.APIRequestParameters) (*ddosx.PaginatedWAFRule, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetDomainWAFRulesPaginated", arg0, arg1)
-	ret0, _ := ret[0].([]ddosx.WAFRule)
+	ret0, _ := ret[0].(*ddosx.PaginatedWAFRule)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -906,10 +906,10 @@ func (mr *MockDDoSXServiceMockRecorder) GetDomains(arg0 interface{}) *gomock.Cal
 }
 
 // GetDomainsPaginated mocks base method
-func (m *MockDDoSXService) GetDomainsPaginated(arg0 connection.APIRequestParameters) ([]ddosx.Domain, error) {
+func (m *MockDDoSXService) GetDomainsPaginated(arg0 connection.APIRequestParameters) (*ddosx.PaginatedDomain, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetDomainsPaginated", arg0)
-	ret0, _ := ret[0].([]ddosx.Domain)
+	ret0, _ := ret[0].(*ddosx.PaginatedDomain)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -936,10 +936,10 @@ func (mr *MockDDoSXServiceMockRecorder) GetRecords(arg0 interface{}) *gomock.Cal
 }
 
 // GetRecordsPaginated mocks base method
-func (m *MockDDoSXService) GetRecordsPaginated(arg0 connection.APIRequestParameters) ([]ddosx.Record, error) {
+func (m *MockDDoSXService) GetRecordsPaginated(arg0 connection.APIRequestParameters) (*ddosx.PaginatedRecord, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetRecordsPaginated", arg0)
-	ret0, _ := ret[0].([]ddosx.Record)
+	ret0, _ := ret[0].(*ddosx.PaginatedRecord)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -1011,10 +1011,10 @@ func (mr *MockDDoSXServiceMockRecorder) GetSSLs(arg0 interface{}) *gomock.Call {
 }
 
 // GetSSLsPaginated mocks base method
-func (m *MockDDoSXService) GetSSLsPaginated(arg0 connection.APIRequestParameters) ([]ddosx.SSL, error) {
+func (m *MockDDoSXService) GetSSLsPaginated(arg0 connection.APIRequestParameters) (*ddosx.PaginatedSSL, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetSSLsPaginated", arg0)
-	ret0, _ := ret[0].([]ddosx.SSL)
+	ret0, _ := ret[0].(*ddosx.PaginatedSSL)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

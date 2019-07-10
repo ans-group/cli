@@ -61,6 +61,7 @@ type APIResponseMetadataPaginationLinks struct {
 // DeserializeResponseBody deserializes the API response body and stores the result
 // in parameter out
 func (r *APIResponse) DeserializeResponseBody(out interface{}) error {
+	defer r.Response.Body.Close()
 	bodyBytes, err := ioutil.ReadAll(r.Response.Body)
 	if err != nil {
 		return fmt.Errorf("failed to read response body with response status code %d: %s", r.StatusCode, err)

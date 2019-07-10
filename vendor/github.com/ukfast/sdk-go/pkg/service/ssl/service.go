@@ -7,6 +7,7 @@ import (
 // SSLService is an interface for managing SSL certificates
 type SSLService interface {
 	GetCertificates(parameters connection.APIRequestParameters) ([]Certificate, error)
+	GetCertificatesPaginated(parameters connection.APIRequestParameters) (*PaginatedCertificate, error)
 	GetCertificate(certificateID int) (Certificate, error)
 	GetCertificateContent(certificateID int) (CertificateContent, error)
 	GetCertificatePrivateKey(certificateID int) (CertificatePrivateKey, error)

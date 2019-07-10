@@ -210,10 +210,10 @@ func (mr *MockSafeDNSServiceMockRecorder) GetTemplateRecords(arg0, arg1 interfac
 }
 
 // GetTemplateRecordsPaginated mocks base method
-func (m *MockSafeDNSService) GetTemplateRecordsPaginated(arg0 int, arg1 connection.APIRequestParameters) ([]safedns.Record, error) {
+func (m *MockSafeDNSService) GetTemplateRecordsPaginated(arg0 int, arg1 connection.APIRequestParameters) (*safedns.PaginatedRecord, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetTemplateRecordsPaginated", arg0, arg1)
-	ret0, _ := ret[0].([]safedns.Record)
+	ret0, _ := ret[0].(*safedns.PaginatedRecord)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -240,10 +240,10 @@ func (mr *MockSafeDNSServiceMockRecorder) GetTemplates(arg0 interface{}) *gomock
 }
 
 // GetTemplatesPaginated mocks base method
-func (m *MockSafeDNSService) GetTemplatesPaginated(arg0 connection.APIRequestParameters) ([]safedns.Template, error) {
+func (m *MockSafeDNSService) GetTemplatesPaginated(arg0 connection.APIRequestParameters) (*safedns.PaginatedTemplate, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetTemplatesPaginated", arg0)
-	ret0, _ := ret[0].([]safedns.Template)
+	ret0, _ := ret[0].(*safedns.PaginatedTemplate)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -300,10 +300,10 @@ func (mr *MockSafeDNSServiceMockRecorder) GetZoneNotes(arg0, arg1 interface{}) *
 }
 
 // GetZoneNotesPaginated mocks base method
-func (m *MockSafeDNSService) GetZoneNotesPaginated(arg0 string, arg1 connection.APIRequestParameters) ([]safedns.Note, error) {
+func (m *MockSafeDNSService) GetZoneNotesPaginated(arg0 string, arg1 connection.APIRequestParameters) (*safedns.PaginatedNote, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetZoneNotesPaginated", arg0, arg1)
-	ret0, _ := ret[0].([]safedns.Note)
+	ret0, _ := ret[0].(*safedns.PaginatedNote)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -345,10 +345,10 @@ func (mr *MockSafeDNSServiceMockRecorder) GetZoneRecords(arg0, arg1 interface{})
 }
 
 // GetZoneRecordsPaginated mocks base method
-func (m *MockSafeDNSService) GetZoneRecordsPaginated(arg0 string, arg1 connection.APIRequestParameters) ([]safedns.Record, error) {
+func (m *MockSafeDNSService) GetZoneRecordsPaginated(arg0 string, arg1 connection.APIRequestParameters) (*safedns.PaginatedRecord, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetZoneRecordsPaginated", arg0, arg1)
-	ret0, _ := ret[0].([]safedns.Record)
+	ret0, _ := ret[0].(*safedns.PaginatedRecord)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -375,10 +375,10 @@ func (mr *MockSafeDNSServiceMockRecorder) GetZones(arg0 interface{}) *gomock.Cal
 }
 
 // GetZonesPaginated mocks base method
-func (m *MockSafeDNSService) GetZonesPaginated(arg0 connection.APIRequestParameters) ([]safedns.Zone, error) {
+func (m *MockSafeDNSService) GetZonesPaginated(arg0 connection.APIRequestParameters) (*safedns.PaginatedZone, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetZonesPaginated", arg0)
-	ret0, _ := ret[0].([]safedns.Zone)
+	ret0, _ := ret[0].(*safedns.PaginatedZone)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

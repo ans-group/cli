@@ -183,10 +183,10 @@ func Test_ddosxDomainHSTSRuleCreate(t *testing.T) {
 		cmd := ddosxDomainHSTSRuleCreateCmd()
 		cmd.Flags().Set("type", "invalid")
 
-		test_output.AssertFatalOutputFunc(t, func() {
-			ddosxDomainHSTSRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
-		}, func(stdErr string) {
+		test_output.AssertFatalOutputFunc(t, func(stdErr string) {
 			assert.Contains(t, stdErr, "Invalid value 'invalid' provided for 'type'")
+		}, func() {
+			ddosxDomainHSTSRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
 		})
 	})
 

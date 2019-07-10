@@ -208,10 +208,10 @@ func (mr *MockECloudServiceMockRecorder) GetApplianceParameters(arg0, arg1 inter
 }
 
 // GetApplianceParametersPaginated mocks base method
-func (m *MockECloudService) GetApplianceParametersPaginated(arg0 string, arg1 connection.APIRequestParameters) ([]ecloud.ApplianceParameter, error) {
+func (m *MockECloudService) GetApplianceParametersPaginated(arg0 string, arg1 connection.APIRequestParameters) (*ecloud.PaginatedApplianceParameter, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetApplianceParametersPaginated", arg0, arg1)
-	ret0, _ := ret[0].([]ecloud.ApplianceParameter)
+	ret0, _ := ret[0].(*ecloud.PaginatedApplianceParameter)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -238,10 +238,10 @@ func (mr *MockECloudServiceMockRecorder) GetAppliances(arg0 interface{}) *gomock
 }
 
 // GetAppliancesPaginated mocks base method
-func (m *MockECloudService) GetAppliancesPaginated(arg0 connection.APIRequestParameters) ([]ecloud.Appliance, error) {
+func (m *MockECloudService) GetAppliancesPaginated(arg0 connection.APIRequestParameters) (*ecloud.PaginatedAppliance, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetAppliancesPaginated", arg0)
-	ret0, _ := ret[0].([]ecloud.Appliance)
+	ret0, _ := ret[0].(*ecloud.PaginatedAppliance)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -298,10 +298,10 @@ func (mr *MockECloudServiceMockRecorder) GetDatastores(arg0 interface{}) *gomock
 }
 
 // GetDatastoresPaginated mocks base method
-func (m *MockECloudService) GetDatastoresPaginated(arg0 connection.APIRequestParameters) ([]ecloud.Datastore, error) {
+func (m *MockECloudService) GetDatastoresPaginated(arg0 connection.APIRequestParameters) (*ecloud.PaginatedDatastore, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetDatastoresPaginated", arg0)
-	ret0, _ := ret[0].([]ecloud.Datastore)
+	ret0, _ := ret[0].(*ecloud.PaginatedDatastore)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -358,10 +358,10 @@ func (mr *MockECloudServiceMockRecorder) GetFirewalls(arg0 interface{}) *gomock.
 }
 
 // GetFirewallsPaginated mocks base method
-func (m *MockECloudService) GetFirewallsPaginated(arg0 connection.APIRequestParameters) ([]ecloud.Firewall, error) {
+func (m *MockECloudService) GetFirewallsPaginated(arg0 connection.APIRequestParameters) (*ecloud.PaginatedFirewall, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetFirewallsPaginated", arg0)
-	ret0, _ := ret[0].([]ecloud.Firewall)
+	ret0, _ := ret[0].(*ecloud.PaginatedFirewall)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -403,10 +403,10 @@ func (mr *MockECloudServiceMockRecorder) GetHosts(arg0 interface{}) *gomock.Call
 }
 
 // GetHostsPaginated mocks base method
-func (m *MockECloudService) GetHostsPaginated(arg0 connection.APIRequestParameters) ([]ecloud.Host, error) {
+func (m *MockECloudService) GetHostsPaginated(arg0 connection.APIRequestParameters) (*ecloud.PaginatedHost, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetHostsPaginated", arg0)
-	ret0, _ := ret[0].([]ecloud.Host)
+	ret0, _ := ret[0].(*ecloud.PaginatedHost)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -448,10 +448,10 @@ func (mr *MockECloudServiceMockRecorder) GetPodAppliances(arg0, arg1 interface{}
 }
 
 // GetPodAppliancesPaginated mocks base method
-func (m *MockECloudService) GetPodAppliancesPaginated(arg0 int, arg1 connection.APIRequestParameters) ([]ecloud.Appliance, error) {
+func (m *MockECloudService) GetPodAppliancesPaginated(arg0 int, arg1 connection.APIRequestParameters) (*ecloud.PaginatedAppliance, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetPodAppliancesPaginated", arg0, arg1)
-	ret0, _ := ret[0].([]ecloud.Appliance)
+	ret0, _ := ret[0].(*ecloud.PaginatedAppliance)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -493,10 +493,10 @@ func (mr *MockECloudServiceMockRecorder) GetPodTemplates(arg0, arg1 interface{})
 }
 
 // GetPodTemplatesPaginated mocks base method
-func (m *MockECloudService) GetPodTemplatesPaginated(arg0 int, arg1 connection.APIRequestParameters) ([]ecloud.Template, error) {
+func (m *MockECloudService) GetPodTemplatesPaginated(arg0 int, arg1 connection.APIRequestParameters) (*ecloud.PaginatedTemplate, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetPodTemplatesPaginated", arg0, arg1)
-	ret0, _ := ret[0].([]ecloud.Template)
+	ret0, _ := ret[0].(*ecloud.PaginatedTemplate)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -523,10 +523,10 @@ func (mr *MockECloudServiceMockRecorder) GetPods(arg0 interface{}) *gomock.Call 
 }
 
 // GetPodsPaginated mocks base method
-func (m *MockECloudService) GetPodsPaginated(arg0 connection.APIRequestParameters) ([]ecloud.Pod, error) {
+func (m *MockECloudService) GetPodsPaginated(arg0 connection.APIRequestParameters) (*ecloud.PaginatedPod, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetPodsPaginated", arg0)
-	ret0, _ := ret[0].([]ecloud.Pod)
+	ret0, _ := ret[0].(*ecloud.PaginatedPod)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -568,10 +568,10 @@ func (mr *MockECloudServiceMockRecorder) GetSites(arg0 interface{}) *gomock.Call
 }
 
 // GetSitesPaginated mocks base method
-func (m *MockECloudService) GetSitesPaginated(arg0 connection.APIRequestParameters) ([]ecloud.Site, error) {
+func (m *MockECloudService) GetSitesPaginated(arg0 connection.APIRequestParameters) (*ecloud.PaginatedSite, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetSitesPaginated", arg0)
-	ret0, _ := ret[0].([]ecloud.Site)
+	ret0, _ := ret[0].(*ecloud.PaginatedSite)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -613,10 +613,10 @@ func (mr *MockECloudServiceMockRecorder) GetSolutionDatastores(arg0, arg1 interf
 }
 
 // GetSolutionDatastoresPaginated mocks base method
-func (m *MockECloudService) GetSolutionDatastoresPaginated(arg0 int, arg1 connection.APIRequestParameters) ([]ecloud.Datastore, error) {
+func (m *MockECloudService) GetSolutionDatastoresPaginated(arg0 int, arg1 connection.APIRequestParameters) (*ecloud.PaginatedDatastore, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetSolutionDatastoresPaginated", arg0, arg1)
-	ret0, _ := ret[0].([]ecloud.Datastore)
+	ret0, _ := ret[0].(*ecloud.PaginatedDatastore)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -643,10 +643,10 @@ func (mr *MockECloudServiceMockRecorder) GetSolutionFirewalls(arg0, arg1 interfa
 }
 
 // GetSolutionFirewallsPaginated mocks base method
-func (m *MockECloudService) GetSolutionFirewallsPaginated(arg0 int, arg1 connection.APIRequestParameters) ([]ecloud.Firewall, error) {
+func (m *MockECloudService) GetSolutionFirewallsPaginated(arg0 int, arg1 connection.APIRequestParameters) (*ecloud.PaginatedFirewall, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetSolutionFirewallsPaginated", arg0, arg1)
-	ret0, _ := ret[0].([]ecloud.Firewall)
+	ret0, _ := ret[0].(*ecloud.PaginatedFirewall)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -673,10 +673,10 @@ func (mr *MockECloudServiceMockRecorder) GetSolutionHosts(arg0, arg1 interface{}
 }
 
 // GetSolutionHostsPaginated mocks base method
-func (m *MockECloudService) GetSolutionHostsPaginated(arg0 int, arg1 connection.APIRequestParameters) ([]ecloud.Host, error) {
+func (m *MockECloudService) GetSolutionHostsPaginated(arg0 int, arg1 connection.APIRequestParameters) (*ecloud.PaginatedHost, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetSolutionHostsPaginated", arg0, arg1)
-	ret0, _ := ret[0].([]ecloud.Host)
+	ret0, _ := ret[0].(*ecloud.PaginatedHost)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -703,10 +703,10 @@ func (mr *MockECloudServiceMockRecorder) GetSolutionNetworks(arg0, arg1 interfac
 }
 
 // GetSolutionNetworksPaginated mocks base method
-func (m *MockECloudService) GetSolutionNetworksPaginated(arg0 int, arg1 connection.APIRequestParameters) ([]ecloud.Network, error) {
+func (m *MockECloudService) GetSolutionNetworksPaginated(arg0 int, arg1 connection.APIRequestParameters) (*ecloud.PaginatedNetwork, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetSolutionNetworksPaginated", arg0, arg1)
-	ret0, _ := ret[0].([]ecloud.Network)
+	ret0, _ := ret[0].(*ecloud.PaginatedNetwork)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -733,10 +733,10 @@ func (mr *MockECloudServiceMockRecorder) GetSolutionSites(arg0, arg1 interface{}
 }
 
 // GetSolutionSitesPaginated mocks base method
-func (m *MockECloudService) GetSolutionSitesPaginated(arg0 int, arg1 connection.APIRequestParameters) ([]ecloud.Site, error) {
+func (m *MockECloudService) GetSolutionSitesPaginated(arg0 int, arg1 connection.APIRequestParameters) (*ecloud.PaginatedSite, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetSolutionSitesPaginated", arg0, arg1)
-	ret0, _ := ret[0].([]ecloud.Site)
+	ret0, _ := ret[0].(*ecloud.PaginatedSite)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -778,10 +778,10 @@ func (mr *MockECloudServiceMockRecorder) GetSolutionTags(arg0, arg1 interface{})
 }
 
 // GetSolutionTagsPaginated mocks base method
-func (m *MockECloudService) GetSolutionTagsPaginated(arg0 int, arg1 connection.APIRequestParameters) ([]ecloud.Tag, error) {
+func (m *MockECloudService) GetSolutionTagsPaginated(arg0 int, arg1 connection.APIRequestParameters) (*ecloud.PaginatedTag, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetSolutionTagsPaginated", arg0, arg1)
-	ret0, _ := ret[0].([]ecloud.Tag)
+	ret0, _ := ret[0].(*ecloud.PaginatedTag)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -823,10 +823,10 @@ func (mr *MockECloudServiceMockRecorder) GetSolutionTemplates(arg0, arg1 interfa
 }
 
 // GetSolutionTemplatesPaginated mocks base method
-func (m *MockECloudService) GetSolutionTemplatesPaginated(arg0 int, arg1 connection.APIRequestParameters) ([]ecloud.Template, error) {
+func (m *MockECloudService) GetSolutionTemplatesPaginated(arg0 int, arg1 connection.APIRequestParameters) (*ecloud.PaginatedTemplate, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetSolutionTemplatesPaginated", arg0, arg1)
-	ret0, _ := ret[0].([]ecloud.Template)
+	ret0, _ := ret[0].(*ecloud.PaginatedTemplate)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -853,10 +853,10 @@ func (mr *MockECloudServiceMockRecorder) GetSolutionVirtualMachines(arg0, arg1 i
 }
 
 // GetSolutionVirtualMachinesPaginated mocks base method
-func (m *MockECloudService) GetSolutionVirtualMachinesPaginated(arg0 int, arg1 connection.APIRequestParameters) ([]ecloud.VirtualMachine, error) {
+func (m *MockECloudService) GetSolutionVirtualMachinesPaginated(arg0 int, arg1 connection.APIRequestParameters) (*ecloud.PaginatedVirtualMachine, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetSolutionVirtualMachinesPaginated", arg0, arg1)
-	ret0, _ := ret[0].([]ecloud.VirtualMachine)
+	ret0, _ := ret[0].(*ecloud.PaginatedVirtualMachine)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -883,10 +883,10 @@ func (mr *MockECloudServiceMockRecorder) GetSolutions(arg0 interface{}) *gomock.
 }
 
 // GetSolutionsPaginated mocks base method
-func (m *MockECloudService) GetSolutionsPaginated(arg0 connection.APIRequestParameters) ([]ecloud.Solution, error) {
+func (m *MockECloudService) GetSolutionsPaginated(arg0 connection.APIRequestParameters) (*ecloud.PaginatedSolution, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetSolutionsPaginated", arg0)
-	ret0, _ := ret[0].([]ecloud.Solution)
+	ret0, _ := ret[0].(*ecloud.PaginatedSolution)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -943,10 +943,10 @@ func (mr *MockECloudServiceMockRecorder) GetVirtualMachineTags(arg0, arg1 interf
 }
 
 // GetVirtualMachineTagsPaginated mocks base method
-func (m *MockECloudService) GetVirtualMachineTagsPaginated(arg0 int, arg1 connection.APIRequestParameters) ([]ecloud.Tag, error) {
+func (m *MockECloudService) GetVirtualMachineTagsPaginated(arg0 int, arg1 connection.APIRequestParameters) (*ecloud.PaginatedTag, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetVirtualMachineTagsPaginated", arg0, arg1)
-	ret0, _ := ret[0].([]ecloud.Tag)
+	ret0, _ := ret[0].(*ecloud.PaginatedTag)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -973,10 +973,10 @@ func (mr *MockECloudServiceMockRecorder) GetVirtualMachines(arg0 interface{}) *g
 }
 
 // GetVirtualMachinesPaginated mocks base method
-func (m *MockECloudService) GetVirtualMachinesPaginated(arg0 connection.APIRequestParameters) ([]ecloud.VirtualMachine, error) {
+func (m *MockECloudService) GetVirtualMachinesPaginated(arg0 connection.APIRequestParameters) (*ecloud.PaginatedVirtualMachine, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetVirtualMachinesPaginated", arg0)
-	ret0, _ := ret[0].([]ecloud.VirtualMachine)
+	ret0, _ := ret[0].(*ecloud.PaginatedVirtualMachine)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

@@ -8,32 +8,28 @@ import (
 
 // GetHosts retrieves a list of hosts
 func (s *Service) GetHosts(parameters connection.APIRequestParameters) ([]Host, error) {
-	r := connection.RequestAll{}
-
 	var hosts []Host
-	r.GetNext = func(parameters connection.APIRequestParameters) (connection.ResponseBody, error) {
-		response, err := s.getHostsPaginatedResponseBody(parameters)
-		if err != nil {
-			return nil, err
-		}
 
-		for _, host := range response.Data {
-			hosts = append(hosts, host)
-		}
-
-		return response, nil
+	getFunc := func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetHostsPaginated(p)
 	}
 
-	err := r.Invoke(parameters)
+	responseFunc := func(response connection.Paginated) {
+		for _, host := range response.(*PaginatedHost).Items {
+			hosts = append(hosts, host)
+		}
+	}
 
-	return hosts, err
+	return hosts, connection.InvokeRequestAll(getFunc, responseFunc, parameters)
 }
 
 // GetHostsPaginated retrieves a paginated list of hosts
-func (s *Service) GetHostsPaginated(parameters connection.APIRequestParameters) ([]Host, error) {
+func (s *Service) GetHostsPaginated(parameters connection.APIRequestParameters) (*PaginatedHost, error) {
 	body, err := s.getHostsPaginatedResponseBody(parameters)
 
-	return body.Data, err
+	return NewPaginatedHost(func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetHostsPaginated(p)
+	}, parameters, body.Metadata.Pagination, body.Data), err
 }
 
 func (s *Service) getHostsPaginatedResponseBody(parameters connection.APIRequestParameters) (*GetHostsResponseBody, error) {

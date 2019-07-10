@@ -8,32 +8,28 @@ import (
 
 // GetDomains retrieves a list of domains
 func (s *Service) GetDomains(parameters connection.APIRequestParameters) ([]Domain, error) {
-	r := connection.RequestAll{}
-
 	var domains []Domain
-	r.GetNext = func(parameters connection.APIRequestParameters) (connection.ResponseBody, error) {
-		response, err := s.getDomainsPaginatedResponseBody(parameters)
-		if err != nil {
-			return nil, err
-		}
 
-		for _, domain := range response.Data {
-			domains = append(domains, domain)
-		}
-
-		return response, nil
+	getFunc := func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetDomainsPaginated(p)
 	}
 
-	err := r.Invoke(parameters)
+	responseFunc := func(response connection.Paginated) {
+		for _, domain := range response.(*PaginatedDomain).Items {
+			domains = append(domains, domain)
+		}
+	}
 
-	return domains, err
+	return domains, connection.InvokeRequestAll(getFunc, responseFunc, parameters)
 }
 
 // GetDomainsPaginated retrieves a paginated list of domains
-func (s *Service) GetDomainsPaginated(parameters connection.APIRequestParameters) ([]Domain, error) {
+func (s *Service) GetDomainsPaginated(parameters connection.APIRequestParameters) (*PaginatedDomain, error) {
 	body, err := s.getDomainsPaginatedResponseBody(parameters)
 
-	return body.Data, err
+	return NewPaginatedDomain(func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetDomainsPaginated(p)
+	}, parameters, body.Metadata.Pagination, body.Data), err
 }
 
 func (s *Service) getDomainsPaginatedResponseBody(parameters connection.APIRequestParameters) (*GetDomainsResponseBody, error) {

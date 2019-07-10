@@ -8,32 +8,28 @@ import (
 
 // GetSolutions retrieves a list of solutions
 func (s *Service) GetSolutions(parameters connection.APIRequestParameters) ([]Solution, error) {
-	r := connection.RequestAll{}
-
 	var solutions []Solution
-	r.GetNext = func(parameters connection.APIRequestParameters) (connection.ResponseBody, error) {
-		response, err := s.getSolutionsPaginatedResponseBody(parameters)
-		if err != nil {
-			return nil, err
-		}
 
-		for _, solution := range response.Data {
-			solutions = append(solutions, solution)
-		}
-
-		return response, nil
+	getFunc := func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetSolutionsPaginated(p)
 	}
 
-	err := r.Invoke(parameters)
+	responseFunc := func(response connection.Paginated) {
+		for _, solution := range response.(*PaginatedSolution).Items {
+			solutions = append(solutions, solution)
+		}
+	}
 
-	return solutions, err
+	return solutions, connection.InvokeRequestAll(getFunc, responseFunc, parameters)
 }
 
 // GetSolutionsPaginated retrieves a paginated list of solutions
-func (s *Service) GetSolutionsPaginated(parameters connection.APIRequestParameters) ([]Solution, error) {
+func (s *Service) GetSolutionsPaginated(parameters connection.APIRequestParameters) (*PaginatedSolution, error) {
 	body, err := s.getSolutionsPaginatedResponseBody(parameters)
 
-	return body.Data, err
+	return NewPaginatedSolution(func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetSolutionsPaginated(p)
+	}, parameters, body.Metadata.Pagination, body.Data), err
 }
 
 func (s *Service) getSolutionsPaginatedResponseBody(parameters connection.APIRequestParameters) (*GetSolutionsResponseBody, error) {
@@ -103,34 +99,30 @@ func (s *Service) patchSolutionResponseBody(solutionID int, patch PatchSolutionR
 	})
 }
 
-// GetSolutionVirtualMachines retrieves a list of virtual machines within a solution
+// GetSolutionVirtualMachines retrieves a list of vms
 func (s *Service) GetSolutionVirtualMachines(solutionID int, parameters connection.APIRequestParameters) ([]VirtualMachine, error) {
-	r := connection.RequestAll{}
-
 	var vms []VirtualMachine
-	r.GetNext = func(parameters connection.APIRequestParameters) (connection.ResponseBody, error) {
-		response, err := s.getSolutionVirtualMachinesPaginatedResponseBody(solutionID, parameters)
-		if err != nil {
-			return nil, err
-		}
 
-		for _, vm := range response.Data {
-			vms = append(vms, vm)
-		}
-
-		return response, nil
+	getFunc := func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetSolutionVirtualMachinesPaginated(solutionID, p)
 	}
 
-	err := r.Invoke(parameters)
+	responseFunc := func(response connection.Paginated) {
+		for _, vm := range response.(*PaginatedVirtualMachine).Items {
+			vms = append(vms, vm)
+		}
+	}
 
-	return vms, err
+	return vms, connection.InvokeRequestAll(getFunc, responseFunc, parameters)
 }
 
-// GetSolutionVirtualMachinesPaginated retrieves a paginated list of virtual machines within a solution
-func (s *Service) GetSolutionVirtualMachinesPaginated(solutionID int, parameters connection.APIRequestParameters) ([]VirtualMachine, error) {
+// GetSolutionVirtualMachinesPaginated retrieves a paginated list of domains
+func (s *Service) GetSolutionVirtualMachinesPaginated(solutionID int, parameters connection.APIRequestParameters) (*PaginatedVirtualMachine, error) {
 	body, err := s.getSolutionVirtualMachinesPaginatedResponseBody(solutionID, parameters)
 
-	return body.Data, err
+	return NewPaginatedVirtualMachine(func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetSolutionVirtualMachinesPaginated(solutionID, p)
+	}, parameters, body.Metadata.Pagination, body.Data), err
 }
 
 func (s *Service) getSolutionVirtualMachinesPaginatedResponseBody(solutionID int, parameters connection.APIRequestParameters) (*GetVirtualMachinesResponseBody, error) {
@@ -154,34 +146,30 @@ func (s *Service) getSolutionVirtualMachinesPaginatedResponseBody(solutionID int
 	})
 }
 
-// GetSolutionSites retrieves a list of virtual machines within a solution
+// GetSolutionSites retrieves a list of sites
 func (s *Service) GetSolutionSites(solutionID int, parameters connection.APIRequestParameters) ([]Site, error) {
-	r := connection.RequestAll{}
-
 	var sites []Site
-	r.GetNext = func(parameters connection.APIRequestParameters) (connection.ResponseBody, error) {
-		response, err := s.getSolutionSitesPaginatedResponseBody(solutionID, parameters)
-		if err != nil {
-			return nil, err
-		}
 
-		for _, site := range response.Data {
-			sites = append(sites, site)
-		}
-
-		return response, nil
+	getFunc := func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetSolutionSitesPaginated(solutionID, p)
 	}
 
-	err := r.Invoke(parameters)
+	responseFunc := func(response connection.Paginated) {
+		for _, site := range response.(*PaginatedSite).Items {
+			sites = append(sites, site)
+		}
+	}
 
-	return sites, err
+	return sites, connection.InvokeRequestAll(getFunc, responseFunc, parameters)
 }
 
-// GetSolutionSitesPaginated retrieves a paginated list of sites within a solution
-func (s *Service) GetSolutionSitesPaginated(solutionID int, parameters connection.APIRequestParameters) ([]Site, error) {
+// GetSolutionSitesPaginated retrieves a paginated list of domains
+func (s *Service) GetSolutionSitesPaginated(solutionID int, parameters connection.APIRequestParameters) (*PaginatedSite, error) {
 	body, err := s.getSolutionSitesPaginatedResponseBody(solutionID, parameters)
 
-	return body.Data, err
+	return NewPaginatedSite(func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetSolutionSitesPaginated(solutionID, p)
+	}, parameters, body.Metadata.Pagination, body.Data), err
 }
 
 func (s *Service) getSolutionSitesPaginatedResponseBody(solutionID int, parameters connection.APIRequestParameters) (*GetSitesResponseBody, error) {
@@ -205,34 +193,30 @@ func (s *Service) getSolutionSitesPaginatedResponseBody(solutionID int, paramete
 	})
 }
 
-// GetSolutionDatastores retrieves a list of datastores within a solution
+// GetSolutionDatastores retrieves a list of datastores
 func (s *Service) GetSolutionDatastores(solutionID int, parameters connection.APIRequestParameters) ([]Datastore, error) {
-	r := connection.RequestAll{}
-
 	var datastores []Datastore
-	r.GetNext = func(parameters connection.APIRequestParameters) (connection.ResponseBody, error) {
-		response, err := s.getSolutionDatastoresPaginatedResponseBody(solutionID, parameters)
-		if err != nil {
-			return nil, err
-		}
 
-		for _, datastore := range response.Data {
-			datastores = append(datastores, datastore)
-		}
-
-		return response, nil
+	getFunc := func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetSolutionDatastoresPaginated(solutionID, p)
 	}
 
-	err := r.Invoke(parameters)
+	responseFunc := func(response connection.Paginated) {
+		for _, datastore := range response.(*PaginatedDatastore).Items {
+			datastores = append(datastores, datastore)
+		}
+	}
 
-	return datastores, err
+	return datastores, connection.InvokeRequestAll(getFunc, responseFunc, parameters)
 }
 
-// GetSolutionDatastoresPaginated retrieves a paginated list of datastores within a solution
-func (s *Service) GetSolutionDatastoresPaginated(solutionID int, parameters connection.APIRequestParameters) ([]Datastore, error) {
+// GetSolutionDatastoresPaginated retrieves a paginated list of domains
+func (s *Service) GetSolutionDatastoresPaginated(solutionID int, parameters connection.APIRequestParameters) (*PaginatedDatastore, error) {
 	body, err := s.getSolutionDatastoresPaginatedResponseBody(solutionID, parameters)
 
-	return body.Data, err
+	return NewPaginatedDatastore(func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetSolutionDatastoresPaginated(solutionID, p)
+	}, parameters, body.Metadata.Pagination, body.Data), err
 }
 
 func (s *Service) getSolutionDatastoresPaginatedResponseBody(solutionID int, parameters connection.APIRequestParameters) (*GetDatastoresResponseBody, error) {
@@ -256,34 +240,30 @@ func (s *Service) getSolutionDatastoresPaginatedResponseBody(solutionID int, par
 	})
 }
 
-// GetSolutionHosts retrieves a list of hosts within a solution
+// GetSolutionHosts retrieves a list of hosts
 func (s *Service) GetSolutionHosts(solutionID int, parameters connection.APIRequestParameters) ([]Host, error) {
-	r := connection.RequestAll{}
-
 	var hosts []Host
-	r.GetNext = func(parameters connection.APIRequestParameters) (connection.ResponseBody, error) {
-		response, err := s.getSolutionHostsPaginatedResponseBody(solutionID, parameters)
-		if err != nil {
-			return nil, err
-		}
 
-		for _, host := range response.Data {
-			hosts = append(hosts, host)
-		}
-
-		return response, nil
+	getFunc := func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetSolutionHostsPaginated(solutionID, p)
 	}
 
-	err := r.Invoke(parameters)
+	responseFunc := func(response connection.Paginated) {
+		for _, host := range response.(*PaginatedHost).Items {
+			hosts = append(hosts, host)
+		}
+	}
 
-	return hosts, err
+	return hosts, connection.InvokeRequestAll(getFunc, responseFunc, parameters)
 }
 
-// GetSolutionHostsPaginated retrieves a paginated list of hosts within a solution
-func (s *Service) GetSolutionHostsPaginated(solutionID int, parameters connection.APIRequestParameters) ([]Host, error) {
+// GetSolutionHostsPaginated retrieves a paginated list of domains
+func (s *Service) GetSolutionHostsPaginated(solutionID int, parameters connection.APIRequestParameters) (*PaginatedHost, error) {
 	body, err := s.getSolutionHostsPaginatedResponseBody(solutionID, parameters)
 
-	return body.Data, err
+	return NewPaginatedHost(func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetSolutionHostsPaginated(solutionID, p)
+	}, parameters, body.Metadata.Pagination, body.Data), err
 }
 
 func (s *Service) getSolutionHostsPaginatedResponseBody(solutionID int, parameters connection.APIRequestParameters) (*GetHostsResponseBody, error) {
@@ -307,34 +287,30 @@ func (s *Service) getSolutionHostsPaginatedResponseBody(solutionID int, paramete
 	})
 }
 
-// GetSolutionNetworks retrieves a list of networks within a solution
+// GetSolutionNetworks retrieves a list of networks
 func (s *Service) GetSolutionNetworks(solutionID int, parameters connection.APIRequestParameters) ([]Network, error) {
-	r := connection.RequestAll{}
-
 	var networks []Network
-	r.GetNext = func(parameters connection.APIRequestParameters) (connection.ResponseBody, error) {
-		response, err := s.getSolutionNetworksPaginatedResponseBody(solutionID, parameters)
-		if err != nil {
-			return nil, err
-		}
 
-		for _, network := range response.Data {
-			networks = append(networks, network)
-		}
-
-		return response, nil
+	getFunc := func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetSolutionNetworksPaginated(solutionID, p)
 	}
 
-	err := r.Invoke(parameters)
+	responseFunc := func(response connection.Paginated) {
+		for _, network := range response.(*PaginatedNetwork).Items {
+			networks = append(networks, network)
+		}
+	}
 
-	return networks, err
+	return networks, connection.InvokeRequestAll(getFunc, responseFunc, parameters)
 }
 
-// GetSolutionNetworksPaginated retrieves a paginated list of networks within a solution
-func (s *Service) GetSolutionNetworksPaginated(solutionID int, parameters connection.APIRequestParameters) ([]Network, error) {
+// GetSolutionNetworksPaginated retrieves a paginated list of domains
+func (s *Service) GetSolutionNetworksPaginated(solutionID int, parameters connection.APIRequestParameters) (*PaginatedNetwork, error) {
 	body, err := s.getSolutionNetworksPaginatedResponseBody(solutionID, parameters)
 
-	return body.Data, err
+	return NewPaginatedNetwork(func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetSolutionNetworksPaginated(solutionID, p)
+	}, parameters, body.Metadata.Pagination, body.Data), err
 }
 
 func (s *Service) getSolutionNetworksPaginatedResponseBody(solutionID int, parameters connection.APIRequestParameters) (*GetNetworksResponseBody, error) {
@@ -358,34 +334,30 @@ func (s *Service) getSolutionNetworksPaginatedResponseBody(solutionID int, param
 	})
 }
 
-// GetSolutionFirewalls retrieves a list of firewalls within a solution
+// GetSolutionFirewalls retrieves a list of firewalls
 func (s *Service) GetSolutionFirewalls(solutionID int, parameters connection.APIRequestParameters) ([]Firewall, error) {
-	r := connection.RequestAll{}
-
 	var firewalls []Firewall
-	r.GetNext = func(parameters connection.APIRequestParameters) (connection.ResponseBody, error) {
-		response, err := s.getSolutionFirewallsPaginatedResponseBody(solutionID, parameters)
-		if err != nil {
-			return nil, err
-		}
 
-		for _, firewall := range response.Data {
-			firewalls = append(firewalls, firewall)
-		}
-
-		return response, nil
+	getFunc := func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetSolutionFirewallsPaginated(solutionID, p)
 	}
 
-	err := r.Invoke(parameters)
+	responseFunc := func(response connection.Paginated) {
+		for _, firewall := range response.(*PaginatedFirewall).Items {
+			firewalls = append(firewalls, firewall)
+		}
+	}
 
-	return firewalls, err
+	return firewalls, connection.InvokeRequestAll(getFunc, responseFunc, parameters)
 }
 
-// GetSolutionFirewallsPaginated retrieves a paginated list of firewalls within a solution
-func (s *Service) GetSolutionFirewallsPaginated(solutionID int, parameters connection.APIRequestParameters) ([]Firewall, error) {
+// GetSolutionFirewallsPaginated retrieves a paginated list of domains
+func (s *Service) GetSolutionFirewallsPaginated(solutionID int, parameters connection.APIRequestParameters) (*PaginatedFirewall, error) {
 	body, err := s.getSolutionFirewallsPaginatedResponseBody(solutionID, parameters)
 
-	return body.Data, err
+	return NewPaginatedFirewall(func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetSolutionFirewallsPaginated(solutionID, p)
+	}, parameters, body.Metadata.Pagination, body.Data), err
 }
 
 func (s *Service) getSolutionFirewallsPaginatedResponseBody(solutionID int, parameters connection.APIRequestParameters) (*GetFirewallsResponseBody, error) {
@@ -409,34 +381,30 @@ func (s *Service) getSolutionFirewallsPaginatedResponseBody(solutionID int, para
 	})
 }
 
-// GetSolutionTemplates retrieves a list of virtual machines within a solution
+// GetSolutionTemplates retrieves a list of templates
 func (s *Service) GetSolutionTemplates(solutionID int, parameters connection.APIRequestParameters) ([]Template, error) {
-	r := connection.RequestAll{}
-
 	var templates []Template
-	r.GetNext = func(parameters connection.APIRequestParameters) (connection.ResponseBody, error) {
-		response, err := s.getSolutionTemplatesPaginatedResponseBody(solutionID, parameters)
-		if err != nil {
-			return nil, err
-		}
 
-		for _, template := range response.Data {
-			templates = append(templates, template)
-		}
-
-		return response, nil
+	getFunc := func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetSolutionTemplatesPaginated(solutionID, p)
 	}
 
-	err := r.Invoke(parameters)
+	responseFunc := func(response connection.Paginated) {
+		for _, template := range response.(*PaginatedTemplate).Items {
+			templates = append(templates, template)
+		}
+	}
 
-	return templates, err
+	return templates, connection.InvokeRequestAll(getFunc, responseFunc, parameters)
 }
 
-// GetSolutionTemplatesPaginated retrieves a paginated list of templates within a solution
-func (s *Service) GetSolutionTemplatesPaginated(solutionID int, parameters connection.APIRequestParameters) ([]Template, error) {
+// GetSolutionTemplatesPaginated retrieves a paginated list of domains
+func (s *Service) GetSolutionTemplatesPaginated(solutionID int, parameters connection.APIRequestParameters) (*PaginatedTemplate, error) {
 	body, err := s.getSolutionTemplatesPaginatedResponseBody(solutionID, parameters)
 
-	return body.Data, err
+	return NewPaginatedTemplate(func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetSolutionTemplatesPaginated(solutionID, p)
+	}, parameters, body.Metadata.Pagination, body.Data), err
 }
 
 func (s *Service) getSolutionTemplatesPaginatedResponseBody(solutionID int, parameters connection.APIRequestParameters) (*GetTemplatesResponseBody, error) {
@@ -553,34 +521,30 @@ func (s *Service) deleteSolutionTemplateResponseBody(solutionID int, templateNam
 	})
 }
 
-// GetSolutionTags retrieves a list of tags for a solution
+// GetSolutionTags retrieves a list of tags
 func (s *Service) GetSolutionTags(solutionID int, parameters connection.APIRequestParameters) ([]Tag, error) {
-	r := connection.RequestAll{}
-
 	var tags []Tag
-	r.GetNext = func(parameters connection.APIRequestParameters) (connection.ResponseBody, error) {
-		response, err := s.getSolutionTagsPaginatedResponseBody(solutionID, parameters)
-		if err != nil {
-			return nil, err
-		}
 
-		for _, tag := range response.Data {
-			tags = append(tags, tag)
-		}
-
-		return response, nil
+	getFunc := func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetSolutionTagsPaginated(solutionID, p)
 	}
 
-	err := r.Invoke(parameters)
+	responseFunc := func(response connection.Paginated) {
+		for _, tag := range response.(*PaginatedTag).Items {
+			tags = append(tags, tag)
+		}
+	}
 
-	return tags, err
+	return tags, connection.InvokeRequestAll(getFunc, responseFunc, parameters)
 }
 
-// GetSolutionTagsPaginated retrieves a paginated list of tags for a solution
-func (s *Service) GetSolutionTagsPaginated(solutionID int, parameters connection.APIRequestParameters) ([]Tag, error) {
+// GetSolutionTagsPaginated retrieves a paginated list of domains
+func (s *Service) GetSolutionTagsPaginated(solutionID int, parameters connection.APIRequestParameters) (*PaginatedTag, error) {
 	body, err := s.getSolutionTagsPaginatedResponseBody(solutionID, parameters)
 
-	return body.Data, err
+	return NewPaginatedTag(func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetSolutionTagsPaginated(solutionID, p)
+	}, parameters, body.Metadata.Pagination, body.Data), err
 }
 
 func (s *Service) getSolutionTagsPaginatedResponseBody(solutionID int, parameters connection.APIRequestParameters) (*GetTagsResponseBody, error) {

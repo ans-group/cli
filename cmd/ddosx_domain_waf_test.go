@@ -115,7 +115,9 @@ func Test_ddosxDomainWAFCreate(t *testing.T) {
 		cmd.Flags().Set("mode", "invalidmode")
 		cmd.Flags().Set("paranoia-level", "high")
 
-		test_output.AssertFatalOutput(t, "Invalid WAF mode\n", func() {
+		test_output.AssertFatalOutputFunc(t, func(stdErr string) {
+			assert.Contains(t, stdErr, "Invalid ddosx.WAFMode")
+		}, func() {
 			ddosxDomainWAFCreate(service, cmd, []string{"testdomain1.co.uk"})
 		})
 	})
@@ -130,7 +132,9 @@ func Test_ddosxDomainWAFCreate(t *testing.T) {
 		cmd.Flags().Set("mode", "on")
 		cmd.Flags().Set("paranoia-level", "invalidparanoialevel")
 
-		test_output.AssertFatalOutput(t, "Invalid WAF paranoia level\n", func() {
+		test_output.AssertFatalOutputFunc(t, func(stdErr string) {
+			assert.Contains(t, stdErr, "Invalid ddosx.WAFParanoiaLevel")
+		}, func() {
 			ddosxDomainWAFCreate(service, cmd, []string{"testdomain1.co.uk"})
 		})
 	})
@@ -221,7 +225,9 @@ func Test_ddosxDomainWAFUpdate(t *testing.T) {
 		cmd.Flags().Set("mode", "invalidmode")
 		cmd.Flags().Set("paranoia-level", "high")
 
-		test_output.AssertFatalOutput(t, "Invalid WAF mode\n", func() {
+		test_output.AssertFatalOutputFunc(t, func(stdErr string) {
+			assert.Contains(t, stdErr, "Invalid ddosx.WAFMode")
+		}, func() {
 			ddosxDomainWAFUpdate(service, cmd, []string{"testdomain1.co.uk"})
 		})
 	})
@@ -236,7 +242,9 @@ func Test_ddosxDomainWAFUpdate(t *testing.T) {
 		cmd.Flags().Set("mode", "on")
 		cmd.Flags().Set("paranoia-level", "invalidparanoialevel")
 
-		test_output.AssertFatalOutput(t, "Invalid WAF paranoia level\n", func() {
+		test_output.AssertFatalOutputFunc(t, func(stdErr string) {
+			assert.Contains(t, stdErr, "Invalid ddosx.WAFParanoiaLevel")
+		}, func() {
 			ddosxDomainWAFUpdate(service, cmd, []string{"testdomain1.co.uk"})
 		})
 	})

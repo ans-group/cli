@@ -8,32 +8,28 @@ import (
 
 // GetPods retrieves a list of pods
 func (s *Service) GetPods(parameters connection.APIRequestParameters) ([]Pod, error) {
-	r := connection.RequestAll{}
-
 	var pods []Pod
-	r.GetNext = func(parameters connection.APIRequestParameters) (connection.ResponseBody, error) {
-		response, err := s.getPodsPaginatedResponseBody(parameters)
-		if err != nil {
-			return nil, err
-		}
 
-		for _, pod := range response.Data {
-			pods = append(pods, pod)
-		}
-
-		return response, nil
+	getFunc := func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetPodsPaginated(p)
 	}
 
-	err := r.Invoke(parameters)
+	responseFunc := func(response connection.Paginated) {
+		for _, pod := range response.(*PaginatedPod).Items {
+			pods = append(pods, pod)
+		}
+	}
 
-	return pods, err
+	return pods, connection.InvokeRequestAll(getFunc, responseFunc, parameters)
 }
 
 // GetPodsPaginated retrieves a paginated list of pods
-func (s *Service) GetPodsPaginated(parameters connection.APIRequestParameters) ([]Pod, error) {
+func (s *Service) GetPodsPaginated(parameters connection.APIRequestParameters) (*PaginatedPod, error) {
 	body, err := s.getPodsPaginatedResponseBody(parameters)
 
-	return body.Data, err
+	return NewPaginatedPod(func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetPodsPaginated(p)
+	}, parameters, body.Metadata.Pagination, body.Data), err
 }
 
 func (s *Service) getPodsPaginatedResponseBody(parameters connection.APIRequestParameters) (*GetPodsResponseBody, error) {
@@ -75,34 +71,30 @@ func (s *Service) getPodResponseBody(podID int) (*GetPodResponseBody, error) {
 	})
 }
 
-// GetPodTemplates retrieves a list of pod templates
+// GetPodTemplates retrieves a list of templates
 func (s *Service) GetPodTemplates(podID int, parameters connection.APIRequestParameters) ([]Template, error) {
-	r := connection.RequestAll{}
-
 	var templates []Template
-	r.GetNext = func(parameters connection.APIRequestParameters) (connection.ResponseBody, error) {
-		response, err := s.getPodTemplatesPaginatedResponseBody(podID, parameters)
-		if err != nil {
-			return nil, err
-		}
 
-		for _, template := range response.Data {
-			templates = append(templates, template)
-		}
-
-		return response, nil
+	getFunc := func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetPodTemplatesPaginated(podID, p)
 	}
 
-	err := r.Invoke(parameters)
+	responseFunc := func(response connection.Paginated) {
+		for _, template := range response.(*PaginatedTemplate).Items {
+			templates = append(templates, template)
+		}
+	}
 
-	return templates, err
+	return templates, connection.InvokeRequestAll(getFunc, responseFunc, parameters)
 }
 
-// GetPodTemplatesPaginated retrieves a paginated list of pod templates
-func (s *Service) GetPodTemplatesPaginated(podID int, parameters connection.APIRequestParameters) ([]Template, error) {
+// GetPodTemplatesPaginated retrieves a paginated list of domains
+func (s *Service) GetPodTemplatesPaginated(podID int, parameters connection.APIRequestParameters) (*PaginatedTemplate, error) {
 	body, err := s.getPodTemplatesPaginatedResponseBody(podID, parameters)
 
-	return body.Data, err
+	return NewPaginatedTemplate(func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetPodTemplatesPaginated(podID, p)
+	}, parameters, body.Metadata.Pagination, body.Data), err
 }
 
 func (s *Service) getPodTemplatesPaginatedResponseBody(podID int, parameters connection.APIRequestParameters) (*GetTemplatesResponseBody, error) {
@@ -213,34 +205,30 @@ func (s *Service) deletePodTemplateResponseBody(podID int, templateName string) 
 	})
 }
 
-// GetPodAppliances retrieves a list of appliances for pod
+// GetPodAppliances retrieves a list of appliances
 func (s *Service) GetPodAppliances(podID int, parameters connection.APIRequestParameters) ([]Appliance, error) {
-	r := connection.RequestAll{}
-
 	var appliances []Appliance
-	r.GetNext = func(parameters connection.APIRequestParameters) (connection.ResponseBody, error) {
-		response, err := s.getPodAppliancesPaginatedResponseBody(podID, parameters)
-		if err != nil {
-			return nil, err
-		}
 
-		for _, appliance := range response.Data {
-			appliances = append(appliances, appliance)
-		}
-
-		return response, nil
+	getFunc := func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetPodAppliancesPaginated(podID, p)
 	}
 
-	err := r.Invoke(parameters)
+	responseFunc := func(response connection.Paginated) {
+		for _, appliance := range response.(*PaginatedAppliance).Items {
+			appliances = append(appliances, appliance)
+		}
+	}
 
-	return appliances, err
+	return appliances, connection.InvokeRequestAll(getFunc, responseFunc, parameters)
 }
 
-// GetPodAppliancesPaginated retrieves a paginated list of appliances for pod
-func (s *Service) GetPodAppliancesPaginated(podID int, parameters connection.APIRequestParameters) ([]Appliance, error) {
+// GetPodAppliancesPaginated retrieves a paginated list of domains
+func (s *Service) GetPodAppliancesPaginated(podID int, parameters connection.APIRequestParameters) (*PaginatedAppliance, error) {
 	body, err := s.getPodAppliancesPaginatedResponseBody(podID, parameters)
 
-	return body.Data, err
+	return NewPaginatedAppliance(func(p connection.APIRequestParameters) (connection.Paginated, error) {
+		return s.GetPodAppliancesPaginated(podID, p)
+	}, parameters, body.Metadata.Pagination, body.Data), err
 }
 
 func (s *Service) getPodAppliancesPaginatedResponseBody(podID int, parameters connection.APIRequestParameters) (*GetAppliancesResponseBody, error) {
