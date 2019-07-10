@@ -191,6 +191,21 @@ func Test_pssRequestCreate(t *testing.T) {
 	})
 }
 
+func Test_pssRequestUpdateCmd_Args(t *testing.T) {
+	t.Run("ValidArgs_NoError", func(t *testing.T) {
+		err := pssRequestUpdateCmd().Args(nil, []string{"123"})
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("InvalidArgs_Error", func(t *testing.T) {
+		err := pssRequestUpdateCmd().Args(nil, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing request", err.Error())
+	})
+}
+
 func Test_pssRequestUpdate(t *testing.T) {
 	t.Run("DefaultUpdate", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
@@ -200,7 +215,6 @@ func Test_pssRequestUpdate(t *testing.T) {
 		cmd := pssRequestUpdateCmd()
 		cmd.Flags().Set("secure", "true")
 		cmd.Flags().Set("read", "true")
-		cmd.Flags().Set("contact", "456")
 		cmd.Flags().Set("request-sms", "true")
 		cmd.Flags().Set("archived", "true")
 		cmd.Flags().Set("priority", "High")
@@ -210,7 +224,6 @@ func Test_pssRequestUpdate(t *testing.T) {
 				assert.Equal(t, 123, requestID)
 				assert.Equal(t, true, *req.Secure)
 				assert.Equal(t, true, *req.Read)
-				assert.Equal(t, 456, req.ContactID)
 				assert.Equal(t, true, *req.RequestSMS)
 				assert.Equal(t, true, *req.Archived)
 				assert.Equal(t, pss.RequestPriorityHigh, req.Priority)
