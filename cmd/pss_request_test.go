@@ -127,10 +127,16 @@ func Test_pssRequestCreate(t *testing.T) {
 		service := mocks.NewMockPSSService(mockCtrl)
 		cmd := pssRequestCreateCmd()
 		cmd.Flags().Set("subject", "test subject")
+		cmd.Flags().Set("product-id", "456")
+		cmd.Flags().Set("product-name", "testname")
+		cmd.Flags().Set("product-type", "testtype")
 
 		gomock.InOrder(
 			service.EXPECT().CreateRequest(gomock.Any()).Do(func(req pss.CreateRequestRequest) {
 				assert.Equal(t, "test subject", req.Subject)
+				assert.Equal(t, 456, req.Product.ID)
+				assert.Equal(t, "testname", req.Product.Name)
+				assert.Equal(t, "testtype", req.Product.Type)
 			}).Return(123, nil),
 			service.EXPECT().GetRequest(123).Return(pss.Request{}, nil),
 		)
@@ -181,6 +187,95 @@ func Test_pssRequestCreate(t *testing.T) {
 
 		test_output.AssertFatalOutput(t, "Error retrieving new request: test error\n", func() {
 			pssRequestCreate(service, cmd, []string{})
+		})
+	})
+}
+
+func Test_pssRequestUpdate(t *testing.T) {
+	t.Run("DefaultUpdate", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockPSSService(mockCtrl)
+		cmd := pssRequestUpdateCmd()
+		cmd.Flags().Set("secure", "true")
+		cmd.Flags().Set("read", "true")
+		cmd.Flags().Set("contact", "456")
+		cmd.Flags().Set("request-sms", "true")
+		cmd.Flags().Set("archived", "true")
+		cmd.Flags().Set("priority", "High")
+
+		gomock.InOrder(
+			service.EXPECT().PatchRequest(123, gomock.Any()).Do(func(requestID int, req pss.PatchRequestRequest) {
+				assert.Equal(t, 123, requestID)
+				assert.Equal(t, true, *req.Secure)
+				assert.Equal(t, true, *req.Read)
+				assert.Equal(t, 456, req.ContactID)
+				assert.Equal(t, true, *req.RequestSMS)
+				assert.Equal(t, true, *req.Archived)
+				assert.Equal(t, pss.RequestPriorityHigh, req.Priority)
+			}).Return(nil),
+			service.EXPECT().GetRequest(123).Return(pss.Request{}, nil),
+		)
+
+		pssRequestUpdate(service, cmd, []string{"123"})
+	})
+
+	t.Run("InvalidPriority_OutputsFatal", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockPSSService(mockCtrl)
+		cmd := pssRequestUpdateCmd()
+		cmd.Flags().Set("priority", "invalid")
+
+		test_output.AssertFatalOutputFunc(t, func(stdErr string) {
+			assert.Contains(t, stdErr, "Invalid pss.RequestPriority")
+		}, func() {
+			pssRequestUpdate(service, cmd, []string{"123"})
+		})
+	})
+
+	t.Run("InvalidRequestID_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockPSSService(mockCtrl)
+		cmd := pssRequestUpdateCmd()
+
+		test_output.AssertErrorOutput(t, "Invalid request ID [abc]\n", func() {
+			pssRequestUpdate(service, cmd, []string{"abc"})
+		})
+	})
+
+	t.Run("PatchRequestError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockPSSService(mockCtrl)
+		cmd := pssRequestUpdateCmd()
+
+		service.EXPECT().PatchRequest(123, gomock.Any()).Return(errors.New("test error")).Times(1)
+
+		test_output.AssertErrorOutput(t, "Error updating request [123]: test error\n", func() {
+			pssRequestUpdate(service, cmd, []string{"123"})
+		})
+	})
+
+	t.Run("GetRequestError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockPSSService(mockCtrl)
+		cmd := pssRequestUpdateCmd()
+
+		gomock.InOrder(
+			service.EXPECT().PatchRequest(123, gomock.Any()).Return(nil),
+			service.EXPECT().GetRequest(123).Return(pss.Request{}, errors.New("test error")),
+		)
+
+		test_output.AssertErrorOutput(t, "Error retrieving updated request [123]: test error\n", func() {
+			pssRequestUpdate(service, cmd, []string{"123"})
 		})
 	})
 }
