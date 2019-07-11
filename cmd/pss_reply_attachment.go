@@ -3,10 +3,10 @@ package cmd
 import (
 	"errors"
 	"os"
-	"path/filepath"
 
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
+	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/pss"
 )
@@ -26,9 +26,9 @@ func pssReplyAttachmentRootCmd() *cobra.Command {
 func pssReplyAttachmentDownloadCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "download <reply: id> <attachment: name>",
-		Short:   "Shows a reply",
-		Long:    "This command shows one or more replies",
-		Example: "ukfast pss reply attachment download 123 file.txt --path /my/file.txt",
+		Short:   "Downloads a reply attachment",
+		Long:    "This command downloads a reply attachment",
+		Example: "ukfast pss reply attachment download 123 file.txt --path /path/to/file",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing reply")
@@ -56,17 +56,11 @@ func pssReplyAttachmentDownload(service pss.PSSService, cmd *cobra.Command, args
 		return
 	}
 
-	var targetFilePath string
-	if cmd.Flags().Changed("path") {
-		targetFilePath, _ := cmd.Flags().GetString("path")
-		targetFilePath = filepath.Join(targetFilePath, args[1])
-	} else {
-		dir, err := os.Getwd()
-		if err != nil {
-			output.Fatalf("Error determining current directory: %s", err)
-			return
-		}
-		targetFilePath = filepath.Join(dir, args[1])
+	path, _ := cmd.Flags().GetString("path")
+	targetFilePath, err := helper.GetDestinationFilePath(appFilesystem, args[1], path)
+	if err != nil {
+		output.Fatalf("Error determining destination file path: %s", err)
+		return
 	}
 
 	_, err = appFilesystem.Stat(targetFilePath)
