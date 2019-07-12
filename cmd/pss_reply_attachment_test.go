@@ -114,3 +114,72 @@ func Test_pssReplyAttachmentDownload(t *testing.T) {
 		})
 	})
 }
+
+func Test_pssReplyAttachmentUploadCmd_Args(t *testing.T) {
+	t.Run("ValidArgs_NoError", func(t *testing.T) {
+		err := pssReplyAttachmentUploadCmd().Args(nil, []string{"123"})
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("MissingReply_Error", func(t *testing.T) {
+		err := pssReplyAttachmentUploadCmd().Args(nil, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing reply", err.Error())
+	})
+}
+
+func Test_pssReplyAttachmentUpload(t *testing.T) {
+	t.Run("Valid_UploadsFile", func(t *testing.T) {
+		appFilesystem = afero.NewMemMapFs()
+		afero.WriteFile(appFilesystem, "/test/test1.txt", []byte("test content"), 644)
+
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockPSSService(mockCtrl)
+
+		cmd := pssReplyAttachmentUploadCmd()
+		cmd.Flags().Set("path", "/test/test1.txt")
+
+		gomock.InOrder(
+			service.EXPECT().UploadReplyAttachmentStream("C123", "test1.txt", gomock.Any()).Return(nil),
+		)
+
+		pssReplyAttachmentUpload(service, cmd, []string{"C123"})
+	})
+
+	t.Run("FileOpenError_ReturnsError", func(t *testing.T) {
+		appFilesystem = afero.NewMemMapFs()
+
+		cmd := pssReplyAttachmentUploadCmd()
+		cmd.Flags().Set("path", "/test/test1.txt")
+
+		err := pssReplyAttachmentUpload(nil, cmd, []string{"C123"})
+
+		assert.NotNil(t, err)
+		assert.Contains(t, err.Error(), "Failed to open file")
+	})
+
+	t.Run("UploadReplyAttachmentStream_ReturnsError", func(t *testing.T) {
+		appFilesystem = afero.NewMemMapFs()
+		afero.WriteFile(appFilesystem, "/test/test1.txt", []byte("test content"), 644)
+
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockPSSService(mockCtrl)
+
+		cmd := pssReplyAttachmentUploadCmd()
+		cmd.Flags().Set("path", "/test/test1.txt")
+
+		gomock.InOrder(
+			service.EXPECT().UploadReplyAttachmentStream("C123", "test1.txt", gomock.Any()).Return(errors.New("test error")),
+		)
+
+		err := pssReplyAttachmentUpload(service, cmd, []string{"C123"})
+		assert.NotNil(t, err)
+		assert.Contains(t, err.Error(), "Failed to upload attachment")
+	})
+}
