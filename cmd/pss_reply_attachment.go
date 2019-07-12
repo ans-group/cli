@@ -2,7 +2,9 @@ package cmd
 
 import (
 	"errors"
+	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
@@ -19,6 +21,7 @@ func pssReplyAttachmentRootCmd() *cobra.Command {
 
 	// Child commands
 	cmd.AddCommand(pssReplyAttachmentDownloadCmd())
+	cmd.AddCommand(pssReplyAttachmentUploadCmd())
 
 	return cmd
 }
@@ -69,9 +72,52 @@ func pssReplyAttachmentDownload(service pss.PSSService, cmd *cobra.Command, args
 		return
 	}
 
-	err = afero.WriteReader(appFilesystem, targetFilePath, attachmentStream)
+	err = afero.SafeWriteReader(appFilesystem, targetFilePath, attachmentStream)
 	if err != nil {
 		output.Fatalf("Error writing attachment to [%s]: %s", targetFilePath, err.Error())
 		return
 	}
+}
+
+func pssReplyAttachmentUploadCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:     "upload <reply: id>",
+		Short:   "Uploads a reply attachment",
+		Long:    "This command uploads a reply attachment",
+		Example: "ukfast pss reply attachment upload 123 --path /path/to/file",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Missing reply")
+			}
+
+			return nil
+		},
+		Run: func(cmd *cobra.Command, args []string) {
+			err := pssReplyAttachmentUpload(getClient().PSSService(), cmd, args)
+			if err != nil {
+				output.Fatal(err.Error())
+			}
+		},
+	}
+
+	cmd.Flags().String("path", "", "Specifies path for file to upload")
+	cmd.MarkFlagRequired("path")
+
+	return cmd
+}
+
+func pssReplyAttachmentUpload(service pss.PSSService, cmd *cobra.Command, args []string) error {
+	path, _ := cmd.Flags().GetString("path")
+
+	fileStream, err := appFilesystem.Open(path)
+	if err != nil {
+		return fmt.Errorf("Failed to open file [%s]: %s", path, err)
+	}
+
+	err = service.UploadReplyAttachmentStream(args[0], filepath.Base(path), fileStream)
+	if err != nil {
+		return fmt.Errorf("Failed to upload attachment: %s", err)
+	}
+
+	return nil
 }
