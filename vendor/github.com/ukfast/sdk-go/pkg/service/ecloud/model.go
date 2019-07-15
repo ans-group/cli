@@ -115,6 +115,8 @@ type VirtualMachine struct {
 	PowerStatus string               `json:"power_status"`
 	ToolsStatus string               `json:"tools_status"`
 	Disks       []VirtualMachineDisk `json:"hdd_disks"`
+	Encrypted   bool                 `json:"encrypted"`
+	Role        string               `json:"role"`
 }
 
 // VirtualMachineDisk represents an eCloud Virtual Machine disk

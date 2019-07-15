@@ -77,6 +77,8 @@ func (o *OutputECloudVirtualMachines) getOrderedFields(vm ecloud.VirtualMachine)
 	fields.Set("status", output.NewFieldValue(vm.Status.String(), true))
 	fields.Set("power_status", output.NewFieldValue(vm.PowerStatus, true))
 	fields.Set("tools_status", output.NewFieldValue(vm.ToolsStatus, false))
+	fields.Set("encrypted", output.NewFieldValue(strconv.FormatBool(vm.Encrypted), false))
+	fields.Set("role", output.NewFieldValue(vm.Role, false))
 
 	return fields
 }

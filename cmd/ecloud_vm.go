@@ -149,49 +149,33 @@ func ecloudVirtualMachineCreateCmd() *cobra.Command {
 	cmd.Flags().StringSlice("tag", []string{}, "Tag for virtual machine, can be repeated, e.g. key=value")
 	cmd.Flags().StringSlice("ssh-key", []string{}, "SSH public key for virtual machine, can be repeated")
 	cmd.Flags().StringSlice("parameter", []string{}, "Parameters for virtual machine, can be repeated, e.g. key=value")
+	cmd.Flags().Bool("encrypt", false, "Specifies that the virtual machine should be encrypted")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the VM has been completely created before continuing on")
 
 	return cmd
 }
 
 func ecloudVirtualMachineCreate(service ecloud.ECloudService, cmd *cobra.Command, args []string) {
-	environment, _ := cmd.Flags().GetString("environment")
-	template, _ := cmd.Flags().GetString("template")
-	applianceID, _ := cmd.Flags().GetString("appliance")
-	cpu, _ := cmd.Flags().GetInt("cpu")
-	ram, _ := cmd.Flags().GetInt("ram")
-	hdd, _ := cmd.Flags().GetInt("hdd")
-	name, _ := cmd.Flags().GetString("name")
-	computername, _ := cmd.Flags().GetString("computername")
-	backup, _ := cmd.Flags().GetBool("backup")
-	support, _ := cmd.Flags().GetBool("support")
-	monitoring, _ := cmd.Flags().GetBool("monitoring")
-	monitoringContact, _ := cmd.Flags().GetIntSlice("monitoring-contact")
-	solutionID, _ := cmd.Flags().GetInt("solution")
-	datastoreID, _ := cmd.Flags().GetInt("datastore")
-	siteID, _ := cmd.Flags().GetInt("site")
-	networkID, _ := cmd.Flags().GetInt("network")
-	externalIP, _ := cmd.Flags().GetBool("external-ip")
 
-	createRequest := ecloud.CreateVirtualMachineRequest{
-		Environment:        environment,
-		Template:           template,
-		ApplianceID:        applianceID,
-		CPU:                cpu,
-		RAM:                ram,
-		HDD:                hdd,
-		Name:               name,
-		ComputerName:       computername,
-		Backup:             backup,
-		Support:            support,
-		Monitoring:         monitoring,
-		MonitoringContacts: monitoringContact,
-		SolutionID:         solutionID,
-		DatastoreID:        datastoreID,
-		SiteID:             siteID,
-		NetworkID:          networkID,
-		ExternalIPRequired: externalIP,
-	}
+	createRequest := ecloud.CreateVirtualMachineRequest{}
+	createRequest.Environment, _ = cmd.Flags().GetString("environment")
+	createRequest.Template, _ = cmd.Flags().GetString("template")
+	createRequest.ApplianceID, _ = cmd.Flags().GetString("appliance")
+	createRequest.CPU, _ = cmd.Flags().GetInt("cpu")
+	createRequest.RAM, _ = cmd.Flags().GetInt("ram")
+	createRequest.HDD, _ = cmd.Flags().GetInt("hdd")
+	createRequest.Name, _ = cmd.Flags().GetString("name")
+	createRequest.ComputerName, _ = cmd.Flags().GetString("computername")
+	createRequest.Backup, _ = cmd.Flags().GetBool("backup")
+	createRequest.Support, _ = cmd.Flags().GetBool("support")
+	createRequest.Monitoring, _ = cmd.Flags().GetBool("monitoring")
+	createRequest.MonitoringContacts, _ = cmd.Flags().GetIntSlice("monitoring-contact")
+	createRequest.SolutionID, _ = cmd.Flags().GetInt("solution")
+	createRequest.DatastoreID, _ = cmd.Flags().GetInt("datastore")
+	createRequest.SiteID, _ = cmd.Flags().GetInt("site")
+	createRequest.NetworkID, _ = cmd.Flags().GetInt("network")
+	createRequest.ExternalIPRequired, _ = cmd.Flags().GetBool("external-ip")
+	createRequest.Encrypt, _ = cmd.Flags().GetBool("encrypt")
 
 	if cmd.Flags().Changed("tag") {
 		tagsFlag, _ := cmd.Flags().GetStringSlice("tag")
