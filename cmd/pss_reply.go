@@ -16,6 +16,9 @@ func pssReplyRootCmd() *cobra.Command {
 	// Child commands
 	cmd.AddCommand(pssReplyShowCmd())
 
+	// Child root commands
+	cmd.AddCommand(pssReplyAttachmentRootCmd())
+
 	return cmd
 }
 
