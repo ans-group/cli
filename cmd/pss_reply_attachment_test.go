@@ -63,11 +63,8 @@ func Test_pssReplyAttachmentDownload(t *testing.T) {
 			service.EXPECT().DownloadReplyAttachmentStream("C123", "test1.txt").Return(nil, errors.New("test error")),
 		)
 
-		test_output.AssertFatalOutputFunc(t, func(stdErr string) {
-			assert.Equal(t, stdErr, "Error downloading reply attachment: test error\n")
-		}, func() {
-			pssReplyAttachmentDownload(service, pssReplyAttachmentDownloadCmd(), []string{"C123", "test1.txt"})
-		})
+		err := pssReplyAttachmentDownload(service, pssReplyAttachmentDownloadCmd(), []string{"C123", "test1.txt"})
+		assert.Equal(t, "Error downloading reply attachment: test error", err.Error())
 	})
 
 	t.Run("FileExists_ReturnsFatal", func(t *testing.T) {
@@ -83,11 +80,8 @@ func Test_pssReplyAttachmentDownload(t *testing.T) {
 			service.EXPECT().DownloadReplyAttachmentStream("C123", "test1.txt").Return(nil, nil),
 		)
 
-		test_output.AssertFatalOutputFunc(t, func(stdErr string) {
-			assert.Equal(t, stdErr, "Destination file [test1.txt] exists\n")
-		}, func() {
-			pssReplyAttachmentDownload(service, pssReplyAttachmentDownloadCmd(), []string{"C123", "test1.txt"})
-		})
+		err := pssReplyAttachmentDownload(service, pssReplyAttachmentDownloadCmd(), []string{"C123", "test1.txt"})
+		assert.Equal(t, "Destination file [test1.txt] exists", err.Error())
 	})
 
 	t.Run("WriteReaderError_ReturnsFatal", func(t *testing.T) {
@@ -107,11 +101,8 @@ func Test_pssReplyAttachmentDownload(t *testing.T) {
 			service.EXPECT().DownloadReplyAttachmentStream("C123", "test1.txt").Return(&b, nil),
 		)
 
-		test_output.AssertFatalOutputFunc(t, func(stdErr string) {
-			assert.Contains(t, stdErr, "test reader error 1")
-		}, func() {
-			pssReplyAttachmentDownload(service, cmd, []string{"C123", "test1.txt"})
-		})
+		err := pssReplyAttachmentDownload(service, cmd, []string{"C123", "test1.txt"})
+		assert.Contains(t, err.Error(), "test reader error 1")
 	})
 }
 
@@ -181,5 +172,57 @@ func Test_pssReplyAttachmentUpload(t *testing.T) {
 		err := pssReplyAttachmentUpload(service, cmd, []string{"C123"})
 		assert.NotNil(t, err)
 		assert.Contains(t, err.Error(), "Failed to upload attachment")
+	})
+}
+
+func Test_pssReplyAttachmentDeleteCmd_Args(t *testing.T) {
+	t.Run("ValidArgs_NoError", func(t *testing.T) {
+		err := pssReplyAttachmentDeleteCmd().Args(nil, []string{"123", "test.txt"})
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("MissingReply_Error", func(t *testing.T) {
+		err := pssReplyAttachmentDeleteCmd().Args(nil, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing reply", err.Error())
+	})
+
+	t.Run("MissingAttachment_Error", func(t *testing.T) {
+		err := pssReplyAttachmentDeleteCmd().Args(nil, []string{"123"})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing attachment", err.Error())
+	})
+}
+
+func Test_pssReplyAttachmentDelete(t *testing.T) {
+	t.Run("Valid_DeletesFile", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockPSSService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().DeleteReplyAttachment("C123", "test1.txt").Return(nil),
+		)
+
+		pssReplyAttachmentDelete(service, pssReplyAttachmentDeleteCmd(), []string{"C123", "test1.txt"})
+	})
+
+	t.Run("DeleteReplyAttachmentError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockPSSService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().DeleteReplyAttachment("C123", "test1.txt").Return(errors.New("test error")),
+		)
+
+		test_output.AssertErrorOutput(t, "Error deleting reply attachment [test1.txt]: test error\n", func() {
+			pssReplyAttachmentDelete(service, pssReplyAttachmentDeleteCmd(), []string{"C123", "test1.txt"})
+		})
 	})
 }
