@@ -3,7 +3,6 @@ package cmd
 import (
 	"crypto/tls"
 	"net/http"
-	"os"
 	"time"
 
 	homedir "github.com/mitchellh/go-homedir"
@@ -32,24 +31,6 @@ var rootCmd = &cobra.Command{
 	Version: "UNKNOWN",
 }
 
-// completionCmd represents the completion command
-var completionCmd = &cobra.Command{
-	Use:   "completion",
-	Short: "Generates bash completion scripts",
-	Long: `To load completion run
-
-. <(ukfast completion)
-
-To configure your bash shell to load completions for each session add to your bashrc
-
-# ~/.bashrc or ~/.profile
-. <(ukfast completion)
-`,
-	Run: func(cmd *cobra.Command, args []string) {
-		rootCmd.GenBashCompletion(os.Stdout)
-	},
-}
-
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute(build build.BuildInfo) {
@@ -74,7 +55,7 @@ func init() {
 	rootCmd.PersistentFlags().StringArrayVar(&flagFilter, "filter", []string{}, "filter for list commands, can be repeated, e.g. 'property=somevalue', 'property:gt=3', 'property=valu*'")
 
 	// Child commands
-	rootCmd.AddCommand(completionCmd)
+	rootCmd.AddCommand(completionRootCmd())
 
 	// Child root commands
 	rootCmd.AddCommand(safednsRootCmd())
