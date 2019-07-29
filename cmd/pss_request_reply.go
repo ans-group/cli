@@ -2,10 +2,10 @@ package cmd
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 
 	"github.com/spf13/cobra"
-	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/pss"
 )
 
@@ -37,32 +37,30 @@ func pssRequestReplyListCmd() *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			pssRequestReplyList(getClient().PSSService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return pssRequestReplyList(getClient().PSSService(), cmd, args)
 		},
 	}
 }
 
-func pssRequestReplyList(service pss.PSSService, cmd *cobra.Command, args []string) {
+func pssRequestReplyList(service pss.PSSService, cmd *cobra.Command, args []string) error {
 	requestID, err := strconv.Atoi(args[0])
 	if err != nil {
-		output.Fatalf("Invalid request ID [%s]", args[0])
-		return
+		return fmt.Errorf("Invalid request ID [%s]", args[0])
 	}
 
 	params, err := GetAPIRequestParametersFromFlags()
 	if err != nil {
-		output.Fatal(err.Error())
-		return
+		return fmt.Errorf(err.Error())
 	}
 
 	replies, err := service.GetRequestConversation(requestID, params)
 	if err != nil {
-		output.Fatalf("Error retrieving request replies: %s", err)
-		return
+		return fmt.Errorf("Error retrieving request replies: %s", err)
 	}
 
 	outputPSSReplies(replies)
+	return nil
 }
 
 func pssRequestReplyCreateCmd() *cobra.Command {
@@ -78,8 +76,8 @@ func pssRequestReplyCreateCmd() *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			pssRequestReplyCreate(getClient().PSSService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return pssRequestReplyCreate(getClient().PSSService(), cmd, args)
 		},
 	}
 
@@ -92,11 +90,10 @@ func pssRequestReplyCreateCmd() *cobra.Command {
 	return cmd
 }
 
-func pssRequestReplyCreate(service pss.PSSService, cmd *cobra.Command, args []string) {
+func pssRequestReplyCreate(service pss.PSSService, cmd *cobra.Command, args []string) error {
 	requestID, err := strconv.Atoi(args[0])
 	if err != nil {
-		output.Fatalf("Invalid request ID [%s]", args[0])
-		return
+		return fmt.Errorf("Invalid request ID [%s]", args[0])
 	}
 
 	createRequest := pss.CreateReplyRequest{}
@@ -105,15 +102,14 @@ func pssRequestReplyCreate(service pss.PSSService, cmd *cobra.Command, args []st
 
 	replyID, err := service.CreateRequestReply(requestID, createRequest)
 	if err != nil {
-		output.Fatalf("Error creating reply: %s", err)
-		return
+		return fmt.Errorf("Error creating reply: %s", err)
 	}
 
 	reply, err := service.GetReply(replyID)
 	if err != nil {
-		output.Fatalf("Error retrieving new reply: %s", err)
-		return
+		return fmt.Errorf("Error retrieving new reply: %s", err)
 	}
 
 	outputPSSReplies([]pss.Reply{reply})
+	return nil
 }

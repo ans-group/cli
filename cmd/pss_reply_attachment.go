@@ -9,7 +9,6 @@ import (
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
 	"github.com/ukfast/cli/internal/pkg/helper"
-	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/pss"
 )
 
@@ -43,11 +42,8 @@ func pssReplyAttachmentDownloadCmd() *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			err := pssReplyAttachmentDownload(getClient().PSSService(), cmd, args)
-			if err != nil {
-				output.Fatal(err.Error())
-			}
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return pssReplyAttachmentDownload(getClient().PSSService(), cmd, args)
 		},
 	}
 
@@ -94,11 +90,8 @@ func pssReplyAttachmentUploadCmd() *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			err := pssReplyAttachmentUpload(getClient().PSSService(), cmd, args)
-			if err != nil {
-				output.Fatal(err.Error())
-			}
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return pssReplyAttachmentUpload(getClient().PSSService(), cmd, args)
 		},
 	}
 

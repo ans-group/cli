@@ -8,7 +8,6 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
 	"github.com/ukfast/cli/test/mocks"
-	"github.com/ukfast/cli/test/test_output"
 	"github.com/ukfast/sdk-go/pkg/service/pss"
 )
 
@@ -45,9 +44,8 @@ func Test_pssRequestReplyList(t *testing.T) {
 
 		service := mocks.NewMockPSSService(mockCtrl)
 
-		test_output.AssertFatalOutput(t, "Invalid request ID [abc]\n", func() {
-			pssRequestReplyList(service, &cobra.Command{}, []string{"abc"})
-		})
+		err := pssRequestReplyList(service, &cobra.Command{}, []string{"abc"})
+		assert.Equal(t, "Invalid request ID [abc]", err.Error())
 	})
 
 	t.Run("MalformedFlag_OutputsFatal", func(t *testing.T) {
@@ -59,9 +57,8 @@ func Test_pssRequestReplyList(t *testing.T) {
 		service := mocks.NewMockPSSService(mockCtrl)
 		flagFilter = []string{"invalidfilter"}
 
-		test_output.AssertFatalOutput(t, "Missing value for filtering\n", func() {
-			pssRequestReplyList(service, &cobra.Command{}, []string{"123"})
-		})
+		err := pssRequestReplyList(service, &cobra.Command{}, []string{"123"})
+		assert.Equal(t, "Missing value for filtering", err.Error())
 	})
 
 	t.Run("GetRequestConversationError_OutputsFatal", func(t *testing.T) {
@@ -73,9 +70,8 @@ func Test_pssRequestReplyList(t *testing.T) {
 
 		service.EXPECT().GetRequestConversation(123, gomock.Any()).Return([]pss.Reply{}, errors.New("test error")).Times(1)
 
-		test_output.AssertFatalOutput(t, "Error retrieving request replies: test error\n", func() {
-			pssRequestReplyList(service, &cobra.Command{}, []string{"123"})
-		})
+		err := pssRequestReplyList(service, &cobra.Command{}, []string{"123"})
+		assert.Equal(t, "Error retrieving request replies: test error", err.Error())
 	})
 }
 
@@ -126,11 +122,8 @@ func Test_pssRequestReplyCreate(t *testing.T) {
 		service := mocks.NewMockPSSService(mockCtrl)
 		cmd := pssRequestReplyCreateCmd()
 
-		test_output.AssertFatalOutputFunc(t, func(stdErr string) {
-			assert.Contains(t, stdErr, "Invalid request ID [invalid]")
-		}, func() {
-			pssRequestReplyCreate(service, cmd, []string{"invalid"})
-		})
+		err := pssRequestReplyCreate(service, cmd, []string{"invalid"})
+		assert.Contains(t, err.Error(), "Invalid request ID [invalid]")
 	})
 
 	t.Run("CreateRequestReplyError_OutputsFatal", func(t *testing.T) {
@@ -142,9 +135,8 @@ func Test_pssRequestReplyCreate(t *testing.T) {
 
 		service.EXPECT().CreateRequestReply(123, gomock.Any()).Return("", errors.New("test error")).Times(1)
 
-		test_output.AssertFatalOutput(t, "Error creating reply: test error\n", func() {
-			pssRequestReplyCreate(service, cmd, []string{"123"})
-		})
+		err := pssRequestReplyCreate(service, cmd, []string{"123"})
+		assert.Equal(t, "Error creating reply: test error", err.Error())
 	})
 
 	t.Run("GetRequestError_OutputsFatal", func(t *testing.T) {
@@ -159,8 +151,7 @@ func Test_pssRequestReplyCreate(t *testing.T) {
 			service.EXPECT().GetReply("C123").Return(pss.Reply{}, errors.New("test error")),
 		)
 
-		test_output.AssertFatalOutput(t, "Error retrieving new reply: test error\n", func() {
-			pssRequestReplyCreate(service, cmd, []string{"123"})
-		})
+		err := pssRequestReplyCreate(service, cmd, []string{"123"})
+		assert.Equal(t, "Error retrieving new reply: test error", err.Error())
 	})
 }

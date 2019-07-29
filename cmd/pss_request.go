@@ -2,10 +2,10 @@ package cmd
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 
 	"github.com/spf13/cobra"
-	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/pss"
 )
 
@@ -33,26 +33,25 @@ func pssRequestListCmd() *cobra.Command {
 		Short:   "Lists requests",
 		Long:    "This command lists requests",
 		Example: "ukfast pss request list",
-		Run: func(cmd *cobra.Command, args []string) {
-			pssRequestList(getClient().PSSService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return pssRequestList(getClient().PSSService(), cmd, args)
 		},
 	}
 }
 
-func pssRequestList(service pss.PSSService, cmd *cobra.Command, args []string) {
+func pssRequestList(service pss.PSSService, cmd *cobra.Command, args []string) error {
 	params, err := GetAPIRequestParametersFromFlags()
 	if err != nil {
-		output.Fatal(err.Error())
-		return
+		return err
 	}
 
 	requests, err := service.GetRequests(params)
 	if err != nil {
-		output.Fatalf("Error retrieving requests: %s", err)
-		return
+		return err
 	}
 
 	outputPSSRequests(requests)
+	return nil
 }
 
 func pssRequestShowCmd() *cobra.Command {
@@ -101,8 +100,8 @@ func pssRequestCreateCmd() *cobra.Command {
 		Short:   "Creates a request",
 		Long:    "This command creates a new request",
 		Example: "ukfast pss request create --subject 'example ticket' --details 'example' --author 123",
-		Run: func(cmd *cobra.Command, args []string) {
-			pssRequestCreate(getClient().PSSService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return pssRequestCreate(getClient().PSSService(), cmd, args)
 		},
 	}
 
@@ -125,14 +124,13 @@ func pssRequestCreateCmd() *cobra.Command {
 	return cmd
 }
 
-func pssRequestCreate(service pss.PSSService, cmd *cobra.Command, args []string) {
+func pssRequestCreate(service pss.PSSService, cmd *cobra.Command, args []string) error {
 	createRequest := pss.CreateRequestRequest{}
 
 	priority, _ := cmd.Flags().GetString("priority")
 	parsedPriority, err := pss.ParseRequestPriority(priority)
 	if err != nil {
-		output.Fatal(err.Error())
-		return
+		return err
 	}
 	createRequest.Priority = parsedPriority
 
@@ -153,17 +151,16 @@ func pssRequestCreate(service pss.PSSService, cmd *cobra.Command, args []string)
 
 	requestID, err := service.CreateRequest(createRequest)
 	if err != nil {
-		output.Fatalf("Error creating request: %s", err)
-		return
+		return fmt.Errorf("Error creating request: %s", err)
 	}
 
 	request, err := service.GetRequest(requestID)
 	if err != nil {
-		output.Fatalf("Error retrieving new request: %s", err)
-		return
+		return fmt.Errorf("Error retrieving new request: %s", err)
 	}
 
 	outputPSSRequests([]pss.Request{request})
+	return nil
 }
 
 func pssRequestUpdateCmd() *cobra.Command {
@@ -179,8 +176,8 @@ func pssRequestUpdateCmd() *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			pssRequestUpdate(getClient().PSSService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return pssRequestUpdate(getClient().PSSService(), cmd, args)
 		},
 	}
 
@@ -194,15 +191,14 @@ func pssRequestUpdateCmd() *cobra.Command {
 	return cmd
 }
 
-func pssRequestUpdate(service pss.PSSService, cmd *cobra.Command, args []string) {
+func pssRequestUpdate(service pss.PSSService, cmd *cobra.Command, args []string) error {
 	patchRequest := pss.PatchRequestRequest{}
 
 	if cmd.Flags().Changed("priority") {
 		priority, _ := cmd.Flags().GetString("priority")
 		parsedPriority, err := pss.ParseRequestPriority(priority)
 		if err != nil {
-			output.Fatal(err.Error())
-			return
+			return err
 		}
 		patchRequest.Priority = parsedPriority
 	}
@@ -249,4 +245,5 @@ func pssRequestUpdate(service pss.PSSService, cmd *cobra.Command, args []string)
 	}
 
 	outputPSSRequests(requests)
+	return nil
 }

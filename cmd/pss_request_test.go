@@ -33,9 +33,8 @@ func Test_pssRequestList(t *testing.T) {
 		service := mocks.NewMockPSSService(mockCtrl)
 		flagFilter = []string{"invalidfilter"}
 
-		test_output.AssertFatalOutput(t, "Missing value for filtering\n", func() {
-			pssRequestList(service, &cobra.Command{}, []string{})
-		})
+		err := pssRequestList(service, &cobra.Command{}, []string{})
+		assert.Equal(t, "Missing value for filtering", err.Error())
 	})
 
 	t.Run("GetRequestsError_OutputsFatal", func(t *testing.T) {
@@ -47,9 +46,8 @@ func Test_pssRequestList(t *testing.T) {
 
 		service.EXPECT().GetRequests(gomock.Any()).Return([]pss.Request{}, errors.New("test error")).Times(1)
 
-		test_output.AssertFatalOutput(t, "Error retrieving requests: test error\n", func() {
-			pssRequestList(service, &cobra.Command{}, []string{})
-		})
+		err := pssRequestList(service, &cobra.Command{}, []string{})
+		assert.Equal(t, "test error", err.Error())
 	})
 }
 
@@ -152,11 +150,8 @@ func Test_pssRequestCreate(t *testing.T) {
 		cmd := pssRequestCreateCmd()
 		cmd.Flags().Set("priority", "invalid")
 
-		test_output.AssertFatalOutputFunc(t, func(stdErr string) {
-			assert.Contains(t, stdErr, "Invalid pss.RequestPriority")
-		}, func() {
-			pssRequestCreate(service, cmd, []string{})
-		})
+		err := pssRequestCreate(service, cmd, []string{})
+		assert.Contains(t, err.Error(), "Invalid pss.RequestPriority")
 	})
 
 	t.Run("CreateRequestError_OutputsFatal", func(t *testing.T) {
@@ -168,9 +163,8 @@ func Test_pssRequestCreate(t *testing.T) {
 
 		service.EXPECT().CreateRequest(gomock.Any()).Return(0, errors.New("test error")).Times(1)
 
-		test_output.AssertFatalOutput(t, "Error creating request: test error\n", func() {
-			pssRequestCreate(service, cmd, []string{})
-		})
+		err := pssRequestCreate(service, cmd, []string{})
+		assert.Equal(t, "Error creating request: test error", err.Error())
 	})
 
 	t.Run("GetRequestError_OutputsFatal", func(t *testing.T) {
@@ -185,9 +179,8 @@ func Test_pssRequestCreate(t *testing.T) {
 			service.EXPECT().GetRequest(123).Return(pss.Request{}, errors.New("test error")),
 		)
 
-		test_output.AssertFatalOutput(t, "Error retrieving new request: test error\n", func() {
-			pssRequestCreate(service, cmd, []string{})
-		})
+		err := pssRequestCreate(service, cmd, []string{})
+		assert.Equal(t, "Error retrieving new request: test error", err.Error())
 	})
 }
 
@@ -242,11 +235,8 @@ func Test_pssRequestUpdate(t *testing.T) {
 		cmd := pssRequestUpdateCmd()
 		cmd.Flags().Set("priority", "invalid")
 
-		test_output.AssertFatalOutputFunc(t, func(stdErr string) {
-			assert.Contains(t, stdErr, "Invalid pss.RequestPriority")
-		}, func() {
-			pssRequestUpdate(service, cmd, []string{"123"})
-		})
+		err := pssRequestUpdate(service, cmd, []string{"123"})
+		assert.Contains(t, err.Error(), "Invalid pss.RequestPriority")
 	})
 
 	t.Run("InvalidRequestID_OutputsError", func(t *testing.T) {
