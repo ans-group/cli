@@ -6,6 +6,8 @@ ENV CGO_ENABLED 0
 RUN go build -mod=vendor -o ukfast
 
 FROM alpine:3.9  
-RUN apk --no-cache add ca-certificates
+RUN apk --no-cache add ca-certificates bash bash-completion
 COPY --from=builder /build/ukfast /bin/ukfast
-CMD ["/bin/sh"]
+RUN echo "source /usr/share/bash-completion/bash_completion" >> ~/.bashrc
+RUN echo "source <(ukfast completion bash)" >> ~/.bashrc
+CMD ["/bin/bash"]
