@@ -50,8 +50,7 @@ To configure your shell to load completions for each session, output completion 
 $ProfileDIR = Split-Path -Parent -Path $profile
 $CompletionPath = [System.IO.Path]::GetFullPath("$ProfileDIR/ukfast.completion.ps1")
 ukfast completion powershell | Out-File -Append -FilePath $CompletionPath -Encoding ASCII
-` + "\"`n. $CompletionPath\" | Out-File -Append -FilePath $profile -Encoding ASCII" + `
-`,
+` + "\"`n. $CompletionPath\" | Out-File -Append -FilePath $profile -Encoding ASCII",
 		Run: func(cmd *cobra.Command, args []string) {
 			rootCmd.GenPowerShellCompletion(os.Stdout)
 		},
