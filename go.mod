@@ -1,10 +1,12 @@
 module github.com/ukfast/cli
 
 require (
+	github.com/blang/semver v3.5.1+incompatible
 	github.com/golang/mock v1.2.0
 	github.com/mattn/go-runewidth v0.0.4 // indirect
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/olekukonko/tablewriter v0.0.1
+	github.com/rhysd/go-github-selfupdate v1.1.0
 	github.com/ryanuber/go-glob v1.0.0
 	github.com/spf13/afero v1.2.1
 	github.com/spf13/cobra v0.0.5
