@@ -198,3 +198,13 @@ When using `list` commands, sorting is available via the `--sort` flag.
 --sort id
 --sort id:desc
 ```
+
+## Updates
+
+The CLI has self-update functionality, which can be invoked via the command `update`:
+
+```
+> ukfast update
+```
+
+This command in-place updates the CLI, with the old binary moved to `ukfast.old` (`ukfast.old.exe` on Windows), should roll-back be required.
