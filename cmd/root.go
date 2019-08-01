@@ -2,10 +2,13 @@ package cmd
 
 import (
 	"crypto/tls"
+	"fmt"
 	"net/http"
 	"time"
 
+	"github.com/blang/semver"
 	homedir "github.com/mitchellh/go-homedir"
+	"github.com/rhysd/go-github-selfupdate/selfupdate"
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -23,6 +26,7 @@ var flagSort string
 var flagProperty []string
 var flagFilter []string
 var appFilesystem afero.Fs
+var appVersion string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -34,6 +38,7 @@ var rootCmd = &cobra.Command{
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute(build build.BuildInfo) {
+	appVersion = build.Version
 	rootCmd.Version = build.String()
 
 	if err := rootCmd.Execute(); err != nil {
@@ -55,9 +60,10 @@ func init() {
 	rootCmd.PersistentFlags().StringArrayVar(&flagFilter, "filter", []string{}, "filter for list commands, can be repeated, e.g. 'property=somevalue', 'property:gt=3', 'property=valu*'")
 
 	// Child commands
-	rootCmd.AddCommand(completionRootCmd())
+	rootCmd.AddCommand(updateCmd())
 
 	// Child root commands
+	rootCmd.AddCommand(completionRootCmd())
 	rootCmd.AddCommand(safednsRootCmd())
 	rootCmd.AddCommand(ecloudRootCmd())
 	rootCmd.AddCommand(sslRootCmd())
@@ -136,4 +142,29 @@ func getClient() apiclient.Client {
 	}
 
 	return apiclient.NewClient(conn)
+}
+
+func updateCmd() *cobra.Command {
+	return &cobra.Command{
+		Use:   "update",
+		Short: "Updates CLI to latest version",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			currentVersion, err := semver.ParseTolerant(appVersion)
+			if err != nil {
+				return fmt.Errorf("Unable to parse version: %s", err.Error())
+			}
+			newRelease, err := selfupdate.UpdateSelf(currentVersion, "ukfast/cli")
+			if err != nil {
+				return fmt.Errorf("Failed to update UKFast CLI: %s", err.Error())
+			}
+
+			if currentVersion.Equals(newRelease.Version) {
+				fmt.Println("UKFast CLI already at latest version", appVersion)
+			} else {
+				fmt.Println("UKFast CLI updated successfully", newRelease.Version)
+				fmt.Println("Release notes:\n", newRelease.ReleaseNotes)
+			}
+			return nil
+		},
+	}
 }
