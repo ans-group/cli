@@ -15,6 +15,7 @@ func completionRootCmd() *cobra.Command {
 	// Child commands
 	cmd.AddCommand(completionBashCmd())
 	cmd.AddCommand(completionPowerShellCmd())
+	cmd.AddCommand(completionZshCmd())
 
 	return cmd
 }
@@ -53,6 +54,24 @@ ukfast completion powershell | Out-File -Append -FilePath $CompletionPath -Encod
 ` + "\"`n. $CompletionPath\" | Out-File -Append -FilePath $profile -Encoding ASCII",
 		Run: func(cmd *cobra.Command, args []string) {
 			rootCmd.GenPowerShellCompletion(os.Stdout)
+		},
+	}
+}
+
+func completionZshCmd() *cobra.Command {
+	return &cobra.Command{
+		Use:   "zsh",
+		Short: "Generates zsh completion scripts",
+		Long: `To load completion run
+
+. <(ukfast completion zsh)
+
+To configure your zsh shell to load completions for each session, output completion to file:
+
+ukfast completion zsh > /etc/bash_completion.d/ukfast
+`,
+		Run: func(cmd *cobra.Command, args []string) {
+			rootCmd.GenZshCompletion(os.Stdout)
 		},
 	}
 }
