@@ -1,0 +1,24 @@
+project_name: ukfast
+before:
+  hooks:
+    - go mod download
+    - go generate ./...
+builds:
+- env:
+  - CGO_ENABLED=0
+  - GO111MODULE=on
+archives:
+- replacements:
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "{{ .Tag }}-next"
+release:
+  disable: true
+changelog:
+  sort: asc
+  filters:
+    exclude:
+    - '^docs:'
+    - '^test:'
+
