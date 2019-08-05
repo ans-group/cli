@@ -7,8 +7,21 @@ builds:
 - env:
   - CGO_ENABLED=0
   - GO111MODULE=on
+  ldflags:
+    - -s -X main.VERSION={{.Version}} -X main.BUILDDATE={{.Date}}
+  goos:
+    - windows
+    - linux
+    - darwin
+  goarch:
+    - 386
+    - amd64
+    - arm
+    - arm64
 archives:
-- replacements:
+- format_overrides: 
+  - goos: windows 
+    format: zip
 checksum:
   name_template: 'checksums.txt'
 snapshot:
