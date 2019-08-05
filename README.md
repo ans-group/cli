@@ -1,5 +1,8 @@
 # UKFast CLI
 
+[![Build Status](https://travis-ci.org/ukfast/cli.svg?branch=master)](https://travis-ci.org/ukfast/cli)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 This is the official UKFast command-line client, allowing for querying and controlling
 supported UKFast services.
 
