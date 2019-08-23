@@ -152,7 +152,7 @@ func safednsZoneRecordCreateCmd() *cobra.Command {
 	cmd.MarkFlagRequired("type")
 	cmd.Flags().String("content", "", "Record content")
 	cmd.MarkFlagRequired("content")
-	cmd.Flags().Int("priority", 0, "Record priority")
+	cmd.Flags().Int("priority", 0, "Record priority. Only applicable with MX type records")
 
 	return cmd
 }
@@ -211,7 +211,7 @@ func safednsZoneRecordUpdateCmd() *cobra.Command {
 	cmd.Flags().String("name", "", "Name of record")
 	cmd.Flags().String("type", "", "Type of record")
 	cmd.Flags().String("content", "", "Record content")
-	cmd.Flags().Int("priority", 0, "Record priority")
+	cmd.Flags().Int("priority", 0, "Record priority. Only applicable with MX type records")
 
 	return cmd
 }
