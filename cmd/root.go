@@ -159,9 +159,9 @@ func updateCmd() *cobra.Command {
 			}
 
 			if currentVersion.Equals(newRelease.Version) {
-				fmt.Println("UKFast CLI already at latest version", appVersion)
+				fmt.Printf("UKFast CLI already at latest version (%s)\n", appVersion)
 			} else {
-				fmt.Println("UKFast CLI updated successfully", newRelease.Version)
+				fmt.Printf("UKFast CLI updated to version v%s successfully\n", newRelease.Version)
 				fmt.Println("Release notes:\n", newRelease.ReleaseNotes)
 			}
 			return nil
