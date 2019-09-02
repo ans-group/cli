@@ -23,6 +23,7 @@ func ddosxDomainVerificationFileUploadRootCmd() *cobra.Command {
 	// Child commands
 	cmd.AddCommand(ddosxDomainVerificationFileUploadShowCmd())
 	cmd.AddCommand(ddosxDomainVerificationFileUploadDownloadCmd())
+	cmd.AddCommand(ddosxDomainVerificationFileUploadVerifyCmd())
 
 	return cmd
 }
@@ -113,4 +114,35 @@ func ddosxDomainVerificationFileUploadDownload(service ddosx.DDoSXService, cmd *
 	}
 
 	fmt.Println(targetFilePath)
+}
+
+func ddosxDomainVerificationFileUploadVerifyCmd() *cobra.Command {
+	return &cobra.Command{
+		Use:     "verify <domain: name>...",
+		Short:   "Verifies a domain via verification file method",
+		Long:    "This command verifies one or more domains via the verification file method",
+		Example: "ukfast ddosx domain verification fileupload verify example.com",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Missing domain")
+			}
+
+			return nil
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return ddosxDomainVerificationFileUploadVerify(getClient().DDoSXService(), cmd, args)
+		},
+	}
+}
+
+func ddosxDomainVerificationFileUploadVerify(service ddosx.DDoSXService, cmd *cobra.Command, args []string) error {
+	for _, arg := range args {
+		err := service.VerifyDomainFileUpload(arg)
+		if err != nil {
+			OutputWithErrorLevelf("Error verifying domain [%s] via verification file method: %s", arg, err)
+			continue
+		}
+	}
+
+	return nil
 }
