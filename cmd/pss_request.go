@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/spf13/cobra"
+	"github.com/ukfast/cli/internal/pkg/input"
 	"github.com/ukfast/sdk-go/pkg/service/pss"
 )
 
@@ -109,7 +110,6 @@ func pssRequestCreateCmd() *cobra.Command {
 	cmd.Flags().String("subject", "", "Specifies subject for request")
 	cmd.MarkFlagRequired("subject")
 	cmd.Flags().String("details", "", "Specifies details for request")
-	cmd.MarkFlagRequired("details")
 	cmd.Flags().Int("author", 0, "Specifies author ID for request")
 	cmd.MarkFlagRequired("author")
 	cmd.Flags().String("priority", "Normal", "Specifies priority for request")
@@ -142,12 +142,20 @@ func pssRequestCreate(service pss.PSSService, cmd *cobra.Command, args []string)
 	}
 
 	createRequest.Subject, _ = cmd.Flags().GetString("subject")
-	createRequest.Details, _ = cmd.Flags().GetString("details")
 	createRequest.Author.ID, _ = cmd.Flags().GetInt("author")
 	createRequest.Secure, _ = cmd.Flags().GetBool("secure")
 	createRequest.CC, _ = cmd.Flags().GetStringSlice("cc")
 	createRequest.RequestSMS, _ = cmd.Flags().GetBool("request-sms")
 	createRequest.CustomerReference, _ = cmd.Flags().GetString("customer-reference")
+
+	if cmd.Flags().Changed("details") {
+		createRequest.Details, _ = cmd.Flags().GetString("details")
+	} else {
+		createRequest.Details, err = input.ReadInput("details")
+		if err != nil {
+			return err
+		}
+	}
 
 	requestID, err := service.CreateRequest(createRequest)
 	if err != nil {
