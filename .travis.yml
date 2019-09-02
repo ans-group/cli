@@ -3,5 +3,5 @@ go:
   - "1.12"
 
 script:
-  - go mod download
+  - go get -d -v
   - go test -v ./...
