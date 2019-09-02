@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/spf13/cobra"
+	"github.com/ukfast/cli/internal/pkg/input"
 	"github.com/ukfast/sdk-go/pkg/service/pss"
 )
 
@@ -83,7 +84,6 @@ func pssRequestReplyCreateCmd() *cobra.Command {
 
 	// Setup flags
 	cmd.Flags().String("description", "", "Specifies description for reply")
-	cmd.MarkFlagRequired("description")
 	cmd.Flags().Int("author", 0, "Specifies author ID for reply")
 	cmd.MarkFlagRequired("author")
 
@@ -98,7 +98,15 @@ func pssRequestReplyCreate(service pss.PSSService, cmd *cobra.Command, args []st
 
 	createRequest := pss.CreateReplyRequest{}
 	createRequest.Author.ID, _ = cmd.Flags().GetInt("author")
-	createRequest.Description, _ = cmd.Flags().GetString("description")
+
+	if cmd.Flags().Changed("description") {
+		createRequest.Description, _ = cmd.Flags().GetString("description")
+	} else {
+		createRequest.Description, err = input.ReadInput("description")
+		if err != nil {
+			return err
+		}
+	}
 
 	replyID, err := service.CreateRequestReply(requestID, createRequest)
 	if err != nil {
