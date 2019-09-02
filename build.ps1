@@ -30,7 +30,7 @@ $builddate = (Get-Date).ToString("yyyy-MM-ddTHH:mm:ss")
 $env:GO111MODULE="on"
 
 Write-Host -ForegroundColor Yellow -Object "Building $output with version $version and build date $builddate"
-go build -mod=vendor -o $output -ldflags "-s -X 'main.VERSION=$version' -X 'main.BUILDDATE=$builddate'"
+go build -o $output -ldflags "-s -X 'main.VERSION=$version' -X 'main.BUILDDATE=$builddate'"
 $ec = $LASTEXITCODE
 
 if (Test-Path -Path Env:\GOOS)

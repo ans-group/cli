@@ -167,3 +167,44 @@ func Test_ddosxDomainVerificationFileUploadDownload(t *testing.T) {
 		})
 	})
 }
+
+func Test_ddosxDomainVerificationFileUploadVerifyCmd_Args(t *testing.T) {
+	t.Run("ValidArgs_NoError", func(t *testing.T) {
+		err := ddosxDomainVerificationFileUploadVerifyCmd().Args(nil, []string{"testdomain1.co.uk"})
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("InvalidArgs_Error", func(t *testing.T) {
+		err := ddosxDomainVerificationFileUploadVerifyCmd().Args(nil, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing domain", err.Error())
+	})
+}
+
+func Test_ddosxDomainVerificationFileUploadVerify(t *testing.T) {
+	t.Run("SingleDomain_NoError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockDDoSXService(mockCtrl)
+
+		service.EXPECT().VerifyDomainFileUpload("testdomain1.co.uk").Return(nil)
+
+		ddosxDomainVerificationFileUploadVerify(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
+	})
+
+	t.Run("DownloadDomainVerificationFileError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockDDoSXService(mockCtrl)
+
+		service.EXPECT().VerifyDomainFileUpload("testdomain1.co.uk").Return(errors.New("test error"))
+
+		test_output.AssertErrorOutput(t, "Error verifying domain [testdomain1.co.uk] via verification file method: test error\n", func() {
+			ddosxDomainVerificationFileUploadVerify(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
+		})
+	})
+}

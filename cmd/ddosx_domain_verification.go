@@ -10,6 +10,7 @@ func ddosxDomainVerificationRootCmd() *cobra.Command {
 
 	// Child root commands
 	cmd.AddCommand(ddosxDomainVerificationFileUploadRootCmd())
+	cmd.AddCommand(ddosxDomainVerificationDNSRootCmd())
 
 	return cmd
 }
