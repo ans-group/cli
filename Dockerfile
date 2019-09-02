@@ -4,6 +4,7 @@ COPY . /build/
 WORKDIR /build
 ENV GO111MODULE on
 ENV CGO_ENABLED 0
+RUN go mod download
 RUN go build -o ukfast -ldflags "-s -X 'main.VERSION=$(git describe --tags)' -X 'main.BUILDDATE=$(date +'%Y-%m-%dT%H:%M:%S')'"
 
 FROM alpine:3.9  
