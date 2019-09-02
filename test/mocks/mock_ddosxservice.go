@@ -1207,3 +1207,31 @@ func (mr *MockDDoSXServiceMockRecorder) PurgeDomainCDN(arg0, arg1 interface{}) *
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PurgeDomainCDN", reflect.TypeOf((*MockDDoSXService)(nil).PurgeDomainCDN), arg0, arg1)
 }
+
+// VerifyDomainDNS mocks base method
+func (m *MockDDoSXService) VerifyDomainDNS(arg0 string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "VerifyDomainDNS", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// VerifyDomainDNS indicates an expected call of VerifyDomainDNS
+func (mr *MockDDoSXServiceMockRecorder) VerifyDomainDNS(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "VerifyDomainDNS", reflect.TypeOf((*MockDDoSXService)(nil).VerifyDomainDNS), arg0)
+}
+
+// VerifyDomainFileUpload mocks base method
+func (m *MockDDoSXService) VerifyDomainFileUpload(arg0 string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "VerifyDomainFileUpload", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// VerifyDomainFileUpload indicates an expected call of VerifyDomainFileUpload
+func (mr *MockDDoSXServiceMockRecorder) VerifyDomainFileUpload(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "VerifyDomainFileUpload", reflect.TypeOf((*MockDDoSXService)(nil).VerifyDomainFileUpload), arg0)
+}
