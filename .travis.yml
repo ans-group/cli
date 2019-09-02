@@ -1,7 +1,8 @@
 language: go
 go:
   - "1.12"
-
+env:
+  - GO111MODULE=on
 script:
-  - go get -d -v
+  - go mod download
   - go test -v ./...
