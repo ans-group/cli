@@ -34,12 +34,12 @@ func TestReadInput(t *testing.T) {
 		defer func() { InputReader = oldReader }()
 
 		InputReader = func() io.Reader {
-			return bytes.NewReader([]byte("test text\n.\n"))
+			return bytes.NewReader([]byte("test text\nmore text\n.\n"))
 		}
 
 		text, _ := ReadInput("test")
 
-		assert.Equal(t, "test text", text)
+		assert.Equal(t, "test text\nmore text", text)
 	})
 
 	t.Run("BreakOnEOF", func(t *testing.T) {
