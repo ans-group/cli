@@ -4,16 +4,21 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
+	"io"
 	"os"
 	"strings"
 
 	"github.com/ukfast/cli/internal/pkg/output"
 )
 
+var InputReader = func() io.Reader {
+	return os.Stdin
+}
+
 func ReadInput(name string) (string, error) {
 	buf := bytes.Buffer{}
 
-	scanner := bufio.NewScanner(os.Stdin)
+	scanner := bufio.NewScanner(InputReader())
 	output.Errorf("Enter %s (single dot '.' on new line indicates EOF):", name)
 	for scanner.Scan() {
 		if scanner.Text() == "." {
