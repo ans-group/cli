@@ -890,17 +890,17 @@ func TestOrderedFields_Set(t *testing.T) {
 	})
 }
 
-func Test_getColumnsOrDefault_Expected(t *testing.T) {
+func Test_getPropertiesOrDefault_Expected(t *testing.T) {
 	t.Run("NoIncludeFields_DefaultColumns", func(t *testing.T) {
 		f := NewOrderedFields()
 		f.Set("testkey1", NewFieldValue("testvalue1", false))
 		f.Set("testkey2", NewFieldValue("testvalue2", true))
 		f.Set("testkey3", NewFieldValue("testvalue3", false))
 
-		columns := getColumnsOrDefault([]string{}, f)
+		properties := getPropertiesOrDefault([]string{}, f)
 
-		assert.Len(t, columns, 1)
-		assert.Equal(t, "testkey2", columns[0])
+		assert.Len(t, properties, 1)
+		assert.Equal(t, "testkey2", properties[0])
 	})
 
 	t.Run("IncludeField_ExpectedColumn", func(t *testing.T) {
@@ -909,10 +909,10 @@ func Test_getColumnsOrDefault_Expected(t *testing.T) {
 		f.Set("testkey2", NewFieldValue("testvalue2", false))
 		f.Set("testkey3", NewFieldValue("testvalue3", false))
 
-		columns := getColumnsOrDefault([]string{"testkey2"}, f)
+		properties := getPropertiesOrDefault([]string{"testkey2"}, f)
 
-		assert.Len(t, columns, 1)
-		assert.Equal(t, "testkey2", columns[0])
+		assert.Len(t, properties, 1)
+		assert.Equal(t, "testkey2", properties[0])
 	})
 
 	t.Run("IncludeFieldCaseInsensitive_ExpectedColumn", func(t *testing.T) {
@@ -921,10 +921,10 @@ func Test_getColumnsOrDefault_Expected(t *testing.T) {
 		f.Set("testkey2", NewFieldValue("testvalue2", false))
 		f.Set("testkey3", NewFieldValue("testvalue3", false))
 
-		columns := getColumnsOrDefault([]string{"TeStKeY2"}, f)
+		properties := getPropertiesOrDefault([]string{"TeStKeY2"}, f)
 
-		assert.Len(t, columns, 1)
-		assert.Equal(t, "testkey2", columns[0])
+		assert.Len(t, properties, 1)
+		assert.Equal(t, "testkey2", properties[0])
 	})
 
 	t.Run("IncludeMultipleField_ExpectedColumns", func(t *testing.T) {
@@ -933,11 +933,11 @@ func Test_getColumnsOrDefault_Expected(t *testing.T) {
 		f.Set("testkey2", NewFieldValue("testvalue2", false))
 		f.Set("testkey3", NewFieldValue("testvalue3", false))
 
-		columns := getColumnsOrDefault([]string{"testkey1", "testkey2"}, f)
+		properties := getPropertiesOrDefault([]string{"testkey1", "testkey2"}, f)
 
-		assert.Len(t, columns, 2)
-		assert.Equal(t, "testkey1", columns[0])
-		assert.Equal(t, "testkey2", columns[1])
+		assert.Len(t, properties, 2)
+		assert.Equal(t, "testkey1", properties[0])
+		assert.Equal(t, "testkey2", properties[1])
 	})
 
 	t.Run("GlobAll_ExpectedColumns", func(t *testing.T) {
@@ -946,12 +946,12 @@ func Test_getColumnsOrDefault_Expected(t *testing.T) {
 		f.Set("testkey2", NewFieldValue("testvalue2", false))
 		f.Set("testkey3", NewFieldValue("testvalue3", false))
 
-		columns := getColumnsOrDefault([]string{"*"}, f)
+		properties := getPropertiesOrDefault([]string{"*"}, f)
 
-		assert.Len(t, columns, 3)
-		assert.Equal(t, "testkey1", columns[0])
-		assert.Equal(t, "testkey2", columns[1])
-		assert.Equal(t, "testkey3", columns[2])
+		assert.Len(t, properties, 3)
+		assert.Equal(t, "testkey1", properties[0])
+		assert.Equal(t, "testkey2", properties[1])
+		assert.Equal(t, "testkey3", properties[2])
 	})
 
 	t.Run("GlobStart_ExpectedColumns", func(t *testing.T) {
@@ -961,10 +961,10 @@ func Test_getColumnsOrDefault_Expected(t *testing.T) {
 		f.Set("testkey3", NewFieldValue("testvalue3", false))
 		f.Set("otherkey", NewFieldValue("othervalue", false))
 
-		columns := getColumnsOrDefault([]string{"*key1"}, f)
+		properties := getPropertiesOrDefault([]string{"*key1"}, f)
 
-		assert.Len(t, columns, 1)
-		assert.Equal(t, "testkey1", columns[0])
+		assert.Len(t, properties, 1)
+		assert.Equal(t, "testkey1", properties[0])
 	})
 
 	t.Run("GlobEnd_ExpectedColumns", func(t *testing.T) {
@@ -974,12 +974,12 @@ func Test_getColumnsOrDefault_Expected(t *testing.T) {
 		f.Set("testkey3", NewFieldValue("testvalue3", false))
 		f.Set("otherkey", NewFieldValue("othervalue", false))
 
-		columns := getColumnsOrDefault([]string{"testkey*"}, f)
+		properties := getPropertiesOrDefault([]string{"testkey*"}, f)
 
-		assert.Len(t, columns, 3)
-		assert.Equal(t, "testkey1", columns[0])
-		assert.Equal(t, "testkey2", columns[1])
-		assert.Equal(t, "testkey3", columns[2])
+		assert.Len(t, properties, 3)
+		assert.Equal(t, "testkey1", properties[0])
+		assert.Equal(t, "testkey2", properties[1])
+		assert.Equal(t, "testkey3", properties[2])
 		f.Set("otherkey", NewFieldValue("othervalue", false))
 	})
 
@@ -990,11 +990,11 @@ func Test_getColumnsOrDefault_Expected(t *testing.T) {
 		f.Set("testkey3", NewFieldValue("testvalue3", false))
 		f.Set("otherkey", NewFieldValue("othervalue", false))
 
-		columns := getColumnsOrDefault([]string{"*test*"}, f)
+		properties := getPropertiesOrDefault([]string{"*test*"}, f)
 
-		assert.Len(t, columns, 3)
-		assert.Equal(t, "testkey1", columns[0])
-		assert.Equal(t, "testkey2", columns[1])
-		assert.Equal(t, "testkey3", columns[2])
+		assert.Len(t, properties, 3)
+		assert.Equal(t, "testkey1", properties[0])
+		assert.Equal(t, "testkey2", properties[1])
+		assert.Equal(t, "testkey3", properties[2])
 	})
 }

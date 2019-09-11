@@ -103,6 +103,22 @@ is `table` or unspecified:
 
 The [Property Modifier](#property) is available for this format
 
+### List
+
+Results can be output as a list using the `list` format:
+
+```
+> ukfast safedns zone record show example.co.uk 3337874 --format list
+id         : 3337874
+name       : test.example.co.uk
+type       : A
+content    : 1.2.3.4
+updated_at : 2019-03-19T16:33:55+00:00
+priority   : 0
+```
+
+The [Property Modifier](#property) is available for this format
+
 ### JSON
 
 Results can be output in JSON using the `json` format:

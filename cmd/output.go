@@ -90,6 +90,12 @@ func (o *OutputHandler) Handle() error {
 			return err
 		}
 		return output.CSV(o.Properties, d)
+	case "list":
+		d, err := o.Provider.GetFieldData()
+		if err != nil {
+			return err
+		}
+		return output.List(o.Properties, d)
 	default:
 		output.Errorf("Invalid output format [%s], defaulting to 'table'", o.Format)
 		fallthrough
