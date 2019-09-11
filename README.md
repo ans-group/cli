@@ -115,6 +115,7 @@ type       : A
 content    : 1.2.3.4
 updated_at : 2019-03-19T16:33:55+00:00
 priority   : 0
+ttl        : 0
 ```
 
 The [Property Modifier](#property) is available for this format
@@ -150,7 +151,7 @@ Results can be output as CSV using the `csv` format:
 
 ```
 > ukfast safedns zone record show example.co.uk 3337874 --format csv
-id,name,type,content,updatedat,priority
+id,name,type,content,updated_at,priority,ttl
 3337874,test.example.co.uk,A,1.2.3.4,2019-03-19T16:33:55+00:00,0,0
 ```
 
