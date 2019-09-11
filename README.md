@@ -105,7 +105,7 @@ The [Property Modifier](#property) is available for this format
 
 ### List
 
-Results can be output as CSV using the `list` format:
+Results can be output as a list using the `list` format:
 
 ```
 > ukfast safedns zone record show example.co.uk 3337874 --format list
