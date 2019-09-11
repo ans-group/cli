@@ -1,6 +1,7 @@
 package output
 
 import (
+	"bufio"
 	"encoding/csv"
 	"encoding/json"
 	"fmt"
@@ -68,21 +69,17 @@ func Fatalf(format string, a ...interface{}) {
 	Fatal(fmt.Sprintf(format, a...))
 }
 
-// Value will format specified rows using given includeColumns by extracting field values,
+// Value will format specified rows using given includeProperties by extracting field values,
 // and output them to stdout
-func Value(includeColumns []string, rows []*OrderedFields) error {
-	for _, row := range rows {
-		var out []string
-		columns := getColumnsOrDefault(includeColumns, rows[0])
-		for _, column := range columns {
-			if row.Exists(strings.ToLower(column)) {
-				out = append(out, row.Get(strings.ToLower(column)).Value)
-			}
-		}
+func Value(includeProperties []string, rows []*OrderedFields) error {
+	if len(rows) < 1 {
+		return nil
+	}
 
-		if len(out) > 0 {
-			fmt.Println(strings.Join(out, " "))
-		}
+	properties := getPropertiesOrDefault(includeProperties, rows[0])
+	for _, row := range rows {
+		data := getPropertyData(properties, row)
+		fmt.Println(strings.Join(data, " "))
 	}
 
 	return nil
@@ -101,23 +98,23 @@ func JSON(v interface{}) error {
 }
 
 // Table takes an array of mapped fields (key being lowercased name), and outputs a table
-// Included columns can be overriden by populating includeColumns parameter
-func Table(includeColumns []string, rows []*OrderedFields) error {
+// Included properties can be overriden by populating includeProperties parameter
+func Table(includeProperties []string, rows []*OrderedFields) error {
 	if len(rows) < 1 {
 		return nil
 	}
 
 	table := tablewriter.NewWriter(os.Stdout)
 
-	// columns will hold our header values, and will be used to determine required fields
+	// properties will hold our header values, and will be used to determine required fields
 	// when iterating over rows to add data to table
-	columns := getColumnsOrDefault(includeColumns, rows[0])
+	headers := getPropertiesOrDefault(includeProperties, rows[0])
 
-	table.SetHeader(columns)
+	table.SetHeader(headers)
 
-	// Loop through each row, adding required fields specified in columns to table
+	// Loop through each row, adding required fields specified in headers to table
 	for _, r := range rows {
-		rowData := getColumnData(columns, r)
+		rowData := getPropertyData(headers, r)
 		table.Append(rowData)
 	}
 
@@ -127,19 +124,23 @@ func Table(includeColumns []string, rows []*OrderedFields) error {
 }
 
 // CSV outputs provided rows as CSV to stdout
-func CSV(includeColumns []string, rows []*OrderedFields) error {
+func CSV(includeProperties []string, rows []*OrderedFields) error {
+	if len(rows) < 1 {
+		return nil
+	}
+
 	w := csv.NewWriter(os.Stdout)
 
-	// First retrieve columns and write to CSV buffer
-	columns := getColumnsOrDefault(includeColumns, rows[0])
-	err := w.Write(columns)
+	// First retrieve properties and write to CSV buffer
+	properties := getPropertiesOrDefault(includeProperties, rows[0])
+	err := w.Write(properties)
 	if err != nil {
 		return err
 	}
 
 	for _, row := range rows {
-		// For each row, obtain column data and and write to CSV buffer
-		data := getColumnData(columns, row)
+		// For each row, obtain property data and and write to CSV buffer
+		data := getPropertyData(properties, row)
 		err := w.Write(data)
 		if err != nil {
 			return err
@@ -156,39 +157,85 @@ func CSV(includeColumns []string, rows []*OrderedFields) error {
 	return nil
 }
 
-func getColumnsOrDefault(includeColumns []string, fields *OrderedFields) []string {
-	var columns []string
+// List will format specified rows using given includeProperties by extracting fields,
+// and output them to stdout
+func List(includeProperties []string, rows []*OrderedFields) error {
+	if len(rows) < 1 {
+		return nil
+	}
 
-	if len(includeColumns) > 0 {
-		// For each column in includeColumns, add column to columns array
-		// if that column exists in fields
-		for _, prop := range includeColumns {
-			for _, column := range fields.Keys() {
-				if glob.Glob(strings.ToLower(prop), column) {
-					columns = append(columns, column)
+	f := bufio.NewWriter(os.Stdout)
+	defer f.Flush()
+
+	properties := getPropertiesOrDefault(includeProperties, rows[0])
+	maxPropertyLength := getMaxPropertyLength(properties)
+	for i, row := range rows {
+		if i > 0 {
+			f.WriteString("\n")
+		}
+
+		for _, property := range properties {
+			if row.Exists(strings.ToLower(property)) {
+				f.WriteString(fmt.Sprintf("%s : %s\n", padProperty(property, maxPropertyLength), row.Get(strings.ToLower(property)).Value))
+			}
+		}
+	}
+
+	return nil
+}
+
+func padProperty(property string, maxLength int) string {
+	diff := maxLength - len(property)
+	if diff > 0 {
+		return property + strings.Repeat(" ", diff)
+	}
+	return property
+}
+
+func getMaxPropertyLength(properties []string) int {
+	maxLength := 0
+	for _, property := range properties {
+		length := len(property)
+		if length > maxLength {
+			maxLength = length
+		}
+	}
+	return maxLength
+}
+
+func getPropertiesOrDefault(includeProperties []string, fields *OrderedFields) []string {
+	var properties []string
+
+	if len(includeProperties) > 0 {
+		// For each property in includeProperties, add property to properties array
+		// if that property exists in fields
+		for _, prop := range includeProperties {
+			for _, property := range fields.Keys() {
+				if glob.Glob(strings.ToLower(prop), property) {
+					properties = append(properties, property)
 				}
 			}
 		}
 
 	} else {
 		// Use default fields
-		for _, column := range fields.Keys() {
-			if fields.Get(column).Default {
-				columns = append(columns, column)
+		for _, property := range fields.Keys() {
+			if fields.Get(property).Default {
+				properties = append(properties, property)
 			}
 		}
 	}
 
-	return columns
+	return properties
 }
 
-func getColumnData(columns []string, fields *OrderedFields) []string {
-	var columnData []string
-	for _, column := range columns {
-		columnData = append(columnData, fields.Get(column).Value)
+func getPropertyData(properties []string, fields *OrderedFields) []string {
+	var propertyData []string
+	for _, property := range properties {
+		propertyData = append(propertyData, fields.Get(property).Value)
 	}
 
-	return columnData
+	return propertyData
 }
 
 // Template will format i with given Golang template t, and output resulting string
