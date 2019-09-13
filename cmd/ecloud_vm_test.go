@@ -231,7 +231,8 @@ func Test_ecloudVirtualMachineCreate(t *testing.T) {
 
 		gomock.InOrder(
 			service.EXPECT().CreateVirtualMachine(gomock.Any()).Do(func(req ecloud.CreateVirtualMachineRequest) {
-				assert.True(t, req.Encrypt)
+				assert.NotNil(t, req.Encrypt)
+				assert.True(t, *req.Encrypt)
 			}).Return(123, nil),
 			service.EXPECT().GetVirtualMachine(123).Return(ecloud.VirtualMachine{}, nil),
 		)
