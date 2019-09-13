@@ -164,6 +164,21 @@ func (mr *MockSafeDNSServiceMockRecorder) DeleteZoneRecord(arg0, arg1 interface{
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteZoneRecord", reflect.TypeOf((*MockSafeDNSService)(nil).DeleteZoneRecord), arg0, arg1)
 }
 
+// GetSettings mocks base method
+func (m *MockSafeDNSService) GetSettings() (safedns.Settings, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetSettings")
+	ret0, _ := ret[0].(safedns.Settings)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetSettings indicates an expected call of GetSettings
+func (mr *MockSafeDNSServiceMockRecorder) GetSettings() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSettings", reflect.TypeOf((*MockSafeDNSService)(nil).GetSettings))
+}
+
 // GetTemplate mocks base method
 func (m *MockSafeDNSService) GetTemplate(arg0 int) (safedns.Template, error) {
 	m.ctrl.T.Helper()
@@ -446,36 +461,6 @@ func (m *MockSafeDNSService) PatchZoneRecord(arg0 string, arg1 int, arg2 safedns
 func (mr *MockSafeDNSServiceMockRecorder) PatchZoneRecord(arg0, arg1, arg2 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchZoneRecord", reflect.TypeOf((*MockSafeDNSService)(nil).PatchZoneRecord), arg0, arg1, arg2)
-}
-
-// UpdateTemplate mocks base method
-func (m *MockSafeDNSService) UpdateTemplate(arg0 safedns.Template) (int, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateTemplate", arg0)
-	ret0, _ := ret[0].(int)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// UpdateTemplate indicates an expected call of UpdateTemplate
-func (mr *MockSafeDNSServiceMockRecorder) UpdateTemplate(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateTemplate", reflect.TypeOf((*MockSafeDNSService)(nil).UpdateTemplate), arg0)
-}
-
-// UpdateTemplateRecord mocks base method
-func (m *MockSafeDNSService) UpdateTemplateRecord(arg0 int, arg1 safedns.Record) (int, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateTemplateRecord", arg0, arg1)
-	ret0, _ := ret[0].(int)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// UpdateTemplateRecord indicates an expected call of UpdateTemplateRecord
-func (mr *MockSafeDNSServiceMockRecorder) UpdateTemplateRecord(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateTemplateRecord", reflect.TypeOf((*MockSafeDNSService)(nil).UpdateTemplateRecord), arg0, arg1)
 }
 
 // UpdateZoneRecord mocks base method

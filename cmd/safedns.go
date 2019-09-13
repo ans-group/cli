@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/spf13/cobra"
 	"github.com/ukfast/cli/internal/pkg/output"
@@ -22,6 +23,7 @@ func safednsRootCmd() *cobra.Command {
 	cmd.AddCommand(safednsZoneRecordRootCmd())
 	cmd.AddCommand(safednsZoneNoteRootCmd())
 	cmd.AddCommand(safednsTemplateRootCmd())
+	cmd.AddCommand(safednsSettingsRootCmd())
 
 	return cmd
 }
@@ -222,6 +224,50 @@ func (o *OutputSafeDNSTemplates) getOrderedFields(template safedns.Template) *ou
 	fields.Set("name", output.NewFieldValue(template.Name, true))
 	fields.Set("default", output.NewFieldValue(strconv.FormatBool(template.Default), true))
 	fields.Set("created_at", output.NewFieldValue(template.CreatedAt.String(), true))
+
+	return fields
+}
+
+// OutputSafeDNSSettings implements OutputDataProvider for outputting an array of Settings
+type OutputSafeDNSSettings struct {
+	Settings []safedns.Settings
+}
+
+func outputSafeDNSSettings(settings []safedns.Settings) {
+	err := Output(&OutputSafeDNSSettings{Settings: settings})
+	if err != nil {
+		output.Fatalf("Failed to output settings: %s", err)
+	}
+}
+
+func (o *OutputSafeDNSSettings) GetData() interface{} {
+	return o.Settings
+}
+
+func (o *OutputSafeDNSSettings) GetFieldData() ([]*output.OrderedFields, error) {
+	var data []*output.OrderedFields
+	for _, settings := range o.Settings {
+		fields := o.getOrderedFields(settings)
+		data = append(data, fields)
+	}
+
+	return data, nil
+}
+
+func (o *OutputSafeDNSSettings) getOrderedFields(settings safedns.Settings) *output.OrderedFields {
+	nameservers := []string{}
+	for _, nameserver := range settings.Nameservers {
+		nameservers = append(nameservers, nameserver.Name)
+	}
+
+	fields := output.NewOrderedFields()
+	fields.Set("id", output.NewFieldValue(strconv.Itoa(settings.ID), true))
+	fields.Set("email", output.NewFieldValue(settings.Email, false))
+	fields.Set("nameservers", output.NewFieldValue(strings.Join(nameservers, ", "), false))
+	fields.Set("custom_soa_allowed", output.NewFieldValue(strconv.FormatBool(settings.CustomSOAAllowed), true))
+	fields.Set("custom_base_ns_allowed", output.NewFieldValue(strconv.FormatBool(settings.CustomBaseNSAllowed), true))
+	fields.Set("delegation_allowed", output.NewFieldValue(strconv.FormatBool(settings.DelegationAllowed), true))
+	fields.Set("product", output.NewFieldValue(settings.Product, true))
 
 	return fields
 }
