@@ -156,7 +156,6 @@ func ecloudVirtualMachineCreateCmd() *cobra.Command {
 }
 
 func ecloudVirtualMachineCreate(service ecloud.ECloudService, cmd *cobra.Command, args []string) {
-
 	createRequest := ecloud.CreateVirtualMachineRequest{}
 	createRequest.Environment, _ = cmd.Flags().GetString("environment")
 	createRequest.Template, _ = cmd.Flags().GetString("template")
@@ -175,7 +174,10 @@ func ecloudVirtualMachineCreate(service ecloud.ECloudService, cmd *cobra.Command
 	createRequest.SiteID, _ = cmd.Flags().GetInt("site")
 	createRequest.NetworkID, _ = cmd.Flags().GetInt("network")
 	createRequest.ExternalIPRequired, _ = cmd.Flags().GetBool("external-ip")
-	createRequest.Encrypt, _ = cmd.Flags().GetBool("encrypt")
+	if cmd.Flags().Changed("encrypt") {
+		encrypt, _ := cmd.Flags().GetBool("encrypt")
+		createRequest.Encrypt = &encrypt
+	}
 
 	if cmd.Flags().Changed("tag") {
 		tagsFlag, _ := cmd.Flags().GetStringSlice("tag")
