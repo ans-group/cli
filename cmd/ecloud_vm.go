@@ -150,6 +150,8 @@ func ecloudVirtualMachineCreateCmd() *cobra.Command {
 	cmd.Flags().StringSlice("ssh-key", []string{}, "SSH public key for virtual machine, can be repeated")
 	cmd.Flags().StringSlice("parameter", []string{}, "Parameters for virtual machine, can be repeated, e.g. key=value")
 	cmd.Flags().Bool("encrypt", false, "Specifies that the virtual machine should be encrypted")
+	cmd.Flags().String("role", "", "Specifies role that VM should be created with")
+	cmd.Flags().String("bootstrap-script", "", "Specifies boot script that should be executed on first boot")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the VM has been completely created before continuing on")
 
 	return cmd
@@ -174,10 +176,8 @@ func ecloudVirtualMachineCreate(service ecloud.ECloudService, cmd *cobra.Command
 	createRequest.SiteID, _ = cmd.Flags().GetInt("site")
 	createRequest.NetworkID, _ = cmd.Flags().GetInt("network")
 	createRequest.ExternalIPRequired, _ = cmd.Flags().GetBool("external-ip")
-	if cmd.Flags().Changed("encrypt") {
-		encrypt, _ := cmd.Flags().GetBool("encrypt")
-		createRequest.Encrypt = &encrypt
-	}
+	createRequest.Role, _ = cmd.Flags().GetString("role")
+	createRequest.BootstrapScript, _ = cmd.Flags().GetString("bootstrap-script")
 
 	if cmd.Flags().Changed("tag") {
 		tagsFlag, _ := cmd.Flags().GetStringSlice("tag")
@@ -205,6 +205,11 @@ func ecloudVirtualMachineCreate(service ecloud.ECloudService, cmd *cobra.Command
 		sshKeys, _ := cmd.Flags().GetStringSlice("ssh-key")
 
 		createRequest.SSHKeys = sshKeys
+	}
+
+	if cmd.Flags().Changed("encrypt") {
+		encrypt, _ := cmd.Flags().GetBool("encrypt")
+		createRequest.Encrypt = &encrypt
 	}
 
 	id, err := service.CreateVirtualMachine(createRequest)

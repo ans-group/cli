@@ -165,7 +165,43 @@ func Test_ecloudVirtualMachineCreate(t *testing.T) {
 		ecloudVirtualMachineCreate(service, cmd, []string{})
 	})
 
-	t.Run("CreateWithOptionalFlags_ExpectedFlags", func(t *testing.T) {
+	t.Run("WithTag_SetsTag", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudVirtualMachineCreateCmd()
+		cmd.Flags().Set("tag", "abc=123")
+
+		gomock.InOrder(
+			service.EXPECT().CreateVirtualMachine(gomock.Any()).Do(func(req ecloud.CreateVirtualMachineRequest) {
+				assert.NotNil(t, req.Tags)
+			}).Return(123, nil),
+			service.EXPECT().GetVirtualMachine(123).Return(ecloud.VirtualMachine{}, nil),
+		)
+
+		ecloudVirtualMachineCreate(service, cmd, []string{})
+	})
+
+	t.Run("WithParameter_SetsParameter", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudVirtualMachineCreateCmd()
+		cmd.Flags().Set("parameter", "abc=123")
+
+		gomock.InOrder(
+			service.EXPECT().CreateVirtualMachine(gomock.Any()).Do(func(req ecloud.CreateVirtualMachineRequest) {
+				assert.NotNil(t, req.Parameters)
+			}).Return(123, nil),
+			service.EXPECT().GetVirtualMachine(123).Return(ecloud.VirtualMachine{}, nil),
+		)
+
+		ecloudVirtualMachineCreate(service, cmd, []string{})
+	})
+
+	t.Run("WithSSHKey_SetsSSHKey", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -178,6 +214,24 @@ func Test_ecloudVirtualMachineCreate(t *testing.T) {
 				if req.SSHKeys == nil || len(req.SSHKeys) < 1 || req.SSHKeys[0] != "testkey1" {
 					t.Fatal("Expected SSHKeys to contain key [testkey1]")
 				}
+			}).Return(123, nil),
+			service.EXPECT().GetVirtualMachine(123).Return(ecloud.VirtualMachine{}, nil),
+		)
+
+		ecloudVirtualMachineCreate(service, cmd, []string{})
+	})
+
+	t.Run("WithEncrypt_SetsEncrypt", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudVirtualMachineCreateCmd()
+		cmd.Flags().Set("encrypt", "true")
+
+		gomock.InOrder(
+			service.EXPECT().CreateVirtualMachine(gomock.Any()).Do(func(req ecloud.CreateVirtualMachineRequest) {
+				assert.True(t, req.Encrypt)
 			}).Return(123, nil),
 			service.EXPECT().GetVirtualMachine(123).Return(ecloud.VirtualMachine{}, nil),
 		)
