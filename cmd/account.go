@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/spf13/cobra"
@@ -18,6 +19,7 @@ func accountRootCmd() *cobra.Command {
 	cmd.AddCommand(accountContactRootCmd())
 	cmd.AddCommand(accountDetailsRootCmd())
 	cmd.AddCommand(accountCreditRootCmd())
+	cmd.AddCommand(accountInvoiceRootCmd())
 
 	return cmd
 }
@@ -124,6 +126,44 @@ func (o *OutputAccountCredits) getOrderedFields(credit account.Credit) *output.O
 	fields.Set("type", output.NewFieldValue(credit.Type, true))
 	fields.Set("total", output.NewFieldValue(strconv.Itoa(credit.Total), true))
 	fields.Set("remaining", output.NewFieldValue(strconv.Itoa(credit.Remaining), true))
+
+	return fields
+}
+
+// OutputAccountInvoices implements OutputDataProvider for outputting an array of Invoices
+type OutputAccountInvoices struct {
+	Invoices []account.Invoice
+}
+
+func outputAccountInvoices(invoices []account.Invoice) {
+	err := Output(&OutputAccountInvoices{Invoices: invoices})
+	if err != nil {
+		output.Fatalf("Failed to output invoices: %s", err)
+	}
+}
+
+func (o *OutputAccountInvoices) GetData() interface{} {
+	return o.Invoices
+}
+
+func (o *OutputAccountInvoices) GetFieldData() ([]*output.OrderedFields, error) {
+	var data []*output.OrderedFields
+	for _, invoice := range o.Invoices {
+		fields := o.getOrderedFields(invoice)
+		data = append(data, fields)
+	}
+
+	return data, nil
+}
+
+func (o *OutputAccountInvoices) getOrderedFields(invoice account.Invoice) *output.OrderedFields {
+	fields := output.NewOrderedFields()
+	fields.Set("id", output.NewFieldValue(strconv.Itoa(invoice.ID), true))
+	fields.Set("date", output.NewFieldValue(invoice.Date.String(), true))
+	fields.Set("paid", output.NewFieldValue(strconv.FormatBool(invoice.Paid), true))
+	fields.Set("net", output.NewFieldValue(fmt.Sprintf("%f", invoice.Net), true))
+	fields.Set("vat", output.NewFieldValue(fmt.Sprintf("%f", invoice.VAT), true))
+	fields.Set("gross", output.NewFieldValue(fmt.Sprintf("%f", invoice.Gross), true))
 
 	return fields
 }
