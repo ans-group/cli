@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/spf13/cobra"
+	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/account"
 )
@@ -20,6 +21,7 @@ func accountRootCmd() *cobra.Command {
 	cmd.AddCommand(accountDetailsRootCmd())
 	cmd.AddCommand(accountCreditRootCmd())
 	cmd.AddCommand(accountInvoiceRootCmd())
+	cmd.AddCommand(accountInvoiceQueryRootCmd())
 
 	return cmd
 }
@@ -164,6 +166,45 @@ func (o *OutputAccountInvoices) getOrderedFields(invoice account.Invoice) *outpu
 	fields.Set("net", output.NewFieldValue(fmt.Sprintf("%f", invoice.Net), true))
 	fields.Set("vat", output.NewFieldValue(fmt.Sprintf("%f", invoice.VAT), true))
 	fields.Set("gross", output.NewFieldValue(fmt.Sprintf("%f", invoice.Gross), true))
+
+	return fields
+}
+
+// OutputAccountInvoiceQueries implements OutputDataProvider for outputting an array of InvoiceQueries
+type OutputAccountInvoiceQueries struct {
+	InvoiceQueries []account.InvoiceQuery
+}
+
+func outputAccountInvoiceQueries(queries []account.InvoiceQuery) {
+	err := Output(&OutputAccountInvoiceQueries{InvoiceQueries: queries})
+	if err != nil {
+		output.Fatalf("Failed to output queries: %s", err)
+	}
+}
+
+func (o *OutputAccountInvoiceQueries) GetData() interface{} {
+	return o.InvoiceQueries
+}
+
+func (o *OutputAccountInvoiceQueries) GetFieldData() ([]*output.OrderedFields, error) {
+	var data []*output.OrderedFields
+	for _, query := range o.InvoiceQueries {
+		fields := o.getOrderedFields(query)
+		data = append(data, fields)
+	}
+
+	return data, nil
+}
+
+func (o *OutputAccountInvoiceQueries) getOrderedFields(query account.InvoiceQuery) *output.OrderedFields {
+	fields := output.NewOrderedFields()
+	fields.Set("id", output.NewFieldValue(strconv.Itoa(query.ID), true))
+	fields.Set("contact_id", output.NewFieldValue(strconv.Itoa(query.ContactID), false))
+	fields.Set("amount", output.NewFieldValue(fmt.Sprintf("%f", query.Amount), true))
+	fields.Set("what_was_expected", output.NewFieldValue(query.WhatWasExpected, false))
+	fields.Set("what_was_received", output.NewFieldValue(query.WhatWasReceived, false))
+	fields.Set("proposed_solution", output.NewFieldValue(query.ProposedSolution, false))
+	fields.Set("invoice_ids", output.NewFieldValue(helper.JoinInt(query.InvoiceIDs, ", "), true))
 
 	return fields
 }
