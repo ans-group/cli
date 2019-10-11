@@ -18,6 +18,7 @@ func accountInvoiceQueryRootCmd() *cobra.Command {
 	// Child commands
 	cmd.AddCommand(accountInvoiceQueryListCmd())
 	cmd.AddCommand(accountInvoiceQueryShowCmd())
+	cmd.AddCommand(accountInvoiceQueryCreateCmd())
 
 	return cmd
 }
@@ -88,4 +89,65 @@ func accountInvoiceQueryShow(service account.AccountService, cmd *cobra.Command,
 	}
 
 	outputAccountInvoiceQueries(queries)
+}
+
+func accountInvoiceQueryCreateCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:     "create <invoice: name>",
+		Short:   "Creates a invoice query",
+		Long:    "This command creates a new invoice query",
+		Example: "ukfast account invoice query create example.com --name sub.example.com --type A",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Missing invoice")
+			}
+
+			return nil
+		},
+		Run: func(cmd *cobra.Command, args []string) {
+			accountInvoiceQueryCreate(getClient().AccountService(), cmd, args)
+		},
+	}
+
+	// Setup flags
+	cmd.Flags().Int("contact-id", 0, "The identifier of the contact that raised this query")
+	cmd.MarkFlagRequired("contact-id")
+	cmd.Flags().String("contact-method", "", "What is the preferred method to provide feedback on this query")
+	cmd.MarkFlagRequired("contact-method")
+	cmd.Flags().Float32("amount", 0, "The amount that is being queried")
+	cmd.Flags().String("what-was-expected", "", "Text explaining what was expected")
+	cmd.MarkFlagRequired("what-was-expected")
+	cmd.Flags().String("what-was-received", "", "Text explaining what was actually received")
+	cmd.MarkFlagRequired("what-was-received")
+	cmd.Flags().String("proposed-solution", "", "What is the proposed solution")
+	cmd.MarkFlagRequired("proposed-solution")
+	cmd.Flags().IntSlice("invoice-id", []int{}, "Invoice ID for query")
+	cmd.MarkFlagRequired("invoice-id")
+
+	return cmd
+}
+
+func accountInvoiceQueryCreate(service account.AccountService, cmd *cobra.Command, args []string) {
+	createRequest := account.CreateInvoiceQueryRequest{}
+	createRequest.ContactID, _ = cmd.Flags().GetInt("contact-id")
+	createRequest.ContactMethod, _ = cmd.Flags().GetString("contact-method")
+	createRequest.Amount, _ = cmd.Flags().GetFloat32("amount")
+	createRequest.WhatWasExpected, _ = cmd.Flags().GetString("what-was-expected")
+	createRequest.WhatWasReceived, _ = cmd.Flags().GetString("what-was-received")
+	createRequest.ProposedSolution, _ = cmd.Flags().GetString("proposed-solution")
+	createRequest.InvoiceIDs, _ = cmd.Flags().GetIntSlice("invoice-id")
+
+	id, err := service.CreateInvoiceQuery(createRequest)
+	if err != nil {
+		output.Fatalf("Error creating invoice query: %s", err)
+		return
+	}
+
+	query, err := service.GetInvoiceQuery(id)
+	if err != nil {
+		output.Fatalf("Error retrieving new invoice query [%d]: %s", id, err)
+		return
+	}
+
+	outputAccountInvoiceQueries([]account.InvoiceQuery{query})
 }
