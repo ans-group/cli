@@ -93,10 +93,10 @@ func accountInvoiceQueryShow(service account.AccountService, cmd *cobra.Command,
 
 func accountInvoiceQueryCreateCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "create <invoice: name>",
+		Use:     "create",
 		Short:   "Creates a invoice query",
 		Long:    "This command creates a new invoice query",
-		Example: "ukfast account invoice query create example.com --name sub.example.com --type A",
+		Example: "ukfast account invoice query create",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing invoice")
