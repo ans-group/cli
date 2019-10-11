@@ -117,3 +117,56 @@ func Test_accountInvoiceQueryShow(t *testing.T) {
 		})
 	})
 }
+
+func Test_accountInvoiceQueryCreate(t *testing.T) {
+	t.Run("DefaultCreate", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockAccountService(mockCtrl)
+		cmd := accountInvoiceQueryCreateCmd()
+		cmd.Flags().Set("contact-id", "4")
+
+		gomock.InOrder(
+			service.EXPECT().CreateInvoiceQuery(gomock.Any()).Do(func(req account.CreateInvoiceQueryRequest) {
+				if req.ContactID != 4 {
+					t.Fatalf("Expected ContactID '4', got '%d'", req.ContactID)
+				}
+			}).Return(123, nil),
+			service.EXPECT().GetInvoiceQuery(123).Return(account.InvoiceQuery{}, nil),
+		)
+
+		accountInvoiceQueryCreate(service, cmd, []string{})
+	})
+
+	t.Run("CreateInvoiceQueryError_OutputsFatal", func(t *testing.T) {
+
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockAccountService(mockCtrl)
+
+		service.EXPECT().CreateInvoiceQuery(gomock.Any()).Return(123, errors.New("test error")).Times(1)
+
+		test_output.AssertFatalOutput(t, "Error creating invoice query: test error\n", func() {
+			accountInvoiceQueryCreate(service, &cobra.Command{}, []string{})
+		})
+	})
+
+	t.Run("GetInvoiceQueryError_OutputsFatal", func(t *testing.T) {
+
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockAccountService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().CreateInvoiceQuery(gomock.Any()).Return(123, nil),
+			service.EXPECT().GetInvoiceQuery(123).Return(account.InvoiceQuery{}, errors.New("test error")),
+		)
+
+		test_output.AssertFatalOutput(t, "Error retrieving new invoice query [123]: test error\n", func() {
+			accountInvoiceQueryCreate(service, &cobra.Command{}, []string{})
+		})
+	})
+}
