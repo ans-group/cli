@@ -117,7 +117,7 @@ func safednsZoneNoteCreateCmd() *cobra.Command {
 		Use:     "create <zone: name>",
 		Short:   "Creates a zone note",
 		Long:    "This command creates a zone note",
-		Example: "ukfast safedns zone note create ukfast.co.uk --name subdomain.ukfast.co.uk --type A --content 1.2.3.4",
+		Example: "ukfast safedns zone note create ukfast.co.uk --notes \"test note\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing zone")
@@ -130,22 +130,17 @@ func safednsZoneNoteCreateCmd() *cobra.Command {
 		},
 	}
 
+	cmd.Flags().Int("contact-id", 0, "Contact ID for note")
 	cmd.Flags().String("notes", "", "Note content")
 	cmd.MarkFlagRequired("notes")
-	cmd.Flags().String("ip", "", "Note IP address")
-	cmd.MarkFlagRequired("ip")
 
 	return cmd
 }
 
 func safednsZoneNoteCreate(service safedns.SafeDNSService, cmd *cobra.Command, args []string) {
-	notes, _ := cmd.Flags().GetString("notes")
-	ip, _ := cmd.Flags().GetString("ip")
-
-	createRequest := safedns.CreateNoteRequest{
-		Notes: notes,
-		IP:    ip,
-	}
+	createRequest := safedns.CreateNoteRequest{}
+	createRequest.ContactID, _ = cmd.Flags().GetInt("contact-id")
+	createRequest.Notes, _ = cmd.Flags().GetString("notes")
 
 	id, err := service.CreateZoneNote(args[0], createRequest)
 	if err != nil {
