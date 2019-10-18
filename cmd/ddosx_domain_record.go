@@ -19,6 +19,7 @@ func ddosxDomainRecordRootCmd() *cobra.Command {
 	cmd.AddCommand(ddosxDomainRecordShowCmd())
 	cmd.AddCommand(ddosxDomainRecordCreateCmd())
 	cmd.AddCommand(ddosxDomainRecordUpdateCmd())
+	cmd.AddCommand(ddosxDomainRecordDeleteCmd())
 
 	return cmd
 }
@@ -234,7 +235,7 @@ func ddosxDomainRecordDeleteCmd() *cobra.Command {
 		Use:     "delete <domain: name>...",
 		Short:   "Deletes a domain record",
 		Long:    "This command deletes one or more domain records",
-		Example: "ukfast ddosx domain record delete example.com 00000000-0000-0000-0000-000000000000 --content 1.2.3.4",
+		Example: "ukfast ddosx domain record delete example.com 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
