@@ -199,7 +199,6 @@ func Test_safednsZoneNoteCreate(t *testing.T) {
 
 		expectedRequest := safedns.CreateNoteRequest{
 			Notes: "test note 1",
-			IP:    "1.2.3.4",
 		}
 
 		gomock.InOrder(

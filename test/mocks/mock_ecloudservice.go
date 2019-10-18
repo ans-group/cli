@@ -177,6 +177,51 @@ func (mr *MockECloudServiceMockRecorder) DeleteVirtualMachineTag(arg0, arg1 inte
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteVirtualMachineTag", reflect.TypeOf((*MockECloudService)(nil).DeleteVirtualMachineTag), arg0, arg1)
 }
 
+// GetActiveDirectoryDomain mocks base method
+func (m *MockECloudService) GetActiveDirectoryDomain(arg0 int) (ecloud.ActiveDirectoryDomain, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetActiveDirectoryDomain", arg0)
+	ret0, _ := ret[0].(ecloud.ActiveDirectoryDomain)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetActiveDirectoryDomain indicates an expected call of GetActiveDirectoryDomain
+func (mr *MockECloudServiceMockRecorder) GetActiveDirectoryDomain(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetActiveDirectoryDomain", reflect.TypeOf((*MockECloudService)(nil).GetActiveDirectoryDomain), arg0)
+}
+
+// GetActiveDirectoryDomains mocks base method
+func (m *MockECloudService) GetActiveDirectoryDomains(arg0 connection.APIRequestParameters) ([]ecloud.ActiveDirectoryDomain, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetActiveDirectoryDomains", arg0)
+	ret0, _ := ret[0].([]ecloud.ActiveDirectoryDomain)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetActiveDirectoryDomains indicates an expected call of GetActiveDirectoryDomains
+func (mr *MockECloudServiceMockRecorder) GetActiveDirectoryDomains(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetActiveDirectoryDomains", reflect.TypeOf((*MockECloudService)(nil).GetActiveDirectoryDomains), arg0)
+}
+
+// GetActiveDirectoryDomainsPaginated mocks base method
+func (m *MockECloudService) GetActiveDirectoryDomainsPaginated(arg0 connection.APIRequestParameters) (*ecloud.PaginatedActiveDirectoryDomain, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetActiveDirectoryDomainsPaginated", arg0)
+	ret0, _ := ret[0].(*ecloud.PaginatedActiveDirectoryDomain)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetActiveDirectoryDomainsPaginated indicates an expected call of GetActiveDirectoryDomainsPaginated
+func (mr *MockECloudServiceMockRecorder) GetActiveDirectoryDomainsPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetActiveDirectoryDomainsPaginated", reflect.TypeOf((*MockECloudService)(nil).GetActiveDirectoryDomainsPaginated), arg0)
+}
+
 // GetAppliance mocks base method
 func (m *MockECloudService) GetAppliance(arg0 string) (ecloud.Appliance, error) {
 	m.ctrl.T.Helper()
