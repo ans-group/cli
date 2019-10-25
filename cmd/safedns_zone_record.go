@@ -152,7 +152,7 @@ func safednsZoneRecordCreateCmd() *cobra.Command {
 	cmd.MarkFlagRequired("type")
 	cmd.Flags().String("content", "", "Record content")
 	cmd.MarkFlagRequired("content")
-	cmd.Flags().Int("priority", 0, "Record priority. Only applicable with MX type records")
+	cmd.Flags().Int("priority", 0, "Record priority. Only applicable with MX and SRV type records")
 
 	return cmd
 }
