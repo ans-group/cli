@@ -55,7 +55,7 @@ Environment variables can be used to configure/manipulate the CLI
 #### Debug
 
 * `UKF_API_TIMEOUT_SECONDS`: (int) HTTP timeout for API requests. Default: `90`
-* `UKF_API_URL`: (string) API URL. Default: `api.ukfast.io`
+* `UKF_API_URI`: (string) API URL. Default: `api.ukfast.io`
 * `UKF_API_INSECURE`: (bool) Specifies to ignore API certificate validation checks
 * `UKF_API_DEBUG`: (bool) Specifies for debug messages to be output to stderr
 * `UKF_API_PAGINATION_PERPAGE` (int) Specifies the per-page for paginated requests
@@ -73,7 +73,7 @@ Values defined in the configuration file take precedence over environment variab
 #### Debug
 
 * `api_timeout_seconds`: (int) HTTP timeout for API requests. Default: `90`
-* `api_url`: (string) API URL. Default: `api.ukfast.io`
+* `api_uri`: (string) API URI. Default: `api.ukfast.io`
 * `api_insecure`: (bool) Specifies to ignore API certificate validation checks
 * `api_debug`: (bool) Specifies for debug messages to be output to stderr
 * `api_pagination_perpage` (int) Specifies the per-page for paginated requests
