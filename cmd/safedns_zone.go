@@ -19,6 +19,7 @@ func safednsZoneRootCmd() *cobra.Command {
 	cmd.AddCommand(safednsZoneListCmd())
 	cmd.AddCommand(safednsZoneShowCmd())
 	cmd.AddCommand(safednsZoneCreateCmd())
+	cmd.AddCommand(safednsZoneUpdateCmd())
 	cmd.AddCommand(safednsZoneDeleteCmd())
 
 	// Child root commands
@@ -139,6 +140,53 @@ func safednsZoneCreate(service safedns.SafeDNSService, cmd *cobra.Command, args 
 	}
 
 	outputSafeDNSZones([]safedns.Zone{zone})
+}
+
+func safednsZoneUpdateCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:     "update <zone: name>...",
+		Short:   "Updates a zone",
+		Long:    "This command updates one or more zones",
+		Example: "ukfast safedns zone update ukfast.co.uk --description \"some description\"",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Missing zone")
+			}
+
+			return nil
+		},
+		Run: func(cmd *cobra.Command, args []string) {
+			safednsZoneUpdate(getClient().SafeDNSService(), cmd, args)
+		},
+	}
+
+	cmd.Flags().String("description", "", "Description for zone")
+
+	return cmd
+}
+
+func safednsZoneUpdate(service safedns.SafeDNSService, cmd *cobra.Command, args []string) {
+	patchRequest := safedns.PatchZoneRequest{}
+	patchRequest.Description, _ = cmd.Flags().GetString("description")
+
+	var zones []safedns.Zone
+	for _, arg := range args {
+		err := service.PatchZone(arg, patchRequest)
+		if err != nil {
+			OutputWithErrorLevelf("Error updating zone [%s]: %s", arg, err)
+			continue
+		}
+
+		zone, err := service.GetZone(arg)
+		if err != nil {
+			OutputWithErrorLevelf("Error retrieving updated zone [%s]: %s", arg, err)
+			continue
+		}
+
+		zones = append(zones, zone)
+	}
+
+	outputSafeDNSZones(zones)
 }
 
 func safednsZoneDeleteCmd() *cobra.Command {

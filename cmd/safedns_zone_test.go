@@ -201,6 +201,89 @@ func Test_safednsZoneCreate(t *testing.T) {
 	})
 }
 
+func Test_safednsZoneUpdateCmd_Args(t *testing.T) {
+	t.Run("ValidArgs_NoError", func(t *testing.T) {
+		err := safednsZoneUpdateCmd().Args(nil, []string{"testdomain.com"})
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("InvalidArgs_Error", func(t *testing.T) {
+		err := safednsZoneUpdateCmd().Args(nil, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing zone", err.Error())
+	})
+}
+
+func Test_safednsZoneUpdate(t *testing.T) {
+	t.Run("SingleZone", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+
+		cmd := safednsZoneCreateCmd()
+		cmd.Flags().Set("description", "test description")
+
+		expectedRequest := safedns.PatchZoneRequest{
+			Description: "test description",
+		}
+
+		gomock.InOrder(
+			service.EXPECT().PatchZone("testdomain1.com", expectedRequest).Return(nil),
+			service.EXPECT().GetZone("testdomain1.com").Return(safedns.Zone{}, nil),
+		)
+
+		safednsZoneUpdate(service, cmd, []string{"testdomain1.com"})
+	})
+
+	t.Run("MultipleZones", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().PatchZone("testdomain1.com", gomock.Any()).Return(nil),
+			service.EXPECT().GetZone("testdomain1.com").Return(safedns.Zone{}, nil),
+			service.EXPECT().PatchZone("testdomain2.com", gomock.Any()).Return(nil),
+			service.EXPECT().GetZone("testdomain2.com").Return(safedns.Zone{}, nil),
+		)
+
+		safednsZoneUpdate(service, &cobra.Command{}, []string{"testdomain1.com", "testdomain2.com"})
+	})
+
+	t.Run("PatchZoneError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+
+		service.EXPECT().PatchZone("testdomain1.com", gomock.Any()).Return(errors.New("test error"))
+
+		test_output.AssertErrorOutput(t, "Error updating zone [testdomain1.com]: test error\n", func() {
+			safednsZoneUpdate(service, &cobra.Command{}, []string{"testdomain1.com"})
+		})
+	})
+
+	t.Run("GetZoneError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().PatchZone("testdomain1.com", gomock.Any()).Return(nil),
+			service.EXPECT().GetZone("testdomain1.com").Return(safedns.Zone{}, errors.New("test error")),
+		)
+
+		test_output.AssertErrorOutput(t, "Error retrieving updated zone [testdomain1.com]: test error\n", func() {
+			safednsZoneUpdate(service, &cobra.Command{}, []string{"testdomain1.com"})
+		})
+	})
+}
+
 func Test_safednsZoneDeleteCmd_Args(t *testing.T) {
 	t.Run("ValidArgs_NoError", func(t *testing.T) {
 		err := safednsZoneDeleteCmd().Args(nil, []string{"testdomain.com"})
