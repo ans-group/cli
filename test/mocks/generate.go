@@ -8,3 +8,4 @@ package mocks
 //go:generate mockgen -package mocks -destination mock_registrarservice.go github.com/ukfast/sdk-go/pkg/service/registrar RegistrarService
 //go:generate mockgen -package mocks -destination mock_resourcelocatorprovider.go github.com/ukfast/cli/internal/pkg/resource ResourceLocatorProvider
 //go:generate mockgen -package mocks -destination mock_pssservice.go github.com/ukfast/sdk-go/pkg/service/pss PSSService
+//go:generate mockgen -package mocks -destination mock_storageservice.go github.com/ukfast/sdk-go/pkg/service/storage StorageService

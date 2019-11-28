@@ -71,6 +71,7 @@ func init() {
 	rootCmd.AddCommand(accountRootCmd())
 	rootCmd.AddCommand(registrarRootCmd())
 	rootCmd.AddCommand(pssRootCmd())
+	rootCmd.AddCommand(storageRootCmd())
 
 	appFilesystem = afero.NewOsFs()
 }
