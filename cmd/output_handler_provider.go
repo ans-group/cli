@@ -60,11 +60,7 @@ func (o *GenericOutputHandlerProvider) convertStruct(reflectedValue reflect.Valu
 			continue
 		}
 
-		// If defined, use json tag for field name, otherwise fall back to snake-cased property name
-		fieldName := reflectedValueTypeField.Tag.Get("json")
-		if fieldName == "" {
-			fieldName = strcase.ToSnake(reflectedValueTypeField.Name)
-		}
+		fieldName := strcase.ToSnake(reflectedValueTypeField.Name)
 
 		fields.Set(fieldName, output.NewFieldValue(o.fieldToString(reflectedValueField), o.isDefaultField(fieldName)))
 	}

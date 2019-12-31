@@ -34,8 +34,37 @@ func (m *MockLTaaSService) EXPECT() *MockLTaaSServiceMockRecorder {
 	return m.recorder
 }
 
+// CreateJob mocks base method
+func (m *MockLTaaSService) CreateJob(arg0 ltaas.CreateJobRequest) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateJob", arg0)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateJob indicates an expected call of CreateJob
+func (mr *MockLTaaSServiceMockRecorder) CreateJob(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateJob", reflect.TypeOf((*MockLTaaSService)(nil).CreateJob), arg0)
+}
+
+// DeleteJob mocks base method
+func (m *MockLTaaSService) DeleteJob(arg0 string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteJob", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteJob indicates an expected call of DeleteJob
+func (mr *MockLTaaSServiceMockRecorder) DeleteJob(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteJob", reflect.TypeOf((*MockLTaaSService)(nil).DeleteJob), arg0)
+}
+
 // GetDomain mocks base method
-func (m *MockLTaaSService) GetDomain(arg0 int) (ltaas.Domain, error) {
+func (m *MockLTaaSService) GetDomain(arg0 string) (ltaas.Domain, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetDomain", arg0)
 	ret0, _ := ret[0].(ltaas.Domain)
@@ -79,8 +108,68 @@ func (mr *MockLTaaSServiceMockRecorder) GetDomainsPaginated(arg0 interface{}) *g
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDomainsPaginated", reflect.TypeOf((*MockLTaaSService)(nil).GetDomainsPaginated), arg0)
 }
 
+// GetJob mocks base method
+func (m *MockLTaaSService) GetJob(arg0 string) (ltaas.Job, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetJob", arg0)
+	ret0, _ := ret[0].(ltaas.Job)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetJob indicates an expected call of GetJob
+func (mr *MockLTaaSServiceMockRecorder) GetJob(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetJob", reflect.TypeOf((*MockLTaaSService)(nil).GetJob), arg0)
+}
+
+// GetJobResults mocks base method
+func (m *MockLTaaSService) GetJobResults(arg0 string) (ltaas.JobResults, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetJobResults", arg0)
+	ret0, _ := ret[0].(ltaas.JobResults)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetJobResults indicates an expected call of GetJobResults
+func (mr *MockLTaaSServiceMockRecorder) GetJobResults(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetJobResults", reflect.TypeOf((*MockLTaaSService)(nil).GetJobResults), arg0)
+}
+
+// GetJobs mocks base method
+func (m *MockLTaaSService) GetJobs(arg0 connection.APIRequestParameters) ([]ltaas.Job, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetJobs", arg0)
+	ret0, _ := ret[0].([]ltaas.Job)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetJobs indicates an expected call of GetJobs
+func (mr *MockLTaaSServiceMockRecorder) GetJobs(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetJobs", reflect.TypeOf((*MockLTaaSService)(nil).GetJobs), arg0)
+}
+
+// GetJobsPaginated mocks base method
+func (m *MockLTaaSService) GetJobsPaginated(arg0 connection.APIRequestParameters) (*ltaas.PaginatedJob, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetJobsPaginated", arg0)
+	ret0, _ := ret[0].(*ltaas.PaginatedJob)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetJobsPaginated indicates an expected call of GetJobsPaginated
+func (mr *MockLTaaSServiceMockRecorder) GetJobsPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetJobsPaginated", reflect.TypeOf((*MockLTaaSService)(nil).GetJobsPaginated), arg0)
+}
+
 // GetTest mocks base method
-func (m *MockLTaaSService) GetTest(arg0 int) (ltaas.Test, error) {
+func (m *MockLTaaSService) GetTest(arg0 string) (ltaas.Test, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetTest", arg0)
 	ret0, _ := ret[0].(ltaas.Test)

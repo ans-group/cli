@@ -15,6 +15,7 @@ func loadtestRootCmd() *cobra.Command {
 	// Child root commands
 	cmd.AddCommand(loadtestDomainRootCmd())
 	cmd.AddCommand(loadtestTestRootCmd())
+	cmd.AddCommand(loadtestJobRootCmd())
 
 	return cmd
 }
@@ -30,5 +31,19 @@ func outputLoadTestTests(tests []ltaas.Test) {
 	err := Output(NewGenericOutputHandlerProvider(tests, []string{"id", "name", "number_of_users", "duration", "protocol", "path"}))
 	if err != nil {
 		output.Fatalf("Failed to output tests: %s", err)
+	}
+}
+
+func outputLoadTestJobs(jobs []ltaas.Job) {
+	err := Output(NewGenericOutputHandlerProvider(jobs, []string{"id", "status", "job_start_timestamp", "job_end_timestamp"}))
+	if err != nil {
+		output.Fatalf("Failed to output jobs: %s", err)
+	}
+}
+
+func outputLoadTestJobResults(results []ltaas.JobResults) {
+	err := Output(NewGenericOutputHandlerProvider(results, []string{"id", "status", "job_start_timestamp", "job_end_timestamp"}))
+	if err != nil {
+		output.Fatalf("Failed to output job results: %s", err)
 	}
 }

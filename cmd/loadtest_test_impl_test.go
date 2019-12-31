@@ -55,7 +55,7 @@ func Test_loadtestTestList(t *testing.T) {
 
 func Test_loadtestTestShowCmd_Args(t *testing.T) {
 	t.Run("ValidArgs_NoError", func(t *testing.T) {
-		err := loadtestTestShowCmd().Args(nil, []string{"123"})
+		err := loadtestTestShowCmd().Args(nil, []string{"00000000-0000-0000-0000-000000000000"})
 
 		assert.Nil(t, err)
 	})
@@ -75,9 +75,9 @@ func Test_loadtestTestShow(t *testing.T) {
 
 		service := mocks.NewMockLTaaSService(mockCtrl)
 
-		service.EXPECT().GetTest(123).Return(ltaas.Test{}, nil).Times(1)
+		service.EXPECT().GetTest("00000000-0000-0000-0000-000000000000").Return(ltaas.Test{}, nil).Times(1)
 
-		loadtestTestShow(service, &cobra.Command{}, []string{"123"})
+		loadtestTestShow(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000"})
 	})
 
 	t.Run("MultipleTests", func(t *testing.T) {
@@ -87,22 +87,11 @@ func Test_loadtestTestShow(t *testing.T) {
 		service := mocks.NewMockLTaaSService(mockCtrl)
 
 		gomock.InOrder(
-			service.EXPECT().GetTest(123).Return(ltaas.Test{}, nil),
-			service.EXPECT().GetTest(456).Return(ltaas.Test{}, nil),
+			service.EXPECT().GetTest("00000000-0000-0000-0000-000000000000").Return(ltaas.Test{}, nil),
+			service.EXPECT().GetTest("00000000-0000-0000-0000-000000000001").Return(ltaas.Test{}, nil),
 		)
 
-		loadtestTestShow(service, &cobra.Command{}, []string{"123", "456"})
-	})
-
-	t.Run("GetTestID_OutputsError", func(t *testing.T) {
-		mockCtrl := gomock.NewController(t)
-		defer mockCtrl.Finish()
-
-		service := mocks.NewMockLTaaSService(mockCtrl)
-
-		test_output.AssertErrorOutput(t, "Invalid test ID [abc]\n", func() {
-			loadtestTestShow(service, &cobra.Command{}, []string{"abc"})
-		})
+		loadtestTestShow(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000001"})
 	})
 
 	t.Run("GetTestError_OutputsError", func(t *testing.T) {
@@ -111,10 +100,10 @@ func Test_loadtestTestShow(t *testing.T) {
 
 		service := mocks.NewMockLTaaSService(mockCtrl)
 
-		service.EXPECT().GetTest(123).Return(ltaas.Test{}, errors.New("test error"))
+		service.EXPECT().GetTest("00000000-0000-0000-0000-000000000000").Return(ltaas.Test{}, errors.New("test error"))
 
-		test_output.AssertErrorOutput(t, "Error retrieving test [123]: test error\n", func() {
-			loadtestTestShow(service, &cobra.Command{}, []string{"123"})
+		test_output.AssertErrorOutput(t, "Error retrieving test [00000000-0000-0000-0000-000000000000]: test error\n", func() {
+			loadtestTestShow(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000"})
 		})
 	})
 }

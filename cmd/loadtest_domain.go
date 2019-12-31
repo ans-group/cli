@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"errors"
-	"strconv"
 
 	"github.com/spf13/cobra"
 	"github.com/ukfast/cli/internal/pkg/output"
@@ -55,7 +54,7 @@ func loadtestDomainShowCmd() *cobra.Command {
 		Use:     "show <domain: id>...",
 		Short:   "Shows a domain",
 		Long:    "This command shows one or more domains",
-		Example: "ukfast loadtest domain show 123",
+		Example: "ukfast loadtest domain show 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -72,13 +71,7 @@ func loadtestDomainShowCmd() *cobra.Command {
 func loadtestDomainShow(service ltaas.LTaaSService, cmd *cobra.Command, args []string) {
 	var domains []ltaas.Domain
 	for _, arg := range args {
-		domainID, err := strconv.Atoi(arg)
-		if err != nil {
-			OutputWithErrorLevelf("Invalid domain ID [%s]", arg)
-			continue
-		}
-
-		domain, err := service.GetDomain(domainID)
+		domain, err := service.GetDomain(arg)
 		if err != nil {
 			OutputWithErrorLevelf("Error retrieving domain [%s]: %s", arg, err)
 			continue

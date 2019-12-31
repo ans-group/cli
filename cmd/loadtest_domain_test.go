@@ -75,9 +75,9 @@ func Test_loadtestDomainShow(t *testing.T) {
 
 		service := mocks.NewMockLTaaSService(mockCtrl)
 
-		service.EXPECT().GetDomain(123).Return(ltaas.Domain{}, nil).Times(1)
+		service.EXPECT().GetDomain("00000000-0000-0000-0000-000000000000").Return(ltaas.Domain{}, nil).Times(1)
 
-		loadtestDomainShow(service, &cobra.Command{}, []string{"123"})
+		loadtestDomainShow(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000"})
 	})
 
 	t.Run("MultipleDomains", func(t *testing.T) {
@@ -87,22 +87,11 @@ func Test_loadtestDomainShow(t *testing.T) {
 		service := mocks.NewMockLTaaSService(mockCtrl)
 
 		gomock.InOrder(
-			service.EXPECT().GetDomain(123).Return(ltaas.Domain{}, nil),
-			service.EXPECT().GetDomain(456).Return(ltaas.Domain{}, nil),
+			service.EXPECT().GetDomain("00000000-0000-0000-0000-000000000000").Return(ltaas.Domain{}, nil),
+			service.EXPECT().GetDomain("00000000-0000-0000-0000-000000000001").Return(ltaas.Domain{}, nil),
 		)
 
-		loadtestDomainShow(service, &cobra.Command{}, []string{"123", "456"})
-	})
-
-	t.Run("GetDomainID_OutputsError", func(t *testing.T) {
-		mockCtrl := gomock.NewController(t)
-		defer mockCtrl.Finish()
-
-		service := mocks.NewMockLTaaSService(mockCtrl)
-
-		test_output.AssertErrorOutput(t, "Invalid domain ID [abc]\n", func() {
-			loadtestDomainShow(service, &cobra.Command{}, []string{"abc"})
-		})
+		loadtestDomainShow(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000001"})
 	})
 
 	t.Run("GetDomainError_OutputsError", func(t *testing.T) {
@@ -111,10 +100,10 @@ func Test_loadtestDomainShow(t *testing.T) {
 
 		service := mocks.NewMockLTaaSService(mockCtrl)
 
-		service.EXPECT().GetDomain(123).Return(ltaas.Domain{}, errors.New("test error"))
+		service.EXPECT().GetDomain("00000000-0000-0000-0000-000000000000").Return(ltaas.Domain{}, errors.New("test error"))
 
-		test_output.AssertErrorOutput(t, "Error retrieving domain [123]: test error\n", func() {
-			loadtestDomainShow(service, &cobra.Command{}, []string{"123"})
+		test_output.AssertErrorOutput(t, "Error retrieving domain [00000000-0000-0000-0000-000000000000]: test error\n", func() {
+			loadtestDomainShow(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000"})
 		})
 	})
 }

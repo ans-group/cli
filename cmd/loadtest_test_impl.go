@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"errors"
-	"strconv"
 
 	"github.com/spf13/cobra"
 	"github.com/ukfast/cli/internal/pkg/output"
@@ -55,7 +54,7 @@ func loadtestTestShowCmd() *cobra.Command {
 		Use:     "show <test: id>...",
 		Short:   "Shows a test",
 		Long:    "This command shows one or more tests",
-		Example: "ukfast loadtest test show 123",
+		Example: "ukfast loadtest test show 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing test")
@@ -72,13 +71,7 @@ func loadtestTestShowCmd() *cobra.Command {
 func loadtestTestShow(service ltaas.LTaaSService, cmd *cobra.Command, args []string) {
 	var tests []ltaas.Test
 	for _, arg := range args {
-		testID, err := strconv.Atoi(arg)
-		if err != nil {
-			OutputWithErrorLevelf("Invalid test ID [%s]", arg)
-			continue
-		}
-
-		test, err := service.GetTest(testID)
+		test, err := service.GetTest(arg)
 		if err != nil {
 			OutputWithErrorLevelf("Error retrieving test [%s]: %s", arg, err)
 			continue
