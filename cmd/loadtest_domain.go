@@ -20,6 +20,8 @@ func loadtestDomainRootCmd() *cobra.Command {
 	// Child commands
 	cmd.AddCommand(loadtestDomainListCmd())
 	cmd.AddCommand(loadtestDomainShowCmd())
+	cmd.AddCommand(loadtestDomainCreateCmd())
+	cmd.AddCommand(loadtestDomainDeleteCmd())
 
 	return cmd
 }
@@ -100,7 +102,7 @@ func loadtestDomainCreateCmd() *cobra.Command {
 	cmd.Flags().String("name", "", "Name of domain")
 	cmd.MarkFlagRequired("domain")
 	cmd.Flags().String("verification-method", "", "Verification method for domain")
-	cmd.MarkFlagRequired("domain")
+	cmd.MarkFlagRequired("verification-method")
 
 	return cmd
 }
@@ -152,16 +154,11 @@ func loadtestDomainDeleteCmd() *cobra.Command {
 }
 
 func loadtestDomainDelete(service ltaas.LTaaSService, cmd *cobra.Command, args []string) {
-	var domains []ltaas.Domain
 	for _, arg := range args {
-		domain, err := service.GetDomain(arg)
+		err := service.DeleteDomain(arg)
 		if err != nil {
 			output.OutputWithErrorLevelf("Error removing domain [%s]: %s", arg, err)
 			continue
 		}
-
-		domains = append(domains, domain)
 	}
-
-	outputLoadTestDomains(domains)
 }
