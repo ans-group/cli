@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/spf13/cobra"
 	"github.com/ukfast/cli/internal/pkg/clierrors"
@@ -111,8 +112,8 @@ func ddosxDomainHSTSRuleCreateCmd() *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			ddosxDomainHSTSRuleCreate(getClient().DDoSXService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return ddosxDomainHSTSRuleCreate(getClient().DDoSXService(), cmd, args)
 		},
 	}
 
@@ -126,12 +127,11 @@ func ddosxDomainHSTSRuleCreateCmd() *cobra.Command {
 	return cmd
 }
 
-func ddosxDomainHSTSRuleCreate(service ddosx.DDoSXService, cmd *cobra.Command, args []string) {
+func ddosxDomainHSTSRuleCreate(service ddosx.DDoSXService, cmd *cobra.Command, args []string) error {
 	ruleType, _ := cmd.Flags().GetString("type")
 	parsedRuleType, err := ddosx.ParseHSTSRuleType(ruleType)
 	if err != nil {
-		output.Fatal(clierrors.InvalidFlagValueString("type", ruleType, err))
-		return
+		return clierrors.NewErrInvalidFlagValue("type", ruleType, err)
 	}
 
 	createRequest := ddosx.CreateHSTSRuleRequest{}
@@ -147,17 +147,16 @@ func ddosxDomainHSTSRuleCreate(service ddosx.DDoSXService, cmd *cobra.Command, a
 
 	id, err := service.CreateDomainHSTSRule(args[0], createRequest)
 	if err != nil {
-		output.Fatalf("Error creating HSTS rule: %s", err)
-		return
+		return fmt.Errorf("Error creating HSTS rule: %s", err)
 	}
 
 	rule, err := service.GetDomainHSTSRule(args[0], id)
 	if err != nil {
-		output.Fatalf("Error retrieving new HSTS rule [%s]: %s", id, err.Error())
-		return
+		return fmt.Errorf("Error retrieving new HSTS rule [%s]: %s", id, err.Error())
 	}
 
 	outputDDoSXHSTSRules([]ddosx.HSTSRule{rule})
+	return nil
 }
 
 func ddosxDomainHSTSRuleUpdateCmd() *cobra.Command {

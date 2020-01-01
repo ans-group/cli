@@ -1,20 +1,26 @@
 package clierrors
 
-import "fmt"
+import (
+	"fmt"
+)
 
-type MalformedFlagError string
-
-func (e *MalformedFlagError) Error() string {
-	return string(*e)
+type ErrInvalidFlagValue struct {
+	Name  string
+	Value string
+	Err   error
 }
 
-// InvalidFlagValueString returns an error string for invalid flag values, with
-// error err appended if not nil
-func InvalidFlagValueString(name string, value string, err error) string {
-	str := fmt.Sprintf("Invalid value '%s' provided for '%s'", value, name)
-	if err != nil {
-		str = fmt.Sprintf("%s: %s", str, err)
+func (e *ErrInvalidFlagValue) Error() string {
+	str := fmt.Sprintf("Invalid value '%s' provided for '%s'", e.Value, e.Name)
+	if e.Err != nil {
+		str = fmt.Sprintf("%s: %s", str, e.Err)
 	}
 
 	return str
+}
+
+func (e *ErrInvalidFlagValue) Unwrap() error { return e.Err }
+
+func NewErrInvalidFlagValue(name string, value string, err error) *ErrInvalidFlagValue {
+	return &ErrInvalidFlagValue{Name: name, Value: value, Err: err}
 }

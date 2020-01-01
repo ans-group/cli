@@ -34,6 +34,21 @@ func (m *MockLTaaSService) EXPECT() *MockLTaaSServiceMockRecorder {
 	return m.recorder
 }
 
+// CreateDomain mocks base method
+func (m *MockLTaaSService) CreateDomain(arg0 ltaas.CreateDomainRequest) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateDomain", arg0)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateDomain indicates an expected call of CreateDomain
+func (mr *MockLTaaSServiceMockRecorder) CreateDomain(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateDomain", reflect.TypeOf((*MockLTaaSService)(nil).CreateDomain), arg0)
+}
+
 // CreateJob mocks base method
 func (m *MockLTaaSService) CreateJob(arg0 ltaas.CreateJobRequest) (string, error) {
 	m.ctrl.T.Helper()
@@ -47,6 +62,20 @@ func (m *MockLTaaSService) CreateJob(arg0 ltaas.CreateJobRequest) (string, error
 func (mr *MockLTaaSServiceMockRecorder) CreateJob(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateJob", reflect.TypeOf((*MockLTaaSService)(nil).CreateJob), arg0)
+}
+
+// DeleteDomain mocks base method
+func (m *MockLTaaSService) DeleteDomain(arg0 string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteDomain", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteDomain indicates an expected call of DeleteDomain
+func (mr *MockLTaaSServiceMockRecorder) DeleteDomain(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteDomain", reflect.TypeOf((*MockLTaaSService)(nil).DeleteDomain), arg0)
 }
 
 // DeleteJob mocks base method
