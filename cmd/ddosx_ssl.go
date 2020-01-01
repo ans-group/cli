@@ -80,7 +80,7 @@ func ddosxSSLShow(service ddosx.DDoSXService, cmd *cobra.Command, args []string)
 	for _, arg := range args {
 		ssl, err := service.GetSSL(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving ssl [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving ssl [%s]: %s", arg, err)
 			continue
 		}
 
@@ -221,7 +221,7 @@ func ddosxSSLDelete(service ddosx.DDoSXService, cmd *cobra.Command, args []strin
 	for _, arg := range args {
 		err := service.DeleteSSL(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error removing ssl [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error removing ssl [%s]: %s", arg, err)
 			continue
 		}
 	}

@@ -45,7 +45,7 @@ func ddosxDomainACLGeoIPRulesModeShow(service ddosx.DDoSXService, cmd *cobra.Com
 	for _, arg := range args {
 		mode, err := service.GetDomainACLGeoIPRulesMode(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving domain [%s] ACL GeoIP rules mode: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving domain [%s] ACL GeoIP rules mode: %s", arg, err)
 			continue
 		}
 

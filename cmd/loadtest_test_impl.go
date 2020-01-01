@@ -73,7 +73,7 @@ func loadtestTestShow(service ltaas.LTaaSService, cmd *cobra.Command, args []str
 	for _, arg := range args {
 		test, err := service.GetTest(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving test [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving test [%s]: %s", arg, err)
 			continue
 		}
 

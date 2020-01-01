@@ -87,7 +87,7 @@ func ddosxDomainHSTSRuleShow(service ddosx.DDoSXService, cmd *cobra.Command, arg
 	for _, arg := range args[1:] {
 		rule, err := service.GetDomainHSTSRule(args[0], arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving HSTS rule [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving HSTS rule [%s]: %s", arg, err)
 			continue
 		}
 
@@ -209,13 +209,13 @@ func ddosxDomainHSTSRuleUpdate(service ddosx.DDoSXService, cmd *cobra.Command, a
 	for _, arg := range args[1:] {
 		err := service.PatchDomainHSTSRule(args[0], arg, patchRequest)
 		if err != nil {
-			OutputWithErrorLevelf("Error updating domain HSTS rule [%s]: %s", arg, err.Error())
+			output.OutputWithErrorLevelf("Error updating domain HSTS rule [%s]: %s", arg, err.Error())
 			continue
 		}
 
 		rule, err := service.GetDomainHSTSRule(args[0], arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving updated HSTS rule [%s]: %s", arg, err.Error())
+			output.OutputWithErrorLevelf("Error retrieving updated HSTS rule [%s]: %s", arg, err.Error())
 			return
 		}
 
@@ -251,7 +251,7 @@ func ddosxDomainHSTSRuleDelete(service ddosx.DDoSXService, cmd *cobra.Command, a
 	for _, arg := range args[1:] {
 		err := service.DeleteDomainHSTSRule(args[0], arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error removing domain HSTS rule [%s]: %s", arg, err.Error())
+			output.OutputWithErrorLevelf("Error removing domain HSTS rule [%s]: %s", arg, err.Error())
 			continue
 		}
 	}

@@ -79,7 +79,7 @@ func loadtestJobShow(service ltaas.LTaaSService, cmd *cobra.Command, args []stri
 	for _, arg := range args {
 		job, err := service.GetJob(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving job [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving job [%s]: %s", arg, err)
 			continue
 		}
 
@@ -156,7 +156,7 @@ func loadtestJobDelete(service ltaas.LTaaSService, cmd *cobra.Command, args []st
 	for _, arg := range args {
 		job, err := service.GetJob(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error removing job [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error removing job [%s]: %s", arg, err)
 			continue
 		}
 

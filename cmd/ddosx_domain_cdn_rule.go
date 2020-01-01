@@ -87,7 +87,7 @@ func ddosxDomainCDNRuleShow(service ddosx.DDoSXService, cmd *cobra.Command, args
 	for _, arg := range args[1:] {
 		rule, err := service.GetDomainCDNRule(args[0], arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving CDN rule [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving CDN rule [%s]: %s", arg, err)
 			continue
 		}
 
@@ -254,13 +254,13 @@ func ddosxDomainCDNRuleUpdate(service ddosx.DDoSXService, cmd *cobra.Command, ar
 	for _, arg := range args[1:] {
 		err := service.PatchDomainCDNRule(args[0], arg, patchRequest)
 		if err != nil {
-			OutputWithErrorLevelf("Error updating domain CDN rule [%s]: %s", arg, err.Error())
+			output.OutputWithErrorLevelf("Error updating domain CDN rule [%s]: %s", arg, err.Error())
 			continue
 		}
 
 		rule, err := service.GetDomainCDNRule(args[0], arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving updated CDN rule [%s]: %s", arg, err.Error())
+			output.OutputWithErrorLevelf("Error retrieving updated CDN rule [%s]: %s", arg, err.Error())
 			return
 		}
 
@@ -296,7 +296,7 @@ func ddosxDomainCDNRuleDelete(service ddosx.DDoSXService, cmd *cobra.Command, ar
 	for _, arg := range args[1:] {
 		err := service.DeleteDomainCDNRule(args[0], arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error removing domain CDN rule [%s]: %s", arg, err.Error())
+			output.OutputWithErrorLevelf("Error removing domain CDN rule [%s]: %s", arg, err.Error())
 			continue
 		}
 	}

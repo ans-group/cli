@@ -75,13 +75,13 @@ func accountInvoiceQueryShow(service account.AccountService, cmd *cobra.Command,
 	for _, arg := range args {
 		queryID, err := strconv.Atoi(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Invalid invoice query ID [%s]", arg)
+			output.OutputWithErrorLevelf("Invalid invoice query ID [%s]", arg)
 			continue
 		}
 
 		query, err := service.GetInvoiceQuery(queryID)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving invoice query [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving invoice query [%s]: %s", arg, err)
 			continue
 		}
 

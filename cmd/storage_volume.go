@@ -74,13 +74,13 @@ func storageVolumeShow(service storage.StorageService, cmd *cobra.Command, args 
 	for _, arg := range args {
 		volumeID, err := strconv.Atoi(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Invalid volume ID [%s]", arg)
+			output.OutputWithErrorLevelf("Invalid volume ID [%s]", arg)
 			continue
 		}
 
 		volume, err := service.GetVolume(volumeID)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving volume [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving volume [%s]: %s", arg, err)
 			continue
 		}
 

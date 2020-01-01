@@ -99,7 +99,7 @@ func ecloudPodTemplateShow(service ecloud.ECloudService, cmd *cobra.Command, arg
 	for _, arg := range args[1:] {
 		template, err := service.GetPodTemplate(podID, arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving pod template [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving pod template [%s]: %s", arg, err)
 			continue
 		}
 
@@ -210,7 +210,7 @@ func ecloudPodTemplateDelete(service ecloud.ECloudService, cmd *cobra.Command, a
 	for _, arg := range args[1:] {
 		err = service.DeletePodTemplate(podID, arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error removing pod template [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error removing pod template [%s]: %s", arg, err)
 			continue
 		}
 
@@ -218,7 +218,7 @@ func ecloudPodTemplateDelete(service ecloud.ECloudService, cmd *cobra.Command, a
 		if waitFlag {
 			err := WaitForCommand(PodTemplateExistsWaitFunc(service, podID, arg, false))
 			if err != nil {
-				OutputWithErrorLevelf("Error removing pod template [%s]: %s", arg, err)
+				output.OutputWithErrorLevelf("Error removing pod template [%s]: %s", arg, err)
 			}
 		}
 	}

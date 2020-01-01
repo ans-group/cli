@@ -9,6 +9,7 @@ import (
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
 	"github.com/ukfast/cli/internal/pkg/helper"
+	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/pss"
 )
 
@@ -143,7 +144,7 @@ func pssReplyAttachmentDelete(service pss.PSSService, cmd *cobra.Command, args [
 	for _, arg := range args[1:] {
 		err := service.DeleteReplyAttachment(args[0], arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error deleting reply attachment [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error deleting reply attachment [%s]: %s", arg, err)
 		}
 	}
 }

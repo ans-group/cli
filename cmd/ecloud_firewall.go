@@ -74,13 +74,13 @@ func ecloudFirewallShow(service ecloud.ECloudService, cmd *cobra.Command, args [
 	for _, arg := range args {
 		firewallID, err := strconv.Atoi(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Invalid firewall ID [%s]", arg)
+			output.OutputWithErrorLevelf("Invalid firewall ID [%s]", arg)
 			continue
 		}
 
 		firewall, err := service.GetFirewall(firewallID)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving firewall [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving firewall [%s]: %s", arg, err)
 			continue
 		}
 

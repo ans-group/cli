@@ -101,7 +101,7 @@ func ecloudSolutionTagShow(service ecloud.ECloudService, cmd *cobra.Command, arg
 	for _, arg := range args[1:] {
 		tag, err := service.GetSolutionTag(solutionID, arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving solution tag [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving solution tag [%s]: %s", arg, err)
 			continue
 		}
 
@@ -212,13 +212,13 @@ func ecloudSolutionTagUpdate(service ecloud.ECloudService, cmd *cobra.Command, a
 	for _, arg := range args[1:] {
 		err = service.PatchSolutionTag(solutionID, arg, patchRequest)
 		if err != nil {
-			OutputWithErrorLevelf("Error updating solution tag [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error updating solution tag [%s]: %s", arg, err)
 			continue
 		}
 
 		tag, err := service.GetSolutionTag(solutionID, arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving updated solution tag [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving updated solution tag [%s]: %s", arg, err)
 			continue
 		}
 
@@ -260,7 +260,7 @@ func ecloudSolutionTagDelete(service ecloud.ECloudService, cmd *cobra.Command, a
 	for _, arg := range args[1:] {
 		err = service.DeleteSolutionTag(solutionID, arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error removing solution tag [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error removing solution tag [%s]: %s", arg, err)
 		}
 	}
 }

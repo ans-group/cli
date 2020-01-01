@@ -101,7 +101,7 @@ func ecloudVirtualMachineTagShow(service ecloud.ECloudService, cmd *cobra.Comman
 	for _, arg := range args[1:] {
 		tag, err := service.GetVirtualMachineTag(vmID, arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving virtual machine tag [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving virtual machine tag [%s]: %s", arg, err)
 			continue
 		}
 
@@ -212,13 +212,13 @@ func ecloudVirtualMachineTagUpdate(service ecloud.ECloudService, cmd *cobra.Comm
 	for _, arg := range args[1:] {
 		err = service.PatchVirtualMachineTag(vmID, arg, patchRequest)
 		if err != nil {
-			OutputWithErrorLevelf("Error updating virtual machine tag [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error updating virtual machine tag [%s]: %s", arg, err)
 			continue
 		}
 
 		tag, err := service.GetVirtualMachineTag(vmID, arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving updated virtual machine tag [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving updated virtual machine tag [%s]: %s", arg, err)
 			continue
 		}
 
@@ -260,7 +260,7 @@ func ecloudVirtualMachineTagDelete(service ecloud.ECloudService, cmd *cobra.Comm
 	for _, arg := range args[1:] {
 		err = service.DeleteVirtualMachineTag(vmID, arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error removing virtual machine tag [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error removing virtual machine tag [%s]: %s", arg, err)
 		}
 	}
 }

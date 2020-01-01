@@ -89,7 +89,7 @@ func safednsZoneShow(service safedns.SafeDNSService, cmd *cobra.Command, args []
 	for _, arg := range args {
 		zone, err := service.GetZone(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving zone [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving zone [%s]: %s", arg, err)
 			continue
 		}
 
@@ -173,13 +173,13 @@ func safednsZoneUpdate(service safedns.SafeDNSService, cmd *cobra.Command, args 
 	for _, arg := range args {
 		err := service.PatchZone(arg, patchRequest)
 		if err != nil {
-			OutputWithErrorLevelf("Error updating zone [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error updating zone [%s]: %s", arg, err)
 			continue
 		}
 
 		zone, err := service.GetZone(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving updated zone [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving updated zone [%s]: %s", arg, err)
 			continue
 		}
 
@@ -212,7 +212,7 @@ func safednsZoneDelete(service safedns.SafeDNSService, cmd *cobra.Command, args 
 	for _, arg := range args {
 		err := service.DeleteZone(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error removing zone [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error removing zone [%s]: %s", arg, err)
 		}
 	}
 }

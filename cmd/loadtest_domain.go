@@ -73,7 +73,7 @@ func loadtestDomainShow(service ltaas.LTaaSService, cmd *cobra.Command, args []s
 	for _, arg := range args {
 		domain, err := service.GetDomain(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving domain [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving domain [%s]: %s", arg, err)
 			continue
 		}
 

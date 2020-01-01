@@ -78,13 +78,13 @@ func ecloudPodShow(service ecloud.ECloudService, cmd *cobra.Command, args []stri
 	for _, arg := range args {
 		podID, err := strconv.Atoi(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Invalid pod ID [%s]", arg)
+			output.OutputWithErrorLevelf("Invalid pod ID [%s]", arg)
 			continue
 		}
 
 		pod, err := service.GetPod(podID)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving pod [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving pod [%s]: %s", arg, err)
 			continue
 		}
 

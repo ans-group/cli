@@ -122,13 +122,13 @@ func safednsTemplateRecordShow(service safedns.SafeDNSService, cmd *cobra.Comman
 	for _, arg := range args[1:] {
 		recordID, err := strconv.Atoi(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Invalid record ID [%s]", arg)
+			output.OutputWithErrorLevelf("Invalid record ID [%s]", arg)
 			continue
 		}
 
 		templateRecord, err := service.GetTemplateRecord(templateID, recordID)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving record [%d]: %s", recordID, err)
+			output.OutputWithErrorLevelf("Error retrieving record [%d]: %s", recordID, err)
 			continue
 		}
 
@@ -266,19 +266,19 @@ func safednsTemplateRecordUpdate(service safedns.SafeDNSService, cmd *cobra.Comm
 	for _, arg := range args[1:] {
 		recordID, err := strconv.Atoi(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Invalid record ID [%s]", arg)
+			output.OutputWithErrorLevelf("Invalid record ID [%s]", arg)
 			continue
 		}
 
 		_, err = service.PatchTemplateRecord(templateID, recordID, patchRequest)
 		if err != nil {
-			OutputWithErrorLevelf("Error updating record [%d]: %s", recordID, err)
+			output.OutputWithErrorLevelf("Error updating record [%d]: %s", recordID, err)
 			continue
 		}
 
 		templateRecord, err := service.GetTemplateRecord(templateID, recordID)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving updated record [%d]: %s", recordID, err)
+			output.OutputWithErrorLevelf("Error retrieving updated record [%d]: %s", recordID, err)
 			continue
 		}
 
@@ -320,13 +320,13 @@ func safednsTemplateRecordDelete(service safedns.SafeDNSService, cmd *cobra.Comm
 	for _, arg := range args[1:] {
 		recordID, err := strconv.Atoi(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Invalid record ID [%s]", arg)
+			output.OutputWithErrorLevelf("Invalid record ID [%s]", arg)
 			continue
 		}
 
 		err = service.DeleteTemplateRecord(templateID, recordID)
 		if err != nil {
-			OutputWithErrorLevelf("Error removing record [%d]: %s", recordID, err)
+			output.OutputWithErrorLevelf("Error removing record [%d]: %s", recordID, err)
 		}
 	}
 }

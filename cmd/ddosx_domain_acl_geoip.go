@@ -91,7 +91,7 @@ func ddosxDomainACLGeoIPRuleShow(service ddosx.DDoSXService, cmd *cobra.Command,
 	for _, arg := range args[1:] {
 		rule, err := service.GetDomainACLGeoIPRule(args[0], arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving domain ACL GeoIP rule [%s]: %s", arg, err.Error())
+			output.OutputWithErrorLevelf("Error retrieving domain ACL GeoIP rule [%s]: %s", arg, err.Error())
 			continue
 		}
 
@@ -182,13 +182,13 @@ func ddosxDomainACLGeoIPRuleUpdate(service ddosx.DDoSXService, cmd *cobra.Comman
 	for _, arg := range args[1:] {
 		err := service.PatchDomainACLGeoIPRule(args[0], arg, patchRequest)
 		if err != nil {
-			OutputWithErrorLevelf("Error updating domain ACL GeoIP rule [%s]: %s", arg, err.Error())
+			output.OutputWithErrorLevelf("Error updating domain ACL GeoIP rule [%s]: %s", arg, err.Error())
 			continue
 		}
 
 		rule, err := service.GetDomainACLGeoIPRule(args[0], arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving updated domain ACL GeoIP rule [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving updated domain ACL GeoIP rule [%s]: %s", arg, err)
 			continue
 		}
 
@@ -224,7 +224,7 @@ func ddosxDomainACLGeoIPRuleDelete(service ddosx.DDoSXService, cmd *cobra.Comman
 	for _, arg := range args[1:] {
 		err := service.DeleteDomainACLGeoIPRule(args[0], arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error removing domain ACL GeoIP rule [%s]: %s", arg, err.Error())
+			output.OutputWithErrorLevelf("Error removing domain ACL GeoIP rule [%s]: %s", arg, err.Error())
 			continue
 		}
 	}

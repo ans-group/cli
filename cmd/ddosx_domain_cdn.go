@@ -50,13 +50,13 @@ func ddosxDomainCDNEnable(service ddosx.DDoSXService, cmd *cobra.Command, args [
 	for _, arg := range args {
 		err := service.AddDomainCDNConfiguration(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error enabling CDN for domain [%s]: %s", arg, err.Error())
+			output.OutputWithErrorLevelf("Error enabling CDN for domain [%s]: %s", arg, err.Error())
 			continue
 		}
 
 		domain, err := service.GetDomain(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving updated domain [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving updated domain [%s]: %s", arg, err)
 			continue
 		}
 
@@ -91,13 +91,13 @@ func ddosxDomainCDNDisable(service ddosx.DDoSXService, cmd *cobra.Command, args 
 	for _, arg := range args {
 		err := service.DeleteDomainCDNConfiguration(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error disabling CDN for domain [%s]: %s", arg, err.Error())
+			output.OutputWithErrorLevelf("Error disabling CDN for domain [%s]: %s", arg, err.Error())
 			continue
 		}
 
 		domain, err := service.GetDomain(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving updated domain [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving updated domain [%s]: %s", arg, err)
 			continue
 		}
 

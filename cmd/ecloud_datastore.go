@@ -74,13 +74,13 @@ func ecloudDatastoreShow(service ecloud.ECloudService, cmd *cobra.Command, args 
 	for _, arg := range args {
 		datastoreID, err := strconv.Atoi(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Invalid datastore ID [%s]", arg)
+			output.OutputWithErrorLevelf("Invalid datastore ID [%s]", arg)
 			continue
 		}
 
 		datastore, err := service.GetDatastore(datastoreID)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving datastore [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving datastore [%s]: %s", arg, err)
 			continue
 		}
 

@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/spf13/cobra"
+	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/ddosx"
 )
 
@@ -43,7 +44,7 @@ func ddosxSSLPrivateKeyShow(service ddosx.DDoSXService, cmd *cobra.Command, args
 	for _, arg := range args {
 		sslPrivateKey, err := service.GetSSLPrivateKey(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving ssl [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving ssl [%s]: %s", arg, err)
 			continue
 		}
 

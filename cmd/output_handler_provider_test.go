@@ -66,36 +66,6 @@ func TestGenericOutputHandlerProvider_GetFieldData(t *testing.T) {
 		assert.Len(t, output[0].Keys(), 2)
 	})
 
-	t.Run("WithJsonTags_ReturnsExpectedFieldNames", func(t *testing.T) {
-		type testType struct {
-			Property1 string `json:"new_property_1"`
-		}
-
-		data := testType{}
-		o := NewGenericOutputHandlerProvider(data, nil)
-
-		output, err := o.GetFieldData()
-
-		assert.Nil(t, err)
-		assert.Len(t, output[0].Keys(), 1)
-		assert.Equal(t, "new_property_1", output[0].Keys()[0])
-	})
-
-	t.Run("WithoutJsonTags_ReturnsExpectedFieldNames", func(t *testing.T) {
-		type testType struct {
-			Property1 string
-		}
-
-		data := testType{}
-		o := NewGenericOutputHandlerProvider(data, nil)
-
-		output, err := o.GetFieldData()
-
-		assert.Nil(t, err)
-		assert.Len(t, output[0].Keys(), 1)
-		assert.Equal(t, "property_1", output[0].Keys()[0])
-	})
-
 	t.Run("UnexportedProperty_ReturnsExpectedFields", func(t *testing.T) {
 		type testType struct {
 			Property1 string

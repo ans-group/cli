@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/spf13/cobra"
+	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/ddosx"
 )
 
@@ -49,7 +50,7 @@ func ddosxDomainHSTSShow(service ddosx.DDoSXService, cmd *cobra.Command, args []
 	for _, arg := range args {
 		configuration, err := service.GetDomainHSTSConfiguration(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving HSTS configuration for domain [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving HSTS configuration for domain [%s]: %s", arg, err)
 			continue
 		}
 
@@ -84,13 +85,13 @@ func ddosxDomainHSTSEnable(service ddosx.DDoSXService, cmd *cobra.Command, args 
 	for _, arg := range args {
 		err := service.AddDomainHSTSConfiguration(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error enabling HSTS for domain [%s]: %s", arg, err.Error())
+			output.OutputWithErrorLevelf("Error enabling HSTS for domain [%s]: %s", arg, err.Error())
 			continue
 		}
 
 		configuration, err := service.GetDomainHSTSConfiguration(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving updated HSTS configuration for domain [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving updated HSTS configuration for domain [%s]: %s", arg, err)
 			continue
 		}
 
@@ -125,13 +126,13 @@ func ddosxDomainHSTSDisable(service ddosx.DDoSXService, cmd *cobra.Command, args
 	for _, arg := range args {
 		err := service.DeleteDomainHSTSConfiguration(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error disabling HSTS for domain [%s]: %s", arg, err.Error())
+			output.OutputWithErrorLevelf("Error disabling HSTS for domain [%s]: %s", arg, err.Error())
 			continue
 		}
 
 		configuration, err := service.GetDomainHSTSConfiguration(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving updated HSTS configuration for domain [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving updated HSTS configuration for domain [%s]: %s", arg, err)
 			continue
 		}
 

@@ -74,13 +74,13 @@ func accountContactShow(service account.AccountService, cmd *cobra.Command, args
 	for _, arg := range args {
 		contactID, err := strconv.Atoi(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Invalid contact ID [%s]", arg)
+			output.OutputWithErrorLevelf("Invalid contact ID [%s]", arg)
 			continue
 		}
 
 		contact, err := service.GetContact(contactID)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving contact [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving contact [%s]: %s", arg, err)
 			continue
 		}
 

@@ -88,7 +88,7 @@ func ddosxDomainRecordShow(service ddosx.DDoSXService, cmd *cobra.Command, args 
 	for _, arg := range args[1:] {
 		record, err := service.GetDomainRecord(args[0], arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving domain record [%s]: %s", arg, err.Error())
+			output.OutputWithErrorLevelf("Error retrieving domain record [%s]: %s", arg, err.Error())
 			continue
 		}
 
@@ -214,13 +214,13 @@ func ddosxDomainRecordUpdate(service ddosx.DDoSXService, cmd *cobra.Command, arg
 	for _, arg := range args[1:] {
 		err := service.PatchDomainRecord(args[0], arg, patchRequest)
 		if err != nil {
-			OutputWithErrorLevelf("Error updating domain record [%s]: %s", arg, err.Error())
+			output.OutputWithErrorLevelf("Error updating domain record [%s]: %s", arg, err.Error())
 			continue
 		}
 
 		record, err := service.GetDomainRecord(args[0], arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving updated domain record [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving updated domain record [%s]: %s", arg, err)
 			continue
 		}
 
@@ -256,7 +256,7 @@ func ddosxDomainRecordDelete(service ddosx.DDoSXService, cmd *cobra.Command, arg
 	for _, arg := range args[1:] {
 		err := service.DeleteDomainRecord(args[0], arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error removing domain record [%s]: %s", arg, err.Error())
+			output.OutputWithErrorLevelf("Error removing domain record [%s]: %s", arg, err.Error())
 			continue
 		}
 	}

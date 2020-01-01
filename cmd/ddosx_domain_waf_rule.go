@@ -90,7 +90,7 @@ func ddosxDomainWAFRuleShow(service ddosx.DDoSXService, cmd *cobra.Command, args
 	for _, arg := range args[1:] {
 		rule, err := service.GetDomainWAFRule(args[0], arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving domain WAF rule [%s]: %s", arg, err.Error())
+			output.OutputWithErrorLevelf("Error retrieving domain WAF rule [%s]: %s", arg, err.Error())
 			continue
 		}
 
@@ -191,13 +191,13 @@ func ddosxDomainWAFRuleUpdate(service ddosx.DDoSXService, cmd *cobra.Command, ar
 	for _, arg := range args[1:] {
 		err := service.PatchDomainWAFRule(args[0], arg, patchRequest)
 		if err != nil {
-			OutputWithErrorLevelf("Error updating domain WAF rule [%s]: %s", arg, err.Error())
+			output.OutputWithErrorLevelf("Error updating domain WAF rule [%s]: %s", arg, err.Error())
 			continue
 		}
 
 		rule, err := service.GetDomainWAFRule(args[0], arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving updated domain WAF rule [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving updated domain WAF rule [%s]: %s", arg, err)
 			continue
 		}
 
@@ -233,7 +233,7 @@ func ddosxDomainWAFRuleDelete(service ddosx.DDoSXService, cmd *cobra.Command, ar
 	for _, arg := range args[1:] {
 		err := service.DeleteDomainWAFRule(args[0], arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error removing domain WAF rule [%s]: %s", arg, err.Error())
+			output.OutputWithErrorLevelf("Error removing domain WAF rule [%s]: %s", arg, err.Error())
 			continue
 		}
 	}

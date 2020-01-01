@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/registrar"
 )
 
@@ -53,7 +54,7 @@ func registrarWhoisShow(service registrar.RegistrarService, cmd *cobra.Command, 
 	for _, arg := range args {
 		whois, err := service.GetWhois(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving whois for domain [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving whois for domain [%s]: %s", arg, err)
 			continue
 		}
 
@@ -67,7 +68,7 @@ func registrarWhoisShowRaw(service registrar.RegistrarService, cmd *cobra.Comman
 	for _, arg := range args {
 		whois, err := service.GetWhoisRaw(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving raw whois for domain [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving raw whois for domain [%s]: %s", arg, err)
 			continue
 		}
 

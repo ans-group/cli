@@ -84,7 +84,7 @@ func ddosxDomainWAFRuleSetShow(service ddosx.DDoSXService, cmd *cobra.Command, a
 	for _, arg := range args[1:] {
 		ruleset, err := service.GetDomainWAFRuleSet(args[0], arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving domain WAF rule set [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving domain WAF rule set [%s]: %s", arg, err)
 			continue
 		}
 
@@ -132,13 +132,13 @@ func ddosxDomainWAFRuleSetUpdate(service ddosx.DDoSXService, cmd *cobra.Command,
 	for _, arg := range args[1:] {
 		err := service.PatchDomainWAFRuleSet(args[0], arg, patchRequest)
 		if err != nil {
-			OutputWithErrorLevelf("Error updating domain WAF rule set [%s]: %s", arg, err.Error())
+			output.OutputWithErrorLevelf("Error updating domain WAF rule set [%s]: %s", arg, err.Error())
 			continue
 		}
 
 		ruleset, err := service.GetDomainWAFRuleSet(args[0], arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving updated domain WAF rule set [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving updated domain WAF rule set [%s]: %s", arg, err)
 			continue
 		}
 

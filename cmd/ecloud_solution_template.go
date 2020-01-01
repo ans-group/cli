@@ -99,7 +99,7 @@ func ecloudSolutionTemplateShow(service ecloud.ECloudService, cmd *cobra.Command
 	for _, arg := range args[1:] {
 		template, err := service.GetSolutionTemplate(solutionID, arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving solution template [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving solution template [%s]: %s", arg, err)
 			continue
 		}
 
@@ -210,7 +210,7 @@ func ecloudSolutionTemplateDelete(service ecloud.ECloudService, cmd *cobra.Comma
 	for _, arg := range args[1:] {
 		err = service.DeleteSolutionTemplate(solutionID, arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error removing solution template [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error removing solution template [%s]: %s", arg, err)
 			continue
 		}
 
@@ -218,7 +218,7 @@ func ecloudSolutionTemplateDelete(service ecloud.ECloudService, cmd *cobra.Comma
 		if waitFlag {
 			err := WaitForCommand(SolutionTemplateExistsWaitFunc(service, solutionID, arg, false))
 			if err != nil {
-				OutputWithErrorLevelf("Error removing solution template [%s]: %s", arg, err)
+				output.OutputWithErrorLevelf("Error removing solution template [%s]: %s", arg, err)
 			}
 		}
 	}

@@ -96,7 +96,7 @@ func ddosxDomainPropertyShow(service ddosx.DDoSXService, cmd *cobra.Command, arg
 	for _, arg := range args[1:] {
 		property, err := service.GetDomainProperty(args[0], arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving domain property [%s]: %s", arg, err.Error())
+			output.OutputWithErrorLevelf("Error retrieving domain property [%s]: %s", arg, err.Error())
 			continue
 		}
 
@@ -145,13 +145,13 @@ func ddosxDomainPropertyUpdate(service ddosx.DDoSXService, cmd *cobra.Command, a
 	for _, arg := range args[1:] {
 		err := service.PatchDomainProperty(args[0], arg, updateRequest)
 		if err != nil {
-			OutputWithErrorLevelf("Error updating domain property [%s]: %s", arg, err.Error())
+			output.OutputWithErrorLevelf("Error updating domain property [%s]: %s", arg, err.Error())
 			continue
 		}
 
 		property, err := service.GetDomainProperty(args[0], arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving updated domain property [%s]: %s", arg, err.Error())
+			output.OutputWithErrorLevelf("Error retrieving updated domain property [%s]: %s", arg, err.Error())
 			continue
 		}
 

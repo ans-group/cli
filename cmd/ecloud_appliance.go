@@ -76,7 +76,7 @@ func ecloudApplianceShow(service ecloud.ECloudService, cmd *cobra.Command, args 
 	for _, arg := range args {
 		appliance, err := service.GetAppliance(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving appliance [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving appliance [%s]: %s", arg, err)
 			continue
 		}
 

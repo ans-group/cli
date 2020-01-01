@@ -74,13 +74,13 @@ func storageHostShow(service storage.StorageService, cmd *cobra.Command, args []
 	for _, arg := range args {
 		hostID, err := strconv.Atoi(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Invalid host ID [%s]", arg)
+			output.OutputWithErrorLevelf("Invalid host ID [%s]", arg)
 			continue
 		}
 
 		host, err := service.GetHost(hostID)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving host [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving host [%s]: %s", arg, err)
 			continue
 		}
 

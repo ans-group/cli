@@ -45,7 +45,7 @@ func Execute(build build.BuildInfo) {
 		output.Fatal(err.Error())
 	}
 
-	Exit()
+	output.ExitWithErrorLevel()
 }
 
 func init() {
