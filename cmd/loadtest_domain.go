@@ -32,26 +32,24 @@ func loadtestDomainListCmd() *cobra.Command {
 		Short:   "Lists domains",
 		Long:    "This command lists domains",
 		Example: "ukfast loadtest domain list",
-		Run: func(cmd *cobra.Command, args []string) {
-			loadtestDomainList(getClient().LTaaSService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return loadtestDomainList(getClient().LTaaSService(), cmd, args)
 		},
 	}
 }
 
-func loadtestDomainList(service ltaas.LTaaSService, cmd *cobra.Command, args []string) {
+func loadtestDomainList(service ltaas.LTaaSService, cmd *cobra.Command, args []string) error {
 	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
-		output.Fatal(err.Error())
-		return
+		return err
 	}
 
 	domains, err := service.GetDomains(params)
 	if err != nil {
-		output.Fatalf("Error retrieving domains: %s", err)
-		return
+		return fmt.Errorf("Error retrieving domains: %s", err)
 	}
 
-	outputLoadTestDomains(domains)
+	return outputLoadTestDomains(domains)
 }
 
 func loadtestDomainShowCmd() *cobra.Command {
@@ -67,13 +65,13 @@ func loadtestDomainShowCmd() *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			loadtestDomainShow(getClient().LTaaSService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return loadtestDomainShow(getClient().LTaaSService(), cmd, args)
 		},
 	}
 }
 
-func loadtestDomainShow(service ltaas.LTaaSService, cmd *cobra.Command, args []string) {
+func loadtestDomainShow(service ltaas.LTaaSService, cmd *cobra.Command, args []string) error {
 	var domains []ltaas.Domain
 	for _, arg := range args {
 		domain, err := service.GetDomain(arg)
@@ -85,7 +83,7 @@ func loadtestDomainShow(service ltaas.LTaaSService, cmd *cobra.Command, args []s
 		domains = append(domains, domain)
 	}
 
-	outputLoadTestDomains(domains)
+	return outputLoadTestDomains(domains)
 }
 
 func loadtestDomainCreateCmd() *cobra.Command {
@@ -130,8 +128,7 @@ func loadtestDomainCreate(service ltaas.LTaaSService, cmd *cobra.Command, args [
 		return fmt.Errorf("Error retrieving new domain: %s", err)
 	}
 
-	outputLoadTestDomains([]ltaas.Domain{domain})
-	return nil
+	return outputLoadTestDomains([]ltaas.Domain{domain})
 }
 
 func loadtestDomainDeleteCmd() *cobra.Command {

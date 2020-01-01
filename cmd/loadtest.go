@@ -5,7 +5,6 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/spf13/cobra"
-	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/cli/internal/pkg/resource"
 	"github.com/ukfast/sdk-go/pkg/connection"
 	"github.com/ukfast/sdk-go/pkg/service/ltaas"
@@ -66,30 +65,38 @@ func getLoadTestDomainByNameOrID(service ltaas.LTaaSService, nameOrID string) (l
 	return domain, nil
 }
 
-func outputLoadTestDomains(domains []ltaas.Domain) {
+func outputLoadTestDomains(domains []ltaas.Domain) error {
 	err := Output(NewGenericOutputHandlerProvider(domains, []string{"id", "name"}))
 	if err != nil {
-		output.Fatalf("Failed to output domains: %s", err)
+		return fmt.Errorf("Failed to output domains: %s", err)
 	}
+
+	return nil
 }
 
-func outputLoadTestTests(tests []ltaas.Test) {
+func outputLoadTestTests(tests []ltaas.Test) error {
 	err := Output(NewGenericOutputHandlerProvider(tests, []string{"id", "name", "number_of_users", "duration", "protocol", "path"}))
 	if err != nil {
-		output.Fatalf("Failed to output tests: %s", err)
+		return fmt.Errorf("Failed to output tests: %s", err)
 	}
+
+	return nil
 }
 
-func outputLoadTestJobs(jobs []ltaas.Job) {
+func outputLoadTestJobs(jobs []ltaas.Job) error {
 	err := Output(NewGenericOutputHandlerProvider(jobs, []string{"id", "status", "job_start_timestamp", "job_end_timestamp"}))
 	if err != nil {
-		output.Fatalf("Failed to output jobs: %s", err)
+		return fmt.Errorf("Failed to output jobs: %s", err)
 	}
+
+	return nil
 }
 
-func outputLoadTestJobResults(results []ltaas.JobResults) {
+func outputLoadTestJobResults(results []ltaas.JobResults) error {
 	err := Output(NewGenericOutputHandlerProvider(results, []string{"id", "status", "job_start_timestamp", "job_end_timestamp"}))
 	if err != nil {
-		output.Fatalf("Failed to output job results: %s", err)
+		return fmt.Errorf("Failed to output job results: %s", err)
 	}
+
+	return nil
 }

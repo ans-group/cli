@@ -51,6 +51,7 @@ func loadtestJobResultShowCmd() *cobra.Command {
 }
 
 func loadtestJobResultShow(service ltaas.LTaaSService, cmd *cobra.Command, args []string) error {
+	var allResults []ltaas.JobResults
 	for _, arg := range args {
 		results, err := service.GetJobResults(arg)
 		if err != nil {
@@ -87,10 +88,10 @@ func loadtestJobResultShow(service ltaas.LTaaSService, cmd *cobra.Command, args 
 			continue
 		}
 
-		outputLoadTestJobResults([]ltaas.JobResults{results})
+		allResults = append(allResults, results)
 	}
 
-	return nil
+	return outputLoadTestJobResults(allResults)
 }
 
 // generateGraph returns an ASCII graph for given parameters

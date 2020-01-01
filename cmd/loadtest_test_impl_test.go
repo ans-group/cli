@@ -32,9 +32,10 @@ func Test_loadtestTestList(t *testing.T) {
 		cmd := &cobra.Command{}
 		cmd.Flags().StringArray("filter", []string{"invalidfilter"}, "")
 
-		test_output.AssertFatalOutput(t, "Missing value for filtering\n", func() {
-			loadtestTestList(service, cmd, []string{})
-		})
+		err := loadtestTestList(service, cmd, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing value for filtering", err.Error())
 	})
 
 	t.Run("GetTestsError_OutputsFatal", func(t *testing.T) {
@@ -46,9 +47,10 @@ func Test_loadtestTestList(t *testing.T) {
 
 		service.EXPECT().GetTests(gomock.Any()).Return([]ltaas.Test{}, errors.New("test error")).Times(1)
 
-		test_output.AssertFatalOutput(t, "Error retrieving tests: test error\n", func() {
-			loadtestTestList(service, &cobra.Command{}, []string{})
-		})
+		err := loadtestTestList(service, &cobra.Command{}, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Error retrieving tests: test error", err.Error())
 	})
 }
 

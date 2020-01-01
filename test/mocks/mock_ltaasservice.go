@@ -241,3 +241,31 @@ func (mr *MockLTaaSServiceMockRecorder) GetTestsPaginated(arg0 interface{}) *gom
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTestsPaginated", reflect.TypeOf((*MockLTaaSService)(nil).GetTestsPaginated), arg0)
 }
+
+// VerifyDomainByDNS mocks base method
+func (m *MockLTaaSService) VerifyDomainByDNS(arg0 string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "VerifyDomainByDNS", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// VerifyDomainByDNS indicates an expected call of VerifyDomainByDNS
+func (mr *MockLTaaSServiceMockRecorder) VerifyDomainByDNS(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "VerifyDomainByDNS", reflect.TypeOf((*MockLTaaSService)(nil).VerifyDomainByDNS), arg0)
+}
+
+// VerifyDomainByFile mocks base method
+func (m *MockLTaaSService) VerifyDomainByFile(arg0 string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "VerifyDomainByFile", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// VerifyDomainByFile indicates an expected call of VerifyDomainByFile
+func (mr *MockLTaaSServiceMockRecorder) VerifyDomainByFile(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "VerifyDomainByFile", reflect.TypeOf((*MockLTaaSService)(nil).VerifyDomainByFile), arg0)
+}

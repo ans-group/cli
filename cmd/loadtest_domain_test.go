@@ -32,9 +32,10 @@ func Test_loadtestDomainList(t *testing.T) {
 		cmd := &cobra.Command{}
 		cmd.Flags().StringArray("filter", []string{"invalidfilter"}, "")
 
-		test_output.AssertFatalOutput(t, "Missing value for filtering\n", func() {
-			loadtestDomainList(service, cmd, []string{})
-		})
+		err := loadtestDomainList(service, cmd, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing value for filtering", err.Error())
 	})
 
 	t.Run("GetDomainsError_OutputsFatal", func(t *testing.T) {
@@ -46,9 +47,10 @@ func Test_loadtestDomainList(t *testing.T) {
 
 		service.EXPECT().GetDomains(gomock.Any()).Return([]ltaas.Domain{}, errors.New("test error")).Times(1)
 
-		test_output.AssertFatalOutput(t, "Error retrieving domains: test error\n", func() {
-			loadtestDomainList(service, &cobra.Command{}, []string{})
-		})
+		err := loadtestDomainList(service, &cobra.Command{}, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Error retrieving domains: test error", err.Error())
 	})
 }
 

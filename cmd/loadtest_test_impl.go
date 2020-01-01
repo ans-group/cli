@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/spf13/cobra"
 	"github.com/ukfast/cli/internal/pkg/helper"
@@ -28,26 +29,24 @@ func loadtestTestListCmd() *cobra.Command {
 		Short:   "Lists tests",
 		Long:    "This command lists tests",
 		Example: "ukfast loadtest test list",
-		Run: func(cmd *cobra.Command, args []string) {
-			loadtestTestList(getClient().LTaaSService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return loadtestTestList(getClient().LTaaSService(), cmd, args)
 		},
 	}
 }
 
-func loadtestTestList(service ltaas.LTaaSService, cmd *cobra.Command, args []string) {
+func loadtestTestList(service ltaas.LTaaSService, cmd *cobra.Command, args []string) error {
 	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
-		output.Fatal(err.Error())
-		return
+		return err
 	}
 
 	tests, err := service.GetTests(params)
 	if err != nil {
-		output.Fatalf("Error retrieving tests: %s", err)
-		return
+		return fmt.Errorf("Error retrieving tests: %s", err)
 	}
 
-	outputLoadTestTests(tests)
+	return outputLoadTestTests(tests)
 }
 
 func loadtestTestShowCmd() *cobra.Command {
@@ -63,13 +62,13 @@ func loadtestTestShowCmd() *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			loadtestTestShow(getClient().LTaaSService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return loadtestTestShow(getClient().LTaaSService(), cmd, args)
 		},
 	}
 }
 
-func loadtestTestShow(service ltaas.LTaaSService, cmd *cobra.Command, args []string) {
+func loadtestTestShow(service ltaas.LTaaSService, cmd *cobra.Command, args []string) error {
 	var tests []ltaas.Test
 	for _, arg := range args {
 		test, err := service.GetTest(arg)
@@ -81,5 +80,5 @@ func loadtestTestShow(service ltaas.LTaaSService, cmd *cobra.Command, args []str
 		tests = append(tests, test)
 	}
 
-	outputLoadTestTests(tests)
+	return outputLoadTestTests(tests)
 }

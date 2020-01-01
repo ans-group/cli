@@ -34,26 +34,24 @@ func loadtestJobListCmd() *cobra.Command {
 		Short:   "Lists jobs",
 		Long:    "This command lists jobs",
 		Example: "ukfast loadtest job list",
-		Run: func(cmd *cobra.Command, args []string) {
-			loadtestJobList(getClient().LTaaSService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return loadtestJobList(getClient().LTaaSService(), cmd, args)
 		},
 	}
 }
 
-func loadtestJobList(service ltaas.LTaaSService, cmd *cobra.Command, args []string) {
+func loadtestJobList(service ltaas.LTaaSService, cmd *cobra.Command, args []string) error {
 	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
-		output.Fatal(err.Error())
-		return
+		return err
 	}
 
 	jobs, err := service.GetJobs(params)
 	if err != nil {
-		output.Fatalf("Error retrieving jobs: %s", err)
-		return
+		return fmt.Errorf("Error retrieving jobs: %s", err)
 	}
 
-	outputLoadTestJobs(jobs)
+	return outputLoadTestJobs(jobs)
 }
 
 func loadtestJobShowCmd() *cobra.Command {
@@ -69,13 +67,13 @@ func loadtestJobShowCmd() *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			loadtestJobShow(getClient().LTaaSService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return loadtestJobShow(getClient().LTaaSService(), cmd, args)
 		},
 	}
 }
 
-func loadtestJobShow(service ltaas.LTaaSService, cmd *cobra.Command, args []string) {
+func loadtestJobShow(service ltaas.LTaaSService, cmd *cobra.Command, args []string) error {
 	var jobs []ltaas.Job
 	for _, arg := range args {
 		job, err := service.GetJob(arg)
@@ -87,7 +85,7 @@ func loadtestJobShow(service ltaas.LTaaSService, cmd *cobra.Command, args []stri
 		jobs = append(jobs, job)
 	}
 
-	outputLoadTestJobs(jobs)
+	return outputLoadTestJobs(jobs)
 }
 
 func loadtestJobCreateCmd() *cobra.Command {
@@ -129,8 +127,7 @@ func loadtestJobCreate(service ltaas.LTaaSService, cmd *cobra.Command, args []st
 		return fmt.Errorf("Error retrieving new job: %s", err)
 	}
 
-	outputLoadTestJobs([]ltaas.Job{job})
-	return nil
+	return outputLoadTestJobs([]ltaas.Job{job})
 }
 
 func loadtestJobDeleteCmd() *cobra.Command {
@@ -146,13 +143,13 @@ func loadtestJobDeleteCmd() *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			loadtestJobDelete(getClient().LTaaSService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return loadtestJobDelete(getClient().LTaaSService(), cmd, args)
 		},
 	}
 }
 
-func loadtestJobDelete(service ltaas.LTaaSService, cmd *cobra.Command, args []string) {
+func loadtestJobDelete(service ltaas.LTaaSService, cmd *cobra.Command, args []string) error {
 	var jobs []ltaas.Job
 	for _, arg := range args {
 		job, err := service.GetJob(arg)
@@ -164,5 +161,5 @@ func loadtestJobDelete(service ltaas.LTaaSService, cmd *cobra.Command, args []st
 		jobs = append(jobs, job)
 	}
 
-	outputLoadTestJobs(jobs)
+	return outputLoadTestJobs(jobs)
 }
