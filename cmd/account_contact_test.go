@@ -25,13 +25,10 @@ func Test_accountContactList(t *testing.T) {
 	})
 
 	t.Run("MalformedFlag_OutputsFatal", func(t *testing.T) {
-		defer func() { flagFilter = nil }()
-
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockAccountService(mockCtrl)
-		flagFilter = []string{"invalidfilter"}
 		cmd := accountContactListCmd()
 		cmd.Flags().StringArray("filter", []string{"invalidfilter"}, "")
 
