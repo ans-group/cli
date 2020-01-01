@@ -31,10 +31,11 @@ func Test_accountInvoiceList(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockAccountService(mockCtrl)
-		flagFilter = []string{"invalidfilter"}
+		cmd := &cobra.Command{}
+		cmd.Flags().StringArray("filter", []string{"invalidfilter"}, "")
 
 		test_output.AssertFatalOutput(t, "Missing value for filtering\n", func() {
-			accountInvoiceList(service, &cobra.Command{}, []string{})
+			accountInvoiceList(service, cmd, []string{})
 		})
 	})
 

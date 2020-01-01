@@ -6,6 +6,7 @@ import (
 	"github.com/ukfast/sdk-go/pkg/connection"
 
 	"github.com/spf13/cobra"
+	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/ddosx"
 )
@@ -46,7 +47,7 @@ func ddosxDomainWAFRuleListCmd() *cobra.Command {
 }
 
 func ddosxDomainWAFRuleList(service ddosx.DDoSXService, cmd *cobra.Command, args []string) {
-	params, err := GetAPIRequestParametersFromFlags()
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		output.Fatal(err.Error())
 		return

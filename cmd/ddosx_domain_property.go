@@ -47,7 +47,7 @@ func ddosxDomainPropertyListCmd() *cobra.Command {
 }
 
 func ddosxDomainPropertyList(service ddosx.DDoSXService, cmd *cobra.Command, args []string) {
-	params, err := GetAPIRequestParametersFromFlags()
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		output.Fatal(err.Error())
 		return

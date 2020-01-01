@@ -31,10 +31,11 @@ func Test_loadtestJobList(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockLTaaSService(mockCtrl)
-		flagFilter = []string{"invalidfilter"}
+		cmd := &cobra.Command{}
+		cmd.Flags().StringArray("filter", []string{"invalidfilter"}, "")
 
 		test_output.AssertFatalOutput(t, "Missing value for filtering\n", func() {
-			loadtestJobList(service, &cobra.Command{}, []string{})
+			loadtestJobList(service, cmd, []string{})
 		})
 	})
 

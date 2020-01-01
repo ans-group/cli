@@ -31,10 +31,11 @@ func Test_registrarDomainList(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockRegistrarService(mockCtrl)
-		flagFilter = []string{"invalidfilter"}
+		cmd := &cobra.Command{}
+		cmd.Flags().StringArray("filter", []string{"invalidfilter"}, "")
 
 		test_output.AssertFatalOutput(t, "Missing value for filtering\n", func() {
-			registrarDomainList(service, &cobra.Command{}, []string{})
+			registrarDomainList(service, cmd, []string{})
 		})
 	})
 

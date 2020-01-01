@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/spf13/cobra"
+	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/input"
 	"github.com/ukfast/sdk-go/pkg/service/pss"
 )
@@ -50,7 +51,7 @@ func pssRequestReplyList(service pss.PSSService, cmd *cobra.Command, args []stri
 		return fmt.Errorf("Invalid request ID [%s]", args[0])
 	}
 
-	params, err := GetAPIRequestParametersFromFlags()
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		return fmt.Errorf(err.Error())
 	}

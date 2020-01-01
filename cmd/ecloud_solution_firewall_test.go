@@ -58,10 +58,11 @@ func Test_ecloudSolutionFirewallList(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockECloudService(mockCtrl)
-		flagFilter = []string{"invalidfilter"}
+		cmd := &cobra.Command{}
+		cmd.Flags().StringArray("filter", []string{"invalidfilter"}, "")
 
 		test_output.AssertFatalOutput(t, "Missing value for filtering\n", func() {
-			ecloudSolutionFirewallList(service, &cobra.Command{}, []string{"123"})
+			ecloudSolutionFirewallList(service, cmd, []string{"123"})
 		})
 	})
 

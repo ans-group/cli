@@ -72,10 +72,11 @@ func Test_safednsZoneNoteList(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockSafeDNSService(mockCtrl)
-		flagFilter = []string{"invalidfilter"}
+		cmd := &cobra.Command{}
+		cmd.Flags().StringArray("filter", []string{"invalidfilter"}, "")
 
 		test_output.AssertFatalOutput(t, "Missing value for filtering\n", func() {
-			safednsZoneNoteList(service, &cobra.Command{}, []string{"123"})
+			safednsZoneNoteList(service, cmd, []string{"123"})
 		})
 	})
 

@@ -5,6 +5,8 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 	"github.com/ukfast/sdk-go/pkg/connection"
 )
 
@@ -139,4 +141,22 @@ func GetSortingFromStringFlag(sort string) connection.APIRequestSorting {
 		Property:   sortingParts[0],
 		Descending: descending,
 	}
+}
+
+func GetAPIRequestParametersFromFlags(cmd *cobra.Command) (connection.APIRequestParameters, error) {
+	flagFilter, err := cmd.Flags().GetStringArray("filter")
+	filtering, err := GetFilteringArrayFromStringArrayFlag(flagFilter)
+	if err != nil {
+		return connection.APIRequestParameters{}, err
+	}
+
+	flagSort, err := cmd.Flags().GetString("sort")
+
+	return connection.APIRequestParameters{
+		Sorting:   GetSortingFromStringFlag(flagSort),
+		Filtering: filtering,
+		Pagination: connection.APIRequestPagination{
+			PerPage: viper.GetInt("api_pagination_perpage"),
+		},
+	}, nil
 }

@@ -53,7 +53,7 @@ func ecloudVirtualMachineListCmd() *cobra.Command {
 }
 
 func ecloudVirtualMachineList(service ecloud.ECloudService, cmd *cobra.Command, args []string) {
-	params, err := GetAPIRequestParametersFromFlags()
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		output.Fatal(err.Error())
 		return

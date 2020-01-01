@@ -58,10 +58,11 @@ func Test_ecloudPodTemplateList(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockECloudService(mockCtrl)
-		flagFilter = []string{"invalidfilter"}
+		cmd := &cobra.Command{}
+		cmd.Flags().StringArray("filter", []string{"invalidfilter"}, "")
 
 		test_output.AssertFatalOutput(t, "Missing value for filtering\n", func() {
-			ecloudPodTemplateList(service, &cobra.Command{}, []string{"123"})
+			ecloudPodTemplateList(service, cmd, []string{"123"})
 		})
 	})
 

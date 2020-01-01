@@ -59,7 +59,7 @@ func safednsTemplateRecordList(service safedns.SafeDNSService, cmd *cobra.Comman
 		return
 	}
 
-	params, err := GetAPIRequestParametersFromFlags()
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		output.Fatal(err.Error())
 		return

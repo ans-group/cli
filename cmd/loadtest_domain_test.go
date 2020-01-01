@@ -31,10 +31,11 @@ func Test_loadtestDomainList(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockLTaaSService(mockCtrl)
-		flagFilter = []string{"invalidfilter"}
+		cmd := &cobra.Command{}
+		cmd.Flags().StringArray("filter", []string{"invalidfilter"}, "")
 
 		test_output.AssertFatalOutput(t, "Missing value for filtering\n", func() {
-			loadtestDomainList(service, &cobra.Command{}, []string{})
+			loadtestDomainList(service, cmd, []string{})
 		})
 	})
 

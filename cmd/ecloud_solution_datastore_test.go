@@ -46,10 +46,11 @@ func Test_ecloudSolutionDatastoreList(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockECloudService(mockCtrl)
-		flagFilter = []string{"invalidfilter"}
+		cmd := &cobra.Command{}
+		cmd.Flags().StringArray("filter", []string{"invalidfilter"}, "")
 
 		test_output.AssertFatalOutput(t, "Missing value for filtering\n", func() {
-			ecloudSolutionDatastoreList(service, &cobra.Command{}, []string{"123"})
+			ecloudSolutionDatastoreList(service, cmd, []string{"123"})
 		})
 	})
 

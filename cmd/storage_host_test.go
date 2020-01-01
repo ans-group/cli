@@ -31,10 +31,11 @@ func Test_storageHostList(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockStorageService(mockCtrl)
-		flagFilter = []string{"invalidfilter"}
+		cmd := &cobra.Command{}
+		cmd.Flags().StringArray("filter", []string{"invalidfilter"}, "")
 
 		test_output.AssertFatalOutput(t, "Missing value for filtering\n", func() {
-			storageHostList(service, &cobra.Command{}, []string{})
+			storageHostList(service, cmd, []string{})
 		})
 	})
 

@@ -31,10 +31,11 @@ func Test_storageVolumeList(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockStorageService(mockCtrl)
-		flagFilter = []string{"invalidfilter"}
+		cmd := &cobra.Command{}
+		cmd.Flags().StringArray("filter", []string{"invalidfilter"}, "")
 
 		test_output.AssertFatalOutput(t, "Missing value for filtering\n", func() {
-			storageVolumeList(service, &cobra.Command{}, []string{})
+			storageVolumeList(service, cmd, []string{})
 		})
 	})
 
