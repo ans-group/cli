@@ -59,8 +59,14 @@ func (o *GenericOutputHandlerProvider) convertStruct(reflectedValue reflect.Valu
 			// Skip unexported field
 			continue
 		}
+		fieldName := ""
 
-		fieldName := strcase.ToSnake(reflectedValueTypeField.Name)
+		jsonTag := reflectedValueTypeField.Tag.Get("json")
+		if jsonTag != "" {
+			fieldName = jsonTag
+		} else {
+			fieldName = strcase.ToSnake(reflectedValueTypeField.Name)
+		}
 
 		fields.Set(fieldName, output.NewFieldValue(o.fieldToString(reflectedValueField), o.isDefaultField(fieldName)))
 	}
