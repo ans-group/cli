@@ -64,6 +64,35 @@ func (mr *MockLTaaSServiceMockRecorder) CreateJob(arg0 interface{}) *gomock.Call
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateJob", reflect.TypeOf((*MockLTaaSService)(nil).CreateJob), arg0)
 }
 
+// CreateTest mocks base method
+func (m *MockLTaaSService) CreateTest(arg0 ltaas.CreateTestRequest) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateTest", arg0)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateTest indicates an expected call of CreateTest
+func (mr *MockLTaaSServiceMockRecorder) CreateTest(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateTest", reflect.TypeOf((*MockLTaaSService)(nil).CreateTest), arg0)
+}
+
+// CreateTestJob mocks base method
+func (m *MockLTaaSService) CreateTestJob(arg0 string, arg1 ltaas.CreateTestJobRequest) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateTestJob", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateTestJob indicates an expected call of CreateTestJob
+func (mr *MockLTaaSServiceMockRecorder) CreateTestJob(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateTestJob", reflect.TypeOf((*MockLTaaSService)(nil).CreateTestJob), arg0, arg1)
+}
+
 // DeleteDomain mocks base method
 func (m *MockLTaaSService) DeleteDomain(arg0 string) error {
 	m.ctrl.T.Helper()
@@ -90,6 +119,20 @@ func (m *MockLTaaSService) DeleteJob(arg0 string) error {
 func (mr *MockLTaaSServiceMockRecorder) DeleteJob(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteJob", reflect.TypeOf((*MockLTaaSService)(nil).DeleteJob), arg0)
+}
+
+// DeleteTest mocks base method
+func (m *MockLTaaSService) DeleteTest(arg0 string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteTest", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteTest indicates an expected call of DeleteTest
+func (mr *MockLTaaSServiceMockRecorder) DeleteTest(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteTest", reflect.TypeOf((*MockLTaaSService)(nil).DeleteTest), arg0)
 }
 
 // GetDomain mocks base method
@@ -167,6 +210,21 @@ func (mr *MockLTaaSServiceMockRecorder) GetJobResults(arg0 interface{}) *gomock.
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetJobResults", reflect.TypeOf((*MockLTaaSService)(nil).GetJobResults), arg0)
 }
 
+// GetJobSettings mocks base method
+func (m *MockLTaaSService) GetJobSettings(arg0 string) (ltaas.JobSettings, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetJobSettings", arg0)
+	ret0, _ := ret[0].(ltaas.JobSettings)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetJobSettings indicates an expected call of GetJobSettings
+func (mr *MockLTaaSServiceMockRecorder) GetJobSettings(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetJobSettings", reflect.TypeOf((*MockLTaaSService)(nil).GetJobSettings), arg0)
+}
+
 // GetJobs mocks base method
 func (m *MockLTaaSService) GetJobs(arg0 connection.APIRequestParameters) ([]ltaas.Job, error) {
 	m.ctrl.T.Helper()
@@ -195,6 +253,51 @@ func (m *MockLTaaSService) GetJobsPaginated(arg0 connection.APIRequestParameters
 func (mr *MockLTaaSServiceMockRecorder) GetJobsPaginated(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetJobsPaginated", reflect.TypeOf((*MockLTaaSService)(nil).GetJobsPaginated), arg0)
+}
+
+// GetLatestAgreement mocks base method
+func (m *MockLTaaSService) GetLatestAgreement(arg0 ltaas.AgreementType) (ltaas.Agreement, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetLatestAgreement", arg0)
+	ret0, _ := ret[0].(ltaas.Agreement)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetLatestAgreement indicates an expected call of GetLatestAgreement
+func (mr *MockLTaaSServiceMockRecorder) GetLatestAgreement(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLatestAgreement", reflect.TypeOf((*MockLTaaSService)(nil).GetLatestAgreement), arg0)
+}
+
+// GetScenarios mocks base method
+func (m *MockLTaaSService) GetScenarios(arg0 connection.APIRequestParameters) ([]ltaas.Scenario, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetScenarios", arg0)
+	ret0, _ := ret[0].([]ltaas.Scenario)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetScenarios indicates an expected call of GetScenarios
+func (mr *MockLTaaSServiceMockRecorder) GetScenarios(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetScenarios", reflect.TypeOf((*MockLTaaSService)(nil).GetScenarios), arg0)
+}
+
+// GetScenariosPaginated mocks base method
+func (m *MockLTaaSService) GetScenariosPaginated(arg0 connection.APIRequestParameters) (*ltaas.PaginatedScenario, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetScenariosPaginated", arg0)
+	ret0, _ := ret[0].(*ltaas.PaginatedScenario)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetScenariosPaginated indicates an expected call of GetScenariosPaginated
+func (mr *MockLTaaSServiceMockRecorder) GetScenariosPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetScenariosPaginated", reflect.TypeOf((*MockLTaaSService)(nil).GetScenariosPaginated), arg0)
 }
 
 // GetTest mocks base method
@@ -240,6 +343,51 @@ func (m *MockLTaaSService) GetTestsPaginated(arg0 connection.APIRequestParameter
 func (mr *MockLTaaSServiceMockRecorder) GetTestsPaginated(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTestsPaginated", reflect.TypeOf((*MockLTaaSService)(nil).GetTestsPaginated), arg0)
+}
+
+// GetThreshold mocks base method
+func (m *MockLTaaSService) GetThreshold(arg0 string) (ltaas.Threshold, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetThreshold", arg0)
+	ret0, _ := ret[0].(ltaas.Threshold)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetThreshold indicates an expected call of GetThreshold
+func (mr *MockLTaaSServiceMockRecorder) GetThreshold(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetThreshold", reflect.TypeOf((*MockLTaaSService)(nil).GetThreshold), arg0)
+}
+
+// GetThresholds mocks base method
+func (m *MockLTaaSService) GetThresholds(arg0 connection.APIRequestParameters) ([]ltaas.Threshold, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetThresholds", arg0)
+	ret0, _ := ret[0].([]ltaas.Threshold)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetThresholds indicates an expected call of GetThresholds
+func (mr *MockLTaaSServiceMockRecorder) GetThresholds(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetThresholds", reflect.TypeOf((*MockLTaaSService)(nil).GetThresholds), arg0)
+}
+
+// GetThresholdsPaginated mocks base method
+func (m *MockLTaaSService) GetThresholdsPaginated(arg0 connection.APIRequestParameters) (*ltaas.PaginatedThreshold, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetThresholdsPaginated", arg0)
+	ret0, _ := ret[0].(*ltaas.PaginatedThreshold)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetThresholdsPaginated indicates an expected call of GetThresholdsPaginated
+func (mr *MockLTaaSServiceMockRecorder) GetThresholdsPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetThresholdsPaginated", reflect.TypeOf((*MockLTaaSService)(nil).GetThresholdsPaginated), arg0)
 }
 
 // VerifyDomainByDNS mocks base method
