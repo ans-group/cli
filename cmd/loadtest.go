@@ -5,6 +5,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/spf13/cobra"
+	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/cli/internal/pkg/resource"
 	"github.com/ukfast/sdk-go/pkg/connection"
 	"github.com/ukfast/sdk-go/pkg/service/ltaas"
@@ -20,6 +21,8 @@ func loadtestRootCmd() *cobra.Command {
 	cmd.AddCommand(loadtestDomainRootCmd())
 	cmd.AddCommand(loadtestTestRootCmd())
 	cmd.AddCommand(loadtestJobRootCmd())
+	cmd.AddCommand(loadtestThresholdRootCmd())
+	cmd.AddCommand(loadtestScenarioRootCmd())
 
 	return cmd
 }
@@ -66,7 +69,7 @@ func getLoadTestDomainByNameOrID(service ltaas.LTaaSService, nameOrID string) (l
 }
 
 func outputLoadTestDomains(domains []ltaas.Domain) error {
-	err := Output(NewGenericOutputHandlerProvider(domains, []string{"id", "name"}, nil))
+	err := Output(output.NewGenericOutputHandlerProvider(domains, []string{"id", "name"}, nil))
 	if err != nil {
 		return fmt.Errorf("Failed to output domains: %s", err)
 	}
@@ -75,7 +78,7 @@ func outputLoadTestDomains(domains []ltaas.Domain) error {
 }
 
 func outputLoadTestTests(tests []ltaas.Test) error {
-	err := Output(NewGenericOutputHandlerProvider(tests, []string{"id", "name", "number_of_users", "duration", "protocol", "path"}, nil))
+	err := Output(output.NewGenericOutputHandlerProvider(tests, []string{"id", "name", "number_of_users", "duration", "protocol", "path"}, nil))
 	if err != nil {
 		return fmt.Errorf("Failed to output tests: %s", err)
 	}
@@ -84,7 +87,7 @@ func outputLoadTestTests(tests []ltaas.Test) error {
 }
 
 func outputLoadTestJobs(jobs []ltaas.Job) error {
-	err := Output(NewGenericOutputHandlerProvider(jobs, []string{"id", "status", "job_start_timestamp", "job_end_timestamp"}, nil))
+	err := Output(output.NewGenericOutputHandlerProvider(jobs, []string{"id", "status", "job_start_timestamp", "job_end_timestamp"}, nil))
 	if err != nil {
 		return fmt.Errorf("Failed to output jobs: %s", err)
 	}
@@ -93,7 +96,7 @@ func outputLoadTestJobs(jobs []ltaas.Job) error {
 }
 
 func outputLoadTestJobResults(results []ltaas.JobResults) error {
-	err := Output(NewGenericOutputHandlerProvider(results, []string{"id", "status", "job_start_timestamp", "job_end_timestamp"}, nil))
+	err := Output(output.NewGenericOutputHandlerProvider(results, []string{"id", "status", "job_start_timestamp", "job_end_timestamp"}, nil))
 	if err != nil {
 		return fmt.Errorf("Failed to output job results: %s", err)
 	}
@@ -102,9 +105,27 @@ func outputLoadTestJobResults(results []ltaas.JobResults) error {
 }
 
 func outputLoadTestJobSettings(settings []ltaas.JobSettings) error {
-	err := Output(NewGenericOutputHandlerProvider(settings, []string{"date", "name", "duration", "max_users", "domain"}, nil))
+	err := Output(output.NewGenericOutputHandlerProvider(settings, []string{"date", "name", "duration", "max_users", "domain"}, nil))
 	if err != nil {
 		return fmt.Errorf("Failed to output job settings: %s", err)
+	}
+
+	return nil
+}
+
+func outputLoadTestThresholds(thresholds []ltaas.Threshold) error {
+	err := Output(output.NewGenericOutputHandlerProvider(thresholds, []string{"id", "name", "description", "query"}, nil))
+	if err != nil {
+		return fmt.Errorf("Failed to output thresholds: %s", err)
+	}
+
+	return nil
+}
+
+func outputLoadTestScenarios(scenarios []ltaas.Scenario) error {
+	err := Output(output.NewGenericOutputHandlerProvider(scenarios, []string{"id", "name", "description"}, nil))
+	if err != nil {
+		return fmt.Errorf("Failed to output scenarios: %s", err)
 	}
 
 	return nil
