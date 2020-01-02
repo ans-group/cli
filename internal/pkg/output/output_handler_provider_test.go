@@ -1,11 +1,10 @@
-package cmd
+package output
 
 import (
 	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/internal/pkg/output"
 )
 
 type testOutputDataProvider struct {
@@ -20,14 +19,14 @@ func (o testOutputDataProvider) GetData() interface{} {
 	return testOutputData{TestProperty1: "testvalue1", TestProperty2: "testvalue2"}
 }
 
-func (o testOutputDataProvider) GetFieldData() ([]*output.OrderedFields, error) {
-	var data []*output.OrderedFields
-	fields1 := output.NewOrderedFields()
-	fields1.Set("test_property_1", output.NewFieldValue("fields1 test value 1", true))
-	fields1.Set("test_property_2", output.NewFieldValue("fields1 test value 2", true))
-	fields2 := output.NewOrderedFields()
-	fields2.Set("test_property_1", output.NewFieldValue("fields2 test value 1", true))
-	fields2.Set("test_property_2", output.NewFieldValue("fields2 test value 2", true))
+func (o testOutputDataProvider) GetFieldData() ([]*OrderedFields, error) {
+	var data []*OrderedFields
+	fields1 := NewOrderedFields()
+	fields1.Set("test_property_1", NewFieldValue("fields1 test value 1", true))
+	fields1.Set("test_property_2", NewFieldValue("fields1 test value 2", true))
+	fields2 := NewOrderedFields()
+	fields2.Set("test_property_1", NewFieldValue("fields2 test value 1", true))
+	fields2.Set("test_property_2", NewFieldValue("fields2 test value 2", true))
 
 	data = append(data, fields1, fields2)
 	return data, o.GetFieldDataError

@@ -1,10 +1,8 @@
-package cmd
+package output
 
 import (
 	"fmt"
 	"strings"
-
-	"github.com/ukfast/cli/internal/pkg/output"
 )
 
 type UnsupportedFormatHandler func() error
@@ -42,36 +40,36 @@ func (o *OutputHandler) Handle() error {
 
 	switch o.Format {
 	case "json":
-		return output.JSON(o.Provider.GetData())
+		return JSON(o.Provider.GetData())
 	case "template":
-		return output.Template(o.Template, o.Provider.GetData())
+		return Template(o.Template, o.Provider.GetData())
 	case "value":
 		d, err := o.Provider.GetFieldData()
 		if err != nil {
 			return err
 		}
-		return output.Value(o.Properties, d)
+		return Value(o.Properties, d)
 	case "csv":
 		d, err := o.Provider.GetFieldData()
 		if err != nil {
 			return err
 		}
-		return output.CSV(o.Properties, d)
+		return CSV(o.Properties, d)
 	case "list":
 		d, err := o.Provider.GetFieldData()
 		if err != nil {
 			return err
 		}
-		return output.List(o.Properties, d)
+		return List(o.Properties, d)
 	default:
-		output.Errorf("Invalid output format [%s], defaulting to 'table'", o.Format)
+		Errorf("Invalid output format [%s], defaulting to 'table'", o.Format)
 		fallthrough
 	case "table":
 		d, err := o.Provider.GetFieldData()
 		if err != nil {
 			return err
 		}
-		return output.Table(o.Properties, d)
+		return Table(o.Properties, d)
 	}
 }
 
@@ -87,14 +85,4 @@ func (o *OutputHandler) supportedFormat() bool {
 	}
 
 	return false
-}
-
-// Output calls the relevant OutputProvider data retrieval methods for given value
-// in global variable 'flagFormat'
-func Output(out OutputHandlerProvider) error {
-	handler := NewOutputHandler(out, flagFormat)
-	handler.Properties = flagProperty
-	handler.Template = flagOutputTemplate
-
-	return handler.Handle()
 }

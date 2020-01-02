@@ -1,4 +1,4 @@
-package cmd
+package output
 
 import (
 	"fmt"
@@ -7,12 +7,11 @@ import (
 	"strings"
 
 	"github.com/iancoleman/strcase"
-	"github.com/ukfast/cli/internal/pkg/output"
 )
 
 type OutputHandlerProvider interface {
 	GetData() interface{}
-	GetFieldData() ([]*output.OrderedFields, error)
+	GetFieldData() ([]*OrderedFields, error)
 }
 
 type GenericOutputHandlerProvider struct {
@@ -29,12 +28,12 @@ func (o *GenericOutputHandlerProvider) GetData() interface{} {
 	return o.items
 }
 
-func (o *GenericOutputHandlerProvider) GetFieldData() ([]*output.OrderedFields, error) {
+func (o *GenericOutputHandlerProvider) GetFieldData() ([]*OrderedFields, error) {
 	return o.convert(reflect.ValueOf(o.items)), nil
 }
 
-func (o *GenericOutputHandlerProvider) convert(reflectedValue reflect.Value) []*output.OrderedFields {
-	fields := []*output.OrderedFields{}
+func (o *GenericOutputHandlerProvider) convert(reflectedValue reflect.Value) []*OrderedFields {
+	fields := []*OrderedFields{}
 
 	switch reflectedValue.Kind() {
 	case reflect.Slice:
@@ -48,8 +47,8 @@ func (o *GenericOutputHandlerProvider) convert(reflectedValue reflect.Value) []*
 	return fields
 }
 
-func (o *GenericOutputHandlerProvider) convertStruct(reflectedValue reflect.Value) *output.OrderedFields {
-	fields := output.NewOrderedFields()
+func (o *GenericOutputHandlerProvider) convertStruct(reflectedValue reflect.Value) *OrderedFields {
+	fields := NewOrderedFields()
 	reflectedValueType := reflectedValue.Type()
 
 	for i := 0; i < reflectedValueType.NumField(); i++ {
@@ -70,7 +69,7 @@ func (o *GenericOutputHandlerProvider) convertStruct(reflectedValue reflect.Valu
 		}
 
 		if !o.isIgnoredField(fieldName) {
-			fields.Set(fieldName, output.NewFieldValue(o.fieldToString(reflectedValueField), o.isDefaultField(fieldName)))
+			fields.Set(fieldName, NewFieldValue(o.fieldToString(reflectedValueField), o.isDefaultField(fieldName)))
 		}
 	}
 
