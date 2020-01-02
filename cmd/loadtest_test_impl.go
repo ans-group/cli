@@ -21,6 +21,9 @@ func loadtestTestRootCmd() *cobra.Command {
 	cmd.AddCommand(loadtestTestShowCmd())
 	cmd.AddCommand(loadtestTestDeleteCmd())
 
+	// Child root commands
+	cmd.AddCommand(loadtestTestJobRootCmd())
+
 	return cmd
 }
 
