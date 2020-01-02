@@ -159,3 +159,113 @@ func Test_loadtestJobCreate(t *testing.T) {
 		assert.Equal(t, "Error retrieving new job: test error", err.Error())
 	})
 }
+
+func Test_loadtestJobDeleteCmd_Args(t *testing.T) {
+	t.Run("ValidArgs_NoError", func(t *testing.T) {
+		err := loadtestJobDeleteCmd().Args(nil, []string{"123"})
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("InvalidArgs_Error", func(t *testing.T) {
+		err := loadtestJobDeleteCmd().Args(nil, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing job", err.Error())
+	})
+}
+
+func Test_loadtestJobDelete(t *testing.T) {
+	t.Run("SingleJob", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockLTaaSService(mockCtrl)
+
+		service.EXPECT().GetJob("00000000-0000-0000-0000-000000000000").Return(ltaas.Job{}, nil).Times(1)
+
+		loadtestJobDelete(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000"})
+	})
+
+	t.Run("MultipleJobs", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockLTaaSService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().GetJob("00000000-0000-0000-0000-000000000000").Return(ltaas.Job{}, nil),
+			service.EXPECT().GetJob("00000000-0000-0000-0000-000000000001").Return(ltaas.Job{}, nil),
+		)
+
+		loadtestJobDelete(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000001"})
+	})
+
+	t.Run("GetJobError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockLTaaSService(mockCtrl)
+
+		service.EXPECT().GetJob("00000000-0000-0000-0000-000000000000").Return(ltaas.Job{}, errors.New("test error"))
+
+		test_output.AssertErrorOutput(t, "Error removing job [00000000-0000-0000-0000-000000000000]: test error\n", func() {
+			loadtestJobDelete(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000"})
+		})
+	})
+}
+
+func Test_loadtestJobStopCmd_Args(t *testing.T) {
+	t.Run("ValidArgs_NoError", func(t *testing.T) {
+		err := loadtestJobStopCmd().Args(nil, []string{"123"})
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("InvalidArgs_Error", func(t *testing.T) {
+		err := loadtestJobStopCmd().Args(nil, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing job", err.Error())
+	})
+}
+
+func Test_loadtestJobStop(t *testing.T) {
+	t.Run("SingleJob", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockLTaaSService(mockCtrl)
+
+		service.EXPECT().GetJob("00000000-0000-0000-0000-000000000000").Return(ltaas.Job{}, nil).Times(1)
+
+		loadtestJobStop(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000"})
+	})
+
+	t.Run("MultipleJobs", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockLTaaSService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().GetJob("00000000-0000-0000-0000-000000000000").Return(ltaas.Job{}, nil),
+			service.EXPECT().GetJob("00000000-0000-0000-0000-000000000001").Return(ltaas.Job{}, nil),
+		)
+
+		loadtestJobStop(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000001"})
+	})
+
+	t.Run("GetJobError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockLTaaSService(mockCtrl)
+
+		service.EXPECT().GetJob("00000000-0000-0000-0000-000000000000").Return(ltaas.Job{}, errors.New("test error"))
+
+		test_output.AssertErrorOutput(t, "Error stopping job [00000000-0000-0000-0000-000000000000]: test error\n", func() {
+			loadtestJobStop(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000"})
+		})
+	})
+}

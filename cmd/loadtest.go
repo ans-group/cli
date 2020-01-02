@@ -100,3 +100,12 @@ func outputLoadTestJobResults(results []ltaas.JobResults) error {
 
 	return nil
 }
+
+func outputLoadTestJobSettings(settings []ltaas.JobSettings) error {
+	err := Output(NewGenericOutputHandlerProvider(settings, []string{"date", "name", "duration", "max_users", "domain"}, nil))
+	if err != nil {
+		return fmt.Errorf("Failed to output job settings: %s", err)
+	}
+
+	return nil
+}

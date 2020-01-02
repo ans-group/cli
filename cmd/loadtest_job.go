@@ -21,9 +21,12 @@ func loadtestJobRootCmd() *cobra.Command {
 	cmd.AddCommand(loadtestJobListCmd())
 	cmd.AddCommand(loadtestJobShowCmd())
 	cmd.AddCommand(loadtestJobCreateCmd())
+	cmd.AddCommand(loadtestJobDeleteCmd())
+	cmd.AddCommand(loadtestJobStopCmd())
 
 	// Child root commands
 	cmd.AddCommand(loadtestJobResultRootCmd())
+	cmd.AddCommand(loadtestJobSettingsRootCmd())
 
 	return cmd
 }
@@ -155,6 +158,40 @@ func loadtestJobDelete(service ltaas.LTaaSService, cmd *cobra.Command, args []st
 		job, err := service.GetJob(arg)
 		if err != nil {
 			output.OutputWithErrorLevelf("Error removing job [%s]: %s", arg, err)
+			continue
+		}
+
+		jobs = append(jobs, job)
+	}
+
+	return outputLoadTestJobs(jobs)
+}
+
+func loadtestJobStopCmd() *cobra.Command {
+	return &cobra.Command{
+		Use:     "stop <job: id>...",
+		Short:   "Stops a running job",
+		Long:    "This command stops one or more running jobs",
+		Example: "ukfast loadtest job stop 00000000-0000-0000-0000-000000000000",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Missing job")
+			}
+
+			return nil
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return loadtestJobStop(getClient().LTaaSService(), cmd, args)
+		},
+	}
+}
+
+func loadtestJobStop(service ltaas.LTaaSService, cmd *cobra.Command, args []string) error {
+	var jobs []ltaas.Job
+	for _, arg := range args {
+		job, err := service.GetJob(arg)
+		if err != nil {
+			output.OutputWithErrorLevelf("Error stopping job [%s]: %s", arg, err)
 			continue
 		}
 
