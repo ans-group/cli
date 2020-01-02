@@ -390,30 +390,30 @@ func (mr *MockLTaaSServiceMockRecorder) GetThresholdsPaginated(arg0 interface{})
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetThresholdsPaginated", reflect.TypeOf((*MockLTaaSService)(nil).GetThresholdsPaginated), arg0)
 }
 
-// VerifyDomainByDNS mocks base method
-func (m *MockLTaaSService) VerifyDomainByDNS(arg0 string) error {
+// VerifyDomainDNS mocks base method
+func (m *MockLTaaSService) VerifyDomainDNS(arg0 string) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "VerifyDomainByDNS", arg0)
+	ret := m.ctrl.Call(m, "VerifyDomainDNS", arg0)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// VerifyDomainByDNS indicates an expected call of VerifyDomainByDNS
-func (mr *MockLTaaSServiceMockRecorder) VerifyDomainByDNS(arg0 interface{}) *gomock.Call {
+// VerifyDomainDNS indicates an expected call of VerifyDomainDNS
+func (mr *MockLTaaSServiceMockRecorder) VerifyDomainDNS(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "VerifyDomainByDNS", reflect.TypeOf((*MockLTaaSService)(nil).VerifyDomainByDNS), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "VerifyDomainDNS", reflect.TypeOf((*MockLTaaSService)(nil).VerifyDomainDNS), arg0)
 }
 
-// VerifyDomainByFile mocks base method
-func (m *MockLTaaSService) VerifyDomainByFile(arg0 string) error {
+// VerifyDomainFile mocks base method
+func (m *MockLTaaSService) VerifyDomainFile(arg0 string) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "VerifyDomainByFile", arg0)
+	ret := m.ctrl.Call(m, "VerifyDomainFile", arg0)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// VerifyDomainByFile indicates an expected call of VerifyDomainByFile
-func (mr *MockLTaaSServiceMockRecorder) VerifyDomainByFile(arg0 interface{}) *gomock.Call {
+// VerifyDomainFile indicates an expected call of VerifyDomainFile
+func (mr *MockLTaaSServiceMockRecorder) VerifyDomainFile(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "VerifyDomainByFile", reflect.TypeOf((*MockLTaaSService)(nil).VerifyDomainByFile), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "VerifyDomainFile", reflect.TypeOf((*MockLTaaSService)(nil).VerifyDomainFile), arg0)
 }

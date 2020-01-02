@@ -23,6 +23,9 @@ func loadtestDomainRootCmd() *cobra.Command {
 	cmd.AddCommand(loadtestDomainCreateCmd())
 	cmd.AddCommand(loadtestDomainDeleteCmd())
 
+	// Child root commands
+	cmd.AddCommand(loadtestDomainVerificationRootCmd())
+
 	return cmd
 }
 
