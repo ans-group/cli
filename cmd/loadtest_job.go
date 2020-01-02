@@ -25,7 +25,7 @@ func loadtestJobRootCmd() *cobra.Command {
 	cmd.AddCommand(loadtestJobStopCmd())
 
 	// Child root commands
-	cmd.AddCommand(loadtestJobResultRootCmd())
+	cmd.AddCommand(loadtestJobResultsRootCmd())
 	cmd.AddCommand(loadtestJobSettingsRootCmd())
 
 	return cmd
@@ -127,7 +127,7 @@ func loadtestJobCreate(service ltaas.LTaaSService, cmd *cobra.Command, args []st
 
 	job, err := service.GetJob(jobID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new job: %s", err)
+		return fmt.Errorf("Error retrieving new job [%s]: %s", jobID, err)
 	}
 
 	return outputLoadTestJobs([]ltaas.Job{job})

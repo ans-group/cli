@@ -10,24 +10,24 @@ import (
 	"github.com/ukfast/sdk-go/pkg/service/ltaas"
 )
 
-func loadtestJobResultRootCmd() *cobra.Command {
+func loadtestJobResultsRootCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "result",
+		Use:   "results",
 		Short: "sub-commands relating to job results",
 	}
 
 	// Child commands
-	cmd.AddCommand(loadtestJobResultShowCmd())
+	cmd.AddCommand(loadtestJobResultsShowCmd())
 
 	return cmd
 }
 
-func loadtestJobResultShowCmd() *cobra.Command {
+func loadtestJobResultsShowCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "show",
 		Short:   "Shows job results",
 		Long:    "This command shows job results",
-		Example: "ukfast loadtest job result show",
+		Example: "ukfast loadtest job results show",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing job")
@@ -36,7 +36,7 @@ func loadtestJobResultShowCmd() *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return loadtestJobResultShow(getClient().LTaaSService(), cmd, args)
+			return loadtestJobResultsShow(getClient().LTaaSService(), cmd, args)
 		},
 	}
 
@@ -50,7 +50,7 @@ func loadtestJobResultShowCmd() *cobra.Command {
 	return cmd
 }
 
-func loadtestJobResultShow(service ltaas.LTaaSService, cmd *cobra.Command, args []string) error {
+func loadtestJobResultsShow(service ltaas.LTaaSService, cmd *cobra.Command, args []string) error {
 	var allResults []ltaas.JobResults
 	for _, arg := range args {
 		results, err := service.GetJobResults(arg)
