@@ -18,10 +18,11 @@ type OutputHandlerProvider interface {
 type GenericOutputHandlerProvider struct {
 	items         interface{}
 	DefaultFields []string
+	IgnoredFields []string
 }
 
-func NewGenericOutputHandlerProvider(items interface{}, defaultFields []string) *GenericOutputHandlerProvider {
-	return &GenericOutputHandlerProvider{items: items, DefaultFields: defaultFields}
+func NewGenericOutputHandlerProvider(items interface{}, defaultFields []string, ignoredFields []string) *GenericOutputHandlerProvider {
+	return &GenericOutputHandlerProvider{items: items, DefaultFields: defaultFields, IgnoredFields: ignoredFields}
 }
 
 func (o *GenericOutputHandlerProvider) GetData() interface{} {
@@ -68,7 +69,9 @@ func (o *GenericOutputHandlerProvider) convertStruct(reflectedValue reflect.Valu
 			fieldName = strcase.ToSnake(reflectedValueTypeField.Name)
 		}
 
-		fields.Set(fieldName, output.NewFieldValue(o.fieldToString(reflectedValueField), o.isDefaultField(fieldName)))
+		if !o.isIgnoredField(fieldName) {
+			fields.Set(fieldName, output.NewFieldValue(o.fieldToString(reflectedValueField), o.isDefaultField(fieldName)))
+		}
 	}
 
 	return fields
@@ -99,7 +102,15 @@ func (o *GenericOutputHandlerProvider) fieldToString(reflectedValue reflect.Valu
 }
 
 func (o *GenericOutputHandlerProvider) isDefaultField(name string) bool {
-	for _, field := range o.DefaultFields {
+	return o.fieldInFields(name, o.DefaultFields)
+}
+
+func (o *GenericOutputHandlerProvider) isIgnoredField(name string) bool {
+	return o.fieldInFields(name, o.IgnoredFields)
+}
+
+func (o *GenericOutputHandlerProvider) fieldInFields(name string, fields []string) bool {
+	for _, field := range fields {
 		if strings.ToLower(field) == strings.ToLower(name) {
 			return true
 		}
