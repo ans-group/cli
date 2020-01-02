@@ -131,7 +131,7 @@ func Test_loadtestTestDelete(t *testing.T) {
 
 		service := mocks.NewMockLTaaSService(mockCtrl)
 
-		service.EXPECT().GetTest("00000000-0000-0000-0000-000000000000").Return(ltaas.Test{}, nil).Times(1)
+		service.EXPECT().DeleteTest("00000000-0000-0000-0000-000000000000").Return(nil).Times(1)
 
 		loadtestTestDelete(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000"})
 	})
@@ -143,8 +143,8 @@ func Test_loadtestTestDelete(t *testing.T) {
 		service := mocks.NewMockLTaaSService(mockCtrl)
 
 		gomock.InOrder(
-			service.EXPECT().GetTest("00000000-0000-0000-0000-000000000000").Return(ltaas.Test{}, nil),
-			service.EXPECT().GetTest("00000000-0000-0000-0000-000000000001").Return(ltaas.Test{}, nil),
+			service.EXPECT().DeleteTest("00000000-0000-0000-0000-000000000000").Return(nil),
+			service.EXPECT().DeleteTest("00000000-0000-0000-0000-000000000001").Return(nil),
 		)
 
 		loadtestTestDelete(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000001"})
@@ -156,7 +156,7 @@ func Test_loadtestTestDelete(t *testing.T) {
 
 		service := mocks.NewMockLTaaSService(mockCtrl)
 
-		service.EXPECT().GetTest("00000000-0000-0000-0000-000000000000").Return(ltaas.Test{}, errors.New("test error"))
+		service.EXPECT().DeleteTest("00000000-0000-0000-0000-000000000000").Return(errors.New("test error"))
 
 		test_output.AssertErrorOutput(t, "Error removing test [00000000-0000-0000-0000-000000000000]: test error\n", func() {
 			loadtestTestDelete(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000"})
