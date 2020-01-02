@@ -180,23 +180,18 @@ func loadtestJobStopCmd() *cobra.Command {
 
 			return nil
 		},
-		RunE: func(cmd *cobra.Command, args []string) error {
-			return loadtestJobStop(getClient().LTaaSService(), cmd, args)
+		Run: func(cmd *cobra.Command, args []string) {
+			loadtestJobStop(getClient().LTaaSService(), cmd, args)
 		},
 	}
 }
 
-func loadtestJobStop(service ltaas.LTaaSService, cmd *cobra.Command, args []string) error {
-	var jobs []ltaas.Job
+func loadtestJobStop(service ltaas.LTaaSService, cmd *cobra.Command, args []string) {
 	for _, arg := range args {
-		job, err := service.GetJob(arg)
+		err := service.StopJob(arg)
 		if err != nil {
 			output.OutputWithErrorLevelf("Error stopping job [%s]: %s", arg, err)
 			continue
 		}
-
-		jobs = append(jobs, job)
 	}
-
-	return outputLoadTestJobs(jobs)
 }
