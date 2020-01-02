@@ -53,7 +53,7 @@ func safednsZoneRecordListCmd() *cobra.Command {
 }
 
 func safednsZoneRecordList(service safedns.SafeDNSService, cmd *cobra.Command, args []string) {
-	params, err := GetAPIRequestParametersFromFlags()
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		output.Fatal(err.Error())
 		return
@@ -111,13 +111,13 @@ func safednsZoneRecordShow(service safedns.SafeDNSService, cmd *cobra.Command, a
 	for _, arg := range args[1:] {
 		recordID, err := strconv.Atoi(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Invalid record ID [%s]", arg)
+			output.OutputWithErrorLevelf("Invalid record ID [%s]", arg)
 			continue
 		}
 
 		zoneRecord, err := service.GetZoneRecord(args[0], recordID)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving record [%d]: %s", recordID, err)
+			output.OutputWithErrorLevelf("Error retrieving record [%d]: %s", recordID, err)
 			continue
 		}
 
@@ -241,19 +241,19 @@ func safednsZoneRecordUpdate(service safedns.SafeDNSService, cmd *cobra.Command,
 	for _, arg := range args[1:] {
 		recordID, err := strconv.Atoi(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Invalid record ID [%s]", arg)
+			output.OutputWithErrorLevelf("Invalid record ID [%s]", arg)
 			continue
 		}
 
 		id, err := service.PatchZoneRecord(args[0], recordID, patchRequest)
 		if err != nil {
-			OutputWithErrorLevelf("Error updating record [%d]: %s", recordID, err)
+			output.OutputWithErrorLevelf("Error updating record [%d]: %s", recordID, err)
 			continue
 		}
 
 		zoneRecord, err := service.GetZoneRecord(args[0], id)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving updated record [%d]: %s", recordID, err)
+			output.OutputWithErrorLevelf("Error retrieving updated record [%d]: %s", recordID, err)
 			continue
 		}
 
@@ -289,13 +289,13 @@ func safednsZoneRecordDelete(service safedns.SafeDNSService, cmd *cobra.Command,
 	for _, arg := range args[1:] {
 		recordID, err := strconv.Atoi(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Invalid record ID [%s]", arg)
+			output.OutputWithErrorLevelf("Invalid record ID [%s]", arg)
 			continue
 		}
 
 		err = service.DeleteZoneRecord(args[0], recordID)
 		if err != nil {
-			OutputWithErrorLevelf("Error removing record [%d]: %s", recordID, err)
+			output.OutputWithErrorLevelf("Error removing record [%d]: %s", recordID, err)
 		}
 	}
 }

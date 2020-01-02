@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/spf13/cobra"
+	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/ddosx"
 )
 
@@ -42,7 +43,7 @@ func ddosxDomainVerificationDNSVerify(service ddosx.DDoSXService, cmd *cobra.Com
 	for _, arg := range args {
 		err := service.VerifyDomainDNS(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error verifying domain [%s] via DNS verification method: %s", arg, err)
+			output.OutputWithErrorLevelf("Error verifying domain [%s] via DNS verification method: %s", arg, err)
 			continue
 		}
 	}

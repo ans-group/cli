@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/spf13/cobra"
+	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/account"
 )
@@ -36,7 +37,7 @@ func accountInvoiceQueryListCmd() *cobra.Command {
 }
 
 func accountInvoiceQueryList(service account.AccountService, cmd *cobra.Command, args []string) {
-	params, err := GetAPIRequestParametersFromFlags()
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		output.Fatal(err.Error())
 		return
@@ -75,13 +76,13 @@ func accountInvoiceQueryShow(service account.AccountService, cmd *cobra.Command,
 	for _, arg := range args {
 		queryID, err := strconv.Atoi(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Invalid invoice query ID [%s]", arg)
+			output.OutputWithErrorLevelf("Invalid invoice query ID [%s]", arg)
 			continue
 		}
 
 		query, err := service.GetInvoiceQuery(queryID)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving invoice query [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving invoice query [%s]: %s", arg, err)
 			continue
 		}
 

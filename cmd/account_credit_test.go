@@ -24,16 +24,15 @@ func Test_accountCreditList(t *testing.T) {
 	})
 
 	t.Run("MalformedFlag_OutputsFatal", func(t *testing.T) {
-		defer func() { flagFilter = nil }()
-
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockAccountService(mockCtrl)
-		flagFilter = []string{"invalidfilter"}
+		cmd := accountCreditListCmd()
+		cmd.Flags().StringArray("filter", []string{"invalidfilter"}, "")
 
 		test_output.AssertFatalOutput(t, "Missing value for filtering\n", func() {
-			accountCreditList(service, &cobra.Command{}, []string{})
+			accountCreditList(service, cmd, []string{})
 		})
 	})
 

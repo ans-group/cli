@@ -52,7 +52,7 @@ func ddosxDomainWAFShow(service ddosx.DDoSXService, cmd *cobra.Command, args []s
 	for _, arg := range args {
 		waf, err := service.GetDomainWAF(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving domain waf [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving domain waf [%s]: %s", arg, err)
 			continue
 		}
 
@@ -175,13 +175,13 @@ func ddosxDomainWAFUpdate(service ddosx.DDoSXService, cmd *cobra.Command, args [
 	for _, arg := range args {
 		err := service.PatchDomainWAF(arg, patchRequest)
 		if err != nil {
-			OutputWithErrorLevelf("Error updating domain waf [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error updating domain waf [%s]: %s", arg, err)
 			continue
 		}
 
 		waf, err := service.GetDomainWAF(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving updated domain waf [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving updated domain waf [%s]: %s", arg, err)
 			continue
 		}
 
@@ -214,7 +214,7 @@ func ddosxDomainWAFDelete(service ddosx.DDoSXService, cmd *cobra.Command, args [
 	for _, arg := range args {
 		err := service.DeleteDomainWAF(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error removing domain waf [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error removing domain waf [%s]: %s", arg, err)
 			continue
 		}
 	}

@@ -48,7 +48,7 @@ func safednsZoneNoteListCmd() *cobra.Command {
 }
 
 func safednsZoneNoteList(service safedns.SafeDNSService, cmd *cobra.Command, args []string) {
-	params, err := GetAPIRequestParametersFromFlags()
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		output.Fatal(err.Error())
 		return
@@ -96,13 +96,13 @@ func safednsZoneNoteShow(service safedns.SafeDNSService, cmd *cobra.Command, arg
 	for _, arg := range args[1:] {
 		noteID, err := strconv.Atoi(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Invalid note ID [%s]", arg)
+			output.OutputWithErrorLevelf("Invalid note ID [%s]", arg)
 			continue
 		}
 
 		zoneNote, err := service.GetZoneNote(args[0], noteID)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving note [%d]: %s", noteID, err)
+			output.OutputWithErrorLevelf("Error retrieving note [%d]: %s", noteID, err)
 			continue
 		}
 

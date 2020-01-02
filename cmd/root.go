@@ -40,12 +40,14 @@ var rootCmd = &cobra.Command{
 func Execute(build build.BuildInfo) {
 	appVersion = build.Version
 	rootCmd.Version = build.String()
+	rootCmd.SilenceErrors = true
+	rootCmd.SilenceUsage = true
 
 	if err := rootCmd.Execute(); err != nil {
 		output.Fatal(err.Error())
 	}
 
-	Exit()
+	output.ExitWithErrorLevel()
 }
 
 func init() {
@@ -72,6 +74,7 @@ func init() {
 	rootCmd.AddCommand(registrarRootCmd())
 	rootCmd.AddCommand(pssRootCmd())
 	rootCmd.AddCommand(storageRootCmd())
+	rootCmd.AddCommand(loadtestRootCmd())
 
 	appFilesystem = afero.NewOsFs()
 }

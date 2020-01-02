@@ -46,7 +46,7 @@ func safednsTemplateListCmd() *cobra.Command {
 }
 
 func safednsTemplateList(service safedns.SafeDNSService, cmd *cobra.Command, args []string) {
-	params, err := GetAPIRequestParametersFromFlags()
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		output.Fatal(err.Error())
 		return
@@ -91,7 +91,7 @@ func safednsTemplateShow(service safedns.SafeDNSService, cmd *cobra.Command, arg
 	for _, arg := range args {
 		template, err := getSafeDNSTemplateByNameOrID(service, arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving template [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving template [%s]: %s", arg, err)
 			continue
 		}
 
@@ -183,19 +183,19 @@ func safednsTemplateUpdate(service safedns.SafeDNSService, cmd *cobra.Command, a
 	for _, arg := range args {
 		templateID, err := getSafeDNSTemplateIDByNameOrID(service, arg)
 		if err != nil {
-			OutputWithErrorLevel(err.Error())
+			output.OutputWithErrorLevel(err.Error())
 			continue
 		}
 
 		id, err := service.PatchTemplate(templateID, patchRequest)
 		if err != nil {
-			OutputWithErrorLevelf("Error updating template [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error updating template [%s]: %s", arg, err)
 			continue
 		}
 
 		template, err := service.GetTemplate(id)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving updated template: %s", err)
+			output.OutputWithErrorLevelf("Error retrieving updated template: %s", err)
 			continue
 		}
 
@@ -228,13 +228,13 @@ func safednsTemplateDelete(service safedns.SafeDNSService, cmd *cobra.Command, a
 	for _, arg := range args {
 		templateID, err := getSafeDNSTemplateIDByNameOrID(service, arg)
 		if err != nil {
-			OutputWithErrorLevel(err.Error())
+			output.OutputWithErrorLevel(err.Error())
 			continue
 		}
 
 		err = service.DeleteTemplate(templateID)
 		if err != nil {
-			OutputWithErrorLevelf("Error removing template [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error removing template [%s]: %s", arg, err)
 			continue
 		}
 	}

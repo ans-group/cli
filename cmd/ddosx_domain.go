@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/ddosx"
 )
@@ -47,7 +48,7 @@ func ddosxDomainListCmd() *cobra.Command {
 }
 
 func ddosxDomainList(service ddosx.DDoSXService, cmd *cobra.Command, args []string) {
-	params, err := GetAPIRequestParametersFromFlags()
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		output.Fatal(err.Error())
 		return
@@ -86,7 +87,7 @@ func ddosxDomainShow(service ddosx.DDoSXService, cmd *cobra.Command, args []stri
 	for _, arg := range args {
 		domain, err := service.GetDomain(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving domain [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving domain [%s]: %s", arg, err)
 			continue
 		}
 
@@ -159,7 +160,7 @@ func ddosxDomainDelete(service ddosx.DDoSXService, cmd *cobra.Command, args []st
 	for _, arg := range args {
 		err := service.DeleteDomain(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error removing domain [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error removing domain [%s]: %s", arg, err)
 			continue
 		}
 	}
@@ -193,7 +194,7 @@ func ddosxDomainDeploy(service ddosx.DDoSXService, cmd *cobra.Command, args []st
 	for _, arg := range args {
 		err := service.DeployDomain(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error deploying domain [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error deploying domain [%s]: %s", arg, err)
 			continue
 		}
 
@@ -201,14 +202,14 @@ func ddosxDomainDeploy(service ddosx.DDoSXService, cmd *cobra.Command, args []st
 		if waitFlag {
 			err := WaitForCommand(DomainStatusWaitFunc(service, arg, ddosx.DomainStatusConfigured))
 			if err != nil {
-				OutputWithErrorLevelf("Error deploying domain [%s]: %s", arg, err)
+				output.OutputWithErrorLevelf("Error deploying domain [%s]: %s", arg, err)
 				continue
 			}
 		}
 
 		domain, err := service.GetDomain(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving domain [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving domain [%s]: %s", arg, err)
 			continue
 		}
 

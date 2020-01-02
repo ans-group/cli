@@ -52,7 +52,7 @@ func ecloudSolutionListCmd() *cobra.Command {
 }
 
 func ecloudSolutionList(service ecloud.ECloudService, cmd *cobra.Command, args []string) {
-	params, err := GetAPIRequestParametersFromFlags()
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		output.Fatal(err.Error())
 		return
@@ -96,13 +96,13 @@ func ecloudSolutionShow(service ecloud.ECloudService, cmd *cobra.Command, args [
 	for _, arg := range args {
 		solutionID, err := strconv.Atoi(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Invalid solution ID [%s]", arg)
+			output.OutputWithErrorLevelf("Invalid solution ID [%s]", arg)
 			continue
 		}
 
 		solution, err := service.GetSolution(solutionID)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving solution [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving solution [%s]: %s", arg, err)
 			continue
 		}
 

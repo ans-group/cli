@@ -15,6 +15,7 @@ import (
 )
 
 var outputExit func(code int) = os.Exit
+var errorLevel int
 
 func SetOutputExit(e func(code int)) func(code int) {
 	oldOutputExit := outputExit
@@ -67,6 +68,35 @@ func Fatal(str string) {
 // outputExit to exit with 1
 func Fatalf(format string, a ...interface{}) {
 	Fatal(fmt.Sprintf(format, a...))
+}
+
+// OutputWithCustomErrorLevel is a wrapper for OutputError, which sets global
+// var errorLevel with provided level
+func OutputWithCustomErrorLevel(level int, str string) {
+	Error(str)
+	errorLevel = level
+}
+
+// OutputWithCustomErrorLevelf is a wrapper for OutputWithCustomErrorLevel, which sets global
+// var errorLevel with provided level
+func OutputWithCustomErrorLevelf(level int, format string, a ...interface{}) {
+	OutputWithCustomErrorLevel(level, fmt.Sprintf(format, a...))
+}
+
+// OutputWithErrorLevelf is a wrapper for OutputWithCustomErrorLevelf, which sets global
+// var errorLevel to 1
+func OutputWithErrorLevelf(format string, a ...interface{}) {
+	OutputWithCustomErrorLevelf(1, format, a...)
+}
+
+// OutputWithErrorLevel is a wrapper for OutputWithCustomErrorLevel, which sets global
+// var errorLevel to 1
+func OutputWithErrorLevel(str string) {
+	OutputWithCustomErrorLevel(1, str)
+}
+
+func ExitWithErrorLevel() {
+	outputExit(errorLevel)
 }
 
 // Value will format specified rows using given includeProperties by extracting field values,

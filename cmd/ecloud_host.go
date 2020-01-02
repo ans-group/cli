@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/spf13/cobra"
+	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
@@ -35,7 +36,7 @@ func ecloudHostListCmd() *cobra.Command {
 }
 
 func ecloudHostList(service ecloud.ECloudService, cmd *cobra.Command, args []string) {
-	params, err := GetAPIRequestParametersFromFlags()
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		output.Fatal(err.Error())
 		return
@@ -74,13 +75,13 @@ func ecloudHostShow(service ecloud.ECloudService, cmd *cobra.Command, args []str
 	for _, arg := range args {
 		hostID, err := strconv.Atoi(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Invalid host ID [%s]", arg)
+			output.OutputWithErrorLevelf("Invalid host ID [%s]", arg)
 			continue
 		}
 
 		host, err := service.GetHost(hostID)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving host [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving host [%s]: %s", arg, err)
 			continue
 		}
 

@@ -6,7 +6,9 @@ import (
 	"strconv"
 
 	"github.com/spf13/cobra"
+	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/input"
+	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/pss"
 )
 
@@ -41,7 +43,7 @@ func pssRequestListCmd() *cobra.Command {
 }
 
 func pssRequestList(service pss.PSSService, cmd *cobra.Command, args []string) error {
-	params, err := GetAPIRequestParametersFromFlags()
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		return err
 	}
@@ -79,13 +81,13 @@ func pssRequestShow(service pss.PSSService, cmd *cobra.Command, args []string) {
 	for _, arg := range args {
 		requestID, err := strconv.Atoi(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Invalid request ID [%s]", arg)
+			output.OutputWithErrorLevelf("Invalid request ID [%s]", arg)
 			continue
 		}
 
 		request, err := service.GetRequest(requestID)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving request [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving request [%s]: %s", arg, err)
 			continue
 		}
 
@@ -233,19 +235,19 @@ func pssRequestUpdate(service pss.PSSService, cmd *cobra.Command, args []string)
 	for _, arg := range args {
 		requestID, err := strconv.Atoi(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Invalid request ID [%s]", arg)
+			output.OutputWithErrorLevelf("Invalid request ID [%s]", arg)
 			continue
 		}
 
 		err = service.PatchRequest(requestID, patchRequest)
 		if err != nil {
-			OutputWithErrorLevelf("Error updating request [%d]: %s", requestID, err)
+			output.OutputWithErrorLevelf("Error updating request [%d]: %s", requestID, err)
 			continue
 		}
 
 		request, err := service.GetRequest(requestID)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving updated request [%d]: %s", requestID, err)
+			output.OutputWithErrorLevelf("Error retrieving updated request [%d]: %s", requestID, err)
 			continue
 		}
 

@@ -53,7 +53,7 @@ func ecloudVirtualMachineListCmd() *cobra.Command {
 }
 
 func ecloudVirtualMachineList(service ecloud.ECloudService, cmd *cobra.Command, args []string) {
-	params, err := GetAPIRequestParametersFromFlags()
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		output.Fatal(err.Error())
 		return
@@ -97,13 +97,13 @@ func ecloudVirtualMachineShow(service ecloud.ECloudService, cmd *cobra.Command, 
 	for _, arg := range args {
 		vmID, err := strconv.Atoi(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Invalid virtual machine ID [%s]", arg)
+			output.OutputWithErrorLevelf("Invalid virtual machine ID [%s]", arg)
 			continue
 		}
 
 		vm, err := service.GetVirtualMachine(vmID)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving virtual machine [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving virtual machine [%s]: %s", arg, err)
 			continue
 		}
 
@@ -284,25 +284,25 @@ func ecloudVirtualMachineUpdate(service ecloud.ECloudService, cmd *cobra.Command
 	for _, arg := range args {
 		vmID, err := strconv.Atoi(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Invalid virtual machine ID [%s]", arg)
+			output.OutputWithErrorLevelf("Invalid virtual machine ID [%s]", arg)
 			continue
 		}
 
 		err = service.PatchVirtualMachine(vmID, patchRequest)
 		if err != nil {
-			OutputWithErrorLevelf("Error updating virtual machine [%d]: %s", vmID, err.Error())
+			output.OutputWithErrorLevelf("Error updating virtual machine [%d]: %s", vmID, err.Error())
 			continue
 		}
 
 		err = WaitForCommand(VirtualMachineStatusWaitFunc(service, vmID, ecloud.VirtualMachineStatusComplete))
 		if err != nil {
-			OutputWithErrorLevelf("Error updating virtual machine [%d]: %s", vmID, err.Error())
+			output.OutputWithErrorLevelf("Error updating virtual machine [%d]: %s", vmID, err.Error())
 			continue
 		}
 
 		vm, err := service.GetVirtualMachine(vmID)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving updated virtual machine [%d]: %s", vmID, err.Error())
+			output.OutputWithErrorLevelf("Error retrieving updated virtual machine [%d]: %s", vmID, err.Error())
 			return
 		}
 
@@ -335,13 +335,13 @@ func ecloudVirtualMachineStart(service ecloud.ECloudService, cmd *cobra.Command,
 	for _, arg := range args {
 		vmID, err := strconv.Atoi(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Invalid virtual machine ID [%s]", arg)
+			output.OutputWithErrorLevelf("Invalid virtual machine ID [%s]", arg)
 			continue
 		}
 
 		err = service.PowerOnVirtualMachine(vmID)
 		if err != nil {
-			OutputWithErrorLevelf("Error powering on virtual machine [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error powering on virtual machine [%s]: %s", arg, err)
 			continue
 		}
 	}
@@ -376,20 +376,20 @@ func ecloudVirtualMachineStop(service ecloud.ECloudService, cmd *cobra.Command, 
 	for _, arg := range args {
 		vmID, err := strconv.Atoi(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Invalid virtual machine ID [%s]", arg)
+			output.OutputWithErrorLevelf("Invalid virtual machine ID [%s]", arg)
 			continue
 		}
 
 		if force {
 			err = service.PowerOffVirtualMachine(vmID)
 			if err != nil {
-				OutputWithErrorLevelf("Error powering off (forced) virtual machine [%s]: %s", arg, err)
+				output.OutputWithErrorLevelf("Error powering off (forced) virtual machine [%s]: %s", arg, err)
 				continue
 			}
 		} else {
 			err = service.PowerShutdownVirtualMachine(vmID)
 			if err != nil {
-				OutputWithErrorLevelf("Error powering off virtual machine [%s]: %s", arg, err)
+				output.OutputWithErrorLevelf("Error powering off virtual machine [%s]: %s", arg, err)
 				continue
 			}
 		}
@@ -425,20 +425,20 @@ func ecloudVirtualMachineRestart(service ecloud.ECloudService, cmd *cobra.Comman
 	for _, arg := range args {
 		vmID, err := strconv.Atoi(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Invalid virtual machine ID [%s]", arg)
+			output.OutputWithErrorLevelf("Invalid virtual machine ID [%s]", arg)
 			continue
 		}
 
 		if force {
 			err = service.PowerResetVirtualMachine(vmID)
 			if err != nil {
-				OutputWithErrorLevelf("Error restarting (forced) virtual machine [%s]: %s", arg, err)
+				output.OutputWithErrorLevelf("Error restarting (forced) virtual machine [%s]: %s", arg, err)
 				continue
 			}
 		} else {
 			err = service.PowerRestartVirtualMachine(vmID)
 			if err != nil {
-				OutputWithErrorLevelf("Error restarting virtual machine [%s]: %s", arg, err)
+				output.OutputWithErrorLevelf("Error restarting virtual machine [%s]: %s", arg, err)
 				continue
 			}
 		}
@@ -472,13 +472,13 @@ func ecloudVirtualMachineDelete(service ecloud.ECloudService, cmd *cobra.Command
 	for _, arg := range args {
 		vmID, err := strconv.Atoi(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Invalid virtual machine ID [%s]", arg)
+			output.OutputWithErrorLevelf("Invalid virtual machine ID [%s]", arg)
 			continue
 		}
 
 		err = service.DeleteVirtualMachine(vmID)
 		if err != nil {
-			OutputWithErrorLevelf("Error removing virtual machine [%d]: %s", vmID, err)
+			output.OutputWithErrorLevelf("Error removing virtual machine [%d]: %s", vmID, err)
 			continue
 		}
 
@@ -486,7 +486,7 @@ func ecloudVirtualMachineDelete(service ecloud.ECloudService, cmd *cobra.Command
 		if waitFlag {
 			err := WaitForCommand(VirtualMachineNotFoundWaitFunc(service, vmID))
 			if err != nil {
-				OutputWithErrorLevelf("Error removing virtual machine [%d]: %s", vmID, err)
+				output.OutputWithErrorLevelf("Error removing virtual machine [%d]: %s", vmID, err)
 				continue
 			}
 		}

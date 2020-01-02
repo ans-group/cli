@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/spf13/cobra"
+	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
@@ -50,7 +51,7 @@ func ecloudSolutionTemplateList(service ecloud.ECloudService, cmd *cobra.Command
 		return
 	}
 
-	params, err := GetAPIRequestParametersFromFlags()
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		output.Fatal(err.Error())
 		return
@@ -99,7 +100,7 @@ func ecloudSolutionTemplateShow(service ecloud.ECloudService, cmd *cobra.Command
 	for _, arg := range args[1:] {
 		template, err := service.GetSolutionTemplate(solutionID, arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving solution template [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving solution template [%s]: %s", arg, err)
 			continue
 		}
 
@@ -210,7 +211,7 @@ func ecloudSolutionTemplateDelete(service ecloud.ECloudService, cmd *cobra.Comma
 	for _, arg := range args[1:] {
 		err = service.DeleteSolutionTemplate(solutionID, arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error removing solution template [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error removing solution template [%s]: %s", arg, err)
 			continue
 		}
 
@@ -218,7 +219,7 @@ func ecloudSolutionTemplateDelete(service ecloud.ECloudService, cmd *cobra.Comma
 		if waitFlag {
 			err := WaitForCommand(SolutionTemplateExistsWaitFunc(service, solutionID, arg, false))
 			if err != nil {
-				OutputWithErrorLevelf("Error removing solution template [%s]: %s", arg, err)
+				output.OutputWithErrorLevelf("Error removing solution template [%s]: %s", arg, err)
 			}
 		}
 	}

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"strconv"
 
+	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 
@@ -52,7 +53,7 @@ func ecloudVirtualMachineTagList(service ecloud.ECloudService, cmd *cobra.Comman
 		return
 	}
 
-	params, err := GetAPIRequestParametersFromFlags()
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		output.Fatal(err.Error())
 		return
@@ -101,7 +102,7 @@ func ecloudVirtualMachineTagShow(service ecloud.ECloudService, cmd *cobra.Comman
 	for _, arg := range args[1:] {
 		tag, err := service.GetVirtualMachineTag(vmID, arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving virtual machine tag [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving virtual machine tag [%s]: %s", arg, err)
 			continue
 		}
 
@@ -212,13 +213,13 @@ func ecloudVirtualMachineTagUpdate(service ecloud.ECloudService, cmd *cobra.Comm
 	for _, arg := range args[1:] {
 		err = service.PatchVirtualMachineTag(vmID, arg, patchRequest)
 		if err != nil {
-			OutputWithErrorLevelf("Error updating virtual machine tag [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error updating virtual machine tag [%s]: %s", arg, err)
 			continue
 		}
 
 		tag, err := service.GetVirtualMachineTag(vmID, arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving updated virtual machine tag [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving updated virtual machine tag [%s]: %s", arg, err)
 			continue
 		}
 
@@ -260,7 +261,7 @@ func ecloudVirtualMachineTagDelete(service ecloud.ECloudService, cmd *cobra.Comm
 	for _, arg := range args[1:] {
 		err = service.DeleteVirtualMachineTag(vmID, arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error removing virtual machine tag [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error removing virtual machine tag [%s]: %s", arg, err)
 		}
 	}
 }

@@ -49,15 +49,14 @@ func Test_pssRequestReplyList(t *testing.T) {
 	})
 
 	t.Run("MalformedFlag_OutputsFatal", func(t *testing.T) {
-		defer func() { flagFilter = nil }()
-
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockPSSService(mockCtrl)
-		flagFilter = []string{"invalidfilter"}
+		cmd := &cobra.Command{}
+		cmd.Flags().StringArray("filter", []string{"invalidfilter"}, "")
 
-		err := pssRequestReplyList(service, &cobra.Command{}, []string{"123"})
+		err := pssRequestReplyList(service, cmd, []string{"123"})
 		assert.Equal(t, "Missing value for filtering", err.Error())
 	})
 

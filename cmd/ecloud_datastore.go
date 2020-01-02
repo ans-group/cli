@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/spf13/cobra"
+	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
@@ -35,7 +36,7 @@ func ecloudDatastoreListCmd() *cobra.Command {
 }
 
 func ecloudDatastoreList(service ecloud.ECloudService, cmd *cobra.Command, args []string) {
-	params, err := GetAPIRequestParametersFromFlags()
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		output.Fatal(err.Error())
 		return
@@ -74,13 +75,13 @@ func ecloudDatastoreShow(service ecloud.ECloudService, cmd *cobra.Command, args 
 	for _, arg := range args {
 		datastoreID, err := strconv.Atoi(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Invalid datastore ID [%s]", arg)
+			output.OutputWithErrorLevelf("Invalid datastore ID [%s]", arg)
 			continue
 		}
 
 		datastore, err := service.GetDatastore(datastoreID)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving datastore [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving datastore [%s]: %s", arg, err)
 			continue
 		}
 

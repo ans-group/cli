@@ -7,6 +7,7 @@ import (
 	"github.com/ukfast/sdk-go/pkg/ptr"
 
 	"github.com/spf13/cobra"
+	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/ddosx"
 )
@@ -47,7 +48,7 @@ func ddosxDomainACLIPRuleListCmd() *cobra.Command {
 }
 
 func ddosxDomainACLIPRuleList(service ddosx.DDoSXService, cmd *cobra.Command, args []string) {
-	params, err := GetAPIRequestParametersFromFlags()
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		output.Fatal(err.Error())
 		return
@@ -91,7 +92,7 @@ func ddosxDomainACLIPRuleShow(service ddosx.DDoSXService, cmd *cobra.Command, ar
 	for _, arg := range args[1:] {
 		rule, err := service.GetDomainACLIPRule(args[0], arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving domain ACL IP rule [%s]: %s", arg, err.Error())
+			output.OutputWithErrorLevelf("Error retrieving domain ACL IP rule [%s]: %s", arg, err.Error())
 			continue
 		}
 
@@ -213,13 +214,13 @@ func ddosxDomainACLIPRuleUpdate(service ddosx.DDoSXService, cmd *cobra.Command, 
 	for _, arg := range args[1:] {
 		err := service.PatchDomainACLIPRule(args[0], arg, patchRequest)
 		if err != nil {
-			OutputWithErrorLevelf("Error updating domain ACL IP rule [%s]: %s", arg, err.Error())
+			output.OutputWithErrorLevelf("Error updating domain ACL IP rule [%s]: %s", arg, err.Error())
 			continue
 		}
 
 		rule, err := service.GetDomainACLIPRule(args[0], arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving updated domain ACL IP rule [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving updated domain ACL IP rule [%s]: %s", arg, err)
 			continue
 		}
 
@@ -255,7 +256,7 @@ func ddosxDomainACLIPRuleDelete(service ddosx.DDoSXService, cmd *cobra.Command, 
 	for _, arg := range args[1:] {
 		err := service.DeleteDomainACLIPRule(args[0], arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error removing domain ACL IP rule [%s]: %s", arg, err.Error())
+			output.OutputWithErrorLevelf("Error removing domain ACL IP rule [%s]: %s", arg, err.Error())
 			continue
 		}
 	}

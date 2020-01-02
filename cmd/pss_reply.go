@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/spf13/cobra"
+	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/pss"
 )
 
@@ -46,7 +47,7 @@ func pssReplyShow(service pss.PSSService, cmd *cobra.Command, args []string) {
 	for _, arg := range args {
 		reply, err := service.GetReply(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving reply [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving reply [%s]: %s", arg, err)
 			continue
 		}
 

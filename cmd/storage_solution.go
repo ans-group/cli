@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/spf13/cobra"
+	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/storage"
 )
@@ -35,7 +36,7 @@ func storageSolutionListCmd() *cobra.Command {
 }
 
 func storageSolutionList(service storage.StorageService, cmd *cobra.Command, args []string) {
-	params, err := GetAPIRequestParametersFromFlags()
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		output.Fatal(err.Error())
 		return
@@ -74,13 +75,13 @@ func storageSolutionShow(service storage.StorageService, cmd *cobra.Command, arg
 	for _, arg := range args {
 		solutionID, err := strconv.Atoi(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Invalid solution ID [%s]", arg)
+			output.OutputWithErrorLevelf("Invalid solution ID [%s]", arg)
 			continue
 		}
 
 		solution, err := service.GetSolution(solutionID)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving solution [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving solution [%s]: %s", arg, err)
 			continue
 		}
 

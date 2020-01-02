@@ -50,16 +50,15 @@ func Test_safednsZoneList(t *testing.T) {
 	})
 
 	t.Run("MalformedFlag_OutputsFatal", func(t *testing.T) {
-		defer func() { flagFilter = nil }()
-
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockSafeDNSService(mockCtrl)
-		flagFilter = []string{"invalidfilter"}
+		cmd := &cobra.Command{}
+		cmd.Flags().StringArray("filter", []string{"invalidfilter"}, "")
 
 		test_output.AssertFatalOutput(t, "Missing value for filtering\n", func() {
-			safednsZoneList(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
+			safednsZoneList(service, cmd, []string{"testdomain1.co.uk"})
 		})
 	})
 

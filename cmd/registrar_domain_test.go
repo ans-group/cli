@@ -25,16 +25,15 @@ func Test_registrarDomainList(t *testing.T) {
 	})
 
 	t.Run("MalformedFlag_OutputsFatal", func(t *testing.T) {
-		defer func() { flagFilter = nil }()
-
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockRegistrarService(mockCtrl)
-		flagFilter = []string{"invalidfilter"}
+		cmd := &cobra.Command{}
+		cmd.Flags().StringArray("filter", []string{"invalidfilter"}, "")
 
 		test_output.AssertFatalOutput(t, "Missing value for filtering\n", func() {
-			registrarDomainList(service, &cobra.Command{}, []string{})
+			registrarDomainList(service, cmd, []string{})
 		})
 	})
 

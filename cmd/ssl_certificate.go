@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/spf13/cobra"
+	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/ssl"
 )
@@ -39,7 +40,7 @@ func sslCertificateListCmd() *cobra.Command {
 }
 
 func sslCertificateList(service ssl.SSLService, cmd *cobra.Command, args []string) {
-	params, err := GetAPIRequestParametersFromFlags()
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		output.Fatal(err.Error())
 		return
@@ -78,13 +79,13 @@ func sslCertificateShow(service ssl.SSLService, cmd *cobra.Command, args []strin
 	for _, arg := range args {
 		certificateID, err := strconv.Atoi(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Invalid certificate ID [%s]", arg)
+			output.OutputWithErrorLevelf("Invalid certificate ID [%s]", arg)
 			continue
 		}
 
 		certificate, err := service.GetCertificate(certificateID)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving certificate [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving certificate [%s]: %s", arg, err)
 			continue
 		}
 

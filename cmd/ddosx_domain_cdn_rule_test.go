@@ -7,6 +7,7 @@ import (
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
+	"github.com/ukfast/cli/internal/pkg/clierrors"
 	"github.com/ukfast/cli/test/mocks"
 	"github.com/ukfast/cli/test/test_output"
 	"github.com/ukfast/sdk-go/pkg/service/ddosx"
@@ -42,16 +43,15 @@ func Test_ddosxDomainCDNRuleList(t *testing.T) {
 	})
 
 	t.Run("MalformedFlag_OutputsFatal", func(t *testing.T) {
-		defer func() { flagFilter = nil }()
-
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
-		flagFilter = []string{"invalidfilter"}
+		cmd := &cobra.Command{}
+		cmd.Flags().StringArray("filter", []string{"invalidfilter"}, "")
 
 		test_output.AssertFatalOutput(t, "Missing value for filtering\n", func() {
-			ddosxDomainCDNRuleList(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
+			ddosxDomainCDNRuleList(service, cmd, []string{"testdomain1.co.uk"})
 		})
 	})
 
@@ -184,11 +184,9 @@ func Test_ddosxDomainCDNRuleCreate(t *testing.T) {
 		cmd := ddosxDomainCDNRuleCreateCmd()
 		cmd.Flags().Set("cache-control", "invalid")
 
-		test_output.AssertFatalOutputFunc(t, func(stdErr string) {
-			assert.Contains(t, stdErr, "Invalid value 'invalid' provided for 'cache-control'")
-		}, func() {
-			ddosxDomainCDNRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
-		})
+		err := ddosxDomainCDNRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
+		assert.NotNil(t, err)
+		assert.IsType(t, &clierrors.ErrInvalidFlagValue{}, err)
 	})
 
 	t.Run("ParseCDNRuleTypeError_OutputsFatal", func(t *testing.T) {
@@ -200,11 +198,9 @@ func Test_ddosxDomainCDNRuleCreate(t *testing.T) {
 		cmd.Flags().Set("cache-control", "custom")
 		cmd.Flags().Set("type", "invalid")
 
-		test_output.AssertFatalOutputFunc(t, func(stdErr string) {
-			assert.Contains(t, stdErr, "Invalid value 'invalid' provided for 'type'")
-		}, func() {
-			ddosxDomainCDNRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
-		})
+		err := ddosxDomainCDNRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
+		assert.NotNil(t, err)
+		assert.IsType(t, &clierrors.ErrInvalidFlagValue{}, err)
 	})
 
 	t.Run("ParseDurationError_OutputsFatal", func(t *testing.T) {
@@ -217,11 +213,9 @@ func Test_ddosxDomainCDNRuleCreate(t *testing.T) {
 		cmd.Flags().Set("type", "per-uri")
 		cmd.Flags().Set("cache-control-duration", "invalid")
 
-		test_output.AssertFatalOutputFunc(t, func(stdErr string) {
-			assert.Contains(t, stdErr, "Invalid value 'invalid' provided for 'cache-control-duration'")
-		}, func() {
-			ddosxDomainCDNRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
-		})
+		err := ddosxDomainCDNRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
+		assert.NotNil(t, err)
+		assert.IsType(t, &clierrors.ErrInvalidFlagValue{}, err)
 	})
 
 	t.Run("CreateDomainCDNRuleError_OutputsFatal", func(t *testing.T) {
@@ -238,9 +232,9 @@ func Test_ddosxDomainCDNRuleCreate(t *testing.T) {
 
 		service.EXPECT().CreateDomainCDNRule("testdomain1.co.uk", gomock.Any()).Return("", errors.New("test error"))
 
-		test_output.AssertFatalOutput(t, "Error creating CDN rule: test error\n", func() {
-			ddosxDomainCDNRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
-		})
+		err := ddosxDomainCDNRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
+		assert.NotNil(t, err)
+		assert.Equal(t, "Error creating CDN rule: test error", err.Error())
 	})
 
 	t.Run("GetDomainCDNRuleError_OutputsFatal", func(t *testing.T) {
@@ -260,9 +254,9 @@ func Test_ddosxDomainCDNRuleCreate(t *testing.T) {
 			service.EXPECT().GetDomainCDNRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.CDNRule{}, errors.New("test error")),
 		)
 
-		test_output.AssertFatalOutput(t, "Error retrieving new CDN rule [00000000-0000-0000-0000-000000000000]: test error\n", func() {
-			ddosxDomainCDNRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
-		})
+		err := ddosxDomainCDNRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
+		assert.NotNil(t, err)
+		assert.Equal(t, "Error retrieving new CDN rule [00000000-0000-0000-0000-000000000000]: test error", err.Error())
 	})
 }
 
@@ -326,11 +320,9 @@ func Test_ddosxDomainCDNRuleUpdate(t *testing.T) {
 		cmd := ddosxDomainCDNRuleUpdateCmd()
 		cmd.Flags().Set("cache-control", "invalid")
 
-		test_output.AssertFatalOutputFunc(t, func(stdErr string) {
-			assert.Contains(t, stdErr, "Invalid value 'invalid' provided for 'cache-control'")
-		}, func() {
-			ddosxDomainCDNRuleUpdate(service, cmd, []string{"testdomain1.co.uk"})
-		})
+		err := ddosxDomainCDNRuleUpdate(service, cmd, []string{"testdomain1.co.uk"})
+		assert.NotNil(t, err)
+		assert.IsType(t, &clierrors.ErrInvalidFlagValue{}, err)
 	})
 
 	t.Run("ParseCDNRuleTypeError_OutputsFatal", func(t *testing.T) {
@@ -341,11 +333,9 @@ func Test_ddosxDomainCDNRuleUpdate(t *testing.T) {
 		cmd := ddosxDomainCDNRuleUpdateCmd()
 		cmd.Flags().Set("type", "invalid")
 
-		test_output.AssertFatalOutputFunc(t, func(stdErr string) {
-			assert.Contains(t, stdErr, "Invalid value 'invalid' provided for 'type'")
-		}, func() {
-			ddosxDomainCDNRuleUpdate(service, cmd, []string{"testdomain1.co.uk"})
-		})
+		err := ddosxDomainCDNRuleUpdate(service, cmd, []string{"testdomain1.co.uk"})
+		assert.NotNil(t, err)
+		assert.IsType(t, &clierrors.ErrInvalidFlagValue{}, err)
 	})
 
 	t.Run("ParseDurationError_OutputsFatal", func(t *testing.T) {
@@ -356,11 +346,9 @@ func Test_ddosxDomainCDNRuleUpdate(t *testing.T) {
 		cmd := ddosxDomainCDNRuleUpdateCmd()
 		cmd.Flags().Set("cache-control-duration", "invalid")
 
-		test_output.AssertFatalOutputFunc(t, func(stdErr string) {
-			assert.Contains(t, stdErr, "Invalid value 'invalid' provided for 'cache-control-duration'")
-		}, func() {
-			ddosxDomainCDNRuleUpdate(service, cmd, []string{"testdomain1.co.uk"})
-		})
+		err := ddosxDomainCDNRuleUpdate(service, cmd, []string{"testdomain1.co.uk"})
+		assert.NotNil(t, err)
+		assert.IsType(t, &clierrors.ErrInvalidFlagValue{}, err)
 	})
 
 	t.Run("PatchDomainCDNRuleError_OutputsError", func(t *testing.T) {

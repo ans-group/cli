@@ -2,9 +2,11 @@ package cmd
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/spf13/cobra"
 	"github.com/ukfast/cli/internal/pkg/clierrors"
+	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/ddosx"
 )
@@ -45,7 +47,7 @@ func ddosxDomainCDNRuleListCmd() *cobra.Command {
 }
 
 func ddosxDomainCDNRuleList(service ddosx.DDoSXService, cmd *cobra.Command, args []string) {
-	params, err := GetAPIRequestParametersFromFlags()
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		output.Fatal(err.Error())
 		return
@@ -87,7 +89,7 @@ func ddosxDomainCDNRuleShow(service ddosx.DDoSXService, cmd *cobra.Command, args
 	for _, arg := range args[1:] {
 		rule, err := service.GetDomainCDNRule(args[0], arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving CDN rule [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving CDN rule [%s]: %s", arg, err)
 			continue
 		}
 
@@ -110,8 +112,8 @@ func ddosxDomainCDNRuleCreateCmd() *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			ddosxDomainCDNRuleCreate(getClient().DDoSXService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return ddosxDomainCDNRuleCreate(getClient().DDoSXService(), cmd, args)
 		},
 	}
 
@@ -128,19 +130,17 @@ func ddosxDomainCDNRuleCreateCmd() *cobra.Command {
 	return cmd
 }
 
-func ddosxDomainCDNRuleCreate(service ddosx.DDoSXService, cmd *cobra.Command, args []string) {
+func ddosxDomainCDNRuleCreate(service ddosx.DDoSXService, cmd *cobra.Command, args []string) error {
 	cacheControl, _ := cmd.Flags().GetString("cache-control")
 	parsedCacheControl, err := ddosx.ParseCDNRuleCacheControl(cacheControl)
 	if err != nil {
-		output.Fatal(clierrors.InvalidFlagValueString("cache-control", cacheControl, err))
-		return
+		return clierrors.NewErrInvalidFlagValue("cache-control", cacheControl, err)
 	}
 
 	ruleType, _ := cmd.Flags().GetString("type")
 	parsedRuleType, err := ddosx.ParseCDNRuleType(ruleType)
 	if err != nil {
-		output.Fatal(clierrors.InvalidFlagValueString("type", ruleType, err))
-		return
+		return clierrors.NewErrInvalidFlagValue("type", ruleType, err)
 	}
 
 	createRequest := ddosx.CreateCDNRuleRequest{}
@@ -153,8 +153,7 @@ func ddosxDomainCDNRuleCreate(service ddosx.DDoSXService, cmd *cobra.Command, ar
 		cacheControlDuration, _ := cmd.Flags().GetString("cache-control-duration")
 		parsedCacheControlDuration, err := ddosx.ParseCDNRuleCacheControlDuration(cacheControlDuration)
 		if err != nil {
-			output.Fatal(clierrors.InvalidFlagValueString("cache-control-duration", cacheControlDuration, err))
-			return
+			return clierrors.NewErrInvalidFlagValue("cache-control-duration", cacheControlDuration, err)
 		}
 
 		createRequest.CacheControlDuration = parsedCacheControlDuration
@@ -162,17 +161,16 @@ func ddosxDomainCDNRuleCreate(service ddosx.DDoSXService, cmd *cobra.Command, ar
 
 	id, err := service.CreateDomainCDNRule(args[0], createRequest)
 	if err != nil {
-		output.Fatalf("Error creating CDN rule: %s", err)
-		return
+		return fmt.Errorf("Error creating CDN rule: %s", err)
 	}
 
 	rule, err := service.GetDomainCDNRule(args[0], id)
 	if err != nil {
-		output.Fatalf("Error retrieving new CDN rule [%s]: %s", id, err.Error())
-		return
+		return fmt.Errorf("Error retrieving new CDN rule [%s]: %s", id, err.Error())
 	}
 
 	outputDDoSXCDNRules([]ddosx.CDNRule{rule})
+	return nil
 }
 
 func ddosxDomainCDNRuleUpdateCmd() *cobra.Command {
@@ -191,8 +189,8 @@ func ddosxDomainCDNRuleUpdateCmd() *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			ddosxDomainCDNRuleUpdate(getClient().DDoSXService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return ddosxDomainCDNRuleUpdate(getClient().DDoSXService(), cmd, args)
 		},
 	}
 
@@ -205,7 +203,7 @@ func ddosxDomainCDNRuleUpdateCmd() *cobra.Command {
 	return cmd
 }
 
-func ddosxDomainCDNRuleUpdate(service ddosx.DDoSXService, cmd *cobra.Command, args []string) {
+func ddosxDomainCDNRuleUpdate(service ddosx.DDoSXService, cmd *cobra.Command, args []string) error {
 	patchRequest := ddosx.PatchCDNRuleRequest{}
 
 	if cmd.Flags().Changed("uri") {
@@ -216,8 +214,7 @@ func ddosxDomainCDNRuleUpdate(service ddosx.DDoSXService, cmd *cobra.Command, ar
 		cacheControl, _ := cmd.Flags().GetString("cache-control")
 		parsedCacheControl, err := ddosx.ParseCDNRuleCacheControl(cacheControl)
 		if err != nil {
-			output.Fatal(clierrors.InvalidFlagValueString("cache-control", cacheControl, err))
-			return
+			return clierrors.NewErrInvalidFlagValue("cache-control", cacheControl, err)
 		}
 
 		patchRequest.CacheControl = parsedCacheControl
@@ -227,8 +224,7 @@ func ddosxDomainCDNRuleUpdate(service ddosx.DDoSXService, cmd *cobra.Command, ar
 		cacheControlDuration, _ := cmd.Flags().GetString("cache-control-duration")
 		parsedCacheControlDuration, err := ddosx.ParseCDNRuleCacheControlDuration(cacheControlDuration)
 		if err != nil {
-			output.Fatal(clierrors.InvalidFlagValueString("cache-control-duration", cacheControlDuration, err))
-			return
+			return clierrors.NewErrInvalidFlagValue("cache-control-duration", cacheControlDuration, err)
 		}
 
 		patchRequest.CacheControlDuration = parsedCacheControlDuration
@@ -242,8 +238,7 @@ func ddosxDomainCDNRuleUpdate(service ddosx.DDoSXService, cmd *cobra.Command, ar
 		ruleType, _ := cmd.Flags().GetString("type")
 		parsedRuleType, err := ddosx.ParseCDNRuleType(ruleType)
 		if err != nil {
-			output.Fatal(clierrors.InvalidFlagValueString("type", ruleType, err))
-			return
+			return clierrors.NewErrInvalidFlagValue("type", ruleType, err)
 		}
 
 		patchRequest.Type = parsedRuleType
@@ -254,20 +249,21 @@ func ddosxDomainCDNRuleUpdate(service ddosx.DDoSXService, cmd *cobra.Command, ar
 	for _, arg := range args[1:] {
 		err := service.PatchDomainCDNRule(args[0], arg, patchRequest)
 		if err != nil {
-			OutputWithErrorLevelf("Error updating domain CDN rule [%s]: %s", arg, err.Error())
+			output.OutputWithErrorLevelf("Error updating domain CDN rule [%s]: %s", arg, err.Error())
 			continue
 		}
 
 		rule, err := service.GetDomainCDNRule(args[0], arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving updated CDN rule [%s]: %s", arg, err.Error())
-			return
+			output.OutputWithErrorLevelf("Error retrieving updated CDN rule [%s]: %s", arg, err.Error())
+			continue
 		}
 
 		rules = append(rules, rule)
 	}
 
 	outputDDoSXCDNRules(rules)
+	return nil
 }
 
 func ddosxDomainCDNRuleDeleteCmd() *cobra.Command {
@@ -296,7 +292,7 @@ func ddosxDomainCDNRuleDelete(service ddosx.DDoSXService, cmd *cobra.Command, ar
 	for _, arg := range args[1:] {
 		err := service.DeleteDomainCDNRule(args[0], arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error removing domain CDN rule [%s]: %s", arg, err.Error())
+			output.OutputWithErrorLevelf("Error removing domain CDN rule [%s]: %s", arg, err.Error())
 			continue
 		}
 	}

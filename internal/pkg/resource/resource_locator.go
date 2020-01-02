@@ -26,7 +26,8 @@ func (f *ResourceLocator) Invoke(filter string) (interface{}, error) {
 		}
 
 		if items != nil {
-			switch reflect.TypeOf(items).Kind() {
+			kind := reflect.TypeOf(items).Kind()
+			switch kind {
 			case reflect.Slice:
 				s := reflect.ValueOf(items)
 				length := s.Len()
@@ -38,6 +39,8 @@ func (f *ResourceLocator) Invoke(filter string) (interface{}, error) {
 				if length == 1 {
 					return s.Index(0).Interface(), nil
 				}
+			default:
+				return nil, fmt.Errorf("Unsupported non-slice type [%s]", kind.String())
 			}
 		}
 	}

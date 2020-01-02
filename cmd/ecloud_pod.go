@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/spf13/cobra"
+	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
@@ -39,7 +40,7 @@ func ecloudPodListCmd() *cobra.Command {
 }
 
 func ecloudPodList(service ecloud.ECloudService, cmd *cobra.Command, args []string) {
-	params, err := GetAPIRequestParametersFromFlags()
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		output.Fatal(err.Error())
 		return
@@ -78,13 +79,13 @@ func ecloudPodShow(service ecloud.ECloudService, cmd *cobra.Command, args []stri
 	for _, arg := range args {
 		podID, err := strconv.Atoi(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Invalid pod ID [%s]", arg)
+			output.OutputWithErrorLevelf("Invalid pod ID [%s]", arg)
 			continue
 		}
 
 		pod, err := service.GetPod(podID)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving pod [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving pod [%s]: %s", arg, err)
 			continue
 		}
 

@@ -53,7 +53,7 @@ func ddosxDomainVerificationFileUploadShow(service ddosx.DDoSXService, cmd *cobr
 	for _, arg := range args {
 		content, filename, err := service.DownloadDomainVerificationFile(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving domain verification file [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving domain verification file [%s]: %s", arg, err)
 			continue
 		}
 
@@ -139,7 +139,7 @@ func ddosxDomainVerificationFileUploadVerify(service ddosx.DDoSXService, cmd *co
 	for _, arg := range args {
 		err := service.VerifyDomainFileUpload(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error verifying domain [%s] via verification file method: %s", arg, err)
+			output.OutputWithErrorLevelf("Error verifying domain [%s] via verification file method: %s", arg, err)
 			continue
 		}
 	}

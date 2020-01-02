@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/spf13/cobra"
+	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/ddosx"
 )
@@ -41,7 +42,7 @@ func ddosxSSLListCmd() *cobra.Command {
 }
 
 func ddosxSSLList(service ddosx.DDoSXService, cmd *cobra.Command, args []string) {
-	params, err := GetAPIRequestParametersFromFlags()
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		output.Fatal(err.Error())
 		return
@@ -80,7 +81,7 @@ func ddosxSSLShow(service ddosx.DDoSXService, cmd *cobra.Command, args []string)
 	for _, arg := range args {
 		ssl, err := service.GetSSL(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving ssl [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving ssl [%s]: %s", arg, err)
 			continue
 		}
 
@@ -221,7 +222,7 @@ func ddosxSSLDelete(service ddosx.DDoSXService, cmd *cobra.Command, args []strin
 	for _, arg := range args {
 		err := service.DeleteSSL(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error removing ssl [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error removing ssl [%s]: %s", arg, err)
 			continue
 		}
 	}

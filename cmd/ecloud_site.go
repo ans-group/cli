@@ -40,7 +40,7 @@ func ecloudSiteListCmd() *cobra.Command {
 }
 
 func ecloudSiteList(service ecloud.ECloudService, cmd *cobra.Command, args []string) {
-	params, err := GetAPIRequestParametersFromFlags()
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		output.Fatal(err.Error())
 		return
@@ -84,13 +84,13 @@ func ecloudSiteShow(service ecloud.ECloudService, cmd *cobra.Command, args []str
 	for _, arg := range args {
 		siteID, err := strconv.Atoi(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Invalid site ID [%s]", arg)
+			output.OutputWithErrorLevelf("Invalid site ID [%s]", arg)
 			continue
 		}
 
 		site, err := service.GetSite(siteID)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving site [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving site [%s]: %s", arg, err)
 			continue
 		}
 

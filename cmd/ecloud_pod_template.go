@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/spf13/cobra"
+	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
@@ -50,7 +51,7 @@ func ecloudPodTemplateList(service ecloud.ECloudService, cmd *cobra.Command, arg
 		return
 	}
 
-	params, err := GetAPIRequestParametersFromFlags()
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		output.Fatal(err.Error())
 		return
@@ -99,7 +100,7 @@ func ecloudPodTemplateShow(service ecloud.ECloudService, cmd *cobra.Command, arg
 	for _, arg := range args[1:] {
 		template, err := service.GetPodTemplate(podID, arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving pod template [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving pod template [%s]: %s", arg, err)
 			continue
 		}
 
@@ -210,7 +211,7 @@ func ecloudPodTemplateDelete(service ecloud.ECloudService, cmd *cobra.Command, a
 	for _, arg := range args[1:] {
 		err = service.DeletePodTemplate(podID, arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error removing pod template [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error removing pod template [%s]: %s", arg, err)
 			continue
 		}
 
@@ -218,7 +219,7 @@ func ecloudPodTemplateDelete(service ecloud.ECloudService, cmd *cobra.Command, a
 		if waitFlag {
 			err := WaitForCommand(PodTemplateExistsWaitFunc(service, podID, arg, false))
 			if err != nil {
-				OutputWithErrorLevelf("Error removing pod template [%s]: %s", arg, err)
+				output.OutputWithErrorLevelf("Error removing pod template [%s]: %s", arg, err)
 			}
 		}
 	}

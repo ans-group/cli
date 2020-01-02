@@ -2,9 +2,11 @@ package cmd
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 
 	"github.com/spf13/cobra"
+	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/account"
 )
@@ -28,26 +30,25 @@ func accountContactListCmd() *cobra.Command {
 		Short:   "Lists contacts",
 		Long:    "This command lists contacts",
 		Example: "ukfast account contact list",
-		Run: func(cmd *cobra.Command, args []string) {
-			accountContactList(getClient().AccountService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return accountContactList(getClient().AccountService(), cmd, args)
 		},
 	}
 }
 
-func accountContactList(service account.AccountService, cmd *cobra.Command, args []string) {
-	params, err := GetAPIRequestParametersFromFlags()
+func accountContactList(service account.AccountService, cmd *cobra.Command, args []string) error {
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
-		output.Fatal(err.Error())
-		return
+		return err
 	}
 
 	contacts, err := service.GetContacts(params)
 	if err != nil {
-		output.Fatalf("Error retrieving contacts: %s", err)
-		return
+		return fmt.Errorf("Error retrieving contacts: %s", err)
 	}
 
 	outputAccountContacts(contacts)
+	return nil
 }
 
 func accountContactShowCmd() *cobra.Command {
@@ -74,13 +75,13 @@ func accountContactShow(service account.AccountService, cmd *cobra.Command, args
 	for _, arg := range args {
 		contactID, err := strconv.Atoi(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Invalid contact ID [%s]", arg)
+			output.OutputWithErrorLevelf("Invalid contact ID [%s]", arg)
 			continue
 		}
 
 		contact, err := service.GetContact(contactID)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving contact [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving contact [%s]: %s", arg, err)
 			continue
 		}
 

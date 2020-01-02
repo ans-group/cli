@@ -7,6 +7,7 @@ import (
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
+	"github.com/ukfast/cli/internal/pkg/clierrors"
 	"github.com/ukfast/cli/test/mocks"
 	"github.com/ukfast/cli/test/test_output"
 	"github.com/ukfast/sdk-go/pkg/ptr"
@@ -43,16 +44,15 @@ func Test_ddosxDomainHSTSRuleList(t *testing.T) {
 	})
 
 	t.Run("MalformedFlag_OutputsFatal", func(t *testing.T) {
-		defer func() { flagFilter = nil }()
-
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
-		flagFilter = []string{"invalidfilter"}
+		cmd := &cobra.Command{}
+		cmd.Flags().StringArray("filter", []string{"invalidfilter"}, "")
 
 		test_output.AssertFatalOutput(t, "Missing value for filtering\n", func() {
-			ddosxDomainHSTSRuleList(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
+			ddosxDomainHSTSRuleList(service, cmd, []string{"testdomain1.co.uk"})
 		})
 	})
 
@@ -183,11 +183,9 @@ func Test_ddosxDomainHSTSRuleCreate(t *testing.T) {
 		cmd := ddosxDomainHSTSRuleCreateCmd()
 		cmd.Flags().Set("type", "invalid")
 
-		test_output.AssertFatalOutputFunc(t, func(stdErr string) {
-			assert.Contains(t, stdErr, "Invalid value 'invalid' provided for 'type'")
-		}, func() {
-			ddosxDomainHSTSRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
-		})
+		err := ddosxDomainHSTSRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
+		assert.NotNil(t, err)
+		assert.IsType(t, &clierrors.ErrInvalidFlagValue{}, err)
 	})
 
 	t.Run("CreateDomainHSTSRuleError_OutputsFatal", func(t *testing.T) {
@@ -201,9 +199,9 @@ func Test_ddosxDomainHSTSRuleCreate(t *testing.T) {
 
 		service.EXPECT().CreateDomainHSTSRule("testdomain1.co.uk", gomock.Any()).Return("", errors.New("test error"))
 
-		test_output.AssertFatalOutput(t, "Error creating HSTS rule: test error\n", func() {
-			ddosxDomainHSTSRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
-		})
+		err := ddosxDomainHSTSRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
+		assert.NotNil(t, err)
+		assert.Equal(t, "Error creating HSTS rule: test error", err.Error())
 	})
 
 	t.Run("GetDomainHSTSRuleError_OutputsFatal", func(t *testing.T) {
@@ -220,9 +218,9 @@ func Test_ddosxDomainHSTSRuleCreate(t *testing.T) {
 			service.EXPECT().GetDomainHSTSRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.HSTSRule{}, errors.New("test error")),
 		)
 
-		test_output.AssertFatalOutput(t, "Error retrieving new HSTS rule [00000000-0000-0000-0000-000000000000]: test error\n", func() {
-			ddosxDomainHSTSRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
-		})
+		err := ddosxDomainHSTSRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
+		assert.NotNil(t, err)
+		assert.Equal(t, "Error retrieving new HSTS rule [00000000-0000-0000-0000-000000000000]: test error", err.Error())
 	})
 }
 

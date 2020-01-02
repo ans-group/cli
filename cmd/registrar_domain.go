@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/spf13/cobra"
+	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/registrar"
 )
@@ -37,7 +38,7 @@ func registrarDomainListCmd() *cobra.Command {
 }
 
 func registrarDomainList(service registrar.RegistrarService, cmd *cobra.Command, args []string) {
-	params, err := GetAPIRequestParametersFromFlags()
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		output.Fatal(err.Error())
 		return
@@ -76,7 +77,7 @@ func registrarDomainShow(service registrar.RegistrarService, cmd *cobra.Command,
 	for _, arg := range args {
 		domain, err := service.GetDomain(arg)
 		if err != nil {
-			OutputWithErrorLevelf("Error retrieving domain [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving domain [%s]: %s", arg, err)
 			continue
 		}
 

@@ -6,29 +6,7 @@ import (
 	"time"
 
 	"github.com/spf13/viper"
-	"github.com/ukfast/cli/internal/pkg/helper"
-	"github.com/ukfast/sdk-go/pkg/connection"
 )
-
-type APIListParameters struct {
-	Filtering []connection.APIRequestFiltering
-	Sorting   connection.APIRequestSorting
-}
-
-func GetAPIRequestParametersFromFlags() (connection.APIRequestParameters, error) {
-	filtering, err := helper.GetFilteringArrayFromStringArrayFlag(flagFilter)
-	if err != nil {
-		return connection.APIRequestParameters{}, err
-	}
-
-	return connection.APIRequestParameters{
-		Sorting:   helper.GetSortingFromStringFlag(flagSort),
-		Filtering: filtering,
-		Pagination: connection.APIRequestPagination{
-			PerPage: viper.GetInt("api_pagination_perpage"),
-		},
-	}, nil
-}
 
 type WaitFunc func() (finished bool, err error)
 

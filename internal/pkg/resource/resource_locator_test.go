@@ -95,4 +95,21 @@ func TestResourceLocator_Invoke(t *testing.T) {
 		assert.NotNil(t, err)
 		assert.Equal(t, "No items found matching [testvalue1]", err.Error())
 	})
+
+	t.Run("LocateReturnsNoneSlice_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		provider := mocks.NewMockResourceLocatorProvider(mockCtrl)
+
+		provider.EXPECT().SupportedProperties().Return([]string{"testproperty1"}).Times(1)
+		provider.EXPECT().Locate("testproperty1", "testvalue1").Return("non-slice", nil)
+
+		r := NewResourceLocator(provider)
+
+		_, err := r.Invoke("testvalue1")
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Unsupported non-slice type [string]", err.Error())
+	})
 }

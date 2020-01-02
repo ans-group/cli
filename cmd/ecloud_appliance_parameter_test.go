@@ -40,16 +40,15 @@ func Test_ecloudApplianceParameterList(t *testing.T) {
 	})
 
 	t.Run("MalformedFlag_OutputsFatal", func(t *testing.T) {
-		defer func() { flagFilter = nil }()
-
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockECloudService(mockCtrl)
-		flagFilter = []string{"invalidfilter"}
+		cmd := &cobra.Command{}
+		cmd.Flags().StringArray("filter", []string{"invalidfilter"}, "")
 
 		test_output.AssertFatalOutput(t, "Missing value for filtering\n", func() {
-			ecloudApplianceParameterList(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000"})
+			ecloudApplianceParameterList(service, cmd, []string{"00000000-0000-0000-0000-000000000000"})
 		})
 	})
 

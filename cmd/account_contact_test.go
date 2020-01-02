@@ -25,17 +25,17 @@ func Test_accountContactList(t *testing.T) {
 	})
 
 	t.Run("MalformedFlag_OutputsFatal", func(t *testing.T) {
-		defer func() { flagFilter = nil }()
-
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockAccountService(mockCtrl)
-		flagFilter = []string{"invalidfilter"}
+		cmd := accountContactListCmd()
+		cmd.Flags().StringArray("filter", []string{"invalidfilter"}, "")
 
-		test_output.AssertFatalOutput(t, "Missing value for filtering\n", func() {
-			accountContactList(service, &cobra.Command{}, []string{})
-		})
+		err := accountContactList(service, cmd, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing value for filtering", err.Error())
 	})
 
 	t.Run("GetContactsError_OutputsFatal", func(t *testing.T) {
@@ -46,9 +46,10 @@ func Test_accountContactList(t *testing.T) {
 
 		service.EXPECT().GetContacts(gomock.Any()).Return([]account.Contact{}, errors.New("test error")).Times(1)
 
-		test_output.AssertFatalOutput(t, "Error retrieving contacts: test error\n", func() {
-			accountContactList(service, &cobra.Command{}, []string{})
-		})
+		err := accountContactList(service, &cobra.Command{}, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Error retrieving contacts: test error", err.Error())
 	})
 }
 
