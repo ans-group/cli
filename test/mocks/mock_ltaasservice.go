@@ -34,6 +34,21 @@ func (m *MockLTaaSService) EXPECT() *MockLTaaSServiceMockRecorder {
 	return m.recorder
 }
 
+// CreateAccount mocks base method
+func (m *MockLTaaSService) CreateAccount() (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateAccount")
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateAccount indicates an expected call of CreateAccount
+func (mr *MockLTaaSServiceMockRecorder) CreateAccount() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateAccount", reflect.TypeOf((*MockLTaaSService)(nil).CreateAccount))
+}
+
 // CreateDomain mocks base method
 func (m *MockLTaaSService) CreateDomain(arg0 ltaas.CreateDomainRequest) (string, error) {
 	m.ctrl.T.Helper()

@@ -24,6 +24,7 @@ func loadtestRootCmd() *cobra.Command {
 	cmd.AddCommand(loadtestThresholdRootCmd())
 	cmd.AddCommand(loadtestScenarioRootCmd())
 	cmd.AddCommand(loadtestAgreementRootCmd())
+	cmd.AddCommand(loadtestAccountRootCmd())
 
 	return cmd
 }
@@ -136,6 +137,15 @@ func outputLoadTestAgreements(agreements []ltaas.Agreement) error {
 	err := Output(output.NewGenericOutputHandlerProvider(agreements, []string{"version"}, nil))
 	if err != nil {
 		return fmt.Errorf("Failed to output agreements: %s", err)
+	}
+
+	return nil
+}
+
+func outputLoadTestAccounts(accounts []ltaas.Account) error {
+	err := Output(output.NewGenericOutputHandlerProvider(accounts, []string{"id"}, nil))
+	if err != nil {
+		return fmt.Errorf("Failed to output accounts: %s", err)
 	}
 
 	return nil
