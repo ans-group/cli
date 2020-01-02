@@ -40,6 +40,8 @@ var rootCmd = &cobra.Command{
 func Execute(build build.BuildInfo) {
 	appVersion = build.Version
 	rootCmd.Version = build.String()
+	rootCmd.SilenceErrors = true
+	rootCmd.SilenceUsage = true
 
 	if err := rootCmd.Execute(); err != nil {
 		output.Fatal(err.Error())
