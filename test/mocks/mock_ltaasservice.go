@@ -390,6 +390,20 @@ func (mr *MockLTaaSServiceMockRecorder) GetThresholdsPaginated(arg0 interface{})
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetThresholdsPaginated", reflect.TypeOf((*MockLTaaSService)(nil).GetThresholdsPaginated), arg0)
 }
 
+// StopJob mocks base method
+func (m *MockLTaaSService) StopJob(arg0 string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "StopJob", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// StopJob indicates an expected call of StopJob
+func (mr *MockLTaaSServiceMockRecorder) StopJob(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "StopJob", reflect.TypeOf((*MockLTaaSService)(nil).StopJob), arg0)
+}
+
 // VerifyDomainDNS mocks base method
 func (m *MockLTaaSService) VerifyDomainDNS(arg0 string) error {
 	m.ctrl.T.Helper()
