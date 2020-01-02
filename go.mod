@@ -15,10 +15,8 @@ require (
 	github.com/spf13/cobra v0.0.5
 	github.com/spf13/viper v1.3.2
 	github.com/stretchr/testify v1.3.0
-	github.com/ukfast/sdk-go v1.2.5
+	github.com/ukfast/sdk-go v1.3.1
 	gopkg.in/go-playground/assert.v1 v1.2.1
 )
-
-replace github.com/ukfast/sdk-go v1.2.5 => C:/Users/Lee/Projects/sdk-go
 
 go 1.13
