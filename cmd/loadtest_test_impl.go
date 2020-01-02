@@ -19,6 +19,7 @@ func loadtestTestRootCmd() *cobra.Command {
 	// Child commands
 	cmd.AddCommand(loadtestTestListCmd())
 	cmd.AddCommand(loadtestTestShowCmd())
+	cmd.AddCommand(loadtestTestDeleteCmd())
 
 	return cmd
 }
@@ -74,6 +75,40 @@ func loadtestTestShow(service ltaas.LTaaSService, cmd *cobra.Command, args []str
 		test, err := service.GetTest(arg)
 		if err != nil {
 			output.OutputWithErrorLevelf("Error retrieving test [%s]: %s", arg, err)
+			continue
+		}
+
+		tests = append(tests, test)
+	}
+
+	return outputLoadTestTests(tests)
+}
+
+func loadtestTestDeleteCmd() *cobra.Command {
+	return &cobra.Command{
+		Use:     "delete <test: id>...",
+		Short:   "Deletes a test",
+		Long:    "This command deletes one or more tests",
+		Example: "ukfast loadtest test delete 00000000-0000-0000-0000-000000000000",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Missing test")
+			}
+
+			return nil
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return loadtestTestDelete(getClient().LTaaSService(), cmd, args)
+		},
+	}
+}
+
+func loadtestTestDelete(service ltaas.LTaaSService, cmd *cobra.Command, args []string) error {
+	var tests []ltaas.Test
+	for _, arg := range args {
+		test, err := service.GetTest(arg)
+		if err != nil {
+			output.OutputWithErrorLevelf("Error removing test [%s]: %s", arg, err)
 			continue
 		}
 
