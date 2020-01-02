@@ -156,7 +156,7 @@ func Test_loadtestJobCreate(t *testing.T) {
 		)
 
 		err := loadtestJobCreate(service, cmd, []string{})
-		assert.Equal(t, "Error retrieving new job: test error", err.Error())
+		assert.Equal(t, "Error retrieving new job [00000000-0000-0000-0000-000000000000]: test error", err.Error())
 	})
 }
 
@@ -237,7 +237,7 @@ func Test_loadtestJobStop(t *testing.T) {
 
 		service := mocks.NewMockLTaaSService(mockCtrl)
 
-		service.EXPECT().GetJob("00000000-0000-0000-0000-000000000000").Return(ltaas.Job{}, nil).Times(1)
+		service.EXPECT().StopJob("00000000-0000-0000-0000-000000000000").Return(nil).Times(1)
 
 		loadtestJobStop(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000"})
 	})
@@ -249,8 +249,8 @@ func Test_loadtestJobStop(t *testing.T) {
 		service := mocks.NewMockLTaaSService(mockCtrl)
 
 		gomock.InOrder(
-			service.EXPECT().GetJob("00000000-0000-0000-0000-000000000000").Return(ltaas.Job{}, nil),
-			service.EXPECT().GetJob("00000000-0000-0000-0000-000000000001").Return(ltaas.Job{}, nil),
+			service.EXPECT().StopJob("00000000-0000-0000-0000-000000000000").Return(nil),
+			service.EXPECT().StopJob("00000000-0000-0000-0000-000000000001").Return(nil),
 		)
 
 		loadtestJobStop(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000001"})
@@ -262,7 +262,7 @@ func Test_loadtestJobStop(t *testing.T) {
 
 		service := mocks.NewMockLTaaSService(mockCtrl)
 
-		service.EXPECT().GetJob("00000000-0000-0000-0000-000000000000").Return(ltaas.Job{}, errors.New("test error"))
+		service.EXPECT().StopJob("00000000-0000-0000-0000-000000000000").Return(errors.New("test error"))
 
 		test_output.AssertErrorOutput(t, "Error stopping job [00000000-0000-0000-0000-000000000000]: test error\n", func() {
 			loadtestJobStop(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000"})

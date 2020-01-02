@@ -80,11 +80,12 @@ func (mr *MockLTaaSServiceMockRecorder) CreateTest(arg0 interface{}) *gomock.Cal
 }
 
 // CreateTestJob mocks base method
-func (m *MockLTaaSService) CreateTestJob(arg0 string, arg1 ltaas.CreateTestJobRequest) error {
+func (m *MockLTaaSService) CreateTestJob(arg0 string, arg1 ltaas.CreateTestJobRequest) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateTestJob", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // CreateTestJob indicates an expected call of CreateTestJob
