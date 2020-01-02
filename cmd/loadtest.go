@@ -66,7 +66,7 @@ func getLoadTestDomainByNameOrID(service ltaas.LTaaSService, nameOrID string) (l
 }
 
 func outputLoadTestDomains(domains []ltaas.Domain) error {
-	err := Output(NewGenericOutputHandlerProvider(domains, []string{"id", "name"}))
+	err := Output(NewGenericOutputHandlerProvider(domains, []string{"id", "name"}, nil))
 	if err != nil {
 		return fmt.Errorf("Failed to output domains: %s", err)
 	}
@@ -75,7 +75,7 @@ func outputLoadTestDomains(domains []ltaas.Domain) error {
 }
 
 func outputLoadTestTests(tests []ltaas.Test) error {
-	err := Output(NewGenericOutputHandlerProvider(tests, []string{"id", "name", "number_of_users", "duration", "protocol", "path"}))
+	err := Output(NewGenericOutputHandlerProvider(tests, []string{"id", "name", "number_of_users", "duration", "protocol", "path"}, nil))
 	if err != nil {
 		return fmt.Errorf("Failed to output tests: %s", err)
 	}
@@ -84,7 +84,7 @@ func outputLoadTestTests(tests []ltaas.Test) error {
 }
 
 func outputLoadTestJobs(jobs []ltaas.Job) error {
-	err := Output(NewGenericOutputHandlerProvider(jobs, []string{"id", "status", "job_start_timestamp", "job_end_timestamp"}))
+	err := Output(NewGenericOutputHandlerProvider(jobs, []string{"id", "status", "job_start_timestamp", "job_end_timestamp"}, nil))
 	if err != nil {
 		return fmt.Errorf("Failed to output jobs: %s", err)
 	}
@@ -93,7 +93,7 @@ func outputLoadTestJobs(jobs []ltaas.Job) error {
 }
 
 func outputLoadTestJobResults(results []ltaas.JobResults) error {
-	err := Output(NewGenericOutputHandlerProvider(results, []string{"id", "status", "job_start_timestamp", "job_end_timestamp"}))
+	err := Output(NewGenericOutputHandlerProvider(results, []string{"id", "status", "job_start_timestamp", "job_end_timestamp"}, nil))
 	if err != nil {
 		return fmt.Errorf("Failed to output job results: %s", err)
 	}
