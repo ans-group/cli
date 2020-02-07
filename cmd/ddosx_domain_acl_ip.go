@@ -2,11 +2,13 @@ package cmd
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/ukfast/sdk-go/pkg/connection"
 	"github.com/ukfast/sdk-go/pkg/ptr"
 
 	"github.com/spf13/cobra"
+	"github.com/ukfast/cli/internal/pkg/clierrors"
 	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/ddosx"
@@ -115,27 +117,26 @@ func ddosxDomainACLIPRuleCreateCmd() *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			ddosxDomainACLIPRuleCreate(getClient().DDoSXService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return ddosxDomainACLIPRuleCreate(getClient().DDoSXService(), cmd, args)
 		},
 	}
 
 	cmd.Flags().String("ip", "", "IP address for IP ACL rule")
 	cmd.MarkFlagRequired("ip")
-	cmd.Flags().String("uri", "", "Relative URI for IP ACL rule, e.g. path/to/file.jpg")
+	cmd.Flags().String("uri", "", "Path for IP ACL rule, e.g. path/to/file.jpg")
 	cmd.Flags().String("mode", "", "Mode for IP ACL rule. Valid values: "+ddosx.ACLIPModeEnum.String())
 	cmd.MarkFlagRequired("mode")
 
 	return cmd
 }
 
-func ddosxDomainACLIPRuleCreate(service ddosx.DDoSXService, cmd *cobra.Command, args []string) {
+func ddosxDomainACLIPRuleCreate(service ddosx.DDoSXService, cmd *cobra.Command, args []string) error {
 	ip, _ := cmd.Flags().GetString("ip")
 	mode, _ := cmd.Flags().GetString("mode")
 	parsedMode, err := ddosx.ParseACLIPMode(mode)
 	if err != nil {
-		output.Fatal(err.Error())
-		return
+		return clierrors.NewErrInvalidFlagValue("mode", mode, err)
 	}
 
 	createRequest := ddosx.CreateACLIPRuleRequest{}
@@ -145,17 +146,16 @@ func ddosxDomainACLIPRuleCreate(service ddosx.DDoSXService, cmd *cobra.Command, 
 
 	id, err := service.CreateDomainACLIPRule(args[0], createRequest)
 	if err != nil {
-		output.Fatalf("Error creating domain ACL IP rule: %s", err)
-		return
+		return fmt.Errorf("Error creating domain ACL IP rule: %s", err)
 	}
 
 	rule, err := service.GetDomainACLIPRule(args[0], id)
 	if err != nil {
-		output.Fatalf("Error retrieving new domain ACL IP rule [%s]: %s", id, err)
-		return
+		return fmt.Errorf("Error retrieving new domain ACL IP rule [%s]: %s", id, err)
 	}
 
 	outputDDoSXACLIPRules([]ddosx.ACLIPRule{rule})
+	return nil
 }
 
 func ddosxDomainACLIPRuleUpdateCmd() *cobra.Command {
