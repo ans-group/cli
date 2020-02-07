@@ -107,7 +107,7 @@ func ddosxDomainACLIPRuleCreateCmd() *cobra.Command {
 		Use:     "create <domain: name>",
 		Short:   "Creates ACL IP rules",
 		Long:    "This command creates domain ACL IP rules",
-		Example: "ukfast ddosx domain acl ip create",
+		Example: "ukfast ddosx domain acl ip create example.com --ip 1.2.3.4 --mode Deny --uri blog",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -122,9 +122,8 @@ func ddosxDomainACLIPRuleCreateCmd() *cobra.Command {
 
 	cmd.Flags().String("ip", "", "IP address for IP ACL rule")
 	cmd.MarkFlagRequired("ip")
-	cmd.Flags().String("uri", "", "URI for IP ACL rule")
-	cmd.MarkFlagRequired("uri")
-	cmd.Flags().String("mode", "", "Mode for IP ACL rule")
+	cmd.Flags().String("uri", "", "Relative URI for IP ACL rule, e.g. path/to/file.jpg")
+	cmd.Flags().String("mode", "", "Mode for IP ACL rule. Valid values: "+ddosx.ACLIPModeEnum.String())
 	cmd.MarkFlagRequired("mode")
 
 	return cmd
