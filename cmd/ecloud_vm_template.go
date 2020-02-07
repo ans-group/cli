@@ -6,7 +6,7 @@ import (
 	"strconv"
 
 	"github.com/spf13/cobra"
-	"github.com/ukfast/cli/internal/pkg/output"
+	"github.com/ukfast/cli/internal/pkg/clierrors"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
@@ -35,8 +35,8 @@ func ecloudVirtualMachineTemplateCreateCmd() *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			ecloudVirtualMachineTemplateCreate(getClient().ECloudService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return ecloudVirtualMachineTemplateCreate(getClient().ECloudService(), cmd, args)
 		},
 	}
 
@@ -49,18 +49,16 @@ func ecloudVirtualMachineTemplateCreateCmd() *cobra.Command {
 	return cmd
 }
 
-func ecloudVirtualMachineTemplateCreate(service ecloud.ECloudService, cmd *cobra.Command, args []string) {
+func ecloudVirtualMachineTemplateCreate(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	vmID, err := strconv.Atoi(args[0])
 	if err != nil {
-		output.Fatalf("Invalid virtual machine ID [%s]", args[0])
-		return
+		return fmt.Errorf("Invalid virtual machine ID [%s]", args[0])
 	}
 
 	templateType, _ := cmd.Flags().GetString("type")
 	parsedTemplateType, err := ecloud.ParseTemplateType(templateType)
 	if err != nil {
-		output.Fatal(err.Error())
-		return
+		return clierrors.NewErrInvalidFlagValue("type", templateType, err)
 	}
 
 	templateName, _ := cmd.Flags().GetString("name")
@@ -71,31 +69,28 @@ func ecloudVirtualMachineTemplateCreate(service ecloud.ECloudService, cmd *cobra
 
 	err = service.CreateVirtualMachineTemplate(vmID, createRequest)
 	if err != nil {
-		output.Fatalf("Error creating virtual machine template: %s", err)
-		return
+		return fmt.Errorf("Error creating virtual machine template: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := WaitForCommand(VirtualMachineStatusWaitFunc(service, vmID, ecloud.VirtualMachineStatusComplete))
 		if err != nil {
-			output.Fatalf(err.Error())
-			return
+			return err
 		}
 	}
 
 	template, err := getVMTemplate(service, vmID, templateName, parsedTemplateType)
 	if err != nil {
 		if _, ok := err.(*ecloud.TemplateNotFoundError); ok {
-			output.Fatalf("Error creating virtual machine template (unknown failure)")
-			return
+			return fmt.Errorf("Error creating virtual machine template (unknown failure)")
 		}
 
-		output.Fatalf("Error retrieving new virtual machine template: %s", err)
-		return
+		return fmt.Errorf("Error retrieving new virtual machine template: %s", err)
 	}
 
 	outputECloudTemplates([]ecloud.Template{template})
+	return nil
 }
 
 func getVMTemplate(service ecloud.ECloudService, vmID int, templateName string, templateType ecloud.TemplateType) (ecloud.Template, error) {

@@ -169,9 +169,8 @@ func Test_ddosxSSLCreate(t *testing.T) {
 			service.EXPECT().CreateSSL(gomock.Any()).Return("00000000-0000-0000-0000-000000000000", errors.New("test error")),
 		)
 
-		test_output.AssertFatalOutput(t, "Error creating ssl: test error\n", func() {
-			ddosxSSLCreate(service, cmd, []string{})
-		})
+		err := ddosxSSLCreate(service, cmd, []string{})
+		assert.Equal(t, "Error creating ssl: test error", err.Error())
 	})
 
 	t.Run("GetSSLError_OutputsFatal", func(t *testing.T) {
@@ -188,9 +187,8 @@ func Test_ddosxSSLCreate(t *testing.T) {
 			service.EXPECT().GetSSL("00000000-0000-0000-0000-000000000000").Return(ddosx.SSL{}, errors.New("test error")),
 		)
 
-		test_output.AssertFatalOutput(t, "Error retrieving new ssl [00000000-0000-0000-0000-000000000000]: test error\n", func() {
-			ddosxSSLCreate(service, cmd, []string{})
-		})
+		err := ddosxSSLCreate(service, cmd, []string{})
+		assert.Equal(t, "Error retrieving new ssl [00000000-0000-0000-0000-000000000000]: test error", err.Error())
 	})
 }
 
@@ -259,7 +257,6 @@ func Test_ddosxSSLUpdate(t *testing.T) {
 	})
 
 	t.Run("UpdateSSLError_OutputsFatal", func(t *testing.T) {
-
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -271,13 +268,11 @@ func Test_ddosxSSLUpdate(t *testing.T) {
 			service.EXPECT().PatchSSL("00000000-0000-0000-0000-000000000000", gomock.Any()).Return("00000000-0000-0000-0000-000000000000", errors.New("test error")),
 		)
 
-		test_output.AssertFatalOutput(t, "Error updating ssl: test error\n", func() {
-			ddosxSSLUpdate(service, cmd, []string{"00000000-0000-0000-0000-000000000000"})
-		})
+		err := ddosxSSLUpdate(service, cmd, []string{"00000000-0000-0000-0000-000000000000"})
+		assert.Equal(t, "Error updating ssl: test error", err.Error())
 	})
 
 	t.Run("GetSSLError_OutputsFatal", func(t *testing.T) {
-
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -290,9 +285,8 @@ func Test_ddosxSSLUpdate(t *testing.T) {
 			service.EXPECT().GetSSL("00000000-0000-0000-0000-000000000000").Return(ddosx.SSL{}, errors.New("test error")),
 		)
 
-		test_output.AssertFatalOutput(t, "Error retrieving updated ssl: test error\n", func() {
-			ddosxSSLUpdate(service, cmd, []string{"00000000-0000-0000-0000-000000000000"})
-		})
+		err := ddosxSSLUpdate(service, cmd, []string{"00000000-0000-0000-0000-000000000000"})
+		assert.Equal(t, "Error retrieving updated ssl: test error", err.Error())
 	})
 }
 

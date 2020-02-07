@@ -7,6 +7,7 @@ import (
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
+	"github.com/ukfast/cli/internal/pkg/clierrors"
 	"github.com/ukfast/cli/test/mocks"
 	"github.com/ukfast/cli/test/test_output"
 	"github.com/ukfast/sdk-go/pkg/ptr"
@@ -174,11 +175,8 @@ func Test_ddosxDomainACLIPRuleCreate(t *testing.T) {
 		cmd.Flags().Set("uri", "testuri")
 		cmd.Flags().Set("mode", "invalidmode")
 
-		test_output.AssertFatalOutputFunc(t, func(stdErr string) {
-			assert.Contains(t, stdErr, "Invalid ddosx.ACLIPMode")
-		}, func() {
-			ddosxDomainACLIPRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
-		})
+		err := ddosxDomainACLIPRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
+		assert.IsType(t, &clierrors.ErrInvalidFlagValue{}, err)
 	})
 
 	t.Run("CreateDomainACLIPRuleError_OutputsFatal", func(t *testing.T) {
@@ -194,9 +192,8 @@ func Test_ddosxDomainACLIPRuleCreate(t *testing.T) {
 
 		service.EXPECT().CreateDomainACLIPRule("testdomain1.co.uk", gomock.Any()).Return("00000000-0000-0000-0000-000000000000", errors.New("test error")).Times(1)
 
-		test_output.AssertFatalOutput(t, "Error creating domain ACL IP rule: test error\n", func() {
-			ddosxDomainACLIPRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
-		})
+		err := ddosxDomainACLIPRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
+		assert.Equal(t, "Error creating domain ACL IP rule: test error", err.Error())
 	})
 
 	t.Run("CreateDomainACLIPRuleError_OutputsFatal", func(t *testing.T) {
@@ -215,9 +212,8 @@ func Test_ddosxDomainACLIPRuleCreate(t *testing.T) {
 			service.EXPECT().GetDomainACLIPRule("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.ACLIPRule{}, errors.New("test error")),
 		)
 
-		test_output.AssertFatalOutput(t, "Error retrieving new domain ACL IP rule [00000000-0000-0000-0000-000000000000]: test error\n", func() {
-			ddosxDomainACLIPRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
-		})
+		err := ddosxDomainACLIPRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
+		assert.Equal(t, "Error retrieving new domain ACL IP rule [00000000-0000-0000-0000-000000000000]: test error", err.Error())
 	})
 }
 

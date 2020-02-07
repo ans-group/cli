@@ -94,21 +94,6 @@ func (mr *MockLTaaSServiceMockRecorder) CreateTest(arg0 interface{}) *gomock.Cal
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateTest", reflect.TypeOf((*MockLTaaSService)(nil).CreateTest), arg0)
 }
 
-// CreateTestJob mocks base method
-func (m *MockLTaaSService) CreateTestJob(arg0 string, arg1 ltaas.CreateTestJobRequest) (string, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateTestJob", arg0, arg1)
-	ret0, _ := ret[0].(string)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// CreateTestJob indicates an expected call of CreateTestJob
-func (mr *MockLTaaSServiceMockRecorder) CreateTestJob(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateTestJob", reflect.TypeOf((*MockLTaaSService)(nil).CreateTestJob), arg0, arg1)
-}
-
 // DeleteDomain mocks base method
 func (m *MockLTaaSService) DeleteDomain(arg0 string) error {
 	m.ctrl.T.Helper()

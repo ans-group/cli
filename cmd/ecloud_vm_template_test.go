@@ -8,8 +8,8 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
+	"github.com/ukfast/cli/internal/pkg/clierrors"
 	"github.com/ukfast/cli/test/mocks"
-	"github.com/ukfast/cli/test/test_output"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
@@ -35,9 +35,8 @@ func Test_ecloudVirtualMachineTemplateCreate(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		test_output.AssertFatalOutput(t, "Invalid virtual machine ID [abc]\n", func() {
-			ecloudVirtualMachineTemplateCreate(service, &cobra.Command{}, []string{"abc"})
-		})
+		err := ecloudVirtualMachineTemplateCreate(service, &cobra.Command{}, []string{"abc"})
+		assert.Equal(t, "Invalid virtual machine ID [abc]", err.Error())
 	})
 
 	t.Run("InvalidType_OutputsFatal", func(t *testing.T) {
@@ -48,9 +47,8 @@ func Test_ecloudVirtualMachineTemplateCreate(t *testing.T) {
 		cmd := ecloudVirtualMachineTemplateCreateCmd()
 		cmd.Flags().Set("type", "invalid")
 
-		test_output.AssertFatalOutput(t, "Invalid template type\n", func() {
-			ecloudVirtualMachineTemplateCreate(service, cmd, []string{"123"})
-		})
+		err := ecloudVirtualMachineTemplateCreate(service, cmd, []string{"123"})
+		assert.IsType(t, &clierrors.ErrInvalidFlagValue{}, err)
 	})
 
 	t.Run("CreateVirtualMachineTemplateError_OutputsFatal", func(t *testing.T) {
@@ -63,9 +61,8 @@ func Test_ecloudVirtualMachineTemplateCreate(t *testing.T) {
 
 		service.EXPECT().CreateVirtualMachineTemplate(123, gomock.Any()).Return(errors.New("test error 1"))
 
-		test_output.AssertFatalOutput(t, "Error creating virtual machine template: test error 1\n", func() {
-			ecloudVirtualMachineTemplateCreate(service, cmd, []string{"123"})
-		})
+		err := ecloudVirtualMachineTemplateCreate(service, cmd, []string{"123"})
+		assert.Equal(t, "Error creating virtual machine template: test error 1", err.Error())
 	})
 
 	t.Run("WaitForCommandError_OutputsFatal", func(t *testing.T) {
@@ -86,8 +83,7 @@ func Test_ecloudVirtualMachineTemplateCreate(t *testing.T) {
 			service.EXPECT().GetVirtualMachine(123).Return(ecloud.VirtualMachine{}, errors.New("test error 1")),
 		)
 
-		test_output.AssertFatalOutput(t, "Error waiting for command: Failed to retrieve virtual machine [123]: test error 1\n", func() {
-			ecloudVirtualMachineTemplateCreate(service, cmd, []string{"123"})
-		})
+		err := ecloudVirtualMachineTemplateCreate(service, cmd, []string{"123"})
+		assert.Equal(t, "Error waiting for command: Failed to retrieve virtual machine [123]: test error 1", err.Error())
 	})
 }
