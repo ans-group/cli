@@ -96,26 +96,20 @@ func loadtestJobResultsShow(service ltaas.LTaaSService, cmd *cobra.Command, args
 
 // generateGraph returns an ASCII graph for given parameters
 func generateGraph(graphWidth int, graphHeight int, graphCaption string, axisArray []ltaas.JobResultsAxis) string {
-	values, valid := getGraphValues(axisArray)
-	if !valid {
-		return ""
-	}
-
-	return asciigraph.Plot(values, asciigraph.Caption(graphCaption), asciigraph.Width(graphWidth), asciigraph.Height(graphHeight))
+	return asciigraph.Plot(getGraphValues(axisArray), asciigraph.Caption(graphCaption), asciigraph.Width(graphWidth), asciigraph.Height(graphHeight))
 }
 
-// getGraphValues returns the Y-axis values for provided axisArray, and a boolean indicating
-// whether values are valid (contain at least 1 positive value), to workaround bug https://github.com/guptarohit/asciigraph/issues/17
-func getGraphValues(axisArray []ltaas.JobResultsAxis) ([]float64, bool) {
-	values := []float64{}
-	valid := false
-	for _, axis := range axisArray {
-		if axis.Y > 0 {
-			valid = true
-		}
+// getGraphValues returns the Y-axis values for provided axisArray, or a single value of 0
+// if no axis provided
+func getGraphValues(axisArray []ltaas.JobResultsAxis) []float64 {
+	if len(axisArray) == 0 {
+		return []float64{0}
+	}
 
+	values := []float64{}
+	for _, axis := range axisArray {
 		values = append(values, axis.Y)
 	}
 
-	return values, valid
+	return values
 }
