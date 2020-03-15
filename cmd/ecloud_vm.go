@@ -118,7 +118,7 @@ func ecloudVirtualMachineCreateCmd() *cobra.Command {
 		Use:     "create",
 		Short:   "Creates a virtual machine",
 		Long:    "This command creates a virtual machine",
-		Example: "ukfast safedns vm create",
+		Example: "ukfast ecloud vm create",
 		Run: func(cmd *cobra.Command, args []string) {
 			ecloudVirtualMachineCreate(getClient().ECloudService(), cmd, args)
 		},
