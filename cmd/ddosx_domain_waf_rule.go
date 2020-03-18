@@ -106,7 +106,7 @@ func ddosxDomainWAFRuleCreateCmd() *cobra.Command {
 		Use:     "create <domain: name>",
 		Short:   "Creates domain WAF rules",
 		Long:    "This command creates domain WAF rules",
-		Example: "ukfast ddosx domain waf rule create --uri example.html --ip 1.2.3.4",
+		Example: "ukfast ddosx domain waf rule create example.com --uri example.html --ip 1.2.3.4",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
