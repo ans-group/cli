@@ -153,6 +153,7 @@ func ecloudVirtualMachineCreateCmd() *cobra.Command {
 	cmd.Flags().String("role", "", "Specifies role that VM should be created with")
 	cmd.Flags().String("bootstrap-script", "", "Specifies boot script that should be executed on first boot")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the VM has been completely created before continuing on")
+	cmd.Flags().Int("pod", 0, "Pod ID for virtual machine")
 
 	return cmd
 }
@@ -178,6 +179,7 @@ func ecloudVirtualMachineCreate(service ecloud.ECloudService, cmd *cobra.Command
 	createRequest.ExternalIPRequired, _ = cmd.Flags().GetBool("external-ip")
 	createRequest.Role, _ = cmd.Flags().GetString("role")
 	createRequest.BootstrapScript, _ = cmd.Flags().GetString("bootstrap-script")
+	createRequest.PodID, _ = cmd.Flags().GetInt("pod")
 
 	if cmd.Flags().Changed("tag") {
 		tagsFlag, _ := cmd.Flags().GetStringSlice("tag")
