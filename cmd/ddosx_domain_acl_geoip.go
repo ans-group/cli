@@ -107,7 +107,7 @@ func ddosxDomainACLGeoIPRuleCreateCmd() *cobra.Command {
 		Use:     "create <domain: name>",
 		Short:   "Creates ACL GeoIP rules",
 		Long:    "This command creates domain ACL GeoIP rules",
-		Example: "ukfast ddosx domain acl geoip create",
+		Example: "ukfast ddosx domain acl geoip create example.com --code gb",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")

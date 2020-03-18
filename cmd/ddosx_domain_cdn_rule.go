@@ -104,7 +104,7 @@ func ddosxDomainCDNRuleCreateCmd() *cobra.Command {
 		Use:     "create <domain: name>",
 		Short:   "Creates domain CDN rules",
 		Long:    "This command creates domain CDN rules",
-		Example: "ukfast ddosx domain cdn rule create --uri example.html --cache-control custom --mime-type image/* --type global",
+		Example: "ukfast ddosx domain cdn rule create example.com --uri example.html --cache-control custom --mime-type image/* --type global",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
