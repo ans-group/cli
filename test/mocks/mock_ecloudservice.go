@@ -79,6 +79,21 @@ func (mr *MockECloudServiceMockRecorder) CreateVirtualMachine(arg0 interface{}) 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateVirtualMachine", reflect.TypeOf((*MockECloudService)(nil).CreateVirtualMachine), arg0)
 }
 
+// CreateVirtualMachineConsoleSession mocks base method
+func (m *MockECloudService) CreateVirtualMachineConsoleSession(arg0 int) (ecloud.ConsoleSession, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateVirtualMachineConsoleSession", arg0)
+	ret0, _ := ret[0].(ecloud.ConsoleSession)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateVirtualMachineConsoleSession indicates an expected call of CreateVirtualMachineConsoleSession
+func (mr *MockECloudServiceMockRecorder) CreateVirtualMachineConsoleSession(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateVirtualMachineConsoleSession", reflect.TypeOf((*MockECloudService)(nil).CreateVirtualMachineConsoleSession), arg0)
+}
+
 // CreateVirtualMachineTag mocks base method
 func (m *MockECloudService) CreateVirtualMachineTag(arg0 int, arg1 ecloud.CreateTagRequest) error {
 	m.ctrl.T.Helper()
@@ -1087,6 +1102,21 @@ func (m *MockECloudService) PatchVirtualMachineTag(arg0 int, arg1 string, arg2 e
 func (mr *MockECloudServiceMockRecorder) PatchVirtualMachineTag(arg0, arg1, arg2 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchVirtualMachineTag", reflect.TypeOf((*MockECloudService)(nil).PatchVirtualMachineTag), arg0, arg1, arg2)
+}
+
+// PodConsoleAvailable mocks base method
+func (m *MockECloudService) PodConsoleAvailable(arg0 int) (bool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PodConsoleAvailable", arg0)
+	ret0, _ := ret[0].(bool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// PodConsoleAvailable indicates an expected call of PodConsoleAvailable
+func (mr *MockECloudServiceMockRecorder) PodConsoleAvailable(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PodConsoleAvailable", reflect.TypeOf((*MockECloudService)(nil).PodConsoleAvailable), arg0)
 }
 
 // PowerOffVirtualMachine mocks base method

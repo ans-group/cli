@@ -298,3 +298,20 @@ func OutputECloudApplianceParametersProvider(parameters []ecloud.ApplianceParame
 		}),
 	)
 }
+
+func OutputECloudConsoleSessionsProvider(sessions []ecloud.ConsoleSession) output.OutputHandlerProvider {
+	return output.NewGenericOutputHandlerProvider(
+		output.WithData(sessions),
+		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
+			var data []*output.OrderedFields
+			for _, session := range sessions {
+				fields := output.NewOrderedFields()
+				fields.Set("url", output.NewFieldValue(session.URL, true))
+
+				data = append(data, fields)
+			}
+
+			return data, nil
+		}),
+	)
+}
