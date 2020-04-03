@@ -53,7 +53,7 @@ func Test_sslCertificateContentShow(t *testing.T) {
 		sslCertificateContentShow(service, &cobra.Command{}, []string{"123", "456"})
 	})
 
-	t.Run("GetCertificateContentID_ReturnsError", func(t *testing.T) {
+	t.Run("GetCertificateContentID_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -64,7 +64,7 @@ func Test_sslCertificateContentShow(t *testing.T) {
 		})
 	})
 
-	t.Run("GetCertificateContentError_ReturnsError", func(t *testing.T) {
+	t.Run("GetCertificateContentError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

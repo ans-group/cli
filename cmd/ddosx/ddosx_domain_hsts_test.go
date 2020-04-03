@@ -40,7 +40,7 @@ func Test_ddosxDomainHSTSEnable(t *testing.T) {
 		ddosxDomainHSTSEnable(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 	})
 
-	t.Run("AddDomainHSTSConfiguration_ReturnsError", func(t *testing.T) {
+	t.Run("AddDomainHSTSConfiguration_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -53,7 +53,7 @@ func Test_ddosxDomainHSTSEnable(t *testing.T) {
 		})
 	})
 
-	t.Run("GetDomainError_ReturnsError", func(t *testing.T) {
+	t.Run("GetDomainError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -96,7 +96,7 @@ func Test_ddosxDomainHSTSDisable(t *testing.T) {
 		ddosxDomainHSTSDisable(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 	})
 
-	t.Run("DeleteDomainHSTSConfiguration_ReturnsError", func(t *testing.T) {
+	t.Run("DeleteDomainHSTSConfiguration_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -109,7 +109,7 @@ func Test_ddosxDomainHSTSDisable(t *testing.T) {
 		})
 	})
 
-	t.Run("GetDomainError_ReturnsError", func(t *testing.T) {
+	t.Run("GetDomainError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

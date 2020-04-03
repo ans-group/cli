@@ -54,7 +54,7 @@ func Test_ddosxDomainACLGeoIPRulesModeShow(t *testing.T) {
 		ddosxDomainACLGeoIPRulesModeShow(service, &cobra.Command{}, []string{"testdomain1.co.uk", "testdomain2.co.uk"})
 	})
 
-	t.Run("GetDomainACLGeoIPRulesModeError_ReturnsError", func(t *testing.T) {
+	t.Run("GetDomainACLGeoIPRulesModeError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

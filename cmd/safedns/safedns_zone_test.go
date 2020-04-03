@@ -118,7 +118,7 @@ func Test_safednsZoneShow(t *testing.T) {
 		safednsZoneShow(service, &cobra.Command{}, []string{"testdomain1.com", "testdomain2.com"})
 	})
 
-	t.Run("GetZoneError_ReturnsError", func(t *testing.T) {
+	t.Run("GetZoneError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -254,7 +254,7 @@ func Test_safednsZoneUpdate(t *testing.T) {
 		safednsZoneUpdate(service, &cobra.Command{}, []string{"testdomain1.com", "testdomain2.com"})
 	})
 
-	t.Run("PatchZoneError_ReturnsError", func(t *testing.T) {
+	t.Run("PatchZoneError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -267,7 +267,7 @@ func Test_safednsZoneUpdate(t *testing.T) {
 		})
 	})
 
-	t.Run("GetZoneError_ReturnsError", func(t *testing.T) {
+	t.Run("GetZoneError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -325,7 +325,7 @@ func Test_safednsZoneDelete(t *testing.T) {
 		safednsZoneDelete(service, &cobra.Command{}, []string{"testdomain1.com", "testdomain2.com"})
 	})
 
-	t.Run("DeleteZoneError_ReturnsError", func(t *testing.T) {
+	t.Run("DeleteZoneError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

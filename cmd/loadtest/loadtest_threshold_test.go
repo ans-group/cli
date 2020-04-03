@@ -96,7 +96,7 @@ func Test_loadtestThresholdShow(t *testing.T) {
 		loadtestThresholdShow(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000001"})
 	})
 
-	t.Run("GetThresholdError_ReturnsError", func(t *testing.T) {
+	t.Run("GetThresholdError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

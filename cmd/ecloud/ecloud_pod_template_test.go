@@ -139,7 +139,7 @@ func Test_ecloudPodTemplateShow(t *testing.T) {
 		assert.Equal(t, "Invalid pod ID [abc]", err.Error())
 	})
 
-	t.Run("GetPodTemplateError_ReturnsError", func(t *testing.T) {
+	t.Run("GetPodTemplateError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -346,7 +346,7 @@ func Test_ecloudPodTemplateDelete(t *testing.T) {
 		assert.Equal(t, "Invalid pod ID [abc]", err.Error())
 	})
 
-	t.Run("DeletePodTemplateError_ReturnsError", func(t *testing.T) {
+	t.Run("DeletePodTemplateError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -359,7 +359,7 @@ func Test_ecloudPodTemplateDelete(t *testing.T) {
 		})
 	})
 
-	t.Run("WaitForCommandError_ReturnsError", func(t *testing.T) {
+	t.Run("WaitForCommandError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

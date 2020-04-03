@@ -143,7 +143,7 @@ func Test_ddosxDomainPropertyShow(t *testing.T) {
 		ddosxDomainPropertyShow(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000001"})
 	})
 
-	t.Run("GetDomainPropertyError_ReturnsError", func(t *testing.T) {
+	t.Run("GetDomainPropertyError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -200,7 +200,7 @@ func Test_ddosxDomainPropertyUpdate(t *testing.T) {
 		ddosxDomainPropertyUpdate(service, cmd, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 	})
 
-	t.Run("PatchDomainPropertyError_ReturnsError", func(t *testing.T) {
+	t.Run("PatchDomainPropertyError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -213,7 +213,7 @@ func Test_ddosxDomainPropertyUpdate(t *testing.T) {
 		})
 	})
 
-	t.Run("GetDomainPropertyError_ReturnsError", func(t *testing.T) {
+	t.Run("GetDomainPropertyError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

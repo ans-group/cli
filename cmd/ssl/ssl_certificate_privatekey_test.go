@@ -53,7 +53,7 @@ func Test_sslCertificatePrivateKeyShow(t *testing.T) {
 		sslCertificatePrivateKeyShow(service, &cobra.Command{}, []string{"123", "456"})
 	})
 
-	t.Run("GetCertificatePrivateKeyID_ReturnsError", func(t *testing.T) {
+	t.Run("GetCertificatePrivateKeyID_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -64,7 +64,7 @@ func Test_sslCertificatePrivateKeyShow(t *testing.T) {
 		})
 	})
 
-	t.Run("GetCertificatePrivateKeyError_ReturnsError", func(t *testing.T) {
+	t.Run("GetCertificatePrivateKeyError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

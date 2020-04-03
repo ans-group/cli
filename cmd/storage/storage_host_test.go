@@ -94,7 +94,7 @@ func Test_storageHostShow(t *testing.T) {
 		storageHostShow(service, &cobra.Command{}, []string{"123", "456"})
 	})
 
-	t.Run("GetHostID_ReturnsError", func(t *testing.T) {
+	t.Run("GetHostID_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -105,7 +105,7 @@ func Test_storageHostShow(t *testing.T) {
 		})
 	})
 
-	t.Run("GetHostError_ReturnsError", func(t *testing.T) {
+	t.Run("GetHostError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

@@ -120,7 +120,7 @@ func Test_ecloudVirtualMachineShow(t *testing.T) {
 		ecloudVirtualMachineShow(service, &cobra.Command{}, []string{"123", "456"})
 	})
 
-	t.Run("InvalidVirtualMachineID_ReturnsError", func(t *testing.T) {
+	t.Run("InvalidVirtualMachineID_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -131,7 +131,7 @@ func Test_ecloudVirtualMachineShow(t *testing.T) {
 		})
 	})
 
-	t.Run("GetVirtualMachineError_ReturnsError", func(t *testing.T) {
+	t.Run("GetVirtualMachineError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -413,7 +413,7 @@ func Test_ecloudVirtualMachineUpdate(t *testing.T) {
 		ecloudVirtualMachineUpdate(service, cmd, []string{"123", "456"})
 	})
 
-	t.Run("InvalidVirtualMachineID_ReturnsError", func(t *testing.T) {
+	t.Run("InvalidVirtualMachineID_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -424,7 +424,7 @@ func Test_ecloudVirtualMachineUpdate(t *testing.T) {
 		})
 	})
 
-	t.Run("PatchVirtualMachineError_ReturnsError", func(t *testing.T) {
+	t.Run("PatchVirtualMachineError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -437,7 +437,7 @@ func Test_ecloudVirtualMachineUpdate(t *testing.T) {
 		})
 	})
 
-	t.Run("WaitGetVirtualMachineError_ReturnsError", func(t *testing.T) {
+	t.Run("WaitGetVirtualMachineError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -453,7 +453,7 @@ func Test_ecloudVirtualMachineUpdate(t *testing.T) {
 		})
 	})
 
-	t.Run("GetVirtualMachineError_ReturnsError", func(t *testing.T) {
+	t.Run("GetVirtualMachineError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -512,7 +512,7 @@ func Test_ecloudVirtualMachineStart(t *testing.T) {
 		ecloudVirtualMachineStart(service, &cobra.Command{}, []string{"123", "456"})
 	})
 
-	t.Run("InvalidVirtualMachineID_ReturnsError", func(t *testing.T) {
+	t.Run("InvalidVirtualMachineID_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -523,7 +523,7 @@ func Test_ecloudVirtualMachineStart(t *testing.T) {
 		})
 	})
 
-	t.Run("PowerOnVirtualMachineError_ReturnsError", func(t *testing.T) {
+	t.Run("PowerOnVirtualMachineError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -607,7 +607,7 @@ func Test_ecloudVirtualMachineStop(t *testing.T) {
 		ecloudVirtualMachineStop(service, cmd, []string{"123", "456"})
 	})
 
-	t.Run("InvalidVirtualMachineID_ReturnsError", func(t *testing.T) {
+	t.Run("InvalidVirtualMachineID_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -618,7 +618,7 @@ func Test_ecloudVirtualMachineStop(t *testing.T) {
 		})
 	})
 
-	t.Run("PowerShutdownVirtualMachineError_ReturnsError", func(t *testing.T) {
+	t.Run("PowerShutdownVirtualMachineError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -631,7 +631,7 @@ func Test_ecloudVirtualMachineStop(t *testing.T) {
 		})
 	})
 
-	t.Run("PowerOffVirtualMachineError_ReturnsError", func(t *testing.T) {
+	t.Run("PowerOffVirtualMachineError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -717,7 +717,7 @@ func Test_ecloudVirtualMachineRestart(t *testing.T) {
 		ecloudVirtualMachineRestart(service, cmd, []string{"123", "456"})
 	})
 
-	t.Run("InvalidVirtualMachineID_ReturnsError", func(t *testing.T) {
+	t.Run("InvalidVirtualMachineID_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -728,7 +728,7 @@ func Test_ecloudVirtualMachineRestart(t *testing.T) {
 		})
 	})
 
-	t.Run("PowerRestartVirtualMachineError_ReturnsError", func(t *testing.T) {
+	t.Run("PowerRestartVirtualMachineError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -741,7 +741,7 @@ func Test_ecloudVirtualMachineRestart(t *testing.T) {
 		})
 	})
 
-	t.Run("PowerResetVirtualMachineError_ReturnsError", func(t *testing.T) {
+	t.Run("PowerResetVirtualMachineError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -818,7 +818,7 @@ func Test_ecloudVirtualMachineDelete(t *testing.T) {
 		ecloudVirtualMachineDelete(service, cmd, []string{"123"})
 	})
 
-	t.Run("WithWaitFailedStatus_ReturnsError", func(t *testing.T) {
+	t.Run("WithWaitFailedStatus_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -840,7 +840,7 @@ func Test_ecloudVirtualMachineDelete(t *testing.T) {
 		})
 	})
 
-	t.Run("WithWaitGetStatusError_ReturnsError", func(t *testing.T) {
+	t.Run("WithWaitGetStatusError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -862,7 +862,7 @@ func Test_ecloudVirtualMachineDelete(t *testing.T) {
 		})
 	})
 
-	t.Run("InvalidVirtualMachineID_ReturnsError", func(t *testing.T) {
+	t.Run("InvalidVirtualMachineID_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -873,7 +873,7 @@ func Test_ecloudVirtualMachineDelete(t *testing.T) {
 		})
 	})
 
-	t.Run("GetVirtualMachineError_ReturnsError", func(t *testing.T) {
+	t.Run("GetVirtualMachineError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

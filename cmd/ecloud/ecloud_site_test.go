@@ -94,7 +94,7 @@ func Test_ecloudSiteShow(t *testing.T) {
 		ecloudSiteShow(service, &cobra.Command{}, []string{"123", "456"})
 	})
 
-	t.Run("GetSiteID_ReturnsError", func(t *testing.T) {
+	t.Run("GetSiteID_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -105,7 +105,7 @@ func Test_ecloudSiteShow(t *testing.T) {
 		})
 	})
 
-	t.Run("GetSiteError_ReturnsError", func(t *testing.T) {
+	t.Run("GetSiteError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

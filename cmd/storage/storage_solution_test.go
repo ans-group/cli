@@ -94,7 +94,7 @@ func Test_storageSolutionShow(t *testing.T) {
 		storageSolutionShow(service, &cobra.Command{}, []string{"123", "456"})
 	})
 
-	t.Run("GetSolutionID_ReturnsError", func(t *testing.T) {
+	t.Run("GetSolutionID_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -105,7 +105,7 @@ func Test_storageSolutionShow(t *testing.T) {
 		})
 	})
 
-	t.Run("GetSolutionError_ReturnsError", func(t *testing.T) {
+	t.Run("GetSolutionError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

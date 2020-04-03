@@ -53,7 +53,7 @@ func Test_ddosxSSLContent(t *testing.T) {
 		ddosxSSLContentShow(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000001"})
 	})
 
-	t.Run("GetSSLContentError_ReturnsError", func(t *testing.T) {
+	t.Run("GetSSLContentError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

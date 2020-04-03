@@ -40,7 +40,7 @@ func Test_ddosxDomainCDNEnable(t *testing.T) {
 		ddosxDomainCDNEnable(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 	})
 
-	t.Run("AddDomainCDNConfiguration_ReturnsError", func(t *testing.T) {
+	t.Run("AddDomainCDNConfiguration_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -53,7 +53,7 @@ func Test_ddosxDomainCDNEnable(t *testing.T) {
 		})
 	})
 
-	t.Run("GetDomainError_ReturnsError", func(t *testing.T) {
+	t.Run("GetDomainError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -96,7 +96,7 @@ func Test_ddosxDomainCDNDisable(t *testing.T) {
 		ddosxDomainCDNDisable(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 	})
 
-	t.Run("DeleteDomainCDNConfiguration_ReturnsError", func(t *testing.T) {
+	t.Run("DeleteDomainCDNConfiguration_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -109,7 +109,7 @@ func Test_ddosxDomainCDNDisable(t *testing.T) {
 		})
 	})
 
-	t.Run("GetDomainError_ReturnsError", func(t *testing.T) {
+	t.Run("GetDomainError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

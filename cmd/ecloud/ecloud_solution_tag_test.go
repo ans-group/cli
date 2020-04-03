@@ -140,7 +140,7 @@ func Test_ecloudSolutionTagShow(t *testing.T) {
 		assert.Equal(t, "Invalid solution ID [abc]", err.Error())
 	})
 
-	t.Run("GetSolutionTagError_ReturnsError", func(t *testing.T) {
+	t.Run("GetSolutionTagError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -316,7 +316,7 @@ func Test_ecloudSolutionTagUpdate(t *testing.T) {
 		assert.Equal(t, "Invalid solution ID [abc]", err.Error())
 	})
 
-	t.Run("PatchSolutionTag_ReturnsError", func(t *testing.T) {
+	t.Run("PatchSolutionTag_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -331,7 +331,7 @@ func Test_ecloudSolutionTagUpdate(t *testing.T) {
 		})
 	})
 
-	t.Run("GetSolutionTagError_ReturnsError", func(t *testing.T) {
+	t.Run("GetSolutionTagError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -410,7 +410,7 @@ func Test_ecloudSolutionTagDelete(t *testing.T) {
 		assert.Equal(t, "Invalid solution ID [abc]", err.Error())
 	})
 
-	t.Run("DeleteSolutionTagError_ReturnsError", func(t *testing.T) {
+	t.Run("DeleteSolutionTagError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

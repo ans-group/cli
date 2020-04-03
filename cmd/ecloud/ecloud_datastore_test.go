@@ -94,7 +94,7 @@ func Test_ecloudDatastoreShow(t *testing.T) {
 		ecloudDatastoreShow(service, &cobra.Command{}, []string{"123", "456"})
 	})
 
-	t.Run("GetDatastoreID_ReturnsError", func(t *testing.T) {
+	t.Run("GetDatastoreID_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -105,7 +105,7 @@ func Test_ecloudDatastoreShow(t *testing.T) {
 		})
 	})
 
-	t.Run("GetDatastoreError_ReturnsError", func(t *testing.T) {
+	t.Run("GetDatastoreError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

@@ -139,7 +139,7 @@ func Test_ecloudVirtualMachineTagShow(t *testing.T) {
 		assert.Equal(t, "Invalid virtual machine ID [abc]", err.Error())
 	})
 
-	t.Run("GetVirtualMachineTagError_ReturnsError", func(t *testing.T) {
+	t.Run("GetVirtualMachineTagError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -315,7 +315,7 @@ func Test_ecloudVirtualMachineTagUpdate(t *testing.T) {
 		assert.Equal(t, "Invalid virtual machine ID [abc]", err.Error())
 	})
 
-	t.Run("PatchVirtualMachineTag_ReturnsError", func(t *testing.T) {
+	t.Run("PatchVirtualMachineTag_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -330,7 +330,7 @@ func Test_ecloudVirtualMachineTagUpdate(t *testing.T) {
 		})
 	})
 
-	t.Run("GetVirtualMachineTagError_ReturnsError", func(t *testing.T) {
+	t.Run("GetVirtualMachineTagError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -409,7 +409,7 @@ func Test_ecloudVirtualMachineTagDelete(t *testing.T) {
 		assert.Equal(t, "Invalid virtual machine ID [abc]", err.Error())
 	})
 
-	t.Run("DeleteVirtualMachineTagError_ReturnsError", func(t *testing.T) {
+	t.Run("DeleteVirtualMachineTagError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

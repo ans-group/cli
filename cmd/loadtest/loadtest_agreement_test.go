@@ -60,7 +60,7 @@ func Test_loadtestAgreementShow(t *testing.T) {
 		assert.IsType(t, &connection.ErrInvalidEnumValue{}, err)
 	})
 
-	t.Run("GetAgreementError_ReturnsError", func(t *testing.T) {
+	t.Run("GetAgreementError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

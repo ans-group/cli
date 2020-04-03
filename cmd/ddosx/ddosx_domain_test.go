@@ -96,7 +96,7 @@ func Test_ddosxDomainShow(t *testing.T) {
 		ddosxDomainShow(service, &cobra.Command{}, []string{"testdomain1.co.uk", "testdomain2.co.uk"})
 	})
 
-	t.Run("GetDomainError_ReturnsError", func(t *testing.T) {
+	t.Run("GetDomainError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -206,7 +206,7 @@ func Test_ddosxDomainDelete(t *testing.T) {
 		ddosxDomainDelete(service, &cobra.Command{}, []string{"testdomain1.co.uk", "testdomain2.co.uk"})
 	})
 
-	t.Run("DeleteDomainError_ReturnsError", func(t *testing.T) {
+	t.Run("DeleteDomainError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -272,7 +272,7 @@ func Test_ddosxDomainDeploy(t *testing.T) {
 		ddosxDomainDeploy(service, cmd, []string{"testdomain1.co.uk"})
 	})
 
-	t.Run("WithWaitFailedStatus_ReturnsError", func(t *testing.T) {
+	t.Run("WithWaitFailedStatus_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -294,7 +294,7 @@ func Test_ddosxDomainDeploy(t *testing.T) {
 		})
 	})
 
-	t.Run("DeployDomainError_ReturnsError", func(t *testing.T) {
+	t.Run("DeployDomainError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -307,7 +307,7 @@ func Test_ddosxDomainDeploy(t *testing.T) {
 		})
 	})
 
-	t.Run("GetDomainError_ReturnsError", func(t *testing.T) {
+	t.Run("GetDomainError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

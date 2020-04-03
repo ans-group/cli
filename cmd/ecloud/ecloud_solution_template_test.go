@@ -139,7 +139,7 @@ func Test_ecloudSolutionTemplateShow(t *testing.T) {
 		assert.Equal(t, "Invalid solution ID [abc]", err.Error())
 	})
 
-	t.Run("GetSolutionTemplateError_ReturnsError", func(t *testing.T) {
+	t.Run("GetSolutionTemplateError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -346,7 +346,7 @@ func Test_ecloudSolutionTemplateDelete(t *testing.T) {
 		assert.Equal(t, "Invalid solution ID [abc]", err.Error())
 	})
 
-	t.Run("DeleteSolutionTemplateError_ReturnsError", func(t *testing.T) {
+	t.Run("DeleteSolutionTemplateError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -359,7 +359,7 @@ func Test_ecloudSolutionTemplateDelete(t *testing.T) {
 		})
 	})
 
-	t.Run("WaitForCommandError_ReturnsError", func(t *testing.T) {
+	t.Run("WaitForCommandError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

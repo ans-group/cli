@@ -94,7 +94,7 @@ func Test_sslCertificateShow(t *testing.T) {
 		sslCertificateShow(service, &cobra.Command{}, []string{"123", "456"})
 	})
 
-	t.Run("GetCertificateID_ReturnsError", func(t *testing.T) {
+	t.Run("GetCertificateID_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -105,7 +105,7 @@ func Test_sslCertificateShow(t *testing.T) {
 		})
 	})
 
-	t.Run("GetCertificateError_ReturnsError", func(t *testing.T) {
+	t.Run("GetCertificateError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

@@ -53,7 +53,7 @@ func Test_ddosxSSLPrivateKey(t *testing.T) {
 		ddosxSSLPrivateKeyShow(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000001"})
 	})
 
-	t.Run("GetSSLPrivateKeyError_ReturnsError", func(t *testing.T) {
+	t.Run("GetSSLPrivateKeyError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

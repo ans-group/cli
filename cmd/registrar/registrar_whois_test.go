@@ -53,7 +53,7 @@ func Test_registrarWhoisShow(t *testing.T) {
 		registrarWhoisShow(service, &cobra.Command{}, []string{"testdomain1.co.uk", "testdomain2.co.uk"})
 	})
 
-	t.Run("GetWhoisError_ReturnsError", func(t *testing.T) {
+	t.Run("GetWhoisError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -79,7 +79,7 @@ func Test_registrarWhoisShowRaw(t *testing.T) {
 		registrarWhoisShowRaw(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 	})
 
-	t.Run("GetWhoisRawError_ReturnsError", func(t *testing.T) {
+	t.Run("GetWhoisRawError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

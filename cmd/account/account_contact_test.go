@@ -95,7 +95,7 @@ func Test_accountContactShow(t *testing.T) {
 		accountContactShow(service, &cobra.Command{}, []string{"123", "456"})
 	})
 
-	t.Run("GetContactID_ReturnsError", func(t *testing.T) {
+	t.Run("GetContactID_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -106,7 +106,7 @@ func Test_accountContactShow(t *testing.T) {
 		})
 	})
 
-	t.Run("GetContactError_ReturnsError", func(t *testing.T) {
+	t.Run("GetContactError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

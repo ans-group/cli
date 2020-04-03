@@ -38,7 +38,7 @@ func Test_loadtestDomainVerificationDNSVerify(t *testing.T) {
 		loadtestDomainVerificationDNSVerify(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000"})
 	})
 
-	t.Run("DownloadDomainVerificationFileError_ReturnsError", func(t *testing.T) {
+	t.Run("DownloadDomainVerificationFileError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

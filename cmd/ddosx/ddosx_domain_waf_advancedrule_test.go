@@ -108,7 +108,7 @@ func Test_ddosxDomainWAFAdvancedRuleShow(t *testing.T) {
 		ddosxDomainWAFAdvancedRuleShow(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 	})
 
-	t.Run("GetDomainWAFAdvancedRule_ReturnsError", func(t *testing.T) {
+	t.Run("GetDomainWAFAdvancedRule_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -294,7 +294,7 @@ func Test_ddosxDomainWAFAdvancedRuleUpdate(t *testing.T) {
 		assert.IsType(t, &connection.ErrInvalidEnumValue{}, err)
 	})
 
-	t.Run("PatchDomainWAFAdvancedRuleError_ReturnsError", func(t *testing.T) {
+	t.Run("PatchDomainWAFAdvancedRuleError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -307,7 +307,7 @@ func Test_ddosxDomainWAFAdvancedRuleUpdate(t *testing.T) {
 		})
 	})
 
-	t.Run("GetDomainWAFAdvancedRuleError_ReturnsError", func(t *testing.T) {
+	t.Run("GetDomainWAFAdvancedRuleError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -361,7 +361,7 @@ func Test_ddosxDomainWAFAdvancedRuleDelete(t *testing.T) {
 		ddosxDomainWAFAdvancedRuleDelete(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 	})
 
-	t.Run("DeleteDomainWAFAdvancedRule_ReturnsError", func(t *testing.T) {
+	t.Run("DeleteDomainWAFAdvancedRule_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

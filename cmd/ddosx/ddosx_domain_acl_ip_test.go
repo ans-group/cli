@@ -109,7 +109,7 @@ func Test_ddosxDomainACLIPRuleShow(t *testing.T) {
 		ddosxDomainACLIPRuleShow(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 	})
 
-	t.Run("GetDomainACLIPRule_ReturnsError", func(t *testing.T) {
+	t.Run("GetDomainACLIPRule_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -282,7 +282,7 @@ func Test_ddosxDomainACLIPRuleUpdate(t *testing.T) {
 		assert.IsType(t, &connection.ErrInvalidEnumValue{}, err)
 	})
 
-	t.Run("UpdateDomainACLIPRuleError_ReturnsError", func(t *testing.T) {
+	t.Run("UpdateDomainACLIPRuleError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -295,7 +295,7 @@ func Test_ddosxDomainACLIPRuleUpdate(t *testing.T) {
 		})
 	})
 
-	t.Run("GetDomainACLIPRuleError_ReturnsError", func(t *testing.T) {
+	t.Run("GetDomainACLIPRuleError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -349,7 +349,7 @@ func Test_ddosxDomainACLIPRuleDelete(t *testing.T) {
 		ddosxDomainACLIPRuleDelete(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 	})
 
-	t.Run("DeleteDomainACLIPRuleError_ReturnsError", func(t *testing.T) {
+	t.Run("DeleteDomainACLIPRuleError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

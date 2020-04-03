@@ -93,7 +93,7 @@ func Test_accountInvoiceShow(t *testing.T) {
 		accountInvoiceShow(service, &cobra.Command{}, []string{"123", "456"})
 	})
 
-	t.Run("GetInvoiceID_ReturnsError", func(t *testing.T) {
+	t.Run("GetInvoiceID_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -104,7 +104,7 @@ func Test_accountInvoiceShow(t *testing.T) {
 		})
 	})
 
-	t.Run("GetInvoiceError_ReturnsError", func(t *testing.T) {
+	t.Run("GetInvoiceError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

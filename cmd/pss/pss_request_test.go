@@ -92,7 +92,7 @@ func Test_pssRequestShow(t *testing.T) {
 		pssRequestShow(service, &cobra.Command{}, []string{"123", "456"})
 	})
 
-	t.Run("GetRequestID_ReturnsError", func(t *testing.T) {
+	t.Run("GetRequestID_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -103,7 +103,7 @@ func Test_pssRequestShow(t *testing.T) {
 		})
 	})
 
-	t.Run("GetRequestError_ReturnsError", func(t *testing.T) {
+	t.Run("GetRequestError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -239,7 +239,7 @@ func Test_pssRequestUpdate(t *testing.T) {
 		assert.Contains(t, err.Error(), "Invalid pss.RequestPriority")
 	})
 
-	t.Run("InvalidRequestID_ReturnsError", func(t *testing.T) {
+	t.Run("InvalidRequestID_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -251,7 +251,7 @@ func Test_pssRequestUpdate(t *testing.T) {
 		})
 	})
 
-	t.Run("PatchRequestError_ReturnsError", func(t *testing.T) {
+	t.Run("PatchRequestError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -265,7 +265,7 @@ func Test_pssRequestUpdate(t *testing.T) {
 		})
 	})
 
-	t.Run("GetRequestError_ReturnsError", func(t *testing.T) {
+	t.Run("GetRequestError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

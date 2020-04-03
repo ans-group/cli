@@ -234,7 +234,7 @@ func Test_safednsTemplateRecordShow(t *testing.T) {
 		assert.Equal(t, "Error locating template [test template 1]: Error retrieving items: test error", err.Error())
 	})
 
-	t.Run("InvalidRecordID_ReturnsError", func(t *testing.T) {
+	t.Run("InvalidRecordID_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -245,7 +245,7 @@ func Test_safednsTemplateRecordShow(t *testing.T) {
 		})
 	})
 
-	t.Run("GetTemplateRecordError_ReturnsError", func(t *testing.T) {
+	t.Run("GetTemplateRecordError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -504,7 +504,7 @@ func Test_safednsTemplateRecordUpdate(t *testing.T) {
 		assert.Equal(t, "Error locating template [test template 1]: Error retrieving items: test error", err.Error())
 	})
 
-	t.Run("InvalidRecordID_ReturnsError", func(t *testing.T) {
+	t.Run("InvalidRecordID_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -515,7 +515,7 @@ func Test_safednsTemplateRecordUpdate(t *testing.T) {
 		})
 	})
 
-	t.Run("PatchTemplateRecordError_ReturnsError", func(t *testing.T) {
+	t.Run("PatchTemplateRecordError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -528,7 +528,7 @@ func Test_safednsTemplateRecordUpdate(t *testing.T) {
 		})
 	})
 
-	t.Run("GetTemplateRecordError_ReturnsError", func(t *testing.T) {
+	t.Run("GetTemplateRecordError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

@@ -175,7 +175,7 @@ func Test_safednsTemplateShow(t *testing.T) {
 		safednsTemplateShow(service, &cobra.Command{}, []string{"test template 1", "test template 2"})
 	})
 
-	t.Run("GetTemplateError_ReturnsError", func(t *testing.T) {
+	t.Run("GetTemplateError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -329,7 +329,7 @@ func Test_safednsTemplateUpdate(t *testing.T) {
 		safednsTemplateUpdate(service, cmd, []string{"123", "456"})
 	})
 
-	t.Run("ErrorUpdatingTemplate_ByID_ReturnsError", func(t *testing.T) {
+	t.Run("ErrorUpdatingTemplate_ByID_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -433,7 +433,7 @@ func Test_safednsTemplateUpdate(t *testing.T) {
 		safednsTemplateUpdate(service, cmd, []string{"test template 1", "test template 2"})
 	})
 
-	t.Run("ErrorUpdatingTemplate_ByName_ReturnsError", func(t *testing.T) {
+	t.Run("ErrorUpdatingTemplate_ByName_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -448,7 +448,7 @@ func Test_safednsTemplateUpdate(t *testing.T) {
 		})
 	})
 
-	t.Run("GetTemplatesError_ReturnsError", func(t *testing.T) {
+	t.Run("GetTemplatesError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -473,7 +473,7 @@ func Test_safednsTemplateUpdate(t *testing.T) {
 		})
 	})
 
-	t.Run("GetTemplateError_ReturnsError", func(t *testing.T) {
+	t.Run("GetTemplateError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -593,7 +593,7 @@ func Test_safednsTemplateDelete(t *testing.T) {
 		safednsTemplateDelete(service, &cobra.Command{}, []string{"test template 1", "test template 2"})
 	})
 
-	t.Run("GetTemplatesError_ReturnsError", func(t *testing.T) {
+	t.Run("GetTemplatesError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -618,7 +618,7 @@ func Test_safednsTemplateDelete(t *testing.T) {
 		})
 	})
 
-	t.Run("DeleteTemplateByNameError_ReturnsError", func(t *testing.T) {
+	t.Run("DeleteTemplateByNameError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -644,7 +644,7 @@ func Test_safednsTemplateDelete(t *testing.T) {
 		})
 	})
 
-	t.Run("DeleteTemplateByIDError_ReturnsError", func(t *testing.T) {
+	t.Run("DeleteTemplateByIDError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

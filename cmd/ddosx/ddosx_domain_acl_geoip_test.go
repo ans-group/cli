@@ -107,7 +107,7 @@ func Test_ddosxDomainACLGeoIPRuleShow(t *testing.T) {
 		ddosxDomainACLGeoIPRuleShow(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 	})
 
-	t.Run("GetDomainACLGeoIPRule_ReturnsError", func(t *testing.T) {
+	t.Run("GetDomainACLGeoIPRule_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -238,7 +238,7 @@ func Test_ddosxDomainACLGeoIPRuleUpdate(t *testing.T) {
 		ddosxDomainACLGeoIPRuleUpdate(service, cmd, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 	})
 
-	t.Run("PatchDomainACLGeoIPRuleError_ReturnsError", func(t *testing.T) {
+	t.Run("PatchDomainACLGeoIPRuleError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -251,7 +251,7 @@ func Test_ddosxDomainACLGeoIPRuleUpdate(t *testing.T) {
 		})
 	})
 
-	t.Run("GetDomainACLGeoIPRuleError_ReturnsError", func(t *testing.T) {
+	t.Run("GetDomainACLGeoIPRuleError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -305,7 +305,7 @@ func Test_ddosxDomainACLGeoIPRuleDelete(t *testing.T) {
 		ddosxDomainACLGeoIPRuleDelete(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 	})
 
-	t.Run("DeleteDomainACLGeoIPRule_ReturnsError", func(t *testing.T) {
+	t.Run("DeleteDomainACLGeoIPRule_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

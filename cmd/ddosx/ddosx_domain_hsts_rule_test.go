@@ -119,7 +119,7 @@ func Test_ddosxDomainHSTSRuleShow(t *testing.T) {
 		ddosxDomainHSTSRuleShow(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000001"})
 	})
 
-	t.Run("GetDomainHSTSRuleError_ReturnsError", func(t *testing.T) {
+	t.Run("GetDomainHSTSRuleError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -274,7 +274,7 @@ func Test_ddosxDomainHSTSRuleUpdate(t *testing.T) {
 		ddosxDomainHSTSRuleUpdate(service, cmd, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 	})
 
-	t.Run("PatchDomainHSTSRuleError_ReturnsError", func(t *testing.T) {
+	t.Run("PatchDomainHSTSRuleError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -287,7 +287,7 @@ func Test_ddosxDomainHSTSRuleUpdate(t *testing.T) {
 		})
 	})
 
-	t.Run("GetDomainHSTSRuleError_ReturnsError", func(t *testing.T) {
+	t.Run("GetDomainHSTSRuleError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -341,7 +341,7 @@ func Test_ddosxDomainHSTSRuleDelete(t *testing.T) {
 		ddosxDomainHSTSRuleDelete(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 	})
 
-	t.Run("DeleteDomainHSTSRule_ReturnsError", func(t *testing.T) {
+	t.Run("DeleteDomainHSTSRule_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

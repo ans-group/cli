@@ -94,7 +94,7 @@ func Test_ddosxSSLShow(t *testing.T) {
 		ddosxSSLShow(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000001"})
 	})
 
-	t.Run("GetSSLError_ReturnsError", func(t *testing.T) {
+	t.Run("GetSSLError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -332,7 +332,7 @@ func Test_ddosxSSLDelete(t *testing.T) {
 		ddosxSSLDelete(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000001"})
 	})
 
-	t.Run("DeleteSSLError_ReturnsError", func(t *testing.T) {
+	t.Run("DeleteSSLError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

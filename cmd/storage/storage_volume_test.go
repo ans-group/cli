@@ -94,7 +94,7 @@ func Test_storageVolumeShow(t *testing.T) {
 		storageVolumeShow(service, &cobra.Command{}, []string{"123", "456"})
 	})
 
-	t.Run("GetVolumeID_ReturnsError", func(t *testing.T) {
+	t.Run("GetVolumeID_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -105,7 +105,7 @@ func Test_storageVolumeShow(t *testing.T) {
 		})
 	})
 
-	t.Run("GetVolumeError_ReturnsError", func(t *testing.T) {
+	t.Run("GetVolumeError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

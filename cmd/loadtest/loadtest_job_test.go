@@ -96,7 +96,7 @@ func Test_loadtestJobShow(t *testing.T) {
 		loadtestJobShow(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000001"})
 	})
 
-	t.Run("GetJobError_ReturnsError", func(t *testing.T) {
+	t.Run("GetJobError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -202,7 +202,7 @@ func Test_loadtestJobDelete(t *testing.T) {
 		loadtestJobDelete(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000001"})
 	})
 
-	t.Run("GetJobError_ReturnsError", func(t *testing.T) {
+	t.Run("GetJobError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -257,7 +257,7 @@ func Test_loadtestJobStop(t *testing.T) {
 		loadtestJobStop(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000001"})
 	})
 
-	t.Run("GetJobError_ReturnsError", func(t *testing.T) {
+	t.Run("GetJobError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

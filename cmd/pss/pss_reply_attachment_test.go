@@ -212,7 +212,7 @@ func Test_pssReplyAttachmentDelete(t *testing.T) {
 		pssReplyAttachmentDelete(service, pssReplyAttachmentDeleteCmd(nil), []string{"C123", "test1.txt"})
 	})
 
-	t.Run("DeleteReplyAttachmentError_ReturnsError", func(t *testing.T) {
+	t.Run("DeleteReplyAttachmentError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

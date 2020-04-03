@@ -94,7 +94,7 @@ func Test_ecloudPodShow(t *testing.T) {
 		ecloudPodShow(service, &cobra.Command{}, []string{"123", "456"})
 	})
 
-	t.Run("GetPodID_ReturnsError", func(t *testing.T) {
+	t.Run("GetPodID_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -105,7 +105,7 @@ func Test_ecloudPodShow(t *testing.T) {
 		})
 	})
 
-	t.Run("GetPodError_ReturnsError", func(t *testing.T) {
+	t.Run("GetPodError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

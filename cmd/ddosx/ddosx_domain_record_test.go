@@ -107,7 +107,7 @@ func Test_ddosxDomainRecordShow(t *testing.T) {
 		ddosxDomainRecordShow(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 	})
 
-	t.Run("GetDomainRecord_ReturnsError", func(t *testing.T) {
+	t.Run("GetDomainRecord_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -265,7 +265,7 @@ func Test_ddosxDomainRecordUpdate(t *testing.T) {
 		ddosxDomainRecordUpdate(service, cmd, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 	})
 
-	t.Run("UpdateDomainRecordError_ReturnsError", func(t *testing.T) {
+	t.Run("UpdateDomainRecordError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -278,7 +278,7 @@ func Test_ddosxDomainRecordUpdate(t *testing.T) {
 		})
 	})
 
-	t.Run("GetDomainRecordError_ReturnsError", func(t *testing.T) {
+	t.Run("GetDomainRecordError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -332,7 +332,7 @@ func Test_ddosxDomainRecordDelete(t *testing.T) {
 		ddosxDomainRecordDelete(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 	})
 
-	t.Run("DeleteDomainRecordError_ReturnsError", func(t *testing.T) {
+	t.Run("DeleteDomainRecordError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

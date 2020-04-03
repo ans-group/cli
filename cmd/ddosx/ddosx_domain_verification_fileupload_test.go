@@ -59,7 +59,7 @@ func Test_ddosxDomainVerificationFileUploadShow(t *testing.T) {
 		ddosxDomainVerificationFileUploadShow(service, &cobra.Command{}, []string{"testdomain1.co.uk", "testdomain2.co.uk"})
 	})
 
-	t.Run("DownloadDomainVerificationFileError_ReturnsError", func(t *testing.T) {
+	t.Run("DownloadDomainVerificationFileError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -196,7 +196,7 @@ func Test_ddosxDomainVerificationFileUploadVerify(t *testing.T) {
 		ddosxDomainVerificationFileUploadVerify(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 	})
 
-	t.Run("DownloadDomainVerificationFileError_ReturnsError", func(t *testing.T) {
+	t.Run("DownloadDomainVerificationFileError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

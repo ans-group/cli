@@ -38,7 +38,7 @@ func Test_ddosxDomainVerificationDNSVerify(t *testing.T) {
 		ddosxDomainVerificationDNSVerify(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 	})
 
-	t.Run("DownloadDomainVerificationFileError_ReturnsError", func(t *testing.T) {
+	t.Run("DownloadDomainVerificationFileError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

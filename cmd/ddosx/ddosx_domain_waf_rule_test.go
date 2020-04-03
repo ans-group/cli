@@ -107,7 +107,7 @@ func Test_ddosxDomainWAFRuleShow(t *testing.T) {
 		ddosxDomainWAFRuleShow(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 	})
 
-	t.Run("GetDomainWAFRule_ReturnsError", func(t *testing.T) {
+	t.Run("GetDomainWAFRule_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -239,7 +239,7 @@ func Test_ddosxDomainWAFRuleUpdate(t *testing.T) {
 		ddosxDomainWAFRuleUpdate(service, cmd, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 	})
 
-	t.Run("PatchDomainWAFRuleError_ReturnsError", func(t *testing.T) {
+	t.Run("PatchDomainWAFRuleError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -252,7 +252,7 @@ func Test_ddosxDomainWAFRuleUpdate(t *testing.T) {
 		})
 	})
 
-	t.Run("GetDomainWAFRuleError_ReturnsError", func(t *testing.T) {
+	t.Run("GetDomainWAFRuleError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -306,7 +306,7 @@ func Test_ddosxDomainWAFRuleDelete(t *testing.T) {
 		ddosxDomainWAFRuleDelete(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 	})
 
-	t.Run("DeleteDomainWAFRule_ReturnsError", func(t *testing.T) {
+	t.Run("DeleteDomainWAFRule_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

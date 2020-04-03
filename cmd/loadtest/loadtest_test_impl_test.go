@@ -96,7 +96,7 @@ func Test_loadtestTestShow(t *testing.T) {
 		loadtestTestShow(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000001"})
 	})
 
-	t.Run("GetTestError_ReturnsError", func(t *testing.T) {
+	t.Run("GetTestError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -151,7 +151,7 @@ func Test_loadtestTestDelete(t *testing.T) {
 		loadtestTestDelete(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000001"})
 	})
 
-	t.Run("GetTestError_ReturnsError", func(t *testing.T) {
+	t.Run("GetTestError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

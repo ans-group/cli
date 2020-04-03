@@ -96,7 +96,7 @@ func Test_loadtestDomainShow(t *testing.T) {
 		loadtestDomainShow(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000001"})
 	})
 
-	t.Run("GetDomainError_ReturnsError", func(t *testing.T) {
+	t.Run("GetDomainError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

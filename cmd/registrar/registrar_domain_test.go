@@ -94,7 +94,7 @@ func Test_registrarDomainShow(t *testing.T) {
 		registrarDomainShow(service, &cobra.Command{}, []string{"testdomain1.co.uk", "testdomain2.co.uk"})
 	})
 
-	t.Run("GetDomainError_ReturnsError", func(t *testing.T) {
+	t.Run("GetDomainError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

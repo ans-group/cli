@@ -54,7 +54,7 @@ func Test_ddosxDomainWAFShow(t *testing.T) {
 		ddosxDomainWAFShow(service, &cobra.Command{}, []string{"testdomain1.co.uk", "testdomain2.co.uk"})
 	})
 
-	t.Run("GetDomainWAFError_ReturnsError", func(t *testing.T) {
+	t.Run("GetDomainWAFError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -242,7 +242,7 @@ func Test_ddosxDomainWAFUpdate(t *testing.T) {
 		assert.IsType(t, &connection.ErrInvalidEnumValue{}, err)
 	})
 
-	t.Run("UpdateDomainWAFError_ReturnsError", func(t *testing.T) {
+	t.Run("UpdateDomainWAFError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -258,7 +258,7 @@ func Test_ddosxDomainWAFUpdate(t *testing.T) {
 		})
 	})
 
-	t.Run("GetDomainWAFError_ReturnsError", func(t *testing.T) {
+	t.Run("GetDomainWAFError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -319,7 +319,7 @@ func Test_ddosxDomainWAFDelete(t *testing.T) {
 		ddosxDomainWAFDelete(service, &cobra.Command{}, []string{"testdomain1.co.uk", "testdomain2.co.uk"})
 	})
 
-	t.Run("DeleteDomainWAFError_ReturnsError", func(t *testing.T) {
+	t.Run("DeleteDomainWAFError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

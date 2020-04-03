@@ -157,7 +157,7 @@ func Test_safednsZoneRecordShow(t *testing.T) {
 		safednsZoneRecordShow(service, &cobra.Command{}, []string{"testdomain1.com", "123", "456"})
 	})
 
-	t.Run("InvalidRecordID_ReturnsError", func(t *testing.T) {
+	t.Run("InvalidRecordID_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -168,7 +168,7 @@ func Test_safednsZoneRecordShow(t *testing.T) {
 		})
 	})
 
-	t.Run("GetZoneRecordError_ReturnsError", func(t *testing.T) {
+	t.Run("GetZoneRecordError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -374,7 +374,7 @@ func Test_safednsZoneRecordUpdate(t *testing.T) {
 		safednsZoneRecordUpdate(service, cmd, []string{"testdomain1.com", "123"})
 	})
 
-	t.Run("InvalidRecordID_ReturnsError", func(t *testing.T) {
+	t.Run("InvalidRecordID_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -385,7 +385,7 @@ func Test_safednsZoneRecordUpdate(t *testing.T) {
 		})
 	})
 
-	t.Run("PatchZoneRecordError_ReturnsError", func(t *testing.T) {
+	t.Run("PatchZoneRecordError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -398,7 +398,7 @@ func Test_safednsZoneRecordUpdate(t *testing.T) {
 		})
 	})
 
-	t.Run("GetZoneRecordError_ReturnsError", func(t *testing.T) {
+	t.Run("GetZoneRecordError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -466,7 +466,7 @@ func Test_safednsZoneRecordDelete(t *testing.T) {
 		safednsZoneRecordDelete(service, &cobra.Command{}, []string{"testdomain1.com", "123", "456"})
 	})
 
-	t.Run("InvalidRecordID_ReturnsError", func(t *testing.T) {
+	t.Run("InvalidRecordID_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -477,7 +477,7 @@ func Test_safednsZoneRecordDelete(t *testing.T) {
 		})
 	})
 
-	t.Run("DeleteZoneRecordError_ReturnsError", func(t *testing.T) {
+	t.Run("DeleteZoneRecordError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 

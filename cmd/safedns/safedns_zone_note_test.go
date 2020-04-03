@@ -145,7 +145,7 @@ func Test_safednsZoneNoteShow(t *testing.T) {
 		safednsZoneNoteShow(service, &cobra.Command{}, []string{"testdomain1.com", "123", "456"})
 	})
 
-	t.Run("InvalidNoteID_ReturnsError", func(t *testing.T) {
+	t.Run("InvalidNoteID_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -156,7 +156,7 @@ func Test_safednsZoneNoteShow(t *testing.T) {
 		})
 	})
 
-	t.Run("GetZoneNoteError_ReturnsError", func(t *testing.T) {
+	t.Run("GetZoneNoteError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
