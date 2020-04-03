@@ -1,0 +1,92 @@
+package ecloud
+
+import (
+	"errors"
+	"fmt"
+	"strconv"
+
+	"github.com/spf13/cobra"
+	"github.com/ukfast/cli/internal/pkg/factory"
+	"github.com/ukfast/cli/internal/pkg/helper"
+	"github.com/ukfast/cli/internal/pkg/output"
+	"github.com/ukfast/sdk-go/pkg/service/ecloud"
+)
+
+func ecloudDatastoreRootCmd(f factory.ClientFactory) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "datastore",
+		Short: "sub-commands relating to datastores",
+	}
+
+	// Child commands
+	cmd.AddCommand(ecloudDatastoreListCmd(f))
+	cmd.AddCommand(ecloudDatastoreShowCmd(f))
+
+	return cmd
+}
+
+func ecloudDatastoreListCmd(f factory.ClientFactory) *cobra.Command {
+	return &cobra.Command{
+		Use:     "list",
+		Short:   "Lists datastores",
+		Long:    "This command lists datastores",
+		Example: "ukfast ecloud datastore list",
+		Run: func(cmd *cobra.Command, args []string) {
+			ecloudDatastoreList(f.NewClient().ECloudService(), cmd, args)
+		},
+	}
+}
+
+func ecloudDatastoreList(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
+	if err != nil {
+		return err
+	}
+
+	datastores, err := service.GetDatastores(params)
+	if err != nil {
+		return fmt.Errorf("Error retrieving datastores: %s", err)
+	}
+
+	return output.CommandOutput(cmd, OutputECloudDatastoresProvider(datastores))
+}
+
+func ecloudDatastoreShowCmd(f factory.ClientFactory) *cobra.Command {
+	return &cobra.Command{
+		Use:     "show <datastore: id>...",
+		Short:   "Shows a datastore",
+		Long:    "This command shows one or more datastores",
+		Example: "ukfast ecloud vm datastore 123",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Missing datastore")
+			}
+
+			return nil
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return ecloudDatastoreShow(f.NewClient().ECloudService(), cmd, args)
+		},
+	}
+}
+
+func ecloudDatastoreShow(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
+	var datastores []ecloud.Datastore
+	for _, arg := range args {
+		datastoreID, err := strconv.Atoi(arg)
+		if err != nil {
+			output.OutputWithErrorLevelf("Invalid datastore ID [%s]", arg)
+			continue
+		}
+
+		datastore, err := service.GetDatastore(datastoreID)
+		if err != nil {
+			output.OutputWithErrorLevelf("Error retrieving datastore [%s]: %s", arg, err)
+			continue
+		}
+
+		datastores = append(datastores, datastore)
+	}
+
+	return output.CommandOutput(cmd, OutputECloudDatastoresProvider(datastores))
+}

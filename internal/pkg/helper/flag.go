@@ -7,6 +7,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"github.com/ukfast/cli/internal/pkg/clierrors"
 	"github.com/ukfast/sdk-go/pkg/connection"
 )
 
@@ -56,7 +57,7 @@ func GetFilteringArrayFromStringArrayFlag(filters []string) ([]connection.APIReq
 	for _, filter := range filters {
 		f, err := GetFilteringFromStringFlag(filter)
 		if err != nil {
-			return filtering, err
+			return filtering, clierrors.NewErrInvalidFlagValue("filter", filter, err)
 		}
 
 		filtering = append(filtering, f)
@@ -144,7 +145,7 @@ func GetSortingFromStringFlag(sort string) connection.APIRequestSorting {
 }
 
 func GetAPIRequestParametersFromFlags(cmd *cobra.Command) (connection.APIRequestParameters, error) {
-	flagFilter, err := cmd.Flags().GetStringArray("filter")
+	flagFilter, _ := cmd.Flags().GetStringArray("filter")
 	filtering, err := GetFilteringArrayFromStringArrayFlag(flagFilter)
 	if err != nil {
 		return connection.APIRequestParameters{}, err

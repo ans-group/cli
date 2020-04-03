@@ -12,6 +12,7 @@ import (
 
 	"github.com/olekukonko/tablewriter"
 	"github.com/ryanuber/go-glob"
+	"github.com/spf13/cobra"
 )
 
 var outputExit func(code int) = os.Exit
@@ -350,4 +351,13 @@ func NewFieldValue(value string, def bool) FieldValue {
 		Value:   value,
 		Default: def,
 	}
+}
+
+func CommandOutput(cmd *cobra.Command, out OutputHandlerProvider) error {
+	format, _ := cmd.Flags().GetString("format")
+	handler := NewOutputHandler(out, format)
+	handler.Properties, _ = cmd.Flags().GetStringSlice("property")
+	handler.Template, _ = cmd.Flags().GetString("outputtemplate")
+
+	return handler.Handle()
 }

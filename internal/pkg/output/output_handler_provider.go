@@ -12,27 +12,76 @@ import (
 type OutputHandlerProvider interface {
 	GetData() interface{}
 	GetFieldData() ([]*OrderedFields, error)
+	SupportedFormats() []string
 }
 
+type ProviderOption func(p *GenericOutputHandlerProvider)
+
 type GenericOutputHandlerProvider struct {
-	items         interface{}
+	data             interface{}
+	fieldDataFunc    func() ([]*OrderedFields, error)
+	supportedFormats []string
+}
+
+func NewGenericOutputHandlerProvider(opts ...ProviderOption) *GenericOutputHandlerProvider {
+	p := &GenericOutputHandlerProvider{}
+	for _, opt := range opts {
+		opt(p)
+	}
+	return p
+}
+
+func WithData(data interface{}) ProviderOption {
+	return func(p *GenericOutputHandlerProvider) {
+		p.data = data
+	}
+}
+
+func WithSupportedFormats(supportedFormats []string) ProviderOption {
+	return func(p *GenericOutputHandlerProvider) {
+		p.supportedFormats = supportedFormats
+	}
+}
+
+func WithFieldDataFunc(fieldDataFunc func() ([]*OrderedFields, error)) ProviderOption {
+	return func(p *GenericOutputHandlerProvider) {
+		p.fieldDataFunc = fieldDataFunc
+	}
+}
+
+func (p *GenericOutputHandlerProvider) GetData() interface{} {
+	return p.data
+}
+
+func (p *GenericOutputHandlerProvider) GetFieldData() ([]*OrderedFields, error) {
+	return p.fieldDataFunc()
+}
+
+func (p *GenericOutputHandlerProvider) SupportedFormats() []string {
+	return p.supportedFormats
+}
+
+type SerializedOutputHandlerProvider struct {
+	*GenericOutputHandlerProvider
 	DefaultFields []string
 	IgnoredFields []string
 }
 
-func NewGenericOutputHandlerProvider(items interface{}, defaultFields []string, ignoredFields []string) *GenericOutputHandlerProvider {
-	return &GenericOutputHandlerProvider{items: items, DefaultFields: defaultFields, IgnoredFields: ignoredFields}
+func NewSerializedOutputHandlerProvider(items interface{}, defaultFields []string, ignoredFields []string) *SerializedOutputHandlerProvider {
+	return &SerializedOutputHandlerProvider{
+		GenericOutputHandlerProvider: NewGenericOutputHandlerProvider(
+			WithData(items),
+		),
+		DefaultFields: defaultFields,
+		IgnoredFields: ignoredFields,
+	}
 }
 
-func (o *GenericOutputHandlerProvider) GetData() interface{} {
-	return o.items
+func (o *SerializedOutputHandlerProvider) GetFieldData() ([]*OrderedFields, error) {
+	return o.convert(reflect.ValueOf(o.GetData())), nil
 }
 
-func (o *GenericOutputHandlerProvider) GetFieldData() ([]*OrderedFields, error) {
-	return o.convert(reflect.ValueOf(o.items)), nil
-}
-
-func (o *GenericOutputHandlerProvider) convert(reflectedValue reflect.Value) []*OrderedFields {
+func (o *SerializedOutputHandlerProvider) convert(reflectedValue reflect.Value) []*OrderedFields {
 	fields := []*OrderedFields{}
 
 	switch reflectedValue.Kind() {
@@ -47,7 +96,7 @@ func (o *GenericOutputHandlerProvider) convert(reflectedValue reflect.Value) []*
 	return fields
 }
 
-func (o *GenericOutputHandlerProvider) convertStruct(reflectedValue reflect.Value) *OrderedFields {
+func (o *SerializedOutputHandlerProvider) convertStruct(reflectedValue reflect.Value) *OrderedFields {
 	fields := NewOrderedFields()
 	reflectedValueType := reflectedValue.Type()
 
@@ -76,7 +125,7 @@ func (o *GenericOutputHandlerProvider) convertStruct(reflectedValue reflect.Valu
 	return fields
 }
 
-func (o *GenericOutputHandlerProvider) fieldToString(reflectedValue reflect.Value) string {
+func (o *SerializedOutputHandlerProvider) fieldToString(reflectedValue reflect.Value) string {
 	switch reflectedValue.Kind() {
 	case reflect.Slice:
 		var items []string
@@ -100,15 +149,15 @@ func (o *GenericOutputHandlerProvider) fieldToString(reflectedValue reflect.Valu
 	return fmt.Sprintf("%v", reflectedValue.Interface())
 }
 
-func (o *GenericOutputHandlerProvider) isDefaultField(name string) bool {
+func (o *SerializedOutputHandlerProvider) isDefaultField(name string) bool {
 	return o.fieldInFields(name, o.DefaultFields)
 }
 
-func (o *GenericOutputHandlerProvider) isIgnoredField(name string) bool {
+func (o *SerializedOutputHandlerProvider) isIgnoredField(name string) bool {
 	return o.fieldInFields(name, o.IgnoredFields)
 }
 
-func (o *GenericOutputHandlerProvider) fieldInFields(name string, fields []string) bool {
+func (o *SerializedOutputHandlerProvider) fieldInFields(name string, fields []string) bool {
 	for _, field := range fields {
 		if strings.ToLower(field) == strings.ToLower(name) {
 			return true
