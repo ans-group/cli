@@ -33,6 +33,7 @@ func ecloudVirtualMachineRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.AddCommand(ecloudVirtualMachineTagRootCmd(f))
 	cmd.AddCommand(ecloudVirtualMachineDiskRootCmd(f))
 	cmd.AddCommand(ecloudVirtualMachineTemplateRootCmd(f))
+	cmd.AddCommand(ecloudVirtualMachineConsoleRootCmd(f))
 
 	return cmd
 }
