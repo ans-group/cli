@@ -1,0 +1,60 @@
+package pss
+
+import (
+	"errors"
+
+	"github.com/spf13/afero"
+	"github.com/spf13/cobra"
+	"github.com/ukfast/cli/internal/pkg/factory"
+	"github.com/ukfast/cli/internal/pkg/output"
+	"github.com/ukfast/sdk-go/pkg/service/pss"
+)
+
+func pssReplyRootCmd(f factory.ClientFactory, appFilesystem afero.Fs) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "reply",
+		Short: "sub-commands relating to replies",
+	}
+
+	// Child commands
+	cmd.AddCommand(pssReplyShowCmd(f))
+
+	// Child root commands
+	cmd.AddCommand(pssReplyAttachmentRootCmd(f, appFilesystem))
+
+	return cmd
+}
+
+func pssReplyShowCmd(f factory.ClientFactory) *cobra.Command {
+	return &cobra.Command{
+		Use:     "show <reply: id>...",
+		Short:   "Shows a reply",
+		Long:    "This command shows one or more replies",
+		Example: "ukfast pss reply show 123",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Missing reply")
+			}
+
+			return nil
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return pssReplyShow(f.NewClient().PSSService(), cmd, args)
+		},
+	}
+}
+
+func pssReplyShow(service pss.PSSService, cmd *cobra.Command, args []string) error {
+	var replies []pss.Reply
+	for _, arg := range args {
+		reply, err := service.GetReply(arg)
+		if err != nil {
+			output.OutputWithErrorLevelf("Error retrieving reply [%s]: %s", arg, err)
+			continue
+		}
+
+		replies = append(replies, reply)
+	}
+
+	return output.CommandOutput(cmd, OutputPSSRepliesProvider(replies))
+}

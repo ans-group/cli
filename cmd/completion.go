@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func completionRootCmd() *cobra.Command {
+func CompletionRootCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "completion",
 		Short: "Commands for generating shell completions",

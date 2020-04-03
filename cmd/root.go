@@ -1,10 +1,8 @@
 package cmd
 
 import (
-	"crypto/tls"
+	"errors"
 	"fmt"
-	"net/http"
-	"time"
 
 	"github.com/blang/semver"
 	homedir "github.com/mitchellh/go-homedir"
@@ -12,11 +10,18 @@ import (
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	accountcmd "github.com/ukfast/cli/cmd/account"
+	ddosxcmd "github.com/ukfast/cli/cmd/ddosx"
+	ecloudcmd "github.com/ukfast/cli/cmd/ecloud"
+	loadtestcmd "github.com/ukfast/cli/cmd/loadtest"
+	psscmd "github.com/ukfast/cli/cmd/pss"
+	registrarcmd "github.com/ukfast/cli/cmd/registrar"
+	safednscmd "github.com/ukfast/cli/cmd/safedns"
+	sslcmd "github.com/ukfast/cli/cmd/ssl"
+	storagecmd "github.com/ukfast/cli/cmd/storage"
 	"github.com/ukfast/cli/internal/pkg/build"
+	"github.com/ukfast/cli/internal/pkg/factory"
 	"github.com/ukfast/cli/internal/pkg/output"
-	apiclient "github.com/ukfast/sdk-go/pkg/client"
-	"github.com/ukfast/sdk-go/pkg/connection"
-	"github.com/ukfast/sdk-go/pkg/logging"
 )
 
 var flagConfig string
@@ -43,16 +48,6 @@ func Execute(build build.BuildInfo) {
 	rootCmd.SilenceErrors = true
 	rootCmd.SilenceUsage = true
 
-	if err := rootCmd.Execute(); err != nil {
-		output.Fatal(err.Error())
-	}
-
-	output.ExitWithErrorLevel()
-}
-
-func init() {
-	cobra.OnInitialize(initConfig)
-
 	// Global flags
 	rootCmd.PersistentFlags().StringVar(&flagConfig, "config", "", "config file (default is $HOME/.ukfast.yaml)")
 	rootCmd.PersistentFlags().StringVarP(&flagFormat, "format", "f", "", "output format {table, json, template, value, csv, list}")
@@ -61,22 +56,35 @@ func init() {
 	rootCmd.PersistentFlags().StringSliceVar(&flagProperty, "property", []string{}, "property to output (used with several formats), can be repeated")
 	rootCmd.PersistentFlags().StringArrayVar(&flagFilter, "filter", []string{}, "filter for list commands, can be repeated, e.g. 'property=somevalue', 'property:gt=3', 'property=valu*'")
 
+	initConfig()
+
+	appFilesystem = afero.NewOsFs()
+
+	clientFactory, err := getClientFactory()
+	if err != nil {
+		output.Fatal(err.Error())
+	}
+
 	// Child commands
 	rootCmd.AddCommand(updateCmd())
 
 	// Child root commands
-	rootCmd.AddCommand(completionRootCmd())
-	rootCmd.AddCommand(safednsRootCmd())
-	rootCmd.AddCommand(ecloudRootCmd())
-	rootCmd.AddCommand(sslRootCmd())
-	rootCmd.AddCommand(ddosxRootCmd())
-	rootCmd.AddCommand(accountRootCmd())
-	rootCmd.AddCommand(registrarRootCmd())
-	rootCmd.AddCommand(pssRootCmd())
-	rootCmd.AddCommand(storageRootCmd())
-	rootCmd.AddCommand(loadtestRootCmd())
+	rootCmd.AddCommand(CompletionRootCmd())
+	rootCmd.AddCommand(accountcmd.AccountRootCmd(clientFactory))
+	rootCmd.AddCommand(ddosxcmd.DDoSXRootCmd(clientFactory, appFilesystem))
+	rootCmd.AddCommand(ecloudcmd.ECloudRootCmd(clientFactory))
+	rootCmd.AddCommand(loadtestcmd.LoadTestRootCmd(clientFactory))
+	rootCmd.AddCommand(psscmd.PSSRootCmd(clientFactory, appFilesystem))
+	rootCmd.AddCommand(registrarcmd.RegistrarRootCmd(clientFactory))
+	rootCmd.AddCommand(safednscmd.SafeDNSRootCmd(clientFactory))
+	rootCmd.AddCommand(sslcmd.SSLRootCmd(clientFactory))
+	rootCmd.AddCommand(storagecmd.StorageRootCmd(clientFactory))
 
-	appFilesystem = afero.NewOsFs()
+	if err := rootCmd.Execute(); err != nil {
+		output.Fatal(err.Error())
+	}
+
+	output.ExitWithErrorLevel()
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -107,45 +115,20 @@ func initConfig() {
 	viper.ReadInConfig()
 }
 
-func getClient() apiclient.Client {
+func getClientFactory() (factory.ClientFactory, error) {
 	apiKey := viper.GetString("api_key")
 	if apiKey == "" {
-		output.Fatal("UKF_API_KEY not set")
+		return nil, errors.New("UKF_API_KEY not set")
 	}
 
-	apiTimeout := viper.GetInt("api_timeout_seconds")
-	apiURI := viper.GetString("api_uri")
-	apiInsecure := viper.GetBool("api_insecure")
-	apiHeaders := viper.GetStringMapString("api_headers")
-	apiDebug := viper.GetBool("api_debug")
-
-	conn := connection.NewAPIConnection(&connection.APIKeyCredentials{APIKey: apiKey})
-	conn.UserAgent = "ukfast-cli"
-	if apiURI != "" {
-		conn.APIURI = apiURI
-	}
-	if apiTimeout > 0 {
-		conn.HTTPClient.Timeout = (time.Duration(apiTimeout) * time.Second)
-	}
-	if apiInsecure {
-		conn.HTTPClient.Transport = &http.Transport{
-			TLSClientConfig: &tls.Config{
-				InsecureSkipVerify: true,
-			},
-		}
-	}
-	if apiHeaders != nil {
-		conn.Headers = http.Header{}
-		for headerKey, headerValue := range apiHeaders {
-			conn.Headers.Add(headerKey, headerValue)
-		}
-	}
-
-	if apiDebug {
-		logging.SetLogger(&output.DebugLogger{})
-	}
-
-	return apiclient.NewClient(conn)
+	return factory.NewUKFastClientFactory(
+		factory.WithAPIKey(apiKey),
+		factory.WithTimeout(viper.GetInt("api_timeout_seconds")),
+		factory.WithURI(viper.GetString("api_uri")),
+		factory.WithInsecure(viper.GetBool("api_insecure")),
+		factory.WithHeaders(viper.GetStringMapString("api_headers")),
+		factory.WithDebug(viper.GetBool("api_debug")),
+	), nil
 }
 
 func updateCmd() *cobra.Command {

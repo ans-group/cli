@@ -12,7 +12,6 @@ type OutputHandler struct {
 	Provider                 OutputHandlerProvider
 	Properties               []string
 	Template                 string
-	SupportedFormats         []string
 	UnsupportedFormatHandler UnsupportedFormatHandler
 }
 
@@ -35,7 +34,7 @@ func (o *OutputHandler) Handle() error {
 			return o.UnsupportedFormatHandler()
 		}
 
-		return fmt.Errorf("Unsupported output format [%s], supported formats: %s", o.Format, strings.Join(o.SupportedFormats, ", "))
+		return fmt.Errorf("Unsupported output format [%s], supported formats: %s", o.Format, strings.Join(o.Provider.SupportedFormats(), ", "))
 	}
 
 	switch o.Format {
@@ -74,11 +73,11 @@ func (o *OutputHandler) Handle() error {
 }
 
 func (o *OutputHandler) supportedFormat() bool {
-	if o.SupportedFormats == nil {
+	if o.Provider.SupportedFormats() == nil {
 		return true
 	}
 
-	for _, supportedFormat := range o.SupportedFormats {
+	for _, supportedFormat := range o.Provider.SupportedFormats() {
 		if strings.ToLower(supportedFormat) == o.Format {
 			return true
 		}

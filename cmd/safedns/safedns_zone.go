@@ -1,0 +1,216 @@
+package safedns
+
+import (
+	"errors"
+	"fmt"
+
+	"github.com/spf13/cobra"
+	"github.com/ukfast/cli/internal/pkg/factory"
+	"github.com/ukfast/cli/internal/pkg/helper"
+	"github.com/ukfast/cli/internal/pkg/output"
+	"github.com/ukfast/sdk-go/pkg/service/safedns"
+)
+
+func safednsZoneRootCmd(f factory.ClientFactory) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "zone",
+		Short: "sub-commands relating to zones",
+	}
+
+	// Child commands
+	cmd.AddCommand(safednsZoneListCmd(f))
+	cmd.AddCommand(safednsZoneShowCmd(f))
+	cmd.AddCommand(safednsZoneCreateCmd(f))
+	cmd.AddCommand(safednsZoneUpdateCmd(f))
+	cmd.AddCommand(safednsZoneDeleteCmd(f))
+
+	// Child root commands
+	cmd.AddCommand(safednsZoneRecordRootCmd(f))
+
+	return cmd
+}
+
+func safednsZoneListCmd(f factory.ClientFactory) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:     "list",
+		Short:   "Lists zones",
+		Long:    "This command lists zones",
+		Example: "ukfast safedns zone list",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return safednsZoneList(f.NewClient().SafeDNSService(), cmd, args)
+		},
+	}
+
+	cmd.Flags().String("name", "", "Zone name for filtering")
+
+	return cmd
+}
+
+func safednsZoneList(service safedns.SafeDNSService, cmd *cobra.Command, args []string) error {
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
+	if err != nil {
+		return err
+	}
+
+	if cmd.Flags().Changed("name") {
+		filterName, _ := cmd.Flags().GetString("name")
+		params.WithFilter(helper.GetFilteringInferOperator("name", filterName))
+	}
+
+	zones, err := service.GetZones(params)
+	if err != nil {
+		return fmt.Errorf("Error retrieving zones: %s", err)
+	}
+
+	return output.CommandOutput(cmd, OutputSafeDNSZonesProvider(zones))
+}
+
+func safednsZoneShowCmd(f factory.ClientFactory) *cobra.Command {
+	return &cobra.Command{
+		Use:     "show <zone: name>...",
+		Short:   "Shows a zone",
+		Long:    "This command shows one or more zones",
+		Example: "ukfast safedns zone show ukfast.co.uk\nukfast safedns zone show 123",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Missing zone")
+			}
+
+			return nil
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return safednsZoneShow(f.NewClient().SafeDNSService(), cmd, args)
+		},
+	}
+}
+
+func safednsZoneShow(service safedns.SafeDNSService, cmd *cobra.Command, args []string) error {
+	var zones []safedns.Zone
+	for _, arg := range args {
+		zone, err := service.GetZone(arg)
+		if err != nil {
+			output.OutputWithErrorLevelf("Error retrieving zone [%s]: %s", arg, err)
+			continue
+		}
+
+		zones = append(zones, zone)
+	}
+
+	return output.CommandOutput(cmd, OutputSafeDNSZonesProvider(zones))
+}
+
+func safednsZoneCreateCmd(f factory.ClientFactory) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:     "create",
+		Short:   "Creates a zone",
+		Long:    "This command creates a zone",
+		Example: "ukfast safedns zone create",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return safednsZoneCreate(f.NewClient().SafeDNSService(), cmd, args)
+		},
+	}
+
+	// Setup flags
+	cmd.Flags().String("name", "", "Name of zone")
+	cmd.MarkFlagRequired("name")
+	cmd.Flags().String("description", "", "Description for zone")
+
+	return cmd
+}
+
+func safednsZoneCreate(service safedns.SafeDNSService, cmd *cobra.Command, args []string) error {
+	name, _ := cmd.Flags().GetString("name")
+	description, _ := cmd.Flags().GetString("description")
+
+	createRequest := safedns.CreateZoneRequest{
+		Name:        name,
+		Description: description,
+	}
+
+	err := service.CreateZone(createRequest)
+	if err != nil {
+		return fmt.Errorf("Error creating zone: %s", err)
+	}
+
+	zone, err := service.GetZone(name)
+	if err != nil {
+		return fmt.Errorf("Error retrieving new zone: %s", err)
+	}
+
+	return output.CommandOutput(cmd, OutputSafeDNSZonesProvider([]safedns.Zone{zone}))
+}
+
+func safednsZoneUpdateCmd(f factory.ClientFactory) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:     "update <zone: name>...",
+		Short:   "Updates a zone",
+		Long:    "This command updates one or more zones",
+		Example: "ukfast safedns zone update ukfast.co.uk --description \"some description\"",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Missing zone")
+			}
+
+			return nil
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return safednsZoneUpdate(f.NewClient().SafeDNSService(), cmd, args)
+		},
+	}
+
+	cmd.Flags().String("description", "", "Description for zone")
+
+	return cmd
+}
+
+func safednsZoneUpdate(service safedns.SafeDNSService, cmd *cobra.Command, args []string) error {
+	patchRequest := safedns.PatchZoneRequest{}
+	patchRequest.Description, _ = cmd.Flags().GetString("description")
+
+	var zones []safedns.Zone
+	for _, arg := range args {
+		err := service.PatchZone(arg, patchRequest)
+		if err != nil {
+			output.OutputWithErrorLevelf("Error updating zone [%s]: %s", arg, err)
+			continue
+		}
+
+		zone, err := service.GetZone(arg)
+		if err != nil {
+			output.OutputWithErrorLevelf("Error retrieving updated zone [%s]: %s", arg, err)
+			continue
+		}
+
+		zones = append(zones, zone)
+	}
+
+	return output.CommandOutput(cmd, OutputSafeDNSZonesProvider(zones))
+}
+
+func safednsZoneDeleteCmd(f factory.ClientFactory) *cobra.Command {
+	return &cobra.Command{
+		Use:     "delete <zone: name...>",
+		Short:   "Removes a zone",
+		Long:    "This command removes one or more zones",
+		Example: "ukfast safedns zone delete ukfast.co.uk\nukfast safedns zone delete 123",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Missing zone")
+			}
+
+			return nil
+		},
+		Run: func(cmd *cobra.Command, args []string) {
+			safednsZoneDelete(f.NewClient().SafeDNSService(), cmd, args)
+		},
+	}
+}
+
+func safednsZoneDelete(service safedns.SafeDNSService, cmd *cobra.Command, args []string) {
+	for _, arg := range args {
+		err := service.DeleteZone(arg)
+		if err != nil {
+			output.OutputWithErrorLevelf("Error removing zone [%s]: %s", arg, err)
+		}
+	}
+}
