@@ -39,7 +39,12 @@ func ecloudVirtualMachineConsoleSessionCreateCmd(f factory.ClientFactory) *cobra
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ecloudVirtualMachineConsoleSessionCreate(f.NewClient().ECloudService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudVirtualMachineConsoleSessionCreate(c.ECloudService(), cmd, args)
 		},
 	}
 

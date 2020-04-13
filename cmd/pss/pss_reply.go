@@ -10,7 +10,7 @@ import (
 	"github.com/ukfast/sdk-go/pkg/service/pss"
 )
 
-func pssReplyRootCmd(f factory.ClientFactory, appFilesystem afero.Fs) *cobra.Command {
+func pssReplyRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "reply",
 		Short: "sub-commands relating to replies",
@@ -20,7 +20,7 @@ func pssReplyRootCmd(f factory.ClientFactory, appFilesystem afero.Fs) *cobra.Com
 	cmd.AddCommand(pssReplyShowCmd(f))
 
 	// Child root commands
-	cmd.AddCommand(pssReplyAttachmentRootCmd(f, appFilesystem))
+	cmd.AddCommand(pssReplyAttachmentRootCmd(f, fs))
 
 	return cmd
 }
@@ -39,7 +39,12 @@ func pssReplyShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return pssReplyShow(f.NewClient().PSSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return pssReplyShow(c.PSSService(), cmd, args)
 		},
 	}
 }

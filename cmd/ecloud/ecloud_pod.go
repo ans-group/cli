@@ -35,8 +35,13 @@ func ecloudPodListCmd(f factory.ClientFactory) *cobra.Command {
 		Short:   "Lists pods",
 		Long:    "This command lists pods",
 		Example: "ukfast ecloud pod list",
-		Run: func(cmd *cobra.Command, args []string) {
-			ecloudPodList(f.NewClient().ECloudService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudPodList(c.ECloudService(), cmd, args)
 		},
 	}
 }
@@ -69,7 +74,12 @@ func ecloudPodShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ecloudPodShow(f.NewClient().ECloudService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudPodShow(c.ECloudService(), cmd, args)
 		},
 	}
 }

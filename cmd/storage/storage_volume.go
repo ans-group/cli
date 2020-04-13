@@ -32,7 +32,12 @@ func storageVolumeListCmd(f factory.ClientFactory) *cobra.Command {
 		Long:    "This command lists volumes",
 		Example: "ukfast storage volume list",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return storageVolumeList(f.NewClient().StorageService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return storageVolumeList(c.StorageService(), cmd, args)
 		},
 	}
 }
@@ -65,7 +70,12 @@ func storageVolumeShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return storageVolumeShow(f.NewClient().StorageService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return storageVolumeShow(c.StorageService(), cmd, args)
 		},
 	}
 }

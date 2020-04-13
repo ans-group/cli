@@ -39,7 +39,12 @@ func ddosxSSLListCmd(f factory.ClientFactory) *cobra.Command {
 		Long:    "This command lists ssls",
 		Example: "ukfast ddosx ssl list",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxSSLList(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxSSLList(c.DDoSXService(), cmd, args)
 		},
 	}
 }
@@ -72,7 +77,12 @@ func ddosxSSLShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxSSLShow(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxSSLShow(c.DDoSXService(), cmd, args)
 		},
 	}
 }
@@ -99,7 +109,12 @@ func ddosxSSLCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Long:    "This command creates an SSL",
 		Example: "ukfast ddosx ssl create",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxSSLCreate(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxSSLCreate(c.DDoSXService(), cmd, args)
 		},
 	}
 
@@ -167,7 +182,12 @@ func ddosxSSLUpdateCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxSSLUpdate(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxSSLUpdate(c.DDoSXService(), cmd, args)
 		},
 	}
 
@@ -252,8 +272,14 @@ func ddosxSSLDeleteCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			ddosxSSLDelete(f.NewClient().DDoSXService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			ddosxSSLDelete(c.DDoSXService(), cmd, args)
+			return nil
 		},
 	}
 }

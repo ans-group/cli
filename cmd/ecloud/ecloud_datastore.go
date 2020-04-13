@@ -31,8 +31,13 @@ func ecloudDatastoreListCmd(f factory.ClientFactory) *cobra.Command {
 		Short:   "Lists datastores",
 		Long:    "This command lists datastores",
 		Example: "ukfast ecloud datastore list",
-		Run: func(cmd *cobra.Command, args []string) {
-			ecloudDatastoreList(f.NewClient().ECloudService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudDatastoreList(c.ECloudService(), cmd, args)
 		},
 	}
 }
@@ -65,7 +70,12 @@ func ecloudDatastoreShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ecloudDatastoreShow(f.NewClient().ECloudService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudDatastoreShow(c.ECloudService(), cmd, args)
 		},
 	}
 }

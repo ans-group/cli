@@ -6,14 +6,14 @@ import (
 	"github.com/ukfast/cli/internal/pkg/factory"
 )
 
-func DDoSXRootCmd(f factory.ClientFactory, appFilesystem afero.Fs) *cobra.Command {
+func DDoSXRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "ddosx",
 		Short: "Commands relating to DDoSX service",
 	}
 
 	// Child root commands
-	cmd.AddCommand(ddosxDomainRootCmd(f, appFilesystem))
+	cmd.AddCommand(ddosxDomainRootCmd(f, fs))
 	cmd.AddCommand(ddosxRecordRootCmd(f))
 	cmd.AddCommand(ddosxSSLRootCmd(f))
 

@@ -6,7 +6,7 @@ import (
 	"github.com/ukfast/cli/internal/pkg/factory"
 )
 
-func PSSRootCmd(f factory.ClientFactory, appFilesystem afero.Fs) *cobra.Command {
+func PSSRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "pss",
 		Short: "Commands relating to PSS service",
@@ -14,7 +14,7 @@ func PSSRootCmd(f factory.ClientFactory, appFilesystem afero.Fs) *cobra.Command 
 
 	// Child root commands
 	cmd.AddCommand(pssRequestRootCmd(f))
-	cmd.AddCommand(pssReplyRootCmd(f, appFilesystem))
+	cmd.AddCommand(pssReplyRootCmd(f, fs))
 
 	return cmd
 }

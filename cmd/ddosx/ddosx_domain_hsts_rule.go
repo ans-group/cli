@@ -42,7 +42,12 @@ func ddosxDomainHSTSRuleListCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainHSTSRuleList(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainHSTSRuleList(c.DDoSXService(), cmd, args)
 		},
 	}
 }
@@ -78,7 +83,12 @@ func ddosxDomainHSTSRuleShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainHSTSRuleShow(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainHSTSRuleShow(c.DDoSXService(), cmd, args)
 		},
 	}
 }
@@ -112,7 +122,12 @@ func ddosxDomainHSTSRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainHSTSRuleCreate(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainHSTSRuleCreate(c.DDoSXService(), cmd, args)
 		},
 	}
 
@@ -174,7 +189,12 @@ func ddosxDomainHSTSRuleUpdateCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainHSTSRuleUpdate(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainHSTSRuleUpdate(c.DDoSXService(), cmd, args)
 		},
 	}
 
@@ -239,8 +259,14 @@ func ddosxDomainHSTSRuleDeleteCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			ddosxDomainHSTSRuleDelete(f.NewClient().DDoSXService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			ddosxDomainHSTSRuleDelete(c.DDoSXService(), cmd, args)
+			return nil
 		},
 	}
 }

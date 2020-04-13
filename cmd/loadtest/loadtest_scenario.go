@@ -29,7 +29,12 @@ func loadtestScenarioListCmd(f factory.ClientFactory) *cobra.Command {
 		Long:    "This command lists scenarios",
 		Example: "ukfast loadtest scenario list",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return loadtestScenarioList(f.NewClient().LTaaSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return loadtestScenarioList(c.LTaaSService(), cmd, args)
 		},
 	}
 }

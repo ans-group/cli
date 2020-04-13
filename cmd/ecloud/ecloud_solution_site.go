@@ -37,8 +37,13 @@ func ecloudSolutionSiteListCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			ecloudSolutionSiteList(f.NewClient().ECloudService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudSolutionSiteList(c.ECloudService(), cmd, args)
 		},
 	}
 }

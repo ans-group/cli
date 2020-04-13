@@ -12,7 +12,7 @@ import (
 	"github.com/ukfast/sdk-go/pkg/service/ddosx"
 )
 
-func ddosxDomainRootCmd(f factory.ClientFactory, appFilesystem afero.Fs) *cobra.Command {
+func ddosxDomainRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "domain",
 		Short: "sub-commands relating to domains",
@@ -30,7 +30,7 @@ func ddosxDomainRootCmd(f factory.ClientFactory, appFilesystem afero.Fs) *cobra.
 	cmd.AddCommand(ddosxDomainWAFRootCmd(f))
 	cmd.AddCommand(ddosxDomainACLRootCmd(f))
 	cmd.AddCommand(ddosxDomainPropertyRootCmd(f))
-	cmd.AddCommand(ddosxDomainVerificationRootCmd(f, appFilesystem))
+	cmd.AddCommand(ddosxDomainVerificationRootCmd(f, fs))
 	cmd.AddCommand(ddosxDomainCDNRootCmd(f))
 	cmd.AddCommand(ddosxDomainHSTSRootCmd(f))
 
@@ -44,7 +44,12 @@ func ddosxDomainListCmd(f factory.ClientFactory) *cobra.Command {
 		Long:    "This command lists domains",
 		Example: "ukfast ddosx domain list",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainList(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainList(c.DDoSXService(), cmd, args)
 		},
 	}
 }
@@ -77,7 +82,12 @@ func ddosxDomainShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainShow(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainShow(c.DDoSXService(), cmd, args)
 		},
 	}
 }
@@ -104,7 +114,12 @@ func ddosxDomainCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Long:    "This command creates a new domain",
 		Example: "ukfast ddosx domain create --name example.com",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainCreate(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainCreate(c.DDoSXService(), cmd, args)
 		},
 	}
 
@@ -148,8 +163,14 @@ func ddosxDomainDeleteCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			ddosxDomainDelete(f.NewClient().DDoSXService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			ddosxDomainDelete(c.DDoSXService(), cmd, args)
+			return nil
 		},
 	}
 }
@@ -178,7 +199,12 @@ func ddosxDomainDeployCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainDeploy(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainDeploy(c.DDoSXService(), cmd, args)
 		},
 	}
 

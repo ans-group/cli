@@ -15,7 +15,7 @@ import (
 	"github.com/ukfast/sdk-go/pkg/service/ddosx"
 )
 
-func ddosxDomainVerificationFileUploadRootCmd(f factory.ClientFactory, appFilesystem afero.Fs) *cobra.Command {
+func ddosxDomainVerificationFileUploadRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "fileupload",
 		Short: "sub-commands relating to file upload domain verification",
@@ -23,7 +23,7 @@ func ddosxDomainVerificationFileUploadRootCmd(f factory.ClientFactory, appFilesy
 
 	// Child commands
 	cmd.AddCommand(ddosxDomainVerificationFileUploadShowCmd(f))
-	cmd.AddCommand(ddosxDomainVerificationFileUploadDownloadCmd(f, appFilesystem))
+	cmd.AddCommand(ddosxDomainVerificationFileUploadDownloadCmd(f, fs))
 	cmd.AddCommand(ddosxDomainVerificationFileUploadVerifyCmd(f))
 
 	return cmd
@@ -43,7 +43,12 @@ func ddosxDomainVerificationFileUploadShowCmd(f factory.ClientFactory) *cobra.Co
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainVerificationFileUploadShow(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainVerificationFileUploadShow(c.DDoSXService(), cmd, args)
 		},
 	}
 }
@@ -67,7 +72,7 @@ func ddosxDomainVerificationFileUploadShow(service ddosx.DDoSXService, cmd *cobr
 	return output.CommandOutput(cmd, OutputDDoSXDomainVerificationFilesProvider(files))
 }
 
-func ddosxDomainVerificationFileUploadDownloadCmd(f factory.ClientFactory, appFilesystem afero.Fs) *cobra.Command {
+func ddosxDomainVerificationFileUploadDownloadCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "download <domain: name>",
 		Short:   "Downloads the verification file for a domain",
@@ -81,7 +86,12 @@ func ddosxDomainVerificationFileUploadDownloadCmd(f factory.ClientFactory, appFi
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainVerificationFileUploadDownload(f.NewClient().DDoSXService(), appFilesystem, cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainVerificationFileUploadDownload(c.DDoSXService(), fs, cmd, args)
 		},
 	}
 
@@ -91,7 +101,7 @@ func ddosxDomainVerificationFileUploadDownloadCmd(f factory.ClientFactory, appFi
 	return cmd
 }
 
-func ddosxDomainVerificationFileUploadDownload(service ddosx.DDoSXService, appFilesystem afero.Fs, cmd *cobra.Command, args []string) error {
+func ddosxDomainVerificationFileUploadDownload(service ddosx.DDoSXService, fs afero.Fs, cmd *cobra.Command, args []string) error {
 	content, filename, err := service.DownloadDomainVerificationFile(args[0])
 	if err != nil {
 		return fmt.Errorf("Error retrieving domain verification file: %s", err)
@@ -101,12 +111,12 @@ func ddosxDomainVerificationFileUploadDownload(service ddosx.DDoSXService, appFi
 
 	targetFilePath := filepath.Join(directory, filename)
 
-	_, err = appFilesystem.Stat(targetFilePath)
+	_, err = fs.Stat(targetFilePath)
 	if err == nil || !os.IsNotExist(err) {
 		return fmt.Errorf("Destination file [%s] exists", targetFilePath)
 	}
 
-	err = afero.WriteFile(appFilesystem, targetFilePath, []byte(content), 0644)
+	err = afero.WriteFile(fs, targetFilePath, []byte(content), 0644)
 	if err != nil {
 		return fmt.Errorf("Error writing domain verification file to [%s]: %s", targetFilePath, err.Error())
 	}
@@ -129,7 +139,12 @@ func ddosxDomainVerificationFileUploadVerifyCmd(f factory.ClientFactory) *cobra.
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainVerificationFileUploadVerify(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainVerificationFileUploadVerify(c.DDoSXService(), cmd, args)
 		},
 	}
 }

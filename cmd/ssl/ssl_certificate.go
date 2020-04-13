@@ -36,7 +36,12 @@ func sslCertificateListCmd(f factory.ClientFactory) *cobra.Command {
 		Long:    "This command lists certificates",
 		Example: "ukfast ssl certificate list",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return sslCertificateList(f.NewClient().SSLService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return sslCertificateList(c.SSLService(), cmd, args)
 		},
 	}
 }
@@ -69,7 +74,12 @@ func sslCertificateShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return sslCertificateShow(f.NewClient().SSLService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return sslCertificateShow(c.SSLService(), cmd, args)
 		},
 	}
 }

@@ -90,23 +90,23 @@ func Test_ddosxDomainVerificationFileUploadDownloadCmd_Args(t *testing.T) {
 
 func Test_ddosxDomainVerificationFileUploadDownload(t *testing.T) {
 	t.Run("Valid_FileCreated", func(t *testing.T) {
-		appFilesystem := afero.NewMemMapFs()
+		fs := afero.NewMemMapFs()
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
-		cmd := ddosxDomainVerificationFileUploadDownloadCmd(nil, appFilesystem)
+		cmd := ddosxDomainVerificationFileUploadDownloadCmd(nil, fs)
 		cmd.Flags().Set("path", "/tmp")
 
 		service.EXPECT().DownloadDomainVerificationFile("testdomain1.co.uk").Return("testfilecontent", "testfilename.txt", nil)
 
 		output := test.CatchStdOut(t, func() {
-			ddosxDomainVerificationFileUploadDownload(service, appFilesystem, cmd, []string{"testdomain1.co.uk"})
+			ddosxDomainVerificationFileUploadDownload(service, fs, cmd, []string{"testdomain1.co.uk"})
 		})
 
 		filename := filepath.Join("/tmp", "testfilename.txt")
 
-		_, err := appFilesystem.Stat(filename)
+		_, err := fs.Stat(filename)
 		if os.IsNotExist(err) {
 			t.Errorf("file \"%s\" does not exist.\n", filename)
 		}
@@ -116,41 +116,41 @@ func Test_ddosxDomainVerificationFileUploadDownload(t *testing.T) {
 
 	t.Run("FileExists_ReturnsError", func(t *testing.T) {
 
-		appFilesystem := afero.NewMemMapFs()
-		afero.WriteFile(appFilesystem, "/tmp/testfilename.txt", []byte{}, 0644)
+		fs := afero.NewMemMapFs()
+		afero.WriteFile(fs, "/tmp/testfilename.txt", []byte{}, 0644)
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
-		cmd := ddosxDomainVerificationFileUploadDownloadCmd(nil, appFilesystem)
+		cmd := ddosxDomainVerificationFileUploadDownloadCmd(nil, fs)
 		cmd.Flags().Set("path", "/tmp")
 
 		service.EXPECT().DownloadDomainVerificationFile("testdomain1.co.uk").Return("testfilecontent", "testfilename.txt", nil)
 
 		filename := filepath.Join("/tmp", "testfilename.txt")
 
-		err := ddosxDomainVerificationFileUploadDownload(service, appFilesystem, cmd, []string{"testdomain1.co.uk"})
+		err := ddosxDomainVerificationFileUploadDownload(service, fs, cmd, []string{"testdomain1.co.uk"})
 
 		assert.Equal(t, fmt.Sprintf("Destination file [%s] exists", filename), err.Error())
 	})
 
 	t.Run("WriteFileError_ReturnsError", func(t *testing.T) {
 
-		appFilesystem := afero.NewRegexpFs(afero.NewMemMapFs(), regexp.MustCompile(`\.invalid$`))
+		fs := afero.NewRegexpFs(afero.NewMemMapFs(), regexp.MustCompile(`\.invalid$`))
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
-		cmd := ddosxDomainVerificationFileUploadDownloadCmd(nil, appFilesystem)
+		cmd := ddosxDomainVerificationFileUploadDownloadCmd(nil, fs)
 		cmd.Flags().Set("path", "/tmp")
 
 		service.EXPECT().DownloadDomainVerificationFile("testdomain1.co.uk").Return("testfilecontent", "testfilename.txt", nil)
 
 		filename := filepath.Join("/tmp", "testfilename.txt")
 
-		err := ddosxDomainVerificationFileUploadDownload(service, appFilesystem, cmd, []string{"testdomain1.co.uk"})
+		err := ddosxDomainVerificationFileUploadDownload(service, fs, cmd, []string{"testdomain1.co.uk"})
 		assert.Equal(t, fmt.Sprintf("Error writing domain verification file to [%s]: open %s: file does not exist", filename, filename), err.Error())
 	})
 

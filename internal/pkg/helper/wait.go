@@ -11,13 +11,13 @@ import (
 type WaitFunc func() (finished bool, err error)
 
 func WaitForCommand(f WaitFunc) error {
-	waitTimeout := viper.GetInt("command_wait_timeout_seconds")
-	if waitTimeout < 1 {
-		return errors.New("Invalid command_wait_timeout_seconds")
+	waitTimeout := 1200
+	if viper.GetInt("command_wait_timeout_seconds") > 0 {
+		waitTimeout = viper.GetInt("command_wait_timeout_seconds")
 	}
-	sleepTimeout := viper.GetInt("command_wait_sleep_seconds")
-	if sleepTimeout < 1 {
-		return errors.New("Invalid command_wait_sleep_seconds")
+	sleepTimeout := 5
+	if viper.GetInt("command_wait_sleep_seconds") > 0 {
+		sleepTimeout = viper.GetInt("command_wait_sleep_seconds")
 	}
 
 	timeStart := time.Now()

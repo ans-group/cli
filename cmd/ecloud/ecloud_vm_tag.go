@@ -42,8 +42,13 @@ func ecloudVirtualMachineTagListCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			ecloudVirtualMachineTagList(f.NewClient().ECloudService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudVirtualMachineTagList(c.ECloudService(), cmd, args)
 		},
 	}
 }
@@ -84,7 +89,12 @@ func ecloudVirtualMachineTagShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ecloudVirtualMachineTagShow(f.NewClient().ECloudService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudVirtualMachineTagShow(c.ECloudService(), cmd, args)
 		},
 	}
 }
@@ -124,7 +134,12 @@ func ecloudVirtualMachineTagCreateCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ecloudVirtualMachineTagCreate(f.NewClient().ECloudService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudVirtualMachineTagCreate(c.ECloudService(), cmd, args)
 		},
 	}
 
@@ -180,7 +195,12 @@ func ecloudVirtualMachineTagUpdateCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ecloudVirtualMachineTagUpdate(f.NewClient().ECloudService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudVirtualMachineTagUpdate(c.ECloudService(), cmd, args)
 		},
 	}
 
@@ -240,7 +260,12 @@ func ecloudVirtualMachineTagDeleteCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ecloudVirtualMachineTagDelete(f.NewClient().ECloudService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudVirtualMachineTagDelete(c.ECloudService(), cmd, args)
 		},
 	}
 }

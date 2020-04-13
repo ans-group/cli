@@ -43,8 +43,13 @@ func ecloudSolutionListCmd(f factory.ClientFactory) *cobra.Command {
 		Short:   "Lists solutions",
 		Long:    "This command lists solutions",
 		Example: "ukfast ecloud solution list",
-		Run: func(cmd *cobra.Command, args []string) {
-			ecloudSolutionList(f.NewClient().ECloudService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudSolutionList(c.ECloudService(), cmd, args)
 		},
 	}
 
@@ -86,7 +91,12 @@ func ecloudSolutionShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ecloudSolutionShow(f.NewClient().ECloudService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudSolutionShow(c.ECloudService(), cmd, args)
 		},
 	}
 }
@@ -126,7 +136,12 @@ func ecloudSolutionUpdateCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ecloudSolutionUpdate(f.NewClient().ECloudService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudSolutionUpdate(c.ECloudService(), cmd, args)
 		},
 	}
 

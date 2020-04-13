@@ -40,7 +40,12 @@ func safednsZoneNoteListCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return safednsZoneNoteList(f.NewClient().SafeDNSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return safednsZoneNoteList(c.SafeDNSService(), cmd, args)
 		},
 	}
 
@@ -85,7 +90,12 @@ func safednsZoneNoteShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return safednsZoneNoteShow(f.NewClient().SafeDNSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return safednsZoneNoteShow(c.SafeDNSService(), cmd, args)
 		},
 	}
 }
@@ -126,7 +136,12 @@ func safednsZoneNoteCreateCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return safednsZoneNoteCreate(f.NewClient().SafeDNSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return safednsZoneNoteCreate(c.SafeDNSService(), cmd, args)
 		},
 	}
 

@@ -43,7 +43,12 @@ func safednsTemplateRecordListCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return safednsTemplateRecordList(f.NewClient().SafeDNSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return safednsTemplateRecordList(c.SafeDNSService(), cmd, args)
 		},
 	}
 
@@ -105,7 +110,12 @@ func safednsTemplateRecordShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return safednsTemplateRecordShow(f.NewClient().SafeDNSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return safednsTemplateRecordShow(c.SafeDNSService(), cmd, args)
 		},
 	}
 }
@@ -151,7 +161,12 @@ func safednsTemplateRecordCreateCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return safednsTemplateRecordCreate(f.NewClient().SafeDNSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return safednsTemplateRecordCreate(c.SafeDNSService(), cmd, args)
 		},
 	}
 
@@ -219,7 +234,12 @@ func safednsTemplateRecordUpdateCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return safednsTemplateRecordUpdate(f.NewClient().SafeDNSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return safednsTemplateRecordUpdate(c.SafeDNSService(), cmd, args)
 		},
 	}
 
@@ -300,7 +320,12 @@ func safednsTemplateRecordDeleteCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return safednsTemplateRecordDelete(f.NewClient().SafeDNSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return safednsTemplateRecordDelete(c.SafeDNSService(), cmd, args)
 		},
 	}
 }

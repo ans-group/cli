@@ -37,7 +37,12 @@ func ecloudApplianceParameterListCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ecloudApplianceParameterList(f.NewClient().ECloudService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudApplianceParameterList(c.ECloudService(), cmd, args)
 		},
 	}
 }

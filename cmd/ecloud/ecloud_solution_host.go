@@ -37,8 +37,13 @@ func ecloudSolutionHostListCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			ecloudSolutionHostList(f.NewClient().ECloudService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudSolutionHostList(c.ECloudService(), cmd, args)
 		},
 	}
 }

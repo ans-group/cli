@@ -38,11 +38,21 @@ func registrarWhoisShowCmd(f factory.ClientFactory) *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			raw, _ := cmd.Flags().GetBool("raw")
 			if raw {
-				registrarWhoisShowRaw(f.NewClient().RegistrarService(), cmd, args)
+				c, err := f.NewClient()
+				if err != nil {
+					return err
+				}
+
+				registrarWhoisShowRaw(c.RegistrarService(), cmd, args)
 				return nil
 			}
 
-			return registrarWhoisShow(f.NewClient().RegistrarService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return registrarWhoisShow(c.RegistrarService(), cmd, args)
 		},
 	}
 

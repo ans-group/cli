@@ -38,7 +38,12 @@ func safednsTemplateListCmd(f factory.ClientFactory) *cobra.Command {
 		Long:    "This command lists templates",
 		Example: "ukfast safedns template list",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return safednsTemplateList(f.NewClient().SafeDNSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return safednsTemplateList(c.SafeDNSService(), cmd, args)
 		},
 	}
 
@@ -81,7 +86,12 @@ func safednsTemplateShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return safednsTemplateShow(f.NewClient().SafeDNSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return safednsTemplateShow(c.SafeDNSService(), cmd, args)
 		},
 	}
 }
@@ -108,7 +118,12 @@ func safednsTemplateCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Long:    "This command creates a template",
 		Example: "ukfast safedns template create --name \"main template\"",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return safednsTemplateCreate(f.NewClient().SafeDNSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return safednsTemplateCreate(c.SafeDNSService(), cmd, args)
 		},
 	}
 	cmd.Flags().String("name", "", "Name of template")
@@ -154,7 +169,12 @@ func safednsTemplateUpdateCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return safednsTemplateUpdate(f.NewClient().SafeDNSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return safednsTemplateUpdate(c.SafeDNSService(), cmd, args)
 		},
 	}
 
@@ -216,8 +236,14 @@ func safednsTemplateDeleteCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			safednsTemplateDelete(f.NewClient().SafeDNSService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			safednsTemplateDelete(c.SafeDNSService(), cmd, args)
+			return nil
 		},
 	}
 }

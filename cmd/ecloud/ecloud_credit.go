@@ -30,7 +30,12 @@ func ecloudCreditListCmd(f factory.ClientFactory) *cobra.Command {
 		Long:    "This command lists credits",
 		Example: "ukfast account credit list",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ecloudCreditList(f.NewClient().ECloudService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudCreditList(c.ECloudService(), cmd, args)
 		},
 	}
 }

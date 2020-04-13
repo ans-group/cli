@@ -44,8 +44,13 @@ func ecloudVirtualMachineListCmd(f factory.ClientFactory) *cobra.Command {
 		Short:   "Lists virtual machines",
 		Long:    "This command lists virtual machines",
 		Example: "ukfast ecloud vm list",
-		Run: func(cmd *cobra.Command, args []string) {
-			ecloudVirtualMachineList(f.NewClient().ECloudService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudVirtualMachineList(c.ECloudService(), cmd, args)
 		},
 	}
 
@@ -87,7 +92,12 @@ func ecloudVirtualMachineShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ecloudVirtualMachineShow(f.NewClient().ECloudService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudVirtualMachineShow(c.ECloudService(), cmd, args)
 		},
 	}
 }
@@ -120,7 +130,12 @@ func ecloudVirtualMachineCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Long:    "This command creates a virtual machine",
 		Example: "ukfast ecloud vm create",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ecloudVirtualMachineCreate(f.NewClient().ECloudService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudVirtualMachineCreate(c.ECloudService(), cmd, args)
 		},
 	}
 
@@ -247,7 +262,12 @@ func ecloudVirtualMachineUpdateCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ecloudVirtualMachineUpdate(f.NewClient().ECloudService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudVirtualMachineUpdate(c.ECloudService(), cmd, args)
 		},
 	}
 
@@ -322,8 +342,14 @@ func ecloudVirtualMachineStartCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			ecloudVirtualMachineStart(f.NewClient().ECloudService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			ecloudVirtualMachineStart(c.ECloudService(), cmd, args)
+			return nil
 		},
 	}
 }
@@ -357,8 +383,14 @@ func ecloudVirtualMachineStopCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			ecloudVirtualMachineStop(f.NewClient().ECloudService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			ecloudVirtualMachineStop(c.ECloudService(), cmd, args)
+			return nil
 		},
 	}
 
@@ -406,8 +438,14 @@ func ecloudVirtualMachineRestartCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			ecloudVirtualMachineRestart(f.NewClient().ECloudService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			ecloudVirtualMachineRestart(c.ECloudService(), cmd, args)
+			return nil
 		},
 	}
 
@@ -455,8 +493,14 @@ func ecloudVirtualMachineDeleteCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			ecloudVirtualMachineDelete(f.NewClient().ECloudService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			ecloudVirtualMachineDelete(c.ECloudService(), cmd, args)
+			return nil
 		},
 	}
 

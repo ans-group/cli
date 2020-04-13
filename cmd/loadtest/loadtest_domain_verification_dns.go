@@ -35,7 +35,12 @@ func loadtestDomainVerificationDNSVerifyCmd(f factory.ClientFactory) *cobra.Comm
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return loadtestDomainVerificationDNSVerify(f.NewClient().LTaaSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return loadtestDomainVerificationDNSVerify(c.LTaaSService(), cmd, args)
 		},
 	}
 }

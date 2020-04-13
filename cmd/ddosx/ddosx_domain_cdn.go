@@ -41,7 +41,12 @@ func ddosxDomainCDNEnableCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainCDNEnable(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainCDNEnable(c.DDoSXService(), cmd, args)
 		},
 	}
 }
@@ -82,7 +87,12 @@ func ddosxDomainCDNDisableCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainCDNDisable(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainCDNDisable(c.DDoSXService(), cmd, args)
 		},
 	}
 }
@@ -123,7 +133,12 @@ func ddosxDomainCDNPurgeCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainCDNPurge(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainCDNPurge(c.DDoSXService(), cmd, args)
 		},
 	}
 

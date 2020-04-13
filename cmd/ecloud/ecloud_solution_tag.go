@@ -42,8 +42,13 @@ func ecloudSolutionTagListCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			ecloudSolutionTagList(f.NewClient().ECloudService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudSolutionTagList(c.ECloudService(), cmd, args)
 		},
 	}
 }
@@ -84,7 +89,12 @@ func ecloudSolutionTagShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ecloudSolutionTagShow(f.NewClient().ECloudService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudSolutionTagShow(c.ECloudService(), cmd, args)
 		},
 	}
 }
@@ -124,7 +134,12 @@ func ecloudSolutionTagCreateCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ecloudSolutionTagCreate(f.NewClient().ECloudService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudSolutionTagCreate(c.ECloudService(), cmd, args)
 		},
 	}
 
@@ -180,7 +195,12 @@ func ecloudSolutionTagUpdateCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ecloudSolutionTagUpdate(f.NewClient().ECloudService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudSolutionTagUpdate(c.ECloudService(), cmd, args)
 		},
 	}
 
@@ -240,7 +260,12 @@ func ecloudSolutionTagDeleteCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ecloudSolutionTagDelete(f.NewClient().ECloudService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudSolutionTagDelete(c.ECloudService(), cmd, args)
 		},
 	}
 }

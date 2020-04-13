@@ -32,7 +32,12 @@ func accountContactListCmd(f factory.ClientFactory) *cobra.Command {
 		Long:    "This command lists contacts",
 		Example: "ukfast account contact list",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return accountContactList(f.NewClient().AccountService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return accountContactList(c.AccountService(), cmd, args)
 		},
 	}
 }
@@ -65,7 +70,12 @@ func accountContactShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return accountContactShow(f.NewClient().AccountService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return accountContactShow(c.AccountService(), cmd, args)
 		},
 	}
 }

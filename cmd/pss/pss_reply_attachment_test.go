@@ -39,7 +39,7 @@ func Test_pssReplyAttachmentDownloadCmd_Args(t *testing.T) {
 
 func Test_pssReplyAttachmentDownload(t *testing.T) {
 	t.Run("Valid_DownloadsFile", func(t *testing.T) {
-		appFilesystem := afero.NewMemMapFs()
+		fs := afero.NewMemMapFs()
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -51,7 +51,7 @@ func Test_pssReplyAttachmentDownload(t *testing.T) {
 			service.EXPECT().DownloadReplyAttachmentStream("C123", "test1.txt").Return(attachmentStream, nil),
 		)
 
-		pssReplyAttachmentDownload(service, appFilesystem, &cobra.Command{}, []string{"C123", "test1.txt"})
+		pssReplyAttachmentDownload(service, fs, &cobra.Command{}, []string{"C123", "test1.txt"})
 	})
 
 	t.Run("DownloadReplyAttachmentStreamError_ReturnsFatal", func(t *testing.T) {
@@ -69,8 +69,8 @@ func Test_pssReplyAttachmentDownload(t *testing.T) {
 	})
 
 	t.Run("FileExists_ReturnsFatal", func(t *testing.T) {
-		appFilesystem := afero.NewMemMapFs()
-		afero.WriteFile(appFilesystem, "test1.txt", []byte{}, 0644)
+		fs := afero.NewMemMapFs()
+		afero.WriteFile(fs, "test1.txt", []byte{}, 0644)
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -81,12 +81,12 @@ func Test_pssReplyAttachmentDownload(t *testing.T) {
 			service.EXPECT().DownloadReplyAttachmentStream("C123", "test1.txt").Return(nil, nil),
 		)
 
-		err := pssReplyAttachmentDownload(service, appFilesystem, &cobra.Command{}, []string{"C123", "test1.txt"})
+		err := pssReplyAttachmentDownload(service, fs, &cobra.Command{}, []string{"C123", "test1.txt"})
 		assert.Equal(t, "Destination file [test1.txt] exists", err.Error())
 	})
 
 	t.Run("WriteReaderError_ReturnsFatal", func(t *testing.T) {
-		appFilesystem := afero.NewMemMapFs()
+		fs := afero.NewMemMapFs()
 		b := test.TestReadCloser{
 			ReadError: errors.New("test reader error 1"),
 		}
@@ -102,7 +102,7 @@ func Test_pssReplyAttachmentDownload(t *testing.T) {
 			service.EXPECT().DownloadReplyAttachmentStream("C123", "test1.txt").Return(&b, nil),
 		)
 
-		err := pssReplyAttachmentDownload(service, appFilesystem, cmd, []string{"C123", "test1.txt"})
+		err := pssReplyAttachmentDownload(service, fs, cmd, []string{"C123", "test1.txt"})
 		assert.Contains(t, err.Error(), "test reader error 1")
 	})
 }
@@ -124,8 +124,8 @@ func Test_pssReplyAttachmentUploadCmd_Args(t *testing.T) {
 
 func Test_pssReplyAttachmentUpload(t *testing.T) {
 	t.Run("Valid_UploadsFile", func(t *testing.T) {
-		appFilesystem := afero.NewMemMapFs()
-		afero.WriteFile(appFilesystem, "/test/test1.txt", []byte("test content"), 644)
+		fs := afero.NewMemMapFs()
+		afero.WriteFile(fs, "/test/test1.txt", []byte("test content"), 644)
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -139,24 +139,24 @@ func Test_pssReplyAttachmentUpload(t *testing.T) {
 			service.EXPECT().UploadReplyAttachmentStream("C123", "test1.txt", gomock.Any()).Return(nil),
 		)
 
-		pssReplyAttachmentUpload(service, appFilesystem, cmd, []string{"C123"})
+		pssReplyAttachmentUpload(service, fs, cmd, []string{"C123"})
 	})
 
 	t.Run("FileOpenError_ReturnsError", func(t *testing.T) {
-		appFilesystem := afero.NewMemMapFs()
+		fs := afero.NewMemMapFs()
 
 		cmd := pssReplyAttachmentUploadCmd(nil, nil)
 		cmd.Flags().Set("path", "/test/test1.txt")
 
-		err := pssReplyAttachmentUpload(nil, appFilesystem, cmd, []string{"C123"})
+		err := pssReplyAttachmentUpload(nil, fs, cmd, []string{"C123"})
 
 		assert.NotNil(t, err)
 		assert.Contains(t, err.Error(), "Failed to open file")
 	})
 
 	t.Run("UploadReplyAttachmentStream_ReturnsError", func(t *testing.T) {
-		appFilesystem := afero.NewMemMapFs()
-		afero.WriteFile(appFilesystem, "/test/test1.txt", []byte("test content"), 644)
+		fs := afero.NewMemMapFs()
+		afero.WriteFile(fs, "/test/test1.txt", []byte("test content"), 644)
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -170,7 +170,7 @@ func Test_pssReplyAttachmentUpload(t *testing.T) {
 			service.EXPECT().UploadReplyAttachmentStream("C123", "test1.txt", gomock.Any()).Return(errors.New("test error")),
 		)
 
-		err := pssReplyAttachmentUpload(service, appFilesystem, cmd, []string{"C123"})
+		err := pssReplyAttachmentUpload(service, fs, cmd, []string{"C123"})
 		assert.NotNil(t, err)
 		assert.Contains(t, err.Error(), "Failed to upload attachment")
 	})
