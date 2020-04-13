@@ -33,7 +33,12 @@ func loadtestTestListCmd(f factory.ClientFactory) *cobra.Command {
 		Long:    "This command lists tests",
 		Example: "ukfast loadtest test list",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return loadtestTestList(f.NewClient().LTaaSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return loadtestTestList(c.LTaaSService(), cmd, args)
 		},
 	}
 }
@@ -66,7 +71,12 @@ func loadtestTestShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return loadtestTestShow(f.NewClient().LTaaSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return loadtestTestShow(c.LTaaSService(), cmd, args)
 		},
 	}
 }
@@ -93,7 +103,12 @@ func loadtestTestCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Long:    "This command creates a test ",
 		Example: "ukfast loadtest test create",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return loadtestTestCreate(f.NewClient().LTaaSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return loadtestTestCreate(c.LTaaSService(), cmd, args)
 		},
 	}
 
@@ -179,8 +194,14 @@ func loadtestTestDeleteCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			loadtestTestDelete(f.NewClient().LTaaSService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			loadtestTestDelete(c.LTaaSService(), cmd, args)
+			return nil
 		},
 	}
 }

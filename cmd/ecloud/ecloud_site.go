@@ -31,8 +31,13 @@ func ecloudSiteListCmd(f factory.ClientFactory) *cobra.Command {
 		Short:   "Lists sites",
 		Long:    "This command lists sites",
 		Example: "ukfast ecloud site list",
-		Run: func(cmd *cobra.Command, args []string) {
-			ecloudSiteList(f.NewClient().ECloudService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudSiteList(c.ECloudService(), cmd, args)
 		},
 	}
 
@@ -74,7 +79,12 @@ func ecloudSiteShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ecloudSiteShow(f.NewClient().ECloudService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudSiteShow(c.ECloudService(), cmd, args)
 		},
 	}
 }

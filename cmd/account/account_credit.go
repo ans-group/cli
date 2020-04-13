@@ -29,7 +29,12 @@ func accountCreditListCmd(f factory.ClientFactory) *cobra.Command {
 		Long:    "This command lists credits",
 		Example: "ukfast account credit list",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return accountCreditList(f.NewClient().AccountService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return accountCreditList(c.AccountService(), cmd, args)
 		},
 	}
 }

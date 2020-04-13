@@ -52,38 +52,4 @@ func TestWaitForCommand(t *testing.T) {
 		assert.NotNil(t, r)
 		assert.Equal(t, 3, attempt)
 	})
-
-	t.Run("InvalidWaitTimeout", func(t *testing.T) {
-		test.TestResetViper()
-		defer test.TestResetViper()
-		viper.SetDefault("command_wait_timeout_seconds", 0)
-
-		attempt := 1
-		f := func() (bool, error) {
-			attempt++
-			return false, nil
-		}
-
-		r := WaitForCommand(f)
-
-		assert.NotNil(t, r)
-		assert.Equal(t, 1, attempt)
-	})
-
-	t.Run("InvalidWaitSleep", func(t *testing.T) {
-		test.TestResetViper()
-		defer test.TestResetViper()
-		viper.SetDefault("command_wait_sleep_seconds", 0)
-
-		attempt := 1
-		f := func() (bool, error) {
-			attempt++
-			return false, nil
-		}
-
-		r := WaitForCommand(f)
-
-		assert.NotNil(t, r)
-		assert.Equal(t, 1, attempt)
-	})
 }

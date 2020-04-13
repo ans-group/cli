@@ -28,7 +28,12 @@ func loadtestAccountCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Long:    "This command creates a account ",
 		Example: "ukfast loadtest account create",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return loadtestAccountCreate(f.NewClient().LTaaSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return loadtestAccountCreate(c.LTaaSService(), cmd, args)
 		},
 	}
 }

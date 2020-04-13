@@ -39,8 +39,13 @@ func ecloudVirtualMachineDiskListCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			ecloudVirtualMachineDiskList(f.NewClient().ECloudService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudVirtualMachineDiskList(c.ECloudService(), cmd, args)
 		},
 	}
 
@@ -80,7 +85,12 @@ func ecloudVirtualMachineDiskUpdateCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ecloudVirtualMachineDiskUpdate(f.NewClient().ECloudService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudVirtualMachineDiskUpdate(c.ECloudService(), cmd, args)
 		},
 	}
 

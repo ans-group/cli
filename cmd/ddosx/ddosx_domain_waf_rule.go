@@ -43,7 +43,12 @@ func ddosxDomainWAFRuleListCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainWAFRuleList(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainWAFRuleList(c.DDoSXService(), cmd, args)
 		},
 	}
 }
@@ -79,7 +84,12 @@ func ddosxDomainWAFRuleShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainWAFRuleShow(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainWAFRuleShow(c.DDoSXService(), cmd, args)
 		},
 	}
 }
@@ -115,7 +125,12 @@ func ddosxDomainWAFRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainWAFRuleCreate(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainWAFRuleCreate(c.DDoSXService(), cmd, args)
 		},
 	}
 
@@ -164,7 +179,12 @@ func ddosxDomainWAFRuleUpdateCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainWAFRuleUpdate(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainWAFRuleUpdate(c.DDoSXService(), cmd, args)
 		},
 	}
 
@@ -222,8 +242,14 @@ func ddosxDomainWAFRuleDeleteCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			ddosxDomainWAFRuleDelete(f.NewClient().DDoSXService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			ddosxDomainWAFRuleDelete(c.DDoSXService(), cmd, args)
+			return nil
 		},
 	}
 }

@@ -36,7 +36,12 @@ func sslCertificatePrivateKeyShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return sslCertificatePrivateKeyShow(f.NewClient().SSLService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return sslCertificatePrivateKeyShow(c.SSLService(), cmd, args)
 		},
 	}
 }

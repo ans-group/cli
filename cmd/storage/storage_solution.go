@@ -32,7 +32,12 @@ func storageSolutionListCmd(f factory.ClientFactory) *cobra.Command {
 		Long:    "This command lists solutions",
 		Example: "ukfast storage solution list",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return storageSolutionList(f.NewClient().StorageService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return storageSolutionList(c.StorageService(), cmd, args)
 		},
 	}
 }
@@ -65,7 +70,12 @@ func storageSolutionShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return storageSolutionShow(f.NewClient().StorageService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return storageSolutionShow(c.StorageService(), cmd, args)
 		},
 	}
 }

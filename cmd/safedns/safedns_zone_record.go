@@ -43,7 +43,12 @@ func safednsZoneRecordListCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return safednsZoneRecordList(f.NewClient().SafeDNSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return safednsZoneRecordList(c.SafeDNSService(), cmd, args)
 		},
 	}
 
@@ -101,7 +106,12 @@ func safednsZoneRecordShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return safednsZoneRecordShow(f.NewClient().SafeDNSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return safednsZoneRecordShow(c.SafeDNSService(), cmd, args)
 		},
 	}
 }
@@ -142,7 +152,12 @@ func safednsZoneRecordCreateCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return safednsZoneRecordCreate(f.NewClient().SafeDNSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return safednsZoneRecordCreate(c.SafeDNSService(), cmd, args)
 		},
 	}
 
@@ -204,7 +219,12 @@ func safednsZoneRecordUpdateCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return safednsZoneRecordUpdate(f.NewClient().SafeDNSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return safednsZoneRecordUpdate(c.SafeDNSService(), cmd, args)
 		},
 	}
 	cmd.Flags().String("name", "", "Name of record")
@@ -278,8 +298,14 @@ func safednsZoneRecordDeleteCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			safednsZoneRecordDelete(f.NewClient().SafeDNSService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			safednsZoneRecordDelete(c.SafeDNSService(), cmd, args)
+			return nil
 		},
 	}
 }

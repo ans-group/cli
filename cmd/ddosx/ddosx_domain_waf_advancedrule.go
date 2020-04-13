@@ -43,7 +43,12 @@ func ddosxDomainWAFAdvancedRuleListCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainWAFAdvancedRuleList(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainWAFAdvancedRuleList(c.DDoSXService(), cmd, args)
 		},
 	}
 }
@@ -79,7 +84,12 @@ func ddosxDomainWAFAdvancedRuleShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainWAFAdvancedRuleShow(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainWAFAdvancedRuleShow(c.DDoSXService(), cmd, args)
 		},
 	}
 }
@@ -115,7 +125,12 @@ func ddosxDomainWAFAdvancedRuleCreateCmd(f factory.ClientFactory) *cobra.Command
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainWAFAdvancedRuleCreate(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainWAFAdvancedRuleCreate(c.DDoSXService(), cmd, args)
 		},
 	}
 
@@ -176,7 +191,12 @@ func ddosxDomainWAFAdvancedRuleUpdateCmd(f factory.ClientFactory) *cobra.Command
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainWAFAdvancedRuleUpdate(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainWAFAdvancedRuleUpdate(c.DDoSXService(), cmd, args)
 		},
 	}
 
@@ -247,8 +267,14 @@ func ddosxDomainWAFAdvancedRuleDeleteCmd(f factory.ClientFactory) *cobra.Command
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			ddosxDomainWAFAdvancedRuleDelete(f.NewClient().DDoSXService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			ddosxDomainWAFAdvancedRuleDelete(c.DDoSXService(), cmd, args)
+			return nil
 		},
 	}
 }

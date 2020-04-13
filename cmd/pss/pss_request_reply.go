@@ -42,7 +42,12 @@ func pssRequestReplyListCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return pssRequestReplyList(f.NewClient().PSSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return pssRequestReplyList(c.PSSService(), cmd, args)
 		},
 	}
 }
@@ -80,7 +85,12 @@ func pssRequestReplyCreateCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return pssRequestReplyCreate(f.NewClient().PSSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return pssRequestReplyCreate(c.PSSService(), cmd, args)
 		},
 	}
 

@@ -36,7 +36,12 @@ func loadtestJobSettingsShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return loadtestJobSettingsShow(f.NewClient().LTaaSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return loadtestJobSettingsShow(c.LTaaSService(), cmd, args)
 		},
 	}
 }

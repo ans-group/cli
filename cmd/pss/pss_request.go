@@ -38,7 +38,12 @@ func pssRequestListCmd(f factory.ClientFactory) *cobra.Command {
 		Long:    "This command lists requests",
 		Example: "ukfast pss request list",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return pssRequestList(f.NewClient().PSSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return pssRequestList(c.PSSService(), cmd, args)
 		},
 	}
 }
@@ -71,7 +76,12 @@ func pssRequestShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return pssRequestShow(f.NewClient().PSSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return pssRequestShow(c.PSSService(), cmd, args)
 		},
 	}
 }
@@ -104,7 +114,12 @@ func pssRequestCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Long:    "This command creates a new request",
 		Example: "ukfast pss request create --subject 'example ticket' --details 'example' --author 123",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return pssRequestCreate(f.NewClient().PSSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return pssRequestCreate(c.PSSService(), cmd, args)
 		},
 	}
 
@@ -186,7 +201,12 @@ func pssRequestUpdateCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return pssRequestUpdate(f.NewClient().PSSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return pssRequestUpdate(c.PSSService(), cmd, args)
 		},
 	}
 

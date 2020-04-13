@@ -40,8 +40,13 @@ func ecloudSolutionTemplateListCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			ecloudSolutionTemplateList(f.NewClient().ECloudService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudSolutionTemplateList(c.ECloudService(), cmd, args)
 		},
 	}
 }
@@ -82,7 +87,12 @@ func ecloudSolutionTemplateShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ecloudSolutionTemplateShow(f.NewClient().ECloudService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudSolutionTemplateShow(c.ECloudService(), cmd, args)
 		},
 	}
 }
@@ -125,7 +135,12 @@ func ecloudSolutionTemplateUpdateCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ecloudSolutionTemplateUpdate(f.NewClient().ECloudService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudSolutionTemplateUpdate(c.ECloudService(), cmd, args)
 		},
 	}
 
@@ -186,7 +201,12 @@ func ecloudSolutionTemplateDeleteCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ecloudSolutionTemplateDelete(f.NewClient().ECloudService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudSolutionTemplateDelete(c.ECloudService(), cmd, args)
 		},
 	}
 

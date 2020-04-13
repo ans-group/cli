@@ -33,7 +33,12 @@ func accountInvoiceQueryListCmd(f factory.ClientFactory) *cobra.Command {
 		Long:    "This command lists invoice queries",
 		Example: "ukfast account invoicequery list",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return accountInvoiceQueryList(f.NewClient().AccountService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return accountInvoiceQueryList(c.AccountService(), cmd, args)
 		},
 	}
 }
@@ -66,7 +71,12 @@ func accountInvoiceQueryShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return accountInvoiceQueryShow(f.NewClient().AccountService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return accountInvoiceQueryShow(c.AccountService(), cmd, args)
 		},
 	}
 }
@@ -106,7 +116,12 @@ func accountInvoiceQueryCreateCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return accountInvoiceQueryCreate(f.NewClient().AccountService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return accountInvoiceQueryCreate(c.AccountService(), cmd, args)
 		},
 	}
 

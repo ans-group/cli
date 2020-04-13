@@ -44,7 +44,12 @@ func ddosxDomainACLGeoIPRuleListCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainACLGeoIPRuleList(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainACLGeoIPRuleList(c.DDoSXService(), cmd, args)
 		},
 	}
 }
@@ -80,7 +85,12 @@ func ddosxDomainACLGeoIPRuleShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainACLGeoIPRuleShow(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainACLGeoIPRuleShow(c.DDoSXService(), cmd, args)
 		},
 	}
 }
@@ -116,7 +126,12 @@ func ddosxDomainACLGeoIPRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainACLGeoIPRuleCreate(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainACLGeoIPRuleCreate(c.DDoSXService(), cmd, args)
 		},
 	}
 
@@ -161,7 +176,12 @@ func ddosxDomainACLGeoIPRuleUpdateCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainACLGeoIPRuleUpdate(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainACLGeoIPRuleUpdate(c.DDoSXService(), cmd, args)
 		},
 	}
 
@@ -213,8 +233,14 @@ func ddosxDomainACLGeoIPRuleDeleteCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			ddosxDomainACLGeoIPRuleDelete(f.NewClient().DDoSXService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			ddosxDomainACLGeoIPRuleDelete(c.DDoSXService(), cmd, args)
+			return nil
 		},
 	}
 }

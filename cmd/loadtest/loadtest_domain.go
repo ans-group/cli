@@ -37,7 +37,12 @@ func loadtestDomainListCmd(f factory.ClientFactory) *cobra.Command {
 		Long:    "This command lists domains",
 		Example: "ukfast loadtest domain list",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return loadtestDomainList(f.NewClient().LTaaSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return loadtestDomainList(c.LTaaSService(), cmd, args)
 		},
 	}
 }
@@ -70,7 +75,12 @@ func loadtestDomainShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return loadtestDomainShow(f.NewClient().LTaaSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return loadtestDomainShow(c.LTaaSService(), cmd, args)
 		},
 	}
 }
@@ -97,7 +107,12 @@ func loadtestDomainCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Long:    "This command creates a domain ",
 		Example: "ukfast loadtest domain create",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return loadtestDomainCreate(f.NewClient().LTaaSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return loadtestDomainCreate(c.LTaaSService(), cmd, args)
 		},
 	}
 
@@ -148,8 +163,14 @@ func loadtestDomainDeleteCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			loadtestDomainDelete(f.NewClient().LTaaSService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			loadtestDomainDelete(c.LTaaSService(), cmd, args)
+			return nil
 		},
 	}
 }

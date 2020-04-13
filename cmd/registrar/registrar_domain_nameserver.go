@@ -36,7 +36,12 @@ func registrarDomainNameserverListCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return registrarDomainNameserverList(f.NewClient().RegistrarService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return registrarDomainNameserverList(c.RegistrarService(), cmd, args)
 		},
 	}
 }

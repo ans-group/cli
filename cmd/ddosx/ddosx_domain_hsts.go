@@ -40,7 +40,12 @@ func ddosxDomainHSTSShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainHSTSShow(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainHSTSShow(c.DDoSXService(), cmd, args)
 		},
 	}
 }
@@ -75,7 +80,12 @@ func ddosxDomainHSTSEnableCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainHSTSEnable(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainHSTSEnable(c.DDoSXService(), cmd, args)
 		},
 	}
 }
@@ -116,7 +126,12 @@ func ddosxDomainHSTSDisableCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainHSTSDisable(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainHSTSDisable(c.DDoSXService(), cmd, args)
 		},
 	}
 }

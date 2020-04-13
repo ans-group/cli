@@ -42,7 +42,12 @@ func ddosxDomainCDNRuleListCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainCDNRuleList(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainCDNRuleList(c.DDoSXService(), cmd, args)
 		},
 	}
 }
@@ -78,7 +83,12 @@ func ddosxDomainCDNRuleShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainCDNRuleShow(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainCDNRuleShow(c.DDoSXService(), cmd, args)
 		},
 	}
 }
@@ -112,7 +122,12 @@ func ddosxDomainCDNRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainCDNRuleCreate(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainCDNRuleCreate(c.DDoSXService(), cmd, args)
 		},
 	}
 
@@ -188,7 +203,12 @@ func ddosxDomainCDNRuleUpdateCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainCDNRuleUpdate(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainCDNRuleUpdate(c.DDoSXService(), cmd, args)
 		},
 	}
 
@@ -280,8 +300,14 @@ func ddosxDomainCDNRuleDeleteCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			ddosxDomainCDNRuleDelete(f.NewClient().DDoSXService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			ddosxDomainCDNRuleDelete(c.DDoSXService(), cmd, args)
+			return nil
 		},
 	}
 }

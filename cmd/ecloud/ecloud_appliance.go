@@ -34,7 +34,12 @@ func ecloudApplianceListCmd(f factory.ClientFactory) *cobra.Command {
 		Long:    "This command lists appliances",
 		Example: "ukfast ecloud appliance list",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ecloudApplianceList(f.NewClient().ECloudService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudApplianceList(c.ECloudService(), cmd, args)
 		},
 	}
 }
@@ -67,7 +72,12 @@ func ecloudApplianceShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ecloudApplianceShow(f.NewClient().ECloudService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudApplianceShow(c.ECloudService(), cmd, args)
 		},
 	}
 }

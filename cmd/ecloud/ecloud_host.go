@@ -31,8 +31,13 @@ func ecloudHostListCmd(f factory.ClientFactory) *cobra.Command {
 		Short:   "Lists hosts",
 		Long:    "This command lists hosts",
 		Example: "ukfast ecloud host list",
-		Run: func(cmd *cobra.Command, args []string) {
-			ecloudHostList(f.NewClient().ECloudService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudHostList(c.ECloudService(), cmd, args)
 		},
 	}
 }
@@ -65,7 +70,12 @@ func ecloudHostShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ecloudHostShow(f.NewClient().ECloudService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudHostShow(c.ECloudService(), cmd, args)
 		},
 	}
 }

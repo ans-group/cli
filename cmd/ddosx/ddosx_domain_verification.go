@@ -6,14 +6,14 @@ import (
 	"github.com/ukfast/cli/internal/pkg/factory"
 )
 
-func ddosxDomainVerificationRootCmd(f factory.ClientFactory, appFilesystem afero.Fs) *cobra.Command {
+func ddosxDomainVerificationRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "verification",
 		Short: "sub-commands relating to domain verification",
 	}
 
 	// Child root commands
-	cmd.AddCommand(ddosxDomainVerificationFileUploadRootCmd(f, appFilesystem))
+	cmd.AddCommand(ddosxDomainVerificationFileUploadRootCmd(f, fs))
 	cmd.AddCommand(ddosxDomainVerificationDNSRootCmd(f))
 
 	return cmd

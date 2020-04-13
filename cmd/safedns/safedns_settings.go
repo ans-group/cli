@@ -28,7 +28,12 @@ func safednsSettingsShowCmd(f factory.ClientFactory) *cobra.Command {
 		Long:    "This command shows SafeDNS settings for account",
 		Example: "ukfast safedns settings show",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return safednsSettingsShow(f.NewClient().SafeDNSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return safednsSettingsShow(c.SafeDNSService(), cmd, args)
 		},
 	}
 }

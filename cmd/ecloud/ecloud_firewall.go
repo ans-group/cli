@@ -31,8 +31,13 @@ func ecloudFirewallListCmd(f factory.ClientFactory) *cobra.Command {
 		Short:   "Lists firewalls",
 		Long:    "This command lists firewalls",
 		Example: "ukfast ecloud firewall list",
-		Run: func(cmd *cobra.Command, args []string) {
-			ecloudFirewallList(f.NewClient().ECloudService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudFirewallList(c.ECloudService(), cmd, args)
 		},
 	}
 }
@@ -65,7 +70,12 @@ func ecloudFirewallShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ecloudFirewallShow(f.NewClient().ECloudService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudFirewallShow(c.ECloudService(), cmd, args)
 		},
 	}
 }

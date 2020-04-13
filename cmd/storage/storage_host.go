@@ -32,7 +32,12 @@ func storageHostListCmd(f factory.ClientFactory) *cobra.Command {
 		Long:    "This command lists hosts",
 		Example: "ukfast storage host list",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return storageHostList(f.NewClient().StorageService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return storageHostList(c.StorageService(), cmd, args)
 		},
 	}
 }
@@ -65,7 +70,12 @@ func storageHostShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return storageHostShow(f.NewClient().StorageService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return storageHostShow(c.StorageService(), cmd, args)
 		},
 	}
 }

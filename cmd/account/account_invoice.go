@@ -32,7 +32,12 @@ func accountInvoiceListCmd(f factory.ClientFactory) *cobra.Command {
 		Long:    "This command lists invoices",
 		Example: "ukfast account invoice list",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return accountInvoiceList(f.NewClient().AccountService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return accountInvoiceList(c.AccountService(), cmd, args)
 		},
 	}
 }
@@ -65,7 +70,12 @@ func accountInvoiceShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return accountInvoiceShow(f.NewClient().AccountService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return accountInvoiceShow(c.AccountService(), cmd, args)
 		},
 	}
 }

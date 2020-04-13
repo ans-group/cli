@@ -34,7 +34,12 @@ func registrarDomainListCmd(f factory.ClientFactory) *cobra.Command {
 		Long:    "This command lists domains",
 		Example: "ukfast registrar domain list",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return registrarDomainList(f.NewClient().RegistrarService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return registrarDomainList(c.RegistrarService(), cmd, args)
 		},
 	}
 }
@@ -67,7 +72,12 @@ func registrarDomainShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return registrarDomainShow(f.NewClient().RegistrarService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return registrarDomainShow(c.RegistrarService(), cmd, args)
 		},
 	}
 }

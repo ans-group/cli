@@ -31,7 +31,12 @@ func loadtestThresholdListCmd(f factory.ClientFactory) *cobra.Command {
 		Long:    "This command lists thresholds",
 		Example: "ukfast loadtest threshold list",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return loadtestThresholdList(f.NewClient().LTaaSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return loadtestThresholdList(c.LTaaSService(), cmd, args)
 		},
 	}
 }
@@ -64,7 +69,12 @@ func loadtestThresholdShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return loadtestThresholdShow(f.NewClient().LTaaSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return loadtestThresholdShow(c.LTaaSService(), cmd, args)
 		},
 	}
 }

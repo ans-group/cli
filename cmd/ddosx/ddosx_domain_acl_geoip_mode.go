@@ -37,7 +37,12 @@ func ddosxDomainACLGeoIPRulesModeShowCmd(f factory.ClientFactory) *cobra.Command
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainACLGeoIPRulesModeShow(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainACLGeoIPRulesModeShow(c.DDoSXService(), cmd, args)
 		},
 	}
 }
@@ -71,7 +76,12 @@ func ddosxDomainACLGeoIPRulesModeUpdateCmd(f factory.ClientFactory) *cobra.Comma
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainACLGeoIPRulesModeUpdate(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainACLGeoIPRulesModeUpdate(c.DDoSXService(), cmd, args)
 		},
 	}
 

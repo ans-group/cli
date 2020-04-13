@@ -39,7 +39,12 @@ func ecloudVirtualMachineTemplateCreateCmd(f factory.ClientFactory) *cobra.Comma
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ecloudVirtualMachineTemplateCreate(f.NewClient().ECloudService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudVirtualMachineTemplateCreate(c.ECloudService(), cmd, args)
 		},
 	}
 

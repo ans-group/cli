@@ -29,7 +29,12 @@ func ddosxRecordListCmd(f factory.ClientFactory) *cobra.Command {
 		Long:    "This command lists records",
 		Example: "ukfast ddosx record list",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxRecordList(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxRecordList(c.DDoSXService(), cmd, args)
 		},
 	}
 }

@@ -39,7 +39,12 @@ func ddosxDomainPropertyListCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainPropertyList(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainPropertyList(c.DDoSXService(), cmd, args)
 		},
 	}
 
@@ -84,7 +89,12 @@ func ddosxDomainPropertyShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainPropertyShow(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainPropertyShow(c.DDoSXService(), cmd, args)
 		},
 	}
 }
@@ -123,7 +133,12 @@ func ddosxDomainPropertyUpdateCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainPropertyUpdate(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainPropertyUpdate(c.DDoSXService(), cmd, args)
 		},
 	}
 

@@ -45,7 +45,12 @@ func ddosxDomainACLIPRuleListCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainACLIPRuleList(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainACLIPRuleList(c.DDoSXService(), cmd, args)
 		},
 	}
 }
@@ -81,7 +86,12 @@ func ddosxDomainACLIPRuleShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainACLIPRuleShow(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainACLIPRuleShow(c.DDoSXService(), cmd, args)
 		},
 	}
 }
@@ -117,7 +127,12 @@ func ddosxDomainACLIPRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainACLIPRuleCreate(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainACLIPRuleCreate(c.DDoSXService(), cmd, args)
 		},
 	}
 
@@ -173,7 +188,12 @@ func ddosxDomainACLIPRuleUpdateCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ddosxDomainACLIPRuleUpdate(f.NewClient().DDoSXService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ddosxDomainACLIPRuleUpdate(c.DDoSXService(), cmd, args)
 		},
 	}
 
@@ -242,8 +262,14 @@ func ddosxDomainACLIPRuleDeleteCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			ddosxDomainACLIPRuleDelete(f.NewClient().DDoSXService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			ddosxDomainACLIPRuleDelete(c.DDoSXService(), cmd, args)
+			return nil
 		},
 	}
 }

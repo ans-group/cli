@@ -37,7 +37,12 @@ func safednsZoneListCmd(f factory.ClientFactory) *cobra.Command {
 		Long:    "This command lists zones",
 		Example: "ukfast safedns zone list",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return safednsZoneList(f.NewClient().SafeDNSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return safednsZoneList(c.SafeDNSService(), cmd, args)
 		},
 	}
 
@@ -79,7 +84,12 @@ func safednsZoneShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return safednsZoneShow(f.NewClient().SafeDNSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return safednsZoneShow(c.SafeDNSService(), cmd, args)
 		},
 	}
 }
@@ -106,7 +116,12 @@ func safednsZoneCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Long:    "This command creates a zone",
 		Example: "ukfast safedns zone create",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return safednsZoneCreate(f.NewClient().SafeDNSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return safednsZoneCreate(c.SafeDNSService(), cmd, args)
 		},
 	}
 
@@ -154,7 +169,12 @@ func safednsZoneUpdateCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return safednsZoneUpdate(f.NewClient().SafeDNSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return safednsZoneUpdate(c.SafeDNSService(), cmd, args)
 		},
 	}
 
@@ -200,8 +220,14 @@ func safednsZoneDeleteCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			safednsZoneDelete(f.NewClient().SafeDNSService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			safednsZoneDelete(c.SafeDNSService(), cmd, args)
+			return nil
 		},
 	}
 }

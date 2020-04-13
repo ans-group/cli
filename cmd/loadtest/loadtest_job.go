@@ -39,7 +39,12 @@ func loadtestJobListCmd(f factory.ClientFactory) *cobra.Command {
 		Long:    "This command lists jobs",
 		Example: "ukfast loadtest job list",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return loadtestJobList(f.NewClient().LTaaSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return loadtestJobList(c.LTaaSService(), cmd, args)
 		},
 	}
 }
@@ -72,7 +77,12 @@ func loadtestJobShowCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return loadtestJobShow(f.NewClient().LTaaSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return loadtestJobShow(c.LTaaSService(), cmd, args)
 		},
 	}
 }
@@ -99,7 +109,12 @@ func loadtestJobCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Long:    "This command creates a job ",
 		Example: "ukfast loadtest job create",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return loadtestJobCreate(f.NewClient().LTaaSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return loadtestJobCreate(c.LTaaSService(), cmd, args)
 		},
 	}
 
@@ -148,7 +163,12 @@ func loadtestJobDeleteCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return loadtestJobDelete(f.NewClient().LTaaSService(), cmd, args)
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return loadtestJobDelete(c.LTaaSService(), cmd, args)
 		},
 	}
 }
@@ -181,8 +201,14 @@ func loadtestJobStopCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		Run: func(cmd *cobra.Command, args []string) {
-			loadtestJobStop(f.NewClient().LTaaSService(), cmd, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			loadtestJobStop(c.LTaaSService(), cmd, args)
+			return nil
 		},
 	}
 }
