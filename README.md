@@ -63,7 +63,7 @@ Environment variables can be used to configure/manipulate the CLI
 ### Configuration File
 
 An alternative to environment variables is using a configuration file, which is read from
-`$HOME/.ukfast.yaml` by default. This path can be overridden with the `--config` flag. 
+`$HOME/.ukfast{.extension}` by default (extension being one of the `viper` supported formats such as `yml`, `yaml`, `json`, `toml` etc.). This path can be overridden with the `--config` flag. 
 Values defined in the configuration file take precedence over environment variables.
 
 #### Required
