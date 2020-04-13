@@ -44,25 +44,9 @@ And away we go!
 There are two available methods for configuring the CLI; Environment variables and configuration file. 
 Both of these methods are explained below.
 
-### Environment variables
-
-Environment variables can be used to configure/manipulate the CLI
-
-#### Required
-
-* `UKF_API_KEY`: API key for interacting with UKFast APIs
-
-#### Debug
-
-* `UKF_API_TIMEOUT_SECONDS`: (int) HTTP timeout for API requests. Default: `90`
-* `UKF_API_URI`: (string) API URL. Default: `api.ukfast.io`
-* `UKF_API_INSECURE`: (bool) Specifies to ignore API certificate validation checks
-* `UKF_API_DEBUG`: (bool) Specifies for debug messages to be output to stderr
-* `UKF_API_PAGINATION_PERPAGE` (int) Specifies the per-page for paginated requests
-
 ### Configuration File
 
-An alternative to environment variables is using a configuration file, which is read from
+The configuration file is read from
 `$HOME/.ukfast{.extension}` by default (extension being one of the `viper` supported formats such as `yml`, `yaml`, `json`, `toml` etc.). This path can be overridden with the `--config` flag. 
 Values defined in the configuration file take precedence over environment variables.
 
@@ -77,6 +61,11 @@ Values defined in the configuration file take precedence over environment variab
 * `api_insecure`: (bool) Specifies to ignore API certificate validation checks
 * `api_debug`: (bool) Specifies for debug messages to be output to stderr
 * `api_pagination_perpage` (int) Specifies the per-page for paginated requests
+
+### Environment variables
+
+Environment variables can be used to configure/manipulate the CLI. These variables match the naming of directives in the configuration file 
+defined above, however are uppercased and prefixed with `UKF`, such as `UKF_API_KEY`
 
 
 ## Output Formatting
