@@ -12,4 +12,4 @@ RUN apk --no-cache add ca-certificates bash bash-completion
 COPY --from=builder /build/ukfast /bin/ukfast
 RUN echo "source /usr/share/bash-completion/bash_completion" >> ~/.bashrc
 RUN echo "source <(ukfast completion bash)" >> ~/.bashrc
-CMD ["/bin/bash"]
+ENTRYPOINT ["/bin/ukfast"]
