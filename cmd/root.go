@@ -50,7 +50,7 @@ func Execute(build build.BuildInfo) {
 	// Global flags
 	rootCmd.PersistentFlags().StringVar(&flagConfig, "config", "", "config file (default is $HOME/.ukfast.yml)")
 	rootCmd.PersistentFlags().StringVarP(&flagFormat, "format", "f", "", "output format {table, json, jsonpath, template, value, csv, list}")
-	rootCmd.PersistentFlags().StringVar(&flagOutputTemplate, "gotemplate", "", "output Go template (used with 'template' format), e.g. 'Name: {{ .Name }}'")
+	rootCmd.PersistentFlags().StringVar(&flagOutputTemplate, "outputtemplate", "", "output Go template (used with 'template' format), e.g. 'Name: {{ .Name }}'")
 	rootCmd.PersistentFlags().StringVar(&flagJSONPath, "jsonpath", "", "JSON path query (used with 'jsonpath' format)")
 	rootCmd.PersistentFlags().StringVar(&flagSort, "sort", "", "output sorting, e.g. 'name', 'name:asc', 'name:desc'")
 	rootCmd.PersistentFlags().StringSliceVar(&flagProperty, "property", []string{}, "property to output (used with several formats), can be repeated")
