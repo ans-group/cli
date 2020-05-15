@@ -37,7 +37,7 @@ func TestOutputHandler_Handle(t *testing.T) {
 
 	t.Run("TemplateFormat_ExpectedOutput", func(t *testing.T) {
 		handler := NewOutputHandler(testOutputHandlerProvider, "template")
-		handler.Template = "{{ .TestProperty1 }}"
+		handler.WithOption("Template", "{{ .TestProperty1 }}")
 
 		output := test.CatchStdOut(t, func() {
 			handler.Handle()

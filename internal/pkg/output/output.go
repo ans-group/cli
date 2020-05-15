@@ -13,6 +13,7 @@ import (
 	"github.com/olekukonko/tablewriter"
 	"github.com/ryanuber/go-glob"
 	"github.com/spf13/cobra"
+	"k8s.io/client-go/util/jsonpath"
 )
 
 var outputExit func(code int) = os.Exit
@@ -126,6 +127,22 @@ func JSON(v interface{}) error {
 	_, err = fmt.Print(string(out[:]))
 
 	return err
+}
+
+// JSONPath marshals and outputs value v to stdout
+func JSONPath(jsonPathTemplate string, v interface{}) error {
+	j := jsonpath.New("clioutput")
+	err := j.Parse(jsonPathTemplate)
+	if err != nil {
+		return fmt.Errorf("Failed to parse jsonpath template: %w", err)
+	}
+
+	err = j.Execute(os.Stdout, v)
+	if err != nil {
+		return fmt.Errorf("Failed to execute jsonpath: %w", err)
+	}
+
+	return nil
 }
 
 // Table takes an array of mapped fields (key being lowercased name), and outputs a table
@@ -356,8 +373,15 @@ func NewFieldValue(value string, def bool) FieldValue {
 func CommandOutput(cmd *cobra.Command, out OutputHandlerProvider) error {
 	format, _ := cmd.Flags().GetString("format")
 	handler := NewOutputHandler(out, format)
-	handler.Properties, _ = cmd.Flags().GetStringSlice("property")
-	handler.Template, _ = cmd.Flags().GetString("outputtemplate")
+
+	properties, _ := cmd.Flags().GetStringSlice("property")
+	handler.WithOption("Properties", properties)
+
+	template, _ := cmd.Flags().GetString("outputtemplate")
+	handler.WithOption("Template", template)
+
+	jsonPath, _ := cmd.Flags().GetString("jsonpath")
+	handler.WithOption("JSONPath", jsonPath)
 
 	return handler.Handle()
 }
