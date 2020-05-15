@@ -389,6 +389,34 @@ func TestOutput_JSON_ExpectedStdout(t *testing.T) {
 	})
 }
 
+func TestOutput_JSONPath_ExpectedStdout(t *testing.T) {
+	t.Run("WithJSONPathTemplate_ExpectedStdOut", func(t *testing.T) {
+		zone := safedns.Zone{Name: "testzone.com", Description: "testdescription"}
+
+		output := test.CatchStdOut(t, func() {
+			JSONPath("{.name}", zone)
+		})
+
+		assert.Equal(t, "testzone.com", output)
+	})
+
+	t.Run("WithJSONPathParseError_ReturnsError", func(t *testing.T) {
+		zone := safedns.Zone{Name: "testzone.com", Description: "testdescription"}
+
+		err := JSONPath("{.name", zone)
+
+		assert.NotNil(t, err)
+	})
+
+	t.Run("WithJSONPathExecuteError_ReturnsError", func(t *testing.T) {
+		zone := safedns.Zone{Name: "testzone.com", Description: "testdescription"}
+
+		err := JSONPath("{.invalid}", zone)
+
+		assert.NotNil(t, err)
+	})
+}
+
 func TestTable_ExpectedStdout(t *testing.T) {
 	t.Run("SingleRowDefaultFields", func(t *testing.T) {
 		var rows []*OrderedFields
