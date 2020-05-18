@@ -281,7 +281,6 @@ func ddosxDomainCDNRuleUpdate(service ddosx.DDoSXService, cmd *cobra.Command, ar
 	}
 
 	return output.CommandOutput(cmd, OutputDDoSXCDNRulesProvider(rules))
-	return nil
 }
 
 func ddosxDomainCDNRuleDeleteCmd(f factory.ClientFactory) *cobra.Command {

@@ -54,7 +54,7 @@ func Test_ddosxDomainPropertyList(t *testing.T) {
 
 		expectedParams := connection.APIRequestParameters{
 			Filtering: []connection.APIRequestFiltering{
-				connection.APIRequestFiltering{
+				{
 					Property: "name",
 					Operator: connection.EQOperator,
 					Value:    []string{"testproperty1"},
