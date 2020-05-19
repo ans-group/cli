@@ -14,6 +14,7 @@ func DRaaSRootCmd(f factory.ClientFactory) *cobra.Command {
 	// Child root commands
 	cmd.AddCommand(draasSolutionRootCmd(f))
 	cmd.AddCommand(draasIOPSTierRootCmd(f))
+	cmd.AddCommand(draasBillingTypeRootCmd(f))
 
 	return cmd
 }

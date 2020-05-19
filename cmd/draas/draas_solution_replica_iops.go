@@ -30,6 +30,9 @@ func draasSolutionReplicaIOPSUpdateCmd(f factory.ClientFactory) *cobra.Command {
 			if len(args) < 1 {
 				return errors.New("Missing solution")
 			}
+			if len(args) < 2 {
+				return errors.New("Missing replica")
+			}
 
 			return nil
 		},
