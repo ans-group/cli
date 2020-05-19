@@ -26,6 +26,8 @@ func draasSolutionRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.AddCommand(draasSolutionBackupResourceRootCmd(f))
 	cmd.AddCommand(draasSolutionBackupServiceRootCmd(f))
 	cmd.AddCommand(draasSolutionFailoverPlanRootCmd(f))
+	cmd.AddCommand(draasSolutionComputeResourceRootCmd(f))
+	cmd.AddCommand(draasSolutionHardwarePlanRootCmd(f))
 
 	return cmd
 }

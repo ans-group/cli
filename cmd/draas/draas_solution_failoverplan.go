@@ -8,6 +8,7 @@ import (
 	"github.com/ukfast/cli/internal/pkg/factory"
 	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
+	"github.com/ukfast/sdk-go/pkg/connection"
 	"github.com/ukfast/sdk-go/pkg/service/draas"
 )
 
@@ -108,7 +109,7 @@ func draasSolutionFailoverPlanShow(service draas.DRaaSService, cmd *cobra.Comman
 }
 
 func draasSolutionFailoverPlanStartCmd(f factory.ClientFactory) *cobra.Command {
-	return &cobra.Command{
+	cmd := &cobra.Command{
 		Use:     "start <solution: id> <failoverplan: id>...",
 		Short:   "Starts solution failover plan",
 		Long:    "This command starts one or more solution failover plans",
@@ -133,11 +134,22 @@ func draasSolutionFailoverPlanStartCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 	}
+
+	cmd.Flags().String("date", "", "Indicates failover plan should be started at specified date/time")
+
+	return cmd
 }
 
 func draasSolutionFailoverPlanStart(service draas.DRaaSService, cmd *cobra.Command, args []string) {
+	req := draas.StartFailoverPlanRequest{}
+
+	if cmd.Flags().Changed("date") {
+		date, _ := cmd.Flags().GetString("date")
+		req.StartDate = connection.DateTime(date)
+	}
+
 	for _, arg := range args[1:] {
-		err := service.StartSolutionFailoverPlan(args[0], arg)
+		err := service.StartSolutionFailoverPlan(args[0], arg, req)
 		if err != nil {
 			output.OutputWithErrorLevelf("Error starting solution failover plan [%s]: %s", arg, err.Error())
 			continue

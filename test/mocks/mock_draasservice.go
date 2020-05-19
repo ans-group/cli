@@ -378,17 +378,17 @@ func (mr *MockDRaaSServiceMockRecorder) ResetSolutionBackupServiceCredentials(ar
 }
 
 // StartSolutionFailoverPlan mocks base method
-func (m *MockDRaaSService) StartSolutionFailoverPlan(arg0, arg1 string) error {
+func (m *MockDRaaSService) StartSolutionFailoverPlan(arg0, arg1 string, arg2 draas.StartFailoverPlanRequest) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "StartSolutionFailoverPlan", arg0, arg1)
+	ret := m.ctrl.Call(m, "StartSolutionFailoverPlan", arg0, arg1, arg2)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // StartSolutionFailoverPlan indicates an expected call of StartSolutionFailoverPlan
-func (mr *MockDRaaSServiceMockRecorder) StartSolutionFailoverPlan(arg0, arg1 interface{}) *gomock.Call {
+func (mr *MockDRaaSServiceMockRecorder) StartSolutionFailoverPlan(arg0, arg1, arg2 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "StartSolutionFailoverPlan", reflect.TypeOf((*MockDRaaSService)(nil).StartSolutionFailoverPlan), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "StartSolutionFailoverPlan", reflect.TypeOf((*MockDRaaSService)(nil).StartSolutionFailoverPlan), arg0, arg1, arg2)
 }
 
 // StopSolutionFailoverPlan mocks base method
@@ -403,4 +403,18 @@ func (m *MockDRaaSService) StopSolutionFailoverPlan(arg0, arg1 string) error {
 func (mr *MockDRaaSServiceMockRecorder) StopSolutionFailoverPlan(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "StopSolutionFailoverPlan", reflect.TypeOf((*MockDRaaSService)(nil).StopSolutionFailoverPlan), arg0, arg1)
+}
+
+// UpdateSolutionReplicaIOPS mocks base method
+func (m *MockDRaaSService) UpdateSolutionReplicaIOPS(arg0, arg1 string, arg2 draas.UpdateReplicaIOPSRequest) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateSolutionReplicaIOPS", arg0, arg1, arg2)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateSolutionReplicaIOPS indicates an expected call of UpdateSolutionReplicaIOPS
+func (mr *MockDRaaSServiceMockRecorder) UpdateSolutionReplicaIOPS(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateSolutionReplicaIOPS", reflect.TypeOf((*MockDRaaSService)(nil).UpdateSolutionReplicaIOPS), arg0, arg1, arg2)
 }

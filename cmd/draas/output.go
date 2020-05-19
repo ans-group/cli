@@ -128,9 +128,9 @@ func OutputDRaaSComputeResourcesProvider(resources []draas.ComputeResource) outp
 				fields.Set("memory_limit", output.NewFieldValue(fmt.Sprintf("%f", resource.Memory.Limit), true))
 				fields.Set("cpu_used", output.NewFieldValue(strconv.Itoa(resource.CPU.Used), true))
 				for i, storage := range resource.Storage {
-					fields.Set(fmt.Sprintf("storage_%d_name", i), output.NewFieldValue(storage.Name, true))
-					fields.Set(fmt.Sprintf("storage_%d_used", i), output.NewFieldValue(strconv.Itoa(storage.Used), true))
-					fields.Set(fmt.Sprintf("storage_%d_limit", i), output.NewFieldValue(strconv.Itoa(storage.Limit), true))
+					fields.Set(fmt.Sprintf("storage_#%d_name", i), output.NewFieldValue(storage.Name, true))
+					fields.Set(fmt.Sprintf("storage_#%d_used", i), output.NewFieldValue(strconv.Itoa(storage.Used), true))
+					fields.Set(fmt.Sprintf("storage_#%d_limit", i), output.NewFieldValue(strconv.Itoa(storage.Limit), true))
 				}
 
 				data = append(data, fields)
@@ -155,10 +155,12 @@ func OutputDRaaSHardwarePlansProvider(plans []draas.HardwarePlan) output.OutputH
 				fields.Set("limits_memory", output.NewFieldValue(strconv.Itoa(plan.Limits.Memory), false))
 				fields.Set("networks_public", output.NewFieldValue(strconv.Itoa(plan.Networks.Public), false))
 				fields.Set("networks_private", output.NewFieldValue(strconv.Itoa(plan.Networks.Private), false))
-				fields.Set("storage_id", output.NewFieldValue(plan.Storage.ID, false))
-				fields.Set("storage_name", output.NewFieldValue(plan.Storage.Name, false))
-				fields.Set("storage_type", output.NewFieldValue(plan.Storage.Type, false))
-				fields.Set("storage_quota", output.NewFieldValue(strconv.Itoa(plan.Storage.Quota), false))
+				for i, storage := range plan.Storage {
+					fields.Set(fmt.Sprintf("storage_#%d_id", i), output.NewFieldValue(storage.ID, true))
+					fields.Set(fmt.Sprintf("storage_#%d_name", i), output.NewFieldValue(storage.Name, true))
+					fields.Set(fmt.Sprintf("storage_#%d_type", i), output.NewFieldValue(storage.Type, false))
+					fields.Set(fmt.Sprintf("storage_#%d_quota", i), output.NewFieldValue(strconv.Itoa(storage.Quota), false))
+				}
 
 				data = append(data, fields)
 			}
@@ -180,7 +182,7 @@ func OutputDRaaSReplicasProvider(replicas []draas.Replica) output.OutputHandlerP
 				fields.Set("platform", output.NewFieldValue(replica.Platform, true))
 				fields.Set("cpu", output.NewFieldValue(strconv.Itoa(replica.CPU), false))
 				fields.Set("ram", output.NewFieldValue(strconv.Itoa(replica.RAM), false))
-				fields.Set("hdd", output.NewFieldValue(strconv.Itoa(replica.HDD), false))
+				fields.Set("disk", output.NewFieldValue(strconv.Itoa(replica.Disk), false))
 				fields.Set("iops", output.NewFieldValue(strconv.Itoa(replica.IOPS), false))
 				fields.Set("power", output.NewFieldValue(strconv.FormatBool(replica.Power), true))
 

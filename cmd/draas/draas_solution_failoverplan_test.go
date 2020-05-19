@@ -153,18 +153,20 @@ func Test_draasSolutionFailoverPlanStart(t *testing.T) {
 
 		service := mocks.NewMockDRaaSService(mockCtrl)
 
-		service.EXPECT().StartSolutionFailoverPlan("00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000001").Return(nil)
+		req := draas.StartFailoverPlanRequest{}
+
+		service.EXPECT().StartSolutionFailoverPlan("00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000001", req).Return(nil)
 
 		draasSolutionFailoverPlanStart(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000001"})
 	})
 
-	t.Run("StartSolutionFailoverPlan_OutputsError", func(t *testing.T) {
+	t.Run("StartSolutionFailoverPlanError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockDRaaSService(mockCtrl)
 
-		service.EXPECT().StartSolutionFailoverPlan("00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000001").Return(errors.New("test error"))
+		service.EXPECT().StartSolutionFailoverPlan("00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000001", gomock.Any()).Return(errors.New("test error"))
 
 		test_output.AssertErrorOutput(t, "Error starting solution failover plan [00000000-0000-0000-0000-000000000001]: test error\n", func() {
 			draasSolutionFailoverPlanStart(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000001"})
