@@ -9,6 +9,7 @@ import (
 	"github.com/spf13/viper"
 	accountcmd "github.com/ukfast/cli/cmd/account"
 	ddosxcmd "github.com/ukfast/cli/cmd/ddosx"
+	draascmd "github.com/ukfast/cli/cmd/draas"
 	ecloudcmd "github.com/ukfast/cli/cmd/ecloud"
 	loadtestcmd "github.com/ukfast/cli/cmd/loadtest"
 	psscmd "github.com/ukfast/cli/cmd/pss"
@@ -70,6 +71,7 @@ func Execute(build build.BuildInfo) {
 	rootCmd.AddCommand(CompletionRootCmd())
 	rootCmd.AddCommand(accountcmd.AccountRootCmd(clientFactory))
 	rootCmd.AddCommand(ddosxcmd.DDoSXRootCmd(clientFactory, fs))
+	rootCmd.AddCommand(draascmd.DRaaSRootCmd(clientFactory))
 	rootCmd.AddCommand(ecloudcmd.ECloudRootCmd(clientFactory))
 	rootCmd.AddCommand(loadtestcmd.LoadTestRootCmd(clientFactory))
 	rootCmd.AddCommand(psscmd.PSSRootCmd(clientFactory, fs))

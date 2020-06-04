@@ -1,5 +1,7 @@
 module github.com/ukfast/cli
 
+go 1.13
+
 require (
 	github.com/blang/semver v3.5.1+incompatible
 	github.com/golang/mock v1.2.0
@@ -16,10 +18,10 @@ require (
 	github.com/spf13/cobra v0.0.5
 	github.com/spf13/viper v1.3.2
 	github.com/stretchr/testify v1.3.0
-	github.com/ukfast/sdk-go v1.3.8
+	github.com/ukfast/sdk-go v1.3.13
 	golang.org/x/sys v0.0.0-20190507160741-ecd444e8653b // indirect
 	gopkg.in/go-playground/assert.v1 v1.2.1
 	k8s.io/client-go v11.0.0+incompatible
 )
 
-go 1.13
+// replace github.com/ukfast/sdk-go => ../sdk-go
