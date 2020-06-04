@@ -23,9 +23,13 @@ import (
 )
 
 var flagConfig string
+
+// flagFormat is deprecated
 var flagFormat string
+var flagOutput string
+
+// flagOutputTemplate is deprecated
 var flagOutputTemplate string
-var flagJSONPath string
 var flagSort string
 var flagProperty []string
 var flagFilter []string
@@ -50,9 +54,11 @@ func Execute(build build.BuildInfo) {
 
 	// Global flags
 	rootCmd.PersistentFlags().StringVar(&flagConfig, "config", "", "config file (default is $HOME/.ukfast.yml)")
-	rootCmd.PersistentFlags().StringVarP(&flagFormat, "format", "f", "", "output format {table, json, jsonpath, template, value, csv, list}")
+	rootCmd.PersistentFlags().StringVarP(&flagOutput, "output", "o", "", "output type {table, json, jsonpath, template, value, csv, list}, with optional arguments provided as {outputname,outputargument}")
+	rootCmd.PersistentFlags().StringVarP(&flagFormat, "format", "f", "", "")
+	rootCmd.PersistentFlags().MarkDeprecated("format", "please use --output/-o instead")
 	rootCmd.PersistentFlags().StringVar(&flagOutputTemplate, "outputtemplate", "", "output Go template (used with 'template' format), e.g. 'Name: {{ .Name }}'")
-	rootCmd.PersistentFlags().StringVar(&flagJSONPath, "jsonpath", "", "JSON path query (used with 'jsonpath' format)")
+	rootCmd.PersistentFlags().MarkDeprecated("outputtemplate", "please use --output/-o flag args instead (see documentation)")
 	rootCmd.PersistentFlags().StringVar(&flagSort, "sort", "", "output sorting, e.g. 'name', 'name:asc', 'name:desc'")
 	rootCmd.PersistentFlags().StringSliceVar(&flagProperty, "property", []string{}, "property to output (used with several formats), can be repeated")
 	rootCmd.PersistentFlags().StringArrayVar(&flagFilter, "filter", []string{}, "filter for list commands, can be repeated, e.g. 'property=somevalue', 'property:gt=3', 'property=valu*'")

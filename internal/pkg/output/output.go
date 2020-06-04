@@ -130,9 +130,9 @@ func JSON(v interface{}) error {
 }
 
 // JSONPath marshals and outputs value v to stdout
-func JSONPath(jsonPathTemplate string, v interface{}) error {
+func JSONPath(query string, v interface{}) error {
 	j := jsonpath.New("clioutput")
-	err := j.Parse(jsonPathTemplate)
+	err := j.Parse(query)
 	if err != nil {
 		return fmt.Errorf("Failed to parse jsonpath template: %w", err)
 	}
@@ -371,17 +371,23 @@ func NewFieldValue(value string, def bool) FieldValue {
 }
 
 func CommandOutput(cmd *cobra.Command, out OutputHandlerProvider) error {
-	format, _ := cmd.Flags().GetString("format")
-	handler := NewOutputHandler(out, format)
+	// Format flag deprecated, however we'll check to see whether populated first and use it
+	var flag string
+	if cmd.Flags().Changed("format") {
+		flag, _ = cmd.Flags().GetString("format")
+	} else {
+		flag, _ = cmd.Flags().GetString("output")
+	}
 
-	properties, _ := cmd.Flags().GetStringSlice("property")
-	handler.WithOption("Properties", properties)
+	name, arg := ParseOutputFlag(flag)
 
-	template, _ := cmd.Flags().GetString("outputtemplate")
-	handler.WithOption("Template", template)
+	// outputtemplate flag deprecated, however we'll check to see whether populated first and use it
+	if name == "template" && cmd.Flags().Changed("outputtemplate") {
+		arg, _ = cmd.Flags().GetString("outputtemplate")
+	}
 
-	jsonPath, _ := cmd.Flags().GetString("jsonpath")
-	handler.WithOption("JSONPath", jsonPath)
+	handler := NewOutputHandler(out, name, arg)
+	handler.Properties, _ = cmd.Flags().GetStringSlice("property")
 
 	return handler.Handle()
 }

@@ -26,7 +26,7 @@ var testOutputHandlerProvider = NewGenericOutputHandlerProvider(
 
 func TestOutputHandler_Handle(t *testing.T) {
 	t.Run("JSONFormat_ExpectedOutput", func(t *testing.T) {
-		handler := NewOutputHandler(testOutputHandlerProvider, "json")
+		handler := NewOutputHandler(testOutputHandlerProvider, "json", "")
 
 		output := test.CatchStdOut(t, func() {
 			handler.Handle()
@@ -36,8 +36,7 @@ func TestOutputHandler_Handle(t *testing.T) {
 	})
 
 	t.Run("TemplateFormat_ExpectedOutput", func(t *testing.T) {
-		handler := NewOutputHandler(testOutputHandlerProvider, "template")
-		handler.WithOption("Template", "{{ .TestProperty1 }}")
+		handler := NewOutputHandler(testOutputHandlerProvider, "template", "{{ .TestProperty1 }}")
 
 		output := test.CatchStdOut(t, func() {
 			handler.Handle()
@@ -47,7 +46,7 @@ func TestOutputHandler_Handle(t *testing.T) {
 	})
 
 	t.Run("ValueFormat_ExpectedOutput", func(t *testing.T) {
-		handler := NewOutputHandler(testOutputHandlerProvider, "value")
+		handler := NewOutputHandler(testOutputHandlerProvider, "value", "")
 
 		output := test.CatchStdOut(t, func() {
 			handler.Handle()
@@ -63,7 +62,7 @@ func TestOutputHandler_Handle(t *testing.T) {
 			}),
 		)
 
-		handler := NewOutputHandler(prov, "value")
+		handler := NewOutputHandler(prov, "value", "")
 
 		err := handler.Handle()
 
@@ -72,7 +71,7 @@ func TestOutputHandler_Handle(t *testing.T) {
 	})
 
 	t.Run("CSVFormat_ExpectedOutput", func(t *testing.T) {
-		handler := NewOutputHandler(testOutputHandlerProvider, "csv")
+		handler := NewOutputHandler(testOutputHandlerProvider, "csv", "")
 
 		output := test.CatchStdOut(t, func() {
 			handler.Handle()
@@ -88,7 +87,7 @@ func TestOutputHandler_Handle(t *testing.T) {
 			}),
 		)
 
-		handler := NewOutputHandler(prov, "csv")
+		handler := NewOutputHandler(prov, "csv", "")
 
 		err := handler.Handle()
 
@@ -96,8 +95,43 @@ func TestOutputHandler_Handle(t *testing.T) {
 		assert.Equal(t, "test error 1", err.Error())
 	})
 
+	t.Run("ListFormat_ExpectedOutput", func(t *testing.T) {
+		handler := NewOutputHandler(testOutputHandlerProvider, "list", "")
+
+		output := test.CatchStdOut(t, func() {
+			handler.Handle()
+		})
+
+		assert.Equal(t, "test_property_1 : fields1 test value 1\ntest_property_2 : fields1 test value 2\n\ntest_property_1 : fields2 test value 1\ntest_property_2 : fields2 test value 2\n", output)
+	})
+
+	t.Run("ListFormat_GetFieldDataError_ReturnsError", func(t *testing.T) {
+		prov := NewGenericOutputHandlerProvider(
+			WithFieldDataFunc(func() ([]*OrderedFields, error) {
+				return nil, errors.New("test error 1")
+			}),
+		)
+
+		handler := NewOutputHandler(prov, "list", "")
+
+		err := handler.Handle()
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "test error 1", err.Error())
+	})
+
+	t.Run("JSONPathFormat_ExpectedOutput", func(t *testing.T) {
+		handler := NewOutputHandler(testOutputHandlerProvider, "jsonpath", "{}")
+
+		output := test.CatchStdOut(t, func() {
+			handler.Handle()
+		})
+
+		assert.Equal(t, "{testvalue1 testvalue2}", output)
+	})
+
 	t.Run("TableFormat_ExpectedOutput", func(t *testing.T) {
-		handler := NewOutputHandler(testOutputHandlerProvider, "table")
+		handler := NewOutputHandler(testOutputHandlerProvider, "table", "")
 
 		output := test.CatchStdOut(t, func() {
 			handler.Handle()
@@ -113,7 +147,7 @@ func TestOutputHandler_Handle(t *testing.T) {
 			}),
 		)
 
-		handler := NewOutputHandler(prov, "table")
+		handler := NewOutputHandler(prov, "table", "")
 
 		err := handler.Handle()
 
@@ -122,7 +156,7 @@ func TestOutputHandler_Handle(t *testing.T) {
 	})
 
 	t.Run("EmptyFormat_ExpectedTableOutput", func(t *testing.T) {
-		handler := NewOutputHandler(testOutputHandlerProvider, "")
+		handler := NewOutputHandler(testOutputHandlerProvider, "", "")
 
 		output := test.CatchStdOut(t, func() {
 			handler.Handle()
@@ -132,7 +166,7 @@ func TestOutputHandler_Handle(t *testing.T) {
 	})
 
 	t.Run("InvalidFormat_ExpectedTableOutputWithStdErrError", func(t *testing.T) {
-		handler := NewOutputHandler(testOutputHandlerProvider, "invalidformat")
+		handler := NewOutputHandler(testOutputHandlerProvider, "invalidformat", "")
 
 		stdOut, stdErr := test.CatchStdOutStdErr(t, func() {
 			handler.Handle()
@@ -143,7 +177,7 @@ func TestOutputHandler_Handle(t *testing.T) {
 	})
 
 	t.Run("UnsupportedFormat_NoUnsupportedHandler_ExpectedError", func(t *testing.T) {
-		handler := NewOutputHandler(NewGenericOutputHandlerProvider(WithSupportedFormats([]string{"json"})), "table")
+		handler := NewOutputHandler(NewGenericOutputHandlerProvider(WithSupportedFormats([]string{"json"})), "table", "")
 
 		err := handler.Handle()
 
@@ -151,7 +185,7 @@ func TestOutputHandler_Handle(t *testing.T) {
 	})
 
 	t.Run("UnsupportedFormat_NoUnsupportedHandler_ExpectedError", func(t *testing.T) {
-		handler := NewOutputHandler(NewGenericOutputHandlerProvider(WithSupportedFormats([]string{"json"})), "table")
+		handler := NewOutputHandler(NewGenericOutputHandlerProvider(WithSupportedFormats([]string{"json"})), "table", "")
 
 		err := handler.Handle()
 
@@ -161,7 +195,7 @@ func TestOutputHandler_Handle(t *testing.T) {
 	t.Run("UnsupportedFormat_WithUnsupportedHandler_CallsHandler", func(t *testing.T) {
 		called := false
 
-		handler := NewOutputHandler(NewGenericOutputHandlerProvider(WithSupportedFormats([]string{"json"})), "table")
+		handler := NewOutputHandler(NewGenericOutputHandlerProvider(WithSupportedFormats([]string{"json"})), "table", "")
 		handler.UnsupportedFormatHandler = func() error {
 			called = true
 			return nil
@@ -173,7 +207,7 @@ func TestOutputHandler_Handle(t *testing.T) {
 	})
 
 	t.Run("UnsupportedFormat_Error_ReturnsError", func(t *testing.T) {
-		handler := NewOutputHandler(NewGenericOutputHandlerProvider(WithSupportedFormats([]string{"json"})), "table")
+		handler := NewOutputHandler(NewGenericOutputHandlerProvider(WithSupportedFormats([]string{"json"})), "table", "")
 		handler.UnsupportedFormatHandler = func() error {
 			return errors.New("test error 1")
 		}
@@ -187,7 +221,7 @@ func TestOutputHandler_Handle(t *testing.T) {
 		prov := testOutputHandlerProvider
 		prov.supportedFormats = []string{"value"}
 
-		handler := NewOutputHandler(prov, "value")
+		handler := NewOutputHandler(prov, "value", "")
 
 		output := test.CatchStdOut(t, func() {
 			handler.Handle()

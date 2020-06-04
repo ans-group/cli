@@ -70,12 +70,12 @@ defined above, however are uppercased and prefixed with `UKF`, such as `UKF_API_
 
 ## Output Formatting
 
-The output of all commands is determined by a single global flag `--format` / `-f`.
-In additional to format, there are several format modifier flags which are explained below.
+The output of all commands is determined by a single global flag `--output` / `-o`.
+In addition to output, there are several output modifier flags which are explained below.
 
 ### Table (Default)
 
-The default output format for the CLI is `Table`, which will be used when the `--format` flag
+The default output format for the CLI is `Table`, which will be used when the value of the `--output` flag
 is `table` or unspecified:
 
 ```
@@ -97,7 +97,7 @@ The [Property Modifier](#property) is available for this format
 Results can be output as a list using the `list` format:
 
 ```
-> ukfast safedns zone record show example.co.uk 3337874 --format list
+> ukfast safedns zone record show example.co.uk 3337874 --output list
 id         : 3337874
 name       : test.example.co.uk
 type       : A
@@ -114,7 +114,7 @@ The [Property Modifier](#property) is available for this format
 Results can be output in JSON using the `json` format:
 
 ```
-> ukfast safedns zone record show example.co.uk 3337874 --format json
+> ukfast safedns zone record show example.co.uk 3337874 --output json
 [{"id":3337874,"template_id":0,"name":"test.example.co.uk","type":"A","content":"1.2.3.4","updated_at":"2019-03-19T16:33:55+00:00","ttl":0,"priority":0}]
 ```
 
@@ -123,12 +123,12 @@ Results can be output in JSON using the `json` format:
 Results can be output with a value or set of values using the `value` format:
 
 ```
-> ukfast safedns zone record show example.co.uk 3337874 --format value
+> ukfast safedns zone record show example.co.uk 3337874 --output value
 3337874 test.example.co.uk A 1.2.3.4 2019-03-19T16:33:55+00:00 0 0
 ```
 
 ```
-> ukfast safedns zone record show example.co.uk 3337874 --format value --property id
+> ukfast safedns zone record show example.co.uk 3337874 --output value --property id
 3337874
 ```
 
@@ -139,7 +139,7 @@ The [Property Modifier](#property) is available for this format
 Results can be output as CSV using the `csv` format:
 
 ```
-> ukfast safedns zone record show example.co.uk 3337874 --format csv
+> ukfast safedns zone record show example.co.uk 3337874 --output csv
 id,name,type,content,updated_at,priority,ttl
 3337874,test.example.co.uk,A,1.2.3.4,2019-03-19T16:33:55+00:00,0,0
 ```
@@ -149,14 +149,24 @@ The [Property Modifier](#property) is available for this format
 ### Template
 
 Results can be output using a supplied Golang template string using the `template` format
-in conjunction with the `--outputtemplate` modifier flag:
+in conjunction with output arguments, e.g.
 
 ```
-> ukfast safedns zone record list example.co.uk --format template --outputtemplate "Record name: {{ .Name }}, Type: {{ .Type }}"
+> ukfast safedns zone record list example.co.uk --output template="Record name: {{ .Name }}, Type: {{ .Type }}"
 Record name: ns0.ukfast.net, Type: NS
 Record name: ns1.ukfast.net, Type: NS
 Record name: example.co.uk, Type: SOA
 Record name: test.example.co.uk, Type: A
+```
+
+### JSON path
+
+Results can be output via JSON Path using the `jsonpath` format
+in conjunction with output arguments, e.g.
+
+```
+> ukfast safedns zone record list example.co.uk --output jsonpath="{[*].name}"
+example.co.uk example.co.uk example.co.uk test.example.co.uk
 ```
 
 
@@ -169,14 +179,14 @@ Some output formats support the `--property` output modifier.
 Required properties can be specified with the `--property` format modifer flag:
 
 ```
-> ukfast safedns zone record show example.co.uk 3337874 --format value --property name
+> ukfast safedns zone record show example.co.uk 3337874 --output value --property name
 test.example.co.uk
 ```
 
 The property modifier accepts a comma-delimited list of property names, and is also repeatable:
 
 ```
-> ukfast safedns zone record show example.co.uk 3337874 --format value --property id,name --property content
+> ukfast safedns zone record show example.co.uk 3337874 --output value --property id,name --property content
 3337874 test.example.co.uk 1.2.3.4
 ```
 
