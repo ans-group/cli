@@ -54,7 +54,7 @@ func Execute(build build.BuildInfo) {
 
 	// Global flags
 	rootCmd.PersistentFlags().StringVar(&flagConfig, "config", "", "config file (default is $HOME/.ukfast.yml)")
-	rootCmd.PersistentFlags().StringVarP(&flagOutput, "output", "o", "", "output type {table, json, jsonpath, template, value, csv, list}, with optional arguments provided as {outputname,outputargument}")
+	rootCmd.PersistentFlags().StringVarP(&flagOutput, "output", "o", "", "output type {table, json, jsonpath, template, value, csv, list}, with optional argument provided as 'outputname=outputargument'")
 	rootCmd.PersistentFlags().StringVarP(&flagFormat, "format", "f", "", "")
 	rootCmd.PersistentFlags().MarkDeprecated("format", "please use --output/-o instead")
 	rootCmd.PersistentFlags().StringVar(&flagOutputTemplate, "outputtemplate", "", "output Go template (used with 'template' format), e.g. 'Name: {{ .Name }}'")
