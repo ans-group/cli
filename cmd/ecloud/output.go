@@ -34,6 +34,7 @@ func OutputECloudVirtualMachinesProvider(vms []ecloud.VirtualMachine) output.Out
 				fields.Set("tools_status", output.NewFieldValue(vm.ToolsStatus, false))
 				fields.Set("encrypted", output.NewFieldValue(strconv.FormatBool(vm.Encrypted), false))
 				fields.Set("role", output.NewFieldValue(vm.Role, false))
+				fields.Set("gpu_profile", output.NewFieldValue(vm.GPUProfile, false))
 
 				data = append(data, fields)
 			}
@@ -93,6 +94,9 @@ func OutputECloudSolutionsProvider(solutions []ecloud.Solution) output.OutputHan
 				fields.Set("id", output.NewFieldValue(strconv.Itoa(solution.ID), true))
 				fields.Set("name", output.NewFieldValue(solution.Name, true))
 				fields.Set("environment", output.NewFieldValue(solution.Environment.String(), true))
+				fields.Set("pod_id", output.NewFieldValue(strconv.Itoa(solution.PodID), true))
+				fields.Set("encryption_enabled", output.NewFieldValue(strconv.FormatBool(solution.EncryptionEnabled), false))
+				fields.Set("encryption_default", output.NewFieldValue(strconv.FormatBool(solution.EncryptionDefault), false))
 
 				data = append(data, fields)
 			}
