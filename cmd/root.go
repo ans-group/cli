@@ -22,18 +22,6 @@ import (
 	"github.com/ukfast/cli/internal/pkg/output"
 )
 
-var flagConfig string
-
-// flagFormat is deprecated
-var flagFormat string
-var flagOutput string
-
-// flagOutputTemplate is deprecated
-var flagOutputTemplate string
-var flagSort string
-var flagProperty []string
-var flagFilter []string
-var fs afero.Fs
 var appVersion string
 var defaultConfigFile string
 
@@ -53,18 +41,18 @@ func Execute(build build.BuildInfo) {
 	rootCmd.SilenceUsage = true
 
 	// Global flags
-	rootCmd.PersistentFlags().StringVar(&flagConfig, "config", "", "config file (default is $HOME/.ukfast.yml)")
-	rootCmd.PersistentFlags().StringVarP(&flagOutput, "output", "o", "", "output type {table, json, jsonpath, template, value, csv, list}, with optional arguments provided as {outputname,outputargument}")
-	rootCmd.PersistentFlags().StringVarP(&flagFormat, "format", "f", "", "")
+	rootCmd.PersistentFlags().String("config", "", "config file (default is $HOME/.ukfast.yml)")
+	rootCmd.PersistentFlags().StringP("output", "o", "", "output type {table, json, jsonpath, template, value, csv, list}, with optional arguments provided as {outputname,outputargument}")
+	rootCmd.PersistentFlags().StringP("format", "f", "", "")
 	rootCmd.PersistentFlags().MarkDeprecated("format", "please use --output/-o instead")
-	rootCmd.PersistentFlags().StringVar(&flagOutputTemplate, "outputtemplate", "", "output Go template (used with 'template' format), e.g. 'Name: {{ .Name }}'")
+	rootCmd.PersistentFlags().String("outputtemplate", "", "output Go template (used with 'template' format), e.g. 'Name: {{ .Name }}'")
 	rootCmd.PersistentFlags().MarkDeprecated("outputtemplate", "please use --output/-o flag args instead (see documentation)")
-	rootCmd.PersistentFlags().StringVar(&flagSort, "sort", "", "output sorting, e.g. 'name', 'name:asc', 'name:desc'")
-	rootCmd.PersistentFlags().StringSliceVar(&flagProperty, "property", []string{}, "property to output (used with several formats), can be repeated")
-	rootCmd.PersistentFlags().StringArrayVar(&flagFilter, "filter", []string{}, "filter for list commands, can be repeated, e.g. 'property=somevalue', 'property:gt=3', 'property=valu*'")
+	rootCmd.PersistentFlags().String("sort", "", "output sorting, e.g. 'name', 'name:asc', 'name:desc'")
+	rootCmd.PersistentFlags().StringSlice("property", []string{}, "property to output (used with several formats), can be repeated")
+	rootCmd.PersistentFlags().StringArray("filter", []string{}, "filter for list commands, can be repeated, e.g. 'property=somevalue', 'property:gt=3', 'property=valu*'")
 
 	cobra.OnInitialize(initConfig)
-	fs = afero.NewOsFs()
+	fs := afero.NewOsFs()
 	clientFactory := factory.NewUKFastClientFactory(
 		factory.WithUserAgent("ukfast-cli"),
 	)
@@ -95,9 +83,15 @@ func Execute(build build.BuildInfo) {
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
-	if flagConfig != "" {
+	viper.SetEnvPrefix("ukf")
+	viper.AutomaticEnv() // read in environment variables that match
+
+	var configFilePath string
+	configFile := rootCmd.Flags().Changed("config")
+	if configFile {
+		configFilePath, _ = rootCmd.Flags().GetString("config")
 		// Use config file from the flag.
-		viper.SetConfigFile(flagConfig)
+		viper.SetConfigFile(configFilePath)
 	} else {
 		// Find home directory.
 		home, err := homedir.Dir()
@@ -111,13 +105,9 @@ func initConfig() {
 		defaultConfigFile = fmt.Sprintf("%s/.ukfast.yml", home)
 	}
 
-	viper.SetEnvPrefix("ukf")
-
-	viper.AutomaticEnv() // read in environment variables that match
-
 	// If a config file is found, read it in.
 	err := viper.ReadInConfig()
-	if flagConfig != "" && err != nil {
-		output.Fatalf("Failed to read config from file '%s': %s", flagConfig, err.Error())
+	if configFile && err != nil {
+		output.Fatalf("Failed to read config from file '%s': %s", configFilePath, err.Error())
 	}
 }
