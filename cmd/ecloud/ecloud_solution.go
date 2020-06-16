@@ -146,6 +146,7 @@ func ecloudSolutionUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("name", "", "Name of solution")
+	cmd.Flags().Bool("encryption-default", false, "Specifies solution VMs should be encrypted by default")
 
 	return cmd
 }
@@ -161,6 +162,10 @@ func ecloudSolutionUpdate(service ecloud.ECloudService, cmd *cobra.Command, args
 	if cmd.Flags().Changed("name") {
 		solutionName, _ := cmd.Flags().GetString("name")
 		patchRequest.Name = ptr.String(solutionName)
+	}
+	if cmd.Flags().Changed("encryption-default") {
+		encryptionDefault, _ := cmd.Flags().GetBool("encryption-default")
+		patchRequest.EncryptionDefault = ptr.Bool(encryptionDefault)
 	}
 
 	id, err := service.PatchSolution(solutionID, patchRequest)
