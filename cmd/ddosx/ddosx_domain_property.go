@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
 	"github.com/ukfast/cli/internal/pkg/factory"
 	"github.com/ukfast/cli/internal/pkg/helper"
@@ -11,7 +12,7 @@ import (
 	"github.com/ukfast/sdk-go/pkg/service/ddosx"
 )
 
-func ddosxDomainPropertyRootCmd(f factory.ClientFactory) *cobra.Command {
+func ddosxDomainPropertyRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "property",
 		Short: "sub-commands relating to domain properties",
@@ -20,7 +21,7 @@ func ddosxDomainPropertyRootCmd(f factory.ClientFactory) *cobra.Command {
 	// Child commands
 	cmd.AddCommand(ddosxDomainPropertyListCmd(f))
 	cmd.AddCommand(ddosxDomainPropertyShowCmd(f))
-	cmd.AddCommand(ddosxDomainPropertyUpdateCmd(f))
+	cmd.AddCommand(ddosxDomainPropertyUpdateCmd(f, fs))
 
 	return cmd
 }
@@ -116,7 +117,7 @@ func ddosxDomainPropertyShow(service ddosx.DDoSXService, cmd *cobra.Command, arg
 	return output.CommandOutput(cmd, OutputDDoSXDomainPropertiesProvider(properties))
 }
 
-func ddosxDomainPropertyUpdateCmd(f factory.ClientFactory) *cobra.Command {
+func ddosxDomainPropertyUpdateCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "update <domain: name>...",
 		Short:   "Updates domain properties",
@@ -138,16 +139,17 @@ func ddosxDomainPropertyUpdateCmd(f factory.ClientFactory) *cobra.Command {
 				return err
 			}
 
-			return ddosxDomainPropertyUpdate(c.DDoSXService(), cmd, args)
+			return ddosxDomainPropertyUpdate(c.DDoSXService(), cmd, fs, args)
 		},
 	}
 
 	cmd.Flags().String("value", "", "Property value")
+	cmd.Flags().String("value-file", "", "Property value (from file")
 
 	return cmd
 }
 
-func ddosxDomainPropertyUpdate(service ddosx.DDoSXService, cmd *cobra.Command, args []string) error {
+func ddosxDomainPropertyUpdate(service ddosx.DDoSXService, cmd *cobra.Command, fs afero.Fs, args []string) error {
 	var properties []ddosx.DomainProperty
 
 	updateRequest := ddosx.PatchDomainPropertyRequest{}
@@ -155,6 +157,12 @@ func ddosxDomainPropertyUpdate(service ddosx.DDoSXService, cmd *cobra.Command, a
 	if cmd.Flags().Changed("value") {
 		value, _ := cmd.Flags().GetString("value")
 		updateRequest.Value = helper.InferTypeFromStringFlag(value)
+	} else if cmd.Flags().Changed("value-file") {
+		var err error
+		updateRequest.Value, err = helper.GetContentsFromFilePathFlag(cmd, fs, "value-file")
+		if err != nil {
+			return err
+		}
 	}
 
 	for _, arg := range args[1:] {

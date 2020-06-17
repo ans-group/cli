@@ -29,7 +29,7 @@ func ddosxDomainRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 	cmd.AddCommand(ddosxDomainRecordRootCmd(f))
 	cmd.AddCommand(ddosxDomainWAFRootCmd(f))
 	cmd.AddCommand(ddosxDomainACLRootCmd(f))
-	cmd.AddCommand(ddosxDomainPropertyRootCmd(f))
+	cmd.AddCommand(ddosxDomainPropertyRootCmd(f, fs))
 	cmd.AddCommand(ddosxDomainVerificationRootCmd(f, fs))
 	cmd.AddCommand(ddosxDomainCDNRootCmd(f))
 	cmd.AddCommand(ddosxDomainHSTSRootCmd(f))
