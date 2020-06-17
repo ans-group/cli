@@ -2,9 +2,11 @@ package helper
 
 import (
 	"errors"
+	"io/ioutil"
 	"strconv"
 	"strings"
 
+	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/ukfast/cli/internal/pkg/clierrors"
@@ -160,4 +162,19 @@ func GetAPIRequestParametersFromFlags(cmd *cobra.Command) (connection.APIRequest
 			PerPage: viper.GetInt("api_pagination_perpage"),
 		},
 	}, nil
+}
+
+func GetContentsFromFilePathFlag(cmd *cobra.Command, fs afero.Fs, filePathFlag string) (string, error) {
+	filePath, _ := cmd.Flags().GetString(filePathFlag)
+	file, err := fs.Open(filePath)
+	if err != nil {
+		return "", err
+	}
+
+	contentBytes, err := ioutil.ReadAll(file)
+	if err != nil {
+		return "", err
+	}
+
+	return string(contentBytes), nil
 }

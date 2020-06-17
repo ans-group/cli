@@ -114,7 +114,7 @@ func Test_ddosxSSLCreate(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
-		cmd := ddosxSSLCreateCmd(nil)
+		cmd := ddosxSSLCreateCmd(nil, nil)
 		cmd.Flags().Set("friendly-name", "testssl1")
 		cmd.Flags().Set("ukfast-ssl-id", "123")
 
@@ -128,7 +128,7 @@ func Test_ddosxSSLCreate(t *testing.T) {
 			service.EXPECT().GetSSL("00000000-0000-0000-0000-000000000000").Return(ddosx.SSL{}, nil),
 		)
 
-		ddosxSSLCreate(service, cmd, []string{})
+		ddosxSSLCreate(service, cmd, nil, []string{})
 	})
 
 	t.Run("Valid_FromCertificate", func(t *testing.T) {
@@ -136,7 +136,7 @@ func Test_ddosxSSLCreate(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
-		cmd := ddosxSSLCreateCmd(nil)
+		cmd := ddosxSSLCreateCmd(nil, nil)
 		cmd.Flags().Set("friendly-name", "testssl1")
 		cmd.Flags().Set("key", "testkey1")
 		cmd.Flags().Set("certificate", "testcertificate1")
@@ -154,7 +154,7 @@ func Test_ddosxSSLCreate(t *testing.T) {
 			service.EXPECT().GetSSL("00000000-0000-0000-0000-000000000000").Return(ddosx.SSL{}, nil),
 		)
 
-		ddosxSSLCreate(service, cmd, []string{})
+		ddosxSSLCreate(service, cmd, nil, []string{})
 	})
 
 	t.Run("CreateSSLError_ReturnsError", func(t *testing.T) {
@@ -163,14 +163,14 @@ func Test_ddosxSSLCreate(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
-		cmd := ddosxSSLCreateCmd(nil)
+		cmd := ddosxSSLCreateCmd(nil, nil)
 		cmd.Flags().Set("friendly-name", "testssl1")
 
 		gomock.InOrder(
 			service.EXPECT().CreateSSL(gomock.Any()).Return("00000000-0000-0000-0000-000000000000", errors.New("test error")),
 		)
 
-		err := ddosxSSLCreate(service, cmd, []string{})
+		err := ddosxSSLCreate(service, cmd, nil, []string{})
 		assert.Equal(t, "Error creating ssl: test error", err.Error())
 	})
 
@@ -180,7 +180,7 @@ func Test_ddosxSSLCreate(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
-		cmd := ddosxSSLCreateCmd(nil)
+		cmd := ddosxSSLCreateCmd(nil, nil)
 		cmd.Flags().Set("friendly-name", "testssl1")
 
 		gomock.InOrder(
@@ -188,20 +188,20 @@ func Test_ddosxSSLCreate(t *testing.T) {
 			service.EXPECT().GetSSL("00000000-0000-0000-0000-000000000000").Return(ddosx.SSL{}, errors.New("test error")),
 		)
 
-		err := ddosxSSLCreate(service, cmd, []string{})
+		err := ddosxSSLCreate(service, cmd, nil, []string{})
 		assert.Equal(t, "Error retrieving new ssl [00000000-0000-0000-0000-000000000000]: test error", err.Error())
 	})
 }
 
 func Test_ddosxSSLUpdateCmd_Args(t *testing.T) {
 	t.Run("ValidArgs_NoError", func(t *testing.T) {
-		err := ddosxSSLUpdateCmd(nil).Args(nil, []string{"00000000-0000-0000-0000-000000000000"})
+		err := ddosxSSLUpdateCmd(nil, nil).Args(nil, []string{"00000000-0000-0000-0000-000000000000"})
 
 		assert.Nil(t, err)
 	})
 
 	t.Run("InvalidArgs_Error", func(t *testing.T) {
-		err := ddosxSSLUpdateCmd(nil).Args(nil, []string{})
+		err := ddosxSSLUpdateCmd(nil, nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
 		assert.Equal(t, "Missing ssl", err.Error())
@@ -214,7 +214,7 @@ func Test_ddosxSSLUpdate(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
-		cmd := ddosxSSLUpdateCmd(nil)
+		cmd := ddosxSSLUpdateCmd(nil, nil)
 		cmd.Flags().Set("friendly-name", "testssl1")
 		cmd.Flags().Set("ukfast-ssl-id", "123")
 
@@ -228,7 +228,7 @@ func Test_ddosxSSLUpdate(t *testing.T) {
 			service.EXPECT().GetSSL("00000000-0000-0000-0000-000000000000").Return(ddosx.SSL{}, nil),
 		)
 
-		ddosxSSLUpdate(service, cmd, []string{"00000000-0000-0000-0000-000000000000"})
+		ddosxSSLUpdate(service, cmd, nil, []string{"00000000-0000-0000-0000-000000000000"})
 	})
 
 	t.Run("Valid_Certificate", func(t *testing.T) {
@@ -236,7 +236,7 @@ func Test_ddosxSSLUpdate(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
-		cmd := ddosxSSLUpdateCmd(nil)
+		cmd := ddosxSSLUpdateCmd(nil, nil)
 		cmd.Flags().Set("friendly-name", "testssl1")
 		cmd.Flags().Set("key", "testkey1")
 		cmd.Flags().Set("certificate", "testcertificate1")
@@ -254,7 +254,7 @@ func Test_ddosxSSLUpdate(t *testing.T) {
 			service.EXPECT().GetSSL("00000000-0000-0000-0000-000000000000").Return(ddosx.SSL{}, nil),
 		)
 
-		ddosxSSLUpdate(service, cmd, []string{"00000000-0000-0000-0000-000000000000"})
+		ddosxSSLUpdate(service, cmd, nil, []string{"00000000-0000-0000-0000-000000000000"})
 	})
 
 	t.Run("UpdateSSLError_ReturnsError", func(t *testing.T) {
@@ -262,14 +262,14 @@ func Test_ddosxSSLUpdate(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
-		cmd := ddosxSSLUpdateCmd(nil)
+		cmd := ddosxSSLUpdateCmd(nil, nil)
 		cmd.Flags().Set("friendly-name", "testssl1")
 
 		gomock.InOrder(
 			service.EXPECT().PatchSSL("00000000-0000-0000-0000-000000000000", gomock.Any()).Return("00000000-0000-0000-0000-000000000000", errors.New("test error")),
 		)
 
-		err := ddosxSSLUpdate(service, cmd, []string{"00000000-0000-0000-0000-000000000000"})
+		err := ddosxSSLUpdate(service, cmd, nil, []string{"00000000-0000-0000-0000-000000000000"})
 		assert.Equal(t, "Error updating ssl: test error", err.Error())
 	})
 
@@ -278,7 +278,7 @@ func Test_ddosxSSLUpdate(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
-		cmd := ddosxSSLUpdateCmd(nil)
+		cmd := ddosxSSLUpdateCmd(nil, nil)
 		cmd.Flags().Set("friendly-name", "testssl1")
 
 		gomock.InOrder(
@@ -286,7 +286,7 @@ func Test_ddosxSSLUpdate(t *testing.T) {
 			service.EXPECT().GetSSL("00000000-0000-0000-0000-000000000000").Return(ddosx.SSL{}, errors.New("test error")),
 		)
 
-		err := ddosxSSLUpdate(service, cmd, []string{"00000000-0000-0000-0000-000000000000"})
+		err := ddosxSSLUpdate(service, cmd, nil, []string{"00000000-0000-0000-0000-000000000000"})
 		assert.Equal(t, "Error retrieving updated ssl: test error", err.Error())
 	})
 }

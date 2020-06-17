@@ -15,7 +15,7 @@ func DDoSXRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 	// Child root commands
 	cmd.AddCommand(ddosxDomainRootCmd(f, fs))
 	cmd.AddCommand(ddosxRecordRootCmd(f))
-	cmd.AddCommand(ddosxSSLRootCmd(f))
+	cmd.AddCommand(ddosxSSLRootCmd(f, fs))
 
 	return cmd
 }
