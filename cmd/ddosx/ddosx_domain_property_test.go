@@ -7,6 +7,7 @@ import (
 	"github.com/ukfast/sdk-go/pkg/connection"
 
 	gomock "github.com/golang/mock/gomock"
+	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
 	"github.com/ukfast/cli/internal/pkg/clierrors"
@@ -159,20 +160,20 @@ func Test_ddosxDomainPropertyShow(t *testing.T) {
 
 func Test_ddosxDomainPropertyUpdateCmd_Args(t *testing.T) {
 	t.Run("ValidArgs_NoError", func(t *testing.T) {
-		err := ddosxDomainPropertyUpdateCmd(nil).Args(nil, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
+		err := ddosxDomainPropertyUpdateCmd(nil, nil).Args(nil, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 
 		assert.Nil(t, err)
 	})
 
 	t.Run("MissingDomain_Error", func(t *testing.T) {
-		err := ddosxDomainPropertyUpdateCmd(nil).Args(nil, []string{})
+		err := ddosxDomainPropertyUpdateCmd(nil, nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
 		assert.Equal(t, "Missing domain", err.Error())
 	})
 
 	t.Run("MissingDomainProperty_Error", func(t *testing.T) {
-		err := ddosxDomainPropertyUpdateCmd(nil).Args(nil, []string{"testdomain1.co.uk"})
+		err := ddosxDomainPropertyUpdateCmd(nil, nil).Args(nil, []string{"testdomain1.co.uk"})
 
 		assert.NotNil(t, err)
 		assert.Equal(t, "Missing domain property", err.Error())
@@ -180,24 +181,47 @@ func Test_ddosxDomainPropertyUpdateCmd_Args(t *testing.T) {
 }
 
 func Test_ddosxDomainPropertyUpdate(t *testing.T) {
-	t.Run("Success", func(t *testing.T) {
+	t.Run("WithValueFlag_ExpectedPatchValue", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
-		cmd := ddosxDomainPropertyUpdateCmd(nil)
+		cmd := ddosxDomainPropertyUpdateCmd(nil, nil)
 		cmd.Flags().Set("value", "testvalue1")
 
+		expectedRequest := ddosx.PatchDomainPropertyRequest{
+			Value: "testvalue1",
+		}
+
 		gomock.InOrder(
-			service.EXPECT().PatchDomainProperty("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Any()).Do(func(domainName string, propertyUUID string, req ddosx.PatchDomainPropertyRequest) {
-				if req.Value != "testvalue1" {
-					t.Fatal("Expected value of testvalue1")
-				}
-			}).Return(nil),
+			service.EXPECT().PatchDomainProperty("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", expectedRequest).Return(nil),
 			service.EXPECT().GetDomainProperty("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.DomainProperty{}, nil),
 		)
 
-		ddosxDomainPropertyUpdate(service, cmd, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
+		ddosxDomainPropertyUpdate(service, cmd, nil, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
+	})
+
+	t.Run("WithValueFileFlag_ExpectedPatchValue", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		fs := afero.NewMemMapFs()
+		afero.WriteFile(fs, "/tmp/testfilename.txt", []byte("testvalue1"), 0644)
+
+		service := mocks.NewMockDDoSXService(mockCtrl)
+		cmd := ddosxDomainPropertyUpdateCmd(nil, nil)
+		cmd.Flags().Set("value-file", "/tmp/testfilename.txt")
+
+		expectedRequest := ddosx.PatchDomainPropertyRequest{
+			Value: "testvalue1",
+		}
+
+		gomock.InOrder(
+			service.EXPECT().PatchDomainProperty("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", expectedRequest).Return(nil),
+			service.EXPECT().GetDomainProperty("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000").Return(ddosx.DomainProperty{}, nil),
+		)
+
+		ddosxDomainPropertyUpdate(service, cmd, fs, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 	})
 
 	t.Run("PatchDomainPropertyError_OutputsError", func(t *testing.T) {
@@ -209,7 +233,7 @@ func Test_ddosxDomainPropertyUpdate(t *testing.T) {
 		service.EXPECT().PatchDomainProperty("testdomain1.co.uk", "00000000-0000-0000-0000-000000000000", gomock.Any()).Return(errors.New("test error"))
 
 		test_output.AssertErrorOutput(t, "Error updating domain property [00000000-0000-0000-0000-000000000000]: test error\n", func() {
-			ddosxDomainPropertyUpdate(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
+			ddosxDomainPropertyUpdate(service, &cobra.Command{}, nil, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 		})
 	})
 
@@ -225,7 +249,7 @@ func Test_ddosxDomainPropertyUpdate(t *testing.T) {
 		)
 
 		test_output.AssertErrorOutput(t, "Error retrieving updated domain property [00000000-0000-0000-0000-000000000000]: test error\n", func() {
-			ddosxDomainPropertyUpdate(service, &cobra.Command{}, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
+			ddosxDomainPropertyUpdate(service, &cobra.Command{}, nil, []string{"testdomain1.co.uk", "00000000-0000-0000-0000-000000000000"})
 		})
 	})
 }

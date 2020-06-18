@@ -3,8 +3,8 @@ package ddosx
 import (
 	"errors"
 	"fmt"
-	"io/ioutil"
 
+	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
 	"github.com/ukfast/cli/internal/pkg/factory"
 	"github.com/ukfast/cli/internal/pkg/helper"
@@ -12,7 +12,7 @@ import (
 	"github.com/ukfast/sdk-go/pkg/service/ddosx"
 )
 
-func ddosxSSLRootCmd(f factory.ClientFactory) *cobra.Command {
+func ddosxSSLRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "ssl",
 		Short: "sub-commands relating to ssls",
@@ -21,8 +21,8 @@ func ddosxSSLRootCmd(f factory.ClientFactory) *cobra.Command {
 	// Child commands
 	cmd.AddCommand(ddosxSSLListCmd(f))
 	cmd.AddCommand(ddosxSSLShowCmd(f))
-	cmd.AddCommand(ddosxSSLCreateCmd(f))
-	cmd.AddCommand(ddosxSSLUpdateCmd(f))
+	cmd.AddCommand(ddosxSSLCreateCmd(f, fs))
+	cmd.AddCommand(ddosxSSLUpdateCmd(f, fs))
 	cmd.AddCommand(ddosxSSLDeleteCmd(f))
 
 	// Child root rommands
@@ -102,7 +102,7 @@ func ddosxSSLShow(service ddosx.DDoSXService, cmd *cobra.Command, args []string)
 	return output.CommandOutput(cmd, OutputDDoSXSSLsProvider(ssls))
 }
 
-func ddosxSSLCreateCmd(f factory.ClientFactory) *cobra.Command {
+func ddosxSSLCreateCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "create",
 		Short:   "Creates an ssl",
@@ -114,7 +114,7 @@ func ddosxSSLCreateCmd(f factory.ClientFactory) *cobra.Command {
 				return err
 			}
 
-			return ddosxSSLCreate(c.DDoSXService(), cmd, args)
+			return ddosxSSLCreate(c.DDoSXService(), cmd, fs, args)
 		},
 	}
 
@@ -131,28 +131,26 @@ func ddosxSSLCreateCmd(f factory.ClientFactory) *cobra.Command {
 	return cmd
 }
 
-func ddosxSSLCreate(service ddosx.DDoSXService, cmd *cobra.Command, args []string) error {
+func ddosxSSLCreate(service ddosx.DDoSXService, cmd *cobra.Command, fs afero.Fs, args []string) error {
 	createRequest := ddosx.CreateSSLRequest{}
 	createRequest.FriendlyName, _ = cmd.Flags().GetString("friendly-name")
 
 	if cmd.Flags().Changed("ukfast-ssl-id") {
 		createRequest.UKFastSSLID, _ = cmd.Flags().GetInt("ukfast-ssl-id")
 	} else {
-		key, err := getCertContent(cmd, "key", "key-file")
+		var err error
+		createRequest.Key, err = getCertContent(cmd, fs, "key", "key-file")
 		if err != nil {
 			return err
 		}
-		certificate, err := getCertContent(cmd, "certificate", "certificate-file")
+		createRequest.Certificate, err = getCertContent(cmd, fs, "certificate", "certificate-file")
 		if err != nil {
 			return err
 		}
-		caBundle, err := getCertContent(cmd, "ca-bundle", "ca-bundle-file")
+		createRequest.CABundle, err = getCertContent(cmd, fs, "ca-bundle", "ca-bundle-file")
 		if err != nil {
 			return err
 		}
-		createRequest.Key = key
-		createRequest.Certificate = certificate
-		createRequest.CABundle = caBundle
 	}
 
 	id, err := service.CreateSSL(createRequest)
@@ -168,7 +166,7 @@ func ddosxSSLCreate(service ddosx.DDoSXService, cmd *cobra.Command, args []strin
 	return output.CommandOutput(cmd, OutputDDoSXSSLsProvider([]ddosx.SSL{ssl}))
 }
 
-func ddosxSSLUpdateCmd(f factory.ClientFactory) *cobra.Command {
+func ddosxSSLUpdateCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "update <ssl: id>",
 		Short:   "Updates an ssl",
@@ -187,7 +185,7 @@ func ddosxSSLUpdateCmd(f factory.ClientFactory) *cobra.Command {
 				return err
 			}
 
-			return ddosxSSLUpdate(c.DDoSXService(), cmd, args)
+			return ddosxSSLUpdate(c.DDoSXService(), cmd, fs, args)
 		},
 	}
 
@@ -203,46 +201,27 @@ func ddosxSSLUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	return cmd
 }
 
-func ddosxSSLUpdate(service ddosx.DDoSXService, cmd *cobra.Command, args []string) error {
+func ddosxSSLUpdate(service ddosx.DDoSXService, cmd *cobra.Command, fs afero.Fs, args []string) error {
 	patchRequest := ddosx.PatchSSLRequest{}
 	patchRequest.FriendlyName, _ = cmd.Flags().GetString("friendly-name")
 
 	if cmd.Flags().Changed("ukfast-ssl-id") {
 		patchRequest.UKFastSSLID, _ = cmd.Flags().GetInt("ukfast-ssl-id")
 	} else {
-		if cmd.Flags().Changed("key") {
-			patchRequest.Key, _ = cmd.Flags().GetString("key")
+		var err error
+		patchRequest.Key, err = getCertContent(cmd, fs, "key", "key-file")
+		if err != nil {
+			return err
 		}
-		if cmd.Flags().Changed("certificate") {
-			patchRequest.Certificate, _ = cmd.Flags().GetString("certificate")
+
+		patchRequest.Certificate, err = getCertContent(cmd, fs, "certificate", "certificate-file")
+		if err != nil {
+			return err
 		}
-		if cmd.Flags().Changed("ca-bundle") {
-			patchRequest.CABundle, _ = cmd.Flags().GetString("ca-bundle")
-		}
-	}
-	if cmd.Flags().Changed("ukfast-ssl-id") {
-		patchRequest.UKFastSSLID, _ = cmd.Flags().GetInt("ukfast-ssl-id")
-	} else {
-		if cmd.Flags().Changed("key") || cmd.Flags().Changed("key-file") {
-			key, err := getCertContent(cmd, "key", "key-file")
-			if err != nil {
-				return err
-			}
-			patchRequest.Key = key
-		}
-		if cmd.Flags().Changed("certificate") || cmd.Flags().Changed("certificate-file") {
-			certificate, err := getCertContent(cmd, "certificate", "certificate-file")
-			if err != nil {
-				return err
-			}
-			patchRequest.Certificate = certificate
-		}
-		if cmd.Flags().Changed("ca-bundle") || cmd.Flags().Changed("ca-bundle-file") {
-			caBundle, err := getCertContent(cmd, "ca-bundle", "ca-bundle-file")
-			if err != nil {
-				return err
-			}
-			patchRequest.CABundle = caBundle
+
+		patchRequest.CABundle, err = getCertContent(cmd, fs, "ca-bundle", "ca-bundle-file")
+		if err != nil {
+			return err
 		}
 	}
 
@@ -294,17 +273,13 @@ func ddosxSSLDelete(service ddosx.DDoSXService, cmd *cobra.Command, args []strin
 	}
 }
 
-func getCertContent(cmd *cobra.Command, literalFlag, filePathFlag string) (string, error) {
+func getCertContent(cmd *cobra.Command, fs afero.Fs, literalFlag, filePathFlag string) (string, error) {
+	if cmd.Flags().Changed(literalFlag) {
+		return cmd.Flags().GetString(literalFlag)
+	}
 	if cmd.Flags().Changed(filePathFlag) {
-		filePath, _ := cmd.Flags().GetString(filePathFlag)
-		contentBytes, err := ioutil.ReadFile(filePath)
-		if err != nil {
-			return "", err
-		}
-
-		return string(contentBytes), nil
+		return helper.GetContentsFromFilePathFlag(cmd, fs, filePathFlag)
 	}
 
-	content, _ := cmd.Flags().GetString(literalFlag)
-	return content, nil
+	return "", nil
 }
