@@ -67,3 +67,7 @@ func OutputSSLCertificatesPrivateKeysProvider(certificatesPrivateKey []ssl.Certi
 		}),
 	)
 }
+
+func OutputSSLCertificateValidationsProvider(validations []ssl.CertificateValidation) output.OutputHandlerProvider {
+	return output.NewSerializedOutputHandlerProvider(validations).WithDefaultFields([]string{"domains", "expires_at"})
+}

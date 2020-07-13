@@ -108,3 +108,18 @@ func (mr *MockSSLServiceMockRecorder) GetCertificatesPaginated(arg0 interface{})
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCertificatesPaginated", reflect.TypeOf((*MockSSLService)(nil).GetCertificatesPaginated), arg0)
 }
+
+// ValidateCertificate mocks base method
+func (m *MockSSLService) ValidateCertificate(arg0 ssl.ValidateRequest) (ssl.CertificateValidation, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ValidateCertificate", arg0)
+	ret0, _ := ret[0].(ssl.CertificateValidation)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ValidateCertificate indicates an expected call of ValidateCertificate
+func (mr *MockSSLServiceMockRecorder) ValidateCertificate(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ValidateCertificate", reflect.TypeOf((*MockSSLService)(nil).ValidateCertificate), arg0)
+}

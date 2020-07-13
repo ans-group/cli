@@ -71,7 +71,7 @@ func Execute(build build.BuildInfo) {
 	rootCmd.AddCommand(psscmd.PSSRootCmd(clientFactory, fs))
 	rootCmd.AddCommand(registrarcmd.RegistrarRootCmd(clientFactory))
 	rootCmd.AddCommand(safednscmd.SafeDNSRootCmd(clientFactory))
-	rootCmd.AddCommand(sslcmd.SSLRootCmd(clientFactory))
+	rootCmd.AddCommand(sslcmd.SSLRootCmd(clientFactory, fs))
 	rootCmd.AddCommand(storagecmd.StorageRootCmd(clientFactory))
 
 	if err := rootCmd.Execute(); err != nil {

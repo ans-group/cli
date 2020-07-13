@@ -67,14 +67,22 @@ type SerializedOutputHandlerProvider struct {
 	IgnoredFields []string
 }
 
-func NewSerializedOutputHandlerProvider(items interface{}, defaultFields []string, ignoredFields []string) *SerializedOutputHandlerProvider {
+func NewSerializedOutputHandlerProvider(items interface{}) *SerializedOutputHandlerProvider {
 	return &SerializedOutputHandlerProvider{
 		GenericOutputHandlerProvider: NewGenericOutputHandlerProvider(
 			WithData(items),
 		),
-		DefaultFields: defaultFields,
-		IgnoredFields: ignoredFields,
 	}
+}
+
+func (o *SerializedOutputHandlerProvider) WithDefaultFields(fields []string) *SerializedOutputHandlerProvider {
+	o.DefaultFields = fields
+	return o
+}
+
+func (o *SerializedOutputHandlerProvider) WithIgnoredFields(fields []string) *SerializedOutputHandlerProvider {
+	o.IgnoredFields = fields
+	return o
 }
 
 func (o *SerializedOutputHandlerProvider) GetFieldData() ([]*OrderedFields, error) {
