@@ -139,15 +139,15 @@ func ddosxSSLCreate(service ddosx.DDoSXService, cmd *cobra.Command, fs afero.Fs,
 		createRequest.UKFastSSLID, _ = cmd.Flags().GetInt("ukfast-ssl-id")
 	} else {
 		var err error
-		createRequest.Key, err = getCertContent(cmd, fs, "key", "key-file")
+		createRequest.Key, err = helper.GetContentsFromLiteralOrFilePathFlag(cmd, fs, "key", "key-file")
 		if err != nil {
 			return err
 		}
-		createRequest.Certificate, err = getCertContent(cmd, fs, "certificate", "certificate-file")
+		createRequest.Certificate, err = helper.GetContentsFromLiteralOrFilePathFlag(cmd, fs, "certificate", "certificate-file")
 		if err != nil {
 			return err
 		}
-		createRequest.CABundle, err = getCertContent(cmd, fs, "ca-bundle", "ca-bundle-file")
+		createRequest.CABundle, err = helper.GetContentsFromLiteralOrFilePathFlag(cmd, fs, "ca-bundle", "ca-bundle-file")
 		if err != nil {
 			return err
 		}
@@ -209,17 +209,17 @@ func ddosxSSLUpdate(service ddosx.DDoSXService, cmd *cobra.Command, fs afero.Fs,
 		patchRequest.UKFastSSLID, _ = cmd.Flags().GetInt("ukfast-ssl-id")
 	} else {
 		var err error
-		patchRequest.Key, err = getCertContent(cmd, fs, "key", "key-file")
+		patchRequest.Key, err = helper.GetContentsFromLiteralOrFilePathFlag(cmd, fs, "key", "key-file")
 		if err != nil {
 			return err
 		}
 
-		patchRequest.Certificate, err = getCertContent(cmd, fs, "certificate", "certificate-file")
+		patchRequest.Certificate, err = helper.GetContentsFromLiteralOrFilePathFlag(cmd, fs, "certificate", "certificate-file")
 		if err != nil {
 			return err
 		}
 
-		patchRequest.CABundle, err = getCertContent(cmd, fs, "ca-bundle", "ca-bundle-file")
+		patchRequest.CABundle, err = helper.GetContentsFromLiteralOrFilePathFlag(cmd, fs, "ca-bundle", "ca-bundle-file")
 		if err != nil {
 			return err
 		}
@@ -271,15 +271,4 @@ func ddosxSSLDelete(service ddosx.DDoSXService, cmd *cobra.Command, args []strin
 			continue
 		}
 	}
-}
-
-func getCertContent(cmd *cobra.Command, fs afero.Fs, literalFlag, filePathFlag string) (string, error) {
-	if cmd.Flags().Changed(literalFlag) {
-		return cmd.Flags().GetString(literalFlag)
-	}
-	if cmd.Flags().Changed(filePathFlag) {
-		return helper.GetContentsFromFilePathFlag(cmd, fs, filePathFlag)
-	}
-
-	return "", nil
 }

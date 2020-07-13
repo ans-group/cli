@@ -178,3 +178,13 @@ func GetContentsFromFilePathFlag(cmd *cobra.Command, fs afero.Fs, filePathFlag s
 
 	return string(contentBytes), nil
 }
+func GetContentsFromLiteralOrFilePathFlag(cmd *cobra.Command, fs afero.Fs, literalFlag, filePathFlag string) (string, error) {
+	if cmd.Flags().Changed(literalFlag) {
+		return cmd.Flags().GetString(literalFlag)
+	}
+	if cmd.Flags().Changed(filePathFlag) {
+		return GetContentsFromFilePathFlag(cmd, fs, filePathFlag)
+	}
+
+	return "", nil
+}
