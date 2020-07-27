@@ -1025,6 +1025,126 @@ func (mr *MockDDoSXServiceMockRecorder) GetSSLsPaginated(arg0 interface{}) *gomo
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSSLsPaginated", reflect.TypeOf((*MockDDoSXService)(nil).GetSSLsPaginated), arg0)
 }
 
+// GetWAFLog mocks base method
+func (m *MockDDoSXService) GetWAFLog(arg0 string) (ddosx.WAFLog, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetWAFLog", arg0)
+	ret0, _ := ret[0].(ddosx.WAFLog)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetWAFLog indicates an expected call of GetWAFLog
+func (mr *MockDDoSXServiceMockRecorder) GetWAFLog(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWAFLog", reflect.TypeOf((*MockDDoSXService)(nil).GetWAFLog), arg0)
+}
+
+// GetWAFLogMatches mocks base method
+func (m *MockDDoSXService) GetWAFLogMatches(arg0 connection.APIRequestParameters) ([]ddosx.WAFLogMatch, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetWAFLogMatches", arg0)
+	ret0, _ := ret[0].([]ddosx.WAFLogMatch)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetWAFLogMatches indicates an expected call of GetWAFLogMatches
+func (mr *MockDDoSXServiceMockRecorder) GetWAFLogMatches(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWAFLogMatches", reflect.TypeOf((*MockDDoSXService)(nil).GetWAFLogMatches), arg0)
+}
+
+// GetWAFLogMatchesPaginated mocks base method
+func (m *MockDDoSXService) GetWAFLogMatchesPaginated(arg0 connection.APIRequestParameters) (*ddosx.PaginatedWAFLogMatch, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetWAFLogMatchesPaginated", arg0)
+	ret0, _ := ret[0].(*ddosx.PaginatedWAFLogMatch)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetWAFLogMatchesPaginated indicates an expected call of GetWAFLogMatchesPaginated
+func (mr *MockDDoSXServiceMockRecorder) GetWAFLogMatchesPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWAFLogMatchesPaginated", reflect.TypeOf((*MockDDoSXService)(nil).GetWAFLogMatchesPaginated), arg0)
+}
+
+// GetWAFLogRequestMatch mocks base method
+func (m *MockDDoSXService) GetWAFLogRequestMatch(arg0, arg1 string) (ddosx.WAFLogMatch, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetWAFLogRequestMatch", arg0, arg1)
+	ret0, _ := ret[0].(ddosx.WAFLogMatch)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetWAFLogRequestMatch indicates an expected call of GetWAFLogRequestMatch
+func (mr *MockDDoSXServiceMockRecorder) GetWAFLogRequestMatch(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWAFLogRequestMatch", reflect.TypeOf((*MockDDoSXService)(nil).GetWAFLogRequestMatch), arg0, arg1)
+}
+
+// GetWAFLogRequestMatches mocks base method
+func (m *MockDDoSXService) GetWAFLogRequestMatches(arg0 string, arg1 connection.APIRequestParameters) ([]ddosx.WAFLogMatch, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetWAFLogRequestMatches", arg0, arg1)
+	ret0, _ := ret[0].([]ddosx.WAFLogMatch)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetWAFLogRequestMatches indicates an expected call of GetWAFLogRequestMatches
+func (mr *MockDDoSXServiceMockRecorder) GetWAFLogRequestMatches(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWAFLogRequestMatches", reflect.TypeOf((*MockDDoSXService)(nil).GetWAFLogRequestMatches), arg0, arg1)
+}
+
+// GetWAFLogRequestMatchesPaginated mocks base method
+func (m *MockDDoSXService) GetWAFLogRequestMatchesPaginated(arg0 string, arg1 connection.APIRequestParameters) (*ddosx.PaginatedWAFLogMatch, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetWAFLogRequestMatchesPaginated", arg0, arg1)
+	ret0, _ := ret[0].(*ddosx.PaginatedWAFLogMatch)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetWAFLogRequestMatchesPaginated indicates an expected call of GetWAFLogRequestMatchesPaginated
+func (mr *MockDDoSXServiceMockRecorder) GetWAFLogRequestMatchesPaginated(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWAFLogRequestMatchesPaginated", reflect.TypeOf((*MockDDoSXService)(nil).GetWAFLogRequestMatchesPaginated), arg0, arg1)
+}
+
+// GetWAFLogs mocks base method
+func (m *MockDDoSXService) GetWAFLogs(arg0 connection.APIRequestParameters) ([]ddosx.WAFLog, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetWAFLogs", arg0)
+	ret0, _ := ret[0].([]ddosx.WAFLog)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetWAFLogs indicates an expected call of GetWAFLogs
+func (mr *MockDDoSXServiceMockRecorder) GetWAFLogs(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWAFLogs", reflect.TypeOf((*MockDDoSXService)(nil).GetWAFLogs), arg0)
+}
+
+// GetWAFLogsPaginated mocks base method
+func (m *MockDDoSXService) GetWAFLogsPaginated(arg0 connection.APIRequestParameters) (*ddosx.PaginatedWAFLog, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetWAFLogsPaginated", arg0)
+	ret0, _ := ret[0].(*ddosx.PaginatedWAFLog)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetWAFLogsPaginated indicates an expected call of GetWAFLogsPaginated
+func (mr *MockDDoSXServiceMockRecorder) GetWAFLogsPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWAFLogsPaginated", reflect.TypeOf((*MockDDoSXService)(nil).GetWAFLogsPaginated), arg0)
+}
+
 // PatchDomainACLGeoIPRule mocks base method
 func (m *MockDDoSXService) PatchDomainACLGeoIPRule(arg0, arg1 string, arg2 ddosx.PatchACLGeoIPRuleRequest) error {
 	m.ctrl.T.Helper()
