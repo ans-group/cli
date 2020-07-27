@@ -1071,10 +1071,10 @@ func (mr *MockDDoSXServiceMockRecorder) GetWAFLogMatchesPaginated(arg0 interface
 }
 
 // GetWAFLogRequestMatch mocks base method
-func (m *MockDDoSXService) GetWAFLogRequestMatch(arg0, arg1 string) (ddosx.WAFLog, error) {
+func (m *MockDDoSXService) GetWAFLogRequestMatch(arg0, arg1 string) (ddosx.WAFLogMatch, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetWAFLogRequestMatch", arg0, arg1)
-	ret0, _ := ret[0].(ddosx.WAFLog)
+	ret0, _ := ret[0].(ddosx.WAFLogMatch)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
