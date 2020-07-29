@@ -29,7 +29,7 @@ func Test_ddosxWAFLogMatchList(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		cmd := ddosxWAFLogMatchListCmd(nil)
-		cmd.Flags().Set("request", "abcdef")
+		cmd.Flags().Set("log", "abcdef")
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
 
@@ -43,7 +43,7 @@ func Test_ddosxWAFLogMatchList(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		cmd := ddosxWAFLogMatchListCmd(nil)
-		cmd.Flags().Set("request", "abcdef")
+		cmd.Flags().Set("log", "abcdef")
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
 
@@ -51,7 +51,7 @@ func Test_ddosxWAFLogMatchList(t *testing.T) {
 
 		err := ddosxWAFLogMatchList(service, cmd, []string{})
 
-		assert.Equal(t, "Error retrieving WAF log request matches: test error", err.Error())
+		assert.Equal(t, "Error retrieving WAF log matches: test error", err.Error())
 	})
 
 	t.Run("GetWAFLogMatches_ReturnsError", func(t *testing.T) {
@@ -79,7 +79,7 @@ func Test_ddosxWAFLogMatchShowCmd_Args(t *testing.T) {
 		err := ddosxWAFLogMatchShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing request", err.Error())
+		assert.Equal(t, "Missing log", err.Error())
 	})
 
 	t.Run("MissingMatch_Error", func(t *testing.T) {

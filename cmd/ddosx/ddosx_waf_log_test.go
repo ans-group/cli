@@ -71,7 +71,7 @@ func Test_ddosxWAFLogShowCmd_Args(t *testing.T) {
 		err := ddosxWAFLogShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing request", err.Error())
+		assert.Equal(t, "Missing log", err.Error())
 	})
 }
 

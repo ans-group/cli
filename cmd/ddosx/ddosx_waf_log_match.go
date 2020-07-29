@@ -46,6 +46,8 @@ func ddosxWAFLogMatchListCmd(f factory.ClientFactory) *cobra.Command {
 }
 
 func ddosxWAFLogMatchList(service ddosx.DDoSXService, cmd *cobra.Command, args []string) error {
+	var err error
+
 	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		return err
@@ -56,14 +58,11 @@ func ddosxWAFLogMatchList(service ddosx.DDoSXService, cmd *cobra.Command, args [
 	if cmd.Flags().Changed("log") {
 		log, _ := cmd.Flags().GetString("log")
 		matches, err = service.GetWAFLogRequestMatches(log, params)
-		if err != nil {
-			return fmt.Errorf("Error retrieving WAF log log matches: %s", err)
-		}
 	} else {
 		matches, err = service.GetWAFLogMatches(params)
-		if err != nil {
-			return fmt.Errorf("Error retrieving WAF log matches: %s", err)
-		}
+	}
+	if err != nil {
+		return fmt.Errorf("Error retrieving WAF log matches: %s", err)
 	}
 
 	return output.CommandOutput(cmd, OutputDDoSXWAFLogMatchesProvider(matches))
