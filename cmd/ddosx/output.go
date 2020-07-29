@@ -370,9 +370,9 @@ func OutputDDoSXHSTSRulesProvider(rules []ddosx.HSTSRule) output.OutputHandlerPr
 }
 
 func OutputDDoSXWAFLogsProvider(logs []ddosx.WAFLog) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(logs).WithDefaultFields([]string{"request_id", "created_at", "client_ip", "request"})
+	return output.NewSerializedOutputHandlerProvider(logs).WithDefaultFields([]string{"id", "created_at", "client_ip", "request"})
 }
 
 func OutputDDoSXWAFLogMatchesProvider(matches []ddosx.WAFLogMatch) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(matches).WithDefaultFields([]string{"match_id", "created_at", "country_code", "method", "message"})
+	return output.NewSerializedOutputHandlerProvider(matches).WithDefaultFields([]string{"id", "created_at", "country_code", "method", "message"})
 }
