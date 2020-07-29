@@ -69,13 +69,13 @@ func ddosxWAFLogList(service ddosx.DDoSXService, cmd *cobra.Command, args []stri
 
 func ddosxWAFLogShowCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
-		Use:     "show <request: id>...",
+		Use:     "show <log: id>...",
 		Short:   "Shows WAF logs",
 		Long:    "This command shows a WAF log",
 		Example: "ukfast ddosx waf log show 2d8556677081cecf112b555c359a78c6",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing request")
+				return errors.New("Missing log")
 			}
 
 			return nil

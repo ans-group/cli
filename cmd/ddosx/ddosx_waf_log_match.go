@@ -40,7 +40,7 @@ func ddosxWAFLogMatchListCmd(f factory.ClientFactory) *cobra.Command {
 		},
 	}
 
-	cmd.Flags().String("request", "", "Show matches for specific request")
+	cmd.Flags().String("log", "", "Show matches for specific log")
 
 	return cmd
 }
@@ -53,11 +53,11 @@ func ddosxWAFLogMatchList(service ddosx.DDoSXService, cmd *cobra.Command, args [
 
 	var matches []ddosx.WAFLogMatch
 
-	if cmd.Flags().Changed("request") {
-		request, _ := cmd.Flags().GetString("request")
-		matches, err = service.GetWAFLogRequestMatches(request, params)
+	if cmd.Flags().Changed("log") {
+		log, _ := cmd.Flags().GetString("log")
+		matches, err = service.GetWAFLogRequestMatches(log, params)
 		if err != nil {
-			return fmt.Errorf("Error retrieving WAF log request matches: %s", err)
+			return fmt.Errorf("Error retrieving WAF log log matches: %s", err)
 		}
 	} else {
 		matches, err = service.GetWAFLogMatches(params)
@@ -71,13 +71,13 @@ func ddosxWAFLogMatchList(service ddosx.DDoSXService, cmd *cobra.Command, args [
 
 func ddosxWAFLogMatchShowCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
-		Use:     "show <request: id> <match: id>...",
-		Short:   "Shows WAF log request matches",
-		Long:    "This command shows a WAF log request matches",
+		Use:     "show <log: id> <match: id>...",
+		Short:   "Shows WAF log matches",
+		Long:    "This command shows a WAF log matches",
 		Example: "ukfast ddosx waf log match show 2d8556677081cecf112b555c359a78c6 123456",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing request")
+				return errors.New("Missing log")
 			}
 
 			if len(args) < 2 {
