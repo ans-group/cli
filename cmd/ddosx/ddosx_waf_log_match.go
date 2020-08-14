@@ -40,6 +40,7 @@ func ddosxWAFLogMatchListCmd(f factory.ClientFactory) *cobra.Command {
 		},
 	}
 
+	cmd.Flags().Int("page", 1, "Page to fetch")
 	cmd.Flags().String("log", "", "Show matches for specific log")
 
 	return cmd
@@ -53,19 +54,23 @@ func ddosxWAFLogMatchList(service ddosx.DDoSXService, cmd *cobra.Command, args [
 		return err
 	}
 
-	var matches []ddosx.WAFLogMatch
+	page, _ := cmd.Flags().GetInt("page")
+	params.Pagination.Page = page
+
+	var paginatedMatches *ddosx.PaginatedWAFLogMatch
 
 	if cmd.Flags().Changed("log") {
 		log, _ := cmd.Flags().GetString("log")
-		matches, err = service.GetWAFLogRequestMatches(log, params)
+		paginatedMatches, err = service.GetWAFLogRequestMatchesPaginated(log, params)
 	} else {
-		matches, err = service.GetWAFLogMatches(params)
+		paginatedMatches, err = service.GetWAFLogMatchesPaginated(params)
 	}
 	if err != nil {
 		return fmt.Errorf("Error retrieving WAF log matches: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXWAFLogMatchesProvider(matches))
+	output.Errorf("Page %d/%d", page, paginatedMatches.TotalPages())
+	return output.CommandOutput(cmd, OutputDDoSXWAFLogMatchesProvider(paginatedMatches.Items))
 }
 
 func ddosxWAFLogMatchShowCmd(f factory.ClientFactory) *cobra.Command {

@@ -43,6 +43,7 @@ func ddosxWAFLogListCmd(f factory.ClientFactory) *cobra.Command {
 		},
 	}
 
+	cmd.Flags().Int("page", 1, "Page to fetch")
 	cmd.Flags().String("domain", "", "Domain name for filtering")
 
 	return cmd
@@ -54,17 +55,21 @@ func ddosxWAFLogList(service ddosx.DDoSXService, cmd *cobra.Command, args []stri
 		return err
 	}
 
+	page, _ := cmd.Flags().GetInt("page")
+	params.Pagination.Page = page
+
 	if cmd.Flags().Changed("domain") {
 		filterDomain, _ := cmd.Flags().GetString("domain")
 		params.WithFilter(helper.GetFilteringInferOperator("domain", filterDomain))
 	}
 
-	logs, err := service.GetWAFLogs(params)
+	paginatedLogs, err := service.GetWAFLogsPaginated(params)
 	if err != nil {
 		return fmt.Errorf("Error retrieving WAF logs: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXWAFLogsProvider(logs))
+	output.Errorf("Page %d/%d", page, paginatedLogs.TotalPages())
+	return output.CommandOutput(cmd, OutputDDoSXWAFLogsProvider(paginatedLogs.Items))
 }
 
 func ddosxWAFLogShowCmd(f factory.ClientFactory) *cobra.Command {
