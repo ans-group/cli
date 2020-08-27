@@ -14,6 +14,8 @@ import (
 	"github.com/ryanuber/go-glob"
 	"github.com/spf13/cobra"
 	"k8s.io/client-go/util/jsonpath"
+
+	"github.com/ukfast/sdk-go/pkg/connection"
 )
 
 var outputExit func(code int) = os.Exit
@@ -368,6 +370,16 @@ func NewFieldValue(value string, def bool) FieldValue {
 		Value:   value,
 		Default: def,
 	}
+}
+
+func CommandOutputPaginated(cmd *cobra.Command, out OutputHandlerProvider, paginated connection.Paginated) error {
+	err := CommandOutput(cmd, out)
+	if err != nil {
+		return err
+	}
+
+	Errorf("Page %d/%d", paginated.CurrentPage(), paginated.TotalPages())
+	return nil
 }
 
 func CommandOutput(cmd *cobra.Command, out OutputHandlerProvider) error {

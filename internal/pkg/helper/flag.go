@@ -154,12 +154,14 @@ func GetAPIRequestParametersFromFlags(cmd *cobra.Command) (connection.APIRequest
 	}
 
 	flagSort, err := cmd.Flags().GetString("sort")
+	flagPage, _ := cmd.Flags().GetInt("page")
 
 	return connection.APIRequestParameters{
 		Sorting:   GetSortingFromStringFlag(flagSort),
 		Filtering: filtering,
 		Pagination: connection.APIRequestPagination{
 			PerPage: viper.GetInt("api_pagination_perpage"),
+			Page:    flagPage,
 		},
 	}, nil
 }
