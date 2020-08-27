@@ -227,3 +227,13 @@ The CLI has self-update functionality, which can be invoked via the command `upd
 ```
 
 This command in-place updates the CLI, with the old binary moved to `ukfast.old` (`ukfast.old.exe` on Windows), should roll-back be required.
+
+## Shell autocompletions
+
+The CLI supports generating shell completions for the following shells:
+
+* Bash
+* Zsh
+* PowerShell
+
+The commands at `ukfast completion <shell: bash|zsh|powershell>` provide help for installation on different platforms
