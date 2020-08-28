@@ -77,9 +77,9 @@ func OutputAccountInvoicesProvider(invoices []account.Invoice) output.OutputHand
 				fields.Set("id", output.NewFieldValue(strconv.Itoa(invoice.ID), true))
 				fields.Set("date", output.NewFieldValue(invoice.Date.String(), true))
 				fields.Set("paid", output.NewFieldValue(strconv.FormatBool(invoice.Paid), true))
-				fields.Set("net", output.NewFieldValue(fmt.Sprintf("%f", invoice.Net), true))
-				fields.Set("vat", output.NewFieldValue(fmt.Sprintf("%f", invoice.VAT), true))
-				fields.Set("gross", output.NewFieldValue(fmt.Sprintf("%f", invoice.Gross), true))
+				fields.Set("net", output.NewFieldValue(fmt.Sprintf("%.2f", invoice.Net), true))
+				fields.Set("vat", output.NewFieldValue(fmt.Sprintf("%.2f", invoice.VAT), true))
+				fields.Set("gross", output.NewFieldValue(fmt.Sprintf("%.2f", invoice.Gross), true))
 
 				data = append(data, fields)
 			}
