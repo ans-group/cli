@@ -12,6 +12,7 @@ import (
 	ddosxcmd "github.com/ukfast/cli/cmd/ddosx"
 	draascmd "github.com/ukfast/cli/cmd/draas"
 	ecloudcmd "github.com/ukfast/cli/cmd/ecloud"
+	ecloudflexcmd "github.com/ukfast/cli/cmd/ecloudflex"
 	loadtestcmd "github.com/ukfast/cli/cmd/loadtest"
 	psscmd "github.com/ukfast/cli/cmd/pss"
 	registrarcmd "github.com/ukfast/cli/cmd/registrar"
@@ -70,6 +71,7 @@ func Execute(build build.BuildInfo) {
 	rootCmd.AddCommand(ddosxcmd.DDoSXRootCmd(clientFactory, fs))
 	rootCmd.AddCommand(draascmd.DRaaSRootCmd(clientFactory))
 	rootCmd.AddCommand(ecloudcmd.ECloudRootCmd(clientFactory))
+	rootCmd.AddCommand(ecloudflexcmd.ECloudFlexRootCmd(clientFactory))
 	rootCmd.AddCommand(loadtestcmd.LoadTestRootCmd(clientFactory))
 	rootCmd.AddCommand(psscmd.PSSRootCmd(clientFactory, fs))
 	rootCmd.AddCommand(registrarcmd.RegistrarRootCmd(clientFactory))
