@@ -300,4 +300,16 @@ func TestSerializedOutputHandlerProvider_convertField(t *testing.T) {
 
 		assert.Equal(t, "field1value", output.Get("struct1_field1").Value)
 	})
+
+	t.Run("FieldHandler_Expected", func(t *testing.T) {
+		o := NewSerializedOutputHandlerProvider(nil).WithFieldHandler("test_field", func(v *OrderedFields, fieldName string, reflectedValue reflect.Value) *OrderedFields {
+			v.Set("test_field", NewFieldValue("testvaluefromhandler", false))
+			return v
+		})
+		v := "somestring"
+
+		output := o.convertField(NewOrderedFields(), "test_field", reflect.ValueOf(v))
+
+		assert.Equal(t, "testvaluefromhandler", output.Get("test_field").Value)
+	})
 }
