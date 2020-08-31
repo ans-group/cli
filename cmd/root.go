@@ -8,6 +8,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	accountcmd "github.com/ukfast/cli/cmd/account"
+	billingcmd "github.com/ukfast/cli/cmd/billing"
 	ddosxcmd "github.com/ukfast/cli/cmd/ddosx"
 	draascmd "github.com/ukfast/cli/cmd/draas"
 	ecloudcmd "github.com/ukfast/cli/cmd/ecloud"
@@ -65,6 +66,7 @@ func Execute(build build.BuildInfo) {
 	rootCmd.AddCommand(ConfigRootCmd(fs))
 	rootCmd.AddCommand(CompletionRootCmd())
 	rootCmd.AddCommand(accountcmd.AccountRootCmd(clientFactory))
+	rootCmd.AddCommand(billingcmd.BillingRootCmd(clientFactory))
 	rootCmd.AddCommand(ddosxcmd.DDoSXRootCmd(clientFactory, fs))
 	rootCmd.AddCommand(draascmd.DRaaSRootCmd(clientFactory))
 	rootCmd.AddCommand(ecloudcmd.ECloudRootCmd(clientFactory))
