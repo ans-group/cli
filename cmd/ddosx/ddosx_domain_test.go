@@ -165,21 +165,6 @@ func Test_ddosxDomainCreate(t *testing.T) {
 	})
 }
 
-func Test_ddosxDomainDeployCmd_Args(t *testing.T) {
-	t.Run("ValidArgs_NoError", func(t *testing.T) {
-		err := ddosxDomainDeployCmd(nil).Args(nil, []string{"testdomain1.co.uk"})
-
-		assert.Nil(t, err)
-	})
-
-	t.Run("InvalidArgs_Error", func(t *testing.T) {
-		err := ddosxDomainDeployCmd(nil).Args(nil, []string{})
-
-		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
-	})
-}
-
 func Test_ddosxDomainDelete(t *testing.T) {
 	t.Run("SingleDomain", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
@@ -217,6 +202,21 @@ func Test_ddosxDomainDelete(t *testing.T) {
 		test_output.AssertErrorOutput(t, "Error removing domain [testdomain1.co.uk]: test error\n", func() {
 			ddosxDomainDelete(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 		})
+	})
+}
+
+func Test_ddosxDomainDeployCmd_Args(t *testing.T) {
+	t.Run("ValidArgs_NoError", func(t *testing.T) {
+		err := ddosxDomainDeployCmd(nil).Args(nil, []string{"testdomain1.co.uk"})
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("InvalidArgs_Error", func(t *testing.T) {
+		err := ddosxDomainDeployCmd(nil).Args(nil, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing domain", err.Error())
 	})
 }
 
