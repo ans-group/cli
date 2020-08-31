@@ -35,6 +35,20 @@ func (m *MockDDoSXService) EXPECT() *MockDDoSXServiceMockRecorder {
 	return m.recorder
 }
 
+// ActivateDomainDNSRouting mocks base method
+func (m *MockDDoSXService) ActivateDomainDNSRouting(arg0 string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ActivateDomainDNSRouting", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// ActivateDomainDNSRouting indicates an expected call of ActivateDomainDNSRouting
+func (mr *MockDDoSXServiceMockRecorder) ActivateDomainDNSRouting(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ActivateDomainDNSRouting", reflect.TypeOf((*MockDDoSXService)(nil).ActivateDomainDNSRouting), arg0)
+}
+
 // AddDomainCDNConfiguration mocks base method
 func (m *MockDDoSXService) AddDomainCDNConfiguration(arg0 string) error {
 	m.ctrl.T.Helper()
@@ -209,6 +223,20 @@ func (m *MockDDoSXService) CreateSSL(arg0 ddosx.CreateSSLRequest) (string, error
 func (mr *MockDDoSXServiceMockRecorder) CreateSSL(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateSSL", reflect.TypeOf((*MockDDoSXService)(nil).CreateSSL), arg0)
+}
+
+// DeactivateDomainDNSRouting mocks base method
+func (m *MockDDoSXService) DeactivateDomainDNSRouting(arg0 string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeactivateDomainDNSRouting", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeactivateDomainDNSRouting indicates an expected call of DeactivateDomainDNSRouting
+func (mr *MockDDoSXServiceMockRecorder) DeactivateDomainDNSRouting(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeactivateDomainDNSRouting", reflect.TypeOf((*MockDDoSXService)(nil).DeactivateDomainDNSRouting), arg0)
 }
 
 // DeleteDomain mocks base method
