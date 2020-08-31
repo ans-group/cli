@@ -17,6 +17,7 @@ import (
 	psscmd "github.com/ukfast/cli/cmd/pss"
 	registrarcmd "github.com/ukfast/cli/cmd/registrar"
 	safednscmd "github.com/ukfast/cli/cmd/safedns"
+	sharedexchangecmd "github.com/ukfast/cli/cmd/sharedexchange"
 	sslcmd "github.com/ukfast/cli/cmd/ssl"
 	storagecmd "github.com/ukfast/cli/cmd/storage"
 	"github.com/ukfast/cli/internal/pkg/build"
@@ -76,6 +77,7 @@ func Execute(build build.BuildInfo) {
 	rootCmd.AddCommand(psscmd.PSSRootCmd(clientFactory, fs))
 	rootCmd.AddCommand(registrarcmd.RegistrarRootCmd(clientFactory))
 	rootCmd.AddCommand(safednscmd.SafeDNSRootCmd(clientFactory))
+	rootCmd.AddCommand(sharedexchangecmd.SharedExchangeRootCmd(clientFactory))
 	rootCmd.AddCommand(sslcmd.SSLRootCmd(clientFactory, fs))
 	rootCmd.AddCommand(storagecmd.StorageRootCmd(clientFactory))
 
