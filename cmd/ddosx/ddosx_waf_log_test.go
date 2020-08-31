@@ -20,7 +20,7 @@ func Test_ddosxWAFLogList(t *testing.T) {
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
 
-		service.EXPECT().GetWAFLogs(gomock.Any()).Return([]ddosx.WAFLog{}, nil).Times(1)
+		service.EXPECT().GetWAFLogsPaginated(gomock.Any()).Return(&ddosx.PaginatedWAFLog{PaginatedBase: &connection.PaginatedBase{}}, nil).Times(1)
 
 		ddosxWAFLogList(service, &cobra.Command{}, []string{})
 	})
@@ -41,7 +41,7 @@ func Test_ddosxWAFLogList(t *testing.T) {
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
 
-		service.EXPECT().GetWAFLogs(gomock.Eq(*filtering)).Return([]ddosx.WAFLog{}, nil).Times(1)
+		service.EXPECT().GetWAFLogsPaginated(gomock.Eq(*filtering)).Return(&ddosx.PaginatedWAFLog{PaginatedBase: &connection.PaginatedBase{}}, nil).Times(1)
 
 		ddosxWAFLogList(service, cmd, []string{})
 	})
@@ -52,7 +52,7 @@ func Test_ddosxWAFLogList(t *testing.T) {
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
 
-		service.EXPECT().GetWAFLogs(gomock.Any()).Return([]ddosx.WAFLog{}, errors.New("test error"))
+		service.EXPECT().GetWAFLogsPaginated(gomock.Any()).Return(&ddosx.PaginatedWAFLog{PaginatedBase: &connection.PaginatedBase{}}, errors.New("test error"))
 
 		err := ddosxWAFLogList(service, &cobra.Command{}, []string{})
 

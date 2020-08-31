@@ -9,6 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/ukfast/cli/test/mocks"
 	"github.com/ukfast/cli/test/test_output"
+	"github.com/ukfast/sdk-go/pkg/connection"
 	"github.com/ukfast/sdk-go/pkg/service/ddosx"
 )
 
@@ -19,7 +20,7 @@ func Test_ddosxWAFLogMatchList(t *testing.T) {
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
 
-		service.EXPECT().GetWAFLogMatches(gomock.Any()).Return([]ddosx.WAFLogMatch{}, nil).Times(1)
+		service.EXPECT().GetWAFLogMatchesPaginated(gomock.Any()).Return(&ddosx.PaginatedWAFLogMatch{PaginatedBase: &connection.PaginatedBase{}}, nil).Times(1)
 
 		ddosxWAFLogMatchList(service, ddosxWAFLogMatchListCmd(nil), []string{})
 	})
@@ -33,12 +34,12 @@ func Test_ddosxWAFLogMatchList(t *testing.T) {
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
 
-		service.EXPECT().GetWAFLogRequestMatches("abcdef", gomock.Any()).Return([]ddosx.WAFLogMatch{}, nil).Times(1)
+		service.EXPECT().GetWAFLogRequestMatchesPaginated("abcdef", gomock.Any()).Return(&ddosx.PaginatedWAFLogMatch{PaginatedBase: &connection.PaginatedBase{}}, nil).Times(1)
 
 		ddosxWAFLogMatchList(service, cmd, []string{})
 	})
 
-	t.Run("GetWAFLogRequestMatches_ReturnsError", func(t *testing.T) {
+	t.Run("GetWAFLogRequestMatchesPaginatedError_ReturnsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -47,20 +48,20 @@ func Test_ddosxWAFLogMatchList(t *testing.T) {
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
 
-		service.EXPECT().GetWAFLogRequestMatches("abcdef", gomock.Any()).Return([]ddosx.WAFLogMatch{}, errors.New("test error"))
+		service.EXPECT().GetWAFLogRequestMatchesPaginated("abcdef", gomock.Any()).Return(&ddosx.PaginatedWAFLogMatch{PaginatedBase: &connection.PaginatedBase{}}, errors.New("test error"))
 
 		err := ddosxWAFLogMatchList(service, cmd, []string{})
 
 		assert.Equal(t, "Error retrieving WAF log matches: test error", err.Error())
 	})
 
-	t.Run("GetWAFLogMatches_ReturnsError", func(t *testing.T) {
+	t.Run("GetWAFLogMatchesPaginatedError_ReturnsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
 
-		service.EXPECT().GetWAFLogMatches(gomock.Any()).Return([]ddosx.WAFLogMatch{}, errors.New("test error"))
+		service.EXPECT().GetWAFLogMatchesPaginated(gomock.Any()).Return(&ddosx.PaginatedWAFLogMatch{PaginatedBase: &connection.PaginatedBase{}}, errors.New("test error"))
 
 		err := ddosxWAFLogMatchList(service, ddosxWAFLogMatchListCmd(nil), []string{})
 
