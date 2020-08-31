@@ -1,6 +1,7 @@
 package mocks
 
 //go:generate mockgen -package mocks -destination mock_accountservice.go github.com/ukfast/sdk-go/pkg/service/account AccountService
+//go:generate mockgen -package mocks -destination mock_billingservice.go github.com/ukfast/sdk-go/pkg/service/billing BillingService
 //go:generate mockgen -package mocks -destination mock_ddosxservice.go github.com/ukfast/sdk-go/pkg/service/ddosx DDoSXService
 //go:generate mockgen -package mocks -destination mock_ecloudservice.go github.com/ukfast/sdk-go/pkg/service/ecloud ECloudService
 //go:generate mockgen -package mocks -destination mock_safednsservice.go github.com/ukfast/sdk-go/pkg/service/safedns SafeDNSService
