@@ -139,140 +139,165 @@ func TestSerializedOutputHandlerProvider_isIgnoredField(t *testing.T) {
 	})
 }
 
-func TestSerializedOutputHandlerProvider_fieldToString(t *testing.T) {
+func TestSerializedOutputHandlerProvider_convertField(t *testing.T) {
 	t.Run("StringType_ReturnsExpectedString", func(t *testing.T) {
 		o := NewSerializedOutputHandlerProvider(nil)
 		v := "somestring"
 
-		output := o.fieldToString(reflect.ValueOf(v))
+		output := o.convertField(NewOrderedFields(), "test_field", reflect.ValueOf(v))
 
-		assert.Equal(t, "somestring", output)
+		assert.Equal(t, "somestring", output.Get("test_field").Value)
 	})
 
 	t.Run("BoolType_ReturnsExpectedString", func(t *testing.T) {
 		o := NewSerializedOutputHandlerProvider(nil)
 		v := true
 
-		output := o.fieldToString(reflect.ValueOf(v))
+		output := o.convertField(NewOrderedFields(), "test_field", reflect.ValueOf(v))
 
-		assert.Equal(t, "true", output)
+		assert.Equal(t, "true", output.Get("test_field").Value)
 	})
 
 	t.Run("IntType_ReturnsExpectedString", func(t *testing.T) {
 		o := NewSerializedOutputHandlerProvider(nil)
-		v := int(123)
+		v := 123
 
-		output := o.fieldToString(reflect.ValueOf(v))
+		output := o.convertField(NewOrderedFields(), "test_field", reflect.ValueOf(v))
 
-		assert.Equal(t, "123", output)
+		assert.Equal(t, "123", output.Get("test_field").Value)
 	})
 
 	t.Run("Int8Type_ReturnsExpectedString", func(t *testing.T) {
 		o := NewSerializedOutputHandlerProvider(nil)
 		v := int8(123)
 
-		output := o.fieldToString(reflect.ValueOf(v))
+		output := o.convertField(NewOrderedFields(), "test_field", reflect.ValueOf(v))
 
-		assert.Equal(t, "123", output)
+		assert.Equal(t, "123", output.Get("test_field").Value)
 	})
 
 	t.Run("Int16Type_ReturnsExpectedString", func(t *testing.T) {
 		o := NewSerializedOutputHandlerProvider(nil)
 		v := int16(123)
 
-		output := o.fieldToString(reflect.ValueOf(v))
+		output := o.convertField(NewOrderedFields(), "test_field", reflect.ValueOf(v))
 
-		assert.Equal(t, "123", output)
+		assert.Equal(t, "123", output.Get("test_field").Value)
 	})
 
 	t.Run("Int32Type_ReturnsExpectedString", func(t *testing.T) {
 		o := NewSerializedOutputHandlerProvider(nil)
 		v := int32(123)
 
-		output := o.fieldToString(reflect.ValueOf(v))
+		output := o.convertField(NewOrderedFields(), "test_field", reflect.ValueOf(v))
 
-		assert.Equal(t, "123", output)
+		assert.Equal(t, "123", output.Get("test_field").Value)
 	})
 
 	t.Run("Int64Type_ReturnsExpectedString", func(t *testing.T) {
 		o := NewSerializedOutputHandlerProvider(nil)
 		v := int64(123)
 
-		output := o.fieldToString(reflect.ValueOf(v))
+		output := o.convertField(NewOrderedFields(), "test_field", reflect.ValueOf(v))
 
-		assert.Equal(t, "123", output)
+		assert.Equal(t, "123", output.Get("test_field").Value)
 	})
 
 	t.Run("UintType_ReturnsExpectedString", func(t *testing.T) {
 		o := NewSerializedOutputHandlerProvider(nil)
 		v := uint(123)
 
-		output := o.fieldToString(reflect.ValueOf(v))
+		output := o.convertField(NewOrderedFields(), "test_field", reflect.ValueOf(v))
 
-		assert.Equal(t, "123", output)
+		assert.Equal(t, "123", output.Get("test_field").Value)
 	})
 
 	t.Run("Uint8Type_ReturnsExpectedString", func(t *testing.T) {
 		o := NewSerializedOutputHandlerProvider(nil)
 		v := uint8(123)
 
-		output := o.fieldToString(reflect.ValueOf(v))
+		output := o.convertField(NewOrderedFields(), "test_field", reflect.ValueOf(v))
 
-		assert.Equal(t, "123", output)
+		assert.Equal(t, "123", output.Get("test_field").Value)
 	})
 
 	t.Run("Uint16Type_ReturnsExpectedString", func(t *testing.T) {
 		o := NewSerializedOutputHandlerProvider(nil)
 		v := uint16(123)
 
-		output := o.fieldToString(reflect.ValueOf(v))
+		output := o.convertField(NewOrderedFields(), "test_field", reflect.ValueOf(v))
 
-		assert.Equal(t, "123", output)
+		assert.Equal(t, "123", output.Get("test_field").Value)
 	})
 
 	t.Run("Uint32Type_ReturnsExpectedString", func(t *testing.T) {
 		o := NewSerializedOutputHandlerProvider(nil)
 		v := uint32(123)
 
-		output := o.fieldToString(reflect.ValueOf(v))
+		output := o.convertField(NewOrderedFields(), "test_field", reflect.ValueOf(v))
 
-		assert.Equal(t, "123", output)
+		assert.Equal(t, "123", output.Get("test_field").Value)
 	})
 
 	t.Run("Uint64Type_ReturnsExpectedString", func(t *testing.T) {
 		o := NewSerializedOutputHandlerProvider(nil)
 		v := uint64(123)
 
-		output := o.fieldToString(reflect.ValueOf(v))
+		output := o.convertField(NewOrderedFields(), "test_field", reflect.ValueOf(v))
 
-		assert.Equal(t, "123", output)
+		assert.Equal(t, "123", output.Get("test_field").Value)
 	})
 
 	t.Run("Float32Type_ReturnsExpectedString", func(t *testing.T) {
 		o := NewSerializedOutputHandlerProvider(nil)
 		v := 123.4
 
-		output := o.fieldToString(reflect.ValueOf(v))
+		output := o.convertField(NewOrderedFields(), "test_field", reflect.ValueOf(v))
 
-		assert.Equal(t, "123.400000", output)
+		assert.Equal(t, "123.400000", output.Get("test_field").Value)
 	})
 
 	t.Run("Float64Type_ReturnsExpectedString", func(t *testing.T) {
 		o := NewSerializedOutputHandlerProvider(nil)
 		v := float64(123.4)
 
-		output := o.fieldToString(reflect.ValueOf(v))
+		output := o.convertField(NewOrderedFields(), "test_field", reflect.ValueOf(v))
 
-		assert.Equal(t, "123.400000", output)
+		assert.Equal(t, "123.400000", output.Get("test_field").Value)
 	})
 
-	t.Run("UnknownType_ReturnsExpectedString", func(t *testing.T) {
+	t.Run("StructType_ReturnsExpectedString", func(t *testing.T) {
 		o := NewSerializedOutputHandlerProvider(nil)
-		type somestruct struct{}
-		v := somestruct{}
+		type somestruct struct {
+			Field1 string `json:"field1"`
+			Field2 string `json:"field2"`
+		}
+		v := somestruct{
+			Field1: "field1value",
+			Field2: "field2value",
+		}
 
-		output := o.fieldToString(reflect.ValueOf(v))
+		output := o.convertField(NewOrderedFields(), "", reflect.ValueOf(v))
 
-		assert.Equal(t, "{}", output)
+		assert.Equal(t, "field1value", output.Get("field1").Value)
+		assert.Equal(t, "field2value", output.Get("field2").Value)
+	})
+
+	t.Run("NestedStructType_ReturnsExpectedString", func(t *testing.T) {
+		o := NewSerializedOutputHandlerProvider(nil)
+		type somestruct struct {
+			Struct1 struct {
+				Field1 string `json:"field1"`
+			} `json:"struct1"`
+		}
+		v := somestruct{
+			Struct1: struct {
+				Field1 string `json:"field1"`
+			}{Field1: "field1value"},
+		}
+
+		output := o.convertField(NewOrderedFields(), "", reflect.ValueOf(v))
+
+		assert.Equal(t, "field1value", output.Get("struct1_field1").Value)
 	})
 }
