@@ -957,6 +957,51 @@ func (mr *MockECloudServiceMockRecorder) GetSolutionsPaginated(arg0 interface{})
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSolutionsPaginated", reflect.TypeOf((*MockECloudService)(nil).GetSolutionsPaginated), arg0)
 }
 
+// GetVPC mocks base method
+func (m *MockECloudService) GetVPC(arg0 string) (ecloud.VPC, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVPC", arg0)
+	ret0, _ := ret[0].(ecloud.VPC)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVPC indicates an expected call of GetVPC
+func (mr *MockECloudServiceMockRecorder) GetVPC(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPC", reflect.TypeOf((*MockECloudService)(nil).GetVPC), arg0)
+}
+
+// GetVPCs mocks base method
+func (m *MockECloudService) GetVPCs(arg0 connection.APIRequestParameters) ([]ecloud.VPC, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVPCs", arg0)
+	ret0, _ := ret[0].([]ecloud.VPC)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVPCs indicates an expected call of GetVPCs
+func (mr *MockECloudServiceMockRecorder) GetVPCs(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPCs", reflect.TypeOf((*MockECloudService)(nil).GetVPCs), arg0)
+}
+
+// GetVPCsPaginated mocks base method
+func (m *MockECloudService) GetVPCsPaginated(arg0 connection.APIRequestParameters) (*ecloud.PaginatedVPC, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVPCsPaginated", arg0)
+	ret0, _ := ret[0].(*ecloud.PaginatedVPC)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVPCsPaginated indicates an expected call of GetVPCsPaginated
+func (mr *MockECloudServiceMockRecorder) GetVPCsPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPCsPaginated", reflect.TypeOf((*MockECloudService)(nil).GetVPCsPaginated), arg0)
+}
+
 // GetVirtualMachine mocks base method
 func (m *MockECloudService) GetVirtualMachine(arg0 int) (ecloud.VirtualMachine, error) {
 	m.ctrl.T.Helper()
