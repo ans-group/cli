@@ -237,3 +237,11 @@ The CLI supports generating shell completions for the following shells:
 * PowerShell
 
 The commands at `ukfast completion <shell: bash|zsh|powershell>` provide help for installation on different platforms
+
+## eCloud V2 resources
+
+eCloud V2 resource commands are activated by defining the environment variable `UKF_ECLOUD_V2`:
+
+```
+> export UKF_ECLOUD_V2=true
+```
