@@ -52,10 +52,7 @@ func ecloudSiteList(service ecloud.ECloudService, cmd *cobra.Command, args []str
 		return err
 	}
 
-	if cmd.Flags().Changed("state") {
-		filterState, _ := cmd.Flags().GetString("state")
-		params.WithFilter(helper.GetFilteringInferOperator("state", filterState))
-	}
+	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, "state", "state")
 
 	sites, err := service.GetSites(params)
 	if err != nil {

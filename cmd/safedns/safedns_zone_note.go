@@ -60,10 +60,7 @@ func safednsZoneNoteList(service safedns.SafeDNSService, cmd *cobra.Command, arg
 		return err
 	}
 
-	if cmd.Flags().Changed("ip") {
-		filterIP, _ := cmd.Flags().GetString("ip")
-		params.WithFilter(helper.GetFilteringInferOperator("ip", filterIP))
-	}
+	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, "ip", "ip")
 
 	zoneNotes, err := service.GetZoneNotes(args[0], params)
 	if err != nil {

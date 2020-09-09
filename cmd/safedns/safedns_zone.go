@@ -57,10 +57,7 @@ func safednsZoneList(service safedns.SafeDNSService, cmd *cobra.Command, args []
 		return err
 	}
 
-	if cmd.Flags().Changed("name") {
-		filterName, _ := cmd.Flags().GetString("name")
-		params.WithFilter(helper.GetFilteringInferOperator("name", filterName))
-	}
+	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, "name", "name")
 
 	zones, err := service.GetZones(params)
 	if err != nil {

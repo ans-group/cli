@@ -66,20 +66,9 @@ func safednsZoneRecordList(service safedns.SafeDNSService, cmd *cobra.Command, a
 		return err
 	}
 
-	if cmd.Flags().Changed("name") {
-		filterName, _ := cmd.Flags().GetString("name")
-		params.WithFilter(helper.GetFilteringInferOperator("name", filterName))
-	}
-
-	if cmd.Flags().Changed("type") {
-		filterType, _ := cmd.Flags().GetString("type")
-		params.WithFilter(helper.GetFilteringInferOperator("type", filterType))
-	}
-
-	if cmd.Flags().Changed("content") {
-		filterContent, _ := cmd.Flags().GetString("content")
-		params.WithFilter(helper.GetFilteringInferOperator("content", filterContent))
-	}
+	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, "name", "name")
+	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, "type", "type")
+	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, "content", "content")
 
 	zoneRecords, err := service.GetZoneRecords(args[0], params)
 	if err != nil {
