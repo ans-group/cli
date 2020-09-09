@@ -109,6 +109,36 @@ func (mr *MockSSLServiceMockRecorder) GetCertificatesPaginated(arg0 interface{})
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCertificatesPaginated", reflect.TypeOf((*MockSSLService)(nil).GetCertificatesPaginated), arg0)
 }
 
+// GetRecommendations mocks base method
+func (m *MockSSLService) GetRecommendations(arg0 string) (ssl.Recommendations, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetRecommendations", arg0)
+	ret0, _ := ret[0].(ssl.Recommendations)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetRecommendations indicates an expected call of GetRecommendations
+func (mr *MockSSLServiceMockRecorder) GetRecommendations(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRecommendations", reflect.TypeOf((*MockSSLService)(nil).GetRecommendations), arg0)
+}
+
+// GetReport mocks base method
+func (m *MockSSLService) GetReport(arg0 string) (ssl.Report, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetReport", arg0)
+	ret0, _ := ret[0].(ssl.Report)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetReport indicates an expected call of GetReport
+func (mr *MockSSLServiceMockRecorder) GetReport(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetReport", reflect.TypeOf((*MockSSLService)(nil).GetReport), arg0)
+}
+
 // ValidateCertificate mocks base method
 func (m *MockSSLService) ValidateCertificate(arg0 ssl.ValidateRequest) (ssl.CertificateValidation, error) {
 	m.ctrl.T.Helper()
