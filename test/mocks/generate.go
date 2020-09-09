@@ -14,3 +14,4 @@ package mocks
 //go:generate mockgen -package mocks -destination mock_sharedexchangeservice.go github.com/ukfast/sdk-go/pkg/service/sharedexchange SharedExchangeService
 //go:generate mockgen -package mocks -destination mock_sslservice.go github.com/ukfast/sdk-go/pkg/service/ssl SSLService
 //go:generate mockgen -package mocks -destination mock_storageservice.go github.com/ukfast/sdk-go/pkg/service/storage StorageService
+//go:generate mockgen -package mocks -destination mock_threatmonitoring.go github.com/ukfast/sdk-go/pkg/service/threatmonitoring ThreatMonitoringService

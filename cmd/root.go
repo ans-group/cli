@@ -20,6 +20,7 @@ import (
 	sharedexchangecmd "github.com/ukfast/cli/cmd/sharedexchange"
 	sslcmd "github.com/ukfast/cli/cmd/ssl"
 	storagecmd "github.com/ukfast/cli/cmd/storage"
+	threatmonitoringcmd "github.com/ukfast/cli/cmd/threatmonitoring"
 	"github.com/ukfast/cli/internal/pkg/build"
 	"github.com/ukfast/cli/internal/pkg/factory"
 	"github.com/ukfast/cli/internal/pkg/output"
@@ -80,6 +81,7 @@ func Execute(build build.BuildInfo) {
 	rootCmd.AddCommand(sharedexchangecmd.SharedExchangeRootCmd(clientFactory))
 	rootCmd.AddCommand(sslcmd.SSLRootCmd(clientFactory, fs))
 	rootCmd.AddCommand(storagecmd.StorageRootCmd(clientFactory))
+	rootCmd.AddCommand(threatmonitoringcmd.ThreatMonitoringRootCmd(clientFactory))
 
 	if err := rootCmd.Execute(); err != nil {
 		output.Fatal(err.Error())
