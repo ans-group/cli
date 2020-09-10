@@ -75,7 +75,7 @@ func Test_threatmonitoringAgentShow(t *testing.T) {
 
 		service := mocks.NewMockThreatMonitoringService(mockCtrl)
 
-		service.EXPECT().GetAgent(123).Return(threatmonitoring.Agent{}, nil).Times(1)
+		service.EXPECT().GetAgent("123").Return(threatmonitoring.Agent{}, nil).Times(1)
 
 		threatmonitoringAgentShow(service, &cobra.Command{}, []string{"123"})
 	})
@@ -87,22 +87,11 @@ func Test_threatmonitoringAgentShow(t *testing.T) {
 		service := mocks.NewMockThreatMonitoringService(mockCtrl)
 
 		gomock.InOrder(
-			service.EXPECT().GetAgent(123).Return(threatmonitoring.Agent{}, nil),
-			service.EXPECT().GetAgent(456).Return(threatmonitoring.Agent{}, nil),
+			service.EXPECT().GetAgent("123").Return(threatmonitoring.Agent{}, nil),
+			service.EXPECT().GetAgent("456").Return(threatmonitoring.Agent{}, nil),
 		)
 
 		threatmonitoringAgentShow(service, &cobra.Command{}, []string{"123", "456"})
-	})
-
-	t.Run("GetAgentID_OutputsError", func(t *testing.T) {
-		mockCtrl := gomock.NewController(t)
-		defer mockCtrl.Finish()
-
-		service := mocks.NewMockThreatMonitoringService(mockCtrl)
-
-		test_output.AssertErrorOutput(t, "Invalid agent ID [abc]\n", func() {
-			threatmonitoringAgentShow(service, &cobra.Command{}, []string{"abc"})
-		})
 	})
 
 	t.Run("GetAgentError_OutputsError", func(t *testing.T) {
@@ -111,7 +100,7 @@ func Test_threatmonitoringAgentShow(t *testing.T) {
 
 		service := mocks.NewMockThreatMonitoringService(mockCtrl)
 
-		service.EXPECT().GetAgent(123).Return(threatmonitoring.Agent{}, errors.New("test error"))
+		service.EXPECT().GetAgent("123").Return(threatmonitoring.Agent{}, errors.New("test error"))
 
 		test_output.AssertErrorOutput(t, "Error retrieving agent [123]: test error\n", func() {
 			threatmonitoringAgentShow(service, &cobra.Command{}, []string{"123"})

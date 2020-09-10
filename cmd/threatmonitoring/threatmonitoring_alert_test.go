@@ -10,6 +10,7 @@ import (
 	"github.com/ukfast/cli/internal/pkg/clierrors"
 	"github.com/ukfast/cli/test/mocks"
 	"github.com/ukfast/cli/test/test_output"
+	"github.com/ukfast/sdk-go/pkg/connection"
 	"github.com/ukfast/sdk-go/pkg/service/threatmonitoring"
 )
 
@@ -20,7 +21,7 @@ func Test_threatmonitoringAlertList(t *testing.T) {
 
 		service := mocks.NewMockThreatMonitoringService(mockCtrl)
 
-		service.EXPECT().GetAlerts(gomock.Any()).Return([]threatmonitoring.Alert{}, nil).Times(1)
+		service.EXPECT().GetAlertsPaginated(gomock.Any()).Return(&threatmonitoring.PaginatedAlert{PaginatedBase: &connection.PaginatedBase{}}, nil).Times(1)
 
 		threatmonitoringAlertList(service, &cobra.Command{}, []string{})
 	})
@@ -45,7 +46,7 @@ func Test_threatmonitoringAlertList(t *testing.T) {
 
 		service := mocks.NewMockThreatMonitoringService(mockCtrl)
 
-		service.EXPECT().GetAlerts(gomock.Any()).Return([]threatmonitoring.Alert{}, errors.New("test error")).Times(1)
+		service.EXPECT().GetAlertsPaginated(gomock.Any()).Return(&threatmonitoring.PaginatedAlert{PaginatedBase: &connection.PaginatedBase{}}, errors.New("test error")).Times(1)
 
 		err := threatmonitoringAlertList(service, &cobra.Command{}, []string{})
 
@@ -75,7 +76,7 @@ func Test_threatmonitoringAlertShow(t *testing.T) {
 
 		service := mocks.NewMockThreatMonitoringService(mockCtrl)
 
-		service.EXPECT().GetAlert(123).Return(threatmonitoring.Alert{}, nil).Times(1)
+		service.EXPECT().GetAlert("123").Return(threatmonitoring.Alert{}, nil).Times(1)
 
 		threatmonitoringAlertShow(service, &cobra.Command{}, []string{"123"})
 	})
@@ -87,22 +88,11 @@ func Test_threatmonitoringAlertShow(t *testing.T) {
 		service := mocks.NewMockThreatMonitoringService(mockCtrl)
 
 		gomock.InOrder(
-			service.EXPECT().GetAlert(123).Return(threatmonitoring.Alert{}, nil),
-			service.EXPECT().GetAlert(456).Return(threatmonitoring.Alert{}, nil),
+			service.EXPECT().GetAlert("123").Return(threatmonitoring.Alert{}, nil),
+			service.EXPECT().GetAlert("456").Return(threatmonitoring.Alert{}, nil),
 		)
 
 		threatmonitoringAlertShow(service, &cobra.Command{}, []string{"123", "456"})
-	})
-
-	t.Run("GetAlertID_OutputsError", func(t *testing.T) {
-		mockCtrl := gomock.NewController(t)
-		defer mockCtrl.Finish()
-
-		service := mocks.NewMockThreatMonitoringService(mockCtrl)
-
-		test_output.AssertErrorOutput(t, "Invalid alert ID [abc]\n", func() {
-			threatmonitoringAlertShow(service, &cobra.Command{}, []string{"abc"})
-		})
 	})
 
 	t.Run("GetAlertError_OutputsError", func(t *testing.T) {
@@ -111,7 +101,7 @@ func Test_threatmonitoringAlertShow(t *testing.T) {
 
 		service := mocks.NewMockThreatMonitoringService(mockCtrl)
 
-		service.EXPECT().GetAlert(123).Return(threatmonitoring.Alert{}, errors.New("test error"))
+		service.EXPECT().GetAlert("123").Return(threatmonitoring.Alert{}, errors.New("test error"))
 
 		test_output.AssertErrorOutput(t, "Error retrieving alert [123]: test error\n", func() {
 			threatmonitoringAlertShow(service, &cobra.Command{}, []string{"123"})
