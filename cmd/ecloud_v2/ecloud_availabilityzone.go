@@ -11,41 +11,41 @@ import (
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
-func ecloudV2VPCRootCmd(f factory.ClientFactory) *cobra.Command {
+func ecloudAvailabilityZoneRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "vpc",
-		Short: "sub-commands relating to vpcs",
+		Short: "sub-commands relating to availability zones",
 	}
 
 	// Child commands
-	cmd.AddCommand(ecloudV2VPCListCmd(f))
-	cmd.AddCommand(ecloudV2VPCShowCmd(f))
+	cmd.AddCommand(ecloudAvailabilityZoneListCmd(f))
+	cmd.AddCommand(ecloudAvailabilityZoneShowCmd(f))
 
 	return cmd
 }
 
-func ecloudV2VPCListCmd(f factory.ClientFactory) *cobra.Command {
+func ecloudAvailabilityZoneListCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "list",
-		Short:   "Lists vpcs",
-		Long:    "This command lists vpcs",
-		Example: "ukfast ecloud vpc list",
+		Short:   "Lists availability zones",
+		Long:    "This command lists availability zones",
+		Example: "ukfast ecloud az list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
 				return err
 			}
 
-			return ecloudV2VPCList(c.ECloudService(), cmd, args)
+			return ecloudAvailabilityZoneList(c.ECloudService(), cmd, args)
 		},
 	}
 
-	cmd.Flags().String("name", "", "VPC name for filtering")
+	cmd.Flags().String("name", "", "Availability zone name for filtering")
 
 	return cmd
 }
 
-func ecloudV2VPCList(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
+func ecloudAvailabilityZoneList(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		return err
@@ -56,15 +56,15 @@ func ecloudV2VPCList(service ecloud.ECloudService, cmd *cobra.Command, args []st
 		params.WithFilter(helper.GetFilteringInferOperator("name", filterName))
 	}
 
-	vpcs, err := service.GetVPCs(params)
+	vpcs, err := service.GetAvailabilityZones(params)
 	if err != nil {
 		return fmt.Errorf("Error retrieving vpcs: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudV2VPCsProvider(vpcs))
+	return output.CommandOutput(cmd, OutputECloudAvailabilityZonesProvider(vpcs))
 }
 
-func ecloudV2VPCShowCmd(f factory.ClientFactory) *cobra.Command {
+func ecloudAvailabilityZoneShowCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
 		Use:     "show <vpc: id>...",
 		Short:   "Shows a vpc",
@@ -83,15 +83,15 @@ func ecloudV2VPCShowCmd(f factory.ClientFactory) *cobra.Command {
 				return err
 			}
 
-			return ecloudV2VPCShow(c.ECloudService(), cmd, args)
+			return ecloudAvailabilityZoneShow(c.ECloudService(), cmd, args)
 		},
 	}
 }
 
-func ecloudV2VPCShow(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
-	var vpcs []ecloud.VPC
+func ecloudAvailabilityZoneShow(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
+	var vpcs []ecloud.AvailabilityZone
 	for _, arg := range args {
-		vpc, err := service.GetVPC(arg)
+		vpc, err := service.GetAvailabilityZone(arg)
 		if err != nil {
 			output.OutputWithErrorLevelf("Error retrieving vpc [%s]: %s", arg, err)
 			continue
@@ -100,5 +100,5 @@ func ecloudV2VPCShow(service ecloud.ECloudService, cmd *cobra.Command, args []st
 		vpcs = append(vpcs, vpc)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudV2VPCsProvider(vpcs))
+	return output.CommandOutput(cmd, OutputECloudAvailabilityZonesProvider(vpcs))
 }

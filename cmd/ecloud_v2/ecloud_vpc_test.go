@@ -13,7 +13,7 @@ import (
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
-func Test_ecloudV2VPCList(t *testing.T) {
+func Test_ecloudVPCList(t *testing.T) {
 	t.Run("DefaultRetrieve", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -22,7 +22,7 @@ func Test_ecloudV2VPCList(t *testing.T) {
 
 		service.EXPECT().GetVPCs(gomock.Any()).Return([]ecloud.VPC{}, nil).Times(1)
 
-		ecloudV2VPCList(service, &cobra.Command{}, []string{})
+		ecloudVPCList(service, &cobra.Command{}, []string{})
 	})
 
 	t.Run("MalformedFlag_ReturnsError", func(t *testing.T) {
@@ -33,7 +33,7 @@ func Test_ecloudV2VPCList(t *testing.T) {
 		cmd := &cobra.Command{}
 		cmd.Flags().StringArray("filter", []string{"invalidfilter"}, "")
 
-		err := ecloudV2VPCList(service, cmd, []string{})
+		err := ecloudVPCList(service, cmd, []string{})
 
 		assert.IsType(t, &clierrors.ErrInvalidFlagValue{}, err)
 	})
@@ -47,28 +47,28 @@ func Test_ecloudV2VPCList(t *testing.T) {
 
 		service.EXPECT().GetVPCs(gomock.Any()).Return([]ecloud.VPC{}, errors.New("test error")).Times(1)
 
-		err := ecloudV2VPCList(service, &cobra.Command{}, []string{})
+		err := ecloudVPCList(service, &cobra.Command{}, []string{})
 
 		assert.Equal(t, "Error retrieving vpcs: test error", err.Error())
 	})
 }
 
-func Test_ecloudV2VPCShowCmd_Args(t *testing.T) {
+func Test_ecloudVPCShowCmd_Args(t *testing.T) {
 	t.Run("ValidArgs_NoError", func(t *testing.T) {
-		err := ecloudV2VPCShowCmd(nil).Args(nil, []string{"vpc-abcdef12"})
+		err := ecloudVPCShowCmd(nil).Args(nil, []string{"vpc-abcdef12"})
 
 		assert.Nil(t, err)
 	})
 
 	t.Run("InvalidArgs_Error", func(t *testing.T) {
-		err := ecloudV2VPCShowCmd(nil).Args(nil, []string{})
+		err := ecloudVPCShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
 		assert.Equal(t, "Missing vpc", err.Error())
 	})
 }
 
-func Test_ecloudV2VPCShow(t *testing.T) {
+func Test_ecloudVPCShow(t *testing.T) {
 	t.Run("SingleVPC", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -77,7 +77,7 @@ func Test_ecloudV2VPCShow(t *testing.T) {
 
 		service.EXPECT().GetVPC("vpc-abcdef12").Return(ecloud.VPC{}, nil).Times(1)
 
-		ecloudV2VPCShow(service, &cobra.Command{}, []string{"vpc-abcdef12"})
+		ecloudVPCShow(service, &cobra.Command{}, []string{"vpc-abcdef12"})
 	})
 
 	t.Run("MultipleVPCs", func(t *testing.T) {
@@ -91,7 +91,7 @@ func Test_ecloudV2VPCShow(t *testing.T) {
 			service.EXPECT().GetVPC("vpc-abcdef23").Return(ecloud.VPC{}, nil),
 		)
 
-		ecloudV2VPCShow(service, &cobra.Command{}, []string{"vpc-abcdef12", "vpc-abcdef23"})
+		ecloudVPCShow(service, &cobra.Command{}, []string{"vpc-abcdef12", "vpc-abcdef23"})
 	})
 
 	t.Run("GetVPCError_OutputsError", func(t *testing.T) {
@@ -103,7 +103,7 @@ func Test_ecloudV2VPCShow(t *testing.T) {
 		service.EXPECT().GetVPC("vpc-abcdef12").Return(ecloud.VPC{}, errors.New("test error"))
 
 		test_output.AssertErrorOutput(t, "Error retrieving vpc [vpc-abcdef12]: test error\n", func() {
-			ecloudV2VPCShow(service, &cobra.Command{}, []string{"vpc-abcdef12"})
+			ecloudVPCShow(service, &cobra.Command{}, []string{"vpc-abcdef12"})
 		})
 	})
 }
