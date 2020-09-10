@@ -50,7 +50,7 @@ func sslRecommendationsShow(service ssl.SSLService, cmd *cobra.Command, args []s
 	for _, arg := range args {
 		recommendations, err := service.GetRecommendations(arg)
 		if err != nil {
-			output.OutputWithErrorLevelf("Error retrieving SSL recommendations for [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving SSL recommendations for domain [%s]: %s", arg, err)
 			continue
 		}
 
