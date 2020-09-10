@@ -71,3 +71,11 @@ func OutputSSLCertificatesPrivateKeysProvider(certificatesPrivateKey []ssl.Certi
 func OutputSSLCertificateValidationsProvider(validations []ssl.CertificateValidation) output.OutputHandlerProvider {
 	return output.NewSerializedOutputHandlerProvider(validations).WithDefaultFields([]string{"domains", "expires_at"})
 }
+
+func OutputSSLRecommendationsProvider(recommendationsSlice []ssl.Recommendations) output.OutputHandlerProvider {
+	return output.NewSerializedOutputHandlerProvider(recommendationsSlice).WithDefaultFields([]string{"level", "messages"})
+}
+
+func OutputSSLReportsProvider(reports []ssl.Report) output.OutputHandlerProvider {
+	return output.NewSerializedOutputHandlerProvider(reports).WithDefaultFields([]string{"certificate_name", "certificate_expiring", "certificate_expired", "chain_intact"})
+}

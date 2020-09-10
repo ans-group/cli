@@ -54,10 +54,7 @@ func ddosxWAFLogList(service ddosx.DDoSXService, cmd *cobra.Command, args []stri
 		return err
 	}
 
-	if cmd.Flags().Changed("domain") {
-		filterDomain, _ := cmd.Flags().GetString("domain")
-		params.WithFilter(helper.GetFilteringInferOperator("domain", filterDomain))
-	}
+	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, "domain", "domain")
 
 	paginatedLogs, err := service.GetWAFLogsPaginated(params)
 	if err != nil {

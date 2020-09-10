@@ -22,6 +22,8 @@ func SSLRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 
 	// Child root commands
 	cmd.AddCommand(sslCertificateRootCmd(f))
+	cmd.AddCommand(sslRecommendationsRootCmd(f))
+	cmd.AddCommand(sslReportRootCmd(f))
 
 	return cmd
 }

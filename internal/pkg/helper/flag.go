@@ -13,8 +13,8 @@ import (
 	"github.com/ukfast/sdk-go/pkg/connection"
 )
 
-// InferTypeFromStringFlag will return a int, bool or string, based on value of flag
-func InferTypeFromStringFlag(flag string) interface{} {
+// InferTypeFromStringFlagValue will return a int, bool or string, based on value of flag
+func InferTypeFromStringFlagValue(flag string) interface{} {
 	intValue, err := strconv.Atoi(flag)
 	if err == nil {
 		return intValue
@@ -52,12 +52,12 @@ func inferOperatorFromValue(value string) connection.APIRequestFilteringOperator
 	return connection.EQOperator
 }
 
-// GetFilteringArrayFromStringArrayFlag retrieves an array of APIRequestFiltering structs for given
+// GetFilteringArrayFromStringArrayFlagValue retrieves an array of APIRequestFiltering structs for given
 // filtering strings
-func GetFilteringArrayFromStringArrayFlag(filters []string) ([]connection.APIRequestFiltering, error) {
+func GetFilteringArrayFromStringArrayFlagValue(filters []string) ([]connection.APIRequestFiltering, error) {
 	var filtering []connection.APIRequestFiltering
 	for _, filter := range filters {
-		f, err := GetFilteringFromStringFlag(filter)
+		f, err := GetFilteringFromStringFlagValue(filter)
 		if err != nil {
 			return filtering, clierrors.NewErrInvalidFlagValue("filter", filter, err)
 		}
@@ -68,12 +68,12 @@ func GetFilteringArrayFromStringArrayFlag(filters []string) ([]connection.APIReq
 	return filtering, nil
 }
 
-// GetFilteringFromStringFlag retrieves a APIRequestFiltering struct from given filtering
+// GetFilteringFromStringFlagValue retrieves a APIRequestFiltering struct from given filtering
 // string. This function expects a string in the following format (with optional :operator): propertyname:operator=value,
 // Valid examples:
 // name:eq=something
 // name=something
-func GetFilteringFromStringFlag(filter string) (connection.APIRequestFiltering, error) {
+func GetFilteringFromStringFlagValue(filter string) (connection.APIRequestFiltering, error) {
 	filtering := connection.APIRequestFiltering{}
 
 	if filter == "" {
@@ -127,8 +127,8 @@ func GetFilteringFromStringFlag(filter string) (connection.APIRequestFiltering, 
 	return filtering, nil
 }
 
-// GetSortingFromStringFlag return an APIRequestSorting struct from given sorting string flag
-func GetSortingFromStringFlag(sort string) connection.APIRequestSorting {
+// GetSortingFromStringFlagValue return an APIRequestSorting struct from given sorting string flag
+func GetSortingFromStringFlagValue(sort string) connection.APIRequestSorting {
 	if sort == "" {
 		return connection.APIRequestSorting{}
 	}
@@ -146,9 +146,10 @@ func GetSortingFromStringFlag(sort string) connection.APIRequestSorting {
 	}
 }
 
+// GetAPIRequestParametersFromFlags returns an APIRequestParameters populated from global flags
 func GetAPIRequestParametersFromFlags(cmd *cobra.Command) (connection.APIRequestParameters, error) {
 	flagFilter, _ := cmd.Flags().GetStringArray("filter")
-	filtering, err := GetFilteringArrayFromStringArrayFlag(flagFilter)
+	filtering, err := GetFilteringArrayFromStringArrayFlagValue(flagFilter)
 	if err != nil {
 		return connection.APIRequestParameters{}, err
 	}
@@ -157,13 +158,20 @@ func GetAPIRequestParametersFromFlags(cmd *cobra.Command) (connection.APIRequest
 	flagPage, _ := cmd.Flags().GetInt("page")
 
 	return connection.APIRequestParameters{
-		Sorting:   GetSortingFromStringFlag(flagSort),
+		Sorting:   GetSortingFromStringFlagValue(flagSort),
 		Filtering: filtering,
 		Pagination: connection.APIRequestPagination{
 			PerPage: viper.GetInt("api_pagination_perpage"),
 			Page:    flagPage,
 		},
 	}, nil
+}
+
+func HydrateAPIRequestParametersWithStringFilterFlag(p *connection.APIRequestParameters, cmd *cobra.Command, flagName string, filterPropertyName string) {
+	if cmd.Flags().Changed(flagName) {
+		flagValue, _ := cmd.Flags().GetString(flagName)
+		p.WithFilter(GetFilteringInferOperator(filterPropertyName, flagValue))
+	}
 }
 
 func GetContentsFromFilePathFlag(cmd *cobra.Command, fs afero.Fs, filePathFlag string) (string, error) {

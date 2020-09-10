@@ -60,10 +60,7 @@ func ddosxDomainPropertyList(service ddosx.DDoSXService, cmd *cobra.Command, arg
 		return err
 	}
 
-	if cmd.Flags().Changed("name") {
-		filterName, _ := cmd.Flags().GetString("name")
-		params.WithFilter(helper.GetFilteringInferOperator("name", filterName))
-	}
+	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, "name", "name")
 
 	properties, err := service.GetDomainProperties(args[0], params)
 	if err != nil {
@@ -156,7 +153,7 @@ func ddosxDomainPropertyUpdate(service ddosx.DDoSXService, cmd *cobra.Command, f
 
 	if cmd.Flags().Changed("value") {
 		value, _ := cmd.Flags().GetString("value")
-		updateRequest.Value = helper.InferTypeFromStringFlag(value)
+		updateRequest.Value = helper.InferTypeFromStringFlagValue(value)
 	} else if cmd.Flags().Changed("value-file") {
 		var err error
 		updateRequest.Value, err = helper.GetContentsFromFilePathFlag(cmd, fs, "value-file")
