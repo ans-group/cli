@@ -15,6 +15,7 @@ func ECloudV2RootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.AddCommand(ecloudVPCRootCmd(f))
 	cmd.AddCommand(ecloudAvailabilityZoneRootCmd(f))
 	cmd.AddCommand(ecloudNetworkRootCmd(f))
+	cmd.AddCommand(ecloudDHCPRootCmd(f))
 
 	return cmd
 }

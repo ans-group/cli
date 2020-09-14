@@ -16,3 +16,7 @@ func OutputECloudAvailabilityZonesProvider(azs []ecloud.AvailabilityZone) output
 func OutputECloudNetworksProvider(networks []ecloud.Network) output.OutputHandlerProvider {
 	return output.NewSerializedOutputHandlerProvider(networks).WithDefaultFields([]string{"id", "name", "router_id"})
 }
+
+func OutputECloudDHCPsProvider(dhcps []ecloud.DHCP) output.OutputHandlerProvider {
+	return output.NewSerializedOutputHandlerProvider(dhcps).WithDefaultFields([]string{"id", "name", "vpc_id", "availability_zone_id"})
+}

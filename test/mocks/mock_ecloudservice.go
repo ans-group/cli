@@ -372,6 +372,51 @@ func (mr *MockECloudServiceMockRecorder) GetCredits(arg0 interface{}) *gomock.Ca
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCredits", reflect.TypeOf((*MockECloudService)(nil).GetCredits), arg0)
 }
 
+// GetDHCP mocks base method
+func (m *MockECloudService) GetDHCP(arg0 string) (ecloud.DHCP, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetDHCP", arg0)
+	ret0, _ := ret[0].(ecloud.DHCP)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetDHCP indicates an expected call of GetDHCP
+func (mr *MockECloudServiceMockRecorder) GetDHCP(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDHCP", reflect.TypeOf((*MockECloudService)(nil).GetDHCP), arg0)
+}
+
+// GetDHCPs mocks base method
+func (m *MockECloudService) GetDHCPs(arg0 connection.APIRequestParameters) ([]ecloud.DHCP, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetDHCPs", arg0)
+	ret0, _ := ret[0].([]ecloud.DHCP)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetDHCPs indicates an expected call of GetDHCPs
+func (mr *MockECloudServiceMockRecorder) GetDHCPs(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDHCPs", reflect.TypeOf((*MockECloudService)(nil).GetDHCPs), arg0)
+}
+
+// GetDHCPsPaginated mocks base method
+func (m *MockECloudService) GetDHCPsPaginated(arg0 connection.APIRequestParameters) (*ecloud.PaginatedDHCP, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetDHCPsPaginated", arg0)
+	ret0, _ := ret[0].(*ecloud.PaginatedDHCP)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetDHCPsPaginated indicates an expected call of GetDHCPsPaginated
+func (mr *MockECloudServiceMockRecorder) GetDHCPsPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDHCPsPaginated", reflect.TypeOf((*MockECloudService)(nil).GetDHCPsPaginated), arg0)
+}
+
 // GetDatastore mocks base method
 func (m *MockECloudService) GetDatastore(arg0 int) (ecloud.Datastore, error) {
 	m.ctrl.T.Helper()
