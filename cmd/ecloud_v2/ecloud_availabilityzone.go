@@ -53,23 +53,23 @@ func ecloudAvailabilityZoneList(service ecloud.ECloudService, cmd *cobra.Command
 
 	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, "name", "name")
 
-	vpcs, err := service.GetAvailabilityZones(params)
+	azs, err := service.GetAvailabilityZones(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving vpcs: %s", err)
+		return fmt.Errorf("Error retrieving availability zones: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudAvailabilityZonesProvider(vpcs))
+	return output.CommandOutput(cmd, OutputECloudAvailabilityZonesProvider(azs))
 }
 
 func ecloudAvailabilityZoneShowCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
-		Use:     "show <vpc: id>...",
-		Short:   "Shows a vpc",
-		Long:    "This command shows one or more vpcs",
-		Example: "ukfast ecloud vpc show 123",
+		Use:     "show <az: id>...",
+		Short:   "Shows an availability zone",
+		Long:    "This command shows one or more availability zones",
+		Example: "ukfast ecloud az show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing vpc")
+				return errors.New("Missing availability zone")
 			}
 
 			return nil
@@ -86,16 +86,16 @@ func ecloudAvailabilityZoneShowCmd(f factory.ClientFactory) *cobra.Command {
 }
 
 func ecloudAvailabilityZoneShow(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
-	var vpcs []ecloud.AvailabilityZone
+	var azs []ecloud.AvailabilityZone
 	for _, arg := range args {
-		vpc, err := service.GetAvailabilityZone(arg)
+		az, err := service.GetAvailabilityZone(arg)
 		if err != nil {
-			output.OutputWithErrorLevelf("Error retrieving vpc [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving availability zone [%s]: %s", arg, err)
 			continue
 		}
 
-		vpcs = append(vpcs, vpc)
+		azs = append(azs, az)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudAvailabilityZonesProvider(vpcs))
+	return output.CommandOutput(cmd, OutputECloudAvailabilityZonesProvider(azs))
 }
