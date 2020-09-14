@@ -522,6 +522,51 @@ func (mr *MockECloudServiceMockRecorder) GetHostsPaginated(arg0 interface{}) *go
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetHostsPaginated", reflect.TypeOf((*MockECloudService)(nil).GetHostsPaginated), arg0)
 }
 
+// GetNetwork mocks base method
+func (m *MockECloudService) GetNetwork(arg0 string) (ecloud.Network, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetNetwork", arg0)
+	ret0, _ := ret[0].(ecloud.Network)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetNetwork indicates an expected call of GetNetwork
+func (mr *MockECloudServiceMockRecorder) GetNetwork(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetNetwork", reflect.TypeOf((*MockECloudService)(nil).GetNetwork), arg0)
+}
+
+// GetNetworks mocks base method
+func (m *MockECloudService) GetNetworks(arg0 connection.APIRequestParameters) ([]ecloud.Network, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetNetworks", arg0)
+	ret0, _ := ret[0].([]ecloud.Network)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetNetworks indicates an expected call of GetNetworks
+func (mr *MockECloudServiceMockRecorder) GetNetworks(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetNetworks", reflect.TypeOf((*MockECloudService)(nil).GetNetworks), arg0)
+}
+
+// GetNetworksPaginated mocks base method
+func (m *MockECloudService) GetNetworksPaginated(arg0 connection.APIRequestParameters) (*ecloud.PaginatedNetwork, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetNetworksPaginated", arg0)
+	ret0, _ := ret[0].(*ecloud.PaginatedNetwork)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetNetworksPaginated indicates an expected call of GetNetworksPaginated
+func (mr *MockECloudServiceMockRecorder) GetNetworksPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetNetworksPaginated", reflect.TypeOf((*MockECloudService)(nil).GetNetworksPaginated), arg0)
+}
+
 // GetPod mocks base method
 func (m *MockECloudService) GetPod(arg0 int) (ecloud.Pod, error) {
 	m.ctrl.T.Helper()

@@ -12,3 +12,7 @@ func OutputECloudVPCsProvider(vpcs []ecloud.VPC) output.OutputHandlerProvider {
 func OutputECloudAvailabilityZonesProvider(azs []ecloud.AvailabilityZone) output.OutputHandlerProvider {
 	return output.NewSerializedOutputHandlerProvider(azs).WithDefaultFields([]string{"id", "name", "code"})
 }
+
+func OutputECloudNetworksProvider(networks []ecloud.Network) output.OutputHandlerProvider {
+	return output.NewSerializedOutputHandlerProvider(networks).WithDefaultFields([]string{"id", "name", "router_id"})
+}
