@@ -312,6 +312,51 @@ func (mr *MockECloudServiceMockRecorder) GetAppliancesPaginated(arg0 interface{}
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAppliancesPaginated", reflect.TypeOf((*MockECloudService)(nil).GetAppliancesPaginated), arg0)
 }
 
+// GetAvailabilityZone mocks base method
+func (m *MockECloudService) GetAvailabilityZone(arg0 string) (ecloud.AvailabilityZone, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetAvailabilityZone", arg0)
+	ret0, _ := ret[0].(ecloud.AvailabilityZone)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAvailabilityZone indicates an expected call of GetAvailabilityZone
+func (mr *MockECloudServiceMockRecorder) GetAvailabilityZone(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAvailabilityZone", reflect.TypeOf((*MockECloudService)(nil).GetAvailabilityZone), arg0)
+}
+
+// GetAvailabilityZones mocks base method
+func (m *MockECloudService) GetAvailabilityZones(arg0 connection.APIRequestParameters) ([]ecloud.AvailabilityZone, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetAvailabilityZones", arg0)
+	ret0, _ := ret[0].([]ecloud.AvailabilityZone)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAvailabilityZones indicates an expected call of GetAvailabilityZones
+func (mr *MockECloudServiceMockRecorder) GetAvailabilityZones(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAvailabilityZones", reflect.TypeOf((*MockECloudService)(nil).GetAvailabilityZones), arg0)
+}
+
+// GetAvailabilityZonesPaginated mocks base method
+func (m *MockECloudService) GetAvailabilityZonesPaginated(arg0 connection.APIRequestParameters) (*ecloud.PaginatedAvailabilityZone, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetAvailabilityZonesPaginated", arg0)
+	ret0, _ := ret[0].(*ecloud.PaginatedAvailabilityZone)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAvailabilityZonesPaginated indicates an expected call of GetAvailabilityZonesPaginated
+func (mr *MockECloudServiceMockRecorder) GetAvailabilityZonesPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAvailabilityZonesPaginated", reflect.TypeOf((*MockECloudService)(nil).GetAvailabilityZonesPaginated), arg0)
+}
+
 // GetCredits mocks base method
 func (m *MockECloudService) GetCredits(arg0 connection.APIRequestParameters) ([]account.Credit, error) {
 	m.ctrl.T.Helper()
@@ -748,10 +793,10 @@ func (mr *MockECloudServiceMockRecorder) GetSolutionHostsPaginated(arg0, arg1 in
 }
 
 // GetSolutionNetworks mocks base method
-func (m *MockECloudService) GetSolutionNetworks(arg0 int, arg1 connection.APIRequestParameters) ([]ecloud.Network, error) {
+func (m *MockECloudService) GetSolutionNetworks(arg0 int, arg1 connection.APIRequestParameters) ([]ecloud.V1Network, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetSolutionNetworks", arg0, arg1)
-	ret0, _ := ret[0].([]ecloud.Network)
+	ret0, _ := ret[0].([]ecloud.V1Network)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

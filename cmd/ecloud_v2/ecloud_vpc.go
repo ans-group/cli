@@ -51,10 +51,7 @@ func ecloudVPCList(service ecloud.ECloudService, cmd *cobra.Command, args []stri
 		return err
 	}
 
-	if cmd.Flags().Changed("name") {
-		filterName, _ := cmd.Flags().GetString("name")
-		params.WithFilter(helper.GetFilteringInferOperator("name", filterName))
-	}
+	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, "name", "name")
 
 	vpcs, err := service.GetVPCs(params)
 	if err != nil {
