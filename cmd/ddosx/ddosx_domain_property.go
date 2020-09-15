@@ -60,7 +60,7 @@ func ddosxDomainPropertyList(service ddosx.DDoSXService, cmd *cobra.Command, arg
 		return err
 	}
 
-	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, "name", "name")
+	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, helper.NewStringFilterFlag("name", "name"))
 
 	properties, err := service.GetDomainProperties(args[0], params)
 	if err != nil {

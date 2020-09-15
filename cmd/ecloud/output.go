@@ -200,7 +200,7 @@ func OutputECloudTemplatesProvider(templates []ecloud.Template) output.OutputHan
 	)
 }
 
-func OutputECloudNetworksProvider(networks []ecloud.Network) output.OutputHandlerProvider {
+func OutputECloudV1NetworksProvider(networks []ecloud.V1Network) output.OutputHandlerProvider {
 	return output.NewGenericOutputHandlerProvider(
 		output.WithData(networks),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
