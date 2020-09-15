@@ -41,6 +41,7 @@ func ecloudAvailabilityZoneListCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("name", "", "Availability zone name for filtering")
+	cmd.Flags().String("code", "", "Availability zone code for filtering")
 
 	return cmd
 }
@@ -51,7 +52,10 @@ func ecloudAvailabilityZoneList(service ecloud.ECloudService, cmd *cobra.Command
 		return err
 	}
 
-	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, "name", "name")
+	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd,
+		helper.NewStringFilterFlag("name", "name"),
+		helper.NewStringFilterFlag("code", "code"),
+	)
 
 	azs, err := service.GetAvailabilityZones(params)
 	if err != nil {
@@ -66,7 +70,7 @@ func ecloudAvailabilityZoneShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <az: id>...",
 		Short:   "Shows an availability zone",
 		Long:    "This command shows one or more availability zones",
-		Example: "ukfast ecloud az show 123",
+		Example: "ukfast ecloud az show az-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing availability zone")

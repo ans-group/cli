@@ -49,7 +49,7 @@ func Test_ecloudDHCPList(t *testing.T) {
 
 		err := ecloudDHCPList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving dhcps: test error", err.Error())
+		assert.Equal(t, "Error retrieving DHCP servers/profiles: test error", err.Error())
 	})
 }
 
@@ -102,7 +102,7 @@ func Test_ecloudDHCPShow(t *testing.T) {
 
 		service.EXPECT().GetDHCP("dhcp-abcdef12").Return(ecloud.DHCP{}, errors.New("test error"))
 
-		test_output.AssertErrorOutput(t, "Error retrieving dhcp [dhcp-abcdef12]: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error retrieving DHCP server/profile [dhcp-abcdef12]: test error\n", func() {
 			ecloudDHCPShow(service, &cobra.Command{}, []string{"dhcp-abcdef12"})
 		})
 	})

@@ -167,10 +167,24 @@ func GetAPIRequestParametersFromFlags(cmd *cobra.Command) (connection.APIRequest
 	}, nil
 }
 
-func HydrateAPIRequestParametersWithStringFilterFlag(p *connection.APIRequestParameters, cmd *cobra.Command, flagName string, filterPropertyName string) {
-	if cmd.Flags().Changed(flagName) {
-		flagValue, _ := cmd.Flags().GetString(flagName)
-		p.WithFilter(GetFilteringInferOperator(filterPropertyName, flagValue))
+type StringFilterFlag struct {
+	FlagName           string
+	FilterPropertyName string
+}
+
+func NewStringFilterFlag(flagName string, filterPropertyName string) StringFilterFlag {
+	return StringFilterFlag{
+		FlagName:           flagName,
+		FilterPropertyName: filterPropertyName,
+	}
+}
+
+func HydrateAPIRequestParametersWithStringFilterFlag(p *connection.APIRequestParameters, cmd *cobra.Command, flags ...StringFilterFlag) {
+	for _, flag := range flags {
+		if cmd.Flags().Changed(flag.FlagName) {
+			flagValue, _ := cmd.Flags().GetString(flag.FlagName)
+			p.WithFilter(GetFilteringInferOperator(flag.FilterPropertyName, flagValue))
+		}
 	}
 }
 

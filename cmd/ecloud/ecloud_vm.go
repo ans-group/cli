@@ -65,7 +65,7 @@ func ecloudVirtualMachineList(service ecloud.ECloudService, cmd *cobra.Command, 
 		return err
 	}
 
-	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, "name", "name")
+	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, helper.NewStringFilterFlag("name", "name"))
 
 	vms, err := service.GetVirtualMachines(params)
 	if err != nil {

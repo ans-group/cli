@@ -51,7 +51,7 @@ func ecloudNetworkList(service ecloud.ECloudService, cmd *cobra.Command, args []
 		return err
 	}
 
-	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, "name", "name")
+	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, helper.NewStringFilterFlag("name", "name"))
 
 	networks, err := service.GetNetworks(params)
 	if err != nil {
@@ -66,7 +66,7 @@ func ecloudNetworkShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <network: id>...",
 		Short:   "Shows a network",
 		Long:    "This command shows one or more networks",
-		Example: "ukfast ecloud network show 123",
+		Example: "ukfast ecloud network show net-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing network")

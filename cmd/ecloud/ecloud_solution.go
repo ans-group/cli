@@ -64,7 +64,7 @@ func ecloudSolutionList(service ecloud.ECloudService, cmd *cobra.Command, args [
 		return err
 	}
 
-	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, "name", "name")
+	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, helper.NewStringFilterFlag("name", "name"))
 
 	solutions, err := service.GetSolutions(params)
 	if err != nil {

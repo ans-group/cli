@@ -58,7 +58,7 @@ func safednsTemplateList(service safedns.SafeDNSService, cmd *cobra.Command, arg
 		return err
 	}
 
-	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, "name", "name")
+	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, helper.NewStringFilterFlag("name", "name"))
 
 	templates, err := service.GetTemplates(params)
 	if err != nil {

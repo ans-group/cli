@@ -49,7 +49,7 @@ func Test_ecloudVPCList(t *testing.T) {
 
 		err := ecloudVPCList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving vpcs: test error", err.Error())
+		assert.Equal(t, "Error retrieving VPCs: test error", err.Error())
 	})
 }
 
@@ -102,7 +102,7 @@ func Test_ecloudVPCShow(t *testing.T) {
 
 		service.EXPECT().GetVPC("vpc-abcdef12").Return(ecloud.VPC{}, errors.New("test error"))
 
-		test_output.AssertErrorOutput(t, "Error retrieving vpc [vpc-abcdef12]: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error retrieving VPC [vpc-abcdef12]: test error\n", func() {
 			ecloudVPCShow(service, &cobra.Command{}, []string{"vpc-abcdef12"})
 		})
 	})

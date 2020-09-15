@@ -14,7 +14,7 @@ import (
 func ecloudDHCPRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "dhcp",
-		Short: "sub-commands relating to dhcps",
+		Short: "sub-commands relating to DHCP servers/profiles",
 	}
 
 	// Child commands
@@ -25,10 +25,10 @@ func ecloudDHCPRootCmd(f factory.ClientFactory) *cobra.Command {
 }
 
 func ecloudDHCPListCmd(f factory.ClientFactory) *cobra.Command {
-	cmd := &cobra.Command{
+	return &cobra.Command{
 		Use:     "list",
-		Short:   "Lists dhcps",
-		Long:    "This command lists dhcps",
+		Short:   "Lists DHCP servers/profiles",
+		Long:    "This command lists DHCP servers/profiles",
 		Example: "ukfast ecloud dhcp list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
@@ -39,10 +39,6 @@ func ecloudDHCPListCmd(f factory.ClientFactory) *cobra.Command {
 			return ecloudDHCPList(c.ECloudService(), cmd, args)
 		},
 	}
-
-	cmd.Flags().String("name", "", "DHCP name for filtering")
-
-	return cmd
 }
 
 func ecloudDHCPList(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
@@ -51,11 +47,9 @@ func ecloudDHCPList(service ecloud.ECloudService, cmd *cobra.Command, args []str
 		return err
 	}
 
-	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, "name", "name")
-
 	dhcps, err := service.GetDHCPs(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving dhcps: %s", err)
+		return fmt.Errorf("Error retrieving DHCP servers/profiles: %s", err)
 	}
 
 	return output.CommandOutput(cmd, OutputECloudDHCPsProvider(dhcps))
@@ -64,9 +58,9 @@ func ecloudDHCPList(service ecloud.ECloudService, cmd *cobra.Command, args []str
 func ecloudDHCPShowCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
 		Use:     "show <dhcp: id>...",
-		Short:   "Shows a dhcp",
-		Long:    "This command shows one or more dhcps",
-		Example: "ukfast ecloud dhcp show 123",
+		Short:   "Shows a DHCP server/profile",
+		Long:    "This command shows one or more DHCP servers/profiles",
+		Example: "ukfast ecloud dhcp show dhcp-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing dhcp")
@@ -90,7 +84,7 @@ func ecloudDHCPShow(service ecloud.ECloudService, cmd *cobra.Command, args []str
 	for _, arg := range args {
 		dhcp, err := service.GetDHCP(arg)
 		if err != nil {
-			output.OutputWithErrorLevelf("Error retrieving dhcp [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving DHCP server/profile [%s]: %s", arg, err)
 			continue
 		}
 

@@ -14,7 +14,7 @@ import (
 func ecloudVPCRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "vpc",
-		Short: "sub-commands relating to vpcs",
+		Short: "sub-commands relating to VPCs",
 	}
 
 	// Child commands
@@ -27,8 +27,8 @@ func ecloudVPCRootCmd(f factory.ClientFactory) *cobra.Command {
 func ecloudVPCListCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "list",
-		Short:   "Lists vpcs",
-		Long:    "This command lists vpcs",
+		Short:   "Lists VPCs",
+		Long:    "This command lists VPCs",
 		Example: "ukfast ecloud vpc list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
@@ -51,11 +51,11 @@ func ecloudVPCList(service ecloud.ECloudService, cmd *cobra.Command, args []stri
 		return err
 	}
 
-	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, "name", "name")
+	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, helper.NewStringFilterFlag("name", "name"))
 
 	vpcs, err := service.GetVPCs(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving vpcs: %s", err)
+		return fmt.Errorf("Error retrieving VPCs: %s", err)
 	}
 
 	return output.CommandOutput(cmd, OutputECloudVPCsProvider(vpcs))
@@ -64,9 +64,9 @@ func ecloudVPCList(service ecloud.ECloudService, cmd *cobra.Command, args []stri
 func ecloudVPCShowCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
 		Use:     "show <vpc: id>...",
-		Short:   "Shows a vpc",
-		Long:    "This command shows one or more vpcs",
-		Example: "ukfast ecloud vpc show 123",
+		Short:   "Shows a VPC",
+		Long:    "This command shows one or more VPCs",
+		Example: "ukfast ecloud vpc show vpc-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing vpc")
@@ -90,7 +90,7 @@ func ecloudVPCShow(service ecloud.ECloudService, cmd *cobra.Command, args []stri
 	for _, arg := range args {
 		vpc, err := service.GetVPC(arg)
 		if err != nil {
-			output.OutputWithErrorLevelf("Error retrieving vpc [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error retrieving VPC [%s]: %s", arg, err)
 			continue
 		}
 

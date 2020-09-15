@@ -237,7 +237,7 @@ func TestHydrateAPIRequestParametersWithStringFilterFlag(t *testing.T) {
 		cmd := &cobra.Command{}
 		params := connection.APIRequestParameters{}
 
-		helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, "noneexistent", "nonexistent")
+		helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, helper.NewStringFilterFlag("noneexistent", "noneexistent"))
 
 		assert.Len(t, params.Filtering, 0)
 	})
@@ -248,7 +248,7 @@ func TestHydrateAPIRequestParametersWithStringFilterFlag(t *testing.T) {
 		cmd.ParseFlags([]string{"--name=test"})
 		params := connection.APIRequestParameters{}
 
-		helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, "name", "name")
+		helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, helper.NewStringFilterFlag("name", "name"))
 
 		assert.Len(t, params.Filtering, 1)
 		assert.Equal(t, "name", params.Filtering[0].Property)
