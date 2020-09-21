@@ -50,6 +50,36 @@ func (mr *MockECloudServiceMockRecorder) CloneVirtualMachine(arg0, arg1 interfac
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CloneVirtualMachine", reflect.TypeOf((*MockECloudService)(nil).CloneVirtualMachine), arg0, arg1)
 }
 
+// CreateNetwork mocks base method
+func (m *MockECloudService) CreateNetwork(arg0 ecloud.CreateNetworkRequest) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateNetwork", arg0)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateNetwork indicates an expected call of CreateNetwork
+func (mr *MockECloudServiceMockRecorder) CreateNetwork(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateNetwork", reflect.TypeOf((*MockECloudService)(nil).CreateNetwork), arg0)
+}
+
+// CreateRouter mocks base method
+func (m *MockECloudService) CreateRouter(arg0 ecloud.CreateRouterRequest) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateRouter", arg0)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateRouter indicates an expected call of CreateRouter
+func (mr *MockECloudServiceMockRecorder) CreateRouter(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateRouter", reflect.TypeOf((*MockECloudService)(nil).CreateRouter), arg0)
+}
+
 // CreateSolutionTag mocks base method
 func (m *MockECloudService) CreateSolutionTag(arg0 int, arg1 ecloud.CreateTagRequest) error {
 	m.ctrl.T.Helper()
@@ -137,6 +167,20 @@ func (mr *MockECloudServiceMockRecorder) CreateVirtualMachineTemplate(arg0, arg1
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateVirtualMachineTemplate", reflect.TypeOf((*MockECloudService)(nil).CreateVirtualMachineTemplate), arg0, arg1)
 }
 
+// DeleteNetwork mocks base method
+func (m *MockECloudService) DeleteNetwork(arg0 string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteNetwork", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteNetwork indicates an expected call of DeleteNetwork
+func (mr *MockECloudServiceMockRecorder) DeleteNetwork(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteNetwork", reflect.TypeOf((*MockECloudService)(nil).DeleteNetwork), arg0)
+}
+
 // DeletePodTemplate mocks base method
 func (m *MockECloudService) DeletePodTemplate(arg0 int, arg1 string) error {
 	m.ctrl.T.Helper()
@@ -149,6 +193,20 @@ func (m *MockECloudService) DeletePodTemplate(arg0 int, arg1 string) error {
 func (mr *MockECloudServiceMockRecorder) DeletePodTemplate(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeletePodTemplate", reflect.TypeOf((*MockECloudService)(nil).DeletePodTemplate), arg0, arg1)
+}
+
+// DeleteRouter mocks base method
+func (m *MockECloudService) DeleteRouter(arg0 string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteRouter", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteRouter indicates an expected call of DeleteRouter
+func (mr *MockECloudServiceMockRecorder) DeleteRouter(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteRouter", reflect.TypeOf((*MockECloudService)(nil).DeleteRouter), arg0)
 }
 
 // DeleteSolutionTag mocks base method
@@ -1569,6 +1627,34 @@ func (m *MockECloudService) GetVirtualMachinesPaginated(arg0 connection.APIReque
 func (mr *MockECloudServiceMockRecorder) GetVirtualMachinesPaginated(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVirtualMachinesPaginated", reflect.TypeOf((*MockECloudService)(nil).GetVirtualMachinesPaginated), arg0)
+}
+
+// PatchNetwork mocks base method
+func (m *MockECloudService) PatchNetwork(arg0 string, arg1 ecloud.PatchNetworkRequest) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PatchNetwork", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchNetwork indicates an expected call of PatchNetwork
+func (mr *MockECloudServiceMockRecorder) PatchNetwork(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchNetwork", reflect.TypeOf((*MockECloudService)(nil).PatchNetwork), arg0, arg1)
+}
+
+// PatchRouter mocks base method
+func (m *MockECloudService) PatchRouter(arg0 string, arg1 ecloud.PatchRouterRequest) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PatchRouter", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchRouter indicates an expected call of PatchRouter
+func (mr *MockECloudServiceMockRecorder) PatchRouter(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchRouter", reflect.TypeOf((*MockECloudService)(nil).PatchRouter), arg0, arg1)
 }
 
 // PatchSolution mocks base method
