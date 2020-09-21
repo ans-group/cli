@@ -8,6 +8,7 @@ import (
 	"github.com/ukfast/cli/internal/pkg/factory"
 	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
+	"github.com/ukfast/sdk-go/pkg/ptr"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
@@ -20,6 +21,9 @@ func ecloudVPCRootCmd(f factory.ClientFactory) *cobra.Command {
 	// Child commands
 	cmd.AddCommand(ecloudVPCListCmd(f))
 	cmd.AddCommand(ecloudVPCShowCmd(f))
+	cmd.AddCommand(ecloudVPCCreateCmd(f))
+	cmd.AddCommand(ecloudVPCUpdateCmd(f))
+	cmd.AddCommand(ecloudVPCDeleteCmd(f))
 
 	return cmd
 }
@@ -98,4 +102,141 @@ func ecloudVPCShow(service ecloud.ECloudService, cmd *cobra.Command, args []stri
 	}
 
 	return output.CommandOutput(cmd, OutputECloudVPCsProvider(vpcs))
+}
+
+func ecloudVPCCreateCmd(f factory.ClientFactory) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:     "create",
+		Short:   "Creates a VPC",
+		Long:    "This command creates a VPC",
+		Example: "ukfast ecloud vpc create",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudVPCCreate(c.ECloudService(), cmd, args)
+		},
+	}
+
+	// Setup flags
+	cmd.Flags().String("name", "", "Name of VPC")
+	cmd.Flags().String("region", "", "ID of region")
+	cmd.MarkFlagRequired("region")
+
+	return cmd
+}
+
+func ecloudVPCCreate(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
+
+	name, _ := cmd.Flags().GetString("name")
+	regionID, _ := cmd.Flags().GetString("region")
+
+	createRequest := ecloud.CreateVPCRequest{
+		Name:     ptr.String(name),
+		RegionID: regionID,
+	}
+
+	vpcID, err := service.CreateVPC(createRequest)
+	if err != nil {
+		return fmt.Errorf("Error creating VPC: %s", err)
+	}
+
+	vpc, err := service.GetVPC(vpcID)
+	if err != nil {
+		return fmt.Errorf("Error retrieving new VPC: %s", err)
+	}
+
+	return output.CommandOutput(cmd, OutputECloudVPCsProvider([]ecloud.VPC{vpc}))
+}
+
+func ecloudVPCUpdateCmd(f factory.ClientFactory) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:     "update <vpc: name>...",
+		Short:   "Updates a VPC",
+		Long:    "This command updates one or more VPCs",
+		Example: "ukfast ecloud vpc update vpc-abcdef12 --name \"my vpc\"",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Missing vpc")
+			}
+
+			return nil
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudVPCUpdate(c.ECloudService(), cmd, args)
+		},
+	}
+
+	cmd.Flags().String("name", "", "Name of VPC")
+
+	return cmd
+}
+
+func ecloudVPCUpdate(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
+	patchRequest := ecloud.PatchVPCRequest{}
+
+	if cmd.Flags().Changed("name") {
+		name, _ := cmd.Flags().GetString("name")
+		patchRequest.Name = ptr.String(name)
+	}
+
+	var vpcs []ecloud.VPC
+	for _, arg := range args {
+		err := service.PatchVPC(arg, patchRequest)
+		if err != nil {
+			output.OutputWithErrorLevelf("Error updating VPC [%s]: %s", arg, err)
+			continue
+		}
+
+		vpc, err := service.GetVPC(arg)
+		if err != nil {
+			output.OutputWithErrorLevelf("Error retrieving updated VPC [%s]: %s", arg, err)
+			continue
+		}
+
+		vpcs = append(vpcs, vpc)
+	}
+
+	return output.CommandOutput(cmd, OutputECloudVPCsProvider(vpcs))
+}
+
+func ecloudVPCDeleteCmd(f factory.ClientFactory) *cobra.Command {
+	return &cobra.Command{
+		Use:     "delete <vpc: name...>",
+		Short:   "Removes a VPC",
+		Long:    "This command removes one or more VPCs",
+		Example: "ukfast ecloud vpc delete vpc-abcdef12",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Missing vpc")
+			}
+
+			return nil
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			ecloudVPCDelete(c.ECloudService(), cmd, args)
+			return nil
+		},
+	}
+}
+
+func ecloudVPCDelete(service ecloud.ECloudService, cmd *cobra.Command, args []string) {
+	for _, arg := range args {
+		err := service.DeleteVPC(arg)
+		if err != nil {
+			output.OutputWithErrorLevelf("Error removing VPC [%s]: %s", arg, err)
+		}
+	}
 }

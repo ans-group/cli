@@ -64,6 +64,21 @@ func (mr *MockECloudServiceMockRecorder) CreateSolutionTag(arg0, arg1 interface{
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateSolutionTag", reflect.TypeOf((*MockECloudService)(nil).CreateSolutionTag), arg0, arg1)
 }
 
+// CreateVPC mocks base method
+func (m *MockECloudService) CreateVPC(arg0 ecloud.CreateVPCRequest) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateVPC", arg0)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateVPC indicates an expected call of CreateVPC
+func (mr *MockECloudServiceMockRecorder) CreateVPC(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateVPC", reflect.TypeOf((*MockECloudService)(nil).CreateVPC), arg0)
+}
+
 // CreateVirtualMachine mocks base method
 func (m *MockECloudService) CreateVirtualMachine(arg0 ecloud.CreateVirtualMachineRequest) (int, error) {
 	m.ctrl.T.Helper()
@@ -162,6 +177,20 @@ func (m *MockECloudService) DeleteSolutionTemplate(arg0 int, arg1 string) error 
 func (mr *MockECloudServiceMockRecorder) DeleteSolutionTemplate(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteSolutionTemplate", reflect.TypeOf((*MockECloudService)(nil).DeleteSolutionTemplate), arg0, arg1)
+}
+
+// DeleteVPC mocks base method
+func (m *MockECloudService) DeleteVPC(arg0 string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteVPC", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteVPC indicates an expected call of DeleteVPC
+func (mr *MockECloudServiceMockRecorder) DeleteVPC(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteVPC", reflect.TypeOf((*MockECloudService)(nil).DeleteVPC), arg0)
 }
 
 // DeleteVirtualMachine mocks base method
@@ -1569,6 +1598,20 @@ func (m *MockECloudService) PatchSolutionTag(arg0 int, arg1 string, arg2 ecloud.
 func (mr *MockECloudServiceMockRecorder) PatchSolutionTag(arg0, arg1, arg2 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchSolutionTag", reflect.TypeOf((*MockECloudService)(nil).PatchSolutionTag), arg0, arg1, arg2)
+}
+
+// PatchVPC mocks base method
+func (m *MockECloudService) PatchVPC(arg0 string, arg1 ecloud.PatchVPCRequest) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PatchVPC", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchVPC indicates an expected call of PatchVPC
+func (mr *MockECloudServiceMockRecorder) PatchVPC(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchVPC", reflect.TypeOf((*MockECloudService)(nil).PatchVPC), arg0, arg1)
 }
 
 // PatchVirtualMachine mocks base method
