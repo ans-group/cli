@@ -20,6 +20,8 @@ func ecloudVPNRootCmd(f factory.ClientFactory) *cobra.Command {
 	// Child commands
 	cmd.AddCommand(ecloudVPNListCmd(f))
 	cmd.AddCommand(ecloudVPNShowCmd(f))
+	cmd.AddCommand(ecloudVPNCreateCmd(f))
+	cmd.AddCommand(ecloudVPNDeleteCmd(f))
 
 	return cmd
 }
@@ -92,4 +94,79 @@ func ecloudVPNShow(service ecloud.ECloudService, cmd *cobra.Command, args []stri
 	}
 
 	return output.CommandOutput(cmd, OutputECloudVPNsProvider(vpns))
+}
+
+func ecloudVPNCreateCmd(f factory.ClientFactory) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:     "create",
+		Short:   "Creates a VPN",
+		Long:    "This command creates a VPN",
+		Example: "ukfast ecloud vpn create",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return ecloudVPNCreate(c.ECloudService(), cmd, args)
+		},
+	}
+
+	// Setup flags
+	cmd.Flags().String("router", "", "ID of router")
+	cmd.MarkFlagRequired("router")
+
+	return cmd
+}
+
+func ecloudVPNCreate(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
+
+	createRequest := ecloud.CreateVPNRequest{}
+	createRequest.RouterID, _ = cmd.Flags().GetString("router")
+
+	vpnID, err := service.CreateVPN(createRequest)
+	if err != nil {
+		return fmt.Errorf("Error creating VPN: %s", err)
+	}
+
+	vpn, err := service.GetVPN(vpnID)
+	if err != nil {
+		return fmt.Errorf("Error retrieving new VPN: %s", err)
+	}
+
+	return output.CommandOutput(cmd, OutputECloudVPNsProvider([]ecloud.VPN{vpn}))
+}
+
+func ecloudVPNDeleteCmd(f factory.ClientFactory) *cobra.Command {
+	return &cobra.Command{
+		Use:     "delete <vpn: name...>",
+		Short:   "Removes a VPN",
+		Long:    "This command removes one or more VPNs",
+		Example: "ukfast ecloud vpn delete vpn-abcdef12",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Missing vpn")
+			}
+
+			return nil
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			ecloudVPNDelete(c.ECloudService(), cmd, args)
+			return nil
+		},
+	}
+}
+
+func ecloudVPNDelete(service ecloud.ECloudService, cmd *cobra.Command, args []string) {
+	for _, arg := range args {
+		err := service.DeleteVPN(arg)
+		if err != nil {
+			output.OutputWithErrorLevelf("Error removing VPN [%s]: %s", arg, err)
+		}
+	}
 }

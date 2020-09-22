@@ -109,6 +109,21 @@ func (mr *MockECloudServiceMockRecorder) CreateVPC(arg0 interface{}) *gomock.Cal
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateVPC", reflect.TypeOf((*MockECloudService)(nil).CreateVPC), arg0)
 }
 
+// CreateVPN mocks base method
+func (m *MockECloudService) CreateVPN(arg0 ecloud.CreateVPNRequest) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateVPN", arg0)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateVPN indicates an expected call of CreateVPN
+func (mr *MockECloudServiceMockRecorder) CreateVPN(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateVPN", reflect.TypeOf((*MockECloudService)(nil).CreateVPN), arg0)
+}
+
 // CreateVirtualMachine mocks base method
 func (m *MockECloudService) CreateVirtualMachine(arg0 ecloud.CreateVirtualMachineRequest) (int, error) {
 	m.ctrl.T.Helper()
@@ -249,6 +264,20 @@ func (m *MockECloudService) DeleteVPC(arg0 string) error {
 func (mr *MockECloudServiceMockRecorder) DeleteVPC(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteVPC", reflect.TypeOf((*MockECloudService)(nil).DeleteVPC), arg0)
+}
+
+// DeleteVPN mocks base method
+func (m *MockECloudService) DeleteVPN(arg0 string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteVPN", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteVPN indicates an expected call of DeleteVPN
+func (mr *MockECloudServiceMockRecorder) DeleteVPN(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteVPN", reflect.TypeOf((*MockECloudService)(nil).DeleteVPN), arg0)
 }
 
 // DeleteVirtualMachine mocks base method

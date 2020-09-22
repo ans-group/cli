@@ -107,3 +107,113 @@ func Test_ecloudVPNShow(t *testing.T) {
 		})
 	})
 }
+
+func Test_ecloudVPNCreate(t *testing.T) {
+	t.Run("DefaultCreate", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudVPNCreateCmd(nil)
+		cmd.ParseFlags([]string{"--router=rtr-abcdef12"})
+
+		req := ecloud.CreateVPNRequest{
+			RouterID: "rtr-abcdef12",
+		}
+
+		gomock.InOrder(
+			service.EXPECT().CreateVPN(req).Return("vpn-abcdef12", nil),
+			service.EXPECT().GetVPN("vpn-abcdef12").Return(ecloud.VPN{}, nil),
+		)
+
+		ecloudVPNCreate(service, cmd, []string{})
+	})
+
+	t.Run("CreateVPNError_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudVPNCreateCmd(nil)
+		cmd.ParseFlags([]string{"--router=rtr-abcdef12"})
+
+		service.EXPECT().CreateVPN(gomock.Any()).Return("", errors.New("test error")).Times(1)
+
+		err := ecloudVPNCreate(service, cmd, []string{})
+
+		assert.Equal(t, "Error creating VPN: test error", err.Error())
+	})
+
+	t.Run("GetVPNError_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudVPNCreateCmd(nil)
+		cmd.ParseFlags([]string{"--router=rtr-abcdef12"})
+
+		gomock.InOrder(
+			service.EXPECT().CreateVPN(gomock.Any()).Return("vpn-abcdef12", nil),
+			service.EXPECT().GetVPN("vpn-abcdef12").Return(ecloud.VPN{}, errors.New("test error")),
+		)
+
+		err := ecloudVPNCreate(service, cmd, []string{})
+
+		assert.Equal(t, "Error retrieving new VPN: test error", err.Error())
+	})
+}
+
+func Test_ecloudVPNDeleteCmd_Args(t *testing.T) {
+	t.Run("ValidArgs_NoError", func(t *testing.T) {
+		err := ecloudVPNDeleteCmd(nil).Args(nil, []string{"vpn-abcdef12"})
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("InvalidArgs_Error", func(t *testing.T) {
+		err := ecloudVPNDeleteCmd(nil).Args(nil, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing vpn", err.Error())
+	})
+}
+
+func Test_ecloudVPNDelete(t *testing.T) {
+	t.Run("SingleVPN", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		service.EXPECT().DeleteVPN("vpn-abcdef12").Return(nil).Times(1)
+
+		ecloudVPNDelete(service, &cobra.Command{}, []string{"vpn-abcdef12"})
+	})
+
+	t.Run("MultipleVPNs", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().DeleteVPN("vpn-abcdef12").Return(nil),
+			service.EXPECT().DeleteVPN("vpn-12abcdef").Return(nil),
+		)
+
+		ecloudVPNDelete(service, &cobra.Command{}, []string{"vpn-abcdef12", "vpn-12abcdef"})
+	})
+
+	t.Run("DeleteVPNError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		service.EXPECT().DeleteVPN("vpn-abcdef12").Return(errors.New("test error")).Times(1)
+
+		test_output.AssertErrorOutput(t, "Error removing VPN [vpn-abcdef12]: test error\n", func() {
+			ecloudVPNDelete(service, &cobra.Command{}, []string{"vpn-abcdef12"})
+		})
+	})
+}
