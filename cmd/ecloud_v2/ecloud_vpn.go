@@ -139,7 +139,7 @@ func ecloudVPNCreate(service ecloud.ECloudService, cmd *cobra.Command, args []st
 
 func ecloudVPNDeleteCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
-		Use:     "delete <vpn: name...>",
+		Use:     "delete <vpn: id...>",
 		Short:   "Removes a VPN",
 		Long:    "This command removes one or more VPNs",
 		Example: "ukfast ecloud vpn delete vpn-abcdef12",

@@ -153,7 +153,7 @@ func ecloudNetworkCreate(service ecloud.ECloudService, cmd *cobra.Command, args 
 
 func ecloudNetworkUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "update <network: name>...",
+		Use:     "update <network: id>...",
 		Short:   "Updates a network",
 		Long:    "This command updates one or more networks",
 		Example: "ukfast ecloud network update net-abcdef12 --name \"my network\"",
@@ -209,7 +209,7 @@ func ecloudNetworkUpdate(service ecloud.ECloudService, cmd *cobra.Command, args 
 
 func ecloudNetworkDeleteCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
-		Use:     "delete <network: name...>",
+		Use:     "delete <network: id...>",
 		Short:   "Removes a network",
 		Long:    "This command removes one or more networks",
 		Example: "ukfast ecloud network delete net-abcdef12",

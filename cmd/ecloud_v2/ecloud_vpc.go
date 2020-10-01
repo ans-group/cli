@@ -153,7 +153,7 @@ func ecloudVPCCreate(service ecloud.ECloudService, cmd *cobra.Command, args []st
 
 func ecloudVPCUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "update <vpc: name>...",
+		Use:     "update <vpc: id>...",
 		Short:   "Updates a VPC",
 		Long:    "This command updates one or more VPCs",
 		Example: "ukfast ecloud vpc update vpc-abcdef12 --name \"my vpc\"",
@@ -209,7 +209,7 @@ func ecloudVPCUpdate(service ecloud.ECloudService, cmd *cobra.Command, args []st
 
 func ecloudVPCDeleteCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
-		Use:     "delete <vpc: name...>",
+		Use:     "delete <vpc: id...>",
 		Short:   "Removes a VPC",
 		Long:    "This command removes one or more VPCs",
 		Example: "ukfast ecloud vpc delete vpc-abcdef12",

@@ -154,7 +154,7 @@ func ecloudRouterCreate(service ecloud.ECloudService, cmd *cobra.Command, args [
 
 func ecloudRouterUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "update <router: name>...",
+		Use:     "update <router: id>...",
 		Short:   "Updates a router",
 		Long:    "This command updates one or more routers",
 		Example: "ukfast ecloud router update rtr-abcdef12 --name \"my router\"",
@@ -210,7 +210,7 @@ func ecloudRouterUpdate(service ecloud.ECloudService, cmd *cobra.Command, args [
 
 func ecloudRouterDeleteCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
-		Use:     "delete <router: name...>",
+		Use:     "delete <router: id...>",
 		Short:   "Removes a router",
 		Long:    "This command removes one or more routers",
 		Example: "ukfast ecloud router delete rtr-abcdef12",
