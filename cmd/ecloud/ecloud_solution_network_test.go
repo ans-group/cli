@@ -34,7 +34,7 @@ func Test_ecloudSolutionNetworkList(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().GetSolutionNetworks(123, gomock.Any()).Return([]ecloud.Network{}, nil).Times(1)
+		service.EXPECT().GetSolutionNetworks(123, gomock.Any()).Return([]ecloud.V1Network{}, nil).Times(1)
 
 		ecloudSolutionNetworkList(service, &cobra.Command{}, []string{"123"})
 	})
@@ -69,7 +69,7 @@ func Test_ecloudSolutionNetworkList(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().GetSolutionNetworks(123, gomock.Any()).Return([]ecloud.Network{}, errors.New("test error 1")).Times(1)
+		service.EXPECT().GetSolutionNetworks(123, gomock.Any()).Return([]ecloud.V1Network{}, errors.New("test error 1")).Times(1)
 
 		err := ecloudSolutionNetworkList(service, &cobra.Command{}, []string{"123"})
 
