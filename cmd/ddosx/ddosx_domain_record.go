@@ -136,9 +136,7 @@ func ddosxDomainRecordCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().String("name", "", "Name of record")
 	cmd.MarkFlagRequired("name")
 	cmd.Flags().String("type", "", "Type of record")
-	cmd.MarkFlagRequired("type")
 	cmd.Flags().String("content", "", "Content of record")
-	cmd.MarkFlagRequired("content")
 	cmd.Flags().String("ssl-id", "", "ID of SSL to use for record")
 	cmd.Flags().Int("safedns-record-id", 0, "ID of SafeDNS record")
 
