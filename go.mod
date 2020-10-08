@@ -24,4 +24,4 @@ require (
 	k8s.io/client-go v11.0.0+incompatible
 )
 
-// replace github.com/ukfast/sdk-go => ../sdk-go
+replace github.com/ukfast/sdk-go => ../sdk-go
