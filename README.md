@@ -10,6 +10,20 @@ The client utilises UKFast APIs to provide access to most service features. You 
 [Getting Started](https://developers.ukfast.io/getting-started) section of the API documentation before 
 proceeding below
 
+## Building from source
+
+Install the dependencies, golang and make, then build from the Makefile.
+
+```
+# make
+```
+
+To copy to /usr/local/bin, as root or using sudo
+
+```
+# make install
+```
+
 ## Installation
 
 The CLI is distributed as a single binary, and is available for Windows, Linux and Mac. This binary 
