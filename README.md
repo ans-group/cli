@@ -61,7 +61,17 @@ Both of these methods are explained below.
 ### Configuration File
 
 The configuration file is read from
-`$HOME/.ukfast{.extension}` by default (extension being one of the `viper` supported formats such as `yml`, `yaml`, `json`, `toml` etc.). This path can be overridden with the `--config` flag. 
+`$HOME/.ukfast{.extension}` by default (extension being one of the `viper` supported formats such as `yml`, `yaml`, `json`, `toml` etc.). This path can be overridden with the `--config` flag.
+
+The API key can be written to the configuration file:
+```
+> ukfast config set --api_key="123456789abcdefghijklmnopqrstuvw"
+```
+Check that this has been written:
+```
+> cat ~/.ukfast.yml 
+api_key: 123456789abcdefghijklmnopqrstuvw
+```
 Values defined in the configuration file take precedence over environment variables.
 
 #### Required
