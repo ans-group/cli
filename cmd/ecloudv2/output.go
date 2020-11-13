@@ -1,4 +1,4 @@
-package ecloud_v2
+package ecloudv2
 
 import (
 	"github.com/ukfast/cli/internal/pkg/output"
@@ -6,7 +6,7 @@ import (
 )
 
 func OutputECloudVPCsProvider(vpcs []ecloud.VPC) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(vpcs).WithDefaultFields([]string{"id", "name", "created_at", "updated_at"})
+	return output.NewSerializedOutputHandlerProvider(vpcs).WithDefaultFields([]string{"id", "name", "region_id", "created_at", "updated_at"})
 }
 
 func OutputECloudAvailabilityZonesProvider(azs []ecloud.AvailabilityZone) output.OutputHandlerProvider {
@@ -26,7 +26,7 @@ func OutputECloudVPNsProvider(vpns []ecloud.VPN) output.OutputHandlerProvider {
 }
 
 func OutputECloudInstancesProvider(instances []ecloud.Instance) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(instances).WithDefaultFields([]string{"id", "name", "created_at", "updated_at"})
+	return output.NewSerializedOutputHandlerProvider(instances).WithDefaultFields([]string{"id", "name", "vpc_id", "status", "vcpu_cores", "ram_capacity"})
 }
 
 func OutputECloudFloatingIPsProvider(fips []ecloud.FloatingIP) output.OutputHandlerProvider {
@@ -47,4 +47,8 @@ func OutputECloudRegionsProvider(regions []ecloud.Region) output.OutputHandlerPr
 
 func OutputECloudLoadBalancerClustersProvider(lbcs []ecloud.LoadBalancerCluster) output.OutputHandlerProvider {
 	return output.NewSerializedOutputHandlerProvider(lbcs).WithDefaultFields([]string{"id", "name"})
+}
+
+func OutputECloudVolumesProvider(volumes []ecloud.Volume) output.OutputHandlerProvider {
+	return output.NewSerializedOutputHandlerProvider(volumes).WithDefaultFields([]string{"id", "name", "capacity"})
 }

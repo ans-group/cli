@@ -1,4 +1,4 @@
-package ecloud_v2
+package ecloudv2
 
 import (
 	"errors"
@@ -47,12 +47,12 @@ func ecloudFloatingIPList(service ecloud.ECloudService, cmd *cobra.Command, args
 		return err
 	}
 
-	azs, err := service.GetFloatingIPs(params)
+	fips, err := service.GetFloatingIPs(params)
 	if err != nil {
 		return fmt.Errorf("Error retrieving floating IPs: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudFloatingIPsProvider(azs))
+	return output.CommandOutput(cmd, OutputECloudFloatingIPsProvider(fips))
 }
 
 func ecloudFloatingIPShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -80,16 +80,16 @@ func ecloudFloatingIPShowCmd(f factory.ClientFactory) *cobra.Command {
 }
 
 func ecloudFloatingIPShow(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
-	var azs []ecloud.FloatingIP
+	var fips []ecloud.FloatingIP
 	for _, arg := range args {
-		az, err := service.GetFloatingIP(arg)
+		fip, err := service.GetFloatingIP(arg)
 		if err != nil {
 			output.OutputWithErrorLevelf("Error retrieving floating IP [%s]: %s", arg, err)
 			continue
 		}
 
-		azs = append(azs, az)
+		fips = append(fips, fip)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudFloatingIPsProvider(azs))
+	return output.CommandOutput(cmd, OutputECloudFloatingIPsProvider(fips))
 }
