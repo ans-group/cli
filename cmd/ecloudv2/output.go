@@ -9,22 +9,6 @@ func OutputECloudVPCsProvider(vpcs []ecloud.VPC) output.OutputHandlerProvider {
 	return output.NewSerializedOutputHandlerProvider(vpcs).WithDefaultFields([]string{"id", "name", "region_id", "created_at", "updated_at"})
 }
 
-func OutputECloudAvailabilityZonesProvider(azs []ecloud.AvailabilityZone) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(azs).WithDefaultFields([]string{"id", "name", "code", "created_at", "updated_at"})
-}
-
-func OutputECloudNetworksProvider(networks []ecloud.Network) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(networks).WithDefaultFields([]string{"id", "name", "router_id", "created_at", "updated_at"})
-}
-
-func OutputECloudDHCPsProvider(dhcps []ecloud.DHCP) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(dhcps).WithDefaultFields([]string{"id", "name", "vpc_id", "availability_zone_id", "created_at", "updated_at"})
-}
-
-func OutputECloudVPNsProvider(vpns []ecloud.VPN) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(vpns).WithDefaultFields([]string{"id", "router_id", "created_at", "updated_at"})
-}
-
 func OutputECloudInstancesProvider(instances []ecloud.Instance) output.OutputHandlerProvider {
 	return output.NewSerializedOutputHandlerProvider(instances).WithDefaultFields([]string{"id", "name", "vpc_id", "status", "vcpu_cores", "ram_capacity"})
 }
@@ -35,10 +19,6 @@ func OutputECloudFloatingIPsProvider(fips []ecloud.FloatingIP) output.OutputHand
 
 func OutputECloudFirewallRulesProvider(rules []ecloud.FirewallRule) output.OutputHandlerProvider {
 	return output.NewSerializedOutputHandlerProvider(rules).WithDefaultFields([]string{"id", "router_id", "created_at", "updated_at"})
-}
-
-func OutputECloudRoutersProvider(routers []ecloud.Router) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(routers).WithDefaultFields([]string{"id", "name", "vpc_id", "created_at", "updated_at"})
 }
 
 func OutputECloudRegionsProvider(regions []ecloud.Region) output.OutputHandlerProvider {
