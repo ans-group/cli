@@ -174,6 +174,8 @@ func (o *SerializedOutputHandlerProvider) convertField(v *OrderedFields, fieldNa
 			return o.hydrateField(v, fieldName, fmt.Sprintf("%.2f", reflectedValue.Float()))
 		}
 		return o.hydrateField(v, fieldName, fmt.Sprintf("%f", reflectedValue.Float()))
+	case reflect.Ptr:
+		return o.convertField(v, fieldName, reflectedValue.Elem())
 	}
 
 	return o.hydrateField(v, fieldName, fmt.Sprintf("%v", reflectedValue.Interface()))
