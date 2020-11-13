@@ -846,6 +846,66 @@ func (mr *MockECloudServiceMockRecorder) GetInstance(arg0 interface{}) *gomock.C
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetInstance", reflect.TypeOf((*MockECloudService)(nil).GetInstance), arg0)
 }
 
+// GetInstanceCredentials mocks base method
+func (m *MockECloudService) GetInstanceCredentials(arg0 string, arg1 connection.APIRequestParameters) ([]ecloud.Credential, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetInstanceCredentials", arg0, arg1)
+	ret0, _ := ret[0].([]ecloud.Credential)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetInstanceCredentials indicates an expected call of GetInstanceCredentials
+func (mr *MockECloudServiceMockRecorder) GetInstanceCredentials(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetInstanceCredentials", reflect.TypeOf((*MockECloudService)(nil).GetInstanceCredentials), arg0, arg1)
+}
+
+// GetInstanceCredentialsPaginated mocks base method
+func (m *MockECloudService) GetInstanceCredentialsPaginated(arg0 string, arg1 connection.APIRequestParameters) (*ecloud.PaginatedCredential, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetInstanceCredentialsPaginated", arg0, arg1)
+	ret0, _ := ret[0].(*ecloud.PaginatedCredential)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetInstanceCredentialsPaginated indicates an expected call of GetInstanceCredentialsPaginated
+func (mr *MockECloudServiceMockRecorder) GetInstanceCredentialsPaginated(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetInstanceCredentialsPaginated", reflect.TypeOf((*MockECloudService)(nil).GetInstanceCredentialsPaginated), arg0, arg1)
+}
+
+// GetInstanceNICs mocks base method
+func (m *MockECloudService) GetInstanceNICs(arg0 string, arg1 connection.APIRequestParameters) ([]ecloud.NIC, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetInstanceNICs", arg0, arg1)
+	ret0, _ := ret[0].([]ecloud.NIC)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetInstanceNICs indicates an expected call of GetInstanceNICs
+func (mr *MockECloudServiceMockRecorder) GetInstanceNICs(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetInstanceNICs", reflect.TypeOf((*MockECloudService)(nil).GetInstanceNICs), arg0, arg1)
+}
+
+// GetInstanceNICsPaginated mocks base method
+func (m *MockECloudService) GetInstanceNICsPaginated(arg0 string, arg1 connection.APIRequestParameters) (*ecloud.PaginatedNIC, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetInstanceNICsPaginated", arg0, arg1)
+	ret0, _ := ret[0].(*ecloud.PaginatedNIC)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetInstanceNICsPaginated indicates an expected call of GetInstanceNICsPaginated
+func (mr *MockECloudServiceMockRecorder) GetInstanceNICsPaginated(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetInstanceNICsPaginated", reflect.TypeOf((*MockECloudService)(nil).GetInstanceNICsPaginated), arg0, arg1)
+}
+
 // GetInstanceVolumes mocks base method
 func (m *MockECloudService) GetInstanceVolumes(arg0 string, arg1 connection.APIRequestParameters) ([]ecloud.Volume, error) {
 	m.ctrl.T.Helper()

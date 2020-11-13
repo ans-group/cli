@@ -52,3 +52,11 @@ func OutputECloudLoadBalancerClustersProvider(lbcs []ecloud.LoadBalancerCluster)
 func OutputECloudVolumesProvider(volumes []ecloud.Volume) output.OutputHandlerProvider {
 	return output.NewSerializedOutputHandlerProvider(volumes).WithDefaultFields([]string{"id", "name", "capacity"})
 }
+
+func OutputECloudCredentialsProvider(credentials []ecloud.Credential) output.OutputHandlerProvider {
+	return output.NewSerializedOutputHandlerProvider(credentials).WithDefaultFields([]string{"id", "name", "username", "password"})
+}
+
+func OutputECloudNICsProvider(nics []ecloud.NIC) output.OutputHandlerProvider {
+	return output.NewSerializedOutputHandlerProvider(nics).WithDefaultFields([]string{"id", "mac_address", "instance", "ip_address"})
+}

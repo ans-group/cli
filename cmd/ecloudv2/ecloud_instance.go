@@ -29,6 +29,8 @@ func ecloudInstanceRootCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Child root commands
 	cmd.AddCommand(ecloudInstanceVolumeRootCmd(f))
+	cmd.AddCommand(ecloudInstanceCredentialRootCmd(f))
+	cmd.AddCommand(ecloudInstanceNICRootCmd(f))
 
 	return cmd
 }
