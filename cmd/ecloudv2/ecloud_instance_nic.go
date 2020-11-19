@@ -54,7 +54,7 @@ func ecloudInstanceNICList(service ecloud.ECloudService, cmd *cobra.Command, arg
 
 	nics, err := service.GetInstanceNICs(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving instance NIC: %s", err)
+		return fmt.Errorf("Error retrieving instance NICs: %s", err)
 	}
 
 	return output.CommandOutput(cmd, OutputECloudNICsProvider(nics))
