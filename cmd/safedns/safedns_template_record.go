@@ -167,7 +167,7 @@ func safednsTemplateRecordCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.MarkFlagRequired("type")
 	cmd.Flags().String("content", "", "Record content")
 	cmd.MarkFlagRequired("content")
-	cmd.Flags().Int("ttl", 0, "Record priority")
+	cmd.Flags().Int("ttl", 0, "Record TTL")
 	cmd.MarkFlagRequired("ttl")
 	cmd.Flags().Int("priority", 0, "Record priority")
 
@@ -183,11 +183,16 @@ func safednsTemplateRecordCreate(service safedns.SafeDNSService, cmd *cobra.Comm
 	recordName, _ := cmd.Flags().GetString("name")
 	recordType, _ := cmd.Flags().GetString("type")
 	recordContent, _ := cmd.Flags().GetString("content")
+	recordTTLRaw, _ := cmd.Flags().GetInt("ttl")
+	recordTTL := safedns.RecordTTL(recordTTLRaw)
+	recordPriority, _ := cmd.Flags().GetInt("priority")
 
 	createRequest := safedns.CreateRecordRequest{
-		Name:    recordName,
-		Type:    recordType,
-		Content: recordContent,
+		Name:     recordName,
+		Type:     recordType,
+		Content:  recordContent,
+		TTL:      &recordTTL,
+		Priority: &recordPriority,
 	}
 
 	if cmd.Flags().Changed("priority") {
@@ -237,6 +242,7 @@ func safednsTemplateRecordUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().String("name", "", "Name of record")
 	cmd.Flags().String("type", "", "Type of record")
 	cmd.Flags().String("content", "", "Record content")
+	cmd.Flags().Int("ttl", 0, "Record TTL")
 	cmd.Flags().Int("priority", 0, "Record priority")
 
 	return cmd
@@ -261,6 +267,11 @@ func safednsTemplateRecordUpdate(service safedns.SafeDNSService, cmd *cobra.Comm
 	if cmd.Flags().Changed("content") {
 		recordContent, _ := cmd.Flags().GetString("content")
 		patchRequest.Content = recordContent
+	}
+	if cmd.Flags().Changed("ttl") {
+		recordTTLRaw, _ := cmd.Flags().GetInt("ttl")
+		recordTTL := safedns.RecordTTL(recordTTLRaw)
+		patchRequest.TTL = &recordTTL
 	}
 	if cmd.Flags().Changed("priority") {
 		recordPriority, _ := cmd.Flags().GetInt("priority")
