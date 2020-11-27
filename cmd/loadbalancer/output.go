@@ -5,10 +5,10 @@ import (
 	"github.com/ukfast/sdk-go/pkg/service/loadbalancer"
 )
 
-func OutputLoadBalancerGroupsProvider(groups []loadbalancer.Group) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(groups).WithDefaultFields([]string{"id", "name"})
+func OutputLoadBalancerClustersProvider(clusters []loadbalancer.Cluster) output.OutputHandlerProvider {
+	return output.NewSerializedOutputHandlerProvider(clusters).WithDefaultFields([]string{"id", "name"})
 }
 
-func OutputLoadBalancerConfigurationsProvider(groups []loadbalancer.Configuration) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(groups).WithDefaultFields([]string{"id", "name"})
+func OutputLoadBalancerTargetsProvider(targets []loadbalancer.Target) output.OutputHandlerProvider {
+	return output.NewSerializedOutputHandlerProvider(targets).WithDefaultFields([]string{"id", "ip", "port", "backup", "weight"})
 }

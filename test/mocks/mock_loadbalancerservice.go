@@ -34,135 +34,148 @@ func (m *MockLoadBalancerService) EXPECT() *MockLoadBalancerServiceMockRecorder 
 	return m.recorder
 }
 
-// CreateConfiguration mocks base method
-func (m *MockLoadBalancerService) CreateConfiguration(arg0 loadbalancer.CreateConfigurationRequest) (string, error) {
+// DeleteCluster mocks base method
+func (m *MockLoadBalancerService) DeleteCluster(arg0 string) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateConfiguration", arg0)
-	ret0, _ := ret[0].(string)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// CreateConfiguration indicates an expected call of CreateConfiguration
-func (mr *MockLoadBalancerServiceMockRecorder) CreateConfiguration(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateConfiguration", reflect.TypeOf((*MockLoadBalancerService)(nil).CreateConfiguration), arg0)
-}
-
-// DeleteConfiguration mocks base method
-func (m *MockLoadBalancerService) DeleteConfiguration(arg0 string) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteConfiguration", arg0)
+	ret := m.ctrl.Call(m, "DeleteCluster", arg0)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// DeleteConfiguration indicates an expected call of DeleteConfiguration
-func (mr *MockLoadBalancerServiceMockRecorder) DeleteConfiguration(arg0 interface{}) *gomock.Call {
+// DeleteCluster indicates an expected call of DeleteCluster
+func (mr *MockLoadBalancerServiceMockRecorder) DeleteCluster(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteConfiguration", reflect.TypeOf((*MockLoadBalancerService)(nil).DeleteConfiguration), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteCluster", reflect.TypeOf((*MockLoadBalancerService)(nil).DeleteCluster), arg0)
 }
 
-// GetConfiguration mocks base method
-func (m *MockLoadBalancerService) GetConfiguration(arg0 string) (loadbalancer.Configuration, error) {
+// DeleteTarget mocks base method
+func (m *MockLoadBalancerService) DeleteTarget(arg0 string) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetConfiguration", arg0)
-	ret0, _ := ret[0].(loadbalancer.Configuration)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetConfiguration indicates an expected call of GetConfiguration
-func (mr *MockLoadBalancerServiceMockRecorder) GetConfiguration(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetConfiguration", reflect.TypeOf((*MockLoadBalancerService)(nil).GetConfiguration), arg0)
-}
-
-// GetConfigurations mocks base method
-func (m *MockLoadBalancerService) GetConfigurations(arg0 connection.APIRequestParameters) ([]loadbalancer.Configuration, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetConfigurations", arg0)
-	ret0, _ := ret[0].([]loadbalancer.Configuration)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetConfigurations indicates an expected call of GetConfigurations
-func (mr *MockLoadBalancerServiceMockRecorder) GetConfigurations(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetConfigurations", reflect.TypeOf((*MockLoadBalancerService)(nil).GetConfigurations), arg0)
-}
-
-// GetConfigurationsPaginated mocks base method
-func (m *MockLoadBalancerService) GetConfigurationsPaginated(arg0 connection.APIRequestParameters) (*loadbalancer.PaginatedConfiguration, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetConfigurationsPaginated", arg0)
-	ret0, _ := ret[0].(*loadbalancer.PaginatedConfiguration)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetConfigurationsPaginated indicates an expected call of GetConfigurationsPaginated
-func (mr *MockLoadBalancerServiceMockRecorder) GetConfigurationsPaginated(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetConfigurationsPaginated", reflect.TypeOf((*MockLoadBalancerService)(nil).GetConfigurationsPaginated), arg0)
-}
-
-// GetGroup mocks base method
-func (m *MockLoadBalancerService) GetGroup(arg0 string) (loadbalancer.Group, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetGroup", arg0)
-	ret0, _ := ret[0].(loadbalancer.Group)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetGroup indicates an expected call of GetGroup
-func (mr *MockLoadBalancerServiceMockRecorder) GetGroup(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetGroup", reflect.TypeOf((*MockLoadBalancerService)(nil).GetGroup), arg0)
-}
-
-// GetGroups mocks base method
-func (m *MockLoadBalancerService) GetGroups(arg0 connection.APIRequestParameters) ([]loadbalancer.Group, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetGroups", arg0)
-	ret0, _ := ret[0].([]loadbalancer.Group)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetGroups indicates an expected call of GetGroups
-func (mr *MockLoadBalancerServiceMockRecorder) GetGroups(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetGroups", reflect.TypeOf((*MockLoadBalancerService)(nil).GetGroups), arg0)
-}
-
-// GetGroupsPaginated mocks base method
-func (m *MockLoadBalancerService) GetGroupsPaginated(arg0 connection.APIRequestParameters) (*loadbalancer.PaginatedGroup, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetGroupsPaginated", arg0)
-	ret0, _ := ret[0].(*loadbalancer.PaginatedGroup)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetGroupsPaginated indicates an expected call of GetGroupsPaginated
-func (mr *MockLoadBalancerServiceMockRecorder) GetGroupsPaginated(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetGroupsPaginated", reflect.TypeOf((*MockLoadBalancerService)(nil).GetGroupsPaginated), arg0)
-}
-
-// PatchConfiguration mocks base method
-func (m *MockLoadBalancerService) PatchConfiguration(arg0 string, arg1 loadbalancer.PatchConfigurationRequest) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "PatchConfiguration", arg0, arg1)
+	ret := m.ctrl.Call(m, "DeleteTarget", arg0)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// PatchConfiguration indicates an expected call of PatchConfiguration
-func (mr *MockLoadBalancerServiceMockRecorder) PatchConfiguration(arg0, arg1 interface{}) *gomock.Call {
+// DeleteTarget indicates an expected call of DeleteTarget
+func (mr *MockLoadBalancerServiceMockRecorder) DeleteTarget(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchConfiguration", reflect.TypeOf((*MockLoadBalancerService)(nil).PatchConfiguration), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteTarget", reflect.TypeOf((*MockLoadBalancerService)(nil).DeleteTarget), arg0)
+}
+
+// GetCluster mocks base method
+func (m *MockLoadBalancerService) GetCluster(arg0 string) (loadbalancer.Cluster, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetCluster", arg0)
+	ret0, _ := ret[0].(loadbalancer.Cluster)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetCluster indicates an expected call of GetCluster
+func (mr *MockLoadBalancerServiceMockRecorder) GetCluster(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCluster", reflect.TypeOf((*MockLoadBalancerService)(nil).GetCluster), arg0)
+}
+
+// GetClusters mocks base method
+func (m *MockLoadBalancerService) GetClusters(arg0 connection.APIRequestParameters) ([]loadbalancer.Cluster, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetClusters", arg0)
+	ret0, _ := ret[0].([]loadbalancer.Cluster)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetClusters indicates an expected call of GetClusters
+func (mr *MockLoadBalancerServiceMockRecorder) GetClusters(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetClusters", reflect.TypeOf((*MockLoadBalancerService)(nil).GetClusters), arg0)
+}
+
+// GetClustersPaginated mocks base method
+func (m *MockLoadBalancerService) GetClustersPaginated(arg0 connection.APIRequestParameters) (*loadbalancer.PaginatedCluster, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetClustersPaginated", arg0)
+	ret0, _ := ret[0].(*loadbalancer.PaginatedCluster)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetClustersPaginated indicates an expected call of GetClustersPaginated
+func (mr *MockLoadBalancerServiceMockRecorder) GetClustersPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetClustersPaginated", reflect.TypeOf((*MockLoadBalancerService)(nil).GetClustersPaginated), arg0)
+}
+
+// GetTarget mocks base method
+func (m *MockLoadBalancerService) GetTarget(arg0 string) (loadbalancer.Target, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetTarget", arg0)
+	ret0, _ := ret[0].(loadbalancer.Target)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetTarget indicates an expected call of GetTarget
+func (mr *MockLoadBalancerServiceMockRecorder) GetTarget(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTarget", reflect.TypeOf((*MockLoadBalancerService)(nil).GetTarget), arg0)
+}
+
+// GetTargets mocks base method
+func (m *MockLoadBalancerService) GetTargets(arg0 connection.APIRequestParameters) ([]loadbalancer.Target, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetTargets", arg0)
+	ret0, _ := ret[0].([]loadbalancer.Target)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetTargets indicates an expected call of GetTargets
+func (mr *MockLoadBalancerServiceMockRecorder) GetTargets(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTargets", reflect.TypeOf((*MockLoadBalancerService)(nil).GetTargets), arg0)
+}
+
+// GetTargetsPaginated mocks base method
+func (m *MockLoadBalancerService) GetTargetsPaginated(arg0 connection.APIRequestParameters) (*loadbalancer.PaginatedTarget, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetTargetsPaginated", arg0)
+	ret0, _ := ret[0].(*loadbalancer.PaginatedTarget)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetTargetsPaginated indicates an expected call of GetTargetsPaginated
+func (mr *MockLoadBalancerServiceMockRecorder) GetTargetsPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTargetsPaginated", reflect.TypeOf((*MockLoadBalancerService)(nil).GetTargetsPaginated), arg0)
+}
+
+// PatchCluster mocks base method
+func (m *MockLoadBalancerService) PatchCluster(arg0 string, arg1 loadbalancer.PatchClusterRequest) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PatchCluster", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchCluster indicates an expected call of PatchCluster
+func (mr *MockLoadBalancerServiceMockRecorder) PatchCluster(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchCluster", reflect.TypeOf((*MockLoadBalancerService)(nil).PatchCluster), arg0, arg1)
+}
+
+// PatchTarget mocks base method
+func (m *MockLoadBalancerService) PatchTarget(arg0 string, arg1 loadbalancer.PatchTargetRequest) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PatchTarget", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchTarget indicates an expected call of PatchTarget
+func (mr *MockLoadBalancerServiceMockRecorder) PatchTarget(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchTarget", reflect.TypeOf((*MockLoadBalancerService)(nil).PatchTarget), arg0, arg1)
 }
