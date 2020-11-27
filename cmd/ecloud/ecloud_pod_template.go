@@ -8,6 +8,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/ukfast/cli/internal/pkg/factory"
 	"github.com/ukfast/cli/internal/pkg/helper"
+	flaghelper "github.com/ukfast/cli/internal/pkg/helper/flag"
 	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
@@ -57,7 +58,7 @@ func ecloudPodTemplateList(service ecloud.ECloudService, cmd *cobra.Command, arg
 		return fmt.Errorf("Invalid pod ID [%s]", args[0])
 	}
 
-	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
+	params, err := flaghelper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		return err
 	}

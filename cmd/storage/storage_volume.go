@@ -7,7 +7,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/ukfast/cli/internal/pkg/factory"
-	"github.com/ukfast/cli/internal/pkg/helper"
+	flaghelper "github.com/ukfast/cli/internal/pkg/helper/flag"
 	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/storage"
 )
@@ -43,7 +43,7 @@ func storageVolumeListCmd(f factory.ClientFactory) *cobra.Command {
 }
 
 func storageVolumeList(service storage.StorageService, cmd *cobra.Command, args []string) error {
-	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
+	params, err := flaghelper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		return err
 	}

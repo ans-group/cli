@@ -34,6 +34,21 @@ func (m *MockLoadBalancerService) EXPECT() *MockLoadBalancerServiceMockRecorder 
 	return m.recorder
 }
 
+// CreateTarget mocks base method
+func (m *MockLoadBalancerService) CreateTarget(arg0 loadbalancer.CreateTargetRequest) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateTarget", arg0)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateTarget indicates an expected call of CreateTarget
+func (mr *MockLoadBalancerServiceMockRecorder) CreateTarget(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateTarget", reflect.TypeOf((*MockLoadBalancerService)(nil).CreateTarget), arg0)
+}
+
 // DeleteCluster mocks base method
 func (m *MockLoadBalancerService) DeleteCluster(arg0 string) error {
 	m.ctrl.T.Helper()

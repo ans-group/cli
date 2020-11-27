@@ -6,7 +6,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/ukfast/cli/internal/pkg/factory"
-	"github.com/ukfast/cli/internal/pkg/helper"
+	flaghelper "github.com/ukfast/cli/internal/pkg/helper/flag"
 	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
@@ -46,12 +46,12 @@ func ecloudRegionListCmd(f factory.ClientFactory) *cobra.Command {
 }
 
 func ecloudRegionList(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
-	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
+	params, err := flaghelper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		return err
 	}
 
-	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, helper.NewStringFilterFlag("name", "name"))
+	flaghelper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, flaghelper.NewStringFilterFlag("name", "name"))
 
 	regions, err := service.GetRegions(params)
 	if err != nil {

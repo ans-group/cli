@@ -7,7 +7,7 @@ import (
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
 	"github.com/ukfast/cli/internal/pkg/factory"
-	"github.com/ukfast/cli/internal/pkg/helper"
+	flaghelper "github.com/ukfast/cli/internal/pkg/helper/flag"
 	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/ddosx"
 )
@@ -50,7 +50,7 @@ func ddosxSSLListCmd(f factory.ClientFactory) *cobra.Command {
 }
 
 func ddosxSSLList(service ddosx.DDoSXService, cmd *cobra.Command, args []string) error {
-	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
+	params, err := flaghelper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		return err
 	}
@@ -139,15 +139,15 @@ func ddosxSSLCreate(service ddosx.DDoSXService, cmd *cobra.Command, fs afero.Fs,
 		createRequest.UKFastSSLID, _ = cmd.Flags().GetInt("ukfast-ssl-id")
 	} else {
 		var err error
-		createRequest.Key, err = helper.GetContentsFromLiteralOrFilePathFlag(cmd, fs, "key", "key-file")
+		createRequest.Key, err = flaghelper.GetContentsFromLiteralOrFilePathFlag(cmd, fs, "key", "key-file")
 		if err != nil {
 			return err
 		}
-		createRequest.Certificate, err = helper.GetContentsFromLiteralOrFilePathFlag(cmd, fs, "certificate", "certificate-file")
+		createRequest.Certificate, err = flaghelper.GetContentsFromLiteralOrFilePathFlag(cmd, fs, "certificate", "certificate-file")
 		if err != nil {
 			return err
 		}
-		createRequest.CABundle, err = helper.GetContentsFromLiteralOrFilePathFlag(cmd, fs, "ca-bundle", "ca-bundle-file")
+		createRequest.CABundle, err = flaghelper.GetContentsFromLiteralOrFilePathFlag(cmd, fs, "ca-bundle", "ca-bundle-file")
 		if err != nil {
 			return err
 		}
@@ -209,17 +209,17 @@ func ddosxSSLUpdate(service ddosx.DDoSXService, cmd *cobra.Command, fs afero.Fs,
 		patchRequest.UKFastSSLID, _ = cmd.Flags().GetInt("ukfast-ssl-id")
 	} else {
 		var err error
-		patchRequest.Key, err = helper.GetContentsFromLiteralOrFilePathFlag(cmd, fs, "key", "key-file")
+		patchRequest.Key, err = flaghelper.GetContentsFromLiteralOrFilePathFlag(cmd, fs, "key", "key-file")
 		if err != nil {
 			return err
 		}
 
-		patchRequest.Certificate, err = helper.GetContentsFromLiteralOrFilePathFlag(cmd, fs, "certificate", "certificate-file")
+		patchRequest.Certificate, err = flaghelper.GetContentsFromLiteralOrFilePathFlag(cmd, fs, "certificate", "certificate-file")
 		if err != nil {
 			return err
 		}
 
-		patchRequest.CABundle, err = helper.GetContentsFromLiteralOrFilePathFlag(cmd, fs, "ca-bundle", "ca-bundle-file")
+		patchRequest.CABundle, err = flaghelper.GetContentsFromLiteralOrFilePathFlag(cmd, fs, "ca-bundle", "ca-bundle-file")
 		if err != nil {
 			return err
 		}

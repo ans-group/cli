@@ -1,4 +1,4 @@
-package helper
+package flag
 
 import (
 	"errors"
@@ -202,6 +202,7 @@ func GetContentsFromFilePathFlag(cmd *cobra.Command, fs afero.Fs, filePathFlag s
 
 	return string(contentBytes), nil
 }
+
 func GetContentsFromLiteralOrFilePathFlag(cmd *cobra.Command, fs afero.Fs, literalFlag, filePathFlag string) (string, error) {
 	if cmd.Flags().Changed(literalFlag) {
 		return cmd.Flags().GetString(literalFlag)
@@ -211,4 +212,28 @@ func GetContentsFromLiteralOrFilePathFlag(cmd *cobra.Command, fs afero.Fs, liter
 	}
 
 	return "", nil
+}
+
+func GetChangedOrDefaultPtrString(cmd *cobra.Command, flag string) *string {
+	if cmd.Flags().Changed(flag) {
+		val, _ := cmd.Flags().GetString(flag)
+		return &val
+	}
+	return nil
+}
+
+func GetChangedOrDefaultPtrBool(cmd *cobra.Command, flag string) *bool {
+	if cmd.Flags().Changed(flag) {
+		val, _ := cmd.Flags().GetBool(flag)
+		return &val
+	}
+	return nil
+}
+
+func GetChangedOrDefaultPtrInt(cmd *cobra.Command, flag string) *int {
+	if cmd.Flags().Changed(flag) {
+		val, _ := cmd.Flags().GetInt(flag)
+		return &val
+	}
+	return nil
 }

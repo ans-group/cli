@@ -7,7 +7,7 @@ import (
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
 	"github.com/ukfast/cli/internal/pkg/factory"
-	"github.com/ukfast/cli/internal/pkg/helper"
+	flaghelper "github.com/ukfast/cli/internal/pkg/helper/flag"
 	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/ddosx"
 )
@@ -55,12 +55,12 @@ func ddosxDomainPropertyListCmd(f factory.ClientFactory) *cobra.Command {
 }
 
 func ddosxDomainPropertyList(service ddosx.DDoSXService, cmd *cobra.Command, args []string) error {
-	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
+	params, err := flaghelper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		return err
 	}
 
-	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, helper.NewStringFilterFlag("name", "name"))
+	flaghelper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, flaghelper.NewStringFilterFlag("name", "name"))
 
 	properties, err := service.GetDomainProperties(args[0], params)
 	if err != nil {
@@ -153,10 +153,10 @@ func ddosxDomainPropertyUpdate(service ddosx.DDoSXService, cmd *cobra.Command, f
 
 	if cmd.Flags().Changed("value") {
 		value, _ := cmd.Flags().GetString("value")
-		updateRequest.Value = helper.InferTypeFromStringFlagValue(value)
+		updateRequest.Value = flaghelper.InferTypeFromStringFlagValue(value)
 	} else if cmd.Flags().Changed("value-file") {
 		var err error
-		updateRequest.Value, err = helper.GetContentsFromFilePathFlag(cmd, fs, "value-file")
+		updateRequest.Value, err = flaghelper.GetContentsFromFilePathFlag(cmd, fs, "value-file")
 		if err != nil {
 			return err
 		}

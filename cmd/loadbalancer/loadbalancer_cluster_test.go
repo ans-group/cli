@@ -56,7 +56,7 @@ func Test_loadbalancerClusterList(t *testing.T) {
 
 func Test_loadbalancerClusterShowCmd_Args(t *testing.T) {
 	t.Run("ValidArgs_NoError", func(t *testing.T) {
-		err := loadbalancerClusterShowCmd(nil).Args(nil, []string{"rtr-abcdef12"})
+		err := loadbalancerClusterShowCmd(nil).Args(nil, []string{"00000000-0000-0000-0000-000000000000"})
 
 		assert.Nil(t, err)
 	})
@@ -76,9 +76,9 @@ func Test_loadbalancerClusterShow(t *testing.T) {
 
 		service := mocks.NewMockLoadBalancerService(mockCtrl)
 
-		service.EXPECT().GetCluster("rtr-abcdef12").Return(loadbalancer.Cluster{}, nil).Times(1)
+		service.EXPECT().GetCluster("00000000-0000-0000-0000-000000000000").Return(loadbalancer.Cluster{}, nil).Times(1)
 
-		loadbalancerClusterShow(service, &cobra.Command{}, []string{"rtr-abcdef12"})
+		loadbalancerClusterShow(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000"})
 	})
 
 	t.Run("MultipleClusters", func(t *testing.T) {
@@ -88,11 +88,11 @@ func Test_loadbalancerClusterShow(t *testing.T) {
 		service := mocks.NewMockLoadBalancerService(mockCtrl)
 
 		gomock.InOrder(
-			service.EXPECT().GetCluster("rtr-abcdef12").Return(loadbalancer.Cluster{}, nil),
-			service.EXPECT().GetCluster("rtr-abcdef23").Return(loadbalancer.Cluster{}, nil),
+			service.EXPECT().GetCluster("00000000-0000-0000-0000-000000000000").Return(loadbalancer.Cluster{}, nil),
+			service.EXPECT().GetCluster("00000000-0000-0000-0000-000000000001").Return(loadbalancer.Cluster{}, nil),
 		)
 
-		loadbalancerClusterShow(service, &cobra.Command{}, []string{"rtr-abcdef12", "rtr-abcdef23"})
+		loadbalancerClusterShow(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000001"})
 	})
 
 	t.Run("GetClusterError_OutputsError", func(t *testing.T) {
@@ -101,17 +101,17 @@ func Test_loadbalancerClusterShow(t *testing.T) {
 
 		service := mocks.NewMockLoadBalancerService(mockCtrl)
 
-		service.EXPECT().GetCluster("rtr-abcdef12").Return(loadbalancer.Cluster{}, errors.New("test error"))
+		service.EXPECT().GetCluster("00000000-0000-0000-0000-000000000000").Return(loadbalancer.Cluster{}, errors.New("test error"))
 
-		test_output.AssertErrorOutput(t, "Error retrieving cluster [rtr-abcdef12]: test error\n", func() {
-			loadbalancerClusterShow(service, &cobra.Command{}, []string{"rtr-abcdef12"})
+		test_output.AssertErrorOutput(t, "Error retrieving cluster [00000000-0000-0000-0000-000000000000]: test error\n", func() {
+			loadbalancerClusterShow(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000"})
 		})
 	})
 }
 
 func Test_loadbalancerClusterUpdateCmd_Args(t *testing.T) {
 	t.Run("ValidArgs_NoError", func(t *testing.T) {
-		err := loadbalancerClusterUpdateCmd(nil).Args(nil, []string{"rtr-abcdef12"})
+		err := loadbalancerClusterUpdateCmd(nil).Args(nil, []string{"00000000-0000-0000-0000-000000000000"})
 
 		assert.Nil(t, err)
 	})
@@ -139,11 +139,11 @@ func Test_loadbalancerClusterUpdate(t *testing.T) {
 		}
 
 		gomock.InOrder(
-			service.EXPECT().PatchCluster("rtr-abcdef12", req).Return(nil),
-			service.EXPECT().GetCluster("rtr-abcdef12").Return(loadbalancer.Cluster{}, nil),
+			service.EXPECT().PatchCluster("00000000-0000-0000-0000-000000000000", req).Return(nil),
+			service.EXPECT().GetCluster("00000000-0000-0000-0000-000000000000").Return(loadbalancer.Cluster{}, nil),
 		)
 
-		loadbalancerClusterUpdate(service, cmd, []string{"rtr-abcdef12"})
+		loadbalancerClusterUpdate(service, cmd, []string{"00000000-0000-0000-0000-000000000000"})
 	})
 
 	t.Run("MultipleClusters", func(t *testing.T) {
@@ -153,13 +153,13 @@ func Test_loadbalancerClusterUpdate(t *testing.T) {
 		service := mocks.NewMockLoadBalancerService(mockCtrl)
 
 		gomock.InOrder(
-			service.EXPECT().PatchCluster("rtr-abcdef12", gomock.Any()).Return(nil),
-			service.EXPECT().GetCluster("rtr-abcdef12").Return(loadbalancer.Cluster{}, nil),
+			service.EXPECT().PatchCluster("00000000-0000-0000-0000-000000000000", gomock.Any()).Return(nil),
+			service.EXPECT().GetCluster("00000000-0000-0000-0000-000000000000").Return(loadbalancer.Cluster{}, nil),
 			service.EXPECT().PatchCluster("rtr-12abcdef", gomock.Any()).Return(nil),
 			service.EXPECT().GetCluster("rtr-12abcdef").Return(loadbalancer.Cluster{}, nil),
 		)
 
-		loadbalancerClusterUpdate(service, &cobra.Command{}, []string{"rtr-abcdef12", "rtr-12abcdef"})
+		loadbalancerClusterUpdate(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000", "rtr-12abcdef"})
 	})
 
 	t.Run("PatchClusterError_OutputsError", func(t *testing.T) {
@@ -168,10 +168,10 @@ func Test_loadbalancerClusterUpdate(t *testing.T) {
 
 		service := mocks.NewMockLoadBalancerService(mockCtrl)
 
-		service.EXPECT().PatchCluster("rtr-abcdef12", gomock.Any()).Return(errors.New("test error"))
+		service.EXPECT().PatchCluster("00000000-0000-0000-0000-000000000000", gomock.Any()).Return(errors.New("test error"))
 
-		test_output.AssertErrorOutput(t, "Error updating cluster [rtr-abcdef12]: test error\n", func() {
-			loadbalancerClusterUpdate(service, &cobra.Command{}, []string{"rtr-abcdef12"})
+		test_output.AssertErrorOutput(t, "Error updating cluster [00000000-0000-0000-0000-000000000000]: test error\n", func() {
+			loadbalancerClusterUpdate(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000"})
 		})
 	})
 
@@ -182,19 +182,19 @@ func Test_loadbalancerClusterUpdate(t *testing.T) {
 		service := mocks.NewMockLoadBalancerService(mockCtrl)
 
 		gomock.InOrder(
-			service.EXPECT().PatchCluster("rtr-abcdef12", gomock.Any()).Return(nil),
-			service.EXPECT().GetCluster("rtr-abcdef12").Return(loadbalancer.Cluster{}, errors.New("test error")),
+			service.EXPECT().PatchCluster("00000000-0000-0000-0000-000000000000", gomock.Any()).Return(nil),
+			service.EXPECT().GetCluster("00000000-0000-0000-0000-000000000000").Return(loadbalancer.Cluster{}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error retrieving updated cluster [rtr-abcdef12]: test error\n", func() {
-			loadbalancerClusterUpdate(service, &cobra.Command{}, []string{"rtr-abcdef12"})
+		test_output.AssertErrorOutput(t, "Error retrieving updated cluster [00000000-0000-0000-0000-000000000000]: test error\n", func() {
+			loadbalancerClusterUpdate(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000"})
 		})
 	})
 }
 
 func Test_loadbalancerClusterDeleteCmd_Args(t *testing.T) {
 	t.Run("ValidArgs_NoError", func(t *testing.T) {
-		err := loadbalancerClusterDeleteCmd(nil).Args(nil, []string{"rtr-abcdef12"})
+		err := loadbalancerClusterDeleteCmd(nil).Args(nil, []string{"00000000-0000-0000-0000-000000000000"})
 
 		assert.Nil(t, err)
 	})
@@ -214,9 +214,9 @@ func Test_loadbalancerClusterDelete(t *testing.T) {
 
 		service := mocks.NewMockLoadBalancerService(mockCtrl)
 
-		service.EXPECT().DeleteCluster("rtr-abcdef12").Return(nil).Times(1)
+		service.EXPECT().DeleteCluster("00000000-0000-0000-0000-000000000000").Return(nil).Times(1)
 
-		loadbalancerClusterDelete(service, &cobra.Command{}, []string{"rtr-abcdef12"})
+		loadbalancerClusterDelete(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000"})
 	})
 
 	t.Run("MultipleClusters", func(t *testing.T) {
@@ -226,11 +226,11 @@ func Test_loadbalancerClusterDelete(t *testing.T) {
 		service := mocks.NewMockLoadBalancerService(mockCtrl)
 
 		gomock.InOrder(
-			service.EXPECT().DeleteCluster("rtr-abcdef12").Return(nil),
+			service.EXPECT().DeleteCluster("00000000-0000-0000-0000-000000000000").Return(nil),
 			service.EXPECT().DeleteCluster("rtr-12abcdef").Return(nil),
 		)
 
-		loadbalancerClusterDelete(service, &cobra.Command{}, []string{"rtr-abcdef12", "rtr-12abcdef"})
+		loadbalancerClusterDelete(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000", "rtr-12abcdef"})
 	})
 
 	t.Run("DeleteClusterError_OutputsError", func(t *testing.T) {
@@ -239,10 +239,10 @@ func Test_loadbalancerClusterDelete(t *testing.T) {
 
 		service := mocks.NewMockLoadBalancerService(mockCtrl)
 
-		service.EXPECT().DeleteCluster("rtr-abcdef12").Return(errors.New("test error")).Times(1)
+		service.EXPECT().DeleteCluster("00000000-0000-0000-0000-000000000000").Return(errors.New("test error")).Times(1)
 
-		test_output.AssertErrorOutput(t, "Error removing cluster [rtr-abcdef12]: test error\n", func() {
-			loadbalancerClusterDelete(service, &cobra.Command{}, []string{"rtr-abcdef12"})
+		test_output.AssertErrorOutput(t, "Error removing cluster [00000000-0000-0000-0000-000000000000]: test error\n", func() {
+			loadbalancerClusterDelete(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000"})
 		})
 	})
 }

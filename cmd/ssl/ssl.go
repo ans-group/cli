@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
 	"github.com/ukfast/cli/internal/pkg/factory"
-	"github.com/ukfast/cli/internal/pkg/helper"
+	flaghelper "github.com/ukfast/cli/internal/pkg/helper/flag"
 	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/ssl"
 )
@@ -57,17 +57,17 @@ func sslValidate(service ssl.SSLService, fs afero.Fs, cmd *cobra.Command, args [
 	validateRequest := ssl.ValidateRequest{}
 
 	var err error
-	validateRequest.Key, err = helper.GetContentsFromLiteralOrFilePathFlag(cmd, fs, "key", "key-file")
+	validateRequest.Key, err = flaghelper.GetContentsFromLiteralOrFilePathFlag(cmd, fs, "key", "key-file")
 	if err != nil {
 		return err
 	}
 
-	validateRequest.Certificate, err = helper.GetContentsFromLiteralOrFilePathFlag(cmd, fs, "certificate", "certificate-file")
+	validateRequest.Certificate, err = flaghelper.GetContentsFromLiteralOrFilePathFlag(cmd, fs, "certificate", "certificate-file")
 	if err != nil {
 		return err
 	}
 
-	validateRequest.CABundle, err = helper.GetContentsFromLiteralOrFilePathFlag(cmd, fs, "ca-bundle", "ca-bundle-file")
+	validateRequest.CABundle, err = flaghelper.GetContentsFromLiteralOrFilePathFlag(cmd, fs, "ca-bundle", "ca-bundle-file")
 	if err != nil {
 		return err
 	}

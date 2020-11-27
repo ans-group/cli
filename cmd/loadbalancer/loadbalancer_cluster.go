@@ -6,7 +6,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/ukfast/cli/internal/pkg/factory"
-	"github.com/ukfast/cli/internal/pkg/helper"
+	flaghelper "github.com/ukfast/cli/internal/pkg/helper/flag"
 	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/ptr"
 	"github.com/ukfast/sdk-go/pkg/service/loadbalancer"
@@ -49,12 +49,12 @@ func loadbalancerClusterListCmd(f factory.ClientFactory) *cobra.Command {
 }
 
 func loadbalancerClusterList(service loadbalancer.LoadBalancerService, cmd *cobra.Command, args []string) error {
-	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
+	params, err := flaghelper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		return err
 	}
 
-	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, helper.NewStringFilterFlag("name", "name"))
+	flaghelper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, flaghelper.NewStringFilterFlag("name", "name"))
 
 	clusters, err := service.GetClusters(params)
 	if err != nil {
@@ -69,7 +69,7 @@ func loadbalancerClusterShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <cluster: id>...",
 		Short:   "Shows a cluster",
 		Long:    "This command shows one or more clusters",
-		Example: "ukfast loadbalancer cluster show rtr-abcdef12",
+		Example: "ukfast loadbalancer cluster show 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing cluster")
@@ -108,7 +108,7 @@ func loadbalancerClusterUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <cluster: id>...",
 		Short:   "Updates a cluster",
 		Long:    "This command updates one or more clusters",
-		Example: "ukfast loadbalancer cluster update rtr-abcdef12 --name \"my cluster\"",
+		Example: "ukfast loadbalancer cluster update 00000000-0000-0000-0000-000000000000 --name \"my cluster\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing cluster")
@@ -164,7 +164,7 @@ func loadbalancerClusterDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <cluster: id...>",
 		Short:   "Removes a cluster",
 		Long:    "This command removes one or more clusters",
-		Example: "ukfast loadbalancer cluster delete rtr-abcdef12",
+		Example: "ukfast loadbalancer cluster delete 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing cluster")

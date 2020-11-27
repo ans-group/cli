@@ -7,7 +7,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/ukfast/cli/internal/pkg/factory"
-	"github.com/ukfast/cli/internal/pkg/helper"
+	flaghelper "github.com/ukfast/cli/internal/pkg/helper/flag"
 	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/ptr"
 	"github.com/ukfast/sdk-go/pkg/service/safedns"
@@ -65,15 +65,15 @@ func safednsTemplateRecordList(service safedns.SafeDNSService, cmd *cobra.Comman
 		return err
 	}
 
-	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
+	params, err := flaghelper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		return err
 	}
 
-	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd,
-		helper.NewStringFilterFlag("name", "name"),
-		helper.NewStringFilterFlag("type", "type"),
-		helper.NewStringFilterFlag("content", "content"),
+	flaghelper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd,
+		flaghelper.NewStringFilterFlag("name", "name"),
+		flaghelper.NewStringFilterFlag("type", "type"),
+		flaghelper.NewStringFilterFlag("content", "content"),
 	)
 
 	templateRecords, err := service.GetTemplateRecords(templateID, params)

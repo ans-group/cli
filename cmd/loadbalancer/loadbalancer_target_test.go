@@ -55,7 +55,7 @@ func Test_loadbalancerTargetList(t *testing.T) {
 
 func Test_loadbalancerTargetShowCmd_Args(t *testing.T) {
 	t.Run("ValidArgs_NoError", func(t *testing.T) {
-		err := loadbalancerTargetShowCmd(nil).Args(nil, []string{"rtr-abcdef12"})
+		err := loadbalancerTargetShowCmd(nil).Args(nil, []string{"00000000-0000-0000-0000-000000000000"})
 
 		assert.Nil(t, err)
 	})
@@ -75,9 +75,9 @@ func Test_loadbalancerTargetShow(t *testing.T) {
 
 		service := mocks.NewMockLoadBalancerService(mockCtrl)
 
-		service.EXPECT().GetTarget("rtr-abcdef12").Return(loadbalancer.Target{}, nil).Times(1)
+		service.EXPECT().GetTarget("00000000-0000-0000-0000-000000000000").Return(loadbalancer.Target{}, nil).Times(1)
 
-		loadbalancerTargetShow(service, &cobra.Command{}, []string{"rtr-abcdef12"})
+		loadbalancerTargetShow(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000"})
 	})
 
 	t.Run("MultipleTargets", func(t *testing.T) {
@@ -87,11 +87,11 @@ func Test_loadbalancerTargetShow(t *testing.T) {
 		service := mocks.NewMockLoadBalancerService(mockCtrl)
 
 		gomock.InOrder(
-			service.EXPECT().GetTarget("rtr-abcdef12").Return(loadbalancer.Target{}, nil),
-			service.EXPECT().GetTarget("rtr-abcdef23").Return(loadbalancer.Target{}, nil),
+			service.EXPECT().GetTarget("00000000-0000-0000-0000-000000000000").Return(loadbalancer.Target{}, nil),
+			service.EXPECT().GetTarget("00000000-0000-0000-0000-000000000001").Return(loadbalancer.Target{}, nil),
 		)
 
-		loadbalancerTargetShow(service, &cobra.Command{}, []string{"rtr-abcdef12", "rtr-abcdef23"})
+		loadbalancerTargetShow(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000001"})
 	})
 
 	t.Run("GetTargetError_OutputsError", func(t *testing.T) {
@@ -100,10 +100,10 @@ func Test_loadbalancerTargetShow(t *testing.T) {
 
 		service := mocks.NewMockLoadBalancerService(mockCtrl)
 
-		service.EXPECT().GetTarget("rtr-abcdef12").Return(loadbalancer.Target{}, errors.New("test error"))
+		service.EXPECT().GetTarget("00000000-0000-0000-0000-000000000000").Return(loadbalancer.Target{}, errors.New("test error"))
 
-		test_output.AssertErrorOutput(t, "Error retrieving target [rtr-abcdef12]: test error\n", func() {
-			loadbalancerTargetShow(service, &cobra.Command{}, []string{"rtr-abcdef12"})
+		test_output.AssertErrorOutput(t, "Error retrieving target [00000000-0000-0000-0000-000000000000]: test error\n", func() {
+			loadbalancerTargetShow(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000"})
 		})
 	})
 }
