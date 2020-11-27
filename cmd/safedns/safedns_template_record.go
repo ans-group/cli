@@ -183,16 +183,17 @@ func safednsTemplateRecordCreate(service safedns.SafeDNSService, cmd *cobra.Comm
 	recordName, _ := cmd.Flags().GetString("name")
 	recordType, _ := cmd.Flags().GetString("type")
 	recordContent, _ := cmd.Flags().GetString("content")
-	recordTTLRaw, _ := cmd.Flags().GetInt("ttl")
-	recordTTL := safedns.RecordTTL(recordTTLRaw)
-	recordPriority, _ := cmd.Flags().GetInt("priority")
 
 	createRequest := safedns.CreateRecordRequest{
-		Name:     recordName,
-		Type:     recordType,
-		Content:  recordContent,
-		TTL:      &recordTTL,
-		Priority: &recordPriority,
+		Name:    recordName,
+		Type:    recordType,
+		Content: recordContent,
+	}
+
+	if cmd.Flags().Changed("ttl") {
+		recordTTLRaw, _ := cmd.Flags().GetInt("ttl")
+		recordTTL := safedns.RecordTTL(recordTTLRaw)
+		createRequest.TTL = &recordTTL
 	}
 
 	if cmd.Flags().Changed("priority") {

@@ -294,7 +294,7 @@ func Test_safednsTemplateRecordCreate(t *testing.T) {
 		}
 
 		gomock.InOrder(
-			service.EXPECT().CreateTemplateRecord(123, expectedRequest).Return(456, nil),
+			service.EXPECT().CreateTemplateRecord(123, gomock.Eq(expectedRequest)).Return(456, nil),
 			service.EXPECT().GetTemplateRecord(123, 456).Return(safedns.Record{}, nil),
 		)
 
