@@ -102,6 +102,7 @@ func ecloudRouterCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().String("name", "", "Name of router")
 	cmd.Flags().String("vpc", "", "ID of VPC")
 	cmd.MarkFlagRequired("vpc")
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the router has been completely created before continuing on")
 
 	return cmd
 }
@@ -118,12 +119,20 @@ func ecloudRouterCreate(service ecloud.ECloudService, cmd *cobra.Command, args [
 		return fmt.Errorf("Error creating router: %s", err)
 	}
 
-	lbc, err := service.GetRouter(routerID)
+	waitFlag, _ := cmd.Flags().GetBool("wait")
+	if waitFlag {
+		err := helper.WaitForCommand(RouterResourceSyncStatusWaitFunc(service, routerID, ecloud.SyncStatusComplete))
+		if err != nil {
+			return fmt.Errorf("Error waiting for router sync: %s", err)
+		}
+	}
+
+	router, err := service.GetRouter(routerID)
 	if err != nil {
 		return fmt.Errorf("Error retrieving new router: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudRoutersProvider([]ecloud.Router{lbc}))
+	return output.CommandOutput(cmd, OutputECloudRoutersProvider([]ecloud.Router{router}))
 }
 
 func ecloudRouterUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -199,4 +208,14 @@ func ecloudRouterDelete(service ecloud.ECloudService, cmd *cobra.Command, args [
 		}
 	}
 	return nil
+}
+
+func RouterResourceSyncStatusWaitFunc(service ecloud.ECloudService, routerID string, status ecloud.SyncStatus) helper.WaitFunc {
+	return ResourceSyncStatusWaitFunc(func() (ecloud.SyncStatus, error) {
+		router, err := service.GetRouter(routerID)
+		if err != nil {
+			return "", err
+		}
+		return router.Sync, nil
+	}, status)
 }

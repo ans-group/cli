@@ -130,6 +130,25 @@ func PodTemplateExistsWaitFunc(service ecloud.ECloudService, podID int, template
 	}
 }
 
+type GetResourceSyncStatusFunc func() (ecloud.SyncStatus, error)
+
+func ResourceSyncStatusWaitFunc(fn GetResourceSyncStatusFunc, expectedStatus ecloud.SyncStatus) helper.WaitFunc {
+	return func() (finished bool, err error) {
+		status, err := fn()
+		if err != nil {
+			return false, fmt.Errorf("Failed to retrieve status for resource: %s", err)
+		}
+		if status == ecloud.SyncStatusFailed {
+			return false, fmt.Errorf("Resource in [%s] state", ecloud.SyncStatusFailed.String())
+		}
+		if status == expectedStatus {
+			return true, nil
+		}
+
+		return false, nil
+	}
+}
+
 type ecloudServiceCobraRunEFunc func(service ecloud.ECloudService, cmd *cobra.Command, args []string) error
 
 func ecloudCobraRunEFunc(f factory.ClientFactory, rf ecloudServiceCobraRunEFunc) func(cmd *cobra.Command, args []string) error {
