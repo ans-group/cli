@@ -102,6 +102,7 @@ func ecloudNetworkCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().String("name", "", "Name of network")
 	cmd.Flags().String("network", "", "ID of network")
 	cmd.MarkFlagRequired("network")
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the router has been completely created before continuing on")
 
 	return cmd
 }
@@ -118,12 +119,20 @@ func ecloudNetworkCreate(service ecloud.ECloudService, cmd *cobra.Command, args 
 		return fmt.Errorf("Error creating network: %s", err)
 	}
 
-	lbc, err := service.GetNetwork(networkID)
+	waitFlag, _ := cmd.Flags().GetBool("wait")
+	if waitFlag {
+		err := helper.WaitForCommand(NetworkResourceSyncStatusWaitFunc(service, networkID, ecloud.SyncStatusComplete))
+		if err != nil {
+			return fmt.Errorf("Error waiting for network sync: %s", err)
+		}
+	}
+
+	network, err := service.GetNetwork(networkID)
 	if err != nil {
 		return fmt.Errorf("Error retrieving new network: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudNetworksProvider([]ecloud.Network{lbc}))
+	return output.CommandOutput(cmd, OutputECloudNetworksProvider([]ecloud.Network{network}))
 }
 
 func ecloudNetworkUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -199,4 +208,14 @@ func ecloudNetworkDelete(service ecloud.ECloudService, cmd *cobra.Command, args 
 		}
 	}
 	return nil
+}
+
+func NetworkResourceSyncStatusWaitFunc(service ecloud.ECloudService, networkID string, status ecloud.SyncStatus) helper.WaitFunc {
+	return ResourceSyncStatusWaitFunc(func() (ecloud.SyncStatus, error) {
+		network, err := service.GetNetwork(networkID)
+		if err != nil {
+			return "", err
+		}
+		return network.Sync, nil
+	}, status)
 }
