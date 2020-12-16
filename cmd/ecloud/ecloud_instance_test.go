@@ -1,4 +1,4 @@
-package ecloudv2
+package ecloud
 
 import (
 	"errors"
@@ -10,7 +10,6 @@ import (
 	"github.com/ukfast/cli/internal/pkg/clierrors"
 	"github.com/ukfast/cli/test/mocks"
 	"github.com/ukfast/cli/test/test_output"
-	"github.com/ukfast/sdk-go/pkg/ptr"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
@@ -119,7 +118,7 @@ func Test_ecloudInstanceCreate(t *testing.T) {
 		cmd.ParseFlags([]string{"--name=testinstance"})
 
 		req := ecloud.CreateInstanceRequest{
-			Name: ptr.String("testinstance"),
+			Name: "testinstance",
 		}
 
 		gomock.InOrder(
@@ -190,7 +189,7 @@ func Test_ecloudInstanceUpdate(t *testing.T) {
 		cmd.ParseFlags([]string{"--name=testinstance", "--vcpu=2", "--ram=2"})
 
 		req := ecloud.PatchInstanceRequest{
-			Name:        ptr.String("testinstance"),
+			Name:        "testinstance",
 			VCPUCores:   2,
 			RAMCapacity: 2,
 		}

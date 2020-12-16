@@ -1,4 +1,4 @@
-package ecloudv2
+package ecloud
 
 import (
 	"errors"
@@ -8,7 +8,6 @@ import (
 	"github.com/ukfast/cli/internal/pkg/factory"
 	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/sdk-go/pkg/ptr"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
@@ -134,7 +133,7 @@ func ecloudVPCCreate(service ecloud.ECloudService, cmd *cobra.Command, args []st
 	regionID, _ := cmd.Flags().GetString("region")
 
 	createRequest := ecloud.CreateVPCRequest{
-		Name:     ptr.String(name),
+		Name:     name,
 		RegionID: regionID,
 	}
 
@@ -184,7 +183,7 @@ func ecloudVPCUpdate(service ecloud.ECloudService, cmd *cobra.Command, args []st
 
 	if cmd.Flags().Changed("name") {
 		name, _ := cmd.Flags().GetString("name")
-		patchRequest.Name = ptr.String(name)
+		patchRequest.Name = name
 	}
 
 	var vpcs []ecloud.VPC
