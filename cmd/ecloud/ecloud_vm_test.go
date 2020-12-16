@@ -38,7 +38,7 @@ func Test_ecloudVirtualMachineList(t *testing.T) {
 
 		expectedParameters := connection.APIRequestParameters{
 			Filtering: []connection.APIRequestFiltering{
-				connection.APIRequestFiltering{
+				{
 					Property: "name",
 					Operator: connection.EQOperator,
 					Value:    []string{"test vm 1"},

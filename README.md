@@ -254,8 +254,16 @@ The commands at `ukfast completion <shell: bash|zsh|powershell>` provide help fo
 
 ## eCloud V2 resources
 
-eCloud V2 resource commands are activated by defining the environment variable `UKF_ECLOUD_V2`:
+eCloud V2 resource commands are available by default under the `ecloud` subcommand.
+
+To display only V2 commands, the following environment variable can be set:
 
 ```
 > export UKF_ECLOUD_V2=true
+```
+
+To display only V2 commands, the following environment variable can be set:
+
+```
+> export UKF_ECLOUD_V1=true
 ```
