@@ -325,7 +325,7 @@ func OutputECloudVPCsProvider(vpcs []ecloud.VPC) output.OutputHandlerProvider {
 }
 
 func OutputECloudInstancesProvider(instances []ecloud.Instance) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(instances).WithDefaultFields([]string{"id", "name", "vpc_id", "status", "vcpu_cores", "ram_capacity"})
+	return output.NewSerializedOutputHandlerProvider(instances).WithDefaultFields([]string{"id", "name", "vpc_id", "sync", "vcpu_cores", "ram_capacity"})
 }
 
 func OutputECloudFloatingIPsProvider(fips []ecloud.FloatingIP) output.OutputHandlerProvider {
@@ -359,7 +359,6 @@ func OutputECloudNICsProvider(nics []ecloud.NIC) output.OutputHandlerProvider {
 func OutputECloudRoutersProvider(routers []ecloud.Router) output.OutputHandlerProvider {
 	return output.NewSerializedOutputHandlerProvider(routers).WithDefaultFields([]string{"id", "name", "vpc_id", "sync"})
 }
-
 
 func OutputECloudNetworksProvider(networks []ecloud.Network) output.OutputHandlerProvider {
 	return output.NewSerializedOutputHandlerProvider(networks).WithDefaultFields([]string{"id", "name", "router_id", "subnet", "sync"})
