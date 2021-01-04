@@ -282,3 +282,65 @@ func Test_pssRequestUpdate(t *testing.T) {
 		})
 	})
 }
+
+func Test_pssRequestCloseCmd_Args(t *testing.T) {
+	t.Run("ValidArgs_NoError", func(t *testing.T) {
+		err := pssRequestCloseCmd(nil).Args(nil, []string{"123"})
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("InvalidArgs_Error", func(t *testing.T) {
+		err := pssRequestCloseCmd(nil).Args(nil, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing request", err.Error())
+	})
+}
+
+func Test_pssRequestClose(t *testing.T) {
+	t.Run("DefaultClose", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockPSSService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().PatchRequest(123, gomock.Any()).Return(nil),
+			service.EXPECT().GetRequest(123).Return(pss.Request{}, nil),
+		)
+
+		pssRequestClose(service, pssRequestCloseCmd(nil), []string{"123"})
+	})
+
+	t.Run("PatchRequestError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockPSSService(mockCtrl)
+		cmd := pssRequestCloseCmd(nil)
+
+		service.EXPECT().PatchRequest(123, gomock.Any()).Return(errors.New("test error")).Times(1)
+
+		test_output.AssertErrorOutput(t, "Error closing request [123]: test error\n", func() {
+			pssRequestClose(service, cmd, []string{"123"})
+		})
+	})
+
+	t.Run("GetRequestError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockPSSService(mockCtrl)
+		cmd := pssRequestCloseCmd(nil)
+
+		gomock.InOrder(
+			service.EXPECT().PatchRequest(123, gomock.Any()).Return(nil),
+			service.EXPECT().GetRequest(123).Return(pss.Request{}, errors.New("test error")),
+		)
+
+		test_output.AssertErrorOutput(t, "Error retrieving updated request [123]: test error\n", func() {
+			pssRequestClose(service, cmd, []string{"123"})
+		})
+	})
+}

@@ -24,6 +24,7 @@ func pssRequestRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.AddCommand(pssRequestShowCmd(f))
 	cmd.AddCommand(pssRequestCreateCmd(f))
 	cmd.AddCommand(pssRequestUpdateCmd(f))
+	cmd.AddCommand(pssRequestCloseCmd(f))
 
 	// Child root commands
 	cmd.AddCommand(pssRequestReplyRootCmd(f))
@@ -212,6 +213,7 @@ func pssRequestUpdateCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Setup flags
 	cmd.Flags().String("priority", "", "Specifies priority for request")
+	cmd.Flags().String("status", "", "Specifies status for request")
 	cmd.Flags().Bool("secure", false, "Specifies whether request is secure")
 	cmd.Flags().Bool("read", false, "Specifies whether request is marked as read")
 	cmd.Flags().Bool("request-sms", false, "Specifies whether SMS updates are required")
@@ -230,6 +232,15 @@ func pssRequestUpdate(service pss.PSSService, cmd *cobra.Command, args []string)
 			return err
 		}
 		patchRequest.Priority = parsedPriority
+	}
+
+	if cmd.Flags().Changed("status") {
+		status, _ := cmd.Flags().GetString("status")
+		parsedStatus, err := pss.ParseRequestStatus(status)
+		if err != nil {
+			return err
+		}
+		patchRequest.Status = parsedStatus
 	}
 
 	if cmd.Flags().Changed("secure") {
@@ -261,6 +272,62 @@ func pssRequestUpdate(service pss.PSSService, cmd *cobra.Command, args []string)
 		err = service.PatchRequest(requestID, patchRequest)
 		if err != nil {
 			output.OutputWithErrorLevelf("Error updating request [%d]: %s", requestID, err)
+			continue
+		}
+
+		request, err := service.GetRequest(requestID)
+		if err != nil {
+			output.OutputWithErrorLevelf("Error retrieving updated request [%d]: %s", requestID, err)
+			continue
+		}
+
+		requests = append(requests, request)
+	}
+
+	return output.CommandOutput(cmd, OutputPSSRequestsProvider(requests))
+}
+
+func pssRequestCloseCmd(f factory.ClientFactory) *cobra.Command {
+	return &cobra.Command{
+		Use:     "close <request: id>...",
+		Short:   "Closes requests",
+		Long:    "This command closes one or more requests",
+		Example: "ukfast pss request close 123",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Missing request")
+			}
+
+			return nil
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return pssRequestClose(c.PSSService(), cmd, args)
+		},
+	}
+}
+
+func pssRequestClose(service pss.PSSService, cmd *cobra.Command, args []string) error {
+	patchRequest := pss.PatchRequestRequest{
+		Status: pss.RequestStatusCompleted,
+	}
+
+	var requests []pss.Request
+
+	for _, arg := range args {
+		requestID, err := strconv.Atoi(arg)
+		if err != nil {
+			output.OutputWithErrorLevelf("Invalid request ID [%s]", arg)
+			continue
+		}
+
+		err = service.PatchRequest(requestID, patchRequest)
+		if err != nil {
+			output.OutputWithErrorLevelf("Error closing request [%d]: %s", requestID, err)
 			continue
 		}
 
