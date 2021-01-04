@@ -1,4 +1,4 @@
-package ecloudv2
+package ecloud
 
 import (
 	"errors"
@@ -10,7 +10,6 @@ import (
 	"github.com/ukfast/cli/internal/pkg/clierrors"
 	"github.com/ukfast/cli/test/mocks"
 	"github.com/ukfast/cli/test/test_output"
-	"github.com/ukfast/sdk-go/pkg/ptr"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
@@ -119,7 +118,7 @@ func Test_ecloudVPCCreate(t *testing.T) {
 		cmd.ParseFlags([]string{"--name=testvpc", "--router=rtr-abcdef12"})
 
 		req := ecloud.CreateVPCRequest{
-			Name: ptr.String("testvpc"),
+			Name: "testvpc",
 		}
 
 		gomock.InOrder(
@@ -190,7 +189,7 @@ func Test_ecloudVPCUpdate(t *testing.T) {
 		cmd.ParseFlags([]string{"--name=testvpc"})
 
 		req := ecloud.PatchVPCRequest{
-			Name: ptr.String("testvpc"),
+			Name: "testvpc",
 		}
 
 		gomock.InOrder(

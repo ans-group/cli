@@ -1,4 +1,4 @@
-package ecloudv2
+package ecloud
 
 import (
 	"errors"

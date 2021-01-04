@@ -3,6 +3,7 @@ package ecloud
 import (
 	"errors"
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -18,15 +19,31 @@ func ECloudRootCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	// Child root commands
-	cmd.AddCommand(ecloudVirtualMachineRootCmd(f))
-	cmd.AddCommand(ecloudSolutionRootCmd(f))
-	cmd.AddCommand(ecloudSiteRootCmd(f))
-	cmd.AddCommand(ecloudHostRootCmd(f))
-	cmd.AddCommand(ecloudFirewallRootCmd(f))
-	cmd.AddCommand(ecloudPodRootCmd(f))
-	cmd.AddCommand(ecloudDatastoreRootCmd(f))
-	cmd.AddCommand(ecloudApplianceRootCmd(f))
-	cmd.AddCommand(ecloudCreditRootCmd(f))
+	// -- eCloud v1
+	v1envset := len(os.Getenv("UKF_ECLOUD_V1")) > 0
+	v2envset := len(os.Getenv("UKF_ECLOUD_V2")) > 0
+
+	if v1envset || !v2envset {
+		cmd.AddCommand(ecloudVirtualMachineRootCmd(f))
+		cmd.AddCommand(ecloudSolutionRootCmd(f))
+		cmd.AddCommand(ecloudSiteRootCmd(f))
+		cmd.AddCommand(ecloudHostRootCmd(f))
+		cmd.AddCommand(ecloudFirewallRootCmd(f))
+		cmd.AddCommand(ecloudPodRootCmd(f))
+		cmd.AddCommand(ecloudDatastoreRootCmd(f))
+		cmd.AddCommand(ecloudApplianceRootCmd(f))
+		cmd.AddCommand(ecloudCreditRootCmd(f))
+	}
+	// -- eCloud v2
+	if v2envset || !v1envset {
+		cmd.AddCommand(ecloudVPCRootCmd(f))
+		cmd.AddCommand(ecloudRouterRootCmd(f))
+		cmd.AddCommand(ecloudNetworkRootCmd(f))
+		cmd.AddCommand(ecloudInstanceRootCmd(f))
+		cmd.AddCommand(ecloudFloatingIPRootCmd(f))
+		cmd.AddCommand(ecloudFirewallRuleRootCmd(f))
+		cmd.AddCommand(ecloudRegionRootCmd(f))
+	}
 
 	return cmd
 }
@@ -110,5 +127,37 @@ func PodTemplateExistsWaitFunc(service ecloud.ECloudService, podID int, template
 		}
 
 		return (exists == true), nil
+	}
+}
+
+type GetResourceSyncStatusFunc func() (ecloud.SyncStatus, error)
+
+func ResourceSyncStatusWaitFunc(fn GetResourceSyncStatusFunc, expectedStatus ecloud.SyncStatus) helper.WaitFunc {
+	return func() (finished bool, err error) {
+		status, err := fn()
+		if err != nil {
+			return false, fmt.Errorf("Failed to retrieve status for resource: %s", err)
+		}
+		if status == ecloud.SyncStatusFailed {
+			return false, fmt.Errorf("Resource in [%s] state", ecloud.SyncStatusFailed.String())
+		}
+		if status == expectedStatus {
+			return true, nil
+		}
+
+		return false, nil
+	}
+}
+
+type ecloudServiceCobraRunEFunc func(service ecloud.ECloudService, cmd *cobra.Command, args []string) error
+
+func ecloudCobraRunEFunc(f factory.ClientFactory, rf ecloudServiceCobraRunEFunc) func(cmd *cobra.Command, args []string) error {
+	return func(cmd *cobra.Command, args []string) error {
+		c, err := f.NewClient()
+		if err != nil {
+			return err
+		}
+
+		return rf(c.ECloudService(), cmd, args)
 	}
 }

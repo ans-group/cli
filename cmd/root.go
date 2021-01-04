@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"os"
 
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/afero"
@@ -14,7 +13,6 @@ import (
 	draascmd "github.com/ukfast/cli/cmd/draas"
 	ecloudcmd "github.com/ukfast/cli/cmd/ecloud"
 	ecloudflexcmd "github.com/ukfast/cli/cmd/ecloudflex"
-	ecloudv2cmd "github.com/ukfast/cli/cmd/ecloudv2"
 	loadbalancercmd "github.com/ukfast/cli/cmd/loadbalancer"
 	loadtestcmd "github.com/ukfast/cli/cmd/loadtest"
 	psscmd "github.com/ukfast/cli/cmd/pss"
@@ -74,11 +72,7 @@ func Execute(build build.BuildInfo) {
 	rootCmd.AddCommand(billingcmd.BillingRootCmd(clientFactory))
 	rootCmd.AddCommand(ddosxcmd.DDoSXRootCmd(clientFactory, fs))
 	rootCmd.AddCommand(draascmd.DRaaSRootCmd(clientFactory))
-	if val, ok := os.LookupEnv("UKF_ECLOUD_V2"); ok && len(val) > 0 {
-		rootCmd.AddCommand(ecloudv2cmd.ECloudV2RootCmd(clientFactory))
-	} else {
-		rootCmd.AddCommand(ecloudcmd.ECloudRootCmd(clientFactory))
-	}
+	rootCmd.AddCommand(ecloudcmd.ECloudRootCmd(clientFactory))
 	rootCmd.AddCommand(ecloudflexcmd.ECloudFlexRootCmd(clientFactory))
 	rootCmd.AddCommand(loadbalancercmd.LoadBalancerRootCmd(clientFactory))
 	rootCmd.AddCommand(loadtestcmd.LoadTestRootCmd(clientFactory))

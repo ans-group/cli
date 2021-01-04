@@ -1,4 +1,4 @@
-package ecloudv2
+package ecloud
 
 import (
 	"errors"
@@ -12,31 +12,31 @@ import (
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
-func Test_ecloudInstanceVolumeListCmd_Args(t *testing.T) {
+func Test_ecloudInstanceCredentialListCmd_Args(t *testing.T) {
 	t.Run("ValidArgs_NoError", func(t *testing.T) {
-		err := ecloudInstanceVolumeListCmd(nil).Args(nil, []string{"i-abcdef12"})
+		err := ecloudInstanceCredentialListCmd(nil).Args(nil, []string{"i-abcdef12"})
 
 		assert.Nil(t, err)
 	})
 
 	t.Run("InvalidArgs_Error", func(t *testing.T) {
-		err := ecloudInstanceVolumeListCmd(nil).Args(nil, []string{})
+		err := ecloudInstanceCredentialListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
 		assert.Equal(t, "Missing instance", err.Error())
 	})
 }
 
-func Test_ecloudInstanceVolumeList(t *testing.T) {
+func Test_ecloudInstanceCredentialList(t *testing.T) {
 	t.Run("DefaultRetrieve", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().GetInstanceVolumes("i-abcdef12", gomock.Any()).Return([]ecloud.Volume{}, nil).Times(1)
+		service.EXPECT().GetInstanceCredentials("i-abcdef12", gomock.Any()).Return([]ecloud.Credential{}, nil).Times(1)
 
-		ecloudInstanceVolumeList(service, &cobra.Command{}, []string{"i-abcdef12"})
+		ecloudInstanceCredentialList(service, &cobra.Command{}, []string{"i-abcdef12"})
 	})
 
 	t.Run("MalformedFlag_ReturnsError", func(t *testing.T) {
@@ -47,7 +47,7 @@ func Test_ecloudInstanceVolumeList(t *testing.T) {
 		cmd := &cobra.Command{}
 		cmd.Flags().StringArray("filter", []string{"invalidfilter"}, "")
 
-		err := ecloudInstanceVolumeList(service, cmd, []string{})
+		err := ecloudInstanceCredentialList(service, cmd, []string{})
 
 		assert.IsType(t, &clierrors.ErrInvalidFlagValue{}, err)
 	})
@@ -59,10 +59,10 @@ func Test_ecloudInstanceVolumeList(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().GetInstanceVolumes("i-abcdef12", gomock.Any()).Return([]ecloud.Volume{}, errors.New("test error")).Times(1)
+		service.EXPECT().GetInstanceCredentials("i-abcdef12", gomock.Any()).Return([]ecloud.Credential{}, errors.New("test error")).Times(1)
 
-		err := ecloudInstanceVolumeList(service, &cobra.Command{}, []string{"i-abcdef12"})
+		err := ecloudInstanceCredentialList(service, &cobra.Command{}, []string{"i-abcdef12"})
 
-		assert.Equal(t, "Error retrieving instance volumes: test error", err.Error())
+		assert.Equal(t, "Error retrieving instance credentials: test error", err.Error())
 	})
 }

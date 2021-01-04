@@ -1,4 +1,4 @@
-package ecloudv2
+package ecloud
 
 import (
 	"errors"
@@ -8,7 +8,6 @@ import (
 	"github.com/ukfast/cli/internal/pkg/factory"
 	flaghelper "github.com/ukfast/cli/internal/pkg/helper/flag"
 	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/sdk-go/pkg/ptr"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
@@ -125,8 +124,7 @@ func ecloudInstanceCreateCmd(f factory.ClientFactory) *cobra.Command {
 func ecloudInstanceCreate(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	createRequest := ecloud.CreateInstanceRequest{}
 	if cmd.Flags().Changed("name") {
-		name, _ := cmd.Flags().GetString("name")
-		createRequest.Name = ptr.String(name)
+		createRequest.Name, _ = cmd.Flags().GetString("name")
 	}
 	createRequest.VPCID, _ = cmd.Flags().GetString("vpc")
 	createRequest.VCPUCores, _ = cmd.Flags().GetInt("vcpu")
@@ -174,8 +172,7 @@ func ecloudInstanceUpdate(service ecloud.ECloudService, cmd *cobra.Command, args
 	patchRequest := ecloud.PatchInstanceRequest{}
 
 	if cmd.Flags().Changed("name") {
-		name, _ := cmd.Flags().GetString("name")
-		patchRequest.Name = ptr.String(name)
+		patchRequest.Name, _ = cmd.Flags().GetString("name")
 	}
 
 	if cmd.Flags().Changed("vcpu") {
