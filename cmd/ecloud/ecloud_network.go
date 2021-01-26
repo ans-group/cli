@@ -102,6 +102,8 @@ func ecloudNetworkCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().String("name", "", "Name of network")
 	cmd.Flags().String("router", "", "ID of router")
 	cmd.MarkFlagRequired("router")
+	cmd.Flags().String("subnet", "", "Subnet for network, e.g. 10.0.0.0/24")
+	cmd.MarkFlagRequired("subnet")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the network has been completely created before continuing on")
 
 	return cmd
@@ -113,6 +115,7 @@ func ecloudNetworkCreate(service ecloud.ECloudService, cmd *cobra.Command, args 
 		createRequest.Name, _ = cmd.Flags().GetString("name")
 	}
 	createRequest.RouterID, _ = cmd.Flags().GetString("router")
+	createRequest.Subnet, _ = cmd.Flags().GetString("subnet")
 
 	networkID, err := service.CreateNetwork(createRequest)
 	if err != nil {
