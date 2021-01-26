@@ -146,11 +146,13 @@ func (o *SerializedOutputHandlerProvider) convertField(v *OrderedFields, fieldNa
 				continue
 			}
 			childFieldName := ""
-			jsonTag := reflectedValueTypeField.Tag.Get("json")
-			if jsonTag != "" {
-				childFieldName = jsonTag
-			} else {
-				childFieldName = strcase.ToSnake(reflectedValueTypeField.Name)
+			if !reflectedValueTypeField.Anonymous {
+				jsonTag := reflectedValueTypeField.Tag.Get("json")
+				if jsonTag != "" {
+					childFieldName = jsonTag
+				} else {
+					childFieldName = strcase.ToSnake(reflectedValueTypeField.Name)
+				}
 			}
 
 			if len(fieldName) > 0 {
