@@ -321,19 +321,19 @@ func OutputECloudConsoleSessionsProvider(sessions []ecloud.ConsoleSession) outpu
 }
 
 func OutputECloudVPCsProvider(vpcs []ecloud.VPC) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(vpcs).WithDefaultFields([]string{"id", "name", "region_id", "created_at", "updated_at"})
+	return output.NewSerializedOutputHandlerProvider(vpcs).WithDefaultFields([]string{"id", "name", "region_id", "sync"})
 }
 
 func OutputECloudInstancesProvider(instances []ecloud.Instance) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(instances).WithDefaultFields([]string{"id", "name", "vpc_id", "sync", "vcpu_cores", "ram_capacity"})
+	return output.NewSerializedOutputHandlerProvider(instances).WithDefaultFields([]string{"id", "name", "vpc_id", "vcpu_cores", "ram_capacity", "sync"})
 }
 
 func OutputECloudFloatingIPsProvider(fips []ecloud.FloatingIP) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(fips).WithDefaultFields([]string{"id", "created_at", "updated_at"})
+	return output.NewSerializedOutputHandlerProvider(fips).WithDefaultFields([]string{"id", "ip_address", "sync"})
 }
 
 func OutputECloudFirewallRulesProvider(rules []ecloud.FirewallRule) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(rules).WithDefaultFields([]string{"id", "router_id", "created_at", "updated_at"})
+	return output.NewSerializedOutputHandlerProvider(rules).WithDefaultFields([]string{"id", "name", "source", "destination", "action", "created_at", "updated_at"})
 }
 
 func OutputECloudRegionsProvider(regions []ecloud.Region) output.OutputHandlerProvider {
@@ -353,7 +353,7 @@ func OutputECloudCredentialsProvider(credentials []ecloud.Credential) output.Out
 }
 
 func OutputECloudNICsProvider(nics []ecloud.NIC) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(nics).WithDefaultFields([]string{"id", "mac_address", "instance", "ip_address"})
+	return output.NewSerializedOutputHandlerProvider(nics).WithDefaultFields([]string{"id", "mac_address", "instance_id", "network_id", "ip_address"})
 }
 
 func OutputECloudRoutersProvider(routers []ecloud.Router) output.OutputHandlerProvider {
