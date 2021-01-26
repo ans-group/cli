@@ -3,116 +3,34 @@ package draas
 import (
 	"fmt"
 	"strconv"
-	"strings"
 
 	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/draas"
 )
 
 func OutputDRaaSSolutionsProvider(solutions []draas.Solution) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(solutions),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, solution := range solutions {
-				fields := output.NewOrderedFields()
-				fields.Set("id", output.NewFieldValue(solution.ID, true))
-				fields.Set("name", output.NewFieldValue(solution.Name, true))
-				fields.Set("iops_tier_id", output.NewFieldValue(solution.IOPSTierID, false))
-				fields.Set("billing_type_id", output.NewFieldValue(solution.BillingTypeID, false))
-
-				data = append(data, fields)
-			}
-
-			return data, nil
-		}),
-	)
+	return output.NewSerializedOutputHandlerDataProvider(solutions).
+		WithDefaultFields([]string{"id", "name"})
 }
 
 func OutputDRaaSBackupResourcesProvider(resources []draas.BackupResource) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(resources),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, resource := range resources {
-				fields := output.NewOrderedFields()
-				fields.Set("id", output.NewFieldValue(resource.ID, true))
-				fields.Set("name", output.NewFieldValue(resource.Name, true))
-				fields.Set("quota", output.NewFieldValue(strconv.Itoa(resource.Quota), true))
-				fields.Set("used_quota", output.NewFieldValue(fmt.Sprintf("%f", resource.UsedQuota), true))
-
-				data = append(data, fields)
-			}
-
-			return data, nil
-		}),
-	)
+	return output.NewSerializedOutputHandlerDataProvider(resources).
+		WithDefaultFields([]string{"id", "name", "quota", "used_quota"})
 }
 
 func OutputDRaaSIOPSTiersProvider(tiers []draas.IOPSTier) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(tiers),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, tier := range tiers {
-				fields := output.NewOrderedFields()
-				fields.Set("id", output.NewFieldValue(tier.ID, true))
-				fields.Set("iops_limit", output.NewFieldValue(strconv.Itoa(tier.IOPSLimit), true))
-
-				data = append(data, fields)
-			}
-
-			return data, nil
-		}),
-	)
+	return output.NewSerializedOutputHandlerDataProvider(tiers).
+		WithDefaultFields([]string{"id", "iops_limit"})
 }
 
 func OutputDRaaSBackupServicesProvider(services []draas.BackupService) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(services),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, service := range services {
-				fields := output.NewOrderedFields()
-				fields.Set("service", output.NewFieldValue(service.Service, true))
-				fields.Set("account_name", output.NewFieldValue(service.AccountName, true))
-				fields.Set("gateway", output.NewFieldValue(service.Gateway, true))
-				fields.Set("port", output.NewFieldValue(strconv.Itoa(service.Port), true))
-
-				data = append(data, fields)
-			}
-
-			return data, nil
-		}),
-	)
+	return output.NewSerializedOutputHandlerDataProvider(services).
+		WithDefaultFields([]string{"service", "account_name", "gateway", "port"})
 }
 
 func OutputDRaaSFailoverPlansProvider(plans []draas.FailoverPlan) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(plans),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, plan := range plans {
-				vms := []string{}
-				if len(plan.VMs) > 0 {
-					for _, vm := range plan.VMs {
-						vms = append(vms, vm.Name)
-					}
-				}
-
-				fields := output.NewOrderedFields()
-				fields.Set("id", output.NewFieldValue(plan.ID, true))
-				fields.Set("name", output.NewFieldValue(plan.Name, true))
-				fields.Set("description", output.NewFieldValue(plan.Description, false))
-				fields.Set("status", output.NewFieldValue(plan.Status, true))
-				fields.Set("vms", output.NewFieldValue(strings.Join(vms, ", "), false))
-
-				data = append(data, fields)
-			}
-
-			return data, nil
-		}),
-	)
+	return output.NewSerializedOutputHandlerDataProvider(plans).
+		WithDefaultFields([]string{"id", "name", "status"})
 }
 
 func OutputDRaaSComputeResourcesProvider(resources []draas.ComputeResource) output.OutputHandlerDataProvider {

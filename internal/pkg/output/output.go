@@ -11,7 +11,6 @@ import (
 	"strings"
 
 	"github.com/olekukonko/tablewriter"
-	"github.com/ryanuber/go-glob"
 	"github.com/spf13/cobra"
 	"k8s.io/client-go/util/jsonpath"
 
@@ -105,15 +104,17 @@ func ExitWithErrorLevel() {
 
 // Value will format specified rows using given includeProperties by extracting field values,
 // and output them to stdout
-func Value(includeProperties []string, rows []*OrderedFields) error {
+func Value(rows []*OrderedFields) error {
 	if len(rows) < 1 {
 		return nil
 	}
 
-	properties := getPropertiesOrDefault(includeProperties, rows[0])
 	for _, row := range rows {
-		data := getPropertyData(properties, row)
-		fmt.Println(strings.Join(data, " "))
+		var rowData []string
+		for _, fieldKey := range row.Keys() {
+			rowData = append(rowData, row.Get(fieldKey).Value)
+		}
+		fmt.Println(strings.Join(rowData, " "))
 	}
 
 	return nil
@@ -176,7 +177,7 @@ func Table(rows []*OrderedFields) error {
 }
 
 // CSV outputs provided rows as CSV to stdout
-func CSV(includeProperties []string, rows []*OrderedFields) error {
+func CSV(rows []*OrderedFields) error {
 	if len(rows) < 1 {
 		return nil
 	}
@@ -184,16 +185,19 @@ func CSV(includeProperties []string, rows []*OrderedFields) error {
 	w := csv.NewWriter(os.Stdout)
 
 	// First retrieve properties and write to CSV buffer
-	properties := getPropertiesOrDefault(includeProperties, rows[0])
-	err := w.Write(properties)
+	headers := rows[0].Keys()
+	err := w.Write(headers)
 	if err != nil {
 		return err
 	}
 
 	for _, row := range rows {
 		// For each row, obtain property data and and write to CSV buffer
-		data := getPropertyData(properties, row)
-		err := w.Write(data)
+		var rowData []string
+		for _, header := range headers {
+			rowData = append(rowData, row.Get(header).Value)
+		}
+		err := w.Write(rowData)
 		if err != nil {
 			return err
 		}
@@ -211,7 +215,7 @@ func CSV(includeProperties []string, rows []*OrderedFields) error {
 
 // List will format specified rows using given includeProperties by extracting fields,
 // and output them to stdout
-func List(includeProperties []string, rows []*OrderedFields) error {
+func List(rows []*OrderedFields) error {
 	if len(rows) < 1 {
 		return nil
 	}
@@ -219,17 +223,14 @@ func List(includeProperties []string, rows []*OrderedFields) error {
 	f := bufio.NewWriter(os.Stdout)
 	defer f.Flush()
 
-	properties := getPropertiesOrDefault(includeProperties, rows[0])
-	maxPropertyLength := getMaxPropertyLength(properties)
+	maxPropertyLength := getMaxPropertyLength(rows[0].Keys())
 	for i, row := range rows {
 		if i > 0 {
 			f.WriteString("\n")
 		}
 
-		for _, property := range properties {
-			if row.Exists(strings.ToLower(property)) {
-				f.WriteString(fmt.Sprintf("%s : %s\n", padProperty(property, maxPropertyLength), row.Get(strings.ToLower(property)).Value))
-			}
+		for _, fieldKey := range row.Keys() {
+			f.WriteString(fmt.Sprintf("%s : %s\n", padProperty(fieldKey, maxPropertyLength), row.Get(fieldKey).Value))
 		}
 	}
 
@@ -253,41 +254,6 @@ func getMaxPropertyLength(properties []string) int {
 		}
 	}
 	return maxLength
-}
-
-func getPropertiesOrDefault(includeProperties []string, fields *OrderedFields) []string {
-	var properties []string
-
-	if len(includeProperties) > 0 {
-		// For each property in includeProperties, add property to properties array
-		// if that property exists in fields
-		for _, prop := range includeProperties {
-			for _, property := range fields.Keys() {
-				if glob.Glob(strings.ToLower(prop), property) {
-					properties = append(properties, property)
-				}
-			}
-		}
-
-	} else {
-		// Use default fields
-		for _, property := range fields.Keys() {
-			if fields.Get(property).Default {
-				properties = append(properties, property)
-			}
-		}
-	}
-
-	return properties
-}
-
-func getPropertyData(properties []string, fields *OrderedFields) []string {
-	var propertyData []string
-	for _, property := range properties {
-		propertyData = append(propertyData, fields.Get(property).Value)
-	}
-
-	return propertyData
 }
 
 // Template will format i with given Golang template t, and output resulting string
@@ -319,60 +285,6 @@ func Template(t string, i interface{}) error {
 	}
 
 	return nil
-}
-
-// OrderedFields holds a string map with field values, and a slice of keys for
-// maintaining order
-type OrderedFields struct {
-	m    map[string]FieldValue
-	keys []string
-}
-
-// NewOrderedFields returns a pointer to an initialized OrderedFields struct
-func NewOrderedFields() *OrderedFields {
-	return &OrderedFields{
-		m: make(map[string]FieldValue),
-	}
-}
-
-// Set adds/updates given key k with FieldValue v
-func (o *OrderedFields) Set(k string, v FieldValue) {
-	exists := o.Exists(k)
-	o.m[k] = v
-	if !exists {
-		o.keys = append(o.keys, k)
-	}
-}
-
-// Get retrieves FieldValue for given key k
-func (o *OrderedFields) Get(k string) FieldValue {
-	return o.m[k]
-}
-
-// Exists returns true if given key k exists, otherwise false
-func (o *OrderedFields) Exists(k string) bool {
-	_, exists := o.m[k]
-	return exists
-}
-
-// Keys returns a list of ordered keys
-func (o *OrderedFields) Keys() []string {
-	return o.keys
-}
-
-// FieldValue holds the value for a table field
-type FieldValue struct {
-	Value string
-	// TODO: remove
-	Default bool
-}
-
-// NewFieldValue returns a new, initialized FieldValue struct
-func NewFieldValue(value string, def bool) FieldValue {
-	return FieldValue{
-		Value:   value,
-		Default: def,
-	}
 }
 
 func CommandOutputPaginated(cmd *cobra.Command, out OutputHandlerDataProvider, paginated connection.Paginated) error {

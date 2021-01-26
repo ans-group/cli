@@ -46,22 +46,6 @@ func TestSerializedOutputHandlerDataProvider_GetFieldData(t *testing.T) {
 	})
 }
 
-// func TestSerializedOutputHandlerDataProvider_isDefaultField(t *testing.T) {
-// 	t.Run("ItemInDefaultFields_ReturnsTrue", func(t *testing.T) {
-// 		o := NewSerializedOutputHandlerDataProvider(nil).WithDefaultFields([]string{"field1", "field2", "field3"})
-// 		defaultField := o.isDefaultField("field2")
-
-// 		assert.True(t, defaultField)
-// 	})
-
-// 	t.Run("ItemNotInDefaultFields_ReturnsFalse", func(t *testing.T) {
-// 		o := NewSerializedOutputHandlerDataProvider(nil).WithDefaultFields([]string{"field1", "field2", "field3"})
-// 		defaultField := o.isDefaultField("somefield")
-
-// 		assert.False(t, defaultField)
-// 	})
-// }
-
 func TestSerializedOutputHandlerDataProvider_isIgnoredField(t *testing.T) {
 	t.Run("ItemInIgnoredFields_ReturnsTrue", func(t *testing.T) {
 		o := NewSerializedOutputHandlerDataProvider(nil).WithIgnoredFields([]string{"field1", "field2", "field3"})

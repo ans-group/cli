@@ -53,19 +53,19 @@ func (o *OutputHandler) Handle() error {
 		if err != nil {
 			return err
 		}
-		return Value(o.Properties, d)
+		return Value(d)
 	case "csv":
 		d, err := o.getProcessedFieldData()
 		if err != nil {
 			return err
 		}
-		return CSV(o.Properties, d)
+		return CSV(d)
 	case "list":
 		d, err := o.getProcessedFieldData()
 		if err != nil {
 			return err
 		}
-		return List(o.Properties, d)
+		return List(d)
 	default:
 		Errorf("Invalid output format [%s], defaulting to 'table'", o.Format)
 		fallthrough
@@ -101,20 +101,11 @@ func (o *OutputHandler) getProcessedFieldData() ([]*OrderedFields, error) {
 			}
 
 		} else {
-			isDefaultField := func(key string) bool {
-				for _, defaultFieldKey := range o.DataProvider.DefaultFields() {
-					if key == defaultFieldKey {
-						return true
-					}
-				}
-
-				return false
-			}
-
 			// Use default fields
 			for _, fieldKey := range fieldCollection.Keys() {
-				if isDefaultField(fieldKey) {
-					filteredFieldsCollection.Set(fieldKey, fieldCollection.Get(fieldKey))
+				fieldValue := fieldCollection.Get(fieldKey)
+				if fieldValue.Default {
+					filteredFieldsCollection.Set(fieldKey, fieldValue)
 				}
 			}
 		}
