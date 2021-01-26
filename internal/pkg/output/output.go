@@ -148,8 +148,7 @@ func JSONPath(query string, v interface{}) error {
 }
 
 // Table takes an array of mapped fields (key being lowercased name), and outputs a table
-// Included properties can be overriden by populating includeProperties parameter
-func Table(includeProperties []string, rows []*OrderedFields) error {
+func Table(rows []*OrderedFields) error {
 	if len(rows) < 1 {
 		return nil
 	}
@@ -158,13 +157,16 @@ func Table(includeProperties []string, rows []*OrderedFields) error {
 
 	// properties will hold our header values, and will be used to determine required fields
 	// when iterating over rows to add data to table
-	headers := getPropertiesOrDefault(includeProperties, rows[0])
+	headers := rows[0].Keys()
 
 	table.SetHeader(headers)
 
 	// Loop through each row, adding required fields specified in headers to table
-	for _, r := range rows {
-		rowData := getPropertyData(headers, r)
+	for _, row := range rows {
+		var rowData []string
+		for _, header := range headers {
+			rowData = append(rowData, row.Get(header).Value)
+		}
 		table.Append(rowData)
 	}
 
@@ -360,7 +362,8 @@ func (o *OrderedFields) Keys() []string {
 
 // FieldValue holds the value for a table field
 type FieldValue struct {
-	Value   string
+	Value string
+	// TODO: remove
 	Default bool
 }
 
@@ -372,7 +375,7 @@ func NewFieldValue(value string, def bool) FieldValue {
 	}
 }
 
-func CommandOutputPaginated(cmd *cobra.Command, out OutputHandlerProvider, paginated connection.Paginated) error {
+func CommandOutputPaginated(cmd *cobra.Command, out OutputHandlerDataProvider, paginated connection.Paginated) error {
 	err := CommandOutput(cmd, out)
 	if err != nil {
 		return err
@@ -382,7 +385,7 @@ func CommandOutputPaginated(cmd *cobra.Command, out OutputHandlerProvider, pagin
 	return nil
 }
 
-func CommandOutput(cmd *cobra.Command, out OutputHandlerProvider) error {
+func CommandOutput(cmd *cobra.Command, out OutputHandlerDataProvider) error {
 	// Format flag deprecated, however we'll check to see whether populated first and use it
 	var flag string
 	if cmd.Flags().Changed("format") {

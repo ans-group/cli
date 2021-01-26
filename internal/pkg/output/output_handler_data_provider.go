@@ -4,27 +4,26 @@ import (
 	"fmt"
 	"reflect"
 	"strconv"
-	"strings"
 
 	"github.com/iancoleman/strcase"
 )
 
-type OutputHandlerProvider interface {
+type OutputHandlerDataProvider interface {
 	GetData() interface{}
 	GetFieldData() ([]*OrderedFields, error)
-	SupportedFormats() []string
+	DefaultFields() []string
 }
 
-type ProviderOption func(p *GenericOutputHandlerProvider)
+type ProviderOption func(p *GenericOutputHandlerDataProvider)
 
-type GenericOutputHandlerProvider struct {
-	data             interface{}
-	fieldDataFunc    func() ([]*OrderedFields, error)
-	supportedFormats []string
+type GenericOutputHandlerDataProvider struct {
+	data          interface{}
+	fieldDataFunc func() ([]*OrderedFields, error)
+	defaultFields []string
 }
 
-func NewGenericOutputHandlerProvider(opts ...ProviderOption) *GenericOutputHandlerProvider {
-	p := &GenericOutputHandlerProvider{}
+func NewGenericOutputHandlerDataProvider(opts ...ProviderOption) *GenericOutputHandlerDataProvider {
+	p := &GenericOutputHandlerDataProvider{}
 	for _, opt := range opts {
 		opt(p)
 	}
@@ -32,38 +31,36 @@ func NewGenericOutputHandlerProvider(opts ...ProviderOption) *GenericOutputHandl
 }
 
 func WithData(data interface{}) ProviderOption {
-	return func(p *GenericOutputHandlerProvider) {
+	return func(p *GenericOutputHandlerDataProvider) {
 		p.data = data
 	}
 }
 
-func WithSupportedFormats(supportedFormats []string) ProviderOption {
-	return func(p *GenericOutputHandlerProvider) {
-		p.supportedFormats = supportedFormats
-	}
-}
-
 func WithFieldDataFunc(fieldDataFunc func() ([]*OrderedFields, error)) ProviderOption {
-	return func(p *GenericOutputHandlerProvider) {
+	return func(p *GenericOutputHandlerDataProvider) {
 		p.fieldDataFunc = fieldDataFunc
 	}
 }
 
-func (p *GenericOutputHandlerProvider) GetData() interface{} {
+func (o *GenericOutputHandlerDataProvider) WithDefaultFields(fields []string) *GenericOutputHandlerDataProvider {
+	o.defaultFields = append(o.defaultFields, fields...)
+	return o
+}
+
+func (p *GenericOutputHandlerDataProvider) GetData() interface{} {
 	return p.data
 }
 
-func (p *GenericOutputHandlerProvider) GetFieldData() ([]*OrderedFields, error) {
+func (p *GenericOutputHandlerDataProvider) GetFieldData() ([]*OrderedFields, error) {
 	return p.fieldDataFunc()
 }
 
-func (p *GenericOutputHandlerProvider) SupportedFormats() []string {
-	return p.supportedFormats
+func (p *GenericOutputHandlerDataProvider) DefaultFields() []string {
+	return p.defaultFields
 }
 
-type SerializedOutputHandlerProvider struct {
-	*GenericOutputHandlerProvider
-	DefaultFields     []string
+type SerializedOutputHandlerDataProvider struct {
+	*GenericOutputHandlerDataProvider
 	IgnoredFields     []string
 	MonetaryFields    []string
 	FieldHandlerFuncs map[string]FieldHandlerFunc
@@ -71,30 +68,25 @@ type SerializedOutputHandlerProvider struct {
 
 type FieldHandlerFunc func(v *OrderedFields, fieldName string, reflectedValue reflect.Value) *OrderedFields
 
-func NewSerializedOutputHandlerProvider(items interface{}) *SerializedOutputHandlerProvider {
-	return &SerializedOutputHandlerProvider{
-		GenericOutputHandlerProvider: NewGenericOutputHandlerProvider(
+func NewSerializedOutputHandlerDataProvider(items interface{}) *SerializedOutputHandlerDataProvider {
+	return &SerializedOutputHandlerDataProvider{
+		GenericOutputHandlerDataProvider: NewGenericOutputHandlerDataProvider(
 			WithData(items),
 		),
 	}
 }
 
-func (o *SerializedOutputHandlerProvider) WithDefaultFields(fields []string) *SerializedOutputHandlerProvider {
-	o.DefaultFields = append(o.DefaultFields, fields...)
-	return o
-}
-
-func (o *SerializedOutputHandlerProvider) WithIgnoredFields(fields []string) *SerializedOutputHandlerProvider {
+func (o *SerializedOutputHandlerDataProvider) WithIgnoredFields(fields []string) *SerializedOutputHandlerDataProvider {
 	o.IgnoredFields = append(o.IgnoredFields, fields...)
 	return o
 }
 
-func (o *SerializedOutputHandlerProvider) WithMonetaryFields(fields []string) *SerializedOutputHandlerProvider {
+func (o *SerializedOutputHandlerDataProvider) WithMonetaryFields(fields []string) *SerializedOutputHandlerDataProvider {
 	o.MonetaryFields = append(o.MonetaryFields, fields...)
 	return o
 }
 
-func (o *SerializedOutputHandlerProvider) WithFieldHandler(fieldName string, f FieldHandlerFunc) *SerializedOutputHandlerProvider {
+func (o *SerializedOutputHandlerDataProvider) WithFieldHandler(fieldName string, f FieldHandlerFunc) *SerializedOutputHandlerDataProvider {
 	if o.FieldHandlerFuncs == nil {
 		o.FieldHandlerFuncs = make(map[string]FieldHandlerFunc)
 	}
@@ -102,18 +94,18 @@ func (o *SerializedOutputHandlerProvider) WithFieldHandler(fieldName string, f F
 	return o
 }
 
-func (o *SerializedOutputHandlerProvider) WithMultipleFieldHandler(fieldNames []string, f FieldHandlerFunc) *SerializedOutputHandlerProvider {
+func (o *SerializedOutputHandlerDataProvider) WithMultipleFieldHandler(fieldNames []string, f FieldHandlerFunc) *SerializedOutputHandlerDataProvider {
 	for _, fieldName := range fieldNames {
 		o.WithFieldHandler(fieldName, f)
 	}
 	return o
 }
 
-func (o *SerializedOutputHandlerProvider) GetFieldData() ([]*OrderedFields, error) {
+func (o *SerializedOutputHandlerDataProvider) GetFieldData() ([]*OrderedFields, error) {
 	return o.convert(reflect.ValueOf(o.GetData())), nil
 }
 
-func (o *SerializedOutputHandlerProvider) convert(reflectedValue reflect.Value) []*OrderedFields {
+func (o *SerializedOutputHandlerDataProvider) convert(reflectedValue reflect.Value) []*OrderedFields {
 	fields := []*OrderedFields{}
 
 	switch reflectedValue.Kind() {
@@ -128,7 +120,7 @@ func (o *SerializedOutputHandlerProvider) convert(reflectedValue reflect.Value) 
 	return fields
 }
 
-func (o *SerializedOutputHandlerProvider) convertField(v *OrderedFields, fieldName string, reflectedValue reflect.Value) *OrderedFields {
+func (o *SerializedOutputHandlerDataProvider) convertField(v *OrderedFields, fieldName string, reflectedValue reflect.Value) *OrderedFields {
 	if o.FieldHandlerFuncs[fieldName] != nil {
 		return o.FieldHandlerFuncs[fieldName](v, fieldName, reflectedValue)
 	}
@@ -188,29 +180,24 @@ func (o *SerializedOutputHandlerProvider) convertField(v *OrderedFields, fieldNa
 	return o.hydrateField(v, fieldName, fmt.Sprintf("%v", reflectedValue.Interface()))
 }
 
-func (o *SerializedOutputHandlerProvider) hydrateField(v *OrderedFields, fieldName string, fieldValue string) *OrderedFields {
+func (o *SerializedOutputHandlerDataProvider) hydrateField(v *OrderedFields, fieldName string, fieldValue string) *OrderedFields {
 	if !o.isIgnoredField(fieldName) {
-		v.Set(fieldName, NewFieldValue(fieldValue, o.isDefaultField(fieldName)))
+		v.Set(fieldName, NewFieldValue(fieldValue, true))
 	}
 
 	return v
 }
-
-func (o *SerializedOutputHandlerProvider) isDefaultField(name string) bool {
-	return o.fieldInFields(name, o.DefaultFields)
-}
-
-func (o *SerializedOutputHandlerProvider) isIgnoredField(name string) bool {
+func (o *SerializedOutputHandlerDataProvider) isIgnoredField(name string) bool {
 	return o.fieldInFields(name, o.IgnoredFields)
 }
 
-func (o *SerializedOutputHandlerProvider) isMonetaryField(name string) bool {
+func (o *SerializedOutputHandlerDataProvider) isMonetaryField(name string) bool {
 	return o.fieldInFields(name, o.MonetaryFields)
 }
 
-func (o *SerializedOutputHandlerProvider) fieldInFields(name string, fields []string) bool {
+func (o *SerializedOutputHandlerDataProvider) fieldInFields(name string, fields []string) bool {
 	for _, field := range fields {
-		if strings.ToLower(field) == strings.ToLower(name) {
+		if field == name {
 			return true
 		}
 	}

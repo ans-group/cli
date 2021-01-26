@@ -422,24 +422,21 @@ func TestTable_ExpectedStdout(t *testing.T) {
 		var rows []*OrderedFields
 		fields := NewOrderedFields()
 		fields.Set("testproperty1", FieldValue{
-			Default: true,
-			Value:   "TestValue1",
+			Value: "TestValue1",
 		})
 		fields.Set("testproperty2", FieldValue{
-			Default: false,
-			Value:   "TestValue2",
+			Value: "TestValue2",
 		})
 		fields.Set("testproperty3", FieldValue{
-			Default: true,
-			Value:   "TestValue3",
+			Value: "TestValue3",
 		})
 		rows = append(rows, fields)
 
 		output := test.CatchStdOut(t, func() {
-			Table([]string{}, rows)
+			Table(rows)
 		})
 
-		assert.Equal(t, "+---------------+---------------+\n| TESTPROPERTY1 | TESTPROPERTY3 |\n+---------------+---------------+\n| TestValue1    | TestValue3    |\n+---------------+---------------+\n", output)
+		assert.Equal(t, "+---------------+---------------+---------------+\n| TESTPROPERTY1 | TESTPROPERTY2 | TESTPROPERTY3 |\n+---------------+---------------+---------------+\n| TestValue1    | TestValue2    | TestValue3    |\n+---------------+---------------+---------------+\n", output)
 	})
 
 	t.Run("MultipleRowsDefaultFields", func(t *testing.T) {
@@ -473,139 +470,21 @@ func TestTable_ExpectedStdout(t *testing.T) {
 		rows = append(rows, row2fields)
 
 		output := test.CatchStdOut(t, func() {
-			Table([]string{}, rows)
+			Table(rows)
 		})
 
-		assert.Equal(t, "+----------------+----------------+\n| TESTPROPERTY1  | TESTPROPERTY3  |\n+----------------+----------------+\n| Row1TestValue1 | Row1TestValue3 |\n| Row2TestValue1 | Row2TestValue3 |\n+----------------+----------------+\n", output)
-	})
-
-	t.Run("SingleRowIncludeColumns", func(t *testing.T) {
-		var rows []*OrderedFields
-		fields := NewOrderedFields()
-		fields.Set("testproperty1", FieldValue{
-			Value: "TestValue1",
-		})
-		fields.Set("testproperty2", FieldValue{
-			Value: "TestValue2",
-		})
-		fields.Set("testproperty3", FieldValue{
-			Value: "TestValue3",
-		})
-		rows = append(rows, fields)
-
-		includeColumns := []string{"testproperty1", "testproperty3"}
-
-		output := test.CatchStdOut(t, func() {
-			Table(includeColumns, rows)
-		})
-
-		assert.Equal(t, "+---------------+---------------+\n| TESTPROPERTY1 | TESTPROPERTY3 |\n+---------------+---------------+\n| TestValue1    | TestValue3    |\n+---------------+---------------+\n", output)
-	})
-
-	t.Run("MultipleRowsIncludeColumns", func(t *testing.T) {
-		var rows []*OrderedFields
-
-		row1fields := NewOrderedFields()
-		row1fields.Set("testproperty1", FieldValue{
-			Value: "Row1TestValue1",
-		})
-		row1fields.Set("testproperty2", FieldValue{
-			Value: "Row1TestValue2",
-		})
-		row1fields.Set("testproperty3", FieldValue{
-			Value: "Row1TestValue3",
-		})
-		rows = append(rows, row1fields)
-
-		row2fields := NewOrderedFields()
-		row2fields.Set("testproperty1", FieldValue{
-			Value: "Row2TestValue1",
-		})
-		row2fields.Set("testproperty2", FieldValue{
-			Value: "Row2TestValue2",
-		})
-		row2fields.Set("testproperty3", FieldValue{
-			Value: "Row2TestValue3",
-		})
-		rows = append(rows, row2fields)
-
-		includeColumns := []string{"testproperty1", "testproperty3"}
-
-		output := test.CatchStdOut(t, func() {
-			Table(includeColumns, rows)
-		})
-
-		assert.Equal(t, "+----------------+----------------+\n| TESTPROPERTY1  | TESTPROPERTY3  |\n+----------------+----------------+\n| Row1TestValue1 | Row1TestValue3 |\n| Row2TestValue1 | Row2TestValue3 |\n+----------------+----------------+\n", output)
+		assert.Equal(t, "+----------------+----------------+----------------+\n| TESTPROPERTY1  | TESTPROPERTY2  | TESTPROPERTY3  |\n+----------------+----------------+----------------+\n| Row1TestValue1 | Row1TestValue2 | Row1TestValue3 |\n| Row2TestValue1 | Row2TestValue2 | Row2TestValue3 |\n+----------------+----------------+----------------+\n", output)
 	})
 
 	t.Run("NoRows", func(t *testing.T) {
 		var rows []*OrderedFields
 
 		output := test.CatchStdOut(t, func() {
-			err := Table([]string{}, rows)
+			err := Table(rows)
 			assert.Nil(t, err)
 		})
 
 		assert.Equal(t, "", output)
-	})
-
-	t.Run("SingleRowIncludeColumnGlob", func(t *testing.T) {
-		var rows []*OrderedFields
-		fields := NewOrderedFields()
-		fields.Set("testproperty1", FieldValue{
-			Value: "TestValue1",
-		})
-		fields.Set("testproperty2", FieldValue{
-			Value: "TestValue2",
-		})
-		fields.Set("testproperty3", FieldValue{
-			Value: "TestValue3",
-		})
-		rows = append(rows, fields)
-
-		includeColumns := []string{"*"}
-
-		output := test.CatchStdOut(t, func() {
-			Table(includeColumns, rows)
-		})
-
-		assert.Equal(t, "+---------------+---------------+---------------+\n| TESTPROPERTY1 | TESTPROPERTY2 | TESTPROPERTY3 |\n+---------------+---------------+---------------+\n| TestValue1    | TestValue2    | TestValue3    |\n+---------------+---------------+---------------+\n", output)
-	})
-
-	t.Run("MultipleRowsIncludeColumnGlob", func(t *testing.T) {
-		var rows []*OrderedFields
-
-		row1fields := NewOrderedFields()
-		row1fields.Set("testproperty1", FieldValue{
-			Value: "Row1TestValue1",
-		})
-		row1fields.Set("testproperty2", FieldValue{
-			Value: "Row1TestValue2",
-		})
-		row1fields.Set("testproperty3", FieldValue{
-			Value: "Row1TestValue3",
-		})
-		rows = append(rows, row1fields)
-
-		row2fields := NewOrderedFields()
-		row2fields.Set("testproperty1", FieldValue{
-			Value: "Row2TestValue1",
-		})
-		row2fields.Set("testproperty2", FieldValue{
-			Value: "Row2TestValue2",
-		})
-		row2fields.Set("testproperty3", FieldValue{
-			Value: "Row2TestValue3",
-		})
-		rows = append(rows, row2fields)
-
-		includeColumns := []string{"*"}
-
-		output := test.CatchStdOut(t, func() {
-			Table(includeColumns, rows)
-		})
-
-		assert.Equal(t, "+----------------+----------------+----------------+\n| TESTPROPERTY1  | TESTPROPERTY2  | TESTPROPERTY3  |\n+----------------+----------------+----------------+\n| Row1TestValue1 | Row1TestValue2 | Row1TestValue3 |\n| Row2TestValue1 | Row2TestValue2 | Row2TestValue3 |\n+----------------+----------------+----------------+\n", output)
 	})
 }
 

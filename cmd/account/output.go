@@ -9,8 +9,8 @@ import (
 	"github.com/ukfast/sdk-go/pkg/service/account"
 )
 
-func OutputAccountContactsProvider(contacts []account.Contact) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputAccountContactsProvider(contacts []account.Contact) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(contacts),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -29,8 +29,8 @@ func OutputAccountContactsProvider(contacts []account.Contact) output.OutputHand
 	)
 }
 
-func OutputAccountDetailsProvider(details []account.Details) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputAccountDetailsProvider(details []account.Details) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(details),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -48,8 +48,8 @@ func OutputAccountDetailsProvider(details []account.Details) output.OutputHandle
 	)
 }
 
-func OutputAccountCreditsProvider(credits []account.Credit) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputAccountCreditsProvider(credits []account.Credit) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(credits),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -67,8 +67,8 @@ func OutputAccountCreditsProvider(credits []account.Credit) output.OutputHandler
 	)
 }
 
-func OutputAccountInvoicesProvider(invoices []account.Invoice) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputAccountInvoicesProvider(invoices []account.Invoice) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(invoices),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -89,8 +89,8 @@ func OutputAccountInvoicesProvider(invoices []account.Invoice) output.OutputHand
 	)
 }
 
-func OutputAccountInvoiceQueriesProvider(queries []account.InvoiceQuery) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputAccountInvoiceQueriesProvider(queries []account.InvoiceQuery) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(queries),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields

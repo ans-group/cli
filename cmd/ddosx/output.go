@@ -9,8 +9,8 @@ import (
 	"github.com/ukfast/sdk-go/pkg/service/ddosx"
 )
 
-func OutputDDoSXDomainsProvider(domains []ddosx.Domain) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputDDoSXDomainsProvider(domains []ddosx.Domain) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(domains),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -36,8 +36,8 @@ func OutputDDoSXDomainsProvider(domains []ddosx.Domain) output.OutputHandlerProv
 	)
 }
 
-func OutputDDoSXRecordsProvider(records []ddosx.Record) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputDDoSXRecordsProvider(records []ddosx.Record) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(records),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -68,8 +68,8 @@ func OutputDDoSXRecordsProvider(records []ddosx.Record) output.OutputHandlerProv
 	)
 }
 
-func OutputDDoSXWAFsProvider(wafs []ddosx.WAF) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputDDoSXWAFsProvider(wafs []ddosx.WAF) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(wafs),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -86,8 +86,8 @@ func OutputDDoSXWAFsProvider(wafs []ddosx.WAF) output.OutputHandlerProvider {
 	)
 }
 
-func OutputDDoSXWAFRuleSetsProvider(rulesets []ddosx.WAFRuleSet) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputDDoSXWAFRuleSetsProvider(rulesets []ddosx.WAFRuleSet) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(rulesets),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -105,8 +105,8 @@ func OutputDDoSXWAFRuleSetsProvider(rulesets []ddosx.WAFRuleSet) output.OutputHa
 	)
 }
 
-func OutputDDoSXWAFRulesProvider(rules []ddosx.WAFRule) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputDDoSXWAFRulesProvider(rules []ddosx.WAFRule) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(rules),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -124,8 +124,8 @@ func OutputDDoSXWAFRulesProvider(rules []ddosx.WAFRule) output.OutputHandlerProv
 	)
 }
 
-func OutputDDoSXWAFAdvancedRulesProvider(rules []ddosx.WAFAdvancedRule) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputDDoSXWAFAdvancedRulesProvider(rules []ddosx.WAFAdvancedRule) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(rules),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -145,8 +145,8 @@ func OutputDDoSXWAFAdvancedRulesProvider(rules []ddosx.WAFAdvancedRule) output.O
 	)
 }
 
-func OutputDDoSXSSLsProvider(ssls []ddosx.SSL) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputDDoSXSSLsProvider(ssls []ddosx.SSL) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(ssls),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -170,8 +170,8 @@ func OutputDDoSXSSLsProvider(ssls []ddosx.SSL) output.OutputHandlerProvider {
 	)
 }
 
-func OutputDDoSXSSLContentsProvider(sslContents []ddosx.SSLContent) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputDDoSXSSLContentsProvider(sslContents []ddosx.SSLContent) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(sslContents),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -188,8 +188,8 @@ func OutputDDoSXSSLContentsProvider(sslContents []ddosx.SSLContent) output.Outpu
 	)
 }
 
-func OutputDDoSXSSLPrivateKeysProvider(sslPrivateKeys []ddosx.SSLPrivateKey) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputDDoSXSSLPrivateKeysProvider(sslPrivateKeys []ddosx.SSLPrivateKey) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(sslPrivateKeys),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -205,8 +205,8 @@ func OutputDDoSXSSLPrivateKeysProvider(sslPrivateKeys []ddosx.SSLPrivateKey) out
 	)
 }
 
-func OutputDDoSXACLIPRulesProvider(rules []ddosx.ACLIPRule) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputDDoSXACLIPRulesProvider(rules []ddosx.ACLIPRule) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(rules),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -225,8 +225,8 @@ func OutputDDoSXACLIPRulesProvider(rules []ddosx.ACLIPRule) output.OutputHandler
 	)
 }
 
-func OutputDDoSXACLGeoIPRulesProvider(rules []ddosx.ACLGeoIPRule) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputDDoSXACLGeoIPRulesProvider(rules []ddosx.ACLGeoIPRule) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(rules),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -244,8 +244,8 @@ func OutputDDoSXACLGeoIPRulesProvider(rules []ddosx.ACLGeoIPRule) output.OutputH
 	)
 }
 
-func OutputDDoSXACLGeoIPRulesModesProvider(modes []ddosx.ACLGeoIPRulesMode) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputDDoSXACLGeoIPRulesModesProvider(modes []ddosx.ACLGeoIPRulesMode) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(modes),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -261,8 +261,8 @@ func OutputDDoSXACLGeoIPRulesModesProvider(modes []ddosx.ACLGeoIPRulesMode) outp
 	)
 }
 
-func OutputDDoSXDomainPropertiesProvider(properties []ddosx.DomainProperty) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputDDoSXDomainPropertiesProvider(properties []ddosx.DomainProperty) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(properties),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -285,8 +285,8 @@ type OutputDDoSXDomainVerificationFilesFile struct {
 	Content string
 }
 
-func OutputDDoSXDomainVerificationFilesProvider(files []OutputDDoSXDomainVerificationFilesFile) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputDDoSXDomainVerificationFilesProvider(files []OutputDDoSXDomainVerificationFilesFile) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(files),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -303,8 +303,8 @@ func OutputDDoSXDomainVerificationFilesProvider(files []OutputDDoSXDomainVerific
 	)
 }
 
-func OutputDDoSXCDNRulesProvider(rules []ddosx.CDNRule) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputDDoSXCDNRulesProvider(rules []ddosx.CDNRule) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(rules),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -325,8 +325,8 @@ func OutputDDoSXCDNRulesProvider(rules []ddosx.CDNRule) output.OutputHandlerProv
 	)
 }
 
-func OutputDDoSXHSTSConfigurationsProvider(configurations []ddosx.HSTSConfiguration) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputDDoSXHSTSConfigurationsProvider(configurations []ddosx.HSTSConfiguration) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(configurations),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -342,8 +342,8 @@ func OutputDDoSXHSTSConfigurationsProvider(configurations []ddosx.HSTSConfigurat
 	)
 }
 
-func OutputDDoSXHSTSRulesProvider(rules []ddosx.HSTSRule) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputDDoSXHSTSRulesProvider(rules []ddosx.HSTSRule) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(rules),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -369,10 +369,10 @@ func OutputDDoSXHSTSRulesProvider(rules []ddosx.HSTSRule) output.OutputHandlerPr
 	)
 }
 
-func OutputDDoSXWAFLogsProvider(logs []ddosx.WAFLog) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(logs).WithDefaultFields([]string{"id", "created_at", "client_ip", "request"})
+func OutputDDoSXWAFLogsProvider(logs []ddosx.WAFLog) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(logs).WithDefaultFields([]string{"id", "created_at", "client_ip", "request"})
 }
 
-func OutputDDoSXWAFLogMatchesProvider(matches []ddosx.WAFLogMatch) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(matches).WithDefaultFields([]string{"id", "created_at", "country_code", "method", "message"})
+func OutputDDoSXWAFLogMatchesProvider(matches []ddosx.WAFLogMatch) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(matches).WithDefaultFields([]string{"id", "created_at", "country_code", "method", "message"})
 }

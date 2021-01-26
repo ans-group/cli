@@ -8,8 +8,8 @@ import (
 	"github.com/ukfast/sdk-go/pkg/service/safedns"
 )
 
-func OutputSafeDNSZonesProvider(zones []safedns.Zone) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputSafeDNSZonesProvider(zones []safedns.Zone) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(zones),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -26,8 +26,8 @@ func OutputSafeDNSZonesProvider(zones []safedns.Zone) output.OutputHandlerProvid
 	)
 }
 
-func OutputSafeDNSRecordsProvider(records []safedns.Record) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputSafeDNSRecordsProvider(records []safedns.Record) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(records),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -49,8 +49,8 @@ func OutputSafeDNSRecordsProvider(records []safedns.Record) output.OutputHandler
 	)
 }
 
-func OutputSafeDNSNotesProvider(notes []safedns.Note) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputSafeDNSNotesProvider(notes []safedns.Note) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(notes),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -68,8 +68,8 @@ func OutputSafeDNSNotesProvider(notes []safedns.Note) output.OutputHandlerProvid
 	)
 }
 
-func OutputSafeDNSTemplatesProvider(templates []safedns.Template) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputSafeDNSTemplatesProvider(templates []safedns.Template) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(templates),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -88,8 +88,8 @@ func OutputSafeDNSTemplatesProvider(templates []safedns.Template) output.OutputH
 	)
 }
 
-func OutputSafeDNSSettingsProvider(settings []safedns.Settings) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputSafeDNSSettingsProvider(settings []safedns.Settings) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(settings),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields

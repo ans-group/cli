@@ -9,8 +9,8 @@ import (
 	"github.com/ukfast/sdk-go/pkg/service/draas"
 )
 
-func OutputDRaaSSolutionsProvider(solutions []draas.Solution) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputDRaaSSolutionsProvider(solutions []draas.Solution) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(solutions),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -29,8 +29,8 @@ func OutputDRaaSSolutionsProvider(solutions []draas.Solution) output.OutputHandl
 	)
 }
 
-func OutputDRaaSBackupResourcesProvider(resources []draas.BackupResource) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputDRaaSBackupResourcesProvider(resources []draas.BackupResource) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(resources),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -49,8 +49,8 @@ func OutputDRaaSBackupResourcesProvider(resources []draas.BackupResource) output
 	)
 }
 
-func OutputDRaaSIOPSTiersProvider(tiers []draas.IOPSTier) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputDRaaSIOPSTiersProvider(tiers []draas.IOPSTier) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(tiers),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -67,8 +67,8 @@ func OutputDRaaSIOPSTiersProvider(tiers []draas.IOPSTier) output.OutputHandlerPr
 	)
 }
 
-func OutputDRaaSBackupServicesProvider(services []draas.BackupService) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputDRaaSBackupServicesProvider(services []draas.BackupService) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(services),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -87,8 +87,8 @@ func OutputDRaaSBackupServicesProvider(services []draas.BackupService) output.Ou
 	)
 }
 
-func OutputDRaaSFailoverPlansProvider(plans []draas.FailoverPlan) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputDRaaSFailoverPlansProvider(plans []draas.FailoverPlan) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(plans),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -115,8 +115,8 @@ func OutputDRaaSFailoverPlansProvider(plans []draas.FailoverPlan) output.OutputH
 	)
 }
 
-func OutputDRaaSComputeResourcesProvider(resources []draas.ComputeResource) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputDRaaSComputeResourcesProvider(resources []draas.ComputeResource) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(resources),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -141,8 +141,8 @@ func OutputDRaaSComputeResourcesProvider(resources []draas.ComputeResource) outp
 	)
 }
 
-func OutputDRaaSHardwarePlansProvider(plans []draas.HardwarePlan) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputDRaaSHardwarePlansProvider(plans []draas.HardwarePlan) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(plans),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -170,8 +170,8 @@ func OutputDRaaSHardwarePlansProvider(plans []draas.HardwarePlan) output.OutputH
 	)
 }
 
-func OutputDRaaSReplicasProvider(replicas []draas.Replica) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputDRaaSReplicasProvider(replicas []draas.Replica) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(replicas),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -194,8 +194,8 @@ func OutputDRaaSReplicasProvider(replicas []draas.Replica) output.OutputHandlerP
 	)
 }
 
-func OutputDRaaSBillingTypesProvider(types []draas.BillingType) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputDRaaSBillingTypesProvider(types []draas.BillingType) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(types),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields

@@ -1174,9 +1174,12 @@ func (mr *MockECloudServiceMockRecorder) GetNetwork(arg0 interface{}) *gomock.Ca
 }
 
 // GetNetworkNICs mocks base method
-func (m *MockECloudService) GetNetworkNICs(arg0 string, arg1 connection.APIRequestParameters) {
+func (m *MockECloudService) GetNetworkNICs(arg0 string, arg1 connection.APIRequestParameters) ([]ecloud.NIC, error) {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "GetNetworkNICs", arg0, arg1)
+	ret := m.ctrl.Call(m, "GetNetworkNICs", arg0, arg1)
+	ret0, _ := ret[0].([]ecloud.NIC)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // GetNetworkNICs indicates an expected call of GetNetworkNICs

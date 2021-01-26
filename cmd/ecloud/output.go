@@ -7,8 +7,8 @@ import (
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
-func OutputECloudVirtualMachinesProvider(vms []ecloud.VirtualMachine) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputECloudVirtualMachinesProvider(vms []ecloud.VirtualMachine) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(vms),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -44,8 +44,8 @@ func OutputECloudVirtualMachinesProvider(vms []ecloud.VirtualMachine) output.Out
 	)
 }
 
-func OutputECloudVirtualMachineDisksProvider(disks []ecloud.VirtualMachineDisk) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputECloudVirtualMachineDisksProvider(disks []ecloud.VirtualMachineDisk) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(disks),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -65,8 +65,8 @@ func OutputECloudVirtualMachineDisksProvider(disks []ecloud.VirtualMachineDisk) 
 	)
 }
 
-func OutputECloudTagsProvider(tags []ecloud.Tag) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputECloudTagsProvider(tags []ecloud.Tag) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(tags),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -84,8 +84,8 @@ func OutputECloudTagsProvider(tags []ecloud.Tag) output.OutputHandlerProvider {
 	)
 }
 
-func OutputECloudSolutionsProvider(solutions []ecloud.Solution) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputECloudSolutionsProvider(solutions []ecloud.Solution) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(solutions),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -106,8 +106,8 @@ func OutputECloudSolutionsProvider(solutions []ecloud.Solution) output.OutputHan
 	)
 }
 
-func OutputECloudSitesProvider(sites []ecloud.Site) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputECloudSitesProvider(sites []ecloud.Site) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(sites),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -126,8 +126,8 @@ func OutputECloudSitesProvider(sites []ecloud.Site) output.OutputHandlerProvider
 	)
 }
 
-func OutputECloudHostsProvider(hosts []ecloud.Host) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputECloudHostsProvider(hosts []ecloud.Host) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(hosts),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -153,8 +153,8 @@ func OutputECloudHostsProvider(hosts []ecloud.Host) output.OutputHandlerProvider
 	)
 }
 
-func OutputECloudDatastoresProvider(datastores []ecloud.Datastore) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputECloudDatastoresProvider(datastores []ecloud.Datastore) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(datastores),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -177,8 +177,8 @@ func OutputECloudDatastoresProvider(datastores []ecloud.Datastore) output.Output
 	)
 }
 
-func OutputECloudTemplatesProvider(templates []ecloud.Template) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputECloudTemplatesProvider(templates []ecloud.Template) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(templates),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -200,8 +200,8 @@ func OutputECloudTemplatesProvider(templates []ecloud.Template) output.OutputHan
 	)
 }
 
-func OutputECloudV1NetworksProvider(networks []ecloud.V1Network) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputECloudV1NetworksProvider(networks []ecloud.V1Network) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(networks),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -218,8 +218,8 @@ func OutputECloudV1NetworksProvider(networks []ecloud.V1Network) output.OutputHa
 	)
 }
 
-func OutputECloudFirewallsProvider(firewalls []ecloud.Firewall) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputECloudFirewallsProvider(firewalls []ecloud.Firewall) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(firewalls),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -239,8 +239,8 @@ func OutputECloudFirewallsProvider(firewalls []ecloud.Firewall) output.OutputHan
 	)
 }
 
-func OutputECloudPodsProvider(pods []ecloud.Pod) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputECloudPodsProvider(pods []ecloud.Pod) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(pods),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -257,8 +257,8 @@ func OutputECloudPodsProvider(pods []ecloud.Pod) output.OutputHandlerProvider {
 	)
 }
 
-func OutputECloudAppliancesProvider(appliances []ecloud.Appliance) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputECloudAppliancesProvider(appliances []ecloud.Appliance) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(appliances),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -280,8 +280,8 @@ func OutputECloudAppliancesProvider(appliances []ecloud.Appliance) output.Output
 	)
 }
 
-func OutputECloudApplianceParametersProvider(parameters []ecloud.ApplianceParameter) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputECloudApplianceParametersProvider(parameters []ecloud.ApplianceParameter) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(parameters),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -303,8 +303,8 @@ func OutputECloudApplianceParametersProvider(parameters []ecloud.ApplianceParame
 	)
 }
 
-func OutputECloudConsoleSessionsProvider(sessions []ecloud.ConsoleSession) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputECloudConsoleSessionsProvider(sessions []ecloud.ConsoleSession) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(sessions),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -320,46 +320,46 @@ func OutputECloudConsoleSessionsProvider(sessions []ecloud.ConsoleSession) outpu
 	)
 }
 
-func OutputECloudVPCsProvider(vpcs []ecloud.VPC) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(vpcs).WithDefaultFields([]string{"id", "name", "region_id", "sync"})
+func OutputECloudVPCsProvider(vpcs []ecloud.VPC) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(vpcs).WithDefaultFields([]string{"id", "name", "region_id", "sync"})
 }
 
-func OutputECloudInstancesProvider(instances []ecloud.Instance) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(instances).WithDefaultFields([]string{"id", "name", "vpc_id", "vcpu_cores", "ram_capacity", "sync"})
+func OutputECloudInstancesProvider(instances []ecloud.Instance) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(instances).WithDefaultFields([]string{"id", "name", "vpc_id", "vcpu_cores", "ram_capacity", "sync"})
 }
 
-func OutputECloudFloatingIPsProvider(fips []ecloud.FloatingIP) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(fips).WithDefaultFields([]string{"id", "ip_address", "sync"})
+func OutputECloudFloatingIPsProvider(fips []ecloud.FloatingIP) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(fips).WithDefaultFields([]string{"id", "ip_address", "sync"})
 }
 
-func OutputECloudFirewallRulesProvider(rules []ecloud.FirewallRule) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(rules).WithDefaultFields([]string{"id", "name", "source", "destination", "action", "created_at", "updated_at"})
+func OutputECloudFirewallRulesProvider(rules []ecloud.FirewallRule) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(rules).WithDefaultFields([]string{"id", "name", "source", "destination", "action", "created_at", "updated_at"})
 }
 
-func OutputECloudRegionsProvider(regions []ecloud.Region) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(regions).WithDefaultFields([]string{"id", "name"})
+func OutputECloudRegionsProvider(regions []ecloud.Region) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(regions).WithDefaultFields([]string{"id", "name"})
 }
 
-func OutputECloudLoadBalancerClustersProvider(lbcs []ecloud.LoadBalancerCluster) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(lbcs).WithDefaultFields([]string{"id", "name"})
+func OutputECloudLoadBalancerClustersProvider(lbcs []ecloud.LoadBalancerCluster) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(lbcs).WithDefaultFields([]string{"id", "name"})
 }
 
-func OutputECloudVolumesProvider(volumes []ecloud.Volume) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(volumes).WithDefaultFields([]string{"id", "name", "capacity"})
+func OutputECloudVolumesProvider(volumes []ecloud.Volume) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(volumes).WithDefaultFields([]string{"id", "name", "capacity"})
 }
 
-func OutputECloudCredentialsProvider(credentials []ecloud.Credential) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(credentials).WithDefaultFields([]string{"id", "name", "username", "password"})
+func OutputECloudCredentialsProvider(credentials []ecloud.Credential) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(credentials).WithDefaultFields([]string{"id", "name", "username", "password"})
 }
 
-func OutputECloudNICsProvider(nics []ecloud.NIC) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(nics).WithDefaultFields([]string{"id", "mac_address", "instance_id", "network_id", "ip_address"})
+func OutputECloudNICsProvider(nics []ecloud.NIC) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(nics).WithDefaultFields([]string{"id", "mac_address", "instance_id", "network_id", "ip_address"})
 }
 
-func OutputECloudRoutersProvider(routers []ecloud.Router) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(routers).WithDefaultFields([]string{"id", "name", "vpc_id", "sync"})
+func OutputECloudRoutersProvider(routers []ecloud.Router) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(routers).WithDefaultFields([]string{"id", "name", "vpc_id", "sync"})
 }
 
-func OutputECloudNetworksProvider(networks []ecloud.Network) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(networks).WithDefaultFields([]string{"id", "name", "router_id", "subnet", "sync"})
+func OutputECloudNetworksProvider(networks []ecloud.Network) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(networks).WithDefaultFields([]string{"id", "name", "router_id", "subnet", "sync"})
 }

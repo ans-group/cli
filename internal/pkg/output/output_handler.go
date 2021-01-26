@@ -3,36 +3,34 @@ package output
 import (
 	"fmt"
 	"strings"
-)
 
-type UnsupportedFormatHandler func() error
+	"github.com/ryanuber/go-glob"
+)
 
 type OutputHandlerOpts map[string]interface{}
 
 type OutputHandler struct {
-	Format                   string
-	FormatArg                string
-	Properties               []string
-	Provider                 OutputHandlerProvider
-	Options                  OutputHandlerOpts
-	UnsupportedFormatHandler UnsupportedFormatHandler
+	Format           string
+	FormatArg        string
+	Properties       []string
+	SupportedFormats []string
+	DataProvider     OutputHandlerDataProvider
 }
 
-func NewOutputHandler(out OutputHandlerProvider, format string, formatArg string) *OutputHandler {
+func NewOutputHandler(dataProvider OutputHandlerDataProvider, format string, formatArg string) *OutputHandler {
 	if format == "" {
 		format = "table"
 	}
 
 	return &OutputHandler{
-		Provider:  out,
-		Format:    format,
-		FormatArg: formatArg,
-		Options:   make(map[string]interface{}),
+		DataProvider: dataProvider,
+		Format:       format,
+		FormatArg:    formatArg,
 	}
 }
 
-func (o *OutputHandler) WithOption(name string, value interface{}) *OutputHandler {
-	o.Options[name] = value
+func (o *OutputHandler) WithSupportedFormats(formats []string) *OutputHandler {
+	o.SupportedFormats = formats
 	return o
 }
 
@@ -40,34 +38,30 @@ func (o *OutputHandler) WithOption(name string, value interface{}) *OutputHandle
 // in struct property 'Format'
 func (o *OutputHandler) Handle() error {
 	if !o.supportedFormat() {
-		if o.UnsupportedFormatHandler != nil {
-			return o.UnsupportedFormatHandler()
-		}
-
-		return fmt.Errorf("Unsupported output format [%s], supported formats: %s", o.Format, strings.Join(o.Provider.SupportedFormats(), ", "))
+		return fmt.Errorf("Unsupported output format [%s], supported formats: %s", o.Format, strings.Join(o.SupportedFormats, ", "))
 	}
 
 	switch o.Format {
 	case "json":
-		return JSON(o.Provider.GetData())
+		return JSON(o.DataProvider.GetData())
 	case "jsonpath":
-		return JSONPath(o.FormatArg, o.Provider.GetData())
+		return JSONPath(o.FormatArg, o.DataProvider.GetData())
 	case "template":
-		return Template(o.FormatArg, o.Provider.GetData())
+		return Template(o.FormatArg, o.DataProvider.GetData())
 	case "value":
-		d, err := o.Provider.GetFieldData()
+		d, err := o.getProcessedFieldData()
 		if err != nil {
 			return err
 		}
 		return Value(o.Properties, d)
 	case "csv":
-		d, err := o.Provider.GetFieldData()
+		d, err := o.getProcessedFieldData()
 		if err != nil {
 			return err
 		}
 		return CSV(o.Properties, d)
 	case "list":
-		d, err := o.Provider.GetFieldData()
+		d, err := o.getProcessedFieldData()
 		if err != nil {
 			return err
 		}
@@ -76,40 +70,71 @@ func (o *OutputHandler) Handle() error {
 		Errorf("Invalid output format [%s], defaulting to 'table'", o.Format)
 		fallthrough
 	case "table":
-		d, err := o.Provider.GetFieldData()
+		d, err := o.getProcessedFieldData()
 		if err != nil {
 			return err
 		}
-		return Table(o.Properties, d)
+		return Table(d)
 	}
 }
 
+func (o *OutputHandler) getProcessedFieldData() ([]*OrderedFields, error) {
+	var filteredFieldsCollectionArray []*OrderedFields
+
+	fieldsCollectionArray, err := o.DataProvider.GetFieldData()
+	if err != nil {
+		return nil, err
+	}
+
+	for _, fieldCollection := range fieldsCollectionArray {
+		filteredFieldsCollection := NewOrderedFields()
+
+		if len(o.Properties) > 0 {
+			// For each property in o.Properties, add field to filteredFields array
+			// if that property exists in fields
+			for _, prop := range o.Properties {
+				for _, fieldKey := range fieldCollection.Keys() {
+					if glob.Glob(strings.ToLower(prop), fieldKey) {
+						filteredFieldsCollection.Set(fieldKey, fieldCollection.Get(fieldKey))
+					}
+				}
+			}
+
+		} else {
+			isDefaultField := func(key string) bool {
+				for _, defaultFieldKey := range o.DataProvider.DefaultFields() {
+					if key == defaultFieldKey {
+						return true
+					}
+				}
+
+				return false
+			}
+
+			// Use default fields
+			for _, fieldKey := range fieldCollection.Keys() {
+				if isDefaultField(fieldKey) {
+					filteredFieldsCollection.Set(fieldKey, fieldCollection.Get(fieldKey))
+				}
+			}
+		}
+
+		filteredFieldsCollectionArray = append(filteredFieldsCollectionArray, filteredFieldsCollection)
+	}
+
+	return filteredFieldsCollectionArray, nil
+}
+
 func (o *OutputHandler) supportedFormat() bool {
-	if o.Provider.SupportedFormats() == nil {
+	if o.SupportedFormats == nil {
 		return true
 	}
 
-	for _, supportedFormat := range o.Provider.SupportedFormats() {
+	for _, supportedFormat := range o.SupportedFormats {
 		if strings.ToLower(supportedFormat) == o.Format {
 			return true
 		}
 	}
 
 	return false
-}
-
-func (o *OutputHandler) getStringOpt(name string) string {
-	if o.Options[name] != nil {
-		return o.Options[name].(string)
-	}
-
-	return ""
-}
-
-func (o *OutputHandler) getStringSliceOpt(name string) []string {
-	if o.Options[name] != nil {
-		return o.Options[name].([]string)
-	}
-
-	return []string{}
 }
