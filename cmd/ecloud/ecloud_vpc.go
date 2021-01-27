@@ -25,6 +25,9 @@ func ecloudVPCRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.AddCommand(ecloudVPCDeleteCmd(f))
 	cmd.AddCommand(ecloudVPCDeployDefaultsCmd(f))
 
+	// Child root commands
+	cmd.AddCommand(ecloudVPCVolumeRootCmd(f))
+
 	return cmd
 }
 
@@ -243,7 +246,7 @@ func ecloudVPCDelete(service ecloud.ECloudService, cmd *cobra.Command, args []st
 
 func ecloudVPCDeployDefaultsCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
-		Use:     "show <vpc: id>...",
+		Use:     "deploydefaults <vpc: id>...",
 		Short:   "Deploys default resources for a VPC",
 		Long:    "This command deploys default resources for one or more VPCs",
 		Example: "ukfast ecloud vpc deploydefaults vpc-abcdef12",
