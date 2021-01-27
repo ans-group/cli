@@ -8,8 +8,8 @@ import (
 	"github.com/ukfast/sdk-go/pkg/service/registrar"
 )
 
-func OutputRegistrarDomainsProvider(domains []registrar.Domain) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputRegistrarDomainsProvider(domains []registrar.Domain) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(domains),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -32,8 +32,8 @@ func OutputRegistrarDomainsProvider(domains []registrar.Domain) output.OutputHan
 	)
 }
 
-func OutputRegistrarNameserversProvider(nameservers []registrar.Nameserver) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputRegistrarNameserversProvider(nameservers []registrar.Nameserver) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(nameservers),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -50,8 +50,8 @@ func OutputRegistrarNameserversProvider(nameservers []registrar.Nameserver) outp
 	)
 }
 
-func OutputRegistrarWhoisProvider(whoisArr []registrar.Whois) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputRegistrarWhoisProvider(whoisArr []registrar.Whois) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(whoisArr),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields

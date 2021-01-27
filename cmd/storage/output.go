@@ -7,8 +7,8 @@ import (
 	"github.com/ukfast/sdk-go/pkg/service/storage"
 )
 
-func OutputStorageSolutionsProvider(solutions []storage.Solution) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputStorageSolutionsProvider(solutions []storage.Solution) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(solutions),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -28,8 +28,8 @@ func OutputStorageSolutionsProvider(solutions []storage.Solution) output.OutputH
 	)
 }
 
-func OutputStorageVolumesProvider(volumes []storage.Volume) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputStorageVolumesProvider(volumes []storage.Volume) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(volumes),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -52,8 +52,8 @@ func OutputStorageVolumesProvider(volumes []storage.Volume) output.OutputHandler
 	)
 }
 
-func OutputStorageHostsProvider(hosts []storage.Host) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputStorageHostsProvider(hosts []storage.Host) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(hosts),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields

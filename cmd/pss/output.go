@@ -7,8 +7,8 @@ import (
 	"github.com/ukfast/sdk-go/pkg/service/pss"
 )
 
-func OutputPSSRequestsProvider(requests []pss.Request) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputPSSRequestsProvider(requests []pss.Request) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(requests),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -40,8 +40,8 @@ func OutputPSSRequestsProvider(requests []pss.Request) output.OutputHandlerProvi
 	)
 }
 
-func OutputPSSRepliesProvider(replies []pss.Reply) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputPSSRepliesProvider(replies []pss.Reply) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(replies),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields

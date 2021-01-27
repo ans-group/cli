@@ -8,8 +8,8 @@ import (
 	"github.com/ukfast/sdk-go/pkg/service/ssl"
 )
 
-func OutputSSLCertificatesProvider(certificates []ssl.Certificate) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputSSLCertificatesProvider(certificates []ssl.Certificate) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(certificates),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -32,8 +32,8 @@ func OutputSSLCertificatesProvider(certificates []ssl.Certificate) output.Output
 	)
 }
 
-func OutputSSLCertificatesContentsProvider(certificatesContent []ssl.CertificateContent) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputSSLCertificatesContentsProvider(certificatesContent []ssl.CertificateContent) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(certificatesContent),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -51,8 +51,8 @@ func OutputSSLCertificatesContentsProvider(certificatesContent []ssl.Certificate
 	)
 }
 
-func OutputSSLCertificatesPrivateKeysProvider(certificatesPrivateKey []ssl.CertificatePrivateKey) output.OutputHandlerProvider {
-	return output.NewGenericOutputHandlerProvider(
+func OutputSSLCertificatesPrivateKeysProvider(certificatesPrivateKey []ssl.CertificatePrivateKey) output.OutputHandlerDataProvider {
+	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(certificatesPrivateKey),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
 			var data []*output.OrderedFields
@@ -68,14 +68,14 @@ func OutputSSLCertificatesPrivateKeysProvider(certificatesPrivateKey []ssl.Certi
 	)
 }
 
-func OutputSSLCertificateValidationsProvider(validations []ssl.CertificateValidation) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(validations).WithDefaultFields([]string{"domains", "expires_at"})
+func OutputSSLCertificateValidationsProvider(validations []ssl.CertificateValidation) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(validations).WithDefaultFields([]string{"domains", "expires_at"})
 }
 
-func OutputSSLRecommendationsProvider(recommendationsSlice []ssl.Recommendations) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(recommendationsSlice).WithDefaultFields([]string{"level", "messages"})
+func OutputSSLRecommendationsProvider(recommendationsSlice []ssl.Recommendations) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(recommendationsSlice).WithDefaultFields([]string{"level", "messages"})
 }
 
-func OutputSSLReportsProvider(reports []ssl.Report) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(reports).WithDefaultFields([]string{"certificate_name", "certificate_expiring", "certificate_expired", "chain_intact"})
+func OutputSSLReportsProvider(reports []ssl.Report) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(reports).WithDefaultFields([]string{"certificate_name", "certificate_expiring", "certificate_expired", "chain_intact"})
 }

@@ -5,6 +5,6 @@ import (
 	"github.com/ukfast/sdk-go/pkg/service/ecloudflex"
 )
 
-func OutputECloudFlexProjectsProvider(projects []ecloudflex.Project) output.OutputHandlerProvider {
-	return output.NewSerializedOutputHandlerProvider(projects).WithDefaultFields([]string{"id", "name", "created_at"})
+func OutputECloudFlexProjectsProvider(projects []ecloudflex.Project) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(projects).WithDefaultFields([]string{"id", "name", "created_at"})
 }

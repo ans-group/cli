@@ -65,6 +65,21 @@ func (mr *MockECloudServiceMockRecorder) CreateFirewallPolicy(arg0 interface{}) 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateFirewallPolicy", reflect.TypeOf((*MockECloudService)(nil).CreateFirewallPolicy), arg0)
 }
 
+// CreateFirewallRule mocks base method
+func (m *MockECloudService) CreateFirewallRule(arg0 ecloud.CreateFirewallRuleRequest) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateFirewallRule", arg0)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateFirewallRule indicates an expected call of CreateFirewallRule
+func (mr *MockECloudServiceMockRecorder) CreateFirewallRule(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateFirewallRule", reflect.TypeOf((*MockECloudService)(nil).CreateFirewallRule), arg0)
+}
+
 // CreateInstance mocks base method
 func (m *MockECloudService) CreateInstance(arg0 ecloud.CreateInstanceRequest) (string, error) {
 	m.ctrl.T.Helper()
@@ -241,6 +256,20 @@ func (mr *MockECloudServiceMockRecorder) DeleteFirewallPolicy(arg0 interface{}) 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteFirewallPolicy", reflect.TypeOf((*MockECloudService)(nil).DeleteFirewallPolicy), arg0)
 }
 
+// DeleteFirewallRule mocks base method
+func (m *MockECloudService) DeleteFirewallRule(arg0 string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteFirewallRule", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteFirewallRule indicates an expected call of DeleteFirewallRule
+func (mr *MockECloudServiceMockRecorder) DeleteFirewallRule(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteFirewallRule", reflect.TypeOf((*MockECloudService)(nil).DeleteFirewallRule), arg0)
+}
+
 // DeleteInstance mocks base method
 func (m *MockECloudService) DeleteInstance(arg0 string) error {
 	m.ctrl.T.Helper()
@@ -393,6 +422,20 @@ func (m *MockECloudService) DeleteVirtualMachineTag(arg0 int, arg1 string) error
 func (mr *MockECloudServiceMockRecorder) DeleteVirtualMachineTag(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteVirtualMachineTag", reflect.TypeOf((*MockECloudService)(nil).DeleteVirtualMachineTag), arg0, arg1)
+}
+
+// DeleteVolume mocks base method
+func (m *MockECloudService) DeleteVolume(arg0 string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteVolume", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteVolume indicates an expected call of DeleteVolume
+func (mr *MockECloudServiceMockRecorder) DeleteVolume(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteVolume", reflect.TypeOf((*MockECloudService)(nil).DeleteVolume), arg0)
 }
 
 // GetActiveDirectoryDomain mocks base method
@@ -755,6 +798,36 @@ func (mr *MockECloudServiceMockRecorder) GetFirewallRule(arg0 interface{}) *gomo
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetFirewallRule", reflect.TypeOf((*MockECloudService)(nil).GetFirewallRule), arg0)
 }
 
+// GetFirewallRulePorts mocks base method
+func (m *MockECloudService) GetFirewallRulePorts(arg0 string, arg1 connection.APIRequestParameters) ([]ecloud.FirewallRulePort, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetFirewallRulePorts", arg0, arg1)
+	ret0, _ := ret[0].([]ecloud.FirewallRulePort)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetFirewallRulePorts indicates an expected call of GetFirewallRulePorts
+func (mr *MockECloudServiceMockRecorder) GetFirewallRulePorts(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetFirewallRulePorts", reflect.TypeOf((*MockECloudService)(nil).GetFirewallRulePorts), arg0, arg1)
+}
+
+// GetFirewallRulePortsPaginated mocks base method
+func (m *MockECloudService) GetFirewallRulePortsPaginated(arg0 string, arg1 connection.APIRequestParameters) (*ecloud.PaginatedFirewallRulePort, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetFirewallRulePortsPaginated", arg0, arg1)
+	ret0, _ := ret[0].(*ecloud.PaginatedFirewallRulePort)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetFirewallRulePortsPaginated indicates an expected call of GetFirewallRulePortsPaginated
+func (mr *MockECloudServiceMockRecorder) GetFirewallRulePortsPaginated(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetFirewallRulePortsPaginated", reflect.TypeOf((*MockECloudService)(nil).GetFirewallRulePortsPaginated), arg0, arg1)
+}
+
 // GetFirewallRules mocks base method
 func (m *MockECloudService) GetFirewallRules(arg0 connection.APIRequestParameters) ([]ecloud.FirewallRule, error) {
 	m.ctrl.T.Helper()
@@ -1098,6 +1171,36 @@ func (m *MockECloudService) GetNetwork(arg0 string) (ecloud.Network, error) {
 func (mr *MockECloudServiceMockRecorder) GetNetwork(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetNetwork", reflect.TypeOf((*MockECloudService)(nil).GetNetwork), arg0)
+}
+
+// GetNetworkNICs mocks base method
+func (m *MockECloudService) GetNetworkNICs(arg0 string, arg1 connection.APIRequestParameters) ([]ecloud.NIC, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetNetworkNICs", arg0, arg1)
+	ret0, _ := ret[0].([]ecloud.NIC)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetNetworkNICs indicates an expected call of GetNetworkNICs
+func (mr *MockECloudServiceMockRecorder) GetNetworkNICs(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetNetworkNICs", reflect.TypeOf((*MockECloudService)(nil).GetNetworkNICs), arg0, arg1)
+}
+
+// GetNetworkNICsPaginated mocks base method
+func (m *MockECloudService) GetNetworkNICsPaginated(arg0 string, arg1 connection.APIRequestParameters) (*ecloud.PaginatedNIC, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetNetworkNICsPaginated", arg0, arg1)
+	ret0, _ := ret[0].(*ecloud.PaginatedNIC)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetNetworkNICsPaginated indicates an expected call of GetNetworkNICsPaginated
+func (mr *MockECloudServiceMockRecorder) GetNetworkNICsPaginated(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetNetworkNICsPaginated", reflect.TypeOf((*MockECloudService)(nil).GetNetworkNICsPaginated), arg0, arg1)
 }
 
 // GetNetworks mocks base method
@@ -1880,6 +1983,51 @@ func (mr *MockECloudServiceMockRecorder) GetVirtualMachinesPaginated(arg0 interf
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVirtualMachinesPaginated", reflect.TypeOf((*MockECloudService)(nil).GetVirtualMachinesPaginated), arg0)
 }
 
+// GetVolume mocks base method
+func (m *MockECloudService) GetVolume(arg0 string) (ecloud.Volume, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVolume", arg0)
+	ret0, _ := ret[0].(ecloud.Volume)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVolume indicates an expected call of GetVolume
+func (mr *MockECloudServiceMockRecorder) GetVolume(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVolume", reflect.TypeOf((*MockECloudService)(nil).GetVolume), arg0)
+}
+
+// GetVolumes mocks base method
+func (m *MockECloudService) GetVolumes(arg0 connection.APIRequestParameters) ([]ecloud.Volume, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVolumes", arg0)
+	ret0, _ := ret[0].([]ecloud.Volume)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVolumes indicates an expected call of GetVolumes
+func (mr *MockECloudServiceMockRecorder) GetVolumes(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVolumes", reflect.TypeOf((*MockECloudService)(nil).GetVolumes), arg0)
+}
+
+// GetVolumesPaginated mocks base method
+func (m *MockECloudService) GetVolumesPaginated(arg0 connection.APIRequestParameters) (*ecloud.PaginatedVolume, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVolumesPaginated", arg0)
+	ret0, _ := ret[0].(*ecloud.PaginatedVolume)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVolumesPaginated indicates an expected call of GetVolumesPaginated
+func (mr *MockECloudServiceMockRecorder) GetVolumesPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVolumesPaginated", reflect.TypeOf((*MockECloudService)(nil).GetVolumesPaginated), arg0)
+}
+
 // LockInstance mocks base method
 func (m *MockECloudService) LockInstance(arg0 string) error {
 	m.ctrl.T.Helper()
@@ -1906,6 +2054,20 @@ func (m *MockECloudService) PatchFirewallPolicy(arg0 string, arg1 ecloud.PatchFi
 func (mr *MockECloudServiceMockRecorder) PatchFirewallPolicy(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchFirewallPolicy", reflect.TypeOf((*MockECloudService)(nil).PatchFirewallPolicy), arg0, arg1)
+}
+
+// PatchFirewallRule mocks base method
+func (m *MockECloudService) PatchFirewallRule(arg0 string, arg1 ecloud.PatchFirewallRuleRequest) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PatchFirewallRule", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchFirewallRule indicates an expected call of PatchFirewallRule
+func (mr *MockECloudServiceMockRecorder) PatchFirewallRule(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchFirewallRule", reflect.TypeOf((*MockECloudService)(nil).PatchFirewallRule), arg0, arg1)
 }
 
 // PatchInstance mocks base method
@@ -2033,6 +2195,20 @@ func (m *MockECloudService) PatchVirtualMachineTag(arg0 int, arg1 string, arg2 e
 func (mr *MockECloudServiceMockRecorder) PatchVirtualMachineTag(arg0, arg1, arg2 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchVirtualMachineTag", reflect.TypeOf((*MockECloudService)(nil).PatchVirtualMachineTag), arg0, arg1, arg2)
+}
+
+// PatchVolume mocks base method
+func (m *MockECloudService) PatchVolume(arg0 string, arg1 ecloud.PatchVolumeRequest) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PatchVolume", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchVolume indicates an expected call of PatchVolume
+func (mr *MockECloudServiceMockRecorder) PatchVolume(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchVolume", reflect.TypeOf((*MockECloudService)(nil).PatchVolume), arg0, arg1)
 }
 
 // PodConsoleAvailable mocks base method

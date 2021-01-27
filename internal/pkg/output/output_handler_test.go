@@ -8,7 +8,7 @@ import (
 	"github.com/ukfast/cli/test"
 )
 
-var testOutputHandlerProvider = NewGenericOutputHandlerProvider(
+var testOutputHandlerDataProvider = NewGenericOutputHandlerDataProvider(
 	WithData(testOutputData{TestProperty1: "testvalue1", TestProperty2: "testvalue2"}),
 	WithFieldDataFunc(func() ([]*OrderedFields, error) {
 		var data []*OrderedFields
@@ -26,7 +26,7 @@ var testOutputHandlerProvider = NewGenericOutputHandlerProvider(
 
 func TestOutputHandler_Handle(t *testing.T) {
 	t.Run("JSONFormat_ExpectedOutput", func(t *testing.T) {
-		handler := NewOutputHandler(testOutputHandlerProvider, "json", "")
+		handler := NewOutputHandler(testOutputHandlerDataProvider, "json", "")
 
 		output := test.CatchStdOut(t, func() {
 			handler.Handle()
@@ -36,7 +36,7 @@ func TestOutputHandler_Handle(t *testing.T) {
 	})
 
 	t.Run("TemplateFormat_ExpectedOutput", func(t *testing.T) {
-		handler := NewOutputHandler(testOutputHandlerProvider, "template", "{{ .TestProperty1 }}")
+		handler := NewOutputHandler(testOutputHandlerDataProvider, "template", "{{ .TestProperty1 }}")
 
 		output := test.CatchStdOut(t, func() {
 			handler.Handle()
@@ -46,7 +46,7 @@ func TestOutputHandler_Handle(t *testing.T) {
 	})
 
 	t.Run("ValueFormat_ExpectedOutput", func(t *testing.T) {
-		handler := NewOutputHandler(testOutputHandlerProvider, "value", "")
+		handler := NewOutputHandler(testOutputHandlerDataProvider, "value", "")
 
 		output := test.CatchStdOut(t, func() {
 			handler.Handle()
@@ -56,7 +56,7 @@ func TestOutputHandler_Handle(t *testing.T) {
 	})
 
 	t.Run("ValueFormat_GetFieldDataError_ReturnsError", func(t *testing.T) {
-		prov := NewGenericOutputHandlerProvider(
+		prov := NewGenericOutputHandlerDataProvider(
 			WithFieldDataFunc(func() ([]*OrderedFields, error) {
 				return nil, errors.New("test error 1")
 			}),
@@ -71,7 +71,7 @@ func TestOutputHandler_Handle(t *testing.T) {
 	})
 
 	t.Run("CSVFormat_ExpectedOutput", func(t *testing.T) {
-		handler := NewOutputHandler(testOutputHandlerProvider, "csv", "")
+		handler := NewOutputHandler(testOutputHandlerDataProvider, "csv", "")
 
 		output := test.CatchStdOut(t, func() {
 			handler.Handle()
@@ -81,7 +81,7 @@ func TestOutputHandler_Handle(t *testing.T) {
 	})
 
 	t.Run("CSVFormat_GetFieldDataError_ReturnsError", func(t *testing.T) {
-		prov := NewGenericOutputHandlerProvider(
+		prov := NewGenericOutputHandlerDataProvider(
 			WithFieldDataFunc(func() ([]*OrderedFields, error) {
 				return nil, errors.New("test error 1")
 			}),
@@ -96,7 +96,7 @@ func TestOutputHandler_Handle(t *testing.T) {
 	})
 
 	t.Run("ListFormat_ExpectedOutput", func(t *testing.T) {
-		handler := NewOutputHandler(testOutputHandlerProvider, "list", "")
+		handler := NewOutputHandler(testOutputHandlerDataProvider, "list", "")
 
 		output := test.CatchStdOut(t, func() {
 			handler.Handle()
@@ -106,7 +106,7 @@ func TestOutputHandler_Handle(t *testing.T) {
 	})
 
 	t.Run("ListFormat_GetFieldDataError_ReturnsError", func(t *testing.T) {
-		prov := NewGenericOutputHandlerProvider(
+		prov := NewGenericOutputHandlerDataProvider(
 			WithFieldDataFunc(func() ([]*OrderedFields, error) {
 				return nil, errors.New("test error 1")
 			}),
@@ -121,7 +121,7 @@ func TestOutputHandler_Handle(t *testing.T) {
 	})
 
 	t.Run("JSONPathFormat_ExpectedOutput", func(t *testing.T) {
-		handler := NewOutputHandler(testOutputHandlerProvider, "jsonpath", "{}")
+		handler := NewOutputHandler(testOutputHandlerDataProvider, "jsonpath", "{}")
 
 		output := test.CatchStdOut(t, func() {
 			handler.Handle()
@@ -131,7 +131,7 @@ func TestOutputHandler_Handle(t *testing.T) {
 	})
 
 	t.Run("TableFormat_ExpectedOutput", func(t *testing.T) {
-		handler := NewOutputHandler(testOutputHandlerProvider, "table", "")
+		handler := NewOutputHandler(testOutputHandlerDataProvider, "table", "")
 
 		output := test.CatchStdOut(t, func() {
 			handler.Handle()
@@ -141,7 +141,7 @@ func TestOutputHandler_Handle(t *testing.T) {
 	})
 
 	t.Run("TableFormat_GetFieldDataError_ReturnsError", func(t *testing.T) {
-		prov := NewGenericOutputHandlerProvider(
+		prov := NewGenericOutputHandlerDataProvider(
 			WithFieldDataFunc(func() ([]*OrderedFields, error) {
 				return nil, errors.New("test error 1")
 			}),
@@ -156,7 +156,7 @@ func TestOutputHandler_Handle(t *testing.T) {
 	})
 
 	t.Run("EmptyFormat_ExpectedTableOutput", func(t *testing.T) {
-		handler := NewOutputHandler(testOutputHandlerProvider, "", "")
+		handler := NewOutputHandler(testOutputHandlerDataProvider, "", "")
 
 		output := test.CatchStdOut(t, func() {
 			handler.Handle()
@@ -166,7 +166,7 @@ func TestOutputHandler_Handle(t *testing.T) {
 	})
 
 	t.Run("InvalidFormat_ExpectedTableOutputWithStdErrError", func(t *testing.T) {
-		handler := NewOutputHandler(testOutputHandlerProvider, "invalidformat", "")
+		handler := NewOutputHandler(testOutputHandlerDataProvider, "invalidformat", "")
 
 		stdOut, stdErr := test.CatchStdOutStdErr(t, func() {
 			handler.Handle()
@@ -177,7 +177,7 @@ func TestOutputHandler_Handle(t *testing.T) {
 	})
 
 	t.Run("UnsupportedFormat_NoUnsupportedHandler_ExpectedError", func(t *testing.T) {
-		handler := NewOutputHandler(NewGenericOutputHandlerProvider(WithSupportedFormats([]string{"json"})), "table", "")
+		handler := NewOutputHandler(NewGenericOutputHandlerDataProvider(), "table", "").WithSupportedFormats([]string{"json"})
 
 		err := handler.Handle()
 
@@ -185,43 +185,25 @@ func TestOutputHandler_Handle(t *testing.T) {
 	})
 
 	t.Run("UnsupportedFormat_NoUnsupportedHandler_ExpectedError", func(t *testing.T) {
-		handler := NewOutputHandler(NewGenericOutputHandlerProvider(WithSupportedFormats([]string{"json"})), "table", "")
+		handler := NewOutputHandler(NewGenericOutputHandlerDataProvider(), "table", "").WithSupportedFormats([]string{"json"})
 
 		err := handler.Handle()
 
 		assert.Equal(t, "Unsupported output format [table], supported formats: json", err.Error())
 	})
 
-	t.Run("UnsupportedFormat_WithUnsupportedHandler_CallsHandler", func(t *testing.T) {
-		called := false
-
-		handler := NewOutputHandler(NewGenericOutputHandlerProvider(WithSupportedFormats([]string{"json"})), "table", "")
-		handler.UnsupportedFormatHandler = func() error {
-			called = true
-			return nil
-		}
-
-		handler.Handle()
-
-		assert.True(t, called)
-	})
-
 	t.Run("UnsupportedFormat_Error_ReturnsError", func(t *testing.T) {
-		handler := NewOutputHandler(NewGenericOutputHandlerProvider(WithSupportedFormats([]string{"json"})), "table", "")
-		handler.UnsupportedFormatHandler = func() error {
-			return errors.New("test error 1")
-		}
+		handler := NewOutputHandler(NewGenericOutputHandlerDataProvider(), "table", "").WithSupportedFormats([]string{"json"})
 
 		err := handler.Handle()
 
-		assert.Equal(t, "test error 1", err.Error())
+		assert.NotNil(t, err)
 	})
 
 	t.Run("SupportedFormat_ExpectedOutput", func(t *testing.T) {
-		prov := testOutputHandlerProvider
-		prov.supportedFormats = []string{"value"}
+		prov := testOutputHandlerDataProvider
 
-		handler := NewOutputHandler(prov, "value", "")
+		handler := NewOutputHandler(prov, "value", "").WithSupportedFormats([]string{"value"})
 
 		output := test.CatchStdOut(t, func() {
 			handler.Handle()
