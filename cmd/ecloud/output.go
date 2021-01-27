@@ -345,7 +345,7 @@ func OutputECloudLoadBalancerClustersProvider(lbcs []ecloud.LoadBalancerCluster)
 }
 
 func OutputECloudVolumesProvider(volumes []ecloud.Volume) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(volumes).WithDefaultFields([]string{"id", "name", "capacity"})
+	return output.NewSerializedOutputHandlerDataProvider(volumes).WithDefaultFields([]string{"id", "name", "capacity", "sync"})
 }
 
 func OutputECloudCredentialsProvider(credentials []ecloud.Credential) output.OutputHandlerDataProvider {
