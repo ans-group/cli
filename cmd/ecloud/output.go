@@ -337,7 +337,7 @@ func OutputECloudFirewallPoliciesProvider(policies []ecloud.FirewallPolicy) outp
 }
 
 func OutputECloudFirewallRulesProvider(rules []ecloud.FirewallRule) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(rules).WithDefaultFields([]string{"id", "name", "source", "destination", "action"})
+	return output.NewSerializedOutputHandlerDataProvider(rules).WithDefaultFields([]string{"id", "name", "firewall_policy_id", "source", "destination", "action", "direction", "enabled"})
 }
 
 func OutputECloudRegionsProvider(regions []ecloud.Region) output.OutputHandlerDataProvider {

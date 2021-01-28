@@ -14,7 +14,7 @@ import (
 
 func ecloudFirewallPolicyRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "policy",
+		Use:   "firewallpolicy",
 		Short: "sub-commands relating to policies",
 	}
 
@@ -24,6 +24,9 @@ func ecloudFirewallPolicyRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.AddCommand(ecloudFirewallPolicyCreateCmd(f))
 	cmd.AddCommand(ecloudFirewallPolicyUpdateCmd(f))
 	cmd.AddCommand(ecloudFirewallPolicyDeleteCmd(f))
+
+	// Child root commands
+	cmd.AddCommand(ecloudFirewallPolicyFirewallRuleRootCmd(f))
 
 	return cmd
 }

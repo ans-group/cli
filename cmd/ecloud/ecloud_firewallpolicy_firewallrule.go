@@ -13,7 +13,7 @@ import (
 
 func ecloudFirewallPolicyFirewallRuleRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "nic",
+		Use:   "firewallrule",
 		Short: "sub-commands relating to firewall policy firewall rules",
 	}
 
@@ -50,10 +50,10 @@ func ecloudFirewallPolicyFirewallRuleList(service ecloud.ECloudService, cmd *cob
 		return err
 	}
 
-	nics, err := service.GetFirewallPolicyFirewallRules(args[0], params)
+	rules, err := service.GetFirewallPolicyFirewallRules(args[0], params)
 	if err != nil {
 		return fmt.Errorf("Error retrieving firewall policy firewall rules: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudFirewallRulesProvider(nics))
+	return output.CommandOutput(cmd, OutputECloudFirewallRulesProvider(rules))
 }
