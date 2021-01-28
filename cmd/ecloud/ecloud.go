@@ -36,13 +36,14 @@ func ECloudRootCmd(f factory.ClientFactory) *cobra.Command {
 	}
 	// -- eCloud v2
 	if v2envset || !v1envset {
-		cmd.AddCommand(ecloudVPCRootCmd(f))
-		cmd.AddCommand(ecloudRouterRootCmd(f))
-		cmd.AddCommand(ecloudNetworkRootCmd(f))
-		cmd.AddCommand(ecloudInstanceRootCmd(f))
-		cmd.AddCommand(ecloudFloatingIPRootCmd(f))
+		cmd.AddCommand(ecloudDHCPRootCmd(f))
 		cmd.AddCommand(ecloudFirewallRuleRootCmd(f))
+		cmd.AddCommand(ecloudFloatingIPRootCmd(f))
+		cmd.AddCommand(ecloudInstanceRootCmd(f))
+		cmd.AddCommand(ecloudNetworkRootCmd(f))
 		cmd.AddCommand(ecloudRegionRootCmd(f))
+		cmd.AddCommand(ecloudRouterRootCmd(f))
+		cmd.AddCommand(ecloudVPCRootCmd(f))
 	}
 
 	return cmd

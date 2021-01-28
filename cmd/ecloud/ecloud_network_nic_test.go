@@ -12,31 +12,31 @@ import (
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
-func Test_ecloudVPCInstanceListCmd_Args(t *testing.T) {
+func Test_ecloudNetworkNICListCmd_Args(t *testing.T) {
 	t.Run("ValidArgs_NoError", func(t *testing.T) {
-		err := ecloudVPCInstanceListCmd(nil).Args(nil, []string{"vpc-abcdef12"})
+		err := ecloudNetworkNICListCmd(nil).Args(nil, []string{"net-abcdef12"})
 
 		assert.Nil(t, err)
 	})
 
 	t.Run("InvalidArgs_Error", func(t *testing.T) {
-		err := ecloudVPCInstanceListCmd(nil).Args(nil, []string{})
+		err := ecloudNetworkNICListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing VPC", err.Error())
+		assert.Equal(t, "Missing network", err.Error())
 	})
 }
 
-func Test_ecloudVPCInstanceList(t *testing.T) {
+func Test_ecloudNetworkNICList(t *testing.T) {
 	t.Run("DefaultRetrieve", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().GetVPCInstances("vpc-abcdef12", gomock.Any()).Return([]ecloud.Instance{}, nil).Times(1)
+		service.EXPECT().GetNetworkNICs("net-abcdef12", gomock.Any()).Return([]ecloud.NIC{}, nil).Times(1)
 
-		ecloudVPCInstanceList(service, &cobra.Command{}, []string{"vpc-abcdef12"})
+		ecloudNetworkNICList(service, &cobra.Command{}, []string{"net-abcdef12"})
 	})
 
 	t.Run("MalformedFlag_ReturnsError", func(t *testing.T) {
@@ -47,22 +47,22 @@ func Test_ecloudVPCInstanceList(t *testing.T) {
 		cmd := &cobra.Command{}
 		cmd.Flags().StringArray("filter", []string{"invalidfilter"}, "")
 
-		err := ecloudVPCInstanceList(service, cmd, []string{})
+		err := ecloudNetworkNICList(service, cmd, []string{})
 
 		assert.IsType(t, &clierrors.ErrInvalidFlagValue{}, err)
 	})
 
-	t.Run("GetVPCsError_ReturnsError", func(t *testing.T) {
+	t.Run("GetNetworksError_ReturnsError", func(t *testing.T) {
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().GetVPCInstances("vpc-abcdef12", gomock.Any()).Return([]ecloud.Instance{}, errors.New("test error")).Times(1)
+		service.EXPECT().GetNetworkNICs("net-abcdef12", gomock.Any()).Return([]ecloud.NIC{}, errors.New("test error")).Times(1)
 
-		err := ecloudVPCInstanceList(service, &cobra.Command{}, []string{"vpc-abcdef12"})
+		err := ecloudNetworkNICList(service, &cobra.Command{}, []string{"net-abcdef12"})
 
-		assert.Equal(t, "Error retrieving VPC instances: test error", err.Error())
+		assert.Equal(t, "Error retrieving network NICs: test error", err.Error())
 	})
 }

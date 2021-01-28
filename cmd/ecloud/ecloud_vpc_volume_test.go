@@ -14,7 +14,7 @@ import (
 
 func Test_ecloudVPCVolumeListCmd_Args(t *testing.T) {
 	t.Run("ValidArgs_NoError", func(t *testing.T) {
-		err := ecloudVPCVolumeListCmd(nil).Args(nil, []string{"i-abcdef12"})
+		err := ecloudVPCVolumeListCmd(nil).Args(nil, []string{"vpc-abcdef12"})
 
 		assert.Nil(t, err)
 	})
@@ -34,9 +34,9 @@ func Test_ecloudVPCVolumeList(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().GetVPCVolumes("i-abcdef12", gomock.Any()).Return([]ecloud.Volume{}, nil).Times(1)
+		service.EXPECT().GetVPCVolumes("vpc-abcdef12", gomock.Any()).Return([]ecloud.Volume{}, nil).Times(1)
 
-		ecloudVPCVolumeList(service, &cobra.Command{}, []string{"i-abcdef12"})
+		ecloudVPCVolumeList(service, &cobra.Command{}, []string{"vpc-abcdef12"})
 	})
 
 	t.Run("MalformedFlag_ReturnsError", func(t *testing.T) {
@@ -59,9 +59,9 @@ func Test_ecloudVPCVolumeList(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().GetVPCVolumes("i-abcdef12", gomock.Any()).Return([]ecloud.Volume{}, errors.New("test error")).Times(1)
+		service.EXPECT().GetVPCVolumes("vpc-abcdef12", gomock.Any()).Return([]ecloud.Volume{}, errors.New("test error")).Times(1)
 
-		err := ecloudVPCVolumeList(service, &cobra.Command{}, []string{"i-abcdef12"})
+		err := ecloudVPCVolumeList(service, &cobra.Command{}, []string{"vpc-abcdef12"})
 
 		assert.Equal(t, "Error retrieving VPC volumes: test error", err.Error())
 	})

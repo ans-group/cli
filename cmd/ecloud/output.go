@@ -363,3 +363,7 @@ func OutputECloudRoutersProvider(routers []ecloud.Router) output.OutputHandlerDa
 func OutputECloudNetworksProvider(networks []ecloud.Network) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(networks).WithDefaultFields([]string{"id", "name", "router_id", "subnet", "sync"})
 }
+
+func OutputECloudDHCPsProvider(dhcps []ecloud.DHCP) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(dhcps).WithDefaultFields([]string{"id", "vpc_id", "availability_zone_id", "sync"})
+}
