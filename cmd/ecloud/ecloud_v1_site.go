@@ -47,12 +47,10 @@ func ecloudSiteListCmd(f factory.ClientFactory) *cobra.Command {
 }
 
 func ecloudSiteList(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
-	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd, helper.NewStringFilterFlagOption("state", "state"))
 	if err != nil {
 		return err
 	}
-
-	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, helper.NewStringFilterFlag("state", "state"))
 
 	sites, err := service.GetSites(params)
 	if err != nil {

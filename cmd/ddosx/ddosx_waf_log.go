@@ -49,12 +49,10 @@ func ddosxWAFLogListCmd(f factory.ClientFactory) *cobra.Command {
 }
 
 func ddosxWAFLogList(service ddosx.DDoSXService, cmd *cobra.Command, args []string) error {
-	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd, helper.NewStringFilterFlagOption("domain", "domain"))
 	if err != nil {
 		return err
 	}
-
-	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, helper.NewStringFilterFlag("domain", "domain"))
 
 	paginatedLogs, err := service.GetWAFLogsPaginated(params)
 	if err != nil {

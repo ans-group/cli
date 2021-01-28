@@ -332,8 +332,12 @@ func OutputECloudFloatingIPsProvider(fips []ecloud.FloatingIP) output.OutputHand
 	return output.NewSerializedOutputHandlerDataProvider(fips).WithDefaultFields([]string{"id", "ip_address", "sync"})
 }
 
+func OutputECloudFirewallPoliciesProvider(policies []ecloud.FirewallPolicy) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(policies).WithDefaultFields([]string{"id", "name", "router_id", "sync"})
+}
+
 func OutputECloudFirewallRulesProvider(rules []ecloud.FirewallRule) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(rules).WithDefaultFields([]string{"id", "name", "source", "destination", "action", "created_at", "updated_at"})
+	return output.NewSerializedOutputHandlerDataProvider(rules).WithDefaultFields([]string{"id", "name", "source", "destination", "action"})
 }
 
 func OutputECloudRegionsProvider(regions []ecloud.Region) output.OutputHandlerDataProvider {

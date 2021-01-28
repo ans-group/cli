@@ -49,12 +49,10 @@ func ecloudInstanceListCmd(f factory.ClientFactory) *cobra.Command {
 }
 
 func ecloudInstanceList(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
-	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd, helper.NewStringFilterFlagOption("name", "name"))
 	if err != nil {
 		return err
 	}
-
-	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, helper.NewStringFilterFlag("name", "name"))
 
 	instances, err := service.GetInstances(params)
 	if err != nil {

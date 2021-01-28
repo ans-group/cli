@@ -146,45 +146,53 @@ func GetSortingFromStringFlagValue(sort string) connection.APIRequestSorting {
 	}
 }
 
+type APIRequestParametersFromFlagsOption interface {
+	Hydrate(params *connection.APIRequestParameters, cmd *cobra.Command)
+}
+
 // GetAPIRequestParametersFromFlags returns an APIRequestParameters populated from global flags
-func GetAPIRequestParametersFromFlags(cmd *cobra.Command) (connection.APIRequestParameters, error) {
+func GetAPIRequestParametersFromFlags(cmd *cobra.Command, opts ...APIRequestParametersFromFlagsOption) (connection.APIRequestParameters, error) {
 	flagFilter, _ := cmd.Flags().GetStringArray("filter")
 	filtering, err := GetFilteringArrayFromStringArrayFlagValue(flagFilter)
 	if err != nil {
 		return connection.APIRequestParameters{}, err
 	}
 
-	flagSort, err := cmd.Flags().GetString("sort")
+	flagSort, _ := cmd.Flags().GetString("sort")
 	flagPage, _ := cmd.Flags().GetInt("page")
 
-	return connection.APIRequestParameters{
+	params := connection.APIRequestParameters{
 		Sorting:   GetSortingFromStringFlagValue(flagSort),
 		Filtering: filtering,
 		Pagination: connection.APIRequestPagination{
 			PerPage: viper.GetInt("api_pagination_perpage"),
 			Page:    flagPage,
 		},
-	}, nil
+	}
+
+	for _, opt := range opts {
+		opt.Hydrate(&params, cmd)
+	}
+
+	return params, nil
 }
 
-type StringFilterFlag struct {
+type StringFilterFlagOption struct {
 	FlagName           string
 	FilterPropertyName string
 }
 
-func NewStringFilterFlag(flagName string, filterPropertyName string) StringFilterFlag {
-	return StringFilterFlag{
+func NewStringFilterFlagOption(flagName string, filterPropertyName string) *StringFilterFlagOption {
+	return &StringFilterFlagOption{
 		FlagName:           flagName,
 		FilterPropertyName: filterPropertyName,
 	}
 }
 
-func HydrateAPIRequestParametersWithStringFilterFlag(p *connection.APIRequestParameters, cmd *cobra.Command, flags ...StringFilterFlag) {
-	for _, flag := range flags {
-		if cmd.Flags().Changed(flag.FlagName) {
-			flagValue, _ := cmd.Flags().GetString(flag.FlagName)
-			p.WithFilter(GetFilteringInferOperator(flag.FilterPropertyName, flagValue))
-		}
+func (f *StringFilterFlagOption) Hydrate(params *connection.APIRequestParameters, cmd *cobra.Command) {
+	if cmd.Flags().Changed(f.FlagName) {
+		flagValue, _ := cmd.Flags().GetString(f.FlagName)
+		params.WithFilter(GetFilteringInferOperator(f.FilterPropertyName, flagValue))
 	}
 }
 

@@ -52,12 +52,10 @@ func safednsZoneListCmd(f factory.ClientFactory) *cobra.Command {
 }
 
 func safednsZoneList(service safedns.SafeDNSService, cmd *cobra.Command, args []string) error {
-	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd, helper.NewStringFilterFlagOption("name", "name"))
 	if err != nil {
 		return err
 	}
-
-	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, helper.NewStringFilterFlag("name", "name"))
 
 	zones, err := service.GetZones(params)
 	if err != nil {
