@@ -37,7 +37,7 @@ Pre-compiled binaries are available at [Releases](https://github.com/ukfast/cli/
 To get started, we will define a single environment variable to store our API key:
 
 Bash:
-> UKF_API_KEY="iqmxgom0kairfnxzcopte5hx"
+> export UKF_API_KEY="iqmxgom0kairfnxzcopte5hx"
 
 PowerShell:
 > $env:UKF_API_KEY="iqmxgom0kairfnxzcopte5hx"
