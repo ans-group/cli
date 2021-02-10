@@ -8,7 +8,6 @@ import (
 	"github.com/ukfast/cli/internal/pkg/factory"
 	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/sdk-go/pkg/ptr"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
@@ -41,12 +40,16 @@ func ecloudFirewallPolicyListCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("name", "", "Firewall policy name for filtering")
+	cmd.Flags().String("router", "", "Firewall policy router ID for filtering")
 
 	return cmd
 }
 
 func ecloudFirewallPolicyList(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
-	params, err := helper.GetAPIRequestParametersFromFlags(cmd, helper.NewStringFilterFlagOption("name", "name"))
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd,
+		helper.NewStringFilterFlagOption("name", "name"),
+		helper.NewStringFilterFlagOption("router", "router_id"),
+	)
 	if err != nil {
 		return err
 	}
@@ -103,8 +106,9 @@ func ecloudFirewallPolicyCreateCmd(f factory.ClientFactory) *cobra.Command {
 	// Setup flags
 	cmd.Flags().String("router", "", "ID of router")
 	cmd.MarkFlagRequired("router")
-	cmd.Flags().String("name", "", "Name of policy")
 	cmd.Flags().Int("sequence", 0, "Sequence for policy")
+	cmd.MarkFlagRequired("sequence")
+	cmd.Flags().String("name", "", "Name of policy")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the firewall policy has been completely created before continuing on")
 
 	return cmd
@@ -117,8 +121,7 @@ func ecloudFirewallPolicyCreate(service ecloud.ECloudService, cmd *cobra.Command
 		createRequest.Name, _ = cmd.Flags().GetString("name")
 	}
 	if cmd.Flags().Changed("sequence") {
-		sequence, _ := cmd.Flags().GetInt("sequence")
-		createRequest.Sequence = ptr.Int(sequence)
+		createRequest.Sequence, _ = cmd.Flags().GetInt("sequence")
 	}
 
 	policyID, err := service.CreateFirewallPolicy(createRequest)

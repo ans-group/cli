@@ -13,7 +13,7 @@ import (
 
 func ecloudFirewallPolicyFirewallRuleRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "firewallrule",
+		Use:   "rule",
 		Short: "sub-commands relating to firewall policy firewall rules",
 	}
 
@@ -31,7 +31,7 @@ func ecloudFirewallPolicyFirewallRuleListCmd(f factory.ClientFactory) *cobra.Com
 		Example: "ukfast ecloud firewallpolicy firewallrule list fwp-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing instance")
+				return errors.New("Missing firewall policy")
 			}
 
 			return nil

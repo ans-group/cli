@@ -23,7 +23,7 @@ func Test_ecloudFirewallPolicyFirewallRuleListCmd_Args(t *testing.T) {
 		err := ecloudFirewallPolicyFirewallRuleListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing instance", err.Error())
+		assert.Equal(t, "Missing firewall policy", err.Error())
 	})
 }
 

@@ -340,6 +340,10 @@ func OutputECloudFirewallRulesProvider(rules []ecloud.FirewallRule) output.Outpu
 	return output.NewSerializedOutputHandlerDataProvider(rules).WithDefaultFields([]string{"id", "name", "firewall_policy_id", "source", "destination", "action", "direction", "enabled"})
 }
 
+func OutputECloudFirewallRulePortsProvider(rules []ecloud.FirewallRulePort) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(rules).WithDefaultFields([]string{"id", "name", "firewall_rule_id", "protocol", "source", "destination"})
+}
+
 func OutputECloudRegionsProvider(regions []ecloud.Region) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(regions).WithDefaultFields([]string{"id", "name"})
 }
