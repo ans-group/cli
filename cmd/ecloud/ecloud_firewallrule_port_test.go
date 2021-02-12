@@ -63,6 +63,6 @@ func Test_ecloudFirewallRuleFirewallRulePortList(t *testing.T) {
 
 		err := ecloudFirewallRuleFirewallRulePortList(service, &cobra.Command{}, []string{"fwp-abcdef12"})
 
-		assert.Equal(t, "Error retrieving firewall rule firewall ports: test error", err.Error())
+		assert.Equal(t, "Error retrieving firewall rule ports: test error", err.Error())
 	})
 }

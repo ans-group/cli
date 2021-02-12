@@ -115,10 +115,12 @@ func Test_ecloudFirewallRuleCreate(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 		cmd := ecloudFirewallRuleCreateCmd(nil)
-		cmd.ParseFlags([]string{"--name=testrule"})
+		cmd.ParseFlags([]string{"--name=testrule", "--direction=IN", "--action=DROP"})
 
 		req := ecloud.CreateFirewallRuleRequest{
-			Name: "testrule",
+			Name:      "testrule",
+			Direction: ecloud.FirewallRuleDirectionIn,
+			Action:    ecloud.FirewallRuleActionDrop,
 		}
 
 		gomock.InOrder(
@@ -135,7 +137,7 @@ func Test_ecloudFirewallRuleCreate(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 		cmd := ecloudFirewallRuleCreateCmd(nil)
-		cmd.ParseFlags([]string{"--name=testrule"})
+		cmd.ParseFlags([]string{"--name=testrule", "--direction=IN", "--action=DROP"})
 
 		service.EXPECT().CreateFirewallRule(gomock.Any()).Return("", errors.New("test error")).Times(1)
 
@@ -150,7 +152,7 @@ func Test_ecloudFirewallRuleCreate(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 		cmd := ecloudFirewallRuleCreateCmd(nil)
-		cmd.ParseFlags([]string{"--name=testrule"})
+		cmd.ParseFlags([]string{"--name=testrule", "--direction=IN", "--action=DROP"})
 
 		gomock.InOrder(
 			service.EXPECT().CreateFirewallRule(gomock.Any()).Return("fwr-abcdef12", nil),

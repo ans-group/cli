@@ -39,6 +39,7 @@ func ECloudRootCmd(f factory.ClientFactory) *cobra.Command {
 		cmd.AddCommand(ecloudDHCPRootCmd(f))
 		cmd.AddCommand(ecloudFirewallPolicyRootCmd(f))
 		cmd.AddCommand(ecloudFirewallRuleRootCmd(f))
+		cmd.AddCommand(ecloudFirewallRulePortRootCmd(f))
 		cmd.AddCommand(ecloudFloatingIPRootCmd(f))
 		cmd.AddCommand(ecloudInstanceRootCmd(f))
 		cmd.AddCommand(ecloudNetworkRootCmd(f))

@@ -31,7 +31,7 @@ func ecloudFirewallRuleRootCmd(f factory.ClientFactory) *cobra.Command {
 }
 
 func ecloudFirewallRuleListCmd(f factory.ClientFactory) *cobra.Command {
-	return &cobra.Command{
+	cmd := &cobra.Command{
 		Use:     "list",
 		Short:   "Lists firewall rules",
 		Long:    "This command lists firewall rules",
@@ -45,10 +45,17 @@ func ecloudFirewallRuleListCmd(f factory.ClientFactory) *cobra.Command {
 			return ecloudFirewallRuleList(c.ECloudService(), cmd, args)
 		},
 	}
+
+	cmd.Flags().String("policy", "", "Firewall policy ID for filtering")
+
+	return cmd
 }
 
 func ecloudFirewallRuleList(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
-	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd,
+		helper.NewStringFilterFlagOption("name", "name"),
+		helper.NewStringFilterFlagOption("policy", "firewall_policy_id"),
+	)
 	if err != nil {
 		return err
 	}
@@ -116,13 +123,12 @@ func ecloudFirewallRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.MarkFlagRequired("source")
 	cmd.Flags().String("destination", "", "Destination of rule. IP range/subnet or ANY")
 	cmd.MarkFlagRequired("destination")
-	cmd.Flags().String("direction", "", "Direction of rule. One of: in/out/in_out")
+	cmd.Flags().String("direction", "", "Direction of rule. One of: IN/OUT/IN_OUT")
 	cmd.MarkFlagRequired("direction")
-	cmd.Flags().String("action", "", "Action of rule. One of: allow/drop/reject")
+	cmd.Flags().String("action", "", "Action of rule. One of: ALLOW/DROP/REJECT")
 	cmd.MarkFlagRequired("action")
 	cmd.Flags().String("name", "", "Name of rule")
 	cmd.Flags().Int("sequence", 0, "Sequence for rule")
-	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the firewall rule has been completely created before continuing on")
 
 	return cmd
 }
@@ -183,7 +189,12 @@ func ecloudFirewallRuleUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		RunE: ecloudCobraRunEFunc(f, ecloudFirewallRuleUpdate),
 	}
 
+	cmd.Flags().String("source", "", "Source of rule. IP range/subnet or ANY")
+	cmd.Flags().String("destination", "", "Destination of rule. IP range/subnet or ANY")
+	cmd.Flags().String("direction", "", "Direction of rule. One of: IN/OUT/IN_OUT")
+	cmd.Flags().String("action", "", "Action of rule. One of: ALLOW/DROP/REJECT")
 	cmd.Flags().String("name", "", "Name of rule")
+	cmd.Flags().Int("sequence", 0, "Sequence for rule")
 
 	return cmd
 }
@@ -191,8 +202,39 @@ func ecloudFirewallRuleUpdateCmd(f factory.ClientFactory) *cobra.Command {
 func ecloudFirewallRuleUpdate(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	patchRequest := ecloud.PatchFirewallRuleRequest{}
 
+	if cmd.Flags().Changed("source") {
+		patchRequest.Source, _ = cmd.Flags().GetString("source")
+	}
+
+	if cmd.Flags().Changed("destination") {
+		patchRequest.Destination, _ = cmd.Flags().GetString("destination")
+	}
+
+	if cmd.Flags().Changed("direction") {
+		direction, _ := cmd.Flags().GetString("direction")
+		directionParsed, err := ecloud.ParseFirewallRuleDirection(direction)
+		if err != nil {
+			return err
+		}
+		patchRequest.Direction = directionParsed
+
+	}
+
+	if cmd.Flags().Changed("action") {
+		action, _ := cmd.Flags().GetString("action")
+		actionParsed, err := ecloud.ParseFirewallRuleAction(action)
+		if err != nil {
+			return err
+		}
+		patchRequest.Action = actionParsed
+	}
+
 	if cmd.Flags().Changed("name") {
 		patchRequest.Name, _ = cmd.Flags().GetString("name")
+	}
+
+	if cmd.Flags().Changed("sequence") {
+		patchRequest.Name, _ = cmd.Flags().GetString("sequence")
 	}
 
 	var rules []ecloud.FirewallRule
