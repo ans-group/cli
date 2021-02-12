@@ -185,7 +185,7 @@ func Test_ecloudRouterUpdate(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		cmd := ecloudRouterCreateCmd(nil)
+		cmd := ecloudRouterUpdateCmd(nil)
 		cmd.ParseFlags([]string{"--name=testrouter"})
 
 		req := ecloud.PatchRouterRequest{

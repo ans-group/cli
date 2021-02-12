@@ -24,6 +24,9 @@ func ecloudNetworkRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.AddCommand(ecloudNetworkUpdateCmd(f))
 	cmd.AddCommand(ecloudNetworkDeleteCmd(f))
 
+	// Child root commands
+	cmd.AddCommand(ecloudNetworkNICRootCmd(f))
+
 	return cmd
 }
 

@@ -185,7 +185,7 @@ func Test_ecloudFirewallPolicyUpdate(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		cmd := ecloudFirewallPolicyCreateCmd(nil)
+		cmd := ecloudFirewallPolicyUpdateCmd(nil)
 		cmd.ParseFlags([]string{"--name=testpolicy"})
 
 		req := ecloud.PatchFirewallPolicyRequest{

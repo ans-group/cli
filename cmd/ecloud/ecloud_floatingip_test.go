@@ -185,7 +185,7 @@ func Test_ecloudFloatingIPUpdate(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		cmd := ecloudFloatingIPCreateCmd(nil)
+		cmd := ecloudFloatingIPUpdateCmd(nil)
 		cmd.ParseFlags([]string{"--name=testfip"})
 
 		req := ecloud.PatchFloatingIPRequest{

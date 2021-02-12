@@ -185,7 +185,7 @@ func Test_ecloudInstanceUpdate(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		cmd := ecloudInstanceCreateCmd(nil)
+		cmd := ecloudInstanceUpdateCmd(nil)
 		cmd.ParseFlags([]string{"--name=testinstance", "--vcpu=2", "--ram=2"})
 
 		req := ecloud.PatchInstanceRequest{

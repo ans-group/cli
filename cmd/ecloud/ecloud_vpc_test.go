@@ -185,7 +185,7 @@ func Test_ecloudVPCUpdate(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		cmd := ecloudVPCCreateCmd(nil)
+		cmd := ecloudVPCUpdateCmd(nil)
 		cmd.ParseFlags([]string{"--name=testvpc"})
 
 		req := ecloud.PatchVPCRequest{
