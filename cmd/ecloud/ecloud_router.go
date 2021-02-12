@@ -23,6 +23,11 @@ func ecloudRouterRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.AddCommand(ecloudRouterCreateCmd(f))
 	cmd.AddCommand(ecloudRouterUpdateCmd(f))
 	cmd.AddCommand(ecloudRouterDeleteCmd(f))
+	cmd.AddCommand(ecloudRouterDeployDefaultFirewallPoliciesCmd(f))
+
+	// Child root commands
+	cmd.AddCommand(ecloudRouterFirewallPolicyRootCmd(f))
+	cmd.AddCommand(ecloudRouterNetworkRootCmd(f))
 
 	return cmd
 }
@@ -209,6 +214,35 @@ func ecloudRouterDelete(service ecloud.ECloudService, cmd *cobra.Command, args [
 			output.OutputWithErrorLevelf("Error removing router [%s]: %s", arg, err)
 		}
 	}
+	return nil
+}
+
+func ecloudRouterDeployDefaultFirewallPoliciesCmd(f factory.ClientFactory) *cobra.Command {
+	return &cobra.Command{
+		Use:     "deploydefaults <router: id>...",
+		Short:   "Deploys default firewall policies for a router",
+		Long:    "This command deploys default firewall policies for one or more routers",
+		Example: "ukfast ecloud router deploydefaultfirewallpolicies rtr-abcdef12",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Missing router")
+			}
+
+			return nil
+		},
+		RunE: ecloudCobraRunEFunc(f, ecloudRouterDeployDefaultFirewallPolicies),
+	}
+}
+
+func ecloudRouterDeployDefaultFirewallPolicies(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
+	for _, arg := range args {
+		err := service.DeployRouterDefaultFirewallPolicies(arg)
+		if err != nil {
+			output.OutputWithErrorLevelf("Error deploying default firewall policies for router [%s]: %s", arg, err)
+			continue
+		}
+	}
+
 	return nil
 }
 
