@@ -115,6 +115,7 @@ func ecloudInstanceCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.MarkFlagRequired("volume")
 	cmd.Flags().String("appliance", "", "ID of appliance to deploy from")
 	cmd.MarkFlagRequired("appliance")
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the instance has been completely created before continuing on")
 
 	return cmd
 }
@@ -135,12 +136,20 @@ func ecloudInstanceCreate(service ecloud.ECloudService, cmd *cobra.Command, args
 		return fmt.Errorf("Error creating instance: %s", err)
 	}
 
-	lbc, err := service.GetInstance(instanceID)
+	waitFlag, _ := cmd.Flags().GetBool("wait")
+	if waitFlag {
+		err := helper.WaitForCommand(InstanceResourceSyncStatusWaitFunc(service, instanceID, ecloud.SyncStatusComplete))
+		if err != nil {
+			return fmt.Errorf("Error waiting for instance sync: %s", err)
+		}
+	}
+
+	instance, err := service.GetInstance(instanceID)
 	if err != nil {
 		return fmt.Errorf("Error retrieving new instance: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudInstancesProvider([]ecloud.Instance{lbc}))
+	return output.CommandOutput(cmd, OutputECloudInstancesProvider([]ecloud.Instance{instance}))
 }
 
 func ecloudInstanceUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -389,4 +398,14 @@ func ecloudInstanceRestart(service ecloud.ECloudService, cmd *cobra.Command, arg
 		}
 	}
 	return nil
+}
+
+func InstanceResourceSyncStatusWaitFunc(service ecloud.ECloudService, instanceID string, status ecloud.SyncStatus) helper.WaitFunc {
+	return ResourceSyncStatusWaitFunc(func() (ecloud.SyncStatus, error) {
+		instance, err := service.GetInstance(instanceID)
+		if err != nil {
+			return "", err
+		}
+		return instance.Sync, nil
+	}, status)
 }

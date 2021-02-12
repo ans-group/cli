@@ -329,7 +329,7 @@ func OutputECloudInstancesProvider(instances []ecloud.Instance) output.OutputHan
 }
 
 func OutputECloudFloatingIPsProvider(fips []ecloud.FloatingIP) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(fips).WithDefaultFields([]string{"id", "ip_address", "sync"})
+	return output.NewSerializedOutputHandlerDataProvider(fips).WithDefaultFields([]string{"id", "name", "ip_address", "sync"})
 }
 
 func OutputECloudFirewallPoliciesProvider(policies []ecloud.FirewallPolicy) output.OutputHandlerDataProvider {

@@ -37,12 +37,16 @@ func ecloudNetworkListCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("name", "", "Network name for filtering")
+	cmd.Flags().String("router", "", "Router ID for filtering")
 
 	return cmd
 }
 
 func ecloudNetworkList(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
-	params, err := helper.GetAPIRequestParametersFromFlags(cmd, helper.NewStringFilterFlagOption("name", "name"))
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd,
+		helper.NewStringFilterFlagOption("name", "name"),
+		helper.NewStringFilterFlagOption("router", "router_id"),
+	)
 	if err != nil {
 		return err
 	}
