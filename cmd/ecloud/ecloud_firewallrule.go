@@ -8,6 +8,7 @@ import (
 	"github.com/ukfast/cli/internal/pkg/factory"
 	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
+	"github.com/ukfast/sdk-go/pkg/ptr"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
@@ -129,6 +130,7 @@ func ecloudFirewallRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.MarkFlagRequired("action")
 	cmd.Flags().String("name", "", "Name of rule")
 	cmd.Flags().Int("sequence", 0, "Sequence for rule")
+	cmd.Flags().Bool("enabled", false, "Specifies whether rule is enabled")
 
 	return cmd
 }
@@ -138,6 +140,7 @@ func ecloudFirewallRuleCreate(service ecloud.ECloudService, cmd *cobra.Command, 
 	createRequest.FirewallPolicyID, _ = cmd.Flags().GetString("policy")
 	createRequest.Source, _ = cmd.Flags().GetString("source")
 	createRequest.Destination, _ = cmd.Flags().GetString("destination")
+	createRequest.Enabled, _ = cmd.Flags().GetBool("enabled")
 
 	direction, _ := cmd.Flags().GetString("direction")
 	directionParsed, err := ecloud.ParseFirewallRuleDirection(direction)
@@ -195,6 +198,7 @@ func ecloudFirewallRuleUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().String("action", "", "Action of rule. One of: ALLOW/DROP/REJECT")
 	cmd.Flags().String("name", "", "Name of rule")
 	cmd.Flags().Int("sequence", 0, "Sequence for rule")
+	cmd.Flags().Bool("enabled", false, "Specifies whether rule is enabled")
 
 	return cmd
 }
@@ -235,6 +239,11 @@ func ecloudFirewallRuleUpdate(service ecloud.ECloudService, cmd *cobra.Command, 
 
 	if cmd.Flags().Changed("sequence") {
 		patchRequest.Name, _ = cmd.Flags().GetString("sequence")
+	}
+
+	if cmd.Flags().Changed("enabled") {
+		enabled, _ := cmd.Flags().GetBool("enabled")
+		patchRequest.Enabled = ptr.Bool(enabled)
 	}
 
 	var rules []ecloud.FirewallRule
