@@ -46,6 +46,7 @@ func ECloudRootCmd(f factory.ClientFactory) *cobra.Command {
 		cmd.AddCommand(ecloudNICRootCmd(f))
 		cmd.AddCommand(ecloudRegionRootCmd(f))
 		cmd.AddCommand(ecloudRouterRootCmd(f))
+		cmd.AddCommand(ecloudRouterThroughputRootCmd(f))
 		cmd.AddCommand(ecloudVPCRootCmd(f))
 	}
 
