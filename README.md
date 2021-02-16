@@ -272,7 +272,7 @@ To display only V2 commands, the following environment variable can be set:
 > export UKF_ECLOUD_V2=true
 ```
 
-To display only V2 commands, the following environment variable can be set:
+To display only V1 commands, the following environment variable can be set:
 
 ```
 > export UKF_ECLOUD_V1=true
