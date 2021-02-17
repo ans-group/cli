@@ -40,13 +40,17 @@ func ecloudRouterThroughputListCmd(f factory.ClientFactory) *cobra.Command {
 		},
 	}
 
-	cmd.Flags().String("name", "", "RouterThroughput name for filtering")
+	cmd.Flags().String("name", "", "Router throughput name for filtering")
+	cmd.Flags().String("az", "", "Availability zone ID for filtering")
 
 	return cmd
 }
 
 func ecloudRouterThroughputList(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
-	params, err := helper.GetAPIRequestParametersFromFlags(cmd, helper.NewStringFilterFlagOption("name", "name"))
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd,
+		helper.NewStringFilterFlagOption("name", "name"),
+		helper.NewStringFilterFlagOption("az", "availability_zone_id"),
+	)
 	if err != nil {
 		return err
 	}
