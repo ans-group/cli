@@ -109,6 +109,7 @@ func ecloudRouterCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().String("name", "", "Name of router")
 	cmd.Flags().String("vpc", "", "ID of VPC")
 	cmd.MarkFlagRequired("vpc")
+	cmd.Flags().String("throughput", "", "ID of router throughput to assign")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the router has been completely created before continuing on")
 
 	return cmd
@@ -116,10 +117,15 @@ func ecloudRouterCreateCmd(f factory.ClientFactory) *cobra.Command {
 
 func ecloudRouterCreate(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	createRequest := ecloud.CreateRouterRequest{}
+	createRequest.VPCID, _ = cmd.Flags().GetString("vpc")
+
 	if cmd.Flags().Changed("name") {
 		createRequest.Name, _ = cmd.Flags().GetString("name")
 	}
-	createRequest.VPCID, _ = cmd.Flags().GetString("vpc")
+
+	if cmd.Flags().Changed("throughput") {
+		createRequest.RouterThroughputID, _ = cmd.Flags().GetString("throughput")
+	}
 
 	routerID, err := service.CreateRouter(createRequest)
 	if err != nil {
@@ -159,6 +165,7 @@ func ecloudRouterUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("name", "", "Name of router")
+	cmd.Flags().String("throughput", "", "ID of router throughput to assign")
 
 	return cmd
 }
@@ -168,6 +175,10 @@ func ecloudRouterUpdate(service ecloud.ECloudService, cmd *cobra.Command, args [
 
 	if cmd.Flags().Changed("name") {
 		patchRequest.Name, _ = cmd.Flags().GetString("name")
+	}
+
+	if cmd.Flags().Changed("throughput") {
+		patchRequest.RouterThroughputID, _ = cmd.Flags().GetString("throughput")
 	}
 
 	var routers []ecloud.Router
