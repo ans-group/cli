@@ -61,16 +61,13 @@ func safednsZoneRecordListCmd(f factory.ClientFactory) *cobra.Command {
 }
 
 func safednsZoneRecordList(service safedns.SafeDNSService, cmd *cobra.Command, args []string) error {
-	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd,
+		helper.NewStringFilterFlagOption("name", "name"),
+		helper.NewStringFilterFlagOption("type", "type"),
+		helper.NewStringFilterFlagOption("content", "content"))
 	if err != nil {
 		return err
 	}
-
-	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd,
-		helper.NewStringFilterFlag("name", "name"),
-		helper.NewStringFilterFlag("type", "type"),
-		helper.NewStringFilterFlag("content", "content"),
-	)
 
 	zoneRecords, err := service.GetZoneRecords(args[0], params)
 	if err != nil {

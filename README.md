@@ -37,7 +37,7 @@ Pre-compiled binaries are available at [Releases](https://github.com/ukfast/cli/
 To get started, we will define a single environment variable to store our API key:
 
 Bash:
-> UKF_API_KEY="iqmxgom0kairfnxzcopte5hx"
+> export UKF_API_KEY="iqmxgom0kairfnxzcopte5hx"
 
 PowerShell:
 > $env:UKF_API_KEY="iqmxgom0kairfnxzcopte5hx"
@@ -272,7 +272,7 @@ To display only V2 commands, the following environment variable can be set:
 > export UKF_ECLOUD_V2=true
 ```
 
-To display only V2 commands, the following environment variable can be set:
+To display only V1 commands, the following environment variable can be set:
 
 ```
 > export UKF_ECLOUD_V1=true

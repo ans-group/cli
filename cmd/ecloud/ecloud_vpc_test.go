@@ -185,7 +185,7 @@ func Test_ecloudVPCUpdate(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		cmd := ecloudVPCCreateCmd(nil)
+		cmd := ecloudVPCUpdateCmd(nil)
 		cmd.ParseFlags([]string{"--name=testvpc"})
 
 		req := ecloud.PatchVPCRequest{
@@ -297,6 +297,61 @@ func Test_ecloudVPCDelete(t *testing.T) {
 
 		test_output.AssertErrorOutput(t, "Error removing VPC [vpc-abcdef12]: test error\n", func() {
 			ecloudVPCDelete(service, &cobra.Command{}, []string{"vpc-abcdef12"})
+		})
+	})
+}
+
+func Test_ecloudVPCDeployDefaultsCmd_Args(t *testing.T) {
+	t.Run("ValidArgs_NoError", func(t *testing.T) {
+		err := ecloudVPCDeployDefaultsCmd(nil).Args(nil, []string{"vpc-abcdef12"})
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("InvalidArgs_Error", func(t *testing.T) {
+		err := ecloudVPCDeployDefaultsCmd(nil).Args(nil, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing vpc", err.Error())
+	})
+}
+
+func Test_ecloudVPCDeployDefaults(t *testing.T) {
+	t.Run("SingleVPC", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		service.EXPECT().DeployVPCDefaults("vpc-abcdef12").Return(nil)
+
+		ecloudVPCDeployDefaults(service, &cobra.Command{}, []string{"vpc-abcdef12"})
+	})
+
+	t.Run("MultipleVPCs", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().DeployVPCDefaults("vpc-abcdef12").Return(nil),
+			service.EXPECT().DeployVPCDefaults("vpc-abcdef23").Return(nil),
+		)
+
+		ecloudVPCDeployDefaults(service, &cobra.Command{}, []string{"vpc-abcdef12", "vpc-abcdef23"})
+	})
+
+	t.Run("DeployVPCDefaultsError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		service.EXPECT().DeployVPCDefaults("vpc-abcdef12").Return(errors.New("test error"))
+
+		test_output.AssertErrorOutput(t, "Error deploying default resources for VPC [vpc-abcdef12]: test error\n", func() {
+			ecloudVPCDeployDefaults(service, &cobra.Command{}, []string{"vpc-abcdef12"})
 		})
 	})
 }

@@ -185,7 +185,7 @@ func Test_ecloudRouterUpdate(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		cmd := ecloudRouterCreateCmd(nil)
+		cmd := ecloudRouterUpdateCmd(nil)
 		cmd.ParseFlags([]string{"--name=testrouter"})
 
 		req := ecloud.PatchRouterRequest{
@@ -297,6 +297,61 @@ func Test_ecloudRouterDelete(t *testing.T) {
 
 		test_output.AssertErrorOutput(t, "Error removing router [rtr-abcdef12]: test error\n", func() {
 			ecloudRouterDelete(service, &cobra.Command{}, []string{"rtr-abcdef12"})
+		})
+	})
+}
+
+func Test_ecloudRouterDeployDefaultFirewallPoliciesCmd_Args(t *testing.T) {
+	t.Run("ValidArgs_NoError", func(t *testing.T) {
+		err := ecloudRouterDeployDefaultFirewallPoliciesCmd(nil).Args(nil, []string{"rtr-abcdef12"})
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("InvalidArgs_Error", func(t *testing.T) {
+		err := ecloudRouterDeployDefaultFirewallPoliciesCmd(nil).Args(nil, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing router", err.Error())
+	})
+}
+
+func Test_ecloudRouterDeployDefaultFirewallPolicies(t *testing.T) {
+	t.Run("SingleRouter", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		service.EXPECT().DeployRouterDefaultFirewallPolicies("rtr-abcdef12").Return(nil)
+
+		ecloudRouterDeployDefaultFirewallPolicies(service, &cobra.Command{}, []string{"rtr-abcdef12"})
+	})
+
+	t.Run("MultipleRouters", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().DeployRouterDefaultFirewallPolicies("rtr-abcdef12").Return(nil),
+			service.EXPECT().DeployRouterDefaultFirewallPolicies("rtr-abcdef23").Return(nil),
+		)
+
+		ecloudRouterDeployDefaultFirewallPolicies(service, &cobra.Command{}, []string{"rtr-abcdef12", "rtr-abcdef23"})
+	})
+
+	t.Run("DeployRouterDefaultFirewallPoliciesError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		service.EXPECT().DeployRouterDefaultFirewallPolicies("rtr-abcdef12").Return(errors.New("test error"))
+
+		test_output.AssertErrorOutput(t, "Error deploying default firewall policies for router [rtr-abcdef12]: test error\n", func() {
+			ecloudRouterDeployDefaultFirewallPolicies(service, &cobra.Command{}, []string{"rtr-abcdef12"})
 		})
 	})
 }

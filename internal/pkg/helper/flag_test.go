@@ -232,25 +232,65 @@ func TestGetSortingFromStringFlagValue_Expected(t *testing.T) {
 	})
 }
 
-func TestHydrateAPIRequestParametersWithStringFilterFlag(t *testing.T) {
-	t.Run("FlagNotSpecified_NoFilterHydrated", func(t *testing.T) {
+func TestGetAPIRequestParametersFromFlags(t *testing.T) {
+	t.Run("SortFlagSpecified_SortHydrated", func(t *testing.T) {
 		cmd := &cobra.Command{}
-		params := connection.APIRequestParameters{}
+		cmd.Flags().String("sort", "", "")
+		cmd.ParseFlags([]string{"--sort=testproperty"})
 
-		helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, helper.NewStringFilterFlag("noneexistent", "noneexistent"))
+		params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 
-		assert.Len(t, params.Filtering, 0)
+		assert.Nil(t, err)
+		assert.Equal(t, "testproperty", params.Sorting.Property)
 	})
 
-	t.Run("FlagSpecified_FilterHydrated", func(t *testing.T) {
+	t.Run("SortFlagSpecifiedWithDescending_SortDescendingTrue", func(t *testing.T) {
+		cmd := &cobra.Command{}
+		cmd.Flags().String("sort", "", "")
+		cmd.ParseFlags([]string{"--sort=testproperty:desc"})
+
+		params, err := helper.GetAPIRequestParametersFromFlags(cmd)
+
+		assert.Nil(t, err)
+		assert.Equal(t, "testproperty", params.Sorting.Property)
+		assert.True(t, params.Sorting.Descending)
+	})
+
+	t.Run("PageFlagSpecified_PaginationPageHydrated", func(t *testing.T) {
+		cmd := &cobra.Command{}
+		cmd.Flags().Int("page", 0, "")
+		cmd.ParseFlags([]string{"--page=3"})
+
+		params, err := helper.GetAPIRequestParametersFromFlags(cmd)
+
+		assert.Nil(t, err)
+		assert.Equal(t, 3, params.Pagination.Page)
+	})
+
+	t.Run("FilterFlagSpecified_HydratesFilter", func(t *testing.T) {
+		cmd := &cobra.Command{}
+		cmd.Flags().StringArray("filter", []string{}, "")
+		cmd.ParseFlags([]string{"--filter=testproperty=testvalue"})
+
+		params, err := helper.GetAPIRequestParametersFromFlags(cmd)
+
+		assert.Nil(t, err)
+		assert.Equal(t, "testproperty", params.Filtering[0].Property)
+		assert.Equal(t, "testvalue", params.Filtering[0].Value[0])
+		assert.Equal(t, connection.EQOperator, params.Filtering[0].Operator)
+	})
+
+	t.Run("OptSpecified_OptApplied", func(t *testing.T) {
 		cmd := &cobra.Command{}
 		cmd.Flags().String("name", "", "")
 		cmd.ParseFlags([]string{"--name=test"})
 		params := connection.APIRequestParameters{}
 
-		helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, helper.NewStringFilterFlag("name", "name"))
+		params, err := helper.GetAPIRequestParametersFromFlags(cmd, helper.NewStringFilterFlagOption("name", "name"))
 
-		assert.Len(t, params.Filtering, 1)
+		assert.Nil(t, err)
 		assert.Equal(t, "name", params.Filtering[0].Property)
+		assert.Equal(t, "test", params.Filtering[0].Value[0])
+		assert.Equal(t, connection.EQOperator, params.Filtering[0].Operator)
 	})
 }

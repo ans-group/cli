@@ -329,11 +329,19 @@ func OutputECloudInstancesProvider(instances []ecloud.Instance) output.OutputHan
 }
 
 func OutputECloudFloatingIPsProvider(fips []ecloud.FloatingIP) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(fips).WithDefaultFields([]string{"id", "ip_address", "sync"})
+	return output.NewSerializedOutputHandlerDataProvider(fips).WithDefaultFields([]string{"id", "name", "ip_address", "sync"})
+}
+
+func OutputECloudFirewallPoliciesProvider(policies []ecloud.FirewallPolicy) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(policies).WithDefaultFields([]string{"id", "name", "router_id", "sync"})
 }
 
 func OutputECloudFirewallRulesProvider(rules []ecloud.FirewallRule) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(rules).WithDefaultFields([]string{"id", "name", "source", "destination", "action", "created_at", "updated_at"})
+	return output.NewSerializedOutputHandlerDataProvider(rules).WithDefaultFields([]string{"id", "name", "firewall_policy_id", "source", "destination", "action", "direction", "enabled"})
+}
+
+func OutputECloudFirewallRulePortsProvider(rules []ecloud.FirewallRulePort) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(rules).WithDefaultFields([]string{"id", "name", "firewall_rule_id", "protocol", "source", "destination"})
 }
 
 func OutputECloudRegionsProvider(regions []ecloud.Region) output.OutputHandlerDataProvider {
@@ -345,7 +353,7 @@ func OutputECloudLoadBalancerClustersProvider(lbcs []ecloud.LoadBalancerCluster)
 }
 
 func OutputECloudVolumesProvider(volumes []ecloud.Volume) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(volumes).WithDefaultFields([]string{"id", "name", "capacity"})
+	return output.NewSerializedOutputHandlerDataProvider(volumes).WithDefaultFields([]string{"id", "name", "capacity", "sync"})
 }
 
 func OutputECloudCredentialsProvider(credentials []ecloud.Credential) output.OutputHandlerDataProvider {
@@ -362,4 +370,12 @@ func OutputECloudRoutersProvider(routers []ecloud.Router) output.OutputHandlerDa
 
 func OutputECloudNetworksProvider(networks []ecloud.Network) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(networks).WithDefaultFields([]string{"id", "name", "router_id", "subnet", "sync"})
+}
+
+func OutputECloudDHCPsProvider(dhcps []ecloud.DHCP) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(dhcps).WithDefaultFields([]string{"id", "vpc_id", "availability_zone_id", "sync"})
+}
+
+func OutputECloudRouterThroughputsProvider(throughputs []ecloud.RouterThroughput) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(throughputs).WithDefaultFields([]string{"id", "availability_zone_id", "name"})
 }

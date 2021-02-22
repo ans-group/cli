@@ -11,32 +11,32 @@ import (
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
-func ecloudInstanceNICRootCmd(f factory.ClientFactory) *cobra.Command {
+func ecloudNetworkNICRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "nic",
-		Short: "sub-commands relating to instance NICs",
+		Short: "sub-commands relating to network NICs",
 	}
 
 	// Child commands
-	cmd.AddCommand(ecloudInstanceNICListCmd(f))
+	cmd.AddCommand(ecloudNetworkNICListCmd(f))
 
 	return cmd
 }
 
-func ecloudInstanceNICListCmd(f factory.ClientFactory) *cobra.Command {
+func ecloudNetworkNICListCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "list",
-		Short:   "Lists instance nics",
-		Long:    "This command lists instance nics",
-		Example: "ukfast ecloud instance nic list i-abcdef12",
+		Short:   "Lists network nics",
+		Long:    "This command lists network nics",
+		Example: "ukfast ecloud network nic list net-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing instance")
+				return errors.New("Missing network")
 			}
 
 			return nil
 		},
-		RunE: ecloudCobraRunEFunc(f, ecloudInstanceNICList),
+		RunE: ecloudCobraRunEFunc(f, ecloudNetworkNICList),
 	}
 
 	cmd.Flags().String("name", "", "NIC name for filtering")
@@ -44,15 +44,15 @@ func ecloudInstanceNICListCmd(f factory.ClientFactory) *cobra.Command {
 	return cmd
 }
 
-func ecloudInstanceNICList(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
+func ecloudNetworkNICList(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	params, err := helper.GetAPIRequestParametersFromFlags(cmd, helper.NewStringFilterFlagOption("name", "name"))
 	if err != nil {
 		return err
 	}
 
-	nics, err := service.GetInstanceNICs(args[0], params)
+	nics, err := service.GetNetworkNICs(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving instance NICs: %s", err)
+		return fmt.Errorf("Error retrieving network NICs: %s", err)
 	}
 
 	return output.CommandOutput(cmd, OutputECloudNICsProvider(nics))

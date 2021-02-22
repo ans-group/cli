@@ -23,6 +23,11 @@ func ecloudRouterRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.AddCommand(ecloudRouterCreateCmd(f))
 	cmd.AddCommand(ecloudRouterUpdateCmd(f))
 	cmd.AddCommand(ecloudRouterDeleteCmd(f))
+	cmd.AddCommand(ecloudRouterDeployDefaultFirewallPoliciesCmd(f))
+
+	// Child root commands
+	cmd.AddCommand(ecloudRouterFirewallPolicyRootCmd(f))
+	cmd.AddCommand(ecloudRouterNetworkRootCmd(f))
 
 	return cmd
 }
@@ -37,17 +42,19 @@ func ecloudRouterListCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("name", "", "Router name for filtering")
+	cmd.Flags().String("vpc", "", "VPC ID for filtering")
 
 	return cmd
 }
 
 func ecloudRouterList(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
-	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd,
+		helper.NewStringFilterFlagOption("name", "name"),
+		helper.NewStringFilterFlagOption("vpc", "vpc_id"),
+	)
 	if err != nil {
 		return err
 	}
-
-	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, helper.NewStringFilterFlag("name", "name"))
 
 	routers, err := service.GetRouters(params)
 	if err != nil {
@@ -102,6 +109,7 @@ func ecloudRouterCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().String("name", "", "Name of router")
 	cmd.Flags().String("vpc", "", "ID of VPC")
 	cmd.MarkFlagRequired("vpc")
+	cmd.Flags().String("throughput", "", "ID of router throughput to assign")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the router has been completely created before continuing on")
 
 	return cmd
@@ -109,10 +117,15 @@ func ecloudRouterCreateCmd(f factory.ClientFactory) *cobra.Command {
 
 func ecloudRouterCreate(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	createRequest := ecloud.CreateRouterRequest{}
+	createRequest.VPCID, _ = cmd.Flags().GetString("vpc")
+
 	if cmd.Flags().Changed("name") {
 		createRequest.Name, _ = cmd.Flags().GetString("name")
 	}
-	createRequest.VPCID, _ = cmd.Flags().GetString("vpc")
+
+	if cmd.Flags().Changed("throughput") {
+		createRequest.RouterThroughputID, _ = cmd.Flags().GetString("throughput")
+	}
 
 	routerID, err := service.CreateRouter(createRequest)
 	if err != nil {
@@ -152,6 +165,7 @@ func ecloudRouterUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("name", "", "Name of router")
+	cmd.Flags().String("throughput", "", "ID of router throughput to assign")
 
 	return cmd
 }
@@ -161,6 +175,10 @@ func ecloudRouterUpdate(service ecloud.ECloudService, cmd *cobra.Command, args [
 
 	if cmd.Flags().Changed("name") {
 		patchRequest.Name, _ = cmd.Flags().GetString("name")
+	}
+
+	if cmd.Flags().Changed("throughput") {
+		patchRequest.RouterThroughputID, _ = cmd.Flags().GetString("throughput")
 	}
 
 	var routers []ecloud.Router
@@ -207,6 +225,35 @@ func ecloudRouterDelete(service ecloud.ECloudService, cmd *cobra.Command, args [
 			output.OutputWithErrorLevelf("Error removing router [%s]: %s", arg, err)
 		}
 	}
+	return nil
+}
+
+func ecloudRouterDeployDefaultFirewallPoliciesCmd(f factory.ClientFactory) *cobra.Command {
+	return &cobra.Command{
+		Use:     "deploydefaults <router: id>...",
+		Short:   "Deploys default firewall policies for a router",
+		Long:    "This command deploys default firewall policies for one or more routers",
+		Example: "ukfast ecloud router deploydefaultfirewallpolicies rtr-abcdef12",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Missing router")
+			}
+
+			return nil
+		},
+		RunE: ecloudCobraRunEFunc(f, ecloudRouterDeployDefaultFirewallPolicies),
+	}
+}
+
+func ecloudRouterDeployDefaultFirewallPolicies(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
+	for _, arg := range args {
+		err := service.DeployRouterDefaultFirewallPolicies(arg)
+		if err != nil {
+			output.OutputWithErrorLevelf("Error deploying default firewall policies for router [%s]: %s", arg, err)
+			continue
+		}
+	}
+
 	return nil
 }
 

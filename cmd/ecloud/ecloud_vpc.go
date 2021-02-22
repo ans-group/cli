@@ -23,6 +23,11 @@ func ecloudVPCRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.AddCommand(ecloudVPCCreateCmd(f))
 	cmd.AddCommand(ecloudVPCUpdateCmd(f))
 	cmd.AddCommand(ecloudVPCDeleteCmd(f))
+	cmd.AddCommand(ecloudVPCDeployDefaultsCmd(f))
+
+	// Child root commands
+	cmd.AddCommand(ecloudVPCVolumeRootCmd(f))
+	cmd.AddCommand(ecloudVPCInstanceRootCmd(f))
 
 	return cmd
 }
@@ -49,12 +54,10 @@ func ecloudVPCListCmd(f factory.ClientFactory) *cobra.Command {
 }
 
 func ecloudVPCList(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
-	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd, helper.NewStringFilterFlagOption("name", "name"))
 	if err != nil {
 		return err
 	}
-
-	helper.HydrateAPIRequestParametersWithStringFilterFlag(&params, cmd, helper.NewStringFilterFlag("name", "name"))
 
 	vpcs, err := service.GetVPCs(params)
 	if err != nil {
@@ -238,4 +241,33 @@ func ecloudVPCDelete(service ecloud.ECloudService, cmd *cobra.Command, args []st
 			output.OutputWithErrorLevelf("Error removing VPC [%s]: %s", arg, err)
 		}
 	}
+}
+
+func ecloudVPCDeployDefaultsCmd(f factory.ClientFactory) *cobra.Command {
+	return &cobra.Command{
+		Use:     "deploydefaults <vpc: id>...",
+		Short:   "Deploys default resources for a VPC",
+		Long:    "This command deploys default resources for one or more VPCs",
+		Example: "ukfast ecloud vpc deploydefaults vpc-abcdef12",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Missing vpc")
+			}
+
+			return nil
+		},
+		RunE: ecloudCobraRunEFunc(f, ecloudVPCDeployDefaults),
+	}
+}
+
+func ecloudVPCDeployDefaults(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
+	for _, arg := range args {
+		err := service.DeployVPCDefaults(arg)
+		if err != nil {
+			output.OutputWithErrorLevelf("Error deploying default resources for VPC [%s]: %s", arg, err)
+			continue
+		}
+	}
+
+	return nil
 }

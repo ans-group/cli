@@ -185,7 +185,7 @@ func Test_ecloudNetworkUpdate(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		cmd := ecloudNetworkCreateCmd(nil)
+		cmd := ecloudNetworkUpdateCmd(nil)
 		cmd.ParseFlags([]string{"--name=testnetwork"})
 
 		req := ecloud.PatchNetworkRequest{

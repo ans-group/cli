@@ -49,9 +49,9 @@ func AssertCombinedOutput(t *testing.T, expectedStdOut string, expectedStdErr st
 	}, f)
 }
 
-// AssertFatalOutputFunc tests the output of func f, asserting using func assertFunc and
-// exit code is equal to 1
-func AssertFatalOutputFunc(t *testing.T, assertFunc func(stdErr string), f func()) {
+// AssertErrorLevelFunc tests the output of func f, asserting using func assertFunc and
+// exit code is equal to level
+func AssertErrorLevelFunc(t *testing.T, level int, assertFunc func(stdErr string), f func()) {
 	code := 0
 	oldOutputExit := output.SetOutputExit(func(c int) {
 		code = c
@@ -59,18 +59,18 @@ func AssertFatalOutputFunc(t *testing.T, assertFunc func(stdErr string), f func(
 	defer func() { output.SetOutputExit(oldOutputExit) }()
 
 	AssertErrorOutputFunc(t, assertFunc, f)
-	assert.Equal(t, 1, code)
+	assert.Equal(t, level, code)
 }
 
-// AssertFatalOutput tests the output of func f, asserting stderr matches expected and
+// AssertErrorLevelOutput tests the output of func f, asserting stderr matches expected and
 // exit code is equal to 1
-func AssertFatalOutput(t *testing.T, expected string, f func()) {
-	AssertFatalOutputFunc(t, func(stdErr string) {
+func AssertErrorLevelOutput(t *testing.T, level int, expected string, f func()) {
+	AssertErrorLevelFunc(t, level, func(stdErr string) {
 		assert.Equal(t, expected, stdErr)
 	}, f)
 }
 
-// AssertFatal tests the output of func f, asserting exit code is equal to 1
-// func AssertFatal(t *testing.T, f func()) {
-// 	AssertFatalOutputFunc(t, func(stdErr string) {}, f)
-// }
+// AssertErrorLevel tests that exit code is equal to 1
+func AssertErrorLevel(t *testing.T, f func()) {
+	AssertErrorLevelFunc(t, 1, func(stdErr string) {}, f)
+}

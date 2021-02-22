@@ -11,32 +11,32 @@ import (
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
-func ecloudInstanceVolumeRootCmd(f factory.ClientFactory) *cobra.Command {
+func ecloudVPCVolumeRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "volume",
-		Short: "sub-commands relating to instance volumes",
+		Short: "sub-commands relating to VPC volumes",
 	}
 
 	// Child commands
-	cmd.AddCommand(ecloudInstanceVolumeListCmd(f))
+	cmd.AddCommand(ecloudVPCVolumeListCmd(f))
 
 	return cmd
 }
 
-func ecloudInstanceVolumeListCmd(f factory.ClientFactory) *cobra.Command {
+func ecloudVPCVolumeListCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "list",
-		Short:   "Lists instance volumes",
-		Long:    "This command lists instance volumes",
-		Example: "ukfast ecloud instance volume list i-abcdef12",
+		Short:   "Lists VPC volumes",
+		Long:    "This command lists VPC volumes",
+		Example: "ukfast ecloud vpc volume list vpc-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing instance")
+				return errors.New("Missing VPC")
 			}
 
 			return nil
 		},
-		RunE: ecloudCobraRunEFunc(f, ecloudInstanceVolumeList),
+		RunE: ecloudCobraRunEFunc(f, ecloudVPCVolumeList),
 	}
 
 	cmd.Flags().String("name", "", "Volume name for filtering")
@@ -44,15 +44,15 @@ func ecloudInstanceVolumeListCmd(f factory.ClientFactory) *cobra.Command {
 	return cmd
 }
 
-func ecloudInstanceVolumeList(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
+func ecloudVPCVolumeList(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	params, err := helper.GetAPIRequestParametersFromFlags(cmd, helper.NewStringFilterFlagOption("name", "name"))
 	if err != nil {
 		return err
 	}
 
-	volumes, err := service.GetInstanceVolumes(args[0], params)
+	volumes, err := service.GetVPCVolumes(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving instance volumes: %s", err)
+		return fmt.Errorf("Error retrieving VPC volumes: %s", err)
 	}
 
 	return output.CommandOutput(cmd, OutputECloudVolumesProvider(volumes))
