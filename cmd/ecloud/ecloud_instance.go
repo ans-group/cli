@@ -113,8 +113,8 @@ func ecloudInstanceCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.MarkFlagRequired("ram")
 	cmd.Flags().Int("volume", 0, "Size of volume to allocate")
 	cmd.MarkFlagRequired("volume")
-	cmd.Flags().String("appliance", "", "ID of appliance to deploy from")
-	cmd.MarkFlagRequired("appliance")
+	cmd.Flags().String("image", "", "ID of image to deploy from")
+	cmd.MarkFlagRequired("image")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the instance has been completely created before continuing on")
 
 	return cmd
@@ -129,7 +129,7 @@ func ecloudInstanceCreate(service ecloud.ECloudService, cmd *cobra.Command, args
 	createRequest.VCPUCores, _ = cmd.Flags().GetInt("vcpu")
 	createRequest.RAMCapacity, _ = cmd.Flags().GetInt("ram")
 	createRequest.VolumeCapacity, _ = cmd.Flags().GetInt("volume")
-	createRequest.ApplianceID, _ = cmd.Flags().GetString("appliance")
+	createRequest.ImageID, _ = cmd.Flags().GetString("image")
 
 	instanceID, err := service.CreateInstance(createRequest)
 	if err != nil {

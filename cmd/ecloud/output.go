@@ -348,10 +348,6 @@ func OutputECloudRegionsProvider(regions []ecloud.Region) output.OutputHandlerDa
 	return output.NewSerializedOutputHandlerDataProvider(regions).WithDefaultFields([]string{"id", "name"})
 }
 
-func OutputECloudLoadBalancerClustersProvider(lbcs []ecloud.LoadBalancerCluster) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(lbcs).WithDefaultFields([]string{"id", "name"})
-}
-
 func OutputECloudVolumesProvider(volumes []ecloud.Volume) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(volumes).WithDefaultFields([]string{"id", "name", "capacity", "sync"})
 }
@@ -378,4 +374,16 @@ func OutputECloudDHCPsProvider(dhcps []ecloud.DHCP) output.OutputHandlerDataProv
 
 func OutputECloudRouterThroughputsProvider(throughputs []ecloud.RouterThroughput) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(throughputs).WithDefaultFields([]string{"id", "availability_zone_id", "name"})
+}
+
+func OutputECloudImagesProvider(images []ecloud.Image) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(images).WithDefaultFields([]string{"id", "name"})
+}
+
+func OutputECloudImageParametersProvider(parameters []ecloud.ImageParameter) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(parameters).WithDefaultFields([]string{"key", "type", "required"})
+}
+
+func OutputECloudImageMetadataProvider(metadata []ecloud.ImageMetadata) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(metadata).WithDefaultFields([]string{"key", "value"})
 }
