@@ -3,11 +3,13 @@ package ecloud
 import (
 	"errors"
 	"fmt"
+	"strings"
 
 	"github.com/spf13/cobra"
 	"github.com/ukfast/cli/internal/pkg/factory"
 	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
+	"github.com/ukfast/sdk-go/pkg/connection"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
@@ -113,8 +115,8 @@ func ecloudInstanceCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.MarkFlagRequired("ram")
 	cmd.Flags().Int("volume", 0, "Size of volume to allocate")
 	cmd.MarkFlagRequired("volume")
-	cmd.Flags().String("appliance", "", "ID of appliance to deploy from")
-	cmd.MarkFlagRequired("appliance")
+	cmd.Flags().String("image", "", "ID or name of image to deploy from")
+	cmd.MarkFlagRequired("image")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the instance has been completely created before continuing on")
 
 	return cmd
@@ -129,7 +131,33 @@ func ecloudInstanceCreate(service ecloud.ECloudService, cmd *cobra.Command, args
 	createRequest.VCPUCores, _ = cmd.Flags().GetInt("vcpu")
 	createRequest.RAMCapacity, _ = cmd.Flags().GetInt("ram")
 	createRequest.VolumeCapacity, _ = cmd.Flags().GetInt("volume")
-	createRequest.ApplianceID, _ = cmd.Flags().GetString("appliance")
+
+	getImage := func(imageName string) (string, error) {
+		images, err := service.GetImages(connection.APIRequestParameters{})
+		if err != nil {
+			return "", fmt.Errorf("Error retrieving images: %s", err)
+		}
+
+		// Server-side filtering currently not possible, iterate slice for now
+		for _, image := range images {
+			if strings.ToLower(image.Name) == strings.ToLower(imageName) {
+				return image.ID, nil
+			}
+		}
+		return "", fmt.Errorf("Image not found with name '%s'", imageName)
+	}
+
+	imageFlag, _ := cmd.Flags().GetString("image")
+
+	if strings.HasPrefix(imageFlag, "img-") {
+		createRequest.ImageID = imageFlag
+	} else {
+		var err error
+		createRequest.ImageID, err = getImage(imageFlag)
+		if err != nil {
+			return err
+		}
+	}
 
 	instanceID, err := service.CreateInstance(createRequest)
 	if err != nil {
