@@ -10,6 +10,7 @@ import (
 	"github.com/ukfast/cli/internal/pkg/clierrors"
 	"github.com/ukfast/cli/test/mocks"
 	"github.com/ukfast/cli/test/test_output"
+	"github.com/ukfast/sdk-go/pkg/connection"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
@@ -109,24 +110,60 @@ func Test_ecloudInstanceShow(t *testing.T) {
 }
 
 func Test_ecloudInstanceCreate(t *testing.T) {
-	t.Run("DefaultCreate", func(t *testing.T) {
+	t.Run("CreateWithImageID_NoError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 		cmd := ecloudInstanceCreateCmd(nil)
-		cmd.ParseFlags([]string{"--name=testinstance"})
+		cmd.ParseFlags([]string{"--name=testinstance", "--image=img-abcdef12"})
 
 		req := ecloud.CreateInstanceRequest{
-			Name: "testinstance",
+			Name:    "testinstance",
+			ImageID: "img-abcdef12",
 		}
 
-		gomock.InOrder(
-			service.EXPECT().CreateInstance(req).Return("i-abcdef12", nil),
-			service.EXPECT().GetInstance("i-abcdef12").Return(ecloud.Instance{}, nil),
-		)
+		service.EXPECT().CreateInstance(req).Return("i-abcdef12", nil)
+		service.EXPECT().GetInstance("i-abcdef12").Return(ecloud.Instance{}, nil)
 
-		ecloudInstanceCreate(service, cmd, []string{})
+		err := ecloudInstanceCreate(service, cmd, []string{})
+		assert.Nil(t, err)
+	})
+
+	t.Run("CreateWithImageName_NoError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudInstanceCreateCmd(nil)
+		cmd.ParseFlags([]string{"--name=testinstance", "--image=test"})
+
+		req := ecloud.CreateInstanceRequest{
+			Name:    "testinstance",
+			ImageID: "img-abcdef12",
+		}
+
+		service.EXPECT().GetImages(connection.APIRequestParameters{}).Return([]ecloud.Image{{Name: "test", ID: "img-abcdef12"}}, nil)
+		service.EXPECT().CreateInstance(req).Return("i-abcdef12", nil)
+		service.EXPECT().GetInstance("i-abcdef12").Return(ecloud.Instance{}, nil)
+
+		err := ecloudInstanceCreate(service, cmd, []string{})
+		assert.Nil(t, err)
+	})
+
+	t.Run("ImageNotFound_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudInstanceCreateCmd(nil)
+		cmd.ParseFlags([]string{"--name=testinstance", "--image=unknown"})
+
+		service.EXPECT().GetImages(connection.APIRequestParameters{}).Return([]ecloud.Image{{Name: "test", ID: "img-abcdef12"}}, nil)
+
+		err := ecloudInstanceCreate(service, cmd, []string{})
+		assert.NotNil(t, err)
+		assert.Equal(t, "Image not found with name 'unknown'", err.Error())
 	})
 
 	t.Run("CreateInstanceError_ReturnsError", func(t *testing.T) {
@@ -135,9 +172,9 @@ func Test_ecloudInstanceCreate(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 		cmd := ecloudInstanceCreateCmd(nil)
-		cmd.ParseFlags([]string{"--name=testinstance"})
+		cmd.ParseFlags([]string{"--name=testinstance", "--image=img-abcdef12"})
 
-		service.EXPECT().CreateInstance(gomock.Any()).Return("", errors.New("test error")).Times(1)
+		service.EXPECT().CreateInstance(gomock.Any()).Return("", errors.New("test error"))
 
 		err := ecloudInstanceCreate(service, cmd, []string{})
 
@@ -150,7 +187,7 @@ func Test_ecloudInstanceCreate(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 		cmd := ecloudInstanceCreateCmd(nil)
-		cmd.ParseFlags([]string{"--name=testinstance"})
+		cmd.ParseFlags([]string{"--name=testinstance", "--image=img-abcdef12"})
 
 		gomock.InOrder(
 			service.EXPECT().CreateInstance(gomock.Any()).Return("i-abcdef12", nil),
