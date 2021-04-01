@@ -139,6 +139,21 @@ func (mr *MockECloudServiceMockRecorder) CreateInstance(arg0 interface{}) *gomoc
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateInstance", reflect.TypeOf((*MockECloudService)(nil).CreateInstance), arg0)
 }
 
+// CreateInstanceConsoleSession mocks base method
+func (m *MockECloudService) CreateInstanceConsoleSession(arg0 string) (ecloud.ConsoleSession, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateInstanceConsoleSession", arg0)
+	ret0, _ := ret[0].(ecloud.ConsoleSession)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateInstanceConsoleSession indicates an expected call of CreateInstanceConsoleSession
+func (mr *MockECloudServiceMockRecorder) CreateInstanceConsoleSession(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateInstanceConsoleSession", reflect.TypeOf((*MockECloudService)(nil).CreateInstanceConsoleSession), arg0)
+}
+
 // CreateNetwork mocks base method
 func (m *MockECloudService) CreateNetwork(arg0 ecloud.CreateNetworkRequest) (string, error) {
 	m.ctrl.T.Helper()
@@ -269,6 +284,21 @@ func (m *MockECloudService) CreateVirtualMachineTemplate(arg0 int, arg1 ecloud.C
 func (mr *MockECloudServiceMockRecorder) CreateVirtualMachineTemplate(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateVirtualMachineTemplate", reflect.TypeOf((*MockECloudService)(nil).CreateVirtualMachineTemplate), arg0, arg1)
+}
+
+// CreateVolume mocks base method
+func (m *MockECloudService) CreateVolume(arg0 ecloud.CreateVolumeRequest) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateVolume", arg0)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateVolume indicates an expected call of CreateVolume
+func (mr *MockECloudServiceMockRecorder) CreateVolume(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateVolume", reflect.TypeOf((*MockECloudService)(nil).CreateVolume), arg0)
 }
 
 // DeleteFirewallPolicy mocks base method
