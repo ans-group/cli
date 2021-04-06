@@ -41,12 +41,16 @@ func ecloudDHCPListCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("name", "", "DHCP name for filtering")
+	cmd.Flags().String("vpc", "", "VPC ID for filtering")
 
 	return cmd
 }
 
 func ecloudDHCPList(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
-	params, err := helper.GetAPIRequestParametersFromFlags(cmd, helper.NewStringFilterFlagOption("name", "name"))
+	params, err := helper.GetAPIRequestParametersFromFlags(cmd,
+		helper.NewStringFilterFlagOption("name", "name"),
+		helper.NewStringFilterFlagOption("vpc", "vpc_id"),
+	)
 	if err != nil {
 		return err
 	}
