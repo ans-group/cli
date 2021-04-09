@@ -226,6 +226,6 @@ func FirewallPolicyResourceSyncStatusWaitFunc(service ecloud.ECloudService, poli
 		if err != nil {
 			return "", err
 		}
-		return policy.Sync, nil
+		return policy.Sync.Status, nil
 	}, status)
 }

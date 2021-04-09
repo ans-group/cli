@@ -224,6 +224,6 @@ func VolumeResourceSyncStatusWaitFunc(service ecloud.ECloudService, volumeID str
 		if err != nil {
 			return "", err
 		}
-		return volume.Sync, nil
+		return volume.Sync.Status, nil
 	}, status)
 }

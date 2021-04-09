@@ -224,6 +224,6 @@ func NetworkResourceSyncStatusWaitFunc(service ecloud.ECloudService, networkID s
 		if err != nil {
 			return "", err
 		}
-		return network.Sync, nil
+		return network.Sync.Status, nil
 	}, status)
 }

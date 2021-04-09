@@ -263,6 +263,6 @@ func RouterResourceSyncStatusWaitFunc(service ecloud.ECloudService, routerID str
 		if err != nil {
 			return "", err
 		}
-		return router.Sync, nil
+		return router.Sync.Status, nil
 	}, status)
 }

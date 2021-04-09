@@ -304,6 +304,6 @@ func FloatingIPResourceSyncStatusWaitFunc(service ecloud.ECloudService, fipID st
 		if err != nil {
 			return "", err
 		}
-		return fip.Sync, nil
+		return fip.Sync.Status, nil
 	}, status)
 }
