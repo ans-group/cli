@@ -435,6 +435,6 @@ func InstanceResourceSyncStatusWaitFunc(service ecloud.ECloudService, instanceID
 		if err != nil {
 			return "", err
 		}
-		return instance.Sync, nil
+		return instance.Sync.Status, nil
 	}, status)
 }
