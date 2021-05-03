@@ -108,60 +108,62 @@ func Test_ecloudVolumeShow(t *testing.T) {
 	})
 }
 
-// func Test_ecloudVolumeCreate(t *testing.T) {
-// 	t.Run("DefaultCreate", func(t *testing.T) {
-// 		mockCtrl := gomock.NewController(t)
-// 		defer mockCtrl.Finish()
+func Test_ecloudVolumeCreate(t *testing.T) {
+	t.Run("DefaultCreate", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
 
-// 		service := mocks.NewMockECloudService(mockCtrl)
-// 		cmd := ecloudVolumeCreateCmd(nil)
-// 		cmd.ParseFlags([]string{"--name=testvolume"})
+		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudVolumeCreateCmd(nil)
+		cmd.ParseFlags([]string{"--name=testvolume", "--vpc=vpc-abcdef12", "--capacity=20"})
 
-// 		req := ecloud.CreateVolumeRequest{
-// 			Name: "testvolume",
-// 		}
+		req := ecloud.CreateVolumeRequest{
+			Name:     "testvolume",
+			VPCID:    "vpc-abcdef12",
+			Capacity: 20,
+		}
 
-// 		gomock.InOrder(
-// 			service.EXPECT().CreateVolume(req).Return("net-abcdef12", nil),
-// 			service.EXPECT().GetVolume("net-abcdef12").Return(ecloud.Volume{}, nil),
-// 		)
+		gomock.InOrder(
+			service.EXPECT().CreateVolume(req).Return("net-abcdef12", nil),
+			service.EXPECT().GetVolume("net-abcdef12").Return(ecloud.Volume{}, nil),
+		)
 
-// 		ecloudVolumeCreate(service, cmd, []string{})
-// 	})
+		ecloudVolumeCreate(service, cmd, []string{})
+	})
 
-// 	t.Run("CreateVolumeError_ReturnsError", func(t *testing.T) {
-// 		mockCtrl := gomock.NewController(t)
-// 		defer mockCtrl.Finish()
+	t.Run("CreateVolumeError_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
 
-// 		service := mocks.NewMockECloudService(mockCtrl)
-// 		cmd := ecloudVolumeCreateCmd(nil)
-// 		cmd.ParseFlags([]string{"--name=testvolume"})
+		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudVolumeCreateCmd(nil)
+		cmd.ParseFlags([]string{"--name=testvolume"})
 
-// 		service.EXPECT().CreateVolume(gomock.Any()).Return("", errors.New("test error")).Times(1)
+		service.EXPECT().CreateVolume(gomock.Any()).Return("", errors.New("test error")).Times(1)
 
-// 		err := ecloudVolumeCreate(service, cmd, []string{})
+		err := ecloudVolumeCreate(service, cmd, []string{})
 
-// 		assert.Equal(t, "Error creating volume: test error", err.Error())
-// 	})
+		assert.Equal(t, "Error creating volume: test error", err.Error())
+	})
 
-// 	t.Run("GetVolumeError_ReturnsError", func(t *testing.T) {
-// 		mockCtrl := gomock.NewController(t)
-// 		defer mockCtrl.Finish()
+	t.Run("GetVolumeError_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
 
-// 		service := mocks.NewMockECloudService(mockCtrl)
-// 		cmd := ecloudVolumeCreateCmd(nil)
-// 		cmd.ParseFlags([]string{"--name=testvolume"})
+		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudVolumeCreateCmd(nil)
+		cmd.ParseFlags([]string{"--name=testvolume"})
 
-// 		gomock.InOrder(
-// 			service.EXPECT().CreateVolume(gomock.Any()).Return("net-abcdef12", nil),
-// 			service.EXPECT().GetVolume("net-abcdef12").Return(ecloud.Volume{}, errors.New("test error")),
-// 		)
+		gomock.InOrder(
+			service.EXPECT().CreateVolume(gomock.Any()).Return("net-abcdef12", nil),
+			service.EXPECT().GetVolume("net-abcdef12").Return(ecloud.Volume{}, errors.New("test error")),
+		)
 
-// 		err := ecloudVolumeCreate(service, cmd, []string{})
+		err := ecloudVolumeCreate(service, cmd, []string{})
 
-// 		assert.Equal(t, "Error retrieving new volume: test error", err.Error())
-// 	})
-// }
+		assert.Equal(t, "Error retrieving new volume: test error", err.Error())
+	})
+}
 
 func Test_ecloudVolumeUpdateCmd_Args(t *testing.T) {
 	t.Run("ValidArgs_NoError", func(t *testing.T) {
