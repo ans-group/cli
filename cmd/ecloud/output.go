@@ -349,7 +349,7 @@ func OutputECloudRegionsProvider(regions []ecloud.Region) output.OutputHandlerDa
 }
 
 func OutputECloudVolumesProvider(volumes []ecloud.Volume) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(volumes).WithDefaultFields([]string{"id", "name", "capacity", "sync_status"})
+	return output.NewSerializedOutputHandlerDataProvider(volumes).WithDefaultFields([]string{"id", "name", "type", "capacity", "sync_status"})
 }
 
 func OutputECloudCredentialsProvider(credentials []ecloud.Credential) output.OutputHandlerDataProvider {

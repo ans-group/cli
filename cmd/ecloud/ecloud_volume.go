@@ -20,7 +20,7 @@ func ecloudVolumeRootCmd(f factory.ClientFactory) *cobra.Command {
 	// Child commands
 	cmd.AddCommand(ecloudVolumeListCmd(f))
 	cmd.AddCommand(ecloudVolumeShowCmd(f))
-	// cmd.AddCommand(ecloudVolumeCreateCmd(f))
+	cmd.AddCommand(ecloudVolumeCreateCmd(f))
 	cmd.AddCommand(ecloudVolumeUpdateCmd(f))
 	cmd.AddCommand(ecloudVolumeDeleteCmd(f))
 
@@ -40,7 +40,7 @@ func ecloudVolumeListCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("name", "", "Volume name for filtering")
-	cmd.Flags().String("router", "", "Router ID for filtering")
+	cmd.Flags().String("vpc", "", "VPC ID for filtering")
 
 	return cmd
 }
@@ -48,7 +48,7 @@ func ecloudVolumeListCmd(f factory.ClientFactory) *cobra.Command {
 func ecloudVolumeList(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	params, err := helper.GetAPIRequestParametersFromFlags(cmd,
 		helper.NewStringFilterFlagOption("name", "name"),
-		helper.NewStringFilterFlagOption("router", "router_id"),
+		helper.NewStringFilterFlagOption("vpc", "vpc_id"),
 	)
 	if err != nil {
 		return err
@@ -94,59 +94,61 @@ func ecloudVolumeShow(service ecloud.ECloudService, cmd *cobra.Command, args []s
 	return output.CommandOutput(cmd, OutputECloudVolumesProvider(volumes))
 }
 
-// func ecloudVolumeCreateCmd(f factory.ClientFactory) *cobra.Command {
-// 	cmd := &cobra.Command{
-// 		Use:     "create",
-// 		Short:   "Creates an volume",
-// 		Long:    "This command creates an volume",
-// 		Example: "ukfast ecloud volume create",
-// 		RunE:    ecloudCobraRunEFunc(f, ecloudVolumeCreate),
-// 	}
+func ecloudVolumeCreateCmd(f factory.ClientFactory) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:     "create",
+		Short:   "Creates a volume",
+		Long:    "This command creates a volume",
+		Example: "ukfast ecloud volume create",
+		RunE:    ecloudCobraRunEFunc(f, ecloudVolumeCreate),
+	}
 
-// 	// Setup flags
-// 	cmd.Flags().String("name", "", "Name of volume")
-// 	cmd.Flags().String("router", "", "ID of router")
-// 	cmd.MarkFlagRequired("router")
-// 	cmd.Flags().String("subnet", "", "Subnet for volume, e.g. 10.0.0.0/24")
-// 	cmd.MarkFlagRequired("subnet")
-// 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the volume has been completely created before continuing on")
+	// Setup flags
+	cmd.Flags().String("name", "", "Name of volume")
+	cmd.Flags().String("vpc", "", "ID of VPC")
+	cmd.MarkFlagRequired("vpc")
+	cmd.Flags().Int("capacity", 0, "Capacity of volume in GiB")
+	cmd.MarkFlagRequired("capacity")
+	cmd.Flags().Int("iops", 0, "IOPS for volume")
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the volume has been completely created before continuing on")
 
-// 	return cmd
-// }
+	return cmd
+}
 
-// func ecloudVolumeCreate(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
-// 	createRequest := ecloud.CreateVolumeRequest{}
-// 	if cmd.Flags().Changed("name") {
-// 		createRequest.Name, _ = cmd.Flags().GetString("name")
-// 	}
-// 	createRequest.RouterID, _ = cmd.Flags().GetString("router")
-// 	createRequest.Subnet, _ = cmd.Flags().GetString("subnet")
+func ecloudVolumeCreate(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
+	createRequest := ecloud.CreateVolumeRequest{}
+	if cmd.Flags().Changed("name") {
+		createRequest.Name, _ = cmd.Flags().GetString("name")
+	}
+	createRequest.VPCID, _ = cmd.Flags().GetString("vpc")
+	createRequest.Capacity, _ = cmd.Flags().GetInt("capacity")
+	createRequest.IOPS, _ = cmd.Flags().GetInt("iops")
 
-// 	volumeID, err := service.CreateVolume(createRequest)
-// 	if err != nil {
-// 		return fmt.Errorf("Error creating volume: %s", err)
-// 	}
+	volumeID, err := service.CreateVolume(createRequest)
+	if err != nil {
+		return fmt.Errorf("Error creating volume: %s", err)
+	}
 
-// 	waitFlag, _ := cmd.Flags().GetBool("wait")
-// 	if waitFlag {
-// 		err := helper.WaitForCommand(VolumeResourceSyncStatusWaitFunc(service, volumeID, ecloud.SyncStatusComplete))
-// 		if err != nil {
-// 			return fmt.Errorf("Error waiting for volume sync: %s", err)
-// 		}
-// 	}
+	waitFlag, _ := cmd.Flags().GetBool("wait")
+	if waitFlag {
+		err := helper.WaitForCommand(VolumeResourceSyncStatusWaitFunc(service, volumeID, ecloud.SyncStatusComplete))
+		if err != nil {
+			return fmt.Errorf("Error waiting for volume sync: %s", err)
+		}
+	}
 
-// 	volume, err := service.GetVolume(volumeID)
-// 	if err != nil {
-// 		return fmt.Errorf("Error retrieving new volume: %s", err)
-// 	}
+	volume, err := service.GetVolume(volumeID)
+	if err != nil {
+		return fmt.Errorf("Error retrieving new volume: %s", err)
+	}
 
-// 	return output.CommandOutput(cmd, OutputECloudVolumesProvider([]ecloud.Volume{volume}))
-// }
+	return output.CommandOutput(cmd, OutputECloudVolumesProvider([]ecloud.Volume{volume}))
+}
 
 func ecloudVolumeUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "update <volume: id>...",
-		Short:   "Updates an volume",
+		Short:   "Updates a volume",
 		Long:    "This command updates one or more volumes",
 		Example: "ukfast ecloud volume update vol-abcdef12 --name \"my volume\"",
 		Args: func(cmd *cobra.Command, args []string) error {
@@ -194,7 +196,7 @@ func ecloudVolumeUpdate(service ecloud.ECloudService, cmd *cobra.Command, args [
 func ecloudVolumeDeleteCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
 		Use:     "delete <volume: id...>",
-		Short:   "Removes an volume",
+		Short:   "Removes a volume",
 		Long:    "This command removes one or more volumes",
 		Example: "ukfast ecloud volume delete vol-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
