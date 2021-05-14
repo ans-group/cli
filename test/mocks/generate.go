@@ -6,6 +6,7 @@ package mocks
 //go:generate mockgen -package mocks -destination mock_draasservice.go github.com/ukfast/sdk-go/pkg/service/draas DRaaSService
 //go:generate mockgen -package mocks -destination mock_ecloudservice.go github.com/ukfast/sdk-go/pkg/service/ecloud ECloudService
 //go:generate mockgen -package mocks -destination mock_ecloudflexservice.go github.com/ukfast/sdk-go/pkg/service/ecloudflex ECloudFlexService
+//go:generate mockgen -package mocks -destination mock_loadbalancerservice.go github.com/ukfast/sdk-go/pkg/service/loadbalancer LoadBalancerService
 //go:generate mockgen -package mocks -destination mock_ltaasservice.go github.com/ukfast/sdk-go/pkg/service/ltaas LTaaSService
 //go:generate mockgen -package mocks -destination mock_pssservice.go github.com/ukfast/sdk-go/pkg/service/pss PSSService
 //go:generate mockgen -package mocks -destination mock_registrarservice.go github.com/ukfast/sdk-go/pkg/service/registrar RegistrarService
