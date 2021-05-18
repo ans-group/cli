@@ -95,7 +95,7 @@ func ecloudSSHKeyPairCreateCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Comm
 		Use:     "create",
 		Short:   "Creates a SSH key pair",
 		Long:    "This command creates a SSH key pair",
-		Example: "ukfast ecloud sshkeypair create --name test --public-key ...",
+		Example: "ukfast ecloud sshkeypair create --name test --public-key-file ~/.ssh/id_rsa.pub",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
