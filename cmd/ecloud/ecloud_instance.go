@@ -102,7 +102,7 @@ func ecloudInstanceCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates an instance",
 		Long:    "This command creates an instance",
-		Example: "ukfast ecloud instance create --vpc vpc-abcdef12 --az az-abcdef12",
+		Example: "ukfast ecloud instance create --vpc vpc-abcdef12 --vcpu 2 --ram 2048 --volume 20 --image \"CentOS 7\"",
 		RunE:    ecloudCobraRunEFunc(f, ecloudInstanceCreate),
 	}
 
@@ -118,6 +118,7 @@ func ecloudInstanceCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.MarkFlagRequired("volume")
 	cmd.Flags().String("image", "", "ID or name of image to deploy from")
 	cmd.MarkFlagRequired("image")
+	cmd.Flags().StringSlice("ssh-key-pair", []string{}, "ID of SSH key pair, can be repeated")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the instance has been completely created before continuing on")
 
 	return cmd
@@ -125,13 +126,17 @@ func ecloudInstanceCreateCmd(f factory.ClientFactory) *cobra.Command {
 
 func ecloudInstanceCreate(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	createRequest := ecloud.CreateInstanceRequest{}
-	if cmd.Flags().Changed("name") {
-		createRequest.Name, _ = cmd.Flags().GetString("name")
-	}
 	createRequest.VPCID, _ = cmd.Flags().GetString("vpc")
 	createRequest.VCPUCores, _ = cmd.Flags().GetInt("vcpu")
 	createRequest.RAMCapacity, _ = cmd.Flags().GetInt("ram")
 	createRequest.VolumeCapacity, _ = cmd.Flags().GetInt("volume")
+
+	if cmd.Flags().Changed("name") {
+		createRequest.Name, _ = cmd.Flags().GetString("name")
+	}
+	if cmd.Flags().Changed("ssh-key-pair") {
+		createRequest.SSHKeyPairIDs, _ = cmd.Flags().GetStringSlice("ssh-key-pair")
+	}
 
 	getImage := func(imageName string) (string, error) {
 		images, err := service.GetImages(connection.APIRequestParameters{})
