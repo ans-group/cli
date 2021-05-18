@@ -71,7 +71,7 @@ func Execute(build build.BuildInfo) {
 	rootCmd.AddCommand(billingcmd.BillingRootCmd(clientFactory))
 	rootCmd.AddCommand(ddosxcmd.DDoSXRootCmd(clientFactory, fs))
 	rootCmd.AddCommand(draascmd.DRaaSRootCmd(clientFactory))
-	rootCmd.AddCommand(ecloudcmd.ECloudRootCmd(clientFactory))
+	rootCmd.AddCommand(ecloudcmd.ECloudRootCmd(clientFactory, fs))
 	rootCmd.AddCommand(ecloudflexcmd.ECloudFlexRootCmd(clientFactory))
 	rootCmd.AddCommand(loadtestcmd.LoadTestRootCmd(clientFactory))
 	rootCmd.AddCommand(psscmd.PSSRootCmd(clientFactory, fs))
