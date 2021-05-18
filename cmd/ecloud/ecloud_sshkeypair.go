@@ -109,6 +109,7 @@ func ecloudSSHKeyPairCreateCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Comm
 	// Setup flags
 	cmd.Flags().String("name", "", "Name of SSH key pair")
 	cmd.Flags().String("public-key", "", "Public key for SSH key pair")
+	cmd.Flags().String("public-key-file", "", "Path to file containing public key for SSH key pair")
 
 	return cmd
 }
@@ -163,6 +164,7 @@ func ecloudSSHKeyPairUpdateCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Comm
 
 	cmd.Flags().String("name", "", "Name of SSH key pair")
 	cmd.Flags().String("public-key", "", "Public key for SSH key pair")
+	cmd.Flags().String("public-key-file", "", "Path to file containing public key for SSH key pair")
 
 	return cmd
 }
