@@ -88,6 +88,40 @@ func loadbalancerListenerShow(service loadbalancer.LoadBalancerService, cmd *cob
 	return output.CommandOutput(cmd, OutputLoadBalancerListenersProvider(listeners))
 }
 
+func loadbalancerListenerCreateCmd(f factory.ClientFactory) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:     "create <listener: id>...",
+		Short:   "Creates a listener",
+		Long:    "This command creates a listener",
+		Example: "ukfast loadbalancer listener create --name mylistener",
+		RunE:    loadbalancerCobraRunEFunc(f, loadbalancerListenerCreate),
+	}
+
+	cmd.Flags().String("name", "", "Name of listener")
+
+	return cmd
+}
+
+func loadbalancerListenerCreate(service loadbalancer.LoadBalancerService, cmd *cobra.Command, args []string) error {
+	createRequest := loadbalancer.CreateListenerRequest{}
+
+	if cmd.Flags().Changed("name") {
+		createRequest.Name, _ = cmd.Flags().GetString("name")
+	}
+
+	listenerID, err := service.CreateListener(createRequest)
+	if err != nil {
+		return fmt.Errorf("Error creating listener: %s", err)
+	}
+
+	listener, err := service.GetListener(listenerID)
+	if err != nil {
+		return fmt.Errorf("Error retrieving new listener: %s", err)
+	}
+
+	return output.CommandOutput(cmd, OutputLoadBalancerListenersProvider([]loadbalancer.Listener{listener}))
+}
+
 func loadbalancerListenerUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "update <listener: id>...",
