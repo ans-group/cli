@@ -49,19 +49,19 @@ func (mr *MockECloudServiceMockRecorder) AssignFloatingIP(arg0, arg1 interface{}
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AssignFloatingIP", reflect.TypeOf((*MockECloudService)(nil).AssignFloatingIP), arg0, arg1)
 }
 
-// AttachVolume mocks base method
-func (m *MockECloudService) AttachVolume(arg0 string, arg1 ecloud.AttachVolumeRequest) (string, error) {
+// AttachInstanceVolume mocks base method
+func (m *MockECloudService) AttachInstanceVolume(arg0 string, arg1 ecloud.AttachDetachInstanceVolumeRequest) (string, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AttachVolume", arg0, arg1)
+	ret := m.ctrl.Call(m, "AttachInstanceVolume", arg0, arg1)
 	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// AttachVolume indicates an expected call of AttachVolume
-func (mr *MockECloudServiceMockRecorder) AttachVolume(arg0, arg1 interface{}) *gomock.Call {
+// AttachInstanceVolume indicates an expected call of AttachInstanceVolume
+func (mr *MockECloudServiceMockRecorder) AttachInstanceVolume(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AttachVolume", reflect.TypeOf((*MockECloudService)(nil).AttachVolume), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AttachInstanceVolume", reflect.TypeOf((*MockECloudService)(nil).AttachInstanceVolume), arg0, arg1)
 }
 
 // CloneVirtualMachine mocks base method
@@ -613,19 +613,19 @@ func (mr *MockECloudServiceMockRecorder) DeployVPCDefaults(arg0 interface{}) *go
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeployVPCDefaults", reflect.TypeOf((*MockECloudService)(nil).DeployVPCDefaults), arg0)
 }
 
-// DetachVolume mocks base method
-func (m *MockECloudService) DetachVolume(arg0 string, arg1 ecloud.DetachVolumeRequest) (string, error) {
+// DetachInstanceVolume mocks base method
+func (m *MockECloudService) DetachInstanceVolume(arg0 string, arg1 ecloud.AttachDetachInstanceVolumeRequest) (string, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DetachVolume", arg0, arg1)
+	ret := m.ctrl.Call(m, "DetachInstanceVolume", arg0, arg1)
 	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// DetachVolume indicates an expected call of DetachVolume
-func (mr *MockECloudServiceMockRecorder) DetachVolume(arg0, arg1 interface{}) *gomock.Call {
+// DetachInstanceVolume indicates an expected call of DetachInstanceVolume
+func (mr *MockECloudServiceMockRecorder) DetachInstanceVolume(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DetachVolume", reflect.TypeOf((*MockECloudService)(nil).DetachVolume), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DetachInstanceVolume", reflect.TypeOf((*MockECloudService)(nil).DetachInstanceVolume), arg0, arg1)
 }
 
 // GetActiveDirectoryDomain mocks base method

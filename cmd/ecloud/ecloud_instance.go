@@ -443,3 +443,13 @@ func InstanceResourceSyncStatusWaitFunc(service ecloud.ECloudService, instanceID
 		return instance.Sync.Status, nil
 	}, status)
 }
+
+func InstanceTaskStatusWaitFunc(service ecloud.ECloudService, instanceID string, taskID string, status ecloud.TaskStatus) helper.WaitFunc {
+	return TaskStatusFromResourceTaskListWaitFunc(service, taskID, TaskStatusFromInstanceTaskListFunc(service, instanceID), status)
+}
+
+func TaskStatusFromInstanceTaskListFunc(service ecloud.ECloudService, instanceID string) TaskFromResourceTaskListFunc {
+	return func(params connection.APIRequestParameters) ([]ecloud.Task, error) {
+		return service.GetInstanceTasks(instanceID, params)
+	}
+}
