@@ -27,6 +27,7 @@ func ecloudVolumeRootCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Child root commands
 	cmd.AddCommand(ecloudVolumeInstanceRootCmd(f))
+	cmd.AddCommand(ecloudVolumeTaskRootCmd(f))
 
 	return cmd
 }

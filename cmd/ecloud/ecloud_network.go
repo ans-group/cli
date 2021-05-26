@@ -109,7 +109,7 @@ func ecloudNetworkCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.MarkFlagRequired("router")
 	cmd.Flags().String("subnet", "", "Subnet for network, e.g. 10.0.0.0/24")
 	cmd.MarkFlagRequired("subnet")
-	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the network has been completely created before continuing on")
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the network has been completely created")
 
 	return cmd
 }
@@ -160,6 +160,7 @@ func ecloudNetworkUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("name", "", "Name of network")
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the network has been completely updated")
 
 	return cmd
 }
@@ -179,6 +180,15 @@ func ecloudNetworkUpdate(service ecloud.ECloudService, cmd *cobra.Command, args 
 			continue
 		}
 
+		waitFlag, _ := cmd.Flags().GetBool("wait")
+		if waitFlag {
+			err := helper.WaitForCommand(NetworkResourceSyncStatusWaitFunc(service, arg, ecloud.SyncStatusComplete))
+			if err != nil {
+				output.OutputWithErrorLevelf("Error waiting for network [%s] sync: %s", arg, err)
+				continue
+			}
+		}
+
 		network, err := service.GetNetwork(arg)
 		if err != nil {
 			output.OutputWithErrorLevelf("Error retrieving updated network [%s]: %s", arg, err)
@@ -192,7 +202,7 @@ func ecloudNetworkUpdate(service ecloud.ECloudService, cmd *cobra.Command, args 
 }
 
 func ecloudNetworkDeleteCmd(f factory.ClientFactory) *cobra.Command {
-	return &cobra.Command{
+	cmd := &cobra.Command{
 		Use:     "delete <network: id...>",
 		Short:   "Removes an network",
 		Long:    "This command removes one or more networks",
@@ -206,6 +216,10 @@ func ecloudNetworkDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		},
 		RunE: ecloudCobraRunEFunc(f, ecloudNetworkDelete),
 	}
+
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the network has been completely removed")
+
+	return cmd
 }
 
 func ecloudNetworkDelete(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
@@ -213,6 +227,16 @@ func ecloudNetworkDelete(service ecloud.ECloudService, cmd *cobra.Command, args 
 		err := service.DeleteNetwork(arg)
 		if err != nil {
 			output.OutputWithErrorLevelf("Error removing network [%s]: %s", arg, err)
+			continue
+		}
+
+		waitFlag, _ := cmd.Flags().GetBool("wait")
+		if waitFlag {
+			err := helper.WaitForCommand(NetworkNotFoundWaitFunc(service, arg))
+			if err != nil {
+				output.OutputWithErrorLevelf("Error waiting for removal of network [%s]: %s", arg, err)
+				continue
+			}
 		}
 	}
 	return nil
@@ -226,4 +250,20 @@ func NetworkResourceSyncStatusWaitFunc(service ecloud.ECloudService, networkID s
 		}
 		return network.Sync.Status, nil
 	}, status)
+}
+
+func NetworkNotFoundWaitFunc(service ecloud.ECloudService, networkID string) helper.WaitFunc {
+	return func() (finished bool, err error) {
+		_, err = service.GetNetwork(networkID)
+		if err != nil {
+			switch err.(type) {
+			case *ecloud.NetworkNotFoundError:
+				return true, nil
+			default:
+				return false, fmt.Errorf("Failed to retrieve network [%s]: %s", networkID, err)
+			}
+		}
+
+		return false, nil
+	}
 }

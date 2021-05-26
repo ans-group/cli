@@ -391,3 +391,7 @@ func OutputECloudImageMetadataProvider(metadata []ecloud.ImageMetadata) output.O
 func OutputECloudSSHKeyPairsProvider(keypairs []ecloud.SSHKeyPair) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(keypairs).WithDefaultFields([]string{"id", "name"})
 }
+
+func OutputECloudTasksProvider(tasks []ecloud.Task) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(tasks).WithDefaultFields([]string{"id", "name", "status", "created_at", "updated_at"})
+}
