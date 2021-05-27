@@ -232,7 +232,7 @@ func ecloudVPCUpdate(service ecloud.ECloudService, cmd *cobra.Command, args []st
 
 func ecloudVPCDeleteCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "delete <vpc: id...>",
+		Use:     "delete <vpc: id>...",
 		Short:   "Removes a VPC",
 		Long:    "This command removes one or more VPCs",
 		Example: "ukfast ecloud vpc delete vpc-abcdef12",
@@ -318,10 +318,10 @@ func VPCResourceSyncStatusWaitFunc(service ecloud.ECloudService, vpcID string, s
 }
 
 func VPCTaskStatusWaitFunc(service ecloud.ECloudService, vpcID string, taskID string, status ecloud.TaskStatus) helper.WaitFunc {
-	return TaskStatusFromResourceTaskListWaitFunc(service, taskID, TaskStatusFromVPCTaskListFunc(service, vpcID), status)
+	return TaskStatusFromResourceTaskListWaitFunc(service, taskID, VPCTaskListFunc(service, vpcID), status)
 }
 
-func TaskStatusFromVPCTaskListFunc(service ecloud.ECloudService, vpcID string) TaskFromResourceTaskListFunc {
+func VPCTaskListFunc(service ecloud.ECloudService, vpcID string) ResourceTaskListFunc {
 	return func(params connection.APIRequestParameters) ([]ecloud.Task, error) {
 		return service.GetVPCTasks(vpcID, params)
 	}

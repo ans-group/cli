@@ -8,6 +8,7 @@ import (
 	"github.com/ukfast/cli/internal/pkg/factory"
 	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
+	"github.com/ukfast/sdk-go/pkg/connection"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
@@ -203,7 +204,7 @@ func ecloudNetworkUpdate(service ecloud.ECloudService, cmd *cobra.Command, args 
 
 func ecloudNetworkDeleteCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "delete <network: id...>",
+		Use:     "delete <network: id>...",
 		Short:   "Removes an network",
 		Long:    "This command removes one or more networks",
 		Example: "ukfast ecloud network delete net-abcdef12",
@@ -250,6 +251,16 @@ func NetworkResourceSyncStatusWaitFunc(service ecloud.ECloudService, networkID s
 		}
 		return network.Sync.Status, nil
 	}, status)
+}
+
+func NetworkTaskStatusWaitFunc(service ecloud.ECloudService, networkID string, taskID string, status ecloud.TaskStatus) helper.WaitFunc {
+	return TaskStatusFromResourceTaskListWaitFunc(service, taskID, NetworkTaskListFunc(service, networkID), status)
+}
+
+func NetworkTaskListFunc(service ecloud.ECloudService, networkID string) ResourceTaskListFunc {
+	return func(params connection.APIRequestParameters) ([]ecloud.Task, error) {
+		return service.GetNetworkTasks(networkID, params)
+	}
 }
 
 func NetworkNotFoundWaitFunc(service ecloud.ECloudService, networkID string) helper.WaitFunc {

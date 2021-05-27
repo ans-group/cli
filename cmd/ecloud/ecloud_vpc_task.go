@@ -26,7 +26,7 @@ func ecloudVPCTaskRootCmd(f factory.ClientFactory) *cobra.Command {
 
 func ecloudVPCTaskListCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "list",
+		Use:     "list <vpc: id>",
 		Short:   "Lists VPC tasks",
 		Long:    "This command lists VPC tasks",
 		Example: "ukfast ecloud vpc task list vpc-abcdef12",
@@ -65,9 +65,9 @@ func ecloudVPCTaskList(service ecloud.ECloudService, cmd *cobra.Command, args []
 
 func ecloudVPCTaskWaitCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "wait",
+		Use:     "wait <vpc: id> <task: id>...",
 		Short:   "Waits for a VPC task",
-		Long:    "This command waits for a VPC task to have expected status",
+		Long:    "This command waits for one or more VPC tasks to have expected status",
 		Example: "ukfast ecloud vpc task wait vpc-abcdef12 task-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
@@ -98,9 +98,11 @@ func ecloudVPCTaskWait(service ecloud.ECloudService, cmd *cobra.Command, args []
 		expectedStatus = parsedStatus
 	}
 
-	err := helper.WaitForCommand(VPCTaskStatusWaitFunc(service, args[0], args[1], expectedStatus))
-	if err != nil {
-		return fmt.Errorf("Error waiting for VPC task: %s", err)
+	for _, arg := range args[1:] {
+		err := helper.WaitForCommand(VPCTaskStatusWaitFunc(service, args[0], arg, expectedStatus))
+		if err != nil {
+			output.OutputWithErrorLevelf("Error waiting for VPC task [%s]: %s", arg, err)
+		}
 	}
 
 	return nil

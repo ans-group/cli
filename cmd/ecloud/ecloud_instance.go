@@ -258,7 +258,7 @@ func ecloudInstanceUpdate(service ecloud.ECloudService, cmd *cobra.Command, args
 
 func ecloudInstanceDeleteCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "delete <instance: id...>",
+		Use:     "delete <instance: id>...",
 		Short:   "Removes an instance",
 		Long:    "This command removes one or more instances",
 		Example: "ukfast ecloud instance delete i-abcdef12",
@@ -299,7 +299,7 @@ func ecloudInstanceDelete(service ecloud.ECloudService, cmd *cobra.Command, args
 
 func ecloudInstanceLockCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
-		Use:     "lock <instance: id...>",
+		Use:     "lock <instance: id>...",
 		Short:   "Locks an instance",
 		Long:    "This command locks one or more instances",
 		Example: "ukfast ecloud instance lock i-abcdef12",
@@ -326,7 +326,7 @@ func ecloudInstanceLock(service ecloud.ECloudService, cmd *cobra.Command, args [
 
 func ecloudInstanceUnlockCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
-		Use:     "unlock <instance: id...>",
+		Use:     "unlock <instance: id>...",
 		Short:   "Unlocks an instance",
 		Long:    "This command unlocks one or more instances",
 		Example: "ukfast ecloud instance unlock i-abcdef12",
@@ -353,7 +353,7 @@ func ecloudInstanceUnlock(service ecloud.ECloudService, cmd *cobra.Command, args
 
 func ecloudInstanceStartCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
-		Use:     "start <instance: id...>",
+		Use:     "start <instance: id>...",
 		Short:   "Starts an instance",
 		Long:    "This command powers on one or more instances",
 		Example: "ukfast ecloud instance start i-abcdef12",
@@ -380,7 +380,7 @@ func ecloudInstanceStart(service ecloud.ECloudService, cmd *cobra.Command, args 
 
 func ecloudInstanceStopCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "stop <instance: id...>",
+		Use:     "stop <instance: id>...",
 		Short:   "Stops an instance",
 		Long:    "This command powers off one or more instances",
 		Example: "ukfast ecloud instance stop i-abcdef12",
@@ -420,7 +420,7 @@ func ecloudInstanceStop(service ecloud.ECloudService, cmd *cobra.Command, args [
 
 func ecloudInstanceRestartCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "restart <instance: id...>",
+		Use:     "restart <instance: id>...",
 		Short:   "Restarts an instance",
 		Long:    "This command restarts one or more instances",
 		Example: "ukfast ecloud instance restart i-abcdef12",
@@ -469,10 +469,10 @@ func InstanceResourceSyncStatusWaitFunc(service ecloud.ECloudService, instanceID
 }
 
 func InstanceTaskStatusWaitFunc(service ecloud.ECloudService, instanceID string, taskID string, status ecloud.TaskStatus) helper.WaitFunc {
-	return TaskStatusFromResourceTaskListWaitFunc(service, taskID, TaskStatusFromInstanceTaskListFunc(service, instanceID), status)
+	return TaskStatusFromResourceTaskListWaitFunc(service, taskID, InstanceTaskListFunc(service, instanceID), status)
 }
 
-func TaskStatusFromInstanceTaskListFunc(service ecloud.ECloudService, instanceID string) TaskFromResourceTaskListFunc {
+func InstanceTaskListFunc(service ecloud.ECloudService, instanceID string) ResourceTaskListFunc {
 	return func(params connection.APIRequestParameters) ([]ecloud.Task, error) {
 		return service.GetInstanceTasks(instanceID, params)
 	}

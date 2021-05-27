@@ -226,7 +226,7 @@ func ecloudFirewallRulePortUpdate(service ecloud.ECloudService, cmd *cobra.Comma
 
 func ecloudFirewallRulePortDeleteCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
-		Use:     "delete <port: id...>",
+		Use:     "delete <port: id>...",
 		Short:   "Removes a firewall rule port",
 		Long:    "This command removes one or more firewall rule ports",
 		Example: "ukfast ecloud firewallruleport delete fwrp-abcdef12",

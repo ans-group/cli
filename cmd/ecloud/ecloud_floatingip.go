@@ -195,7 +195,7 @@ func ecloudFloatingIPUpdate(service ecloud.ECloudService, cmd *cobra.Command, ar
 
 func ecloudFloatingIPDeleteCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
-		Use:     "delete <fip: id...>",
+		Use:     "delete <fip: id>...",
 		Short:   "Removes a floating IP",
 		Long:    "This command removes one or more floating IPs",
 		Example: "ukfast ecloud floatingip delete fip-abcdef12",
@@ -273,7 +273,7 @@ func ecloudFloatingIPAssign(service ecloud.ECloudService, cmd *cobra.Command, ar
 
 func ecloudFloatingIPUnassignCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
-		Use:     "unassign <fip: id...>",
+		Use:     "unassign <fip: id>...",
 		Short:   "Unassigns a floating IP",
 		Long:    "This command unassigns one or more floating IPs from connected resources",
 		Example: "ukfast ecloud floatingip unassign fip-abcdef12",

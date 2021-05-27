@@ -8,6 +8,7 @@ import (
 	"github.com/ukfast/cli/internal/pkg/factory"
 	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
+	"github.com/ukfast/sdk-go/pkg/connection"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
@@ -26,6 +27,7 @@ func ecloudFirewallPolicyRootCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Child root commands
 	cmd.AddCommand(ecloudFirewallPolicyFirewallRuleRootCmd(f))
+	cmd.AddCommand(ecloudFirewallPolicyTaskRootCmd(f))
 
 	return cmd
 }
@@ -205,7 +207,7 @@ func ecloudFirewallPolicyUpdate(service ecloud.ECloudService, cmd *cobra.Command
 
 func ecloudFirewallPolicyDeleteCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "delete <policy: id...>",
+		Use:     "delete <policy: id>...",
 		Short:   "Removes a firewall policy",
 		Long:    "This command removes one or more firewall policies",
 		Example: "ukfast ecloud firewallpolicy delete fwp-abcdef12",
@@ -251,6 +253,16 @@ func FirewallPolicyResourceSyncStatusWaitFunc(service ecloud.ECloudService, poli
 		}
 		return policy.Sync.Status, nil
 	}, status)
+}
+
+func FirewallPolicyTaskStatusWaitFunc(service ecloud.ECloudService, policyID string, taskID string, status ecloud.TaskStatus) helper.WaitFunc {
+	return TaskStatusFromResourceTaskListWaitFunc(service, taskID, FirewallPolicyTaskListFunc(service, policyID), status)
+}
+
+func FirewallPolicyTaskListFunc(service ecloud.ECloudService, policyID string) ResourceTaskListFunc {
+	return func(params connection.APIRequestParameters) ([]ecloud.Task, error) {
+		return service.GetFirewallPolicyTasks(policyID, params)
+	}
 }
 
 func FirewallPolicyNotFoundWaitFunc(service ecloud.ECloudService, firewallPolicyID string) helper.WaitFunc {

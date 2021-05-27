@@ -126,7 +126,7 @@ func OutputECloudSitesProvider(sites []ecloud.Site) output.OutputHandlerDataProv
 	)
 }
 
-func OutputECloudHostsProvider(hosts []ecloud.Host) output.OutputHandlerDataProvider {
+func OutputECloudV1HostsProvider(hosts []ecloud.V1Host) output.OutputHandlerDataProvider {
 	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(hosts),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {

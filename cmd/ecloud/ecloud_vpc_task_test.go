@@ -9,6 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/ukfast/cli/internal/pkg/clierrors"
 	"github.com/ukfast/cli/test/mocks"
+	"github.com/ukfast/cli/test/test_output"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
@@ -124,8 +125,8 @@ func Test_ecloudVPCTaskWait(t *testing.T) {
 
 		service.EXPECT().GetVPCTasks("vpc-abcdef12", gomock.Any()).Return([]ecloud.Task{}, errors.New("test error")).Times(1)
 
-		err := ecloudVPCTaskWait(service, &cobra.Command{}, []string{"vpc-abcdef12", "task-abcdef12"})
-
-		assert.Equal(t, "Error waiting for VPC task: Error waiting for command: Failed to retrieve task status: test error", err.Error())
+		test_output.AssertErrorOutput(t, "Error waiting for VPC task [task-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+			ecloudVPCTaskWait(service, &cobra.Command{}, []string{"vpc-abcdef12", "task-abcdef12"})
+		})
 	})
 }

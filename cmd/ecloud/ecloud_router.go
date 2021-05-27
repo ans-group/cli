@@ -8,6 +8,7 @@ import (
 	"github.com/ukfast/cli/internal/pkg/factory"
 	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
+	"github.com/ukfast/sdk-go/pkg/connection"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
@@ -28,6 +29,7 @@ func ecloudRouterRootCmd(f factory.ClientFactory) *cobra.Command {
 	// Child root commands
 	cmd.AddCommand(ecloudRouterFirewallPolicyRootCmd(f))
 	cmd.AddCommand(ecloudRouterNetworkRootCmd(f))
+	cmd.AddCommand(ecloudRouterTaskRootCmd(f))
 
 	return cmd
 }
@@ -213,7 +215,7 @@ func ecloudRouterUpdate(service ecloud.ECloudService, cmd *cobra.Command, args [
 
 func ecloudRouterDeleteCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "delete <router: id...>",
+		Use:     "delete <router: id>...",
 		Short:   "Removes an router",
 		Long:    "This command removes one or more routers",
 		Example: "ukfast ecloud router delete rtr-abcdef12",
@@ -289,6 +291,16 @@ func RouterResourceSyncStatusWaitFunc(service ecloud.ECloudService, routerID str
 		}
 		return router.Sync.Status, nil
 	}, status)
+}
+
+func RouterTaskStatusWaitFunc(service ecloud.ECloudService, routerID string, taskID string, status ecloud.TaskStatus) helper.WaitFunc {
+	return TaskStatusFromResourceTaskListWaitFunc(service, taskID, RouterTaskListFunc(service, routerID), status)
+}
+
+func RouterTaskListFunc(service ecloud.ECloudService, routerID string) ResourceTaskListFunc {
+	return func(params connection.APIRequestParameters) ([]ecloud.Task, error) {
+		return service.GetRouterTasks(routerID, params)
+	}
 }
 
 func RouterNotFoundWaitFunc(service ecloud.ECloudService, routerID string) helper.WaitFunc {

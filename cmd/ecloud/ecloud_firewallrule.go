@@ -268,7 +268,7 @@ func ecloudFirewallRuleUpdate(service ecloud.ECloudService, cmd *cobra.Command, 
 
 func ecloudFirewallRuleDeleteCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
-		Use:     "delete <rule: id...>",
+		Use:     "delete <rule: id>...",
 		Short:   "Removes a firewall rule",
 		Long:    "This command removes one or more firewall rules",
 		Example: "ukfast ecloud firewallrule delete fwr-abcdef12",

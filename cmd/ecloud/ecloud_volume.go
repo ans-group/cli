@@ -207,7 +207,7 @@ func ecloudVolumeUpdate(service ecloud.ECloudService, cmd *cobra.Command, args [
 
 func ecloudVolumeDeleteCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "delete <volume: id...>",
+		Use:     "delete <volume: id>...",
 		Short:   "Removes a volume",
 		Long:    "This command removes one or more volumes",
 		Example: "ukfast ecloud volume delete vol-abcdef12",
@@ -231,6 +231,7 @@ func ecloudVolumeDelete(service ecloud.ECloudService, cmd *cobra.Command, args [
 		_, err := service.DeleteVolume(arg)
 		if err != nil {
 			output.OutputWithErrorLevelf("Error removing volume [%s]: %s", arg, err)
+			continue
 		}
 
 		waitFlag, _ := cmd.Flags().GetBool("wait")
@@ -246,10 +247,10 @@ func ecloudVolumeDelete(service ecloud.ECloudService, cmd *cobra.Command, args [
 }
 
 func VolumeTaskStatusWaitFunc(service ecloud.ECloudService, volumeID string, taskID string, status ecloud.TaskStatus) helper.WaitFunc {
-	return TaskStatusFromResourceTaskListWaitFunc(service, taskID, TaskStatusFromVolumeTaskListFunc(service, volumeID), status)
+	return TaskStatusFromResourceTaskListWaitFunc(service, taskID, VolumeTaskListFunc(service, volumeID), status)
 }
 
-func TaskStatusFromVolumeTaskListFunc(service ecloud.ECloudService, volumeID string) TaskFromResourceTaskListFunc {
+func VolumeTaskListFunc(service ecloud.ECloudService, volumeID string) ResourceTaskListFunc {
 	return func(params connection.APIRequestParameters) ([]ecloud.Task, error) {
 		return service.GetVolumeTasks(volumeID, params)
 	}

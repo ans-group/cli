@@ -11,33 +11,33 @@ import (
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
-func ecloudVolumeTaskRootCmd(f factory.ClientFactory) *cobra.Command {
+func ecloudRouterTaskRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "task",
-		Short: "sub-commands relating to volume tasks",
+		Short: "sub-commands relating to router tasks",
 	}
 
 	// Child commands
-	cmd.AddCommand(ecloudVolumeTaskListCmd(f))
-	cmd.AddCommand(ecloudVolumeTaskWaitCmd(f))
+	cmd.AddCommand(ecloudRouterTaskListCmd(f))
+	cmd.AddCommand(ecloudRouterTaskWaitCmd(f))
 
 	return cmd
 }
 
-func ecloudVolumeTaskListCmd(f factory.ClientFactory) *cobra.Command {
+func ecloudRouterTaskListCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "list <volume: id>",
-		Short:   "Lists volume tasks",
-		Long:    "This command lists volume tasks",
-		Example: "ukfast ecloud volume task list vol-abcdef12",
+		Use:     "list <router: id>",
+		Short:   "Lists router tasks",
+		Long:    "This command lists router tasks",
+		Example: "ukfast ecloud router task list rtr-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing volume")
+				return errors.New("Missing router")
 			}
 
 			return nil
 		},
-		RunE: ecloudCobraRunEFunc(f, ecloudVolumeTaskList),
+		RunE: ecloudCobraRunEFunc(f, ecloudRouterTaskList),
 	}
 
 	cmd.Flags().String("id", "", "Task ID for filtering")
@@ -46,7 +46,7 @@ func ecloudVolumeTaskListCmd(f factory.ClientFactory) *cobra.Command {
 	return cmd
 }
 
-func ecloudVolumeTaskList(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
+func ecloudRouterTaskList(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	params, err := helper.GetAPIRequestParametersFromFlags(cmd,
 		helper.NewStringFilterFlagOption("id", "id"),
 		helper.NewStringFilterFlagOption("name", "name"),
@@ -55,23 +55,23 @@ func ecloudVolumeTaskList(service ecloud.ECloudService, cmd *cobra.Command, args
 		return err
 	}
 
-	tasks, err := service.GetVolumeTasks(args[0], params)
+	tasks, err := service.GetRouterTasks(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving volume tasks: %s", err)
+		return fmt.Errorf("Error retrieving router tasks: %s", err)
 	}
 
 	return output.CommandOutput(cmd, OutputECloudTasksProvider(tasks))
 }
 
-func ecloudVolumeTaskWaitCmd(f factory.ClientFactory) *cobra.Command {
+func ecloudRouterTaskWaitCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "wait <volume: id> <task: id>...",
-		Short:   "Waits for a volume task",
-		Long:    "This command waits for one or more volume tasks to have expected status",
-		Example: "ukfast ecloud volume task wait vol-abcdef12 task-abcdef12",
+		Use:     "wait <router: id> <task: id>...",
+		Short:   "Waits for a router task",
+		Long:    "This command waits for one or more router tasks to have expected status",
+		Example: "ukfast ecloud router task wait rtr-abcdef12 task-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing volume")
+				return errors.New("Missing router")
 			}
 			if len(args) < 2 {
 				return errors.New("Missing task")
@@ -79,7 +79,7 @@ func ecloudVolumeTaskWaitCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		RunE: ecloudCobraRunEFunc(f, ecloudVolumeTaskWait),
+		RunE: ecloudCobraRunEFunc(f, ecloudRouterTaskWait),
 	}
 
 	cmd.Flags().String("status", "", fmt.Sprintf("Status to wait for. Defaults to '%s'", ecloud.TaskStatusComplete))
@@ -87,7 +87,7 @@ func ecloudVolumeTaskWaitCmd(f factory.ClientFactory) *cobra.Command {
 	return cmd
 }
 
-func ecloudVolumeTaskWait(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
+func ecloudRouterTaskWait(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	var expectedStatus ecloud.TaskStatus = ecloud.TaskStatusComplete
 	if cmd.Flags().Changed("status") {
 		status, _ := cmd.Flags().GetString("status")
@@ -99,9 +99,9 @@ func ecloudVolumeTaskWait(service ecloud.ECloudService, cmd *cobra.Command, args
 	}
 
 	for _, arg := range args[1:] {
-		err := helper.WaitForCommand(VolumeTaskStatusWaitFunc(service, args[0], arg, expectedStatus))
+		err := helper.WaitForCommand(RouterTaskStatusWaitFunc(service, args[0], arg, expectedStatus))
 		if err != nil {
-			output.OutputWithErrorLevelf("Error waiting for volume task [%s]: %s", arg, err)
+			output.OutputWithErrorLevelf("Error waiting for router task [%s]: %s", arg, err)
 		}
 	}
 

@@ -180,7 +180,7 @@ func ResourceTaskStatusWaitFunc(fn GetResourceTaskStatusFunc, expectedStatus ecl
 
 type TaskStatusFromResourceTaskListRetrieveFunc func(params connection.APIRequestParameters) ([]ecloud.Task, error)
 
-func TaskStatusFromResourceTaskListWaitFunc(service ecloud.ECloudService, taskID string, fn TaskFromResourceTaskListFunc, status ecloud.TaskStatus) helper.WaitFunc {
+func TaskStatusFromResourceTaskListWaitFunc(service ecloud.ECloudService, taskID string, fn ResourceTaskListFunc, status ecloud.TaskStatus) helper.WaitFunc {
 	return ResourceTaskStatusWaitFunc(func() (ecloud.TaskStatus, error) {
 		task, err := GetTaskFromResourceTaskList(fn, taskID)
 		if err != nil {
@@ -191,9 +191,9 @@ func TaskStatusFromResourceTaskListWaitFunc(service ecloud.ECloudService, taskID
 	}, status)
 }
 
-type TaskFromResourceTaskListFunc func(params connection.APIRequestParameters) ([]ecloud.Task, error)
+type ResourceTaskListFunc func(params connection.APIRequestParameters) ([]ecloud.Task, error)
 
-func GetTaskFromResourceTaskList(fn TaskFromResourceTaskListFunc, taskID string) (ecloud.Task, error) {
+func GetTaskFromResourceTaskList(fn ResourceTaskListFunc, taskID string) (ecloud.Task, error) {
 	tasks, err := fn(*connection.NewAPIRequestParameters().
 		WithFilter(connection.APIRequestFiltering{
 			Property: "id",

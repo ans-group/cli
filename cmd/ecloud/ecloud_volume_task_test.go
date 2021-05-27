@@ -9,6 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/ukfast/cli/internal/pkg/clierrors"
 	"github.com/ukfast/cli/test/mocks"
+	"github.com/ukfast/cli/test/test_output"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
@@ -124,8 +125,8 @@ func Test_ecloudVolumeTaskWait(t *testing.T) {
 
 		service.EXPECT().GetVolumeTasks("vol-abcdef12", gomock.Any()).Return([]ecloud.Task{}, errors.New("test error")).Times(1)
 
-		err := ecloudVolumeTaskWait(service, &cobra.Command{}, []string{"vol-abcdef12", "task-abcdef12"})
-
-		assert.Equal(t, "Error waiting for volume task: Error waiting for command: Failed to retrieve task status: test error", err.Error())
+		test_output.AssertErrorOutput(t, "Error waiting for volume task [task-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+			ecloudVolumeTaskWait(service, &cobra.Command{}, []string{"vol-abcdef12", "task-abcdef12"})
+		})
 	})
 }
