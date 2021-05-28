@@ -19,7 +19,6 @@ func ecloudNetworkTaskRootCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Child commands
 	cmd.AddCommand(ecloudNetworkTaskListCmd(f))
-	cmd.AddCommand(ecloudNetworkTaskWaitCmd(f))
 
 	return cmd
 }
@@ -61,49 +60,4 @@ func ecloudNetworkTaskList(service ecloud.ECloudService, cmd *cobra.Command, arg
 	}
 
 	return output.CommandOutput(cmd, OutputECloudTasksProvider(tasks))
-}
-
-func ecloudNetworkTaskWaitCmd(f factory.ClientFactory) *cobra.Command {
-	cmd := &cobra.Command{
-		Use:     "wait <network: id> <task: id>...",
-		Short:   "Waits for a network task",
-		Long:    "This command waits for one or more network tasks to have expected status",
-		Example: "ukfast ecloud network task wait net-abcdef12 task-abcdef12",
-		Args: func(cmd *cobra.Command, args []string) error {
-			if len(args) < 1 {
-				return errors.New("Missing network")
-			}
-			if len(args) < 2 {
-				return errors.New("Missing task")
-			}
-
-			return nil
-		},
-		RunE: ecloudCobraRunEFunc(f, ecloudNetworkTaskWait),
-	}
-
-	cmd.Flags().String("status", "", fmt.Sprintf("Status to wait for. Defaults to '%s'", ecloud.TaskStatusComplete))
-
-	return cmd
-}
-
-func ecloudNetworkTaskWait(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
-	var expectedStatus ecloud.TaskStatus = ecloud.TaskStatusComplete
-	if cmd.Flags().Changed("status") {
-		status, _ := cmd.Flags().GetString("status")
-		parsedStatus, err := ecloud.ParseTaskStatus(status)
-		if err != nil {
-			return fmt.Errorf("Failed to parse status: %s", err)
-		}
-		expectedStatus = parsedStatus
-	}
-
-	for _, arg := range args[1:] {
-		err := helper.WaitForCommand(NetworkTaskStatusWaitFunc(service, args[0], arg, expectedStatus))
-		if err != nil {
-			output.OutputWithErrorLevelf("Error waiting for network task [%s]: %s", arg, err)
-		}
-	}
-
-	return nil
 }

@@ -8,7 +8,6 @@ import (
 	"github.com/ukfast/cli/internal/pkg/factory"
 	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/sdk-go/pkg/connection"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
@@ -133,7 +132,7 @@ func ecloudVolumeCreate(service ecloud.ECloudService, cmd *cobra.Command, args [
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
-		err := helper.WaitForCommand(VolumeTaskStatusWaitFunc(service, taskRef.ResourceID, taskRef.TaskID, ecloud.TaskStatusComplete))
+		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskRef.TaskID, ecloud.TaskStatusComplete))
 		if err != nil {
 			return fmt.Errorf("Error waiting for volume task to complete: %s", err)
 		}
@@ -186,7 +185,7 @@ func ecloudVolumeUpdate(service ecloud.ECloudService, cmd *cobra.Command, args [
 
 		waitFlag, _ := cmd.Flags().GetBool("wait")
 		if waitFlag {
-			err := helper.WaitForCommand(VolumeTaskStatusWaitFunc(service, arg, taskID, ecloud.TaskStatusComplete))
+			err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskID, ecloud.TaskStatusComplete))
 			if err != nil {
 				output.OutputWithErrorLevelf("Error waiting for volume task to complete for volume [%s]: %s", arg, err)
 				continue
@@ -228,7 +227,7 @@ func ecloudVolumeDeleteCmd(f factory.ClientFactory) *cobra.Command {
 
 func ecloudVolumeDelete(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	for _, arg := range args {
-		_, err := service.DeleteVolume(arg)
+		taskID, err := service.DeleteVolume(arg)
 		if err != nil {
 			output.OutputWithErrorLevelf("Error removing volume [%s]: %s", arg, err)
 			continue
@@ -236,7 +235,7 @@ func ecloudVolumeDelete(service ecloud.ECloudService, cmd *cobra.Command, args [
 
 		waitFlag, _ := cmd.Flags().GetBool("wait")
 		if waitFlag {
-			err := helper.WaitForCommand(VolumeNotFoundWaitFunc(service, arg))
+			err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskID, ecloud.TaskStatusComplete))
 			if err != nil {
 				output.OutputWithErrorLevelf("Error waiting for volume [%s] to be removed: %s", arg, err)
 				continue
@@ -244,30 +243,4 @@ func ecloudVolumeDelete(service ecloud.ECloudService, cmd *cobra.Command, args [
 		}
 	}
 	return nil
-}
-
-func VolumeTaskStatusWaitFunc(service ecloud.ECloudService, volumeID string, taskID string, status ecloud.TaskStatus) helper.WaitFunc {
-	return TaskStatusFromResourceTaskListWaitFunc(service, taskID, VolumeTaskListFunc(service, volumeID), status)
-}
-
-func VolumeTaskListFunc(service ecloud.ECloudService, volumeID string) ResourceTaskListFunc {
-	return func(params connection.APIRequestParameters) ([]ecloud.Task, error) {
-		return service.GetVolumeTasks(volumeID, params)
-	}
-}
-
-func VolumeNotFoundWaitFunc(service ecloud.ECloudService, volumeID string) helper.WaitFunc {
-	return func() (finished bool, err error) {
-		_, err = service.GetVolume(volumeID)
-		if err != nil {
-			switch err.(type) {
-			case *ecloud.VolumeNotFoundError:
-				return true, nil
-			default:
-				return false, fmt.Errorf("Failed to retrieve volume [%s]: %s", volumeID, err)
-			}
-		}
-
-		return false, nil
-	}
 }

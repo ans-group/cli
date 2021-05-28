@@ -2787,6 +2787,51 @@ func (mr *MockECloudServiceMockRecorder) GetSolutionsPaginated(arg0 interface{})
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSolutionsPaginated", reflect.TypeOf((*MockECloudService)(nil).GetSolutionsPaginated), arg0)
 }
 
+// GetTask mocks base method
+func (m *MockECloudService) GetTask(arg0 string) (ecloud.Task, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetTask", arg0)
+	ret0, _ := ret[0].(ecloud.Task)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetTask indicates an expected call of GetTask
+func (mr *MockECloudServiceMockRecorder) GetTask(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTask", reflect.TypeOf((*MockECloudService)(nil).GetTask), arg0)
+}
+
+// GetTasks mocks base method
+func (m *MockECloudService) GetTasks(arg0 connection.APIRequestParameters) ([]ecloud.Task, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetTasks", arg0)
+	ret0, _ := ret[0].([]ecloud.Task)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetTasks indicates an expected call of GetTasks
+func (mr *MockECloudServiceMockRecorder) GetTasks(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTasks", reflect.TypeOf((*MockECloudService)(nil).GetTasks), arg0)
+}
+
+// GetTasksPaginated mocks base method
+func (m *MockECloudService) GetTasksPaginated(arg0 connection.APIRequestParameters) (*ecloud.PaginatedTask, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetTasksPaginated", arg0)
+	ret0, _ := ret[0].(*ecloud.PaginatedTask)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetTasksPaginated indicates an expected call of GetTasksPaginated
+func (mr *MockECloudServiceMockRecorder) GetTasksPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTasksPaginated", reflect.TypeOf((*MockECloudService)(nil).GetTasksPaginated), arg0)
+}
+
 // GetV1Host mocks base method
 func (m *MockECloudService) GetV1Host(arg0 int) (ecloud.V1Host, error) {
 	m.ctrl.T.Helper()

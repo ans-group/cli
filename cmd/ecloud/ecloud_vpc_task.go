@@ -19,7 +19,6 @@ func ecloudVPCTaskRootCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Child commands
 	cmd.AddCommand(ecloudVPCTaskListCmd(f))
-	cmd.AddCommand(ecloudVPCTaskWaitCmd(f))
 
 	return cmd
 }
@@ -61,49 +60,4 @@ func ecloudVPCTaskList(service ecloud.ECloudService, cmd *cobra.Command, args []
 	}
 
 	return output.CommandOutput(cmd, OutputECloudTasksProvider(tasks))
-}
-
-func ecloudVPCTaskWaitCmd(f factory.ClientFactory) *cobra.Command {
-	cmd := &cobra.Command{
-		Use:     "wait <vpc: id> <task: id>...",
-		Short:   "Waits for a VPC task",
-		Long:    "This command waits for one or more VPC tasks to have expected status",
-		Example: "ukfast ecloud vpc task wait vpc-abcdef12 task-abcdef12",
-		Args: func(cmd *cobra.Command, args []string) error {
-			if len(args) < 1 {
-				return errors.New("Missing VPC")
-			}
-			if len(args) < 2 {
-				return errors.New("Missing task")
-			}
-
-			return nil
-		},
-		RunE: ecloudCobraRunEFunc(f, ecloudVPCTaskWait),
-	}
-
-	cmd.Flags().String("status", "", fmt.Sprintf("Status to wait for. Defaults to '%s'", ecloud.TaskStatusComplete))
-
-	return cmd
-}
-
-func ecloudVPCTaskWait(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
-	var expectedStatus ecloud.TaskStatus = ecloud.TaskStatusComplete
-	if cmd.Flags().Changed("status") {
-		status, _ := cmd.Flags().GetString("status")
-		parsedStatus, err := ecloud.ParseTaskStatus(status)
-		if err != nil {
-			return fmt.Errorf("Failed to parse status: %s", err)
-		}
-		expectedStatus = parsedStatus
-	}
-
-	for _, arg := range args[1:] {
-		err := helper.WaitForCommand(VPCTaskStatusWaitFunc(service, args[0], arg, expectedStatus))
-		if err != nil {
-			output.OutputWithErrorLevelf("Error waiting for VPC task [%s]: %s", arg, err)
-		}
-	}
-
-	return nil
 }

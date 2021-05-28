@@ -19,7 +19,6 @@ func ecloudVolumeTaskRootCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Child commands
 	cmd.AddCommand(ecloudVolumeTaskListCmd(f))
-	cmd.AddCommand(ecloudVolumeTaskWaitCmd(f))
 
 	return cmd
 }
@@ -61,49 +60,4 @@ func ecloudVolumeTaskList(service ecloud.ECloudService, cmd *cobra.Command, args
 	}
 
 	return output.CommandOutput(cmd, OutputECloudTasksProvider(tasks))
-}
-
-func ecloudVolumeTaskWaitCmd(f factory.ClientFactory) *cobra.Command {
-	cmd := &cobra.Command{
-		Use:     "wait <volume: id> <task: id>...",
-		Short:   "Waits for a volume task",
-		Long:    "This command waits for one or more volume tasks to have expected status",
-		Example: "ukfast ecloud volume task wait vol-abcdef12 task-abcdef12",
-		Args: func(cmd *cobra.Command, args []string) error {
-			if len(args) < 1 {
-				return errors.New("Missing volume")
-			}
-			if len(args) < 2 {
-				return errors.New("Missing task")
-			}
-
-			return nil
-		},
-		RunE: ecloudCobraRunEFunc(f, ecloudVolumeTaskWait),
-	}
-
-	cmd.Flags().String("status", "", fmt.Sprintf("Status to wait for. Defaults to '%s'", ecloud.TaskStatusComplete))
-
-	return cmd
-}
-
-func ecloudVolumeTaskWait(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
-	var expectedStatus ecloud.TaskStatus = ecloud.TaskStatusComplete
-	if cmd.Flags().Changed("status") {
-		status, _ := cmd.Flags().GetString("status")
-		parsedStatus, err := ecloud.ParseTaskStatus(status)
-		if err != nil {
-			return fmt.Errorf("Failed to parse status: %s", err)
-		}
-		expectedStatus = parsedStatus
-	}
-
-	for _, arg := range args[1:] {
-		err := helper.WaitForCommand(VolumeTaskStatusWaitFunc(service, args[0], arg, expectedStatus))
-		if err != nil {
-			output.OutputWithErrorLevelf("Error waiting for volume task [%s]: %s", arg, err)
-		}
-	}
-
-	return nil
 }

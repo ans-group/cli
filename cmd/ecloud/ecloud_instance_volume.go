@@ -94,7 +94,7 @@ func ecloudInstanceVolumeAttach(service ecloud.ECloudService, cmd *cobra.Command
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
-		err := helper.WaitForCommand(InstanceTaskStatusWaitFunc(service, args[0], taskID, ecloud.TaskStatusComplete))
+		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskID, ecloud.TaskStatusComplete))
 		if err != nil {
 			return fmt.Errorf("Error waiting for task: %s", err)
 		}
@@ -137,7 +137,7 @@ func ecloudInstanceVolumeDetach(service ecloud.ECloudService, cmd *cobra.Command
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
-		err := helper.WaitForCommand(InstanceTaskStatusWaitFunc(service, args[0], taskID, ecloud.TaskStatusComplete))
+		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskID, ecloud.TaskStatusComplete))
 		if err != nil {
 			return fmt.Errorf("Error waiting for task: %s", err)
 		}

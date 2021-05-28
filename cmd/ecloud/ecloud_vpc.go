@@ -8,7 +8,6 @@ import (
 	"github.com/ukfast/cli/internal/pkg/factory"
 	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/sdk-go/pkg/connection"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
@@ -315,16 +314,6 @@ func VPCResourceSyncStatusWaitFunc(service ecloud.ECloudService, vpcID string, s
 		}
 		return vpc.Sync.Status, nil
 	}, status)
-}
-
-func VPCTaskStatusWaitFunc(service ecloud.ECloudService, vpcID string, taskID string, status ecloud.TaskStatus) helper.WaitFunc {
-	return TaskStatusFromResourceTaskListWaitFunc(service, taskID, VPCTaskListFunc(service, vpcID), status)
-}
-
-func VPCTaskListFunc(service ecloud.ECloudService, vpcID string) ResourceTaskListFunc {
-	return func(params connection.APIRequestParameters) ([]ecloud.Task, error) {
-		return service.GetVPCTasks(vpcID, params)
-	}
 }
 
 func VPCNotFoundWaitFunc(service ecloud.ECloudService, vpcID string) helper.WaitFunc {

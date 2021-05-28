@@ -393,5 +393,5 @@ func OutputECloudSSHKeyPairsProvider(keypairs []ecloud.SSHKeyPair) output.Output
 }
 
 func OutputECloudTasksProvider(tasks []ecloud.Task) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(tasks).WithDefaultFields([]string{"id", "name", "status", "created_at", "updated_at"})
+	return output.NewSerializedOutputHandlerDataProvider(tasks).WithDefaultFields([]string{"id", "resource_id", "name", "status", "created_at", "updated_at"})
 }

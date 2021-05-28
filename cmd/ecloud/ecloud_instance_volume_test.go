@@ -9,7 +9,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/ukfast/cli/internal/pkg/clierrors"
 	"github.com/ukfast/cli/test/mocks"
-	"github.com/ukfast/sdk-go/pkg/connection"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
@@ -102,31 +101,15 @@ func Test_ecloudInstanceVolumeAttach(t *testing.T) {
 			VolumeID: "vol-abcdef12",
 		}
 
-		taskReqParameters := connection.APIRequestParameters{
-			Filtering: []connection.APIRequestFiltering{
-				{
-					Property: "id",
-					Operator: connection.EQOperator,
-					Value:    []string{"task-abcdef12"},
-				},
-			},
-		}
-
-		taskResp := []ecloud.Task{
-			{
-				Status: ecloud.TaskStatusComplete,
-			},
-		}
-
 		gomock.InOrder(
 			service.EXPECT().AttachInstanceVolume("i-abcdef12", req).Return("task-abcdef12", nil),
-			service.EXPECT().GetInstanceTasks("i-abcdef12", taskReqParameters).Return(taskResp, nil),
+			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, nil),
 		)
 
 		ecloudInstanceVolumeAttach(service, cmd, []string{"i-abcdef12"})
 	})
 
-	t.Run("WithWaitFlag_GetInstanceTasksError_ReturnsError", func(t *testing.T) {
+	t.Run("WithWaitFlag_GetTaskError_ReturnsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -139,25 +122,9 @@ func Test_ecloudInstanceVolumeAttach(t *testing.T) {
 			VolumeID: "vol-abcdef12",
 		}
 
-		taskReqParameters := connection.APIRequestParameters{
-			Filtering: []connection.APIRequestFiltering{
-				{
-					Property: "id",
-					Operator: connection.EQOperator,
-					Value:    []string{"task-abcdef12"},
-				},
-			},
-		}
-
-		taskResp := []ecloud.Task{
-			{
-				Status: ecloud.TaskStatusComplete,
-			},
-		}
-
 		gomock.InOrder(
 			service.EXPECT().AttachInstanceVolume("i-abcdef12", req).Return("task-abcdef12", nil),
-			service.EXPECT().GetInstanceTasks("i-abcdef12", taskReqParameters).Return(taskResp, errors.New("test error")),
+			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{}, errors.New("test error")),
 		)
 
 		err := ecloudInstanceVolumeAttach(service, cmd, []string{"i-abcdef12"})
@@ -211,31 +178,15 @@ func Test_ecloudInstanceVolumeDetach(t *testing.T) {
 			VolumeID: "vol-abcdef12",
 		}
 
-		taskReqParameters := connection.APIRequestParameters{
-			Filtering: []connection.APIRequestFiltering{
-				{
-					Property: "id",
-					Operator: connection.EQOperator,
-					Value:    []string{"task-abcdef12"},
-				},
-			},
-		}
-
-		taskResp := []ecloud.Task{
-			{
-				Status: ecloud.TaskStatusComplete,
-			},
-		}
-
 		gomock.InOrder(
 			service.EXPECT().DetachInstanceVolume("i-abcdef12", req).Return("task-abcdef12", nil),
-			service.EXPECT().GetInstanceTasks("i-abcdef12", taskReqParameters).Return(taskResp, nil),
+			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, nil),
 		)
 
 		ecloudInstanceVolumeDetach(service, cmd, []string{"i-abcdef12"})
 	})
 
-	t.Run("WithWaitFlag_GetInstanceTasksError_ReturnsError", func(t *testing.T) {
+	t.Run("WithWaitFlag_GetTaskError_ReturnsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -248,25 +199,9 @@ func Test_ecloudInstanceVolumeDetach(t *testing.T) {
 			VolumeID: "vol-abcdef12",
 		}
 
-		taskReqParameters := connection.APIRequestParameters{
-			Filtering: []connection.APIRequestFiltering{
-				{
-					Property: "id",
-					Operator: connection.EQOperator,
-					Value:    []string{"task-abcdef12"},
-				},
-			},
-		}
-
-		taskResp := []ecloud.Task{
-			{
-				Status: ecloud.TaskStatusComplete,
-			},
-		}
-
 		gomock.InOrder(
 			service.EXPECT().DetachInstanceVolume("i-abcdef12", req).Return("task-abcdef12", nil),
-			service.EXPECT().GetInstanceTasks("i-abcdef12", taskReqParameters).Return(taskResp, errors.New("test error")),
+			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{}, errors.New("test error")),
 		)
 
 		err := ecloudInstanceVolumeDetach(service, cmd, []string{"i-abcdef12"})

@@ -19,7 +19,6 @@ func ecloudInstanceTaskRootCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Child commands
 	cmd.AddCommand(ecloudInstanceTaskListCmd(f))
-	cmd.AddCommand(ecloudInstanceTaskWaitCmd(f))
 
 	return cmd
 }
@@ -61,49 +60,4 @@ func ecloudInstanceTaskList(service ecloud.ECloudService, cmd *cobra.Command, ar
 	}
 
 	return output.CommandOutput(cmd, OutputECloudTasksProvider(tasks))
-}
-
-func ecloudInstanceTaskWaitCmd(f factory.ClientFactory) *cobra.Command {
-	cmd := &cobra.Command{
-		Use:     "wait <instance: id> <task: id>...",
-		Short:   "Waits for a instance task",
-		Long:    "This command waits for one or more instance tasks to have expected status",
-		Example: "ukfast ecloud instance task wait i-abcdef12 task-abcdef12",
-		Args: func(cmd *cobra.Command, args []string) error {
-			if len(args) < 1 {
-				return errors.New("Missing instance")
-			}
-			if len(args) < 2 {
-				return errors.New("Missing task")
-			}
-
-			return nil
-		},
-		RunE: ecloudCobraRunEFunc(f, ecloudInstanceTaskWait),
-	}
-
-	cmd.Flags().String("status", "", fmt.Sprintf("Status to wait for. Defaults to '%s'", ecloud.TaskStatusComplete))
-
-	return cmd
-}
-
-func ecloudInstanceTaskWait(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
-	var expectedStatus ecloud.TaskStatus = ecloud.TaskStatusComplete
-	if cmd.Flags().Changed("status") {
-		status, _ := cmd.Flags().GetString("status")
-		parsedStatus, err := ecloud.ParseTaskStatus(status)
-		if err != nil {
-			return fmt.Errorf("Failed to parse status: %s", err)
-		}
-		expectedStatus = parsedStatus
-	}
-
-	for _, arg := range args[1:] {
-		err := helper.WaitForCommand(InstanceTaskStatusWaitFunc(service, args[0], arg, expectedStatus))
-		if err != nil {
-			output.OutputWithErrorLevelf("Error waiting for instance task [%s]: %s", arg, err)
-		}
-	}
-
-	return nil
 }

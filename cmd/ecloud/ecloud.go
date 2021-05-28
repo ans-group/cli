@@ -10,7 +10,6 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/ukfast/cli/internal/pkg/factory"
 	"github.com/ukfast/cli/internal/pkg/helper"
-	"github.com/ukfast/sdk-go/pkg/connection"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
@@ -51,6 +50,7 @@ func ECloudRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 		cmd.AddCommand(ecloudRouterRootCmd(f))
 		cmd.AddCommand(ecloudRouterThroughputRootCmd(f))
 		cmd.AddCommand(ecloudSSHKeyPairRootCmd(f, fs))
+		cmd.AddCommand(ecloudTaskRootCmd(f))
 		cmd.AddCommand(ecloudVolumeRootCmd(f))
 		cmd.AddCommand(ecloudVPCRootCmd(f))
 	}
@@ -159,56 +159,21 @@ func ResourceSyncStatusWaitFunc(fn GetResourceSyncStatusFunc, expectedStatus ecl
 	}
 }
 
-type GetResourceTaskStatusFunc func() (ecloud.TaskStatus, error)
-
-func ResourceTaskStatusWaitFunc(fn GetResourceTaskStatusFunc, expectedStatus ecloud.TaskStatus) helper.WaitFunc {
+func TaskStatusWaitFunc(service ecloud.ECloudService, taskID string, expectedStatus ecloud.TaskStatus) helper.WaitFunc {
 	return func() (finished bool, err error) {
-		status, err := fn()
+		task, err := service.GetTask(taskID)
 		if err != nil {
 			return false, fmt.Errorf("Failed to retrieve task status: %s", err)
 		}
-		if status == ecloud.TaskStatusFailed {
+		if task.Status == ecloud.TaskStatusFailed {
 			return false, fmt.Errorf("Task in [%s] state", ecloud.TaskStatusFailed.String())
 		}
-		if status == expectedStatus {
+		if task.Status == expectedStatus {
 			return true, nil
 		}
 
 		return false, nil
 	}
-}
-
-type TaskStatusFromResourceTaskListRetrieveFunc func(params connection.APIRequestParameters) ([]ecloud.Task, error)
-
-func TaskStatusFromResourceTaskListWaitFunc(service ecloud.ECloudService, taskID string, fn ResourceTaskListFunc, status ecloud.TaskStatus) helper.WaitFunc {
-	return ResourceTaskStatusWaitFunc(func() (ecloud.TaskStatus, error) {
-		task, err := GetTaskFromResourceTaskList(fn, taskID)
-		if err != nil {
-			return "", err
-		}
-
-		return task.Status, nil
-	}, status)
-}
-
-type ResourceTaskListFunc func(params connection.APIRequestParameters) ([]ecloud.Task, error)
-
-func GetTaskFromResourceTaskList(fn ResourceTaskListFunc, taskID string) (ecloud.Task, error) {
-	tasks, err := fn(*connection.NewAPIRequestParameters().
-		WithFilter(connection.APIRequestFiltering{
-			Property: "id",
-			Operator: connection.EQOperator,
-			Value:    []string{taskID},
-		}))
-	if err != nil {
-		return ecloud.Task{}, err
-	}
-
-	if len(tasks) != 1 {
-		return ecloud.Task{}, fmt.Errorf("Expected 1 task, got %d", len(tasks))
-	}
-
-	return tasks[0], nil
 }
 
 type ecloudServiceCobraRunEFunc func(service ecloud.ECloudService, cmd *cobra.Command, args []string) error

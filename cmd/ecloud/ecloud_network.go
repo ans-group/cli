@@ -8,7 +8,6 @@ import (
 	"github.com/ukfast/cli/internal/pkg/factory"
 	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/sdk-go/pkg/connection"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
@@ -251,16 +250,6 @@ func NetworkResourceSyncStatusWaitFunc(service ecloud.ECloudService, networkID s
 		}
 		return network.Sync.Status, nil
 	}, status)
-}
-
-func NetworkTaskStatusWaitFunc(service ecloud.ECloudService, networkID string, taskID string, status ecloud.TaskStatus) helper.WaitFunc {
-	return TaskStatusFromResourceTaskListWaitFunc(service, taskID, NetworkTaskListFunc(service, networkID), status)
-}
-
-func NetworkTaskListFunc(service ecloud.ECloudService, networkID string) ResourceTaskListFunc {
-	return func(params connection.APIRequestParameters) ([]ecloud.Task, error) {
-		return service.GetNetworkTasks(networkID, params)
-	}
 }
 
 func NetworkNotFoundWaitFunc(service ecloud.ECloudService, networkID string) helper.WaitFunc {

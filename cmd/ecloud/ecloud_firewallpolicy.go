@@ -8,7 +8,6 @@ import (
 	"github.com/ukfast/cli/internal/pkg/factory"
 	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/sdk-go/pkg/connection"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
@@ -253,16 +252,6 @@ func FirewallPolicyResourceSyncStatusWaitFunc(service ecloud.ECloudService, poli
 		}
 		return policy.Sync.Status, nil
 	}, status)
-}
-
-func FirewallPolicyTaskStatusWaitFunc(service ecloud.ECloudService, policyID string, taskID string, status ecloud.TaskStatus) helper.WaitFunc {
-	return TaskStatusFromResourceTaskListWaitFunc(service, taskID, FirewallPolicyTaskListFunc(service, policyID), status)
-}
-
-func FirewallPolicyTaskListFunc(service ecloud.ECloudService, policyID string) ResourceTaskListFunc {
-	return func(params connection.APIRequestParameters) ([]ecloud.Task, error) {
-		return service.GetFirewallPolicyTasks(policyID, params)
-	}
 }
 
 func FirewallPolicyNotFoundWaitFunc(service ecloud.ECloudService, firewallPolicyID string) helper.WaitFunc {

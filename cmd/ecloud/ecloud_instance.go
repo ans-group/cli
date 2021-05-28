@@ -468,16 +468,6 @@ func InstanceResourceSyncStatusWaitFunc(service ecloud.ECloudService, instanceID
 	}, status)
 }
 
-func InstanceTaskStatusWaitFunc(service ecloud.ECloudService, instanceID string, taskID string, status ecloud.TaskStatus) helper.WaitFunc {
-	return TaskStatusFromResourceTaskListWaitFunc(service, taskID, InstanceTaskListFunc(service, instanceID), status)
-}
-
-func InstanceTaskListFunc(service ecloud.ECloudService, instanceID string) ResourceTaskListFunc {
-	return func(params connection.APIRequestParameters) ([]ecloud.Task, error) {
-		return service.GetInstanceTasks(instanceID, params)
-	}
-}
-
 func InstanceNotFoundWaitFunc(service ecloud.ECloudService, instanceID string) helper.WaitFunc {
 	return func() (finished bool, err error) {
 		_, err = service.GetInstance(instanceID)
