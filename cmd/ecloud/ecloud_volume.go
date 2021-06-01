@@ -111,7 +111,7 @@ func ecloudVolumeCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().Int("capacity", 0, "Capacity of volume in GiB")
 	cmd.MarkFlagRequired("capacity")
 	cmd.Flags().Int("iops", 0, "IOPS for volume")
-	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the volume has been completely created before continuing on")
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the volume has been completely created")
 
 	return cmd
 }
@@ -163,7 +163,7 @@ func ecloudVolumeUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("name", "", "Name of volume")
-	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the volume has been updated before continuing on")
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the volume has been updated")
 
 	return cmd
 }
@@ -220,7 +220,7 @@ func ecloudVolumeDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		RunE: ecloudCobraRunEFunc(f, ecloudVolumeDelete),
 	}
 
-	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the volume has been completely removed before continuing on")
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the volume has been completely removed")
 
 	return cmd
 }
