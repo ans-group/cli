@@ -125,20 +125,20 @@ func ecloudFirewallPolicyCreate(service ecloud.ECloudService, cmd *cobra.Command
 		createRequest.Sequence, _ = cmd.Flags().GetInt("sequence")
 	}
 
-	policyID, err := service.CreateFirewallPolicy(createRequest)
+	taskRef, err := service.CreateFirewallPolicy(createRequest)
 	if err != nil {
 		return fmt.Errorf("Error creating firewall policy: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
-		err := helper.WaitForCommand(FirewallPolicyResourceSyncStatusWaitFunc(service, policyID, ecloud.SyncStatusComplete))
+		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskRef.TaskID, ecloud.TaskStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for firewall policy sync: %s", err)
+			return fmt.Errorf("Error waiting for firewall policy task to complete: %s", err)
 		}
 	}
 
-	policy, err := service.GetFirewallPolicy(policyID)
+	policy, err := service.GetFirewallPolicy(taskRef.ResourceID)
 	if err != nil {
 		return fmt.Errorf("Error retrieving new firewall policy: %s", err)
 	}
@@ -177,7 +177,7 @@ func ecloudFirewallPolicyUpdate(service ecloud.ECloudService, cmd *cobra.Command
 
 	var policies []ecloud.FirewallPolicy
 	for _, arg := range args {
-		err := service.PatchFirewallPolicy(arg, patchRequest)
+		task, err := service.PatchFirewallPolicy(arg, patchRequest)
 		if err != nil {
 			output.OutputWithErrorLevelf("Error updating firewall policy [%s]: %s", arg, err)
 			continue
@@ -185,9 +185,9 @@ func ecloudFirewallPolicyUpdate(service ecloud.ECloudService, cmd *cobra.Command
 
 		waitFlag, _ := cmd.Flags().GetBool("wait")
 		if waitFlag {
-			err := helper.WaitForCommand(FirewallPolicyResourceSyncStatusWaitFunc(service, arg, ecloud.SyncStatusComplete))
+			err := helper.WaitForCommand(TaskStatusWaitFunc(service, task.TaskID, ecloud.TaskStatusComplete))
 			if err != nil {
-				output.OutputWithErrorLevelf("Error waiting for firewall policy [%s] sync: %s", arg, err)
+				output.OutputWithErrorLevelf("Error waiting for task to complete for firewall policy [%s]: %s", arg, err)
 				continue
 			}
 		}
@@ -227,31 +227,22 @@ func ecloudFirewallPolicyDeleteCmd(f factory.ClientFactory) *cobra.Command {
 
 func ecloudFirewallPolicyDelete(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	for _, arg := range args {
-		err := service.DeleteFirewallPolicy(arg)
+		taskID, err := service.DeleteFirewallPolicy(arg)
 		if err != nil {
 			output.OutputWithErrorLevelf("Error removing firewall policy [%s]: %s", arg, err)
+			continue
 		}
 
 		waitFlag, _ := cmd.Flags().GetBool("wait")
 		if waitFlag {
-			err := helper.WaitForCommand(FirewallPolicyNotFoundWaitFunc(service, arg))
+			err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskID, ecloud.TaskStatusComplete))
 			if err != nil {
-				output.OutputWithErrorLevelf("Error waiting for removal of firewall policy [%s]: %s", arg, err)
+				output.OutputWithErrorLevelf("Error waiting for task to complete for firewall policy [%s]: %s", arg, err)
 				continue
 			}
 		}
 	}
 	return nil
-}
-
-func FirewallPolicyResourceSyncStatusWaitFunc(service ecloud.ECloudService, policyID string, status ecloud.SyncStatus) helper.WaitFunc {
-	return ResourceSyncStatusWaitFunc(func() (ecloud.SyncStatus, error) {
-		policy, err := service.GetFirewallPolicy(policyID)
-		if err != nil {
-			return "", err
-		}
-		return policy.Sync.Status, nil
-	}, status)
 }
 
 func FirewallPolicyNotFoundWaitFunc(service ecloud.ECloudService, firewallPolicyID string) helper.WaitFunc {

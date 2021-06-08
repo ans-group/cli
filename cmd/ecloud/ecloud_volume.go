@@ -177,7 +177,7 @@ func ecloudVolumeUpdate(service ecloud.ECloudService, cmd *cobra.Command, args [
 
 	var volumes []ecloud.Volume
 	for _, arg := range args {
-		taskID, err := service.PatchVolume(arg, patchRequest)
+		task, err := service.PatchVolume(arg, patchRequest)
 		if err != nil {
 			output.OutputWithErrorLevelf("Error updating volume [%s]: %s", arg, err)
 			continue
@@ -185,9 +185,9 @@ func ecloudVolumeUpdate(service ecloud.ECloudService, cmd *cobra.Command, args [
 
 		waitFlag, _ := cmd.Flags().GetBool("wait")
 		if waitFlag {
-			err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskID, ecloud.TaskStatusComplete))
+			err := helper.WaitForCommand(TaskStatusWaitFunc(service, task.TaskID, ecloud.TaskStatusComplete))
 			if err != nil {
-				output.OutputWithErrorLevelf("Error waiting for volume task to complete for volume [%s]: %s", arg, err)
+				output.OutputWithErrorLevelf("Error waiting for task to complete for volume [%s]: %s", arg, err)
 				continue
 			}
 		}
@@ -237,7 +237,7 @@ func ecloudVolumeDelete(service ecloud.ECloudService, cmd *cobra.Command, args [
 		if waitFlag {
 			err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskID, ecloud.TaskStatusComplete))
 			if err != nil {
-				output.OutputWithErrorLevelf("Error waiting for volume [%s] to be removed: %s", arg, err)
+				output.OutputWithErrorLevelf("Error waiting for task to complete for volume [%s]: %s", arg, err)
 				continue
 			}
 		}

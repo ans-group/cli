@@ -263,8 +263,13 @@ func Test_ecloudVolumeUpdate(t *testing.T) {
 			Name: "testvolume",
 		}
 
+		resp := ecloud.TaskReference{
+			TaskID:     "task-abcdef12",
+			ResourceID: "vol-abcdef12",
+		}
+
 		gomock.InOrder(
-			service.EXPECT().PatchVolume("vol-abcdef12", req).Return("task-abcdef12", nil),
+			service.EXPECT().PatchVolume("vol-abcdef12", req).Return(resp, nil),
 			service.EXPECT().GetVolume("vol-abcdef12").Return(ecloud.Volume{}, nil),
 		)
 
@@ -283,8 +288,13 @@ func Test_ecloudVolumeUpdate(t *testing.T) {
 			Name: "testvolume",
 		}
 
+		resp := ecloud.TaskReference{
+			TaskID:     "task-abcdef12",
+			ResourceID: "vol-abcdef12",
+		}
+
 		gomock.InOrder(
-			service.EXPECT().PatchVolume("vol-abcdef12", req).Return("task-abcdef12", nil),
+			service.EXPECT().PatchVolume("vol-abcdef12", req).Return(resp, nil),
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, nil),
 			service.EXPECT().GetVolume("vol-abcdef12").Return(ecloud.Volume{}, nil),
 		)
@@ -304,12 +314,17 @@ func Test_ecloudVolumeUpdate(t *testing.T) {
 			Name: "testvolume",
 		}
 
+		resp := ecloud.TaskReference{
+			TaskID:     "task-abcdef12",
+			ResourceID: "vol-abcdef12",
+		}
+
 		gomock.InOrder(
-			service.EXPECT().PatchVolume("vol-abcdef12", req).Return("task-abcdef12", nil),
+			service.EXPECT().PatchVolume("vol-abcdef12", req).Return(resp, nil),
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for volume task to complete for volume [vol-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for volume [vol-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
 			ecloudVolumeUpdate(service, cmd, []string{"vol-abcdef12"})
 		})
 	})
@@ -320,7 +335,7 @@ func Test_ecloudVolumeUpdate(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().PatchVolume("vol-abcdef12", gomock.Any()).Return("task-abcdef12", errors.New("test error"))
+		service.EXPECT().PatchVolume("vol-abcdef12", gomock.Any()).Return(ecloud.TaskReference{}, errors.New("test error"))
 
 		test_output.AssertErrorOutput(t, "Error updating volume [vol-abcdef12]: test error\n", func() {
 			ecloudVolumeUpdate(service, &cobra.Command{}, []string{"vol-abcdef12"})
@@ -333,8 +348,13 @@ func Test_ecloudVolumeUpdate(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
+		resp := ecloud.TaskReference{
+			TaskID:     "task-abcdef12",
+			ResourceID: "vol-abcdef12",
+		}
+
 		gomock.InOrder(
-			service.EXPECT().PatchVolume("vol-abcdef12", gomock.Any()).Return("task-abcdef12", nil),
+			service.EXPECT().PatchVolume("vol-abcdef12", gomock.Any()).Return(resp, nil),
 			service.EXPECT().GetVolume("vol-abcdef12").Return(ecloud.Volume{}, errors.New("test error")),
 		)
 
@@ -396,7 +416,7 @@ func Test_ecloudVolumeDelete(t *testing.T) {
 		service.EXPECT().DeleteVolume("vol-abcdef12").Return("task-abcdef12", nil)
 		service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{}, errors.New("test error"))
 
-		test_output.AssertErrorOutput(t, "Error waiting for volume [vol-abcdef12] to be removed: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for volume [vol-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
 			ecloudVolumeDelete(service, cmd, []string{"vol-abcdef12"})
 		})
 	})

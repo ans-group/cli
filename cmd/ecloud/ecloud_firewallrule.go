@@ -131,6 +131,7 @@ func ecloudFirewallRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().String("name", "", "Name of rule")
 	cmd.Flags().Int("sequence", 0, "Sequence for rule")
 	cmd.Flags().Bool("enabled", false, "Specifies whether rule is enabled")
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the firewall rule has been completely created")
 
 	return cmd
 }
@@ -163,12 +164,20 @@ func ecloudFirewallRuleCreate(service ecloud.ECloudService, cmd *cobra.Command, 
 		createRequest.Sequence, _ = cmd.Flags().GetInt("sequence")
 	}
 
-	ruleID, err := service.CreateFirewallRule(createRequest)
+	taskRef, err := service.CreateFirewallRule(createRequest)
 	if err != nil {
 		return fmt.Errorf("Error creating firewall rule: %s", err)
 	}
 
-	rule, err := service.GetFirewallRule(ruleID)
+	waitFlag, _ := cmd.Flags().GetBool("wait")
+	if waitFlag {
+		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskRef.TaskID, ecloud.TaskStatusComplete))
+		if err != nil {
+			return fmt.Errorf("Error waiting for firewall rule task to complete: %s", err)
+		}
+	}
+
+	rule, err := service.GetFirewallRule(taskRef.ResourceID)
 	if err != nil {
 		return fmt.Errorf("Error retrieving new firewall rule: %s", err)
 	}
@@ -199,6 +208,7 @@ func ecloudFirewallRuleUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().String("name", "", "Name of rule")
 	cmd.Flags().Int("sequence", 0, "Sequence for rule")
 	cmd.Flags().Bool("enabled", false, "Specifies whether rule is enabled")
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the firewall rule has been completely updated")
 
 	return cmd
 }
@@ -248,10 +258,19 @@ func ecloudFirewallRuleUpdate(service ecloud.ECloudService, cmd *cobra.Command, 
 
 	var rules []ecloud.FirewallRule
 	for _, arg := range args {
-		err := service.PatchFirewallRule(arg, patchRequest)
+		task, err := service.PatchFirewallRule(arg, patchRequest)
 		if err != nil {
 			output.OutputWithErrorLevelf("Error updating firewall rule [%s]: %s", arg, err)
 			continue
+		}
+
+		waitFlag, _ := cmd.Flags().GetBool("wait")
+		if waitFlag {
+			err := helper.WaitForCommand(TaskStatusWaitFunc(service, task.TaskID, ecloud.TaskStatusComplete))
+			if err != nil {
+				output.OutputWithErrorLevelf("Error waiting for task to complete for firewall rule [%s]: %s", arg, err)
+				continue
+			}
 		}
 
 		rule, err := service.GetFirewallRule(arg)
@@ -267,7 +286,7 @@ func ecloudFirewallRuleUpdate(service ecloud.ECloudService, cmd *cobra.Command, 
 }
 
 func ecloudFirewallRuleDeleteCmd(f factory.ClientFactory) *cobra.Command {
-	return &cobra.Command{
+	cmd := &cobra.Command{
 		Use:     "delete <rule: id>...",
 		Short:   "Removes a firewall rule",
 		Long:    "This command removes one or more firewall rules",
@@ -281,13 +300,27 @@ func ecloudFirewallRuleDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		},
 		RunE: ecloudCobraRunEFunc(f, ecloudFirewallRuleDelete),
 	}
+
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the firewall rule has been completely removed")
+
+	return cmd
 }
 
 func ecloudFirewallRuleDelete(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	for _, arg := range args {
-		err := service.DeleteFirewallRule(arg)
+		taskID, err := service.DeleteFirewallRule(arg)
 		if err != nil {
 			output.OutputWithErrorLevelf("Error removing firewall rule [%s]: %s", arg, err)
+			continue
+		}
+
+		waitFlag, _ := cmd.Flags().GetBool("wait")
+		if waitFlag {
+			err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskID, ecloud.TaskStatusComplete))
+			if err != nil {
+				output.OutputWithErrorLevelf("Error waiting for task to complete for firewall rule [%s]: %s", arg, err)
+				continue
+			}
 		}
 	}
 	return nil

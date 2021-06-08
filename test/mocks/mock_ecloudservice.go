@@ -80,10 +80,10 @@ func (mr *MockECloudServiceMockRecorder) CloneVirtualMachine(arg0, arg1 interfac
 }
 
 // CreateFirewallPolicy mocks base method
-func (m *MockECloudService) CreateFirewallPolicy(arg0 ecloud.CreateFirewallPolicyRequest) (string, error) {
+func (m *MockECloudService) CreateFirewallPolicy(arg0 ecloud.CreateFirewallPolicyRequest) (ecloud.TaskReference, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateFirewallPolicy", arg0)
-	ret0, _ := ret[0].(string)
+	ret0, _ := ret[0].(ecloud.TaskReference)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -95,10 +95,10 @@ func (mr *MockECloudServiceMockRecorder) CreateFirewallPolicy(arg0 interface{}) 
 }
 
 // CreateFirewallRule mocks base method
-func (m *MockECloudService) CreateFirewallRule(arg0 ecloud.CreateFirewallRuleRequest) (string, error) {
+func (m *MockECloudService) CreateFirewallRule(arg0 ecloud.CreateFirewallRuleRequest) (ecloud.TaskReference, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateFirewallRule", arg0)
-	ret0, _ := ret[0].(string)
+	ret0, _ := ret[0].(ecloud.TaskReference)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -110,10 +110,10 @@ func (mr *MockECloudServiceMockRecorder) CreateFirewallRule(arg0 interface{}) *g
 }
 
 // CreateFirewallRulePort mocks base method
-func (m *MockECloudService) CreateFirewallRulePort(arg0 ecloud.CreateFirewallRulePortRequest) (string, error) {
+func (m *MockECloudService) CreateFirewallRulePort(arg0 ecloud.CreateFirewallRulePortRequest) (ecloud.TaskReference, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateFirewallRulePort", arg0)
-	ret0, _ := ret[0].(string)
+	ret0, _ := ret[0].(ecloud.TaskReference)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -362,11 +362,12 @@ func (mr *MockECloudServiceMockRecorder) CreateVolume(arg0 interface{}) *gomock.
 }
 
 // DeleteFirewallPolicy mocks base method
-func (m *MockECloudService) DeleteFirewallPolicy(arg0 string) error {
+func (m *MockECloudService) DeleteFirewallPolicy(arg0 string) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteFirewallPolicy", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // DeleteFirewallPolicy indicates an expected call of DeleteFirewallPolicy
@@ -376,11 +377,12 @@ func (mr *MockECloudServiceMockRecorder) DeleteFirewallPolicy(arg0 interface{}) 
 }
 
 // DeleteFirewallRule mocks base method
-func (m *MockECloudService) DeleteFirewallRule(arg0 string) error {
+func (m *MockECloudService) DeleteFirewallRule(arg0 string) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteFirewallRule", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // DeleteFirewallRule indicates an expected call of DeleteFirewallRule
@@ -390,11 +392,12 @@ func (mr *MockECloudServiceMockRecorder) DeleteFirewallRule(arg0 interface{}) *g
 }
 
 // DeleteFirewallRulePort mocks base method
-func (m *MockECloudService) DeleteFirewallRulePort(arg0 string) error {
+func (m *MockECloudService) DeleteFirewallRulePort(arg0 string) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteFirewallRulePort", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // DeleteFirewallRulePort indicates an expected call of DeleteFirewallRulePort
@@ -3267,11 +3270,12 @@ func (mr *MockECloudServiceMockRecorder) LockInstance(arg0 interface{}) *gomock.
 }
 
 // PatchFirewallPolicy mocks base method
-func (m *MockECloudService) PatchFirewallPolicy(arg0 string, arg1 ecloud.PatchFirewallPolicyRequest) error {
+func (m *MockECloudService) PatchFirewallPolicy(arg0 string, arg1 ecloud.PatchFirewallPolicyRequest) (ecloud.TaskReference, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PatchFirewallPolicy", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(ecloud.TaskReference)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // PatchFirewallPolicy indicates an expected call of PatchFirewallPolicy
@@ -3281,11 +3285,12 @@ func (mr *MockECloudServiceMockRecorder) PatchFirewallPolicy(arg0, arg1 interfac
 }
 
 // PatchFirewallRule mocks base method
-func (m *MockECloudService) PatchFirewallRule(arg0 string, arg1 ecloud.PatchFirewallRuleRequest) error {
+func (m *MockECloudService) PatchFirewallRule(arg0 string, arg1 ecloud.PatchFirewallRuleRequest) (ecloud.TaskReference, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PatchFirewallRule", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(ecloud.TaskReference)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // PatchFirewallRule indicates an expected call of PatchFirewallRule
@@ -3295,11 +3300,12 @@ func (mr *MockECloudServiceMockRecorder) PatchFirewallRule(arg0, arg1 interface{
 }
 
 // PatchFirewallRulePort mocks base method
-func (m *MockECloudService) PatchFirewallRulePort(arg0 string, arg1 ecloud.PatchFirewallRulePortRequest) error {
+func (m *MockECloudService) PatchFirewallRulePort(arg0 string, arg1 ecloud.PatchFirewallRulePortRequest) (ecloud.TaskReference, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PatchFirewallRulePort", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(ecloud.TaskReference)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // PatchFirewallRulePort indicates an expected call of PatchFirewallRulePort
@@ -3478,10 +3484,10 @@ func (mr *MockECloudServiceMockRecorder) PatchVirtualMachineTag(arg0, arg1, arg2
 }
 
 // PatchVolume mocks base method
-func (m *MockECloudService) PatchVolume(arg0 string, arg1 ecloud.PatchVolumeRequest) (string, error) {
+func (m *MockECloudService) PatchVolume(arg0 string, arg1 ecloud.PatchVolumeRequest) (ecloud.TaskReference, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PatchVolume", arg0, arg1)
-	ret0, _ := ret[0].(string)
+	ret0, _ := ret[0].(ecloud.TaskReference)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
