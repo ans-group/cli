@@ -244,19 +244,3 @@ func ecloudFirewallPolicyDelete(service ecloud.ECloudService, cmd *cobra.Command
 	}
 	return nil
 }
-
-func FirewallPolicyNotFoundWaitFunc(service ecloud.ECloudService, firewallPolicyID string) helper.WaitFunc {
-	return func() (finished bool, err error) {
-		_, err = service.GetFirewallPolicy(firewallPolicyID)
-		if err != nil {
-			switch err.(type) {
-			case *ecloud.FirewallPolicyNotFoundError:
-				return true, nil
-			default:
-				return false, fmt.Errorf("Failed to retrieve firewall policy [%s]: %s", firewallPolicyID, err)
-			}
-		}
-
-		return false, nil
-	}
-}
