@@ -64,5 +64,5 @@ func ecloudSolutionHostList(service ecloud.ECloudService, cmd *cobra.Command, ar
 		return fmt.Errorf("Error retrieving solution hosts: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudHostsProvider(hosts))
+	return output.CommandOutput(cmd, OutputECloudV1HostsProvider(hosts))
 }

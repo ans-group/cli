@@ -8,7 +8,6 @@ import (
 	"github.com/ukfast/cli/internal/pkg/factory"
 	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/sdk-go/pkg/connection"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
@@ -27,6 +26,7 @@ func ecloudVolumeRootCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Child root commands
 	cmd.AddCommand(ecloudVolumeInstanceRootCmd(f))
+	cmd.AddCommand(ecloudVolumeTaskRootCmd(f))
 
 	return cmd
 }
@@ -111,7 +111,7 @@ func ecloudVolumeCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().Int("capacity", 0, "Capacity of volume in GiB")
 	cmd.MarkFlagRequired("capacity")
 	cmd.Flags().Int("iops", 0, "IOPS for volume")
-	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the volume has been completely created before continuing on")
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the volume has been completely created")
 
 	return cmd
 }
@@ -132,7 +132,7 @@ func ecloudVolumeCreate(service ecloud.ECloudService, cmd *cobra.Command, args [
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
-		err := helper.WaitForCommand(VolumeTaskStatusWaitFunc(service, taskRef.ResourceID, taskRef.TaskID, ecloud.TaskStatusComplete))
+		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskRef.TaskID, ecloud.TaskStatusComplete))
 		if err != nil {
 			return fmt.Errorf("Error waiting for volume task to complete: %s", err)
 		}
@@ -163,7 +163,7 @@ func ecloudVolumeUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("name", "", "Name of volume")
-	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the volume has been updated before continuing on")
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the volume has been updated")
 
 	return cmd
 }
@@ -177,7 +177,7 @@ func ecloudVolumeUpdate(service ecloud.ECloudService, cmd *cobra.Command, args [
 
 	var volumes []ecloud.Volume
 	for _, arg := range args {
-		taskID, err := service.PatchVolume(arg, patchRequest)
+		task, err := service.PatchVolume(arg, patchRequest)
 		if err != nil {
 			output.OutputWithErrorLevelf("Error updating volume [%s]: %s", arg, err)
 			continue
@@ -185,9 +185,9 @@ func ecloudVolumeUpdate(service ecloud.ECloudService, cmd *cobra.Command, args [
 
 		waitFlag, _ := cmd.Flags().GetBool("wait")
 		if waitFlag {
-			err := helper.WaitForCommand(VolumeTaskStatusWaitFunc(service, arg, taskID, ecloud.TaskStatusComplete))
+			err := helper.WaitForCommand(TaskStatusWaitFunc(service, task.TaskID, ecloud.TaskStatusComplete))
 			if err != nil {
-				output.OutputWithErrorLevelf("Error waiting for volume task to complete for volume [%s]: %s", arg, err)
+				output.OutputWithErrorLevelf("Error waiting for task to complete for volume [%s]: %s", arg, err)
 				continue
 			}
 		}
@@ -206,7 +206,7 @@ func ecloudVolumeUpdate(service ecloud.ECloudService, cmd *cobra.Command, args [
 
 func ecloudVolumeDeleteCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "delete <volume: id...>",
+		Use:     "delete <volume: id>...",
 		Short:   "Removes a volume",
 		Long:    "This command removes one or more volumes",
 		Example: "ukfast ecloud volume delete vol-abcdef12",
@@ -220,52 +220,27 @@ func ecloudVolumeDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		RunE: ecloudCobraRunEFunc(f, ecloudVolumeDelete),
 	}
 
-	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the volume has been completely removed before continuing on")
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the volume has been completely removed")
 
 	return cmd
 }
 
 func ecloudVolumeDelete(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	for _, arg := range args {
-		_, err := service.DeleteVolume(arg)
+		taskID, err := service.DeleteVolume(arg)
 		if err != nil {
 			output.OutputWithErrorLevelf("Error removing volume [%s]: %s", arg, err)
+			continue
 		}
 
 		waitFlag, _ := cmd.Flags().GetBool("wait")
 		if waitFlag {
-			err := helper.WaitForCommand(VolumeNotFoundWaitFunc(service, arg))
+			err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskID, ecloud.TaskStatusComplete))
 			if err != nil {
-				output.OutputWithErrorLevelf("Error waiting for volume [%s] to be removed: %s", arg, err)
+				output.OutputWithErrorLevelf("Error waiting for task to complete for volume [%s]: %s", arg, err)
 				continue
 			}
 		}
 	}
 	return nil
-}
-
-func VolumeTaskStatusWaitFunc(service ecloud.ECloudService, volumeID string, taskID string, status ecloud.TaskStatus) helper.WaitFunc {
-	return TaskStatusFromResourceTaskListWaitFunc(service, taskID, TaskStatusFromVolumeTaskListFunc(service, volumeID), status)
-}
-
-func TaskStatusFromVolumeTaskListFunc(service ecloud.ECloudService, volumeID string) TaskFromResourceTaskListFunc {
-	return func(params connection.APIRequestParameters) ([]ecloud.Task, error) {
-		return service.GetVolumeTasks(volumeID, params)
-	}
-}
-
-func VolumeNotFoundWaitFunc(service ecloud.ECloudService, volumeID string) helper.WaitFunc {
-	return func() (finished bool, err error) {
-		_, err = service.GetVolume(volumeID)
-		if err != nil {
-			switch err.(type) {
-			case *ecloud.VolumeNotFoundError:
-				return true, nil
-			default:
-				return false, fmt.Errorf("Failed to retrieve volume [%s]: %s", volumeID, err)
-			}
-		}
-
-		return false, nil
-	}
 }

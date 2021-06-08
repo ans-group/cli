@@ -207,7 +207,7 @@ func ecloudSSHKeyPairUpdate(service ecloud.ECloudService, fs afero.Fs, cmd *cobr
 
 func ecloudSSHKeyPairDeleteCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
-		Use:     "delete <keypair: id...>",
+		Use:     "delete <keypair: id>...",
 		Short:   "Removes an SSH key pair",
 		Long:    "This command removes one or more SSH key pairs",
 		Example: "ukfast ecloud sshkeypair delete ssh-abcdef12",

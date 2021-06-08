@@ -126,7 +126,7 @@ func OutputECloudSitesProvider(sites []ecloud.Site) output.OutputHandlerDataProv
 	)
 }
 
-func OutputECloudHostsProvider(hosts []ecloud.Host) output.OutputHandlerDataProvider {
+func OutputECloudV1HostsProvider(hosts []ecloud.V1Host) output.OutputHandlerDataProvider {
 	return output.NewGenericOutputHandlerDataProvider(
 		output.WithData(hosts),
 		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
@@ -390,4 +390,8 @@ func OutputECloudImageMetadataProvider(metadata []ecloud.ImageMetadata) output.O
 
 func OutputECloudSSHKeyPairsProvider(keypairs []ecloud.SSHKeyPair) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(keypairs).WithDefaultFields([]string{"id", "name"})
+}
+
+func OutputECloudTasksProvider(tasks []ecloud.Task) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(tasks).WithDefaultFields([]string{"id", "resource_id", "name", "status", "created_at", "updated_at"})
 }

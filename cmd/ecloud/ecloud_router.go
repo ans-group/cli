@@ -28,6 +28,7 @@ func ecloudRouterRootCmd(f factory.ClientFactory) *cobra.Command {
 	// Child root commands
 	cmd.AddCommand(ecloudRouterFirewallPolicyRootCmd(f))
 	cmd.AddCommand(ecloudRouterNetworkRootCmd(f))
+	cmd.AddCommand(ecloudRouterTaskRootCmd(f))
 
 	return cmd
 }
@@ -110,7 +111,7 @@ func ecloudRouterCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().String("vpc", "", "ID of VPC")
 	cmd.MarkFlagRequired("vpc")
 	cmd.Flags().String("throughput", "", "ID of router throughput to assign")
-	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the router has been completely created before continuing on")
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the router has been completely created")
 
 	return cmd
 }
@@ -166,6 +167,7 @@ func ecloudRouterUpdateCmd(f factory.ClientFactory) *cobra.Command {
 
 	cmd.Flags().String("name", "", "Name of router")
 	cmd.Flags().String("throughput", "", "ID of router throughput to assign")
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the router has been completely updated")
 
 	return cmd
 }
@@ -189,6 +191,15 @@ func ecloudRouterUpdate(service ecloud.ECloudService, cmd *cobra.Command, args [
 			continue
 		}
 
+		waitFlag, _ := cmd.Flags().GetBool("wait")
+		if waitFlag {
+			err := helper.WaitForCommand(RouterResourceSyncStatusWaitFunc(service, arg, ecloud.SyncStatusComplete))
+			if err != nil {
+				output.OutputWithErrorLevelf("Error waiting for router [%s] sync: %s", arg, err)
+				continue
+			}
+		}
+
 		router, err := service.GetRouter(arg)
 		if err != nil {
 			output.OutputWithErrorLevelf("Error retrieving updated router [%s]: %s", arg, err)
@@ -202,8 +213,8 @@ func ecloudRouterUpdate(service ecloud.ECloudService, cmd *cobra.Command, args [
 }
 
 func ecloudRouterDeleteCmd(f factory.ClientFactory) *cobra.Command {
-	return &cobra.Command{
-		Use:     "delete <router: id...>",
+	cmd := &cobra.Command{
+		Use:     "delete <router: id>...",
 		Short:   "Removes an router",
 		Long:    "This command removes one or more routers",
 		Example: "ukfast ecloud router delete rtr-abcdef12",
@@ -216,6 +227,10 @@ func ecloudRouterDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		},
 		RunE: ecloudCobraRunEFunc(f, ecloudRouterDelete),
 	}
+
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the router has been completely removed")
+
+	return cmd
 }
 
 func ecloudRouterDelete(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
@@ -223,6 +238,16 @@ func ecloudRouterDelete(service ecloud.ECloudService, cmd *cobra.Command, args [
 		err := service.DeleteRouter(arg)
 		if err != nil {
 			output.OutputWithErrorLevelf("Error removing router [%s]: %s", arg, err)
+			continue
+		}
+
+		waitFlag, _ := cmd.Flags().GetBool("wait")
+		if waitFlag {
+			err := helper.WaitForCommand(RouterNotFoundWaitFunc(service, arg))
+			if err != nil {
+				output.OutputWithErrorLevelf("Error waiting for removal of router [%s]: %s", arg, err)
+				continue
+			}
 		}
 	}
 	return nil
@@ -265,4 +290,20 @@ func RouterResourceSyncStatusWaitFunc(service ecloud.ECloudService, routerID str
 		}
 		return router.Sync.Status, nil
 	}, status)
+}
+
+func RouterNotFoundWaitFunc(service ecloud.ECloudService, routerID string) helper.WaitFunc {
+	return func() (finished bool, err error) {
+		_, err = service.GetRouter(routerID)
+		if err != nil {
+			switch err.(type) {
+			case *ecloud.RouterNotFoundError:
+				return true, nil
+			default:
+				return false, fmt.Errorf("Failed to retrieve router [%s]: %s", routerID, err)
+			}
+		}
+
+		return false, nil
+	}
 }

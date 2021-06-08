@@ -204,7 +204,7 @@ func safednsZoneUpdate(service safedns.SafeDNSService, cmd *cobra.Command, args 
 
 func safednsZoneDeleteCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
-		Use:     "delete <zone: name...>",
+		Use:     "delete <zone: name>...",
 		Short:   "Removes a zone",
 		Long:    "This command removes one or more zones",
 		Example: "ukfast safedns zone delete ukfast.co.uk\nukfast safedns zone delete 123",
