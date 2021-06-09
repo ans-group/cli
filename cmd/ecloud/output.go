@@ -395,3 +395,15 @@ func OutputECloudSSHKeyPairsProvider(keypairs []ecloud.SSHKeyPair) output.Output
 func OutputECloudTasksProvider(tasks []ecloud.Task) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(tasks).WithDefaultFields([]string{"id", "resource_id", "name", "status", "created_at", "updated_at"})
 }
+
+func OutputECloudNetworkPoliciesProvider(policies []ecloud.NetworkPolicy) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(policies).WithDefaultFields([]string{"id", "name", "router_id", "sync_status"})
+}
+
+func OutputECloudNetworkRulesProvider(rules []ecloud.NetworkRule) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(rules).WithDefaultFields([]string{"id", "name", "network_policy_id", "source", "destination", "action", "direction", "enabled"})
+}
+
+func OutputECloudNetworkRulePortsProvider(rules []ecloud.NetworkRulePort) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(rules).WithDefaultFields([]string{"id", "name", "network_rule_id", "protocol", "source", "destination"})
+}
