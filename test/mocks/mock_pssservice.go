@@ -50,6 +50,21 @@ func (mr *MockPSSServiceMockRecorder) CreateRequest(arg0 interface{}) *gomock.Ca
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateRequest", reflect.TypeOf((*MockPSSService)(nil).CreateRequest), arg0)
 }
 
+// CreateRequestFeedback mocks base method
+func (m *MockPSSService) CreateRequestFeedback(arg0 int, arg1 pss.CreateFeedbackRequest) (int, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateRequestFeedback", arg0, arg1)
+	ret0, _ := ret[0].(int)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateRequestFeedback indicates an expected call of CreateRequestFeedback
+func (mr *MockPSSServiceMockRecorder) CreateRequestFeedback(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateRequestFeedback", reflect.TypeOf((*MockPSSService)(nil).CreateRequestFeedback), arg0, arg1)
+}
+
 // CreateRequestReply mocks base method
 func (m *MockPSSService) CreateRequestReply(arg0 int, arg1 pss.CreateReplyRequest) (string, error) {
 	m.ctrl.T.Helper()
@@ -152,6 +167,21 @@ func (m *MockPSSService) GetRequestConversationPaginated(arg0 int, arg1 connecti
 func (mr *MockPSSServiceMockRecorder) GetRequestConversationPaginated(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRequestConversationPaginated", reflect.TypeOf((*MockPSSService)(nil).GetRequestConversationPaginated), arg0, arg1)
+}
+
+// GetRequestFeedback mocks base method
+func (m *MockPSSService) GetRequestFeedback(arg0 int) (pss.Feedback, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetRequestFeedback", arg0)
+	ret0, _ := ret[0].(pss.Feedback)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetRequestFeedback indicates an expected call of GetRequestFeedback
+func (mr *MockPSSServiceMockRecorder) GetRequestFeedback(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRequestFeedback", reflect.TypeOf((*MockPSSService)(nil).GetRequestFeedback), arg0)
 }
 
 // GetRequestReplies mocks base method

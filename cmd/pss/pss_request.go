@@ -28,6 +28,7 @@ func pssRequestRootCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Child root commands
 	cmd.AddCommand(pssRequestReplyRootCmd(f))
+	cmd.AddCommand(pssRequestFeedbackRootCmd(f))
 
 	return cmd
 }
