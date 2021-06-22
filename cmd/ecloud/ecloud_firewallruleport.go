@@ -33,14 +33,7 @@ func ecloudFirewallRulePortListCmd(f factory.ClientFactory) *cobra.Command {
 		Short:   "Lists firewall rule ports",
 		Long:    "This command lists firewall rule ports",
 		Example: "ukfast ecloud firewallruleport list",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := f.NewClient()
-			if err != nil {
-				return err
-			}
-
-			return ecloudFirewallRulePortList(c.ECloudService(), cmd, args)
-		},
+		RunE:    ecloudCobraRunEFunc(f, ecloudFirewallRulePortList),
 	}
 
 	cmd.Flags().String("rule", "", "Firewall rule ID for filtering")
@@ -78,14 +71,7 @@ func ecloudFirewallRulePortShowCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := f.NewClient()
-			if err != nil {
-				return err
-			}
-
-			return ecloudFirewallRulePortShow(c.ECloudService(), cmd, args)
-		},
+		RunE: ecloudCobraRunEFunc(f, ecloudFirewallRulePortShow),
 	}
 }
 

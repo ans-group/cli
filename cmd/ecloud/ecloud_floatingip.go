@@ -35,14 +35,7 @@ func ecloudFloatingIPListCmd(f factory.ClientFactory) *cobra.Command {
 		Short:   "Lists floating IPs",
 		Long:    "This command lists floating IPs",
 		Example: "ukfast ecloud floatingip list",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := f.NewClient()
-			if err != nil {
-				return err
-			}
-
-			return ecloudFloatingIPList(c.ECloudService(), cmd, args)
-		},
+		RunE:    ecloudCobraRunEFunc(f, ecloudFloatingIPList),
 	}
 }
 
@@ -73,14 +66,7 @@ func ecloudFloatingIPShowCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := f.NewClient()
-			if err != nil {
-				return err
-			}
-
-			return ecloudFloatingIPShow(c.ECloudService(), cmd, args)
-		},
+		RunE: ecloudCobraRunEFunc(f, ecloudFloatingIPShow),
 	}
 }
 
