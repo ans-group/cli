@@ -140,10 +140,10 @@ func (mr *MockECloudServiceMockRecorder) CreateFloatingIP(arg0 interface{}) *gom
 }
 
 // CreateHost mocks base method
-func (m *MockECloudService) CreateHost(arg0 ecloud.CreateHostRequest) (string, error) {
+func (m *MockECloudService) CreateHost(arg0 ecloud.CreateHostRequest) (ecloud.TaskReference, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateHost", arg0)
-	ret0, _ := ret[0].(string)
+	ret0, _ := ret[0].(ecloud.TaskReference)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -155,10 +155,10 @@ func (mr *MockECloudServiceMockRecorder) CreateHost(arg0 interface{}) *gomock.Ca
 }
 
 // CreateHostGroup mocks base method
-func (m *MockECloudService) CreateHostGroup(arg0 ecloud.CreateHostGroupRequest) (string, error) {
+func (m *MockECloudService) CreateHostGroup(arg0 ecloud.CreateHostGroupRequest) (ecloud.TaskReference, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateHostGroup", arg0)
-	ret0, _ := ret[0].(string)
+	ret0, _ := ret[0].(ecloud.TaskReference)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -466,11 +466,12 @@ func (mr *MockECloudServiceMockRecorder) DeleteFloatingIP(arg0 interface{}) *gom
 }
 
 // DeleteHost mocks base method
-func (m *MockECloudService) DeleteHost(arg0 string) error {
+func (m *MockECloudService) DeleteHost(arg0 string) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteHost", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // DeleteHost indicates an expected call of DeleteHost
@@ -480,11 +481,12 @@ func (mr *MockECloudServiceMockRecorder) DeleteHost(arg0 interface{}) *gomock.Ca
 }
 
 // DeleteHostGroup mocks base method
-func (m *MockECloudService) DeleteHostGroup(arg0 string) error {
+func (m *MockECloudService) DeleteHostGroup(arg0 string) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteHostGroup", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // DeleteHostGroup indicates an expected call of DeleteHostGroup
@@ -3644,11 +3646,12 @@ func (mr *MockECloudServiceMockRecorder) PatchFloatingIP(arg0, arg1 interface{})
 }
 
 // PatchHost mocks base method
-func (m *MockECloudService) PatchHost(arg0 string, arg1 ecloud.PatchHostRequest) error {
+func (m *MockECloudService) PatchHost(arg0 string, arg1 ecloud.PatchHostRequest) (ecloud.TaskReference, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PatchHost", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(ecloud.TaskReference)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // PatchHost indicates an expected call of PatchHost
@@ -3658,11 +3661,12 @@ func (mr *MockECloudServiceMockRecorder) PatchHost(arg0, arg1 interface{}) *gomo
 }
 
 // PatchHostGroup mocks base method
-func (m *MockECloudService) PatchHostGroup(arg0 string, arg1 ecloud.PatchHostGroupRequest) error {
+func (m *MockECloudService) PatchHostGroup(arg0 string, arg1 ecloud.PatchHostGroupRequest) (ecloud.TaskReference, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PatchHostGroup", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(ecloud.TaskReference)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // PatchHostGroup indicates an expected call of PatchHostGroup

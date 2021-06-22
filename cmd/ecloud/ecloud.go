@@ -28,7 +28,7 @@ func ECloudRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 		cmd.AddCommand(ecloudVirtualMachineRootCmd(f))
 		cmd.AddCommand(ecloudSolutionRootCmd(f))
 		cmd.AddCommand(ecloudSiteRootCmd(f))
-		cmd.AddCommand(ecloudHostRootCmd(f))
+		cmd.AddCommand(ecloudV1HostRootCmd(f))
 		cmd.AddCommand(ecloudFirewallRootCmd(f))
 		cmd.AddCommand(ecloudPodRootCmd(f))
 		cmd.AddCommand(ecloudDatastoreRootCmd(f))
@@ -37,11 +37,15 @@ func ECloudRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 	}
 	// -- eCloud v2
 	if v2envset || !v1envset {
+		cmd.AddCommand(ecloudAvailabilityZoneRootCmd(f))
 		cmd.AddCommand(ecloudDHCPRootCmd(f))
 		cmd.AddCommand(ecloudFirewallPolicyRootCmd(f))
 		cmd.AddCommand(ecloudFirewallRuleRootCmd(f))
 		cmd.AddCommand(ecloudFirewallRulePortRootCmd(f))
 		cmd.AddCommand(ecloudFloatingIPRootCmd(f))
+		cmd.AddCommand(ecloudHostRootCmd(f))
+		cmd.AddCommand(ecloudHostGroupRootCmd(f))
+		cmd.AddCommand(ecloudHostSpecRootCmd(f))
 		cmd.AddCommand(ecloudImageRootCmd(f))
 		cmd.AddCommand(ecloudInstanceRootCmd(f))
 		cmd.AddCommand(ecloudNetworkRootCmd(f))

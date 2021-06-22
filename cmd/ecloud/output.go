@@ -407,3 +407,19 @@ func OutputECloudNetworkRulesProvider(rules []ecloud.NetworkRule) output.OutputH
 func OutputECloudNetworkRulePortsProvider(rules []ecloud.NetworkRulePort) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(rules).WithDefaultFields([]string{"id", "name", "network_rule_id", "protocol", "source", "destination"})
 }
+
+func OutputECloudHostGroupsProvider(groups []ecloud.HostGroup) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(groups).WithDefaultFields([]string{"id", "name", "vpc_id", "sync_status"})
+}
+
+func OutputECloudHostsProvider(hosts []ecloud.Host) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(hosts).WithDefaultFields([]string{"id", "name", "host_group_id", "sync_status"})
+}
+
+func OutputECloudHostSpecsProvider(specs []ecloud.HostSpec) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(specs).WithDefaultFields([]string{"id", "name", "cpu_sockets", "cpu_cores", "cpu_type", "cpu_clock_speed", "ram_capacity"})
+}
+
+func OutputECloudAvailabilityZonesProvider(azs []ecloud.AvailabilityZone) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(azs).WithDefaultFields([]string{"id", "name", "region_id"})
+}
