@@ -36,7 +36,8 @@ func ecloudAvailabilityZoneListCmd(f factory.ClientFactory) *cobra.Command {
 		RunE:    ecloudCobraRunEFunc(f, ecloudAvailabilityZoneList),
 	}
 
-	cmd.Flags().String("policy", "", "Availability policy ID for filtering")
+	cmd.Flags().String("name", "", "Availability zone name for filtering")
+	cmd.Flags().String("region", "", "Region ID for filtering")
 
 	return cmd
 }
@@ -44,7 +45,7 @@ func ecloudAvailabilityZoneListCmd(f factory.ClientFactory) *cobra.Command {
 func ecloudAvailabilityZoneList(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	params, err := helper.GetAPIRequestParametersFromFlags(cmd,
 		helper.NewStringFilterFlagOption("name", "name"),
-		helper.NewStringFilterFlagOption("policy", "availability_policy_id"),
+		helper.NewStringFilterFlagOption("region", "region_id"),
 	)
 	if err != nil {
 		return err

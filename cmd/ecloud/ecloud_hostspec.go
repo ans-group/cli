@@ -33,7 +33,7 @@ func ecloudHostSpecListCmd(f factory.ClientFactory) *cobra.Command {
 		RunE:    ecloudCobraRunEFunc(f, ecloudHostSpecList),
 	}
 
-	cmd.Flags().String("policy", "", "Host policy ID for filtering")
+	cmd.Flags().String("name", "", "Host spec name for filtering")
 
 	return cmd
 }
@@ -41,7 +41,6 @@ func ecloudHostSpecListCmd(f factory.ClientFactory) *cobra.Command {
 func ecloudHostSpecList(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	params, err := helper.GetAPIRequestParametersFromFlags(cmd,
 		helper.NewStringFilterFlagOption("name", "name"),
-		helper.NewStringFilterFlagOption("policy", "host_policy_id"),
 	)
 	if err != nil {
 		return err

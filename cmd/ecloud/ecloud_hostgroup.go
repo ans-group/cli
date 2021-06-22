@@ -36,7 +36,7 @@ func ecloudHostGroupListCmd(f factory.ClientFactory) *cobra.Command {
 		RunE:    ecloudCobraRunEFunc(f, ecloudHostGroupList),
 	}
 
-	cmd.Flags().String("policy", "", "Host policy ID for filtering")
+	cmd.Flags().String("name", "", "Host group name for filtering")
 
 	return cmd
 }
@@ -44,7 +44,6 @@ func ecloudHostGroupListCmd(f factory.ClientFactory) *cobra.Command {
 func ecloudHostGroupList(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	params, err := helper.GetAPIRequestParametersFromFlags(cmd,
 		helper.NewStringFilterFlagOption("name", "name"),
-		helper.NewStringFilterFlagOption("policy", "host_policy_id"),
 	)
 	if err != nil {
 		return err
