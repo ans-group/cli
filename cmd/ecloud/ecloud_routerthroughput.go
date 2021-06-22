@@ -30,14 +30,7 @@ func ecloudRouterThroughputListCmd(f factory.ClientFactory) *cobra.Command {
 		Short:   "Lists router throughputs",
 		Long:    "This command lists router throughputs",
 		Example: "ukfast ecloud routerthroughput list",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := f.NewClient()
-			if err != nil {
-				return err
-			}
-
-			return ecloudRouterThroughputList(c.ECloudService(), cmd, args)
-		},
+		RunE:    ecloudCobraRunEFunc(f, ecloudRouterThroughputList),
 	}
 
 	cmd.Flags().String("name", "", "Router throughput name for filtering")
@@ -76,14 +69,7 @@ func ecloudRouterThroughputShowCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := f.NewClient()
-			if err != nil {
-				return err
-			}
-
-			return ecloudRouterThroughputShow(c.ECloudService(), cmd, args)
-		},
+		RunE: ecloudCobraRunEFunc(f, ecloudRouterThroughputShow),
 	}
 }
 
