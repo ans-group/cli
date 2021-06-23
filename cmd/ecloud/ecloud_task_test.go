@@ -10,6 +10,7 @@ import (
 	"github.com/ukfast/cli/internal/pkg/clierrors"
 	"github.com/ukfast/cli/test/mocks"
 	"github.com/ukfast/cli/test/test_output"
+	"github.com/ukfast/sdk-go/pkg/connection"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
@@ -20,7 +21,7 @@ func Test_ecloudTaskList(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().GetTasks(gomock.Any()).Return([]ecloud.Task{}, nil).Times(1)
+		service.EXPECT().GetTasksPaginated(gomock.Any()).Return(&ecloud.PaginatedTask{PaginatedBase: &connection.PaginatedBase{}}, nil).Times(1)
 
 		ecloudTaskList(service, &cobra.Command{}, []string{})
 	})
@@ -45,7 +46,7 @@ func Test_ecloudTaskList(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().GetTasks(gomock.Any()).Return([]ecloud.Task{}, errors.New("test error")).Times(1)
+		service.EXPECT().GetTasksPaginated(gomock.Any()).Return(&ecloud.PaginatedTask{PaginatedBase: &connection.PaginatedBase{}}, errors.New("test error")).Times(1)
 
 		err := ecloudTaskList(service, &cobra.Command{}, []string{})
 

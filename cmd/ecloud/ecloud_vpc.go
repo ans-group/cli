@@ -39,14 +39,7 @@ func ecloudVPCListCmd(f factory.ClientFactory) *cobra.Command {
 		Short:   "Lists VPCs",
 		Long:    "This command lists VPCs",
 		Example: "ukfast ecloud vpc list",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := f.NewClient()
-			if err != nil {
-				return err
-			}
-
-			return ecloudVPCList(c.ECloudService(), cmd, args)
-		},
+		RunE:    ecloudCobraRunEFunc(f, ecloudVPCList),
 	}
 
 	cmd.Flags().String("name", "", "VPC name for filtering")
@@ -81,14 +74,7 @@ func ecloudVPCShowCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := f.NewClient()
-			if err != nil {
-				return err
-			}
-
-			return ecloudVPCShow(c.ECloudService(), cmd, args)
-		},
+		RunE: ecloudCobraRunEFunc(f, ecloudVPCShow),
 	}
 }
 
@@ -113,14 +99,7 @@ func ecloudVPCCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Short:   "Creates a VPC",
 		Long:    "This command creates a VPC",
 		Example: "ukfast ecloud vpc create",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := f.NewClient()
-			if err != nil {
-				return err
-			}
-
-			return ecloudVPCCreate(c.ECloudService(), cmd, args)
-		},
+		RunE:    ecloudCobraRunEFunc(f, ecloudVPCCreate),
 	}
 
 	// Setup flags
@@ -176,14 +155,7 @@ func ecloudVPCUpdateCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := f.NewClient()
-			if err != nil {
-				return err
-			}
-
-			return ecloudVPCUpdate(c.ECloudService(), cmd, args)
-		},
+		RunE: ecloudCobraRunEFunc(f, ecloudVPCUpdate),
 	}
 
 	cmd.Flags().String("name", "", "Name of VPC")

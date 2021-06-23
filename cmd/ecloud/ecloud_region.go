@@ -30,14 +30,7 @@ func ecloudRegionListCmd(f factory.ClientFactory) *cobra.Command {
 		Short:   "Lists regions",
 		Long:    "This command lists regions",
 		Example: "ukfast ecloud region list",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := f.NewClient()
-			if err != nil {
-				return err
-			}
-
-			return ecloudRegionList(c.ECloudService(), cmd, args)
-		},
+		RunE:    ecloudCobraRunEFunc(f, ecloudRegionList),
 	}
 
 	cmd.Flags().String("name", "", "Region name for filtering")
@@ -72,14 +65,7 @@ func ecloudRegionShowCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := f.NewClient()
-			if err != nil {
-				return err
-			}
-
-			return ecloudRegionShow(c.ECloudService(), cmd, args)
-		},
+		RunE: ecloudCobraRunEFunc(f, ecloudRegionShow),
 	}
 }
 

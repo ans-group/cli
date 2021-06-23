@@ -36,14 +36,7 @@ func ecloudInstanceConsoleSessionCreateCmd(f factory.ClientFactory) *cobra.Comma
 
 			return nil
 		},
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := f.NewClient()
-			if err != nil {
-				return err
-			}
-
-			return ecloudInstanceConsoleSessionCreate(c.ECloudService(), cmd, args)
-		},
+		RunE: ecloudCobraRunEFunc(f, ecloudInstanceConsoleSessionCreate),
 	}
 
 	cmd.Flags().Bool("browser", false, "Indicates session should be opened in default browser")

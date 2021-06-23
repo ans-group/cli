@@ -20,6 +20,7 @@ func ecloudTaskRootCmd(f factory.ClientFactory) *cobra.Command {
 	// Child commands
 	cmd.AddCommand(ecloudTaskListCmd(f))
 	cmd.AddCommand(ecloudTaskShowCmd(f))
+	cmd.AddCommand(ecloudTaskWaitCmd(f))
 
 	return cmd
 }
@@ -46,12 +47,12 @@ func ecloudTaskList(service ecloud.ECloudService, cmd *cobra.Command, args []str
 		return err
 	}
 
-	tasks, err := service.GetTasks(params)
+	paginatedTasks, err := service.GetTasksPaginated(params)
 	if err != nil {
 		return fmt.Errorf("Error retrieving tasks: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudTasksProvider(tasks))
+	return output.CommandOutputPaginated(cmd, OutputECloudTasksProvider(paginatedTasks.Items), paginatedTasks)
 }
 
 func ecloudTaskShowCmd(f factory.ClientFactory) *cobra.Command {
