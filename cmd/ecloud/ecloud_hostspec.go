@@ -59,7 +59,7 @@ func ecloudHostSpecShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <spec: id>...",
 		Short:   "Shows an host spec",
 		Long:    "This command shows one or more host specs",
-		Example: "ukfast ecloud hostspec show hs--abcdef12",
+		Example: "ukfast ecloud hostspec show hs-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing host spec")

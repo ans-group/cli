@@ -94,7 +94,7 @@ func ecloudHostGroupCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates a host group",
 		Long:    "This command creates a host group",
-		Example: "ukfast ecloud hostgroup create --policy np-abcdef12",
+		Example: "ukfast ecloud hostgroup create --policy hg-abcdef12",
 		RunE:    ecloudCobraRunEFunc(f, ecloudHostGroupCreate),
 	}
 
@@ -145,7 +145,7 @@ func ecloudHostGroupUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <group: id>...",
 		Short:   "Updates a host group",
 		Long:    "This command updates one or more host groups",
-		Example: "ukfast ecloud hostgroup update np-abcdef12 --name \"my group\"",
+		Example: "ukfast ecloud hostgroup update hg-abcdef12 --name \"my group\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing host group")

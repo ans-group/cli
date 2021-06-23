@@ -55,7 +55,7 @@ func Test_ecloudHostSpecList(t *testing.T) {
 
 func Test_ecloudHostSpecShowCmd_Args(t *testing.T) {
 	t.Run("ValidArgs_NoError", func(t *testing.T) {
-		err := ecloudHostSpecShowCmd(nil).Args(nil, []string{"hs--abcdef12"})
+		err := ecloudHostSpecShowCmd(nil).Args(nil, []string{"hs-abcdef12"})
 
 		assert.Nil(t, err)
 	})
@@ -75,9 +75,9 @@ func Test_ecloudHostSpecShow(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().GetHostSpec("hs--abcdef12").Return(ecloud.HostSpec{}, nil).Times(1)
+		service.EXPECT().GetHostSpec("hs-abcdef12").Return(ecloud.HostSpec{}, nil).Times(1)
 
-		ecloudHostSpecShow(service, &cobra.Command{}, []string{"hs--abcdef12"})
+		ecloudHostSpecShow(service, &cobra.Command{}, []string{"hs-abcdef12"})
 	})
 
 	t.Run("MultipleHostSpecs", func(t *testing.T) {
@@ -87,11 +87,11 @@ func Test_ecloudHostSpecShow(t *testing.T) {
 		service := mocks.NewMockECloudService(mockCtrl)
 
 		gomock.InOrder(
-			service.EXPECT().GetHostSpec("hs--abcdef12").Return(ecloud.HostSpec{}, nil),
-			service.EXPECT().GetHostSpec("hs--abcdef23").Return(ecloud.HostSpec{}, nil),
+			service.EXPECT().GetHostSpec("hs-abcdef12").Return(ecloud.HostSpec{}, nil),
+			service.EXPECT().GetHostSpec("hs-abcdef23").Return(ecloud.HostSpec{}, nil),
 		)
 
-		ecloudHostSpecShow(service, &cobra.Command{}, []string{"hs--abcdef12", "hs--abcdef23"})
+		ecloudHostSpecShow(service, &cobra.Command{}, []string{"hs-abcdef12", "hs-abcdef23"})
 	})
 
 	t.Run("GetHostSpecError_OutputsError", func(t *testing.T) {
@@ -100,10 +100,10 @@ func Test_ecloudHostSpecShow(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().GetHostSpec("hs--abcdef12").Return(ecloud.HostSpec{}, errors.New("test error"))
+		service.EXPECT().GetHostSpec("hs-abcdef12").Return(ecloud.HostSpec{}, errors.New("test error"))
 
-		test_output.AssertErrorOutput(t, "Error retrieving host spec [hs--abcdef12]: test error\n", func() {
-			ecloudHostSpecShow(service, &cobra.Command{}, []string{"hs--abcdef12"})
+		test_output.AssertErrorOutput(t, "Error retrieving host spec [hs-abcdef12]: test error\n", func() {
+			ecloudHostSpecShow(service, &cobra.Command{}, []string{"hs-abcdef12"})
 		})
 	})
 }
