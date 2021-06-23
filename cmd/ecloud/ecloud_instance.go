@@ -33,6 +33,7 @@ func ecloudInstanceRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.AddCommand(ecloudInstanceCredentialRootCmd(f))
 	cmd.AddCommand(ecloudInstanceNICRootCmd(f))
 	cmd.AddCommand(ecloudInstanceConsoleRootCmd(f))
+	cmd.AddCommand(ecloudInstanceTaskRootCmd(f))
 
 	return cmd
 }
@@ -102,7 +103,7 @@ func ecloudInstanceCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates an instance",
 		Long:    "This command creates an instance",
-		Example: "ukfast ecloud instance create --vpc vpc-abcdef12 --az az-abcdef12",
+		Example: "ukfast ecloud instance create --vpc vpc-abcdef12 --vcpu 2 --ram 2048 --volume 20 --image \"CentOS 7\"",
 		RunE:    ecloudCobraRunEFunc(f, ecloudInstanceCreate),
 	}
 
@@ -118,20 +119,25 @@ func ecloudInstanceCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.MarkFlagRequired("volume")
 	cmd.Flags().String("image", "", "ID or name of image to deploy from")
 	cmd.MarkFlagRequired("image")
-	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the instance has been completely created before continuing on")
+	cmd.Flags().StringSlice("ssh-key-pair", []string{}, "ID of SSH key pair, can be repeated")
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the instance has been completely created")
 
 	return cmd
 }
 
 func ecloudInstanceCreate(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	createRequest := ecloud.CreateInstanceRequest{}
-	if cmd.Flags().Changed("name") {
-		createRequest.Name, _ = cmd.Flags().GetString("name")
-	}
 	createRequest.VPCID, _ = cmd.Flags().GetString("vpc")
 	createRequest.VCPUCores, _ = cmd.Flags().GetInt("vcpu")
 	createRequest.RAMCapacity, _ = cmd.Flags().GetInt("ram")
 	createRequest.VolumeCapacity, _ = cmd.Flags().GetInt("volume")
+
+	if cmd.Flags().Changed("name") {
+		createRequest.Name, _ = cmd.Flags().GetString("name")
+	}
+	if cmd.Flags().Changed("ssh-key-pair") {
+		createRequest.SSHKeyPairIDs, _ = cmd.Flags().GetStringSlice("ssh-key-pair")
+	}
 
 	getImage := func(imageName string) (string, error) {
 		images, err := service.GetImages(connection.APIRequestParameters{})
@@ -200,6 +206,7 @@ func ecloudInstanceUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().String("name", "", "Name of instance")
 	cmd.Flags().Int("vcpu", 0, "Number of vCPU cores to allocate")
 	cmd.Flags().Int("ram", 0, "Amount of RAM (in MB) to allocate")
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the instance has been completely updated")
 
 	return cmd
 }
@@ -229,6 +236,15 @@ func ecloudInstanceUpdate(service ecloud.ECloudService, cmd *cobra.Command, args
 			continue
 		}
 
+		waitFlag, _ := cmd.Flags().GetBool("wait")
+		if waitFlag {
+			err := helper.WaitForCommand(InstanceResourceSyncStatusWaitFunc(service, arg, ecloud.SyncStatusComplete))
+			if err != nil {
+				output.OutputWithErrorLevelf("Error waiting for instance [%s] sync: %s", arg, err)
+				continue
+			}
+		}
+
 		instance, err := service.GetInstance(arg)
 		if err != nil {
 			output.OutputWithErrorLevelf("Error retrieving updated instance [%s]: %s", arg, err)
@@ -242,8 +258,8 @@ func ecloudInstanceUpdate(service ecloud.ECloudService, cmd *cobra.Command, args
 }
 
 func ecloudInstanceDeleteCmd(f factory.ClientFactory) *cobra.Command {
-	return &cobra.Command{
-		Use:     "delete <instance: id...>",
+	cmd := &cobra.Command{
+		Use:     "delete <instance: id>...",
 		Short:   "Removes an instance",
 		Long:    "This command removes one or more instances",
 		Example: "ukfast ecloud instance delete i-abcdef12",
@@ -256,6 +272,10 @@ func ecloudInstanceDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		},
 		RunE: ecloudCobraRunEFunc(f, ecloudInstanceDelete),
 	}
+
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the instance has been completely removed")
+
+	return cmd
 }
 
 func ecloudInstanceDelete(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
@@ -263,6 +283,16 @@ func ecloudInstanceDelete(service ecloud.ECloudService, cmd *cobra.Command, args
 		err := service.DeleteInstance(arg)
 		if err != nil {
 			output.OutputWithErrorLevelf("Error removing instance [%s]: %s", arg, err)
+			continue
+		}
+
+		waitFlag, _ := cmd.Flags().GetBool("wait")
+		if waitFlag {
+			err := helper.WaitForCommand(InstanceNotFoundWaitFunc(service, arg))
+			if err != nil {
+				output.OutputWithErrorLevelf("Error waiting for removal of instance [%s]: %s", arg, err)
+				continue
+			}
 		}
 	}
 	return nil
@@ -270,7 +300,7 @@ func ecloudInstanceDelete(service ecloud.ECloudService, cmd *cobra.Command, args
 
 func ecloudInstanceLockCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
-		Use:     "lock <instance: id...>",
+		Use:     "lock <instance: id>...",
 		Short:   "Locks an instance",
 		Long:    "This command locks one or more instances",
 		Example: "ukfast ecloud instance lock i-abcdef12",
@@ -297,7 +327,7 @@ func ecloudInstanceLock(service ecloud.ECloudService, cmd *cobra.Command, args [
 
 func ecloudInstanceUnlockCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
-		Use:     "unlock <instance: id...>",
+		Use:     "unlock <instance: id>...",
 		Short:   "Unlocks an instance",
 		Long:    "This command unlocks one or more instances",
 		Example: "ukfast ecloud instance unlock i-abcdef12",
@@ -324,7 +354,7 @@ func ecloudInstanceUnlock(service ecloud.ECloudService, cmd *cobra.Command, args
 
 func ecloudInstanceStartCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
-		Use:     "start <instance: id...>",
+		Use:     "start <instance: id>...",
 		Short:   "Starts an instance",
 		Long:    "This command powers on one or more instances",
 		Example: "ukfast ecloud instance start i-abcdef12",
@@ -351,7 +381,7 @@ func ecloudInstanceStart(service ecloud.ECloudService, cmd *cobra.Command, args 
 
 func ecloudInstanceStopCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "stop <instance: id...>",
+		Use:     "stop <instance: id>...",
 		Short:   "Stops an instance",
 		Long:    "This command powers off one or more instances",
 		Example: "ukfast ecloud instance stop i-abcdef12",
@@ -391,7 +421,7 @@ func ecloudInstanceStop(service ecloud.ECloudService, cmd *cobra.Command, args [
 
 func ecloudInstanceRestartCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "restart <instance: id...>",
+		Use:     "restart <instance: id>...",
 		Short:   "Restarts an instance",
 		Long:    "This command restarts one or more instances",
 		Example: "ukfast ecloud instance restart i-abcdef12",
@@ -437,4 +467,20 @@ func InstanceResourceSyncStatusWaitFunc(service ecloud.ECloudService, instanceID
 		}
 		return instance.Sync.Status, nil
 	}, status)
+}
+
+func InstanceNotFoundWaitFunc(service ecloud.ECloudService, instanceID string) helper.WaitFunc {
+	return func() (finished bool, err error) {
+		_, err = service.GetInstance(instanceID)
+		if err != nil {
+			switch err.(type) {
+			case *ecloud.InstanceNotFoundError:
+				return true, nil
+			default:
+				return false, fmt.Errorf("Failed to retrieve instance [%s]: %s", instanceID, err)
+			}
+		}
+
+		return false, nil
+	}
 }

@@ -30,14 +30,7 @@ func ecloudNICListCmd(f factory.ClientFactory) *cobra.Command {
 		Short:   "Lists NICs",
 		Long:    "This command lists NICs",
 		Example: "ukfast ecloud nic list",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := f.NewClient()
-			if err != nil {
-				return err
-			}
-
-			return ecloudNICList(c.ECloudService(), cmd, args)
-		},
+		RunE:    ecloudCobraRunEFunc(f, ecloudNICList),
 	}
 
 	cmd.Flags().String("name", "", "NIC name for filtering")
@@ -72,14 +65,7 @@ func ecloudNICShowCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := f.NewClient()
-			if err != nil {
-				return err
-			}
-
-			return ecloudNICShow(c.ECloudService(), cmd, args)
-		},
+		RunE: ecloudCobraRunEFunc(f, ecloudNICShow),
 	}
 }
 

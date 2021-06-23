@@ -36,14 +36,7 @@ func ecloudImageMetadataListCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := f.NewClient()
-			if err != nil {
-				return err
-			}
-
-			return ecloudImageMetadataList(c.ECloudService(), cmd, args)
-		},
+		RunE: ecloudCobraRunEFunc(f, ecloudImageMetadataList),
 	}
 }
 

@@ -123,12 +123,73 @@ func Test_ecloudFirewallRuleCreate(t *testing.T) {
 			Action:    ecloud.FirewallRuleActionDrop,
 		}
 
+		resp := ecloud.TaskReference{
+			TaskID:     "task-abcdef12",
+			ResourceID: "fwr-abcdef12",
+		}
+
 		gomock.InOrder(
-			service.EXPECT().CreateFirewallRule(req).Return("fwr-abcdef12", nil),
+			service.EXPECT().CreateFirewallRule(req).Return(resp, nil),
 			service.EXPECT().GetFirewallRule("fwr-abcdef12").Return(ecloud.FirewallRule{}, nil),
 		)
 
 		ecloudFirewallRuleCreate(service, cmd, []string{})
+	})
+
+	t.Run("CreateWithWaitFlagNoError_Succeeds", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudFirewallRuleCreateCmd(nil)
+		cmd.ParseFlags([]string{"--name=testrule", "--direction=IN", "--action=DROP", "--wait"})
+
+		req := ecloud.CreateFirewallRuleRequest{
+			Name:      "testrule",
+			Direction: ecloud.FirewallRuleDirectionIn,
+			Action:    ecloud.FirewallRuleActionDrop,
+		}
+
+		resp := ecloud.TaskReference{
+			TaskID:     "task-abcdef12",
+			ResourceID: "fwr-abcdef12",
+		}
+
+		gomock.InOrder(
+			service.EXPECT().CreateFirewallRule(req).Return(resp, nil),
+			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, nil),
+			service.EXPECT().GetFirewallRule("fwr-abcdef12").Return(ecloud.FirewallRule{}, nil),
+		)
+
+		ecloudFirewallRuleCreate(service, cmd, []string{})
+	})
+
+	t.Run("WithWaitFlag_GetTaskError_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudFirewallRuleCreateCmd(nil)
+		cmd.ParseFlags([]string{"--name=testrule", "--direction=IN", "--action=DROP", "--wait"})
+
+		req := ecloud.CreateFirewallRuleRequest{
+			Name:      "testrule",
+			Direction: ecloud.FirewallRuleDirectionIn,
+			Action:    ecloud.FirewallRuleActionDrop,
+		}
+
+		resp := ecloud.TaskReference{
+			TaskID:     "task-abcdef12",
+			ResourceID: "fwr-abcdef12",
+		}
+
+		gomock.InOrder(
+			service.EXPECT().CreateFirewallRule(req).Return(resp, nil),
+			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
+		)
+
+		err := ecloudFirewallRuleCreate(service, cmd, []string{})
+		assert.Equal(t, "Error waiting for firewall rule task to complete: Error waiting for command: Failed to retrieve task status: test error", err.Error())
 	})
 
 	t.Run("CreateFirewallRuleError_ReturnsError", func(t *testing.T) {
@@ -139,7 +200,7 @@ func Test_ecloudFirewallRuleCreate(t *testing.T) {
 		cmd := ecloudFirewallRuleCreateCmd(nil)
 		cmd.ParseFlags([]string{"--name=testrule", "--direction=IN", "--action=DROP"})
 
-		service.EXPECT().CreateFirewallRule(gomock.Any()).Return("", errors.New("test error")).Times(1)
+		service.EXPECT().CreateFirewallRule(gomock.Any()).Return(ecloud.TaskReference{}, errors.New("test error")).Times(1)
 
 		err := ecloudFirewallRuleCreate(service, cmd, []string{})
 
@@ -155,7 +216,7 @@ func Test_ecloudFirewallRuleCreate(t *testing.T) {
 		cmd.ParseFlags([]string{"--name=testrule", "--direction=IN", "--action=DROP"})
 
 		gomock.InOrder(
-			service.EXPECT().CreateFirewallRule(gomock.Any()).Return("fwr-abcdef12", nil),
+			service.EXPECT().CreateFirewallRule(gomock.Any()).Return(ecloud.TaskReference{ResourceID: "fwr-abcdef12"}, nil),
 			service.EXPECT().GetFirewallRule("fwr-abcdef12").Return(ecloud.FirewallRule{}, errors.New("test error")),
 		)
 
@@ -194,8 +255,13 @@ func Test_ecloudFirewallRuleUpdate(t *testing.T) {
 			Name: "testrule",
 		}
 
+		resp := ecloud.TaskReference{
+			TaskID:     "task-abcdef12",
+			ResourceID: "fwr-abcdef12",
+		}
+
 		gomock.InOrder(
-			service.EXPECT().PatchFirewallRule("fwr-abcdef12", req).Return(nil),
+			service.EXPECT().PatchFirewallRule("fwr-abcdef12", req).Return(resp, nil),
 			service.EXPECT().GetFirewallRule("fwr-abcdef12").Return(ecloud.FirewallRule{}, nil),
 		)
 
@@ -208,14 +274,79 @@ func Test_ecloudFirewallRuleUpdate(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
+		resp1 := ecloud.TaskReference{
+			TaskID:     "task-abcdef12",
+			ResourceID: "fwr-abcdef12",
+		}
+
+		resp2 := ecloud.TaskReference{
+			TaskID:     "task-abcdef23",
+			ResourceID: "fwr-12abcdef",
+		}
+
 		gomock.InOrder(
-			service.EXPECT().PatchFirewallRule("fwr-abcdef12", gomock.Any()).Return(nil),
+			service.EXPECT().PatchFirewallRule("fwr-abcdef12", gomock.Any()).Return(resp1, nil),
 			service.EXPECT().GetFirewallRule("fwr-abcdef12").Return(ecloud.FirewallRule{}, nil),
-			service.EXPECT().PatchFirewallRule("fwr-12abcdef", gomock.Any()).Return(nil),
+			service.EXPECT().PatchFirewallRule("fwr-12abcdef", gomock.Any()).Return(resp2, nil),
 			service.EXPECT().GetFirewallRule("fwr-12abcdef").Return(ecloud.FirewallRule{}, nil),
 		)
 
 		ecloudFirewallRuleUpdate(service, &cobra.Command{}, []string{"fwr-abcdef12", "fwr-12abcdef"})
+	})
+
+	t.Run("WithWaitFlag_NoError_Succeeds", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		cmd := ecloudFirewallRuleUpdateCmd(nil)
+		cmd.ParseFlags([]string{"--name=testrule", "--wait"})
+
+		req := ecloud.PatchFirewallRuleRequest{
+			Name: "testrule",
+		}
+
+		resp := ecloud.TaskReference{
+			TaskID:     "task-abcdef12",
+			ResourceID: "fwr-abcdef12",
+		}
+
+		gomock.InOrder(
+			service.EXPECT().PatchFirewallRule("fwr-abcdef12", req).Return(resp, nil),
+			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, nil),
+			service.EXPECT().GetFirewallRule("fwr-abcdef12").Return(ecloud.FirewallRule{}, nil),
+		)
+
+		ecloudFirewallRuleUpdate(service, cmd, []string{"fwr-abcdef12"})
+	})
+
+	t.Run("WithWaitFlag_GetTaskError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		cmd := ecloudFirewallRuleUpdateCmd(nil)
+		cmd.ParseFlags([]string{"--name=testrule", "--wait"})
+
+		req := ecloud.PatchFirewallRuleRequest{
+			Name: "testrule",
+		}
+
+		resp := ecloud.TaskReference{
+			TaskID:     "task-abcdef12",
+			ResourceID: "fwr-abcdef12",
+		}
+
+		gomock.InOrder(
+			service.EXPECT().PatchFirewallRule("fwr-abcdef12", req).Return(resp, nil),
+			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
+		)
+
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for firewall rule [fwr-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+			ecloudFirewallRuleUpdate(service, cmd, []string{"fwr-abcdef12"})
+		})
 	})
 
 	t.Run("PatchFirewallRuleError_OutputsError", func(t *testing.T) {
@@ -224,7 +355,7 @@ func Test_ecloudFirewallRuleUpdate(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().PatchFirewallRule("fwr-abcdef12", gomock.Any()).Return(errors.New("test error"))
+		service.EXPECT().PatchFirewallRule("fwr-abcdef12", gomock.Any()).Return(ecloud.TaskReference{}, errors.New("test error"))
 
 		test_output.AssertErrorOutput(t, "Error updating firewall rule [fwr-abcdef12]: test error\n", func() {
 			ecloudFirewallRuleUpdate(service, &cobra.Command{}, []string{"fwr-abcdef12"})
@@ -237,8 +368,13 @@ func Test_ecloudFirewallRuleUpdate(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
+		resp := ecloud.TaskReference{
+			TaskID:     "task-abcdef12",
+			ResourceID: "fwr-abcdef12",
+		}
+
 		gomock.InOrder(
-			service.EXPECT().PatchFirewallRule("fwr-abcdef12", gomock.Any()).Return(nil),
+			service.EXPECT().PatchFirewallRule("fwr-abcdef12", gomock.Any()).Return(resp, nil),
 			service.EXPECT().GetFirewallRule("fwr-abcdef12").Return(ecloud.FirewallRule{}, errors.New("test error")),
 		)
 
@@ -270,7 +406,7 @@ func Test_ecloudFirewallRuleDelete(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().DeleteFirewallRule("fwr-abcdef12").Return(nil).Times(1)
+		service.EXPECT().DeleteFirewallRule("fwr-abcdef12").Return("task-abcdef12", nil).Times(1)
 
 		ecloudFirewallRuleDelete(service, &cobra.Command{}, []string{"fwr-abcdef12"})
 	})
@@ -282,11 +418,47 @@ func Test_ecloudFirewallRuleDelete(t *testing.T) {
 		service := mocks.NewMockECloudService(mockCtrl)
 
 		gomock.InOrder(
-			service.EXPECT().DeleteFirewallRule("fwr-abcdef12").Return(nil),
-			service.EXPECT().DeleteFirewallRule("fwr-12abcdef").Return(nil),
+			service.EXPECT().DeleteFirewallRule("fwr-abcdef12").Return("task-abcdef12", nil),
+			service.EXPECT().DeleteFirewallRule("fwr-12abcdef").Return("task-abcdef23", nil),
 		)
 
 		ecloudFirewallRuleDelete(service, &cobra.Command{}, []string{"fwr-abcdef12", "fwr-12abcdef"})
+	})
+
+	t.Run("WithWaitFlag_NoError_Succeeds", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		cmd := ecloudFirewallRuleDeleteCmd(nil)
+		cmd.ParseFlags([]string{"--wait"})
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().DeleteFirewallRule("fwr-abcdef12").Return("task-abcdef12", nil),
+			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, nil),
+		)
+
+		ecloudFirewallRuleDelete(service, cmd, []string{"fwr-abcdef12"})
+	})
+
+	t.Run("WithWaitFlag_GetTaskError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		cmd := ecloudFirewallRuleDeleteCmd(nil)
+		cmd.ParseFlags([]string{"--wait"})
+
+		gomock.InOrder(
+			service.EXPECT().DeleteFirewallRule("fwr-abcdef12").Return("task-abcdef12", nil),
+			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
+		)
+
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for firewall rule [fwr-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+			ecloudFirewallRuleDelete(service, cmd, []string{"fwr-abcdef12"})
+		})
 	})
 
 	t.Run("DeleteFirewallRuleError_OutputsError", func(t *testing.T) {
@@ -295,7 +467,7 @@ func Test_ecloudFirewallRuleDelete(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().DeleteFirewallRule("fwr-abcdef12").Return(errors.New("test error")).Times(1)
+		service.EXPECT().DeleteFirewallRule("fwr-abcdef12").Return("", errors.New("test error")).Times(1)
 
 		test_output.AssertErrorOutput(t, "Error removing firewall rule [fwr-abcdef12]: test error\n", func() {
 			ecloudFirewallRuleDelete(service, &cobra.Command{}, []string{"fwr-abcdef12"})

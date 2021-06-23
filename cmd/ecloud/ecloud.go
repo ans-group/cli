@@ -6,13 +6,14 @@ import (
 	"os"
 	"strings"
 
+	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
 	"github.com/ukfast/cli/internal/pkg/factory"
 	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
-func ECloudRootCmd(f factory.ClientFactory) *cobra.Command {
+func ECloudRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "ecloud",
 		Short: "Commands relating to eCloud service",
@@ -27,7 +28,7 @@ func ECloudRootCmd(f factory.ClientFactory) *cobra.Command {
 		cmd.AddCommand(ecloudVirtualMachineRootCmd(f))
 		cmd.AddCommand(ecloudSolutionRootCmd(f))
 		cmd.AddCommand(ecloudSiteRootCmd(f))
-		cmd.AddCommand(ecloudHostRootCmd(f))
+		cmd.AddCommand(ecloudV1HostRootCmd(f))
 		cmd.AddCommand(ecloudFirewallRootCmd(f))
 		cmd.AddCommand(ecloudPodRootCmd(f))
 		cmd.AddCommand(ecloudDatastoreRootCmd(f))
@@ -36,18 +37,27 @@ func ECloudRootCmd(f factory.ClientFactory) *cobra.Command {
 	}
 	// -- eCloud v2
 	if v2envset || !v1envset {
+		cmd.AddCommand(ecloudAvailabilityZoneRootCmd(f))
 		cmd.AddCommand(ecloudDHCPRootCmd(f))
 		cmd.AddCommand(ecloudFirewallPolicyRootCmd(f))
 		cmd.AddCommand(ecloudFirewallRuleRootCmd(f))
 		cmd.AddCommand(ecloudFirewallRulePortRootCmd(f))
 		cmd.AddCommand(ecloudFloatingIPRootCmd(f))
+		cmd.AddCommand(ecloudHostRootCmd(f))
+		cmd.AddCommand(ecloudHostGroupRootCmd(f))
+		cmd.AddCommand(ecloudHostSpecRootCmd(f))
 		cmd.AddCommand(ecloudImageRootCmd(f))
 		cmd.AddCommand(ecloudInstanceRootCmd(f))
 		cmd.AddCommand(ecloudNetworkRootCmd(f))
+		cmd.AddCommand(ecloudNetworkPolicyRootCmd(f))
+		cmd.AddCommand(ecloudNetworkRuleRootCmd(f))
+		cmd.AddCommand(ecloudNetworkRulePortRootCmd(f))
 		cmd.AddCommand(ecloudNICRootCmd(f))
 		cmd.AddCommand(ecloudRegionRootCmd(f))
 		cmd.AddCommand(ecloudRouterRootCmd(f))
 		cmd.AddCommand(ecloudRouterThroughputRootCmd(f))
+		cmd.AddCommand(ecloudSSHKeyPairRootCmd(f, fs))
+		cmd.AddCommand(ecloudTaskRootCmd(f))
 		cmd.AddCommand(ecloudVolumeRootCmd(f))
 		cmd.AddCommand(ecloudVPCRootCmd(f))
 	}
@@ -149,6 +159,23 @@ func ResourceSyncStatusWaitFunc(fn GetResourceSyncStatusFunc, expectedStatus ecl
 			return false, fmt.Errorf("Resource in [%s] state", ecloud.SyncStatusFailed.String())
 		}
 		if status == expectedStatus {
+			return true, nil
+		}
+
+		return false, nil
+	}
+}
+
+func TaskStatusWaitFunc(service ecloud.ECloudService, taskID string, expectedStatus ecloud.TaskStatus) helper.WaitFunc {
+	return func() (finished bool, err error) {
+		task, err := service.GetTask(taskID)
+		if err != nil {
+			return false, fmt.Errorf("Failed to retrieve task status: %s", err)
+		}
+		if task.Status == ecloud.TaskStatusFailed {
+			return false, fmt.Errorf("Task in [%s] state", ecloud.TaskStatusFailed.String())
+		}
+		if task.Status == expectedStatus {
 			return true, nil
 		}
 

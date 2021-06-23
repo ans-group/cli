@@ -34,14 +34,7 @@ func ecloudImageListCmd(f factory.ClientFactory) *cobra.Command {
 		Short:   "Lists images",
 		Long:    "This command lists images",
 		Example: "ukfast ecloud image list",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := f.NewClient()
-			if err != nil {
-				return err
-			}
-
-			return ecloudImageList(c.ECloudService(), cmd, args)
-		},
+		RunE:    ecloudCobraRunEFunc(f, ecloudImageList),
 	}
 }
 
@@ -72,14 +65,7 @@ func ecloudImageShowCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := f.NewClient()
-			if err != nil {
-				return err
-			}
-
-			return ecloudImageShow(c.ECloudService(), cmd, args)
-		},
+		RunE: ecloudCobraRunEFunc(f, ecloudImageShow),
 	}
 }
 

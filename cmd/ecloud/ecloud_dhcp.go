@@ -30,14 +30,7 @@ func ecloudDHCPListCmd(f factory.ClientFactory) *cobra.Command {
 		Short:   "Lists DHCPs",
 		Long:    "This command lists DHCPs",
 		Example: "ukfast ecloud dhcp list",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := f.NewClient()
-			if err != nil {
-				return err
-			}
-
-			return ecloudDHCPList(c.ECloudService(), cmd, args)
-		},
+		RunE:    ecloudCobraRunEFunc(f, ecloudDHCPList),
 	}
 
 	cmd.Flags().String("name", "", "DHCP name for filtering")
@@ -76,14 +69,7 @@ func ecloudDHCPShowCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := f.NewClient()
-			if err != nil {
-				return err
-			}
-
-			return ecloudDHCPShow(c.ECloudService(), cmd, args)
-		},
+		RunE: ecloudCobraRunEFunc(f, ecloudDHCPShow),
 	}
 }
 

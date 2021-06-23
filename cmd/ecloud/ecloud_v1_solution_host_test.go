@@ -34,7 +34,7 @@ func Test_ecloudSolutionHostList(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().GetSolutionHosts(123, gomock.Any()).Return([]ecloud.Host{}, nil).Times(1)
+		service.EXPECT().GetSolutionHosts(123, gomock.Any()).Return([]ecloud.V1Host{}, nil).Times(1)
 
 		ecloudSolutionHostList(service, &cobra.Command{}, []string{"123"})
 	})
@@ -71,7 +71,7 @@ func Test_ecloudSolutionHostList(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().GetSolutionHosts(123, gomock.Any()).Return([]ecloud.Host{}, errors.New("test error 1")).Times(1)
+		service.EXPECT().GetSolutionHosts(123, gomock.Any()).Return([]ecloud.V1Host{}, errors.New("test error 1")).Times(1)
 
 		err := ecloudSolutionHostList(service, &cobra.Command{}, []string{"123"})
 

@@ -12,56 +12,56 @@ import (
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
-func ecloudHostRootCmd(f factory.ClientFactory) *cobra.Command {
+func ecloudV1HostRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "host",
+		Use:   "v1host",
 		Short: "sub-commands relating to hosts",
 	}
 
 	// Child commands
-	cmd.AddCommand(ecloudHostListCmd(f))
-	cmd.AddCommand(ecloudHostShowCmd(f))
+	cmd.AddCommand(ecloudV1HostListCmd(f))
+	cmd.AddCommand(ecloudV1HostShowCmd(f))
 
 	return cmd
 }
 
-func ecloudHostListCmd(f factory.ClientFactory) *cobra.Command {
+func ecloudV1HostListCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
 		Use:     "list",
 		Short:   "Lists hosts",
 		Long:    "This command lists hosts",
-		Example: "ukfast ecloud host list",
+		Example: "ukfast ecloud v1host list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
 				return err
 			}
 
-			return ecloudHostList(c.ECloudService(), cmd, args)
+			return ecloudV1HostList(c.ECloudService(), cmd, args)
 		},
 	}
 }
 
-func ecloudHostList(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
+func ecloudV1HostList(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		return err
 	}
 
-	hosts, err := service.GetHosts(params)
+	hosts, err := service.GetV1Hosts(params)
 	if err != nil {
 		return fmt.Errorf("Error retrieving hosts: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudHostsProvider(hosts))
+	return output.CommandOutput(cmd, OutputECloudV1HostsProvider(hosts))
 }
 
-func ecloudHostShowCmd(f factory.ClientFactory) *cobra.Command {
+func ecloudV1HostShowCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
 		Use:     "show <host: id>...",
 		Short:   "Shows a host",
 		Long:    "This command shows one or more hosts",
-		Example: "ukfast ecloud vm host 123",
+		Example: "ukfast ecloud v1host 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing host")
@@ -75,13 +75,13 @@ func ecloudHostShowCmd(f factory.ClientFactory) *cobra.Command {
 				return err
 			}
 
-			return ecloudHostShow(c.ECloudService(), cmd, args)
+			return ecloudV1HostShow(c.ECloudService(), cmd, args)
 		},
 	}
 }
 
-func ecloudHostShow(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
-	var hosts []ecloud.Host
+func ecloudV1HostShow(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
+	var hosts []ecloud.V1Host
 	for _, arg := range args {
 		hostID, err := strconv.Atoi(arg)
 		if err != nil {
@@ -89,7 +89,7 @@ func ecloudHostShow(service ecloud.ECloudService, cmd *cobra.Command, args []str
 			continue
 		}
 
-		host, err := service.GetHost(hostID)
+		host, err := service.GetV1Host(hostID)
 		if err != nil {
 			output.OutputWithErrorLevelf("Error retrieving host [%s]: %s", arg, err)
 			continue
@@ -98,5 +98,5 @@ func ecloudHostShow(service ecloud.ECloudService, cmd *cobra.Command, args []str
 		hosts = append(hosts, host)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudHostsProvider(hosts))
+	return output.CommandOutput(cmd, OutputECloudV1HostsProvider(hosts))
 }

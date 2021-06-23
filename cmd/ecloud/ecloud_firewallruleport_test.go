@@ -122,12 +122,71 @@ func Test_ecloudFirewallRulePortCreate(t *testing.T) {
 			Protocol: "TCP",
 		}
 
+		resp := ecloud.TaskReference{
+			TaskID:     "task-abcdef12",
+			ResourceID: "fwrp-abcdef12",
+		}
+
 		gomock.InOrder(
-			service.EXPECT().CreateFirewallRulePort(req).Return("fwrp-abcdef12", nil),
+			service.EXPECT().CreateFirewallRulePort(req).Return(resp, nil),
 			service.EXPECT().GetFirewallRulePort("fwrp-abcdef12").Return(ecloud.FirewallRulePort{}, nil),
 		)
 
 		ecloudFirewallRulePortCreate(service, cmd, []string{})
+	})
+
+	t.Run("CreateWithWaitFlagNoError_Succeeds", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudFirewallRulePortCreateCmd(nil)
+		cmd.ParseFlags([]string{"--name=testport", "--protocol=TCP", "--wait"})
+
+		req := ecloud.CreateFirewallRulePortRequest{
+			Name:     "testport",
+			Protocol: "TCP",
+		}
+
+		resp := ecloud.TaskReference{
+			TaskID:     "task-abcdef12",
+			ResourceID: "fwrp-abcdef12",
+		}
+
+		gomock.InOrder(
+			service.EXPECT().CreateFirewallRulePort(req).Return(resp, nil),
+			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, nil),
+			service.EXPECT().GetFirewallRulePort("fwrp-abcdef12").Return(ecloud.FirewallRulePort{}, nil),
+		)
+
+		ecloudFirewallRulePortCreate(service, cmd, []string{})
+	})
+
+	t.Run("WithWaitFlag_GetTaskError_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudFirewallRulePortCreateCmd(nil)
+		cmd.ParseFlags([]string{"--name=testport", "--protocol=TCP", "--wait"})
+
+		req := ecloud.CreateFirewallRulePortRequest{
+			Name:     "testport",
+			Protocol: "TCP",
+		}
+
+		resp := ecloud.TaskReference{
+			TaskID:     "task-abcdef12",
+			ResourceID: "fwrp-abcdef12",
+		}
+
+		gomock.InOrder(
+			service.EXPECT().CreateFirewallRulePort(req).Return(resp, nil),
+			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
+		)
+
+		err := ecloudFirewallRulePortCreate(service, cmd, []string{})
+		assert.Equal(t, "Error waiting for firewall rule port task to complete: Error waiting for command: Failed to retrieve task status: test error", err.Error())
 	})
 
 	t.Run("CreateFirewallRulePortError_ReturnsError", func(t *testing.T) {
@@ -138,7 +197,7 @@ func Test_ecloudFirewallRulePortCreate(t *testing.T) {
 		cmd := ecloudFirewallRulePortCreateCmd(nil)
 		cmd.ParseFlags([]string{"--name=testport", "--protocol=TCP"})
 
-		service.EXPECT().CreateFirewallRulePort(gomock.Any()).Return("", errors.New("test error")).Times(1)
+		service.EXPECT().CreateFirewallRulePort(gomock.Any()).Return(ecloud.TaskReference{}, errors.New("test error")).Times(1)
 
 		err := ecloudFirewallRulePortCreate(service, cmd, []string{})
 
@@ -154,7 +213,7 @@ func Test_ecloudFirewallRulePortCreate(t *testing.T) {
 		cmd.ParseFlags([]string{"--name=testport", "--protocol=TCP"})
 
 		gomock.InOrder(
-			service.EXPECT().CreateFirewallRulePort(gomock.Any()).Return("fwrp-abcdef12", nil),
+			service.EXPECT().CreateFirewallRulePort(gomock.Any()).Return(ecloud.TaskReference{ResourceID: "fwrp-abcdef12"}, nil),
 			service.EXPECT().GetFirewallRulePort("fwrp-abcdef12").Return(ecloud.FirewallRulePort{}, errors.New("test error")),
 		)
 
@@ -193,12 +252,72 @@ func Test_ecloudFirewallRulePortUpdate(t *testing.T) {
 			Name: "testport",
 		}
 
+		resp := ecloud.TaskReference{
+			TaskID:     "task-abcdef12",
+			ResourceID: "fwrp-abcdef12",
+		}
+
 		gomock.InOrder(
-			service.EXPECT().PatchFirewallRulePort("fwrp-abcdef12", req).Return(nil),
+			service.EXPECT().PatchFirewallRulePort("fwrp-abcdef12", req).Return(resp, nil),
 			service.EXPECT().GetFirewallRulePort("fwrp-abcdef12").Return(ecloud.FirewallRulePort{}, nil),
 		)
 
 		ecloudFirewallRulePortUpdate(service, cmd, []string{"fwrp-abcdef12"})
+	})
+
+	t.Run("WithWaitFlag_NoError_Succeeds", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		cmd := ecloudFirewallRulePortUpdateCmd(nil)
+		cmd.ParseFlags([]string{"--name=testport", "--wait"})
+
+		req := ecloud.PatchFirewallRulePortRequest{
+			Name: "testport",
+		}
+
+		resp := ecloud.TaskReference{
+			TaskID:     "task-abcdef12",
+			ResourceID: "fwrp-abcdef12",
+		}
+
+		gomock.InOrder(
+			service.EXPECT().PatchFirewallRulePort("fwrp-abcdef12", req).Return(resp, nil),
+			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, nil),
+			service.EXPECT().GetFirewallRulePort("fwrp-abcdef12").Return(ecloud.FirewallRulePort{}, nil),
+		)
+
+		ecloudFirewallRulePortUpdate(service, cmd, []string{"fwrp-abcdef12"})
+	})
+
+	t.Run("WithWaitFlag_GetTaskError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		cmd := ecloudFirewallRulePortUpdateCmd(nil)
+		cmd.ParseFlags([]string{"--name=testrule", "--wait"})
+
+		req := ecloud.PatchFirewallRulePortRequest{
+			Name: "testrule",
+		}
+
+		resp := ecloud.TaskReference{
+			TaskID:     "task-abcdef12",
+			ResourceID: "fwrp-abcdef12",
+		}
+
+		gomock.InOrder(
+			service.EXPECT().PatchFirewallRulePort("fwrp-abcdef12", req).Return(resp, nil),
+			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
+		)
+
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for firewall rule port [fwrp-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+			ecloudFirewallRulePortUpdate(service, cmd, []string{"fwrp-abcdef12"})
+		})
 	})
 
 	t.Run("MultipleFirewallRulePorts", func(t *testing.T) {
@@ -207,10 +326,20 @@ func Test_ecloudFirewallRulePortUpdate(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
+		resp1 := ecloud.TaskReference{
+			TaskID:     "task-abcdef12",
+			ResourceID: "fwrp-abcdef12",
+		}
+
+		resp2 := ecloud.TaskReference{
+			TaskID:     "task-abcdef23",
+			ResourceID: "fwrp-12abcdef",
+		}
+
 		gomock.InOrder(
-			service.EXPECT().PatchFirewallRulePort("fwrp-abcdef12", gomock.Any()).Return(nil),
+			service.EXPECT().PatchFirewallRulePort("fwrp-abcdef12", gomock.Any()).Return(resp1, nil),
 			service.EXPECT().GetFirewallRulePort("fwrp-abcdef12").Return(ecloud.FirewallRulePort{}, nil),
-			service.EXPECT().PatchFirewallRulePort("fwrp-12abcdef", gomock.Any()).Return(nil),
+			service.EXPECT().PatchFirewallRulePort("fwrp-12abcdef", gomock.Any()).Return(resp2, nil),
 			service.EXPECT().GetFirewallRulePort("fwrp-12abcdef").Return(ecloud.FirewallRulePort{}, nil),
 		)
 
@@ -223,7 +352,7 @@ func Test_ecloudFirewallRulePortUpdate(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().PatchFirewallRulePort("fwrp-abcdef12", gomock.Any()).Return(errors.New("test error"))
+		service.EXPECT().PatchFirewallRulePort("fwrp-abcdef12", gomock.Any()).Return(ecloud.TaskReference{}, errors.New("test error"))
 
 		test_output.AssertErrorOutput(t, "Error updating firewall rule port [fwrp-abcdef12]: test error\n", func() {
 			ecloudFirewallRulePortUpdate(service, &cobra.Command{}, []string{"fwrp-abcdef12"})
@@ -236,8 +365,13 @@ func Test_ecloudFirewallRulePortUpdate(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
+		resp := ecloud.TaskReference{
+			TaskID:     "task-abcdef12",
+			ResourceID: "fwrp-abcdef12",
+		}
+
 		gomock.InOrder(
-			service.EXPECT().PatchFirewallRulePort("fwrp-abcdef12", gomock.Any()).Return(nil),
+			service.EXPECT().PatchFirewallRulePort("fwrp-abcdef12", gomock.Any()).Return(resp, nil),
 			service.EXPECT().GetFirewallRulePort("fwrp-abcdef12").Return(ecloud.FirewallRulePort{}, errors.New("test error")),
 		)
 
@@ -269,7 +403,7 @@ func Test_ecloudFirewallRulePortDelete(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().DeleteFirewallRulePort("fwrp-abcdef12").Return(nil).Times(1)
+		service.EXPECT().DeleteFirewallRulePort("fwrp-abcdef12").Return("task-abcdef12", nil).Times(1)
 
 		ecloudFirewallRulePortDelete(service, &cobra.Command{}, []string{"fwrp-abcdef12"})
 	})
@@ -281,11 +415,47 @@ func Test_ecloudFirewallRulePortDelete(t *testing.T) {
 		service := mocks.NewMockECloudService(mockCtrl)
 
 		gomock.InOrder(
-			service.EXPECT().DeleteFirewallRulePort("fwrp-abcdef12").Return(nil),
-			service.EXPECT().DeleteFirewallRulePort("fwrp-12abcdef").Return(nil),
+			service.EXPECT().DeleteFirewallRulePort("fwrp-abcdef12").Return("task-abcdef12", nil),
+			service.EXPECT().DeleteFirewallRulePort("fwrp-12abcdef").Return("task-abcdef23", nil),
 		)
 
 		ecloudFirewallRulePortDelete(service, &cobra.Command{}, []string{"fwrp-abcdef12", "fwrp-12abcdef"})
+	})
+
+	t.Run("WithWaitFlag_NoError_Succeeds", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		cmd := ecloudFirewallRulePortDeleteCmd(nil)
+		cmd.ParseFlags([]string{"--wait"})
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().DeleteFirewallRulePort("fwrp-abcdef12").Return("task-abcdef12", nil),
+			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, nil),
+		)
+
+		ecloudFirewallRulePortDelete(service, cmd, []string{"fwrp-abcdef12"})
+	})
+
+	t.Run("WithWaitFlag_GetTaskError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		cmd := ecloudFirewallRulePortDeleteCmd(nil)
+		cmd.ParseFlags([]string{"--wait"})
+
+		gomock.InOrder(
+			service.EXPECT().DeleteFirewallRulePort("fwrp-abcdef12").Return("task-abcdef12", nil),
+			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
+		)
+
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for firewall rule port [fwrp-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+			ecloudFirewallRulePortDelete(service, cmd, []string{"fwrp-abcdef12"})
+		})
 	})
 
 	t.Run("DeleteFirewallRulePortError_OutputsError", func(t *testing.T) {
@@ -294,7 +464,7 @@ func Test_ecloudFirewallRulePortDelete(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().DeleteFirewallRulePort("fwrp-abcdef12").Return(errors.New("test error")).Times(1)
+		service.EXPECT().DeleteFirewallRulePort("fwrp-abcdef12").Return("", errors.New("test error")).Times(1)
 
 		test_output.AssertErrorOutput(t, "Error removing firewall rule port [fwrp-abcdef12]: test error\n", func() {
 			ecloudFirewallRulePortDelete(service, &cobra.Command{}, []string{"fwrp-abcdef12"})
