@@ -13,7 +13,10 @@ func LoadBalancerRootCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	// Child root commands
+	cmd.AddCommand(loadbalancerBindRootCmd(f))
 	cmd.AddCommand(loadbalancerClusterRootCmd(f))
+	cmd.AddCommand(loadbalancerListenerRootCmd(f))
+	cmd.AddCommand(loadbalancerTargetGroupRootCmd(f))
 
 	return cmd
 }

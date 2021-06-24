@@ -12,5 +12,15 @@ func OutputLoadBalancerClustersProvider(clusters []loadbalancer.Cluster) output.
 
 func OutputLoadBalancerListenersProvider(listeners []loadbalancer.Listener) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(listeners).
-		WithDefaultFields([]string{"id", "name", "deployed", "deployed_at"})
+		WithDefaultFields([]string{"id", "name", "cluster_id"})
+}
+
+func OutputLoadBalancerTargetGroupsProvider(groups []loadbalancer.TargetGroup) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(groups).
+		WithDefaultFields([]string{"id", "name", "cluster_id", "mode"})
+}
+
+func OutputLoadBalancerBindsProvider(binds []loadbalancer.Bind) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(binds).
+		WithDefaultFields([]string{"id", "listener_id", "vip_id", "port"})
 }

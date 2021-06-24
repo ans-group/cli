@@ -294,3 +294,71 @@ func TestGetAPIRequestParametersFromFlags(t *testing.T) {
 		assert.Equal(t, connection.EQOperator, params.Filtering[0].Operator)
 	})
 }
+
+func TestGetStringPtrFlagIfChanged(t *testing.T) {
+	t.Run("FlagChanged_ReturnsValue", func(t *testing.T) {
+		cmd := &cobra.Command{}
+		cmd.Flags().String("test", "", "")
+		cmd.ParseFlags([]string{"--test=abcd"})
+
+		value := helper.GetStringPtrFlagIfChanged(cmd, "test")
+
+		expected := "abcd"
+		assert.NotNil(t, value)
+		assert.Equal(t, &expected, value)
+	})
+
+	t.Run("FlagUnchanged_ReturnsNil", func(t *testing.T) {
+		cmd := &cobra.Command{}
+		cmd.Flags().String("test", "", "")
+
+		value := helper.GetStringPtrFlagIfChanged(cmd, "test")
+
+		assert.Nil(t, value)
+	})
+}
+
+func TestGetBoolPtrFlagIfChanged(t *testing.T) {
+	t.Run("FlagChanged_ReturnsValue", func(t *testing.T) {
+		cmd := &cobra.Command{}
+		cmd.Flags().Bool("test", false, "")
+		cmd.ParseFlags([]string{"--test"})
+
+		value := helper.GetBoolPtrFlagIfChanged(cmd, "test")
+
+		assert.NotNil(t, value)
+		assert.True(t, *value)
+	})
+
+	t.Run("FlagUnchanged_ReturnsNil", func(t *testing.T) {
+		cmd := &cobra.Command{}
+		cmd.Flags().Bool("test", false, "")
+
+		value := helper.GetBoolPtrFlagIfChanged(cmd, "test")
+
+		assert.Nil(t, value)
+	})
+}
+
+func TestGetIntPtrFlagIfChanged(t *testing.T) {
+	t.Run("FlagChanged_ReturnsValue", func(t *testing.T) {
+		cmd := &cobra.Command{}
+		cmd.Flags().Int("test", 0, "")
+		cmd.ParseFlags([]string{"--test=123"})
+
+		value := helper.GetIntPtrFlagIfChanged(cmd, "test")
+
+		expected := 123
+		assert.NotNil(t, value)
+		assert.Equal(t, &expected, value)
+	})
+
+	t.Run("FlagUnchanged_ReturnsNil", func(t *testing.T) {
+		cmd := &cobra.Command{}
+		cmd.Flags().Int("test", 0, "")
+
+		value := helper.GetIntPtrFlagIfChanged(cmd, "test")
+
+		assert.Nil(t, value)
+	})
+}
