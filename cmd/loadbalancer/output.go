@@ -20,6 +20,11 @@ func OutputLoadBalancerTargetGroupsProvider(groups []loadbalancer.TargetGroup) o
 		WithDefaultFields([]string{"id", "name", "cluster_id", "mode"})
 }
 
+func OutputLoadBalancerTargetsProvider(targets []loadbalancer.Target) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(targets).
+		WithDefaultFields([]string{"id", "name", "targetgroup_id", "ip", "port", "weight", "backup", "active"})
+}
+
 func OutputLoadBalancerBindsProvider(binds []loadbalancer.Bind) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(binds).
 		WithDefaultFields([]string{"id", "listener_id", "vip_id", "port"})
