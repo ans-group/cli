@@ -28,6 +28,7 @@ func loadbalancerListenerRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Co
 	cmd.AddCommand(loadbalancerListenerDeleteCmd(f))
 
 	// Child root commands
+	cmd.AddCommand(loadbalancerListenerAccessIPRootCmd(f))
 	cmd.AddCommand(loadbalancerListenerCertificateRootCmd(f, fs))
 
 	return cmd

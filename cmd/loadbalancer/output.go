@@ -29,3 +29,8 @@ func OutputLoadBalancerCertificatesProvider(certs []loadbalancer.Certificate) ou
 	return output.NewSerializedOutputHandlerDataProvider(certs).
 		WithDefaultFields([]string{"id", "listener_id", "name"})
 }
+
+func OutputLoadBalancerAccessIPsProvider(accessIPs []loadbalancer.AccessIP) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(accessIPs).
+		WithDefaultFields([]string{"id", "ip"})
+}

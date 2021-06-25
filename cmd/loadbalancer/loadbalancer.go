@@ -14,6 +14,7 @@ func LoadBalancerRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 	}
 
 	// Child root commands
+	cmd.AddCommand(loadbalancerAccessIPRootCmd(f))
 	cmd.AddCommand(loadbalancerBindRootCmd(f))
 	cmd.AddCommand(loadbalancerClusterRootCmd(f))
 	cmd.AddCommand(loadbalancerListenerRootCmd(f, fs))
