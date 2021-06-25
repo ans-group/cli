@@ -431,6 +431,36 @@ func (mr *MockLoadBalancerServiceMockRecorder) GetListener(arg0 interface{}) *go
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetListener", reflect.TypeOf((*MockLoadBalancerService)(nil).GetListener), arg0)
 }
 
+// GetListenerACLs mocks base method
+func (m *MockLoadBalancerService) GetListenerACLs(arg0 int, arg1 connection.APIRequestParameters) ([]loadbalancer.ACL, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetListenerACLs", arg0, arg1)
+	ret0, _ := ret[0].([]loadbalancer.ACL)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetListenerACLs indicates an expected call of GetListenerACLs
+func (mr *MockLoadBalancerServiceMockRecorder) GetListenerACLs(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetListenerACLs", reflect.TypeOf((*MockLoadBalancerService)(nil).GetListenerACLs), arg0, arg1)
+}
+
+// GetListenerACLsPaginated mocks base method
+func (m *MockLoadBalancerService) GetListenerACLsPaginated(arg0 int, arg1 connection.APIRequestParameters) (*loadbalancer.PaginatedACL, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetListenerACLsPaginated", arg0, arg1)
+	ret0, _ := ret[0].(*loadbalancer.PaginatedACL)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetListenerACLsPaginated indicates an expected call of GetListenerACLsPaginated
+func (mr *MockLoadBalancerServiceMockRecorder) GetListenerACLsPaginated(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetListenerACLsPaginated", reflect.TypeOf((*MockLoadBalancerService)(nil).GetListenerACLsPaginated), arg0, arg1)
+}
+
 // GetListenerAccessIPs mocks base method
 func (m *MockLoadBalancerService) GetListenerAccessIPs(arg0 int, arg1 connection.APIRequestParameters) ([]loadbalancer.AccessIP, error) {
 	m.ctrl.T.Helper()
@@ -594,6 +624,36 @@ func (m *MockLoadBalancerService) GetTargetGroup(arg0 int) (loadbalancer.TargetG
 func (mr *MockLoadBalancerServiceMockRecorder) GetTargetGroup(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTargetGroup", reflect.TypeOf((*MockLoadBalancerService)(nil).GetTargetGroup), arg0)
+}
+
+// GetTargetGroupACLs mocks base method
+func (m *MockLoadBalancerService) GetTargetGroupACLs(arg0 int, arg1 connection.APIRequestParameters) ([]loadbalancer.ACL, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetTargetGroupACLs", arg0, arg1)
+	ret0, _ := ret[0].([]loadbalancer.ACL)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetTargetGroupACLs indicates an expected call of GetTargetGroupACLs
+func (mr *MockLoadBalancerServiceMockRecorder) GetTargetGroupACLs(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTargetGroupACLs", reflect.TypeOf((*MockLoadBalancerService)(nil).GetTargetGroupACLs), arg0, arg1)
+}
+
+// GetTargetGroupACLsPaginated mocks base method
+func (m *MockLoadBalancerService) GetTargetGroupACLsPaginated(arg0 int, arg1 connection.APIRequestParameters) (*loadbalancer.PaginatedACL, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetTargetGroupACLsPaginated", arg0, arg1)
+	ret0, _ := ret[0].(*loadbalancer.PaginatedACL)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetTargetGroupACLsPaginated indicates an expected call of GetTargetGroupACLsPaginated
+func (mr *MockLoadBalancerServiceMockRecorder) GetTargetGroupACLsPaginated(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTargetGroupACLsPaginated", reflect.TypeOf((*MockLoadBalancerService)(nil).GetTargetGroupACLsPaginated), arg0, arg1)
 }
 
 // GetTargetGroupTarget mocks base method

@@ -9,7 +9,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/ukfast/cli/internal/pkg/clierrors"
 	"github.com/ukfast/cli/test/mocks"
-	"github.com/ukfast/sdk-go/pkg/connection"
 	"github.com/ukfast/sdk-go/pkg/service/loadbalancer"
 )
 
@@ -26,13 +25,6 @@ func Test_loadbalancerListenerACLListCmd_Args(t *testing.T) {
 		assert.NotNil(t, err)
 		assert.Equal(t, "Missing listener", err.Error())
 	})
-
-	t.Run("InvalidListenerID_Error", func(t *testing.T) {
-		err := loadbalancerListenerACLListCmd(nil).Args(nil, []string{"abc"})
-
-		assert.NotNil(t, err)
-		assert.Equal(t, "Invalid listener ID", err.Error())
-	})
 }
 
 func Test_loadbalancerListenerACLList(t *testing.T) {
@@ -42,13 +34,7 @@ func Test_loadbalancerListenerACLList(t *testing.T) {
 
 		service := mocks.NewMockLoadBalancerService(mockCtrl)
 
-		params := connection.NewAPIRequestParameters().WithFilter(connection.APIRequestFiltering{
-			Property: "listener_id",
-			Operator: connection.EQOperator,
-			Value:    []string{"123"},
-		})
-
-		service.EXPECT().GetACLs(*params).Return([]loadbalancer.ACL{}, nil).Times(1)
+		service.EXPECT().GetListenerACLs(123, gomock.Any()).Return([]loadbalancer.ACL{}, nil).Times(1)
 
 		loadbalancerListenerACLList(service, &cobra.Command{}, []string{"123"})
 	})
@@ -67,13 +53,25 @@ func Test_loadbalancerListenerACLList(t *testing.T) {
 		assert.IsType(t, &clierrors.ErrInvalidFlagValue{}, err)
 	})
 
+	t.Run("InvalidTargetGroupID_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockLoadBalancerService(mockCtrl)
+
+		err := loadbalancerListenerACLList(service, loadbalancerListenerACLListCmd(nil), []string{"invalid"})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Invalid listener ID", err.Error())
+	})
+
 	t.Run("GetListenerACLsError_ReturnsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockLoadBalancerService(mockCtrl)
 
-		service.EXPECT().GetACLs(gomock.Any()).Return([]loadbalancer.ACL{}, errors.New("test error")).Times(1)
+		service.EXPECT().GetListenerACLs(123, gomock.Any()).Return([]loadbalancer.ACL{}, errors.New("test error")).Times(1)
 
 		err := loadbalancerListenerACLList(service, &cobra.Command{}, []string{"123"})
 

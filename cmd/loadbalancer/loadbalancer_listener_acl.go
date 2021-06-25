@@ -9,7 +9,6 @@ import (
 	"github.com/ukfast/cli/internal/pkg/factory"
 	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/sdk-go/pkg/connection"
 	"github.com/ukfast/sdk-go/pkg/service/loadbalancer"
 )
 
@@ -36,11 +35,6 @@ func loadbalancerListenerACLListCmd(f factory.ClientFactory) *cobra.Command {
 				return errors.New("Missing listener")
 			}
 
-			_, err := strconv.Atoi(args[0])
-			if err != nil {
-				return fmt.Errorf("Invalid listener ID")
-			}
-
 			return nil
 		},
 		RunE: loadbalancerCobraRunEFunc(f, loadbalancerListenerACLList),
@@ -53,13 +47,12 @@ func loadbalancerListenerACLList(service loadbalancer.LoadBalancerService, cmd *
 		return err
 	}
 
-	params.WithFilter(connection.APIRequestFiltering{
-		Property: "listener_id",
-		Operator: connection.EQOperator,
-		Value:    []string{args[0]},
-	})
+	listenerID, err := strconv.Atoi(args[0])
+	if err != nil {
+		return fmt.Errorf("Invalid listener ID")
+	}
 
-	acls, err := service.GetACLs(params)
+	acls, err := service.GetListenerACLs(listenerID, params)
 	if err != nil {
 		return fmt.Errorf("Error retrieving ACLs: %s", err)
 	}

@@ -27,6 +27,7 @@ func loadbalancerTargetGroupRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.AddCommand(loadbalancerTargetGroupDeleteCmd(f))
 
 	// Child root commands
+	cmd.AddCommand(loadbalancerTargetGroupACLRootCmd(f))
 	cmd.AddCommand(loadbalancerTargetGroupTargetRootCmd(f))
 
 	return cmd

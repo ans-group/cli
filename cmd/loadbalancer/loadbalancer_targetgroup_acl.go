@@ -9,7 +9,6 @@ import (
 	"github.com/ukfast/cli/internal/pkg/factory"
 	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/sdk-go/pkg/connection"
 	"github.com/ukfast/sdk-go/pkg/service/loadbalancer"
 )
 
@@ -36,11 +35,6 @@ func loadbalancerTargetGroupACLListCmd(f factory.ClientFactory) *cobra.Command {
 				return errors.New("Missing target group")
 			}
 
-			_, err := strconv.Atoi(args[0])
-			if err != nil {
-				return fmt.Errorf("Invalid target group ID")
-			}
-
 			return nil
 		},
 		RunE: loadbalancerCobraRunEFunc(f, loadbalancerTargetGroupACLList),
@@ -53,13 +47,12 @@ func loadbalancerTargetGroupACLList(service loadbalancer.LoadBalancerService, cm
 		return err
 	}
 
-	params.WithFilter(connection.APIRequestFiltering{
-		Property: "target_group_id",
-		Operator: connection.EQOperator,
-		Value:    []string{args[0]},
-	})
+	groupID, err := strconv.Atoi(args[0])
+	if err != nil {
+		return fmt.Errorf("Invalid target group ID")
+	}
 
-	acls, err := service.GetACLs(params)
+	acls, err := service.GetTargetGroupACLs(groupID, params)
 	if err != nil {
 		return fmt.Errorf("Error retrieving ACLs: %s", err)
 	}
