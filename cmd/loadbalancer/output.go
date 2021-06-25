@@ -24,3 +24,8 @@ func OutputLoadBalancerBindsProvider(binds []loadbalancer.Bind) output.OutputHan
 	return output.NewSerializedOutputHandlerDataProvider(binds).
 		WithDefaultFields([]string{"id", "listener_id", "vip_id", "port"})
 }
+
+func OutputLoadBalancerCertificatesProvider(certs []loadbalancer.Certificate) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(certs).
+		WithDefaultFields([]string{"id", "listener_id", "name"})
+}

@@ -1,12 +1,13 @@
 package loadbalancer
 
 import (
+	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
 	"github.com/ukfast/cli/internal/pkg/factory"
 	"github.com/ukfast/sdk-go/pkg/service/loadbalancer"
 )
 
-func LoadBalancerRootCmd(f factory.ClientFactory) *cobra.Command {
+func LoadBalancerRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "loadbalancer",
 		Short: "Commands relating to load balancer service",
@@ -15,7 +16,7 @@ func LoadBalancerRootCmd(f factory.ClientFactory) *cobra.Command {
 	// Child root commands
 	cmd.AddCommand(loadbalancerBindRootCmd(f))
 	cmd.AddCommand(loadbalancerClusterRootCmd(f))
-	cmd.AddCommand(loadbalancerListenerRootCmd(f))
+	cmd.AddCommand(loadbalancerListenerRootCmd(f, fs))
 	cmd.AddCommand(loadbalancerTargetGroupRootCmd(f))
 
 	return cmd

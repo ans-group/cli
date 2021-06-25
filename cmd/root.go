@@ -74,7 +74,7 @@ func Execute(build build.BuildInfo) {
 	rootCmd.AddCommand(draascmd.DRaaSRootCmd(clientFactory))
 	rootCmd.AddCommand(ecloudcmd.ECloudRootCmd(clientFactory, fs))
 	rootCmd.AddCommand(ecloudflexcmd.ECloudFlexRootCmd(clientFactory))
-	rootCmd.AddCommand(loadbalancercmd.LoadBalancerRootCmd(clientFactory))
+	rootCmd.AddCommand(loadbalancercmd.LoadBalancerRootCmd(clientFactory, fs))
 	rootCmd.AddCommand(loadtestcmd.LoadTestRootCmd(clientFactory))
 	rootCmd.AddCommand(psscmd.PSSRootCmd(clientFactory, fs))
 	rootCmd.AddCommand(registrarcmd.RegistrarRootCmd(clientFactory))

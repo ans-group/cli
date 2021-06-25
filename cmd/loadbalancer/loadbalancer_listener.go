@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
 	"github.com/ukfast/cli/internal/pkg/clierrors"
 	"github.com/ukfast/cli/internal/pkg/factory"
@@ -13,7 +14,7 @@ import (
 	"github.com/ukfast/sdk-go/pkg/service/loadbalancer"
 )
 
-func loadbalancerListenerRootCmd(f factory.ClientFactory) *cobra.Command {
+func loadbalancerListenerRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "listener",
 		Short: "sub-commands relating to listeners",
@@ -25,6 +26,9 @@ func loadbalancerListenerRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.AddCommand(loadbalancerListenerCreateCmd(f))
 	cmd.AddCommand(loadbalancerListenerUpdateCmd(f))
 	cmd.AddCommand(loadbalancerListenerDeleteCmd(f))
+
+	// Child root commands
+	cmd.AddCommand(loadbalancerListenerCertificateRootCmd(f, fs))
 
 	return cmd
 }

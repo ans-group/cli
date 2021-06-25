@@ -116,7 +116,7 @@ func loadbalancerListenerBindCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create <listener: id> <bind: id>...",
 		Short:   "Creates a bind",
 		Long:    "This command creates a bind",
-		Example: "ukfast loadbalancer listenerbind create 123 --cluster 123 --default-target-group 456 --name \"test-targetgroup\" --mode http",
+		Example: "ukfast loadbalancer listener bind create 123 --vip 456 --port 443",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing listener")
@@ -163,7 +163,7 @@ func loadbalancerListenerBindUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <listener: id> <bind: id>...",
 		Short:   "Updates a bind",
 		Long:    "This command updates one or more binds",
-		Example: "ukfast loadbalancer listener bind update 123 456 --name mytargetgroup",
+		Example: "ukfast loadbalancer listener bind update 123 --port 443",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing listener")
