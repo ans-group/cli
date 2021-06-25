@@ -164,8 +164,9 @@ func Test_loadbalancerTargetGroupTargetCreate(t *testing.T) {
 		cmd.ParseFlags([]string{"--ip=1.2.3.4", "--port=443"})
 
 		req := loadbalancer.CreateTargetRequest{
-			IP:   connection.IPAddress("1.2.3.4"),
-			Port: 443,
+			IP:     connection.IPAddress("1.2.3.4"),
+			Port:   443,
+			Active: true,
 		}
 
 		gomock.InOrder(
