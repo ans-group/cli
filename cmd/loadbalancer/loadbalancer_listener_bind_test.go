@@ -13,6 +13,21 @@ import (
 	"github.com/ukfast/sdk-go/pkg/service/loadbalancer"
 )
 
+func Test_loadbalancerListenerBindListCmd_Args(t *testing.T) {
+	t.Run("ValidArgs_NoError", func(t *testing.T) {
+		err := loadbalancerListenerBindListCmd(nil).Args(nil, []string{"123"})
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("InvalidArgs_Error", func(t *testing.T) {
+		err := loadbalancerListenerBindListCmd(nil).Args(nil, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing listener", err.Error())
+	})
+}
+
 func Test_loadbalancerListenerBindList(t *testing.T) {
 	t.Run("DefaultRetrieve", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)

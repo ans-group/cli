@@ -14,6 +14,21 @@ import (
 	"github.com/ukfast/sdk-go/pkg/service/loadbalancer"
 )
 
+func Test_loadbalancerTargetGroupTargetListCmd_Args(t *testing.T) {
+	t.Run("ValidArgs_NoError", func(t *testing.T) {
+		err := loadbalancerTargetGroupTargetListCmd(nil).Args(nil, []string{"123"})
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("InvalidArgs_Error", func(t *testing.T) {
+		err := loadbalancerTargetGroupTargetListCmd(nil).Args(nil, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing target group", err.Error())
+	})
+}
+
 func Test_loadbalancerTargetGroupTargetList(t *testing.T) {
 	t.Run("DefaultRetrieve", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)

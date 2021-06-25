@@ -39,3 +39,8 @@ func OutputLoadBalancerAccessIPsProvider(accessIPs []loadbalancer.AccessIP) outp
 	return output.NewSerializedOutputHandlerDataProvider(accessIPs).
 		WithDefaultFields([]string{"id", "ip"})
 }
+
+func OutputLoadBalancerACLsProvider(acls []loadbalancer.ACL) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(acls).
+		WithDefaultFields([]string{"id", "name"})
+}
