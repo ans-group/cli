@@ -77,10 +77,9 @@ func loadbalancerACLCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().String("name", "", "Name of ACL")
 	cmd.Flags().Int("listener", 0, "ID of listener")
 	cmd.Flags().Int("target-group", 0, "ID of target group")
-	cmd.Flags().String("condition-name", "", "Name of condition")
-	cmd.Flags().StringSlice("condition-argument", []string{}, "Command-seperated arguments for condition. Can be repeated")
-	cmd.Flags().String("action-name", "", "Name of action")
-	cmd.MarkFlagRequired("action-name")
+	cmd.Flags().StringArray("condition", []string{}, "Name and arguments of condition. Can be repeated. Example: --condition \"header_matches:host=ukfast.co.uk,accept=application/json\"")
+	cmd.Flags().StringArray("action", []string{}, "Name and arguments of action. Can be repeated")
+	cmd.MarkFlagRequired("action")
 	cmd.Flags().StringSlice("action-argument", []string{}, "Command-seperated arguments for action. Can be repeated")
 
 	return cmd
@@ -92,27 +91,23 @@ func loadbalancerACLCreate(service loadbalancer.LoadBalancerService, cmd *cobra.
 	createRequest.ListenerID, _ = cmd.Flags().GetInt("listener")
 	createRequest.TargetGroupID, _ = cmd.Flags().GetInt("target-group")
 
-	if cmd.Flags().Changed("condition-name") {
-		condition := loadbalancer.ACLCondition{}
-		condition.Name, _ = cmd.Flags().GetString("condition-name")
-		conditionArgumentsFlag, _ := cmd.Flags().GetStringSlice("condition-argument")
-		conditionArguments, err := parseACLArguments(conditionArgumentsFlag)
+	if cmd.Flags().Changed("condition") {
+		conditionsFlag, _ := cmd.Flags().GetStringArray("condition")
+		conditions, err := parseACLConditionsFromFlag(conditionsFlag)
 		if err != nil {
 			return err
 		}
-		condition.Arguments = conditionArguments
-		createRequest.Conditions = []loadbalancer.ACLCondition{condition}
+		createRequest.Conditions = conditions
 	}
 
-	action := loadbalancer.ACLAction{}
-	action.Name, _ = cmd.Flags().GetString("action-name")
-	actionArgumentsFlag, _ := cmd.Flags().GetStringSlice("action-argument")
-	actionArguments, err := parseACLArguments(actionArgumentsFlag)
-	if err != nil {
-		return err
+	if cmd.Flags().Changed("action") {
+		actionsFlag, _ := cmd.Flags().GetStringArray("action")
+		actions, err := parseACLActionsFromFlag(actionsFlag)
+		if err != nil {
+			return err
+		}
+		createRequest.Actions = actions
 	}
-	action.Arguments = actionArguments
-	createRequest.Actions = []loadbalancer.ACLAction{action}
 
 	aclID, err := service.CreateACL(createRequest)
 	if err != nil {
@@ -241,12 +236,59 @@ func loadbalancerACLDelete(service loadbalancer.LoadBalancerService, cmd *cobra.
 	return nil
 }
 
+func parseACLActionsFromFlag(actionFlags []string) ([]loadbalancer.ACLAction, error) {
+	var actions []loadbalancer.ACLAction
+	for _, actionFlag := range actionFlags {
+		name, arguments, err := parseACLStatementFlag(actionFlag)
+		if err != nil {
+			return nil, fmt.Errorf("Failed to parse ACL action from flag: %s", err)
+		}
+		actions = append(actions, loadbalancer.ACLAction{
+			Name:      name,
+			Arguments: arguments,
+		})
+	}
+
+	return actions, nil
+}
+
+func parseACLConditionsFromFlag(conditionFlags []string) ([]loadbalancer.ACLCondition, error) {
+	var conditions []loadbalancer.ACLCondition
+	for _, conditionFlag := range conditionFlags {
+		name, arguments, err := parseACLStatementFlag(conditionFlag)
+		if err != nil {
+			return nil, fmt.Errorf("Failed to parse ACL condition from flag: %s", err)
+		}
+		conditions = append(conditions, loadbalancer.ACLCondition{
+			Name:      name,
+			Arguments: arguments,
+		})
+	}
+
+	return conditions, nil
+}
+
+func parseACLStatementFlag(flag string) (string, map[string]loadbalancer.ACLArgument, error) {
+	flagNameSplit := strings.SplitN(flag, ":", 2)
+	if len(flagNameSplit) != 2 {
+		return "", nil, fmt.Errorf("Invalid flag format. Expected format name:arguments")
+	}
+
+	flagArgsSplit := strings.Split(flagNameSplit[1], ",")
+	arguments, err := parseACLArguments(flagArgsSplit)
+	if err != nil {
+		return "", nil, fmt.Errorf("Invalid flag arguments format: %s", err)
+	}
+
+	return flagNameSplit[0], arguments, nil
+}
+
 func parseACLArguments(args []string) (map[string]loadbalancer.ACLArgument, error) {
 	arguments := make(map[string]loadbalancer.ACLArgument)
 	for _, arg := range args {
 		parts := strings.Split(arg, "=")
 		if len(parts) != 2 {
-			return nil, fmt.Errorf("Expected 2 parts, got %d", len(parts))
+			return nil, fmt.Errorf("Invalid arguments format. Expected format name=value")
 		}
 
 		arguments[parts[0]] = loadbalancer.ACLArgument{
