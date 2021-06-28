@@ -25,6 +25,9 @@ func loadbalancerClusterRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.AddCommand(loadbalancerClusterDeployCmd(f))
 	cmd.AddCommand(loadbalancerClusterValidateCmd(f))
 
+	// Child root commands
+	cmd.AddCommand(loadbalancerClusterACLTemplateRootCmd(f))
+
 	return cmd
 }
 

@@ -356,6 +356,21 @@ func (mr *MockLoadBalancerServiceMockRecorder) GetCluster(arg0 interface{}) *gom
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCluster", reflect.TypeOf((*MockLoadBalancerService)(nil).GetCluster), arg0)
 }
 
+// GetClusterACLTemplates mocks base method
+func (m *MockLoadBalancerService) GetClusterACLTemplates(arg0 int) (loadbalancer.ACLTemplates, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetClusterACLTemplates", arg0)
+	ret0, _ := ret[0].(loadbalancer.ACLTemplates)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetClusterACLTemplates indicates an expected call of GetClusterACLTemplates
+func (mr *MockLoadBalancerServiceMockRecorder) GetClusterACLTemplates(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetClusterACLTemplates", reflect.TypeOf((*MockLoadBalancerService)(nil).GetClusterACLTemplates), arg0)
+}
+
 // GetClusters mocks base method
 func (m *MockLoadBalancerService) GetClusters(arg0 connection.APIRequestParameters) ([]loadbalancer.Cluster, error) {
 	m.ctrl.T.Helper()

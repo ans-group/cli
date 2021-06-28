@@ -44,3 +44,8 @@ func OutputLoadBalancerACLsProvider(acls []loadbalancer.ACL) output.OutputHandle
 	return output.NewSerializedOutputHandlerDataProvider(acls).
 		WithDefaultFields([]string{"id", "name", "conditions", "actions"})
 }
+
+func OutputLoadBalancerACLTemplatesProvider(templates []loadbalancer.ACLTemplates) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(templates).
+		WithDefaultFields([]string{"id", "conditions", "actions"})
+}
