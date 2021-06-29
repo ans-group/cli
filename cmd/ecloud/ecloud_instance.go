@@ -27,6 +27,9 @@ func ecloudInstanceRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.AddCommand(ecloudInstanceDeleteCmd(f))
 	cmd.AddCommand(ecloudInstanceLockCmd(f))
 	cmd.AddCommand(ecloudInstanceUnlockCmd(f))
+	cmd.AddCommand(ecloudInstanceStartCmd(f))
+	cmd.AddCommand(ecloudInstanceStopCmd(f))
+	cmd.AddCommand(ecloudInstanceRestartCmd(f))
 
 	// Child root commands
 	cmd.AddCommand(ecloudInstanceVolumeRootCmd(f))
