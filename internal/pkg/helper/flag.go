@@ -210,6 +210,7 @@ func GetContentsFromFilePathFlag(cmd *cobra.Command, fs afero.Fs, filePathFlag s
 
 	return string(contentBytes), nil
 }
+
 func GetContentsFromLiteralOrFilePathFlag(cmd *cobra.Command, fs afero.Fs, literalFlag, filePathFlag string) (string, error) {
 	if cmd.Flags().Changed(literalFlag) {
 		return cmd.Flags().GetString(literalFlag)
@@ -219,4 +220,28 @@ func GetContentsFromLiteralOrFilePathFlag(cmd *cobra.Command, fs afero.Fs, liter
 	}
 
 	return "", nil
+}
+
+func GetStringPtrFlagIfChanged(cmd *cobra.Command, name string) *string {
+	if cmd.Flags().Changed(name) {
+		value, _ := cmd.Flags().GetString(name)
+		return &value
+	}
+	return nil
+}
+
+func GetBoolPtrFlagIfChanged(cmd *cobra.Command, name string) *bool {
+	if cmd.Flags().Changed(name) {
+		value, _ := cmd.Flags().GetBool(name)
+		return &value
+	}
+	return nil
+}
+
+func GetIntPtrFlagIfChanged(cmd *cobra.Command, name string) *int {
+	if cmd.Flags().Changed(name) {
+		value, _ := cmd.Flags().GetInt(name)
+		return &value
+	}
+	return nil
 }
