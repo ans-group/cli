@@ -78,9 +78,8 @@ func loadbalancerACLCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().Int("listener", 0, "ID of listener")
 	cmd.Flags().Int("target-group", 0, "ID of target group")
 	cmd.Flags().StringArray("condition", []string{}, "Name and arguments of condition. Can be repeated. Example: --condition \"header_matches:host=ukfast.co.uk,accept=application/json\"")
-	cmd.Flags().StringArray("action", []string{}, "Name and arguments of action. Can be repeated")
+	cmd.Flags().StringArray("action", []string{}, "Name and arguments of action. Can be repeated. Example: --action \"redirect:location=developers.ukfast.io,status=302\"")
 	cmd.MarkFlagRequired("action")
-	cmd.Flags().StringSlice("action-argument", []string{}, "Command-seperated arguments for action. Can be repeated")
 
 	return cmd
 }
@@ -139,10 +138,8 @@ func loadbalancerACLUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("name", "", "Name of ACL")
-	cmd.Flags().String("condition-name", "", "Name of condition")
-	cmd.Flags().StringSlice("condition-argument", []string{}, "Command-seperated arguments for condition. Can be repeated")
-	cmd.Flags().String("action-name", "", "Name of action")
-	cmd.Flags().StringSlice("action-argument", []string{}, "Command-seperated arguments for action. Can be repeated")
+	cmd.Flags().StringArray("condition", []string{}, "Name and arguments of condition. Can be repeated. Example: --condition \"header_matches:host=ukfast.co.uk,accept=application/json\"")
+	cmd.Flags().StringArray("action", []string{}, "Name and arguments of action. Can be repeated. Example: --action \"redirect:location=developers.ukfast.io,status=302\"")
 
 	return cmd
 }
@@ -151,28 +148,22 @@ func loadbalancerACLUpdate(service loadbalancer.LoadBalancerService, cmd *cobra.
 	patchRequest := loadbalancer.PatchACLRequest{}
 	patchRequest.Name, _ = cmd.Flags().GetString("name")
 
-	if cmd.Flags().Changed("condition-name") {
-		condition := loadbalancer.ACLCondition{}
-		condition.Name, _ = cmd.Flags().GetString("condition-name")
-		conditionArgumentsFlag, _ := cmd.Flags().GetStringSlice("condition-argument")
-		conditionArguments, err := parseACLArguments(conditionArgumentsFlag)
+	if cmd.Flags().Changed("condition") {
+		conditionsFlag, _ := cmd.Flags().GetStringArray("condition")
+		conditions, err := parseACLConditionsFromFlag(conditionsFlag)
 		if err != nil {
 			return err
 		}
-		condition.Arguments = conditionArguments
-		patchRequest.Conditions = []loadbalancer.ACLCondition{condition}
+		patchRequest.Conditions = conditions
 	}
 
-	if cmd.Flags().Changed("action-name") {
-		action := loadbalancer.ACLAction{}
-		action.Name, _ = cmd.Flags().GetString("action-name")
-		actionArgumentsFlag, _ := cmd.Flags().GetStringSlice("action-argument")
-		actionArguments, err := parseACLArguments(actionArgumentsFlag)
+	if cmd.Flags().Changed("action") {
+		actionsFlag, _ := cmd.Flags().GetStringArray("action")
+		actions, err := parseACLActionsFromFlag(actionsFlag)
 		if err != nil {
 			return err
 		}
-		action.Arguments = actionArguments
-		patchRequest.Actions = []loadbalancer.ACLAction{action}
+		patchRequest.Actions = actions
 	}
 
 	var acls []loadbalancer.ACL
