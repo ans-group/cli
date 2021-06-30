@@ -356,7 +356,7 @@ func ecloudInstanceUnlock(service ecloud.ECloudService, cmd *cobra.Command, args
 }
 
 func ecloudInstanceStartCmd(f factory.ClientFactory) *cobra.Command {
-	return &cobra.Command{
+	cmd := &cobra.Command{
 		Use:     "start <instance: id>...",
 		Short:   "Starts an instance",
 		Long:    "This command powers on one or more instances",
@@ -370,13 +370,27 @@ func ecloudInstanceStartCmd(f factory.ClientFactory) *cobra.Command {
 		},
 		RunE: ecloudCobraRunEFunc(f, ecloudInstanceStart),
 	}
+
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the instance power on task has been completed")
+
+	return cmd
 }
 
 func ecloudInstanceStart(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	for _, arg := range args {
-		err := service.PowerOnInstance(arg)
+		taskID, err := service.PowerOnInstance(arg)
 		if err != nil {
 			output.OutputWithErrorLevelf("Error starting instance [%s]: %s", arg, err)
+			continue
+		}
+
+		waitFlag, _ := cmd.Flags().GetBool("wait")
+		if waitFlag {
+			err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskID, ecloud.TaskStatusComplete))
+			if err != nil {
+				output.OutputWithErrorLevelf("Error waiting for task to complete for instance [%s]: %s", arg, err)
+				continue
+			}
 		}
 	}
 	return nil
@@ -399,6 +413,7 @@ func ecloudInstanceStopCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().Bool("force", false, "Specifies that instance should be forcefully powered off")
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the instance power off task has been completed")
 
 	return cmd
 }
@@ -407,15 +422,28 @@ func ecloudInstanceStop(service ecloud.ECloudService, cmd *cobra.Command, args [
 	force, _ := cmd.Flags().GetBool("force")
 
 	for _, arg := range args {
+		var taskID string
+		var err error
 		if force {
-			err := service.PowerOffInstance(arg)
+			taskID, err = service.PowerOffInstance(arg)
 			if err != nil {
 				output.OutputWithErrorLevelf("Error stopping instance [%s] (forced): %s", arg, err)
+				continue
 			}
 		} else {
-			err := service.PowerShutdownInstance(arg)
+			taskID, err = service.PowerShutdownInstance(arg)
 			if err != nil {
 				output.OutputWithErrorLevelf("Error stopping instance [%s]: %s", arg, err)
+				continue
+			}
+		}
+
+		waitFlag, _ := cmd.Flags().GetBool("wait")
+		if waitFlag {
+			err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskID, ecloud.TaskStatusComplete))
+			if err != nil {
+				output.OutputWithErrorLevelf("Error waiting for task to complete for instance [%s]: %s", arg, err)
+				continue
 			}
 		}
 	}
@@ -439,6 +467,7 @@ func ecloudInstanceRestartCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().Bool("force", false, "Specifies that instance should be forcefully reset")
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the instance restart task has been completed")
 
 	return cmd
 }
@@ -447,15 +476,28 @@ func ecloudInstanceRestart(service ecloud.ECloudService, cmd *cobra.Command, arg
 	force, _ := cmd.Flags().GetBool("force")
 
 	for _, arg := range args {
+		var taskID string
+		var err error
 		if force {
-			err := service.PowerResetInstance(arg)
+			taskID, err = service.PowerResetInstance(arg)
 			if err != nil {
 				output.OutputWithErrorLevelf("Error restarting instance [%s] (forced): %s", arg, err)
+				continue
 			}
 		} else {
-			err := service.PowerRestartInstance(arg)
+			taskID, err = service.PowerRestartInstance(arg)
 			if err != nil {
 				output.OutputWithErrorLevelf("Error restarting instance [%s]: %s", arg, err)
+				continue
+			}
+		}
+
+		waitFlag, _ := cmd.Flags().GetBool("wait")
+		if waitFlag {
+			err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskID, ecloud.TaskStatusComplete))
+			if err != nil {
+				output.OutputWithErrorLevelf("Error waiting for task to complete for instance [%s]: %s", arg, err)
+				continue
 			}
 		}
 	}

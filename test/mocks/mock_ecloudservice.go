@@ -3878,11 +3878,12 @@ func (mr *MockECloudServiceMockRecorder) PodConsoleAvailable(arg0 interface{}) *
 }
 
 // PowerOffInstance mocks base method
-func (m *MockECloudService) PowerOffInstance(arg0 string) error {
+func (m *MockECloudService) PowerOffInstance(arg0 string) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PowerOffInstance", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // PowerOffInstance indicates an expected call of PowerOffInstance
@@ -3906,11 +3907,12 @@ func (mr *MockECloudServiceMockRecorder) PowerOffVirtualMachine(arg0 interface{}
 }
 
 // PowerOnInstance mocks base method
-func (m *MockECloudService) PowerOnInstance(arg0 string) error {
+func (m *MockECloudService) PowerOnInstance(arg0 string) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PowerOnInstance", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // PowerOnInstance indicates an expected call of PowerOnInstance
@@ -3934,11 +3936,12 @@ func (mr *MockECloudServiceMockRecorder) PowerOnVirtualMachine(arg0 interface{})
 }
 
 // PowerResetInstance mocks base method
-func (m *MockECloudService) PowerResetInstance(arg0 string) error {
+func (m *MockECloudService) PowerResetInstance(arg0 string) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PowerResetInstance", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // PowerResetInstance indicates an expected call of PowerResetInstance
@@ -3962,11 +3965,12 @@ func (mr *MockECloudServiceMockRecorder) PowerResetVirtualMachine(arg0 interface
 }
 
 // PowerRestartInstance mocks base method
-func (m *MockECloudService) PowerRestartInstance(arg0 string) error {
+func (m *MockECloudService) PowerRestartInstance(arg0 string) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PowerRestartInstance", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // PowerRestartInstance indicates an expected call of PowerRestartInstance
@@ -3990,11 +3994,12 @@ func (mr *MockECloudServiceMockRecorder) PowerRestartVirtualMachine(arg0 interfa
 }
 
 // PowerShutdownInstance mocks base method
-func (m *MockECloudService) PowerShutdownInstance(arg0 string) error {
+func (m *MockECloudService) PowerShutdownInstance(arg0 string) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PowerShutdownInstance", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // PowerShutdownInstance indicates an expected call of PowerShutdownInstance
