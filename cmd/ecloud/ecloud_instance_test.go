@@ -468,7 +468,7 @@ func Test_ecloudInstanceStart(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockECloudService(mockCtrl)
-		service.EXPECT().PowerOnInstance("i-abcdef12").Return(nil)
+		service.EXPECT().PowerOnInstance("i-abcdef12").Return("task-abcdef12", nil)
 
 		ecloudInstanceStart(service, &cobra.Command{}, []string{"i-abcdef12"})
 	})
@@ -479,11 +479,41 @@ func Test_ecloudInstanceStart(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 		gomock.InOrder(
-			service.EXPECT().PowerOnInstance("i-abcdef12").Return(nil),
-			service.EXPECT().PowerOnInstance("i-12abcdef").Return(nil),
+			service.EXPECT().PowerOnInstance("i-abcdef12").Return("task-abcdef12", nil),
+			service.EXPECT().PowerOnInstance("i-12abcdef").Return("task-abcdef23", nil),
 		)
 
 		ecloudInstanceStart(service, &cobra.Command{}, []string{"i-abcdef12", "i-12abcdef"})
+	})
+
+	t.Run("WithWaitFlag_NoError_Succeeds", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		cmd := ecloudInstanceStartCmd(nil)
+		cmd.ParseFlags([]string{"--wait"})
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		service.EXPECT().PowerOnInstance("i-abcdef12").Return("task-abcdef12", nil)
+		service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, nil)
+
+		ecloudInstanceStart(service, cmd, []string{"i-abcdef12"})
+	})
+
+	t.Run("WithWaitFlag_GetTaskError_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		cmd := ecloudInstanceStartCmd(nil)
+		cmd.ParseFlags([]string{"--wait"})
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		service.EXPECT().PowerOnInstance("i-abcdef12").Return("task-abcdef12", nil)
+		service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{}, errors.New("test error"))
+
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for instance [i-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+			ecloudInstanceStart(service, cmd, []string{"i-abcdef12"})
+		})
 	})
 
 	t.Run("PowerOnInstanceError_OutputsError", func(t *testing.T) {
@@ -491,7 +521,7 @@ func Test_ecloudInstanceStart(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockECloudService(mockCtrl)
-		service.EXPECT().PowerOnInstance("i-abcdef12").Return(errors.New("test error"))
+		service.EXPECT().PowerOnInstance("i-abcdef12").Return("", errors.New("test error"))
 
 		test_output.AssertErrorOutput(t, "Error starting instance [i-abcdef12]: test error\n", func() {
 			ecloudInstanceStart(service, &cobra.Command{}, []string{"i-abcdef12"})
@@ -520,7 +550,7 @@ func Test_ecloudInstanceStop(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockECloudService(mockCtrl)
-		service.EXPECT().PowerShutdownInstance("i-abcdef12").Return(nil)
+		service.EXPECT().PowerShutdownInstance("i-abcdef12").Return("task-abcdef12", nil)
 
 		ecloudInstanceStop(service, &cobra.Command{}, []string{"i-abcdef12"})
 	})
@@ -530,7 +560,7 @@ func Test_ecloudInstanceStop(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockECloudService(mockCtrl)
-		service.EXPECT().PowerOffInstance("i-abcdef12").Return(nil)
+		service.EXPECT().PowerOffInstance("i-abcdef12").Return("task-abcdef12", nil)
 
 		cmd := ecloudInstanceStopCmd(nil)
 		cmd.ParseFlags([]string{"--force"})
@@ -538,12 +568,42 @@ func Test_ecloudInstanceStop(t *testing.T) {
 		ecloudInstanceStop(service, cmd, []string{"i-abcdef12"})
 	})
 
+	t.Run("WithWaitFlag_NoError_Succeeds", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		cmd := ecloudInstanceStopCmd(nil)
+		cmd.ParseFlags([]string{"--wait"})
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		service.EXPECT().PowerShutdownInstance("i-abcdef12").Return("task-abcdef12", nil)
+		service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, nil)
+
+		ecloudInstanceStop(service, cmd, []string{"i-abcdef12"})
+	})
+
+	t.Run("WithWaitFlag_GetTaskError_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		cmd := ecloudInstanceStopCmd(nil)
+		cmd.ParseFlags([]string{"--wait"})
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		service.EXPECT().PowerShutdownInstance("i-abcdef12").Return("task-abcdef12", nil)
+		service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{}, errors.New("test error"))
+
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for instance [i-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+			ecloudInstanceStop(service, cmd, []string{"i-abcdef12"})
+		})
+	})
+
 	t.Run("PowerShutdownInstanceError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockECloudService(mockCtrl)
-		service.EXPECT().PowerShutdownInstance("i-abcdef12").Return(errors.New("test error")).Times(1)
+		service.EXPECT().PowerShutdownInstance("i-abcdef12").Return("", errors.New("test error")).Times(1)
 
 		test_output.AssertErrorOutput(t, "Error stopping instance [i-abcdef12]: test error\n", func() {
 			ecloudInstanceStop(service, &cobra.Command{}, []string{"i-abcdef12"})
@@ -555,7 +615,7 @@ func Test_ecloudInstanceStop(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockECloudService(mockCtrl)
-		service.EXPECT().PowerOffInstance("i-abcdef12").Return(errors.New("test error"))
+		service.EXPECT().PowerOffInstance("i-abcdef12").Return("", errors.New("test error"))
 
 		cmd := ecloudInstanceStopCmd(nil)
 		cmd.ParseFlags([]string{"--force"})
@@ -587,7 +647,7 @@ func Test_ecloudInstanceRestart(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockECloudService(mockCtrl)
-		service.EXPECT().PowerRestartInstance("i-abcdef12").Return(nil)
+		service.EXPECT().PowerRestartInstance("i-abcdef12").Return("task-abcdef12", nil)
 
 		ecloudInstanceRestart(service, &cobra.Command{}, []string{"i-abcdef12"})
 	})
@@ -597,7 +657,7 @@ func Test_ecloudInstanceRestart(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockECloudService(mockCtrl)
-		service.EXPECT().PowerResetInstance("i-abcdef12").Return(nil)
+		service.EXPECT().PowerResetInstance("i-abcdef12").Return("task-abcdef12", nil)
 
 		cmd := ecloudInstanceRestartCmd(nil)
 		cmd.ParseFlags([]string{"--force"})
@@ -605,12 +665,42 @@ func Test_ecloudInstanceRestart(t *testing.T) {
 		ecloudInstanceRestart(service, cmd, []string{"i-abcdef12"})
 	})
 
+	t.Run("WithWaitFlag_NoError_Succeeds", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		cmd := ecloudInstanceRestartCmd(nil)
+		cmd.ParseFlags([]string{"--wait"})
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		service.EXPECT().PowerRestartInstance("i-abcdef12").Return("task-abcdef12", nil)
+		service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, nil)
+
+		ecloudInstanceRestart(service, cmd, []string{"i-abcdef12"})
+	})
+
+	t.Run("WithWaitFlag_GetTaskError_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		cmd := ecloudInstanceRestartCmd(nil)
+		cmd.ParseFlags([]string{"--wait"})
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		service.EXPECT().PowerRestartInstance("i-abcdef12").Return("task-abcdef12", nil)
+		service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{}, errors.New("test error"))
+
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for instance [i-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+			ecloudInstanceRestart(service, cmd, []string{"i-abcdef12"})
+		})
+	})
+
 	t.Run("PowerRestartInstanceError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockECloudService(mockCtrl)
-		service.EXPECT().PowerRestartInstance("i-abcdef12").Return(errors.New("test error")).Times(1)
+		service.EXPECT().PowerRestartInstance("i-abcdef12").Return("", errors.New("test error")).Times(1)
 
 		test_output.AssertErrorOutput(t, "Error restarting instance [i-abcdef12]: test error\n", func() {
 			ecloudInstanceRestart(service, &cobra.Command{}, []string{"i-abcdef12"})
@@ -622,7 +712,7 @@ func Test_ecloudInstanceRestart(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockECloudService(mockCtrl)
-		service.EXPECT().PowerResetInstance("i-abcdef12").Return(errors.New("test error"))
+		service.EXPECT().PowerResetInstance("i-abcdef12").Return("", errors.New("test error"))
 
 		cmd := ecloudInstanceRestartCmd(nil)
 		cmd.ParseFlags([]string{"--force"})
