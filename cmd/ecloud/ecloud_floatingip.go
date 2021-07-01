@@ -224,7 +224,7 @@ func ecloudFloatingIPAssignCmd(f factory.ClientFactory) *cobra.Command {
 
 	cmd.Flags().String("resource", "", "ID of resource to assign")
 	cmd.MarkFlagRequired("resource")
-	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the floating IP has been completely created before continuing on")
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the floating IP has been completely assigned before continuing on")
 
 	return cmd
 }
@@ -258,7 +258,7 @@ func ecloudFloatingIPAssign(service ecloud.ECloudService, cmd *cobra.Command, ar
 }
 
 func ecloudFloatingIPUnassignCmd(f factory.ClientFactory) *cobra.Command {
-	return &cobra.Command{
+	cmd := &cobra.Command{
 		Use:     "unassign <fip: id>...",
 		Short:   "Unassigns a floating IP",
 		Long:    "This command unassigns one or more floating IPs from connected resources",
@@ -272,6 +272,10 @@ func ecloudFloatingIPUnassignCmd(f factory.ClientFactory) *cobra.Command {
 		},
 		RunE: ecloudCobraRunEFunc(f, ecloudFloatingIPUnassign),
 	}
+
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the floating IP has been completely unassigned before continuing on")
+
+	return cmd
 }
 
 func ecloudFloatingIPUnassign(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
@@ -279,6 +283,15 @@ func ecloudFloatingIPUnassign(service ecloud.ECloudService, cmd *cobra.Command, 
 		err := service.UnassignFloatingIP(arg)
 		if err != nil {
 			output.OutputWithErrorLevelf("Error unassigning floating IP [%s]: %s", arg, err)
+			continue
+		}
+
+		waitFlag, _ := cmd.Flags().GetBool("wait")
+		if waitFlag {
+			err := helper.WaitForCommand(FloatingIPResourceSyncStatusWaitFunc(service, arg, ecloud.SyncStatusComplete))
+			if err != nil {
+				return fmt.Errorf("Error waiting for floating IP [%s] sync: %s", arg, err)
+			}
 		}
 	}
 	return nil
