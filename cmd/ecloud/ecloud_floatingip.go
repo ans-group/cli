@@ -220,9 +220,9 @@ func ecloudFloatingIPDelete(service ecloud.ECloudService, cmd *cobra.Command, ar
 
 		waitFlag, _ := cmd.Flags().GetBool("wait")
 		if waitFlag {
-			err := helper.WaitForCommand(FloatingIPResourceSyncStatusWaitFunc(service, arg, ecloud.SyncStatusComplete))
+			err := helper.WaitForCommand(FloatingIPNotFoundWaitFunc(service, arg))
 			if err != nil {
-				output.OutputWithErrorLevelf("Error waiting for floating IP [%s] sync: %s", arg, err)
+				output.OutputWithErrorLevelf("Error waiting for removal of floating IP [%s]: %s", arg, err)
 				continue
 			}
 		}
@@ -330,4 +330,20 @@ func FloatingIPResourceSyncStatusWaitFunc(service ecloud.ECloudService, fipID st
 		}
 		return fip.Sync.Status, nil
 	}, status)
+}
+
+func FloatingIPNotFoundWaitFunc(service ecloud.ECloudService, fipID string) helper.WaitFunc {
+	return func() (finished bool, err error) {
+		_, err = service.GetFloatingIP(fipID)
+		if err != nil {
+			switch err.(type) {
+			case *ecloud.FloatingIPNotFoundError:
+				return true, nil
+			default:
+				return false, fmt.Errorf("Failed to retrieve floating IP [%s]: %s", fipID, err)
+			}
+		}
+
+		return false, nil
+	}
 }
