@@ -98,7 +98,7 @@ func ecloudFloatingIPCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().String("name", "", "Name of floating IP")
 	cmd.Flags().String("vpc", "", "ID of VPC")
 	cmd.MarkFlagRequired("vpc")
-	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the floating IP has been completely created before continuing on")
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the floating IP has been completely created")
 
 	return cmd
 }
@@ -148,6 +148,7 @@ func ecloudFloatingIPUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("name", "", "Name of floating IP")
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the floating IP has been completely updated")
 
 	return cmd
 }
@@ -167,6 +168,15 @@ func ecloudFloatingIPUpdate(service ecloud.ECloudService, cmd *cobra.Command, ar
 			continue
 		}
 
+		waitFlag, _ := cmd.Flags().GetBool("wait")
+		if waitFlag {
+			err := helper.WaitForCommand(FloatingIPResourceSyncStatusWaitFunc(service, arg, ecloud.SyncStatusComplete))
+			if err != nil {
+				output.OutputWithErrorLevelf("Error waiting for floating IP [%s] sync: %s", arg, err)
+				continue
+			}
+		}
+
 		fip, err := service.GetFloatingIP(arg)
 		if err != nil {
 			output.OutputWithErrorLevelf("Error retrieving updated floating IP [%s]: %s", arg, err)
@@ -180,7 +190,7 @@ func ecloudFloatingIPUpdate(service ecloud.ECloudService, cmd *cobra.Command, ar
 }
 
 func ecloudFloatingIPDeleteCmd(f factory.ClientFactory) *cobra.Command {
-	return &cobra.Command{
+	cmd := &cobra.Command{
 		Use:     "delete <fip: id>...",
 		Short:   "Removes a floating IP",
 		Long:    "This command removes one or more floating IPs",
@@ -194,6 +204,10 @@ func ecloudFloatingIPDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		},
 		RunE: ecloudCobraRunEFunc(f, ecloudFloatingIPDelete),
 	}
+
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the floating IP has been completely removed")
+
+	return cmd
 }
 
 func ecloudFloatingIPDelete(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
@@ -201,6 +215,16 @@ func ecloudFloatingIPDelete(service ecloud.ECloudService, cmd *cobra.Command, ar
 		err := service.DeleteFloatingIP(arg)
 		if err != nil {
 			output.OutputWithErrorLevelf("Error removing floating IP [%s]: %s", arg, err)
+			continue
+		}
+
+		waitFlag, _ := cmd.Flags().GetBool("wait")
+		if waitFlag {
+			err := helper.WaitForCommand(FloatingIPResourceSyncStatusWaitFunc(service, arg, ecloud.SyncStatusComplete))
+			if err != nil {
+				output.OutputWithErrorLevelf("Error waiting for floating IP [%s] sync: %s", arg, err)
+				continue
+			}
 		}
 	}
 	return nil
@@ -224,7 +248,7 @@ func ecloudFloatingIPAssignCmd(f factory.ClientFactory) *cobra.Command {
 
 	cmd.Flags().String("resource", "", "ID of resource to assign")
 	cmd.MarkFlagRequired("resource")
-	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the floating IP has been completely assigned before continuing on")
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the floating IP has been completely assigned")
 
 	return cmd
 }
@@ -273,7 +297,7 @@ func ecloudFloatingIPUnassignCmd(f factory.ClientFactory) *cobra.Command {
 		RunE: ecloudCobraRunEFunc(f, ecloudFloatingIPUnassign),
 	}
 
-	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the floating IP has been completely unassigned before continuing on")
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the floating IP has been completely unassigned")
 
 	return cmd
 }
@@ -290,7 +314,8 @@ func ecloudFloatingIPUnassign(service ecloud.ECloudService, cmd *cobra.Command, 
 		if waitFlag {
 			err := helper.WaitForCommand(FloatingIPResourceSyncStatusWaitFunc(service, arg, ecloud.SyncStatusComplete))
 			if err != nil {
-				return fmt.Errorf("Error waiting for floating IP [%s] sync: %s", arg, err)
+				output.OutputWithErrorLevelf("Error waiting for floating IP [%s] sync: %s", arg, err)
+				continue
 			}
 		}
 	}
