@@ -67,7 +67,7 @@ func loadbalancerACLShow(service loadbalancer.LoadBalancerService, cmd *cobra.Co
 
 func loadbalancerACLCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "create <acl: id>...",
+		Use:     "create <acl: id>",
 		Short:   "Creates an ACL",
 		Long:    "This command creates a ACLs with a single condition/action. Additional conditions/actions can be added with subcommands",
 		Example: "ukfast loadbalancer acl create --name \"test ACL\" --host-group 1 --condition \"header_matches:host=ukfast.co.uk,accept=application/json\" --action \"redirect:location=developers.ukfast.io,status=302\"",

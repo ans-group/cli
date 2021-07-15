@@ -64,7 +64,7 @@ func loadbalancerListenerAccessIPList(service loadbalancer.LoadBalancerService, 
 
 func loadbalancerListenerAccessIPCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "create <listener: id> <accessip: id>...",
+		Use:     "create <listener: id>",
 		Short:   "Creates an access IP",
 		Long:    "This command creates an access IP",
 		Example: "ukfast loadbalancer listener accessip create 123 --ip 1.2.3.4",

@@ -114,7 +114,7 @@ func loadbalancerTargetGroupTargetShow(service loadbalancer.LoadBalancerService,
 
 func loadbalancerTargetGroupTargetCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "create <targetgroup: id> <target: id>...",
+		Use:     "create <targetgroup: id>",
 		Short:   "Creates a target",
 		Long:    "This command creates a target",
 		Example: "ukfast loadbalancer targetgroup target create 123 --ip 1.2.3.4 --port 443",

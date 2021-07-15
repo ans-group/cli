@@ -114,10 +114,10 @@ func loadbalancerListenerCertificateShow(service loadbalancer.LoadBalancerServic
 
 func loadbalancerListenerCertificateCreateCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "create <listener: id> <certificate: id>...",
+		Use:     "create <listener: id>",
 		Short:   "Creates a certificate",
 		Long:    "This command creates a certificate",
-		Example: "ukfast loadbalancer listener certificate create 123 --cluster 123 --default-target-group 456 --name \"test-targetgroup\" --mode http",
+		Example: "ukfast loadbalancer listener certificate create 123 --key-file /tmp/cert.key --certificate-file /tmp/cert.crt --ca-bundle-file /tmp/ca.crt",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing listener")
@@ -185,7 +185,7 @@ func loadbalancerListenerCertificateUpdateCmd(f factory.ClientFactory, fs afero.
 		Use:     "update <listener: id> <certificate: id>...",
 		Short:   "Updates a certificate",
 		Long:    "This command updates one or more certificates",
-		Example: "ukfast loadbalancer listener certificate update 123 456 --name mytargetgroup",
+		Example: "ukfast loadbalancer listener certificate update 123 456 --name mycertificate",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing listener")

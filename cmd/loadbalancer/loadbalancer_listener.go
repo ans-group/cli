@@ -99,7 +99,7 @@ func loadbalancerListenerShow(service loadbalancer.LoadBalancerService, cmd *cob
 
 func loadbalancerListenerCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "create <listener: id>...",
+		Use:     "create <listener: id>",
 		Short:   "Creates a listener",
 		Long:    "This command creates a listener",
 		Example: "ukfast loadbalancer listener create --cluster 123 --default-target-group 456 --name \"test-listener\" --mode http",

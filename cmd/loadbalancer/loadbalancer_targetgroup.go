@@ -97,10 +97,10 @@ func loadbalancerTargetGroupShow(service loadbalancer.LoadBalancerService, cmd *
 
 func loadbalancerTargetGroupCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "create <targetgroup: id>...",
+		Use:     "create <targetgroup: id>",
 		Short:   "Creates a target group",
 		Long:    "This command creates a target group",
-		Example: "ukfast loadbalancer targetgroup create --cluster 123 --default-target-group 456 --name \"test-targetgroup\" --mode http",
+		Example: "ukfast loadbalancer targetgroup create --cluster 123 --name \"test-targetgroup\" --balance roundrobin --mode http",
 		RunE:    loadbalancerCobraRunEFunc(f, loadbalancerTargetGroupCreate),
 	}
 
