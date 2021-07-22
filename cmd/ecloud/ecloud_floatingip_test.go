@@ -629,9 +629,6 @@ func Test_ecloudFloatingIPUnassign(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{}, errors.New("test error")),
 		)
 
-		// err := ecloudFloatingIPUnassign(service, cmd, []string{"fip-abcdef12"})
-		// assert.Equal(t, "Error waiting for floating IP task: Error waiting for command: Failed to retrieve task status: test error", err)
-
 		test_output.AssertErrorOutput(t, "Error waiting for floating IP [fip-abcdef12] task: Error waiting for command: Failed to retrieve task status: test error\n", func() {
 			ecloudFloatingIPUnassign(service, cmd, []string{"fip-abcdef12"})
 		})
