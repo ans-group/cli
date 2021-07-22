@@ -36,11 +36,12 @@ func (m *MockECloudService) EXPECT() *MockECloudServiceMockRecorder {
 }
 
 // AssignFloatingIP mocks base method
-func (m *MockECloudService) AssignFloatingIP(arg0 string, arg1 ecloud.AssignFloatingIPRequest) error {
+func (m *MockECloudService) AssignFloatingIP(arg0 string, arg1 ecloud.AssignFloatingIPRequest) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "AssignFloatingIP", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // AssignFloatingIP indicates an expected call of AssignFloatingIP
@@ -125,10 +126,10 @@ func (mr *MockECloudServiceMockRecorder) CreateFirewallRulePort(arg0 interface{}
 }
 
 // CreateFloatingIP mocks base method
-func (m *MockECloudService) CreateFloatingIP(arg0 ecloud.CreateFloatingIPRequest) (string, error) {
+func (m *MockECloudService) CreateFloatingIP(arg0 ecloud.CreateFloatingIPRequest) (ecloud.TaskReference, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateFloatingIP", arg0)
-	ret0, _ := ret[0].(string)
+	ret0, _ := ret[0].(ecloud.TaskReference)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -452,11 +453,12 @@ func (mr *MockECloudServiceMockRecorder) DeleteFirewallRulePort(arg0 interface{}
 }
 
 // DeleteFloatingIP mocks base method
-func (m *MockECloudService) DeleteFloatingIP(arg0 string) error {
+func (m *MockECloudService) DeleteFloatingIP(arg0 string) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteFloatingIP", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // DeleteFloatingIP indicates an expected call of DeleteFloatingIP
@@ -3632,11 +3634,12 @@ func (mr *MockECloudServiceMockRecorder) PatchFirewallRulePort(arg0, arg1 interf
 }
 
 // PatchFloatingIP mocks base method
-func (m *MockECloudService) PatchFloatingIP(arg0 string, arg1 ecloud.PatchFloatingIPRequest) error {
+func (m *MockECloudService) PatchFloatingIP(arg0 string, arg1 ecloud.PatchFloatingIPRequest) (ecloud.TaskReference, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PatchFloatingIP", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(ecloud.TaskReference)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // PatchFloatingIP indicates an expected call of PatchFloatingIP
@@ -4051,11 +4054,12 @@ func (mr *MockECloudServiceMockRecorder) RenameSolutionTemplate(arg0, arg1, arg2
 }
 
 // UnassignFloatingIP mocks base method
-func (m *MockECloudService) UnassignFloatingIP(arg0 string) error {
+func (m *MockECloudService) UnassignFloatingIP(arg0 string) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UnassignFloatingIP", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // UnassignFloatingIP indicates an expected call of UnassignFloatingIP

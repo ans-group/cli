@@ -121,12 +121,69 @@ func Test_ecloudFloatingIPCreate(t *testing.T) {
 			Name: "testfip",
 		}
 
+		resp := ecloud.TaskReference{
+			TaskID: "task-abcdef12",
+			ResourceID: "fip-abcdef12",
+		}
+
 		gomock.InOrder(
-			service.EXPECT().CreateFloatingIP(req).Return("fip-abcdef12", nil),
+			service.EXPECT().CreateFloatingIP(req).Return(resp, nil),
 			service.EXPECT().GetFloatingIP("fip-abcdef12").Return(ecloud.FloatingIP{}, nil),
 		)
 
 		ecloudFloatingIPCreate(service, cmd, []string{})
+	})
+
+	t.Run("CreateWithWaitFlagNoError_Succeeds", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudFloatingIPCreateCmd(nil)
+		cmd.ParseFlags([]string{"--name=testfip", "--wait"})
+
+		req := ecloud.CreateFloatingIPRequest{
+			Name:  "testfip",
+		}
+
+		resp := ecloud.TaskReference{
+			TaskID:     "task-abcdef12",
+			ResourceID: "fip-abcdef12",
+		}
+
+		gomock.InOrder(
+			service.EXPECT().CreateFloatingIP(req).Return(resp, nil),
+			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, nil),
+			service.EXPECT().GetFloatingIP("fip-abcdef12").Return(ecloud.FloatingIP{}, nil),
+		)
+
+		ecloudFloatingIPCreate(service, cmd, []string{})
+	})
+
+	t.Run("WithWaitFlag_GetTaskError_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudFloatingIPCreateCmd(nil)
+		cmd.ParseFlags([]string{"--name=testfip", "--wait"})
+
+		req := ecloud.CreateFloatingIPRequest{
+			Name:  "testfip",
+		}
+
+		resp := ecloud.TaskReference{
+			TaskID:     "task-abcdef12",
+			ResourceID: "fip-abcdef12",
+		}
+
+		gomock.InOrder(
+			service.EXPECT().CreateFloatingIP(req).Return(resp, nil),
+			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
+		)
+
+		err := ecloudFloatingIPCreate(service, cmd, []string{})
+		assert.Equal(t, "Error waiting for floating IP task to complete: Error waiting for command: Failed to retrieve task status: test error", err.Error())
 	})
 
 	t.Run("CreateFloatingIPError_ReturnsError", func(t *testing.T) {
@@ -137,7 +194,7 @@ func Test_ecloudFloatingIPCreate(t *testing.T) {
 		cmd := ecloudFloatingIPCreateCmd(nil)
 		cmd.ParseFlags([]string{"--name=testfip"})
 
-		service.EXPECT().CreateFloatingIP(gomock.Any()).Return("", errors.New("test error")).Times(1)
+		service.EXPECT().CreateFloatingIP(gomock.Any()).Return(ecloud.TaskReference{}, errors.New("test error")).Times(1)
 
 		err := ecloudFloatingIPCreate(service, cmd, []string{})
 
@@ -153,7 +210,7 @@ func Test_ecloudFloatingIPCreate(t *testing.T) {
 		cmd.ParseFlags([]string{"--name=testfip"})
 
 		gomock.InOrder(
-			service.EXPECT().CreateFloatingIP(gomock.Any()).Return("fip-abcdef12", nil),
+			service.EXPECT().CreateFloatingIP(gomock.Any()).Return(ecloud.TaskReference{ResourceID: "fip-abcdef12"}, nil),
 			service.EXPECT().GetFloatingIP("fip-abcdef12").Return(ecloud.FloatingIP{}, errors.New("test error")),
 		)
 
@@ -192,8 +249,13 @@ func Test_ecloudFloatingIPUpdate(t *testing.T) {
 			Name: "testfip",
 		}
 
+		resp := ecloud.TaskReference{
+			TaskID:     "task-abcdef12",
+			ResourceID: "fip-abcef12",
+		}
+
 		gomock.InOrder(
-			service.EXPECT().PatchFloatingIP("fip-abcdef12", req).Return(nil),
+			service.EXPECT().PatchFloatingIP("fip-abcdef12", req).Return(resp, nil),
 			service.EXPECT().GetFloatingIP("fip-abcdef12").Return(ecloud.FloatingIP{}, nil),
 		)
 
@@ -206,14 +268,77 @@ func Test_ecloudFloatingIPUpdate(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
+		resp1 := ecloud.TaskReference{
+			TaskID:     "task-abcdef12",
+			ResourceID: "fip-abcdef12",
+		}
+
+		resp2 := ecloud.TaskReference{
+			TaskID:     "task-abcdef13",
+			ResourceID: "fip-12abcdef",
+		}
+
 		gomock.InOrder(
-			service.EXPECT().PatchFloatingIP("fip-abcdef12", gomock.Any()).Return(nil),
+			service.EXPECT().PatchFloatingIP("fip-abcdef12", gomock.Any()).Return(resp1, nil),
 			service.EXPECT().GetFloatingIP("fip-abcdef12").Return(ecloud.FloatingIP{}, nil),
-			service.EXPECT().PatchFloatingIP("fip-12abcdef", gomock.Any()).Return(nil),
+			service.EXPECT().PatchFloatingIP("fip-12abcdef", gomock.Any()).Return(resp2, nil),
 			service.EXPECT().GetFloatingIP("fip-12abcdef").Return(ecloud.FloatingIP{}, nil),
 		)
 
 		ecloudFloatingIPUpdate(service, &cobra.Command{}, []string{"fip-abcdef12", "fip-12abcdef"})
+	})
+
+	t.Run("WithWaitFlag_NoError_Succeeds", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudFloatingIPCreateCmd(nil)
+		cmd.ParseFlags([]string{"--name=testfip", "--wait"})
+
+		req := ecloud.PatchFloatingIPRequest{
+			Name:  "testfip",
+		}
+
+		resp := ecloud.TaskReference{
+			TaskID:     "task-abcdef12",
+			ResourceID: "fip-abcdef12",
+		}
+
+		gomock.InOrder(
+			service.EXPECT().PatchFloatingIP("fip-abcdef12", req).Return(resp, nil),
+			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, nil),
+			service.EXPECT().GetFloatingIP("fip-abcdef12").Return(ecloud.FloatingIP{}, nil),
+		)
+
+		ecloudFloatingIPUpdate(service, cmd, []string{"fip-abcdef12"})
+	})
+
+	t.Run("WithWaitFlag_GetTaskError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudFloatingIPCreateCmd(nil)
+		cmd.ParseFlags([]string{"--name=testfip", "--wait"})
+
+		req := ecloud.PatchFloatingIPRequest{
+			Name:  "testfip",
+		}
+
+		resp := ecloud.TaskReference{
+			TaskID:     "task-abcdef12",
+			ResourceID: "fip-abcdef12",
+		}
+
+		gomock.InOrder(
+			service.EXPECT().PatchFloatingIP("fip-abcdef12", req).Return(resp, nil),
+			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
+		)
+
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for floating IP [fip-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+			ecloudFloatingIPUpdate(service, cmd, []string{"fip-abcdef12"})
+		})
 	})
 
 	t.Run("PatchFloatingIPError_OutputsError", func(t *testing.T) {
@@ -222,7 +347,7 @@ func Test_ecloudFloatingIPUpdate(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().PatchFloatingIP("fip-abcdef12", gomock.Any()).Return(errors.New("test error"))
+		service.EXPECT().PatchFloatingIP("fip-abcdef12", gomock.Any()).Return(ecloud.TaskReference{}, errors.New("test error"))
 
 		test_output.AssertErrorOutput(t, "Error updating floating IP [fip-abcdef12]: test error\n", func() {
 			ecloudFloatingIPUpdate(service, &cobra.Command{}, []string{"fip-abcdef12"})
@@ -235,8 +360,13 @@ func Test_ecloudFloatingIPUpdate(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
+		resp := ecloud.TaskReference{
+			TaskID:     "task-abcdef12",
+			ResourceID: "fip-abcdef12",
+		}
+
 		gomock.InOrder(
-			service.EXPECT().PatchFloatingIP("fip-abcdef12", gomock.Any()).Return(nil),
+			service.EXPECT().PatchFloatingIP("fip-abcdef12", gomock.Any()).Return(resp, nil),
 			service.EXPECT().GetFloatingIP("fip-abcdef12").Return(ecloud.FloatingIP{}, errors.New("test error")),
 		)
 
@@ -268,7 +398,7 @@ func Test_ecloudFloatingIPDelete(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().DeleteFloatingIP("fip-abcdef12").Return(nil).Times(1)
+		service.EXPECT().DeleteFloatingIP("fip-abcdef12").Return("task-abcdef12", nil).Times(1)
 
 		ecloudFloatingIPDelete(service, &cobra.Command{}, []string{"fip-abcdef12"})
 	})
@@ -280,11 +410,47 @@ func Test_ecloudFloatingIPDelete(t *testing.T) {
 		service := mocks.NewMockECloudService(mockCtrl)
 
 		gomock.InOrder(
-			service.EXPECT().DeleteFloatingIP("fip-abcdef12").Return(nil),
-			service.EXPECT().DeleteFloatingIP("fip-12abcdef").Return(nil),
+			service.EXPECT().DeleteFloatingIP("fip-abcdef12").Return("task-abcdef12", nil),
+			service.EXPECT().DeleteFloatingIP("fip-12abcdef").Return("task-abcdef23", nil),
 		)
 
 		ecloudFloatingIPDelete(service, &cobra.Command{}, []string{"fip-abcdef12", "fip-12abcdef"})
+	})
+
+	t.Run("WithWaitFlag_NoError_Succeeds", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		cmd := ecloudFloatingIPDeleteCmd(nil)
+		cmd.ParseFlags([]string{"--wait"})
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().DeleteFloatingIP("fip-abcdef12").Return("task-abcdef12", nil),
+			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, nil),
+		)
+
+		ecloudFloatingIPDelete(service, cmd, []string{"fip-abcdef12"})
+	})
+
+	t.Run("WithWaitFlag_GetTaskError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		cmd := ecloudFloatingIPDeleteCmd(nil)
+		cmd.ParseFlags([]string{"--wait"})
+
+		gomock.InOrder(
+			service.EXPECT().DeleteFloatingIP("fip-abcdef12").Return("task-abcdef12", nil),
+			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
+		)
+
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for floating IP [fip-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+			ecloudFloatingIPDelete(service, cmd, []string{"fip-abcdef12"})
+		})
 	})
 
 	t.Run("DeleteFloatingIPError_OutputsError", func(t *testing.T) {
@@ -293,7 +459,7 @@ func Test_ecloudFloatingIPDelete(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().DeleteFloatingIP("fip-abcdef12").Return(errors.New("test error")).Times(1)
+		service.EXPECT().DeleteFloatingIP("fip-abcdef12").Return("", errors.New("test error")).Times(1)
 
 		test_output.AssertErrorOutput(t, "Error removing floating IP [fip-abcdef12]: test error\n", func() {
 			ecloudFloatingIPDelete(service, &cobra.Command{}, []string{"fip-abcdef12"})
@@ -329,7 +495,7 @@ func Test_ecloudFloatingIPAssign(t *testing.T) {
 		cmd.ParseFlags([]string{"--resource=i-abcdef12"})
 
 		service := mocks.NewMockECloudService(mockCtrl)
-		service.EXPECT().AssignFloatingIP("fip-abcdef12", gomock.Eq(req)).Return(nil)
+		service.EXPECT().AssignFloatingIP("fip-abcdef12", gomock.Eq(req)).Return("task-abcdef12", nil)
 		service.EXPECT().GetFloatingIP("fip-abcdef12").Return(ecloud.FloatingIP{}, nil)
 
 		err := ecloudFloatingIPAssign(service, cmd, []string{"fip-abcdef12"})
@@ -343,11 +509,51 @@ func Test_ecloudFloatingIPAssign(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().AssignFloatingIP("fip-abcdef12", gomock.Any()).Return(errors.New("test error"))
+		service.EXPECT().AssignFloatingIP("fip-abcdef12", gomock.Any()).Return("", errors.New("test error"))
 
 		err := ecloudFloatingIPAssign(service, &cobra.Command{}, []string{"fip-abcdef12"})
 
 		assert.NotNil(t, err)
+	})
+
+	t.Run("WithWaitFlag_NoError_Succeeds", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		cmd := ecloudFloatingIPAssignCmd(nil)
+		cmd.ParseFlags([]string{"--resource=i-abcdef12","--wait"})
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		req := ecloud.AssignFloatingIPRequest{
+			ResourceID: "i-abcdef12",
+		}
+
+		gomock.InOrder(
+			service.EXPECT().AssignFloatingIP("fip-abcdef12", gomock.Eq(req)).Return("task-abcdef12", nil),
+			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, nil),
+			service.EXPECT().GetFloatingIP("fip-abcdef12").Return(ecloud.FloatingIP{}, nil),
+		)
+
+		ecloudFloatingIPAssign(service, cmd, []string{"fip-abcdef12"})
+	})
+
+	t.Run("WithWaitFlag_GetTaskError_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		cmd := ecloudFloatingIPAssignCmd(nil)
+		cmd.ParseFlags([]string{"--resource=i-abcdef12","--wait"})
+
+		gomock.InOrder(
+			service.EXPECT().AssignFloatingIP("fip-abcdef12", gomock.Any()).Return("task-abcdef12", nil),
+			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{}, errors.New("test error")),
+		)
+
+		err := ecloudFloatingIPAssign(service, cmd, []string{"fip-abcdef12"})
+		assert.Equal(t, "Error waiting for floating IP [fip-abcdef12] task: Error waiting for command: Failed to retrieve task status: test error", err.Error())
 	})
 }
 
@@ -373,7 +579,7 @@ func Test_ecloudFloatingIPUnassign(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().UnassignFloatingIP("fip-abcdef12").Return(nil).Times(1)
+		service.EXPECT().UnassignFloatingIP("fip-abcdef12").Return("task-abcdef12", nil).Times(1)
 
 		ecloudFloatingIPUnassign(service, &cobra.Command{}, []string{"fip-abcdef12"})
 	})
@@ -385,11 +591,50 @@ func Test_ecloudFloatingIPUnassign(t *testing.T) {
 		service := mocks.NewMockECloudService(mockCtrl)
 
 		gomock.InOrder(
-			service.EXPECT().UnassignFloatingIP("fip-abcdef12").Return(nil),
-			service.EXPECT().UnassignFloatingIP("fip-12abcdef").Return(nil),
+			service.EXPECT().UnassignFloatingIP("fip-abcdef12").Return("task-abcdef12", nil),
+			service.EXPECT().UnassignFloatingIP("fip-12abcdef").Return("task-abcdef23", nil),
 		)
 
 		ecloudFloatingIPUnassign(service, &cobra.Command{}, []string{"fip-abcdef12", "fip-12abcdef"})
+	})
+
+	t.Run("WithWaitFlag_NoError_Succeeds", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		cmd := ecloudFloatingIPUnassignCmd(nil)
+		cmd.ParseFlags([]string{"--wait"})
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().UnassignFloatingIP("fip-abcdef12").Return("task-abcdef12", nil),
+			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, nil),
+		)
+
+		ecloudFloatingIPUnassign(service, cmd, []string{"fip-abcdef12"})
+	})
+
+	t.Run("WithWaitFlag_GetTaskError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		cmd := ecloudFloatingIPUnassignCmd(nil)
+		cmd.ParseFlags([]string{"--wait"})
+
+		gomock.InOrder(
+			service.EXPECT().UnassignFloatingIP("fip-abcdef12").Return("task-abcdef12", nil),
+			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{}, errors.New("test error")),
+		)
+
+		// err := ecloudFloatingIPUnassign(service, cmd, []string{"fip-abcdef12"})
+		// assert.Equal(t, "Error waiting for floating IP task: Error waiting for command: Failed to retrieve task status: test error", err)
+
+		test_output.AssertErrorOutput(t, "Error waiting for floating IP [fip-abcdef12] task: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+			ecloudFloatingIPUnassign(service, cmd, []string{"fip-abcdef12"})
+		})
 	})
 
 	t.Run("UnassignFloatingIPError_OutputsError", func(t *testing.T) {
@@ -398,7 +643,7 @@ func Test_ecloudFloatingIPUnassign(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().UnassignFloatingIP("fip-abcdef12").Return(errors.New("test error"))
+		service.EXPECT().UnassignFloatingIP("fip-abcdef12").Return("", errors.New("test error"))
 
 		test_output.AssertErrorOutput(t, "Error unassigning floating IP [fip-abcdef12]: test error\n", func() {
 			ecloudFloatingIPUnassign(service, &cobra.Command{}, []string{"fip-abcdef12"})
