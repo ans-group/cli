@@ -166,6 +166,27 @@ func Test_ecloudInstanceCreate(t *testing.T) {
 		assert.Equal(t, "Image not found with name 'unknown'", err.Error())
 	})
 
+	t.Run("CreateWithNetworkID_NoError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudInstanceCreateCmd(nil)
+		cmd.ParseFlags([]string{"--name=testinstance", "--image=img-abcdef12", "--network=net-abcdef12"})
+
+		req := ecloud.CreateInstanceRequest{
+			Name:      "testinstance",
+			ImageID:   "img-abcdef12",
+			NetworkID: "net-abcdef12",
+		}
+
+		service.EXPECT().CreateInstance(req).Return("i-abcdef12", nil)
+		service.EXPECT().GetInstance("i-abcdef12").Return(ecloud.Instance{}, nil)
+
+		err := ecloudInstanceCreate(service, cmd, []string{})
+		assert.Nil(t, err)
+	})
+
 	t.Run("CreateInstanceError_ReturnsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()

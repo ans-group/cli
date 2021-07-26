@@ -120,6 +120,8 @@ func ecloudInstanceCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.MarkFlagRequired("ram")
 	cmd.Flags().Int("volume", 0, "Size of volume to allocate")
 	cmd.MarkFlagRequired("volume")
+	cmd.Flags().String("network", "", "ID of network to use for instance")
+	cmd.MarkFlagRequired("network")
 	cmd.Flags().String("image", "", "ID or name of image to deploy from")
 	cmd.MarkFlagRequired("image")
 	cmd.Flags().StringSlice("ssh-key-pair", []string{}, "ID of SSH key pair, can be repeated")
@@ -134,6 +136,7 @@ func ecloudInstanceCreate(service ecloud.ECloudService, cmd *cobra.Command, args
 	createRequest.VCPUCores, _ = cmd.Flags().GetInt("vcpu")
 	createRequest.RAMCapacity, _ = cmd.Flags().GetInt("ram")
 	createRequest.VolumeCapacity, _ = cmd.Flags().GetInt("volume")
+	createRequest.NetworkID, _ = cmd.Flags().GetString("network")
 
 	if cmd.Flags().Changed("name") {
 		createRequest.Name, _ = cmd.Flags().GetString("name")
