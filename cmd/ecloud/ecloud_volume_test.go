@@ -115,12 +115,13 @@ func Test_ecloudVolumeCreate(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 		cmd := ecloudVolumeCreateCmd(nil)
-		cmd.ParseFlags([]string{"--name=testvolume", "--vpc=vpc-abcdef12", "--capacity=20"})
+		cmd.ParseFlags([]string{"--name=testvolume", "--vpc=vpc-abcdef12", "--capacity=20", "--availability-zone=az-abcdef12"})
 
 		req := ecloud.CreateVolumeRequest{
 			Name:     "testvolume",
 			VPCID:    "vpc-abcdef12",
 			Capacity: 20,
+			AvailabilityZoneID: "az-abcdef12",
 		}
 
 		resp := ecloud.TaskReference{
@@ -142,12 +143,13 @@ func Test_ecloudVolumeCreate(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 		cmd := ecloudVolumeCreateCmd(nil)
-		cmd.ParseFlags([]string{"--name=testvolume", "--vpc=vpc-abcdef12", "--capacity=20", "--wait"})
+		cmd.ParseFlags([]string{"--name=testvolume", "--vpc=vpc-abcdef12", "--capacity=20", "--availability-zone=az-abcdef12", "--wait"})
 
 		req := ecloud.CreateVolumeRequest{
 			Name:     "testvolume",
 			VPCID:    "vpc-abcdef12",
 			Capacity: 20,
+			AvailabilityZoneID: "az-abcdef12",
 		}
 
 		resp := ecloud.TaskReference{
@@ -170,12 +172,13 @@ func Test_ecloudVolumeCreate(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 		cmd := ecloudVolumeCreateCmd(nil)
-		cmd.ParseFlags([]string{"--name=testvolume", "--vpc=vpc-abcdef12", "--capacity=20", "--wait"})
+		cmd.ParseFlags([]string{"--name=testvolume", "--vpc=vpc-abcdef12", "--capacity=20", "--availability-zone=az-abcdef12", "--wait"})
 
 		req := ecloud.CreateVolumeRequest{
 			Name:     "testvolume",
 			VPCID:    "vpc-abcdef12",
 			Capacity: 20,
+			AvailabilityZoneID: "az-abcdef12",
 		}
 
 		resp := ecloud.TaskReference{

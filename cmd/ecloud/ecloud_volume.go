@@ -108,6 +108,8 @@ func ecloudVolumeCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().String("name", "", "Name of volume")
 	cmd.Flags().String("vpc", "", "ID of VPC")
 	cmd.MarkFlagRequired("vpc")
+	cmd.Flags().String("availability-zone", "", "ID of Availability Zone")
+	cmd.MarkFlagRequired("availability-zone")
 	cmd.Flags().Int("capacity", 0, "Capacity of volume in GiB")
 	cmd.MarkFlagRequired("capacity")
 	cmd.Flags().Int("iops", 0, "IOPS for volume")
@@ -122,6 +124,7 @@ func ecloudVolumeCreate(service ecloud.ECloudService, cmd *cobra.Command, args [
 		createRequest.Name, _ = cmd.Flags().GetString("name")
 	}
 	createRequest.VPCID, _ = cmd.Flags().GetString("vpc")
+	createRequest.AvailabilityZoneID, _ = cmd.Flags().GetString("availability-zone")
 	createRequest.Capacity, _ = cmd.Flags().GetInt("capacity")
 	createRequest.IOPS, _ = cmd.Flags().GetInt("iops")
 
