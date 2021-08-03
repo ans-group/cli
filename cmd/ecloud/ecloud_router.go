@@ -102,7 +102,7 @@ func ecloudRouterCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates an router",
 		Long:    "This command creates an router",
-		Example: "ukfast ecloud router create --vpc vpc-abcdef12 --az az-abcdef12",
+		Example: "ukfast ecloud router create --vpc vpc-abcdef12 --availability-zone az-abcdef12",
 		RunE:    ecloudCobraRunEFunc(f, ecloudRouterCreate),
 	}
 
@@ -110,6 +110,8 @@ func ecloudRouterCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().String("name", "", "Name of router")
 	cmd.Flags().String("vpc", "", "ID of VPC")
 	cmd.MarkFlagRequired("vpc")
+	cmd.Flags().String("availability-zone", "", "ID of Availability Zone")
+	cmd.MarkFlagRequired("availability-zone")
 	cmd.Flags().String("throughput", "", "ID of router throughput to assign")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the router has been completely created")
 
@@ -119,6 +121,7 @@ func ecloudRouterCreateCmd(f factory.ClientFactory) *cobra.Command {
 func ecloudRouterCreate(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	createRequest := ecloud.CreateRouterRequest{}
 	createRequest.VPCID, _ = cmd.Flags().GetString("vpc")
+	createRequest.AvailabilityZoneID, _ = cmd.Flags().GetString("availability-zone")
 
 	if cmd.Flags().Changed("name") {
 		createRequest.Name, _ = cmd.Flags().GetString("name")
