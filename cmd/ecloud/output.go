@@ -361,7 +361,7 @@ func OutputECloudNICsProvider(nics []ecloud.NIC) output.OutputHandlerDataProvide
 }
 
 func OutputECloudRoutersProvider(routers []ecloud.Router) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(routers).WithDefaultFields([]string{"id", "name", "vpc_id", "sync_status"})
+	return output.NewSerializedOutputHandlerDataProvider(routers).WithDefaultFields([]string{"id", "name", "vpc_id", "availability_zone_id", "sync_status"})
 }
 
 func OutputECloudNetworksProvider(networks []ecloud.Network) output.OutputHandlerDataProvider {

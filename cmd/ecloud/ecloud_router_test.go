@@ -115,10 +115,12 @@ func Test_ecloudRouterCreate(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 		cmd := ecloudRouterCreateCmd(nil)
-		cmd.ParseFlags([]string{"--name=testrouter"})
+		cmd.ParseFlags([]string{"--name=testrouter", "--vpc=vpc-abcdef12", "--availability-zone=az-abcdef12"})
 
 		req := ecloud.CreateRouterRequest{
 			Name: "testrouter",
+			VPCID: "vpc-abcdef12",
+			AvailabilityZoneID: "az-abcdef12",
 		}
 
 		gomock.InOrder(
