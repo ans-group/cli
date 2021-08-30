@@ -102,6 +102,7 @@ func ecloudVPNServiceCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().String("router", "", "ID of router")
 	cmd.MarkFlagRequired("router")
 	cmd.Flags().String("name", "", "Name of service")
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the VPN service has been completely created")
 
 	return cmd
 }

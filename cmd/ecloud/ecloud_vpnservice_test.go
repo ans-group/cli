@@ -20,7 +20,7 @@ func Test_ecloudVPNServiceList(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().GetNetworkPolicies(gomock.Any()).Return([]ecloud.VPNService{}, nil).Times(1)
+		service.EXPECT().GetVPNServices(gomock.Any()).Return([]ecloud.VPNService{}, nil).Times(1)
 
 		ecloudVPNServiceList(service, &cobra.Command{}, []string{})
 	})
@@ -38,18 +38,18 @@ func Test_ecloudVPNServiceList(t *testing.T) {
 		assert.IsType(t, &clierrors.ErrInvalidFlagValue{}, err)
 	})
 
-	t.Run("GetNetworkPoliciesError_ReturnsError", func(t *testing.T) {
+	t.Run("GetVPNServicesError_ReturnsError", func(t *testing.T) {
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().GetNetworkPolicies(gomock.Any()).Return([]ecloud.VPNService{}, errors.New("test error")).Times(1)
+		service.EXPECT().GetVPNServices(gomock.Any()).Return([]ecloud.VPNService{}, errors.New("test error")).Times(1)
 
 		err := ecloudVPNServiceList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving network policies: test error", err.Error())
+		assert.Equal(t, "Error retrieving VPN services: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudVPNServiceShowCmd_Args(t *testing.T) {
 		err := ecloudVPNServiceShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing network policy", err.Error())
+		assert.Equal(t, "Missing VPN service", err.Error())
 	})
 }
 
@@ -80,7 +80,7 @@ func Test_ecloudVPNServiceShow(t *testing.T) {
 		ecloudVPNServiceShow(service, &cobra.Command{}, []string{"vpns-abcdef12"})
 	})
 
-	t.Run("MultipleNetworkPolicies", func(t *testing.T) {
+	t.Run("MultipleVPNServices", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
@@ -102,7 +102,7 @@ func Test_ecloudVPNServiceShow(t *testing.T) {
 
 		service.EXPECT().GetVPNService("vpns-abcdef12").Return(ecloud.VPNService{}, errors.New("test error"))
 
-		test_output.AssertErrorOutput(t, "Error retrieving network policy [vpns-abcdef12]: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error retrieving VPN service [vpns-abcdef12]: test error\n", func() {
 			ecloudVPNServiceShow(service, &cobra.Command{}, []string{"vpns-abcdef12"})
 		})
 	})
@@ -183,7 +183,7 @@ func Test_ecloudVPNServiceCreate(t *testing.T) {
 		)
 
 		err := ecloudVPNServiceCreate(service, cmd, []string{})
-		assert.Equal(t, "Error waiting for network policy task to complete: Error waiting for command: Failed to retrieve task status: test error", err.Error())
+		assert.Equal(t, "Error waiting for VPN service task to complete: Error waiting for command: Failed to retrieve task status: test error", err.Error())
 	})
 
 	t.Run("CreateVPNServiceError_ReturnsError", func(t *testing.T) {
@@ -198,7 +198,7 @@ func Test_ecloudVPNServiceCreate(t *testing.T) {
 
 		err := ecloudVPNServiceCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error creating network policy: test error", err.Error())
+		assert.Equal(t, "Error creating VPN service: test error", err.Error())
 	})
 
 	t.Run("GetVPNServiceError_ReturnsError", func(t *testing.T) {
@@ -216,7 +216,7 @@ func Test_ecloudVPNServiceCreate(t *testing.T) {
 
 		err := ecloudVPNServiceCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error retrieving new network policy: test error", err.Error())
+		assert.Equal(t, "Error retrieving new VPN service: test error", err.Error())
 	})
 }
 
@@ -231,7 +231,7 @@ func Test_ecloudVPNServiceUpdateCmd_Args(t *testing.T) {
 		err := ecloudVPNServiceUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing network policy", err.Error())
+		assert.Equal(t, "Missing VPN service", err.Error())
 	})
 }
 
@@ -312,7 +312,7 @@ func Test_ecloudVPNServiceUpdate(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for network policy [vpns-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for VPN service [vpns-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
 			ecloudVPNServiceUpdate(service, cmd, []string{"vpns-abcdef12"})
 		})
 	})
@@ -325,7 +325,7 @@ func Test_ecloudVPNServiceUpdate(t *testing.T) {
 
 		service.EXPECT().PatchVPNService("vpns-abcdef12", gomock.Any()).Return(ecloud.TaskReference{}, errors.New("test error"))
 
-		test_output.AssertErrorOutput(t, "Error updating network policy [vpns-abcdef12]: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error updating VPN service [vpns-abcdef12]: test error\n", func() {
 			ecloudVPNServiceUpdate(service, &cobra.Command{}, []string{"vpns-abcdef12"})
 		})
 	})
@@ -346,7 +346,7 @@ func Test_ecloudVPNServiceUpdate(t *testing.T) {
 			service.EXPECT().GetVPNService("vpns-abcdef12").Return(ecloud.VPNService{}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error retrieving updated network policy [vpns-abcdef12]: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error retrieving updated VPN service [vpns-abcdef12]: test error\n", func() {
 			ecloudVPNServiceUpdate(service, &cobra.Command{}, []string{"vpns-abcdef12"})
 		})
 	})
@@ -363,7 +363,7 @@ func Test_ecloudVPNServiceDeleteCmd_Args(t *testing.T) {
 		err := ecloudVPNServiceDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing network policy", err.Error())
+		assert.Equal(t, "Missing VPN service", err.Error())
 	})
 }
 
@@ -410,7 +410,7 @@ func Test_ecloudVPNServiceDelete(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for network policy [vpns-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for VPN service [vpns-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
 			ecloudVPNServiceDelete(service, cmd, []string{"vpns-abcdef12"})
 		})
 	})
@@ -423,7 +423,7 @@ func Test_ecloudVPNServiceDelete(t *testing.T) {
 
 		service.EXPECT().DeleteVPNService("vpns-abcdef12").Return("", errors.New("test error")).Times(1)
 
-		test_output.AssertErrorOutput(t, "Error removing network policy [vpns-abcdef12]: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error removing VPN service [vpns-abcdef12]: test error\n", func() {
 			ecloudVPNServiceDelete(service, &cobra.Command{}, []string{"vpns-abcdef12"})
 		})
 	})
