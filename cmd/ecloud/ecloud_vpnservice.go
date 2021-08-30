@@ -101,6 +101,7 @@ func ecloudVPNServiceCreateCmd(f factory.ClientFactory) *cobra.Command {
 	// Setup flags
 	cmd.Flags().String("router", "", "ID of router")
 	cmd.MarkFlagRequired("router")
+	cmd.Flags().String("name", "", "Name of service")
 
 	return cmd
 }
@@ -108,6 +109,7 @@ func ecloudVPNServiceCreateCmd(f factory.ClientFactory) *cobra.Command {
 func ecloudVPNServiceCreate(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	createRequest := ecloud.CreateVPNServiceRequest{}
 	createRequest.RouterID, _ = cmd.Flags().GetString("router")
+	createRequest.Name, _ = cmd.Flags().GetString("name")
 
 	taskRef, err := service.CreateVPNService(createRequest)
 	if err != nil {
