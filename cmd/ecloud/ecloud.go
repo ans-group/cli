@@ -60,6 +60,7 @@ func ECloudRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 		cmd.AddCommand(ecloudVolumeRootCmd(f))
 		cmd.AddCommand(ecloudVPCRootCmd(f))
 		cmd.AddCommand(ecloudVPNEndpointRootCmd(f))
+		cmd.AddCommand(ecloudVPNProfileGroupRootCmd(f))
 		cmd.AddCommand(ecloudVPNServiceRootCmd(f))
 		cmd.AddCommand(ecloudVPNSessionRootCmd(f))
 	}

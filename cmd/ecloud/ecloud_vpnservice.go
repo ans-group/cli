@@ -62,7 +62,7 @@ func ecloudVPNServiceShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <service: id>...",
 		Short:   "Shows a VPN service",
 		Long:    "This command shows one or more VPN services",
-		Example: "ukfast ecloud vpnservice show vpns-abcdef12",
+		Example: "ukfast ecloud vpnservice show vpn-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing VPN service")
@@ -138,7 +138,7 @@ func ecloudVPNServiceUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <service: id>...",
 		Short:   "Updates a VPN service",
 		Long:    "This command updates one or more VPN services",
-		Example: "ukfast ecloud vpnservice update vpns-abcdef12 --name \"my service\"",
+		Example: "ukfast ecloud vpnservice update vpn-abcdef12 --name \"my service\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing VPN service")
@@ -196,7 +196,7 @@ func ecloudVPNServiceDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <service: id>...",
 		Short:   "Removes a VPN service",
 		Long:    "This command removes one or more VPN services",
-		Example: "ukfast ecloud vpnservice delete vpns-abcdef12",
+		Example: "ukfast ecloud vpnservice delete vpn-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing VPN service")

@@ -55,7 +55,7 @@ func Test_ecloudVPNServiceList(t *testing.T) {
 
 func Test_ecloudVPNServiceShowCmd_Args(t *testing.T) {
 	t.Run("ValidArgs_NoError", func(t *testing.T) {
-		err := ecloudVPNServiceShowCmd(nil).Args(nil, []string{"vpns-abcdef12"})
+		err := ecloudVPNServiceShowCmd(nil).Args(nil, []string{"vpn-abcdef12"})
 
 		assert.Nil(t, err)
 	})
@@ -75,9 +75,9 @@ func Test_ecloudVPNServiceShow(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().GetVPNService("vpns-abcdef12").Return(ecloud.VPNService{}, nil).Times(1)
+		service.EXPECT().GetVPNService("vpn-abcdef12").Return(ecloud.VPNService{}, nil).Times(1)
 
-		ecloudVPNServiceShow(service, &cobra.Command{}, []string{"vpns-abcdef12"})
+		ecloudVPNServiceShow(service, &cobra.Command{}, []string{"vpn-abcdef12"})
 	})
 
 	t.Run("MultipleVPNServices", func(t *testing.T) {
@@ -87,11 +87,11 @@ func Test_ecloudVPNServiceShow(t *testing.T) {
 		service := mocks.NewMockECloudService(mockCtrl)
 
 		gomock.InOrder(
-			service.EXPECT().GetVPNService("vpns-abcdef12").Return(ecloud.VPNService{}, nil),
-			service.EXPECT().GetVPNService("vpns-abcdef23").Return(ecloud.VPNService{}, nil),
+			service.EXPECT().GetVPNService("vpn-abcdef12").Return(ecloud.VPNService{}, nil),
+			service.EXPECT().GetVPNService("vpn-abcdef23").Return(ecloud.VPNService{}, nil),
 		)
 
-		ecloudVPNServiceShow(service, &cobra.Command{}, []string{"vpns-abcdef12", "vpns-abcdef23"})
+		ecloudVPNServiceShow(service, &cobra.Command{}, []string{"vpn-abcdef12", "vpn-abcdef23"})
 	})
 
 	t.Run("GetVPNServiceError_OutputsError", func(t *testing.T) {
@@ -100,10 +100,10 @@ func Test_ecloudVPNServiceShow(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().GetVPNService("vpns-abcdef12").Return(ecloud.VPNService{}, errors.New("test error"))
+		service.EXPECT().GetVPNService("vpn-abcdef12").Return(ecloud.VPNService{}, errors.New("test error"))
 
-		test_output.AssertErrorOutput(t, "Error retrieving VPN service [vpns-abcdef12]: test error\n", func() {
-			ecloudVPNServiceShow(service, &cobra.Command{}, []string{"vpns-abcdef12"})
+		test_output.AssertErrorOutput(t, "Error retrieving VPN service [vpn-abcdef12]: test error\n", func() {
+			ecloudVPNServiceShow(service, &cobra.Command{}, []string{"vpn-abcdef12"})
 		})
 	})
 }
@@ -123,12 +123,12 @@ func Test_ecloudVPNServiceCreate(t *testing.T) {
 
 		resp := ecloud.TaskReference{
 			TaskID:     "task-abcdef12",
-			ResourceID: "vpns-abcdef12",
+			ResourceID: "vpn-abcdef12",
 		}
 
 		gomock.InOrder(
 			service.EXPECT().CreateVPNService(req).Return(resp, nil),
-			service.EXPECT().GetVPNService("vpns-abcdef12").Return(ecloud.VPNService{}, nil),
+			service.EXPECT().GetVPNService("vpn-abcdef12").Return(ecloud.VPNService{}, nil),
 		)
 
 		ecloudVPNServiceCreate(service, cmd, []string{})
@@ -148,13 +148,13 @@ func Test_ecloudVPNServiceCreate(t *testing.T) {
 
 		resp := ecloud.TaskReference{
 			TaskID:     "task-abcdef12",
-			ResourceID: "vpns-abcdef12",
+			ResourceID: "vpn-abcdef12",
 		}
 
 		gomock.InOrder(
 			service.EXPECT().CreateVPNService(req).Return(resp, nil),
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, nil),
-			service.EXPECT().GetVPNService("vpns-abcdef12").Return(ecloud.VPNService{}, nil),
+			service.EXPECT().GetVPNService("vpn-abcdef12").Return(ecloud.VPNService{}, nil),
 		)
 
 		ecloudVPNServiceCreate(service, cmd, []string{})
@@ -174,7 +174,7 @@ func Test_ecloudVPNServiceCreate(t *testing.T) {
 
 		resp := ecloud.TaskReference{
 			TaskID:     "task-abcdef12",
-			ResourceID: "vpns-abcdef12",
+			ResourceID: "vpn-abcdef12",
 		}
 
 		gomock.InOrder(
@@ -210,8 +210,8 @@ func Test_ecloudVPNServiceCreate(t *testing.T) {
 		cmd.ParseFlags([]string{"--name=testpolicy"})
 
 		gomock.InOrder(
-			service.EXPECT().CreateVPNService(gomock.Any()).Return(ecloud.TaskReference{ResourceID: "vpns-abcdef12"}, nil),
-			service.EXPECT().GetVPNService("vpns-abcdef12").Return(ecloud.VPNService{}, errors.New("test error")),
+			service.EXPECT().CreateVPNService(gomock.Any()).Return(ecloud.TaskReference{ResourceID: "vpn-abcdef12"}, nil),
+			service.EXPECT().GetVPNService("vpn-abcdef12").Return(ecloud.VPNService{}, errors.New("test error")),
 		)
 
 		err := ecloudVPNServiceCreate(service, cmd, []string{})
@@ -222,7 +222,7 @@ func Test_ecloudVPNServiceCreate(t *testing.T) {
 
 func Test_ecloudVPNServiceUpdateCmd_Args(t *testing.T) {
 	t.Run("ValidArgs_NoError", func(t *testing.T) {
-		err := ecloudVPNServiceUpdateCmd(nil).Args(nil, []string{"vpns-abcdef12"})
+		err := ecloudVPNServiceUpdateCmd(nil).Args(nil, []string{"vpn-abcdef12"})
 
 		assert.Nil(t, err)
 	})
@@ -251,15 +251,15 @@ func Test_ecloudVPNServiceUpdate(t *testing.T) {
 
 		resp := ecloud.TaskReference{
 			TaskID:     "task-abcdef12",
-			ResourceID: "vpns-abcdef12",
+			ResourceID: "vpn-abcdef12",
 		}
 
 		gomock.InOrder(
-			service.EXPECT().PatchVPNService("vpns-abcdef12", req).Return(resp, nil),
-			service.EXPECT().GetVPNService("vpns-abcdef12").Return(ecloud.VPNService{}, nil),
+			service.EXPECT().PatchVPNService("vpn-abcdef12", req).Return(resp, nil),
+			service.EXPECT().GetVPNService("vpn-abcdef12").Return(ecloud.VPNService{}, nil),
 		)
 
-		ecloudVPNServiceUpdate(service, cmd, []string{"vpns-abcdef12"})
+		ecloudVPNServiceUpdate(service, cmd, []string{"vpn-abcdef12"})
 	})
 
 	t.Run("WithWaitFlag_NoError_Succeeds", func(t *testing.T) {
@@ -277,16 +277,16 @@ func Test_ecloudVPNServiceUpdate(t *testing.T) {
 
 		resp := ecloud.TaskReference{
 			TaskID:     "task-abcdef12",
-			ResourceID: "vpns-abcdef12",
+			ResourceID: "vpn-abcdef12",
 		}
 
 		gomock.InOrder(
-			service.EXPECT().PatchVPNService("vpns-abcdef12", req).Return(resp, nil),
+			service.EXPECT().PatchVPNService("vpn-abcdef12", req).Return(resp, nil),
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, nil),
-			service.EXPECT().GetVPNService("vpns-abcdef12").Return(ecloud.VPNService{}, nil),
+			service.EXPECT().GetVPNService("vpn-abcdef12").Return(ecloud.VPNService{}, nil),
 		)
 
-		ecloudVPNServiceUpdate(service, cmd, []string{"vpns-abcdef12"})
+		ecloudVPNServiceUpdate(service, cmd, []string{"vpn-abcdef12"})
 	})
 
 	t.Run("WithWaitFlag_GetTaskError_OutputsError", func(t *testing.T) {
@@ -304,16 +304,16 @@ func Test_ecloudVPNServiceUpdate(t *testing.T) {
 
 		resp := ecloud.TaskReference{
 			TaskID:     "task-abcdef12",
-			ResourceID: "vpns-abcdef12",
+			ResourceID: "vpn-abcdef12",
 		}
 
 		gomock.InOrder(
-			service.EXPECT().PatchVPNService("vpns-abcdef12", req).Return(resp, nil),
+			service.EXPECT().PatchVPNService("vpn-abcdef12", req).Return(resp, nil),
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for VPN service [vpns-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
-			ecloudVPNServiceUpdate(service, cmd, []string{"vpns-abcdef12"})
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for VPN service [vpn-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+			ecloudVPNServiceUpdate(service, cmd, []string{"vpn-abcdef12"})
 		})
 	})
 
@@ -323,10 +323,10 @@ func Test_ecloudVPNServiceUpdate(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().PatchVPNService("vpns-abcdef12", gomock.Any()).Return(ecloud.TaskReference{}, errors.New("test error"))
+		service.EXPECT().PatchVPNService("vpn-abcdef12", gomock.Any()).Return(ecloud.TaskReference{}, errors.New("test error"))
 
-		test_output.AssertErrorOutput(t, "Error updating VPN service [vpns-abcdef12]: test error\n", func() {
-			ecloudVPNServiceUpdate(service, &cobra.Command{}, []string{"vpns-abcdef12"})
+		test_output.AssertErrorOutput(t, "Error updating VPN service [vpn-abcdef12]: test error\n", func() {
+			ecloudVPNServiceUpdate(service, &cobra.Command{}, []string{"vpn-abcdef12"})
 		})
 	})
 
@@ -338,23 +338,23 @@ func Test_ecloudVPNServiceUpdate(t *testing.T) {
 
 		resp := ecloud.TaskReference{
 			TaskID:     "task-abcdef12",
-			ResourceID: "vpns-abcdef12",
+			ResourceID: "vpn-abcdef12",
 		}
 
 		gomock.InOrder(
-			service.EXPECT().PatchVPNService("vpns-abcdef12", gomock.Any()).Return(resp, nil),
-			service.EXPECT().GetVPNService("vpns-abcdef12").Return(ecloud.VPNService{}, errors.New("test error")),
+			service.EXPECT().PatchVPNService("vpn-abcdef12", gomock.Any()).Return(resp, nil),
+			service.EXPECT().GetVPNService("vpn-abcdef12").Return(ecloud.VPNService{}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error retrieving updated VPN service [vpns-abcdef12]: test error\n", func() {
-			ecloudVPNServiceUpdate(service, &cobra.Command{}, []string{"vpns-abcdef12"})
+		test_output.AssertErrorOutput(t, "Error retrieving updated VPN service [vpn-abcdef12]: test error\n", func() {
+			ecloudVPNServiceUpdate(service, &cobra.Command{}, []string{"vpn-abcdef12"})
 		})
 	})
 }
 
 func Test_ecloudVPNServiceDeleteCmd_Args(t *testing.T) {
 	t.Run("ValidArgs_NoError", func(t *testing.T) {
-		err := ecloudVPNServiceDeleteCmd(nil).Args(nil, []string{"vpns-abcdef12"})
+		err := ecloudVPNServiceDeleteCmd(nil).Args(nil, []string{"vpn-abcdef12"})
 
 		assert.Nil(t, err)
 	})
@@ -374,9 +374,9 @@ func Test_ecloudVPNServiceDelete(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().DeleteVPNService("vpns-abcdef12").Return("task-abcdef12", nil)
+		service.EXPECT().DeleteVPNService("vpn-abcdef12").Return("task-abcdef12", nil)
 
-		ecloudVPNServiceDelete(service, &cobra.Command{}, []string{"vpns-abcdef12"})
+		ecloudVPNServiceDelete(service, &cobra.Command{}, []string{"vpn-abcdef12"})
 	})
 
 	t.Run("WithWaitFlag_NoError_Succeeds", func(t *testing.T) {
@@ -389,11 +389,11 @@ func Test_ecloudVPNServiceDelete(t *testing.T) {
 		service := mocks.NewMockECloudService(mockCtrl)
 
 		gomock.InOrder(
-			service.EXPECT().DeleteVPNService("vpns-abcdef12").Return("task-abcdef12", nil),
+			service.EXPECT().DeleteVPNService("vpn-abcdef12").Return("task-abcdef12", nil),
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, nil),
 		)
 
-		ecloudVPNServiceDelete(service, cmd, []string{"vpns-abcdef12"})
+		ecloudVPNServiceDelete(service, cmd, []string{"vpn-abcdef12"})
 	})
 
 	t.Run("WithWaitFlag_GetTaskError_OutputsError", func(t *testing.T) {
@@ -406,12 +406,12 @@ func Test_ecloudVPNServiceDelete(t *testing.T) {
 		cmd.ParseFlags([]string{"--wait"})
 
 		gomock.InOrder(
-			service.EXPECT().DeleteVPNService("vpns-abcdef12").Return("task-abcdef12", nil),
+			service.EXPECT().DeleteVPNService("vpn-abcdef12").Return("task-abcdef12", nil),
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for VPN service [vpns-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
-			ecloudVPNServiceDelete(service, cmd, []string{"vpns-abcdef12"})
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for VPN service [vpn-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+			ecloudVPNServiceDelete(service, cmd, []string{"vpn-abcdef12"})
 		})
 	})
 
@@ -421,10 +421,10 @@ func Test_ecloudVPNServiceDelete(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().DeleteVPNService("vpns-abcdef12").Return("", errors.New("test error")).Times(1)
+		service.EXPECT().DeleteVPNService("vpn-abcdef12").Return("", errors.New("test error")).Times(1)
 
-		test_output.AssertErrorOutput(t, "Error removing VPN service [vpns-abcdef12]: test error\n", func() {
-			ecloudVPNServiceDelete(service, &cobra.Command{}, []string{"vpns-abcdef12"})
+		test_output.AssertErrorOutput(t, "Error removing VPN service [vpn-abcdef12]: test error\n", func() {
+			ecloudVPNServiceDelete(service, &cobra.Command{}, []string{"vpn-abcdef12"})
 		})
 	})
 }
