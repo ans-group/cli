@@ -25,6 +25,9 @@ func ecloudVPNSessionRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.AddCommand(ecloudVPNSessionUpdateCmd(f))
 	cmd.AddCommand(ecloudVPNSessionDeleteCmd(f))
 
+	// Child root commands
+	cmd.AddCommand(ecloudVPNSessionCredentialRootCmd(f))
+
 	return cmd
 }
 
