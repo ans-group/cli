@@ -147,7 +147,6 @@ func ecloudVPNServiceUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("name", "", "Name of service")
-	cmd.Flags().String("catchall-rule-action", "", "Action of catchall rule. One of: ALLOW/DROP/REJECT")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the VPN service has been completely updated")
 
 	return cmd
