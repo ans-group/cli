@@ -423,3 +423,7 @@ func OutputECloudHostSpecsProvider(specs []ecloud.HostSpec) output.OutputHandler
 func OutputECloudAvailabilityZonesProvider(azs []ecloud.AvailabilityZone) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(azs).WithDefaultFields([]string{"id", "name", "region_id"})
 }
+
+func OutputECloudVPNServicesProvider(vpns []ecloud.VPNService) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(vpns).WithDefaultFields([]string{"id", "name", "router_id", "vpc_id"})
+}

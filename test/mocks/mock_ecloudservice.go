@@ -319,19 +319,49 @@ func (mr *MockECloudServiceMockRecorder) CreateVPC(arg0 interface{}) *gomock.Cal
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateVPC", reflect.TypeOf((*MockECloudService)(nil).CreateVPC), arg0)
 }
 
-// CreateVPN mocks base method
-func (m *MockECloudService) CreateVPN(arg0 ecloud.CreateVPNRequest) (string, error) {
+// CreateVPNEndpoint mocks base method
+func (m *MockECloudService) CreateVPNEndpoint(arg0 ecloud.CreateVPNEndpointRequest) (ecloud.TaskReference, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateVPN", arg0)
-	ret0, _ := ret[0].(string)
+	ret := m.ctrl.Call(m, "CreateVPNEndpoint", arg0)
+	ret0, _ := ret[0].(ecloud.TaskReference)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// CreateVPN indicates an expected call of CreateVPN
-func (mr *MockECloudServiceMockRecorder) CreateVPN(arg0 interface{}) *gomock.Call {
+// CreateVPNEndpoint indicates an expected call of CreateVPNEndpoint
+func (mr *MockECloudServiceMockRecorder) CreateVPNEndpoint(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateVPN", reflect.TypeOf((*MockECloudService)(nil).CreateVPN), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateVPNEndpoint", reflect.TypeOf((*MockECloudService)(nil).CreateVPNEndpoint), arg0)
+}
+
+// CreateVPNService mocks base method
+func (m *MockECloudService) CreateVPNService(arg0 ecloud.CreateVPNServiceRequest) (ecloud.TaskReference, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateVPNService", arg0)
+	ret0, _ := ret[0].(ecloud.TaskReference)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateVPNService indicates an expected call of CreateVPNService
+func (mr *MockECloudServiceMockRecorder) CreateVPNService(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateVPNService", reflect.TypeOf((*MockECloudService)(nil).CreateVPNService), arg0)
+}
+
+// CreateVPNSession mocks base method
+func (m *MockECloudService) CreateVPNSession(arg0 ecloud.CreateVPNSessionRequest) (ecloud.TaskReference, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateVPNSession", arg0)
+	ret0, _ := ret[0].(ecloud.TaskReference)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateVPNSession indicates an expected call of CreateVPNSession
+func (mr *MockECloudServiceMockRecorder) CreateVPNSession(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateVPNSession", reflect.TypeOf((*MockECloudService)(nil).CreateVPNSession), arg0)
 }
 
 // CreateVirtualMachine mocks base method
@@ -654,18 +684,49 @@ func (mr *MockECloudServiceMockRecorder) DeleteVPC(arg0 interface{}) *gomock.Cal
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteVPC", reflect.TypeOf((*MockECloudService)(nil).DeleteVPC), arg0)
 }
 
-// DeleteVPN mocks base method
-func (m *MockECloudService) DeleteVPN(arg0 string) error {
+// DeleteVPNEndpoint mocks base method
+func (m *MockECloudService) DeleteVPNEndpoint(arg0 string) (string, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteVPN", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret := m.ctrl.Call(m, "DeleteVPNEndpoint", arg0)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
-// DeleteVPN indicates an expected call of DeleteVPN
-func (mr *MockECloudServiceMockRecorder) DeleteVPN(arg0 interface{}) *gomock.Call {
+// DeleteVPNEndpoint indicates an expected call of DeleteVPNEndpoint
+func (mr *MockECloudServiceMockRecorder) DeleteVPNEndpoint(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteVPN", reflect.TypeOf((*MockECloudService)(nil).DeleteVPN), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteVPNEndpoint", reflect.TypeOf((*MockECloudService)(nil).DeleteVPNEndpoint), arg0)
+}
+
+// DeleteVPNService mocks base method
+func (m *MockECloudService) DeleteVPNService(arg0 string) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteVPNService", arg0)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DeleteVPNService indicates an expected call of DeleteVPNService
+func (mr *MockECloudServiceMockRecorder) DeleteVPNService(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteVPNService", reflect.TypeOf((*MockECloudService)(nil).DeleteVPNService), arg0)
+}
+
+// DeleteVPNSession mocks base method
+func (m *MockECloudService) DeleteVPNSession(arg0 string) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteVPNSession", arg0)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DeleteVPNSession indicates an expected call of DeleteVPNSession
+func (mr *MockECloudServiceMockRecorder) DeleteVPNSession(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteVPNSession", reflect.TypeOf((*MockECloudService)(nil).DeleteVPNSession), arg0)
 }
 
 // DeleteVirtualMachine mocks base method
@@ -3334,49 +3395,214 @@ func (mr *MockECloudServiceMockRecorder) GetVPCsPaginated(arg0 interface{}) *gom
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPCsPaginated", reflect.TypeOf((*MockECloudService)(nil).GetVPCsPaginated), arg0)
 }
 
-// GetVPN mocks base method
-func (m *MockECloudService) GetVPN(arg0 string) (ecloud.VPN, error) {
+// GetVPNEndpoint mocks base method
+func (m *MockECloudService) GetVPNEndpoint(arg0 string) (ecloud.VPNEndpoint, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetVPN", arg0)
-	ret0, _ := ret[0].(ecloud.VPN)
+	ret := m.ctrl.Call(m, "GetVPNEndpoint", arg0)
+	ret0, _ := ret[0].(ecloud.VPNEndpoint)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetVPN indicates an expected call of GetVPN
-func (mr *MockECloudServiceMockRecorder) GetVPN(arg0 interface{}) *gomock.Call {
+// GetVPNEndpoint indicates an expected call of GetVPNEndpoint
+func (mr *MockECloudServiceMockRecorder) GetVPNEndpoint(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPN", reflect.TypeOf((*MockECloudService)(nil).GetVPN), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNEndpoint", reflect.TypeOf((*MockECloudService)(nil).GetVPNEndpoint), arg0)
 }
 
-// GetVPNs mocks base method
-func (m *MockECloudService) GetVPNs(arg0 connection.APIRequestParameters) ([]ecloud.VPN, error) {
+// GetVPNEndpoints mocks base method
+func (m *MockECloudService) GetVPNEndpoints(arg0 connection.APIRequestParameters) ([]ecloud.VPNEndpoint, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetVPNs", arg0)
-	ret0, _ := ret[0].([]ecloud.VPN)
+	ret := m.ctrl.Call(m, "GetVPNEndpoints", arg0)
+	ret0, _ := ret[0].([]ecloud.VPNEndpoint)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetVPNs indicates an expected call of GetVPNs
-func (mr *MockECloudServiceMockRecorder) GetVPNs(arg0 interface{}) *gomock.Call {
+// GetVPNEndpoints indicates an expected call of GetVPNEndpoints
+func (mr *MockECloudServiceMockRecorder) GetVPNEndpoints(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNs", reflect.TypeOf((*MockECloudService)(nil).GetVPNs), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNEndpoints", reflect.TypeOf((*MockECloudService)(nil).GetVPNEndpoints), arg0)
 }
 
-// GetVPNsPaginated mocks base method
-func (m *MockECloudService) GetVPNsPaginated(arg0 connection.APIRequestParameters) (*ecloud.PaginatedVPN, error) {
+// GetVPNEndpointsPaginated mocks base method
+func (m *MockECloudService) GetVPNEndpointsPaginated(arg0 connection.APIRequestParameters) (*ecloud.PaginatedVPNEndpoint, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetVPNsPaginated", arg0)
-	ret0, _ := ret[0].(*ecloud.PaginatedVPN)
+	ret := m.ctrl.Call(m, "GetVPNEndpointsPaginated", arg0)
+	ret0, _ := ret[0].(*ecloud.PaginatedVPNEndpoint)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetVPNsPaginated indicates an expected call of GetVPNsPaginated
-func (mr *MockECloudServiceMockRecorder) GetVPNsPaginated(arg0 interface{}) *gomock.Call {
+// GetVPNEndpointsPaginated indicates an expected call of GetVPNEndpointsPaginated
+func (mr *MockECloudServiceMockRecorder) GetVPNEndpointsPaginated(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNsPaginated", reflect.TypeOf((*MockECloudService)(nil).GetVPNsPaginated), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNEndpointsPaginated", reflect.TypeOf((*MockECloudService)(nil).GetVPNEndpointsPaginated), arg0)
+}
+
+// GetVPNProfileGroup mocks base method
+func (m *MockECloudService) GetVPNProfileGroup(arg0 string) (ecloud.VPNProfileGroup, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVPNProfileGroup", arg0)
+	ret0, _ := ret[0].(ecloud.VPNProfileGroup)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVPNProfileGroup indicates an expected call of GetVPNProfileGroup
+func (mr *MockECloudServiceMockRecorder) GetVPNProfileGroup(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNProfileGroup", reflect.TypeOf((*MockECloudService)(nil).GetVPNProfileGroup), arg0)
+}
+
+// GetVPNProfileGroups mocks base method
+func (m *MockECloudService) GetVPNProfileGroups(arg0 connection.APIRequestParameters) ([]ecloud.VPNProfileGroup, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVPNProfileGroups", arg0)
+	ret0, _ := ret[0].([]ecloud.VPNProfileGroup)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVPNProfileGroups indicates an expected call of GetVPNProfileGroups
+func (mr *MockECloudServiceMockRecorder) GetVPNProfileGroups(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNProfileGroups", reflect.TypeOf((*MockECloudService)(nil).GetVPNProfileGroups), arg0)
+}
+
+// GetVPNProfileGroupsPaginated mocks base method
+func (m *MockECloudService) GetVPNProfileGroupsPaginated(arg0 connection.APIRequestParameters) (*ecloud.PaginatedVPNProfileGroup, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVPNProfileGroupsPaginated", arg0)
+	ret0, _ := ret[0].(*ecloud.PaginatedVPNProfileGroup)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVPNProfileGroupsPaginated indicates an expected call of GetVPNProfileGroupsPaginated
+func (mr *MockECloudServiceMockRecorder) GetVPNProfileGroupsPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNProfileGroupsPaginated", reflect.TypeOf((*MockECloudService)(nil).GetVPNProfileGroupsPaginated), arg0)
+}
+
+// GetVPNService mocks base method
+func (m *MockECloudService) GetVPNService(arg0 string) (ecloud.VPNService, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVPNService", arg0)
+	ret0, _ := ret[0].(ecloud.VPNService)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVPNService indicates an expected call of GetVPNService
+func (mr *MockECloudServiceMockRecorder) GetVPNService(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNService", reflect.TypeOf((*MockECloudService)(nil).GetVPNService), arg0)
+}
+
+// GetVPNServices mocks base method
+func (m *MockECloudService) GetVPNServices(arg0 connection.APIRequestParameters) ([]ecloud.VPNService, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVPNServices", arg0)
+	ret0, _ := ret[0].([]ecloud.VPNService)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVPNServices indicates an expected call of GetVPNServices
+func (mr *MockECloudServiceMockRecorder) GetVPNServices(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNServices", reflect.TypeOf((*MockECloudService)(nil).GetVPNServices), arg0)
+}
+
+// GetVPNServicesPaginated mocks base method
+func (m *MockECloudService) GetVPNServicesPaginated(arg0 connection.APIRequestParameters) (*ecloud.PaginatedVPNService, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVPNServicesPaginated", arg0)
+	ret0, _ := ret[0].(*ecloud.PaginatedVPNService)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVPNServicesPaginated indicates an expected call of GetVPNServicesPaginated
+func (mr *MockECloudServiceMockRecorder) GetVPNServicesPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNServicesPaginated", reflect.TypeOf((*MockECloudService)(nil).GetVPNServicesPaginated), arg0)
+}
+
+// GetVPNSession mocks base method
+func (m *MockECloudService) GetVPNSession(arg0 string) (ecloud.VPNSession, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVPNSession", arg0)
+	ret0, _ := ret[0].(ecloud.VPNSession)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVPNSession indicates an expected call of GetVPNSession
+func (mr *MockECloudServiceMockRecorder) GetVPNSession(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNSession", reflect.TypeOf((*MockECloudService)(nil).GetVPNSession), arg0)
+}
+
+// GetVPNSessionVPNSessionCredentials mocks base method
+func (m *MockECloudService) GetVPNSessionVPNSessionCredentials(arg0 string, arg1 connection.APIRequestParameters) ([]ecloud.Credential, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVPNSessionVPNSessionCredentials", arg0, arg1)
+	ret0, _ := ret[0].([]ecloud.Credential)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVPNSessionVPNSessionCredentials indicates an expected call of GetVPNSessionVPNSessionCredentials
+func (mr *MockECloudServiceMockRecorder) GetVPNSessionVPNSessionCredentials(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNSessionVPNSessionCredentials", reflect.TypeOf((*MockECloudService)(nil).GetVPNSessionVPNSessionCredentials), arg0, arg1)
+}
+
+// GetVPNSessionVPNSessionCredentialsPaginated mocks base method
+func (m *MockECloudService) GetVPNSessionVPNSessionCredentialsPaginated(arg0 string, arg1 connection.APIRequestParameters) (*ecloud.PaginatedCredential, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVPNSessionVPNSessionCredentialsPaginated", arg0, arg1)
+	ret0, _ := ret[0].(*ecloud.PaginatedCredential)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVPNSessionVPNSessionCredentialsPaginated indicates an expected call of GetVPNSessionVPNSessionCredentialsPaginated
+func (mr *MockECloudServiceMockRecorder) GetVPNSessionVPNSessionCredentialsPaginated(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNSessionVPNSessionCredentialsPaginated", reflect.TypeOf((*MockECloudService)(nil).GetVPNSessionVPNSessionCredentialsPaginated), arg0, arg1)
+}
+
+// GetVPNSessions mocks base method
+func (m *MockECloudService) GetVPNSessions(arg0 connection.APIRequestParameters) ([]ecloud.VPNSession, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVPNSessions", arg0)
+	ret0, _ := ret[0].([]ecloud.VPNSession)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVPNSessions indicates an expected call of GetVPNSessions
+func (mr *MockECloudServiceMockRecorder) GetVPNSessions(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNSessions", reflect.TypeOf((*MockECloudService)(nil).GetVPNSessions), arg0)
+}
+
+// GetVPNSessionsPaginated mocks base method
+func (m *MockECloudService) GetVPNSessionsPaginated(arg0 connection.APIRequestParameters) (*ecloud.PaginatedVPNSession, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVPNSessionsPaginated", arg0)
+	ret0, _ := ret[0].(*ecloud.PaginatedVPNSession)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVPNSessionsPaginated indicates an expected call of GetVPNSessionsPaginated
+func (mr *MockECloudServiceMockRecorder) GetVPNSessionsPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNSessionsPaginated", reflect.TypeOf((*MockECloudService)(nil).GetVPNSessionsPaginated), arg0)
 }
 
 // GetVirtualMachine mocks base method
@@ -3586,6 +3812,21 @@ func (m *MockECloudService) LockInstance(arg0 string) error {
 func (mr *MockECloudServiceMockRecorder) LockInstance(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "LockInstance", reflect.TypeOf((*MockECloudService)(nil).LockInstance), arg0)
+}
+
+// MigrateInstance mocks base method
+func (m *MockECloudService) MigrateInstance(arg0 string, arg1 ecloud.MigrateInstanceRequest) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "MigrateInstance", arg0, arg1)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// MigrateInstance indicates an expected call of MigrateInstance
+func (mr *MockECloudServiceMockRecorder) MigrateInstance(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MigrateInstance", reflect.TypeOf((*MockECloudService)(nil).MigrateInstance), arg0, arg1)
 }
 
 // PatchFirewallPolicy mocks base method
@@ -3820,6 +4061,51 @@ func (m *MockECloudService) PatchVPC(arg0 string, arg1 ecloud.PatchVPCRequest) e
 func (mr *MockECloudServiceMockRecorder) PatchVPC(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchVPC", reflect.TypeOf((*MockECloudService)(nil).PatchVPC), arg0, arg1)
+}
+
+// PatchVPNEndpoint mocks base method
+func (m *MockECloudService) PatchVPNEndpoint(arg0 string, arg1 ecloud.PatchVPNEndpointRequest) (ecloud.TaskReference, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PatchVPNEndpoint", arg0, arg1)
+	ret0, _ := ret[0].(ecloud.TaskReference)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// PatchVPNEndpoint indicates an expected call of PatchVPNEndpoint
+func (mr *MockECloudServiceMockRecorder) PatchVPNEndpoint(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchVPNEndpoint", reflect.TypeOf((*MockECloudService)(nil).PatchVPNEndpoint), arg0, arg1)
+}
+
+// PatchVPNService mocks base method
+func (m *MockECloudService) PatchVPNService(arg0 string, arg1 ecloud.PatchVPNServiceRequest) (ecloud.TaskReference, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PatchVPNService", arg0, arg1)
+	ret0, _ := ret[0].(ecloud.TaskReference)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// PatchVPNService indicates an expected call of PatchVPNService
+func (mr *MockECloudServiceMockRecorder) PatchVPNService(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchVPNService", reflect.TypeOf((*MockECloudService)(nil).PatchVPNService), arg0, arg1)
+}
+
+// PatchVPNSession mocks base method
+func (m *MockECloudService) PatchVPNSession(arg0 string, arg1 ecloud.PatchVPNSessionRequest) (ecloud.TaskReference, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PatchVPNSession", arg0, arg1)
+	ret0, _ := ret[0].(ecloud.TaskReference)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// PatchVPNSession indicates an expected call of PatchVPNSession
+func (mr *MockECloudServiceMockRecorder) PatchVPNSession(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchVPNSession", reflect.TypeOf((*MockECloudService)(nil).PatchVPNSession), arg0, arg1)
 }
 
 // PatchVirtualMachine mocks base method
