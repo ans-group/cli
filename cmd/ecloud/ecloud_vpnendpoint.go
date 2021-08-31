@@ -62,7 +62,7 @@ func ecloudVPNEndpointShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <endpoint: id>...",
 		Short:   "Shows a VPN endpoint",
 		Long:    "This command shows one or more VPN endpoints",
-		Example: "ukfast ecloud vpnendpoint show vpns-abcdef12",
+		Example: "ukfast ecloud vpnendpoint show vpne-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing VPN endpoint")
@@ -140,7 +140,7 @@ func ecloudVPNEndpointUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <endpoint: id>...",
 		Short:   "Updates a VPN endpoint",
 		Long:    "This command updates one or more VPN endpoints",
-		Example: "ukfast ecloud vpnendpoint update vpns-abcdef12 --name \"my endpoint\"",
+		Example: "ukfast ecloud vpnendpoint update vpne-abcdef12 --name \"my endpoint\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing VPN endpoint")
@@ -198,7 +198,7 @@ func ecloudVPNEndpointDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <endpoint: id>...",
 		Short:   "Removes a VPN endpoint",
 		Long:    "This command removes one or more VPN endpoints",
-		Example: "ukfast ecloud vpnendpoint delete vpns-abcdef12",
+		Example: "ukfast ecloud vpnendpoint delete vpne-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing VPN endpoint")
