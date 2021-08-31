@@ -423,3 +423,19 @@ func OutputECloudHostSpecsProvider(specs []ecloud.HostSpec) output.OutputHandler
 func OutputECloudAvailabilityZonesProvider(azs []ecloud.AvailabilityZone) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(azs).WithDefaultFields([]string{"id", "name", "region_id"})
 }
+
+func OutputECloudVPNServicesProvider(vpns []ecloud.VPNService) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(vpns).WithDefaultFields([]string{"id", "name", "router_id", "vpc_id", "sync_status"})
+}
+
+func OutputECloudVPNEndpointsProvider(endpoints []ecloud.VPNEndpoint) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(endpoints).WithDefaultFields([]string{"id", "name", "vpn_service_id", "floating_ip_id", "sync_status"})
+}
+
+func OutputECloudVPNSessionsProvider(sessions []ecloud.VPNSession) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(sessions).WithDefaultFields([]string{"id", "name", "vpn_service_id", "vpn_endpoint_id", "remote_ip", "sync_status"})
+}
+
+func OutputECloudVPNProfileGroupsProvider(groups []ecloud.VPNProfileGroup) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(groups).WithDefaultFields([]string{"id", "name", "availability_zone_id"})
+}

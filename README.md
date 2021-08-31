@@ -262,18 +262,18 @@ The CLI supports generating shell completions for the following shells:
 
 The commands at `ukfast completion <shell: bash|zsh|powershell>` provide help for installation on different platforms
 
-## eCloud V2 resources
+## eCloud VPC resources
 
-eCloud V2 resource commands are available by default under the `ecloud` subcommand.
+eCloud VPC resource commands are available by default under the `ecloud` subcommand.
 
-To display only V2 commands, the following environment variable can be set:
-
-```
-> export UKF_ECLOUD_V2=true
-```
-
-To display only V1 commands, the following environment variable can be set:
+To display only VPC commands, the following environment variable can be set:
 
 ```
-> export UKF_ECLOUD_V1=true
+> export UKF_ECLOUD_VPC=true
+```
+
+To display only original commands, the following environment variable can be set:
+
+```
+> export UKF_ECLOUD=true
 ```

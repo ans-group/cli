@@ -20,11 +20,10 @@ func ECloudRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 	}
 
 	// Child root commands
-	// -- eCloud v1
-	v1envset := len(os.Getenv("UKF_ECLOUD_V1")) > 0
-	v2envset := len(os.Getenv("UKF_ECLOUD_V2")) > 0
+	v1envset := len(os.Getenv("UKF_ECLOUD")) > 0
+	vpcEnvSet := len(os.Getenv("UKF_ECLOUD_VPC")) > 0
 
-	if v1envset || !v2envset {
+	if v1envset || !vpcEnvSet {
 		cmd.AddCommand(ecloudVirtualMachineRootCmd(f))
 		cmd.AddCommand(ecloudSolutionRootCmd(f))
 		cmd.AddCommand(ecloudSiteRootCmd(f))
@@ -35,8 +34,8 @@ func ECloudRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 		cmd.AddCommand(ecloudApplianceRootCmd(f))
 		cmd.AddCommand(ecloudCreditRootCmd(f))
 	}
-	// -- eCloud v2
-	if v2envset || !v1envset {
+	// -- eCloud VPC
+	if vpcEnvSet || !v1envset {
 		cmd.AddCommand(ecloudAvailabilityZoneRootCmd(f))
 		cmd.AddCommand(ecloudDHCPRootCmd(f))
 		cmd.AddCommand(ecloudFirewallPolicyRootCmd(f))
@@ -60,6 +59,10 @@ func ECloudRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 		cmd.AddCommand(ecloudTaskRootCmd(f))
 		cmd.AddCommand(ecloudVolumeRootCmd(f))
 		cmd.AddCommand(ecloudVPCRootCmd(f))
+		cmd.AddCommand(ecloudVPNEndpointRootCmd(f))
+		cmd.AddCommand(ecloudVPNProfileGroupRootCmd(f))
+		cmd.AddCommand(ecloudVPNServiceRootCmd(f))
+		cmd.AddCommand(ecloudVPNSessionRootCmd(f))
 	}
 
 	return cmd
