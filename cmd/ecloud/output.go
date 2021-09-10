@@ -439,3 +439,7 @@ func OutputECloudVPNSessionsProvider(sessions []ecloud.VPNSession) output.Output
 func OutputECloudVPNProfileGroupsProvider(groups []ecloud.VPNProfileGroup) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(groups).WithDefaultFields([]string{"id", "name", "availability_zone_id"})
 }
+
+func OutputECloudVPNSessionPreSharedKeysProvider(psks []ecloud.VPNSessionPreSharedKey) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(psks).WithDefaultFields([]string{"psk"})
+}

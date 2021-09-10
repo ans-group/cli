@@ -3545,34 +3545,19 @@ func (mr *MockECloudServiceMockRecorder) GetVPNSession(arg0 interface{}) *gomock
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNSession", reflect.TypeOf((*MockECloudService)(nil).GetVPNSession), arg0)
 }
 
-// GetVPNSessionCredentials mocks base method
-func (m *MockECloudService) GetVPNSessionCredentials(arg0 string, arg1 connection.APIRequestParameters) ([]ecloud.Credential, error) {
+// GetVPNSessionPreSharedKey mocks base method
+func (m *MockECloudService) GetVPNSessionPreSharedKey(arg0 string) (ecloud.VPNSessionPreSharedKey, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetVPNSessionCredentials", arg0, arg1)
-	ret0, _ := ret[0].([]ecloud.Credential)
+	ret := m.ctrl.Call(m, "GetVPNSessionPreSharedKey", arg0)
+	ret0, _ := ret[0].(ecloud.VPNSessionPreSharedKey)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetVPNSessionCredentials indicates an expected call of GetVPNSessionCredentials
-func (mr *MockECloudServiceMockRecorder) GetVPNSessionCredentials(arg0, arg1 interface{}) *gomock.Call {
+// GetVPNSessionPreSharedKey indicates an expected call of GetVPNSessionPreSharedKey
+func (mr *MockECloudServiceMockRecorder) GetVPNSessionPreSharedKey(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNSessionCredentials", reflect.TypeOf((*MockECloudService)(nil).GetVPNSessionCredentials), arg0, arg1)
-}
-
-// GetVPNSessionCredentialsPaginated mocks base method
-func (m *MockECloudService) GetVPNSessionCredentialsPaginated(arg0 string, arg1 connection.APIRequestParameters) (*ecloud.PaginatedCredential, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetVPNSessionCredentialsPaginated", arg0, arg1)
-	ret0, _ := ret[0].(*ecloud.PaginatedCredential)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetVPNSessionCredentialsPaginated indicates an expected call of GetVPNSessionCredentialsPaginated
-func (mr *MockECloudServiceMockRecorder) GetVPNSessionCredentialsPaginated(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNSessionCredentialsPaginated", reflect.TypeOf((*MockECloudService)(nil).GetVPNSessionCredentialsPaginated), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNSessionPreSharedKey", reflect.TypeOf((*MockECloudService)(nil).GetVPNSessionPreSharedKey), arg0)
 }
 
 // GetVPNSessions mocks base method
