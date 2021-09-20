@@ -113,7 +113,9 @@ func ecloudVPNSessionCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().String("remote-ip", "", "IP address of remote")
 	cmd.MarkFlagRequired("remote-ip")
 	cmd.Flags().String("remote-networks", "", "Comma seperated list of remote networks")
+	cmd.MarkFlagRequired("remote-networks")
 	cmd.Flags().String("local-networks", "", "Comma seperated list of local networks")
+	cmd.MarkFlagRequired("local-networks")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the VPN session has been completely created")
 
 	return cmd
