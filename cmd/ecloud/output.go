@@ -443,3 +443,7 @@ func OutputECloudVPNProfileGroupsProvider(groups []ecloud.VPNProfileGroup) outpu
 func OutputECloudVPNSessionPreSharedKeysProvider(psks []ecloud.VPNSessionPreSharedKey) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(psks).WithDefaultFields([]string{"psk"})
 }
+
+func OutputECloudVolumeGroupsProvider(groups []ecloud.VolumeGroup) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(groups).WithDefaultFields([]string{"id", "name", "vpc_id", "availability_zone_id", "sync_status"})
+}
