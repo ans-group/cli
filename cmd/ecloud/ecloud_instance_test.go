@@ -11,6 +11,7 @@ import (
 	"github.com/ukfast/cli/test/mocks"
 	"github.com/ukfast/cli/test/test_output"
 	"github.com/ukfast/sdk-go/pkg/connection"
+	"github.com/ukfast/sdk-go/pkg/ptr"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
@@ -250,6 +251,28 @@ func Test_ecloudInstanceUpdate(t *testing.T) {
 			Name:        "testinstance",
 			VCPUCores:   2,
 			RAMCapacity: 2,
+		}
+
+		gomock.InOrder(
+			service.EXPECT().PatchInstance("i-abcdef12", req).Return(nil),
+			service.EXPECT().GetInstance("i-abcdef12").Return(ecloud.Instance{}, nil),
+		)
+
+		ecloudInstanceUpdate(service, cmd, []string{"i-abcdef12"})
+	})
+
+	t.Run("SingleInstanceWithVolumeGroup", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		cmd := ecloudInstanceUpdateCmd(nil)
+		cmd.ParseFlags([]string{"--volumegroup=volgroup-abcdef12"})
+
+		
+		req := ecloud.PatchInstanceRequest{
+			VolumeGroupID: ptr.String("volgroup-abcdef12"),
 		}
 
 		gomock.InOrder(
