@@ -114,7 +114,7 @@ func ecloudVolumeCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().Int("capacity", 0, "Capacity of volume in GiB")
 	cmd.MarkFlagRequired("capacity")
 	cmd.Flags().Int("iops", 0, "IOPS for volume")
-	cmd.Flags().String("volumegroup", "", "ID of volume group for volume")
+	cmd.Flags().String("volume-group", "", "ID of volume-group for volume")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the volume has been completely created")
 
 	return cmd
@@ -129,7 +129,7 @@ func ecloudVolumeCreate(service ecloud.ECloudService, cmd *cobra.Command, args [
 	createRequest.AvailabilityZoneID, _ = cmd.Flags().GetString("availability-zone")
 	createRequest.Capacity, _ = cmd.Flags().GetInt("capacity")
 	createRequest.IOPS, _ = cmd.Flags().GetInt("iops")
-	createRequest.VolumeGroupID, _ = cmd.Flags().GetString("volumegroup")
+	createRequest.VolumeGroupID, _ = cmd.Flags().GetString("volume-group")
 
 	taskRef, err := service.CreateVolume(createRequest)
 	if err != nil {
@@ -171,7 +171,7 @@ func ecloudVolumeUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().String("name", "", "Name of volume")
 	cmd.Flags().Int("capacity", 0, "Capacity of volume in GiB")
 	cmd.Flags().Int("iops", 0, "IOPS for volume")
-	cmd.Flags().String("volumegroup", "", "ID of volume group for volume")
+	cmd.Flags().String("volume-group", "", "ID of volume group for volume")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the volume has been updated")
 
 	return cmd
@@ -192,8 +192,8 @@ func ecloudVolumeUpdate(service ecloud.ECloudService, cmd *cobra.Command, args [
 		patchRequest.IOPS, _ = cmd.Flags().GetInt("iops")
 	}
 
-	if cmd.Flags().Changed("volumegroup") {
-		volGroup, _ := cmd.Flags().GetString("volumegroup")
+	if cmd.Flags().Changed("volume-group") {
+		volGroup, _ := cmd.Flags().GetString("volume-group")
 		patchRequest.VolumeGroupID = ptr.String(volGroup)
 	}
 

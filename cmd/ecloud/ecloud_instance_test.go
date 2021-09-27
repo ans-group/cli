@@ -268,7 +268,7 @@ func Test_ecloudInstanceUpdate(t *testing.T) {
 		service := mocks.NewMockECloudService(mockCtrl)
 
 		cmd := ecloudInstanceUpdateCmd(nil)
-		cmd.ParseFlags([]string{"--volumegroup=volgroup-abcdef12"})
+		cmd.ParseFlags([]string{"--volume-group=volgroup-abcdef12"})
 
 		
 		req := ecloud.PatchInstanceRequest{

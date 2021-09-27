@@ -144,7 +144,7 @@ func Test_ecloudVolumeCreate(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 		cmd := ecloudVolumeCreateCmd(nil)
-		cmd.ParseFlags([]string{"--name=testvolume", "--vpc=vpc-abcdef12", "--capacity=20", "--availability-zone=az-abcdef12", "--volumegroup=volgroup-abcdef12"})
+		cmd.ParseFlags([]string{"--name=testvolume", "--vpc=vpc-abcdef12", "--capacity=20", "--availability-zone=az-abcdef12", "--volume-group=volgroup-abcdef12"})
 
 		req := ecloud.CreateVolumeRequest{
 			Name:     "testvolume",
@@ -318,7 +318,7 @@ func Test_ecloudVolumeUpdate(t *testing.T) {
 		service := mocks.NewMockECloudService(mockCtrl)
 
 		cmd := ecloudVolumeUpdateCmd(nil)
-		cmd.ParseFlags([]string{"--volumegroup=volgroup-abcdef12"})
+		cmd.ParseFlags([]string{"--volume-group=volgroup-abcdef12"})
 
 		req := ecloud.PatchVolumeRequest{
 			VolumeGroupID: ptr.String("volgroup-abcdef12"),
@@ -344,7 +344,7 @@ func Test_ecloudVolumeUpdate(t *testing.T) {
 		service := mocks.NewMockECloudService(mockCtrl)
 
 		cmd := ecloudVolumeUpdateCmd(nil)
-		cmd.ParseFlags([]string{"--volumegroup="})
+		cmd.ParseFlags([]string{"--volume-group="})
 
 		req := ecloud.PatchVolumeRequest{
 			VolumeGroupID: ptr.String(""),

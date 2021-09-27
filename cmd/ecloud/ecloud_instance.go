@@ -213,7 +213,7 @@ func ecloudInstanceUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().String("name", "", "Name of instance")
 	cmd.Flags().Int("vcpu", 0, "Number of vCPU cores to allocate")
 	cmd.Flags().Int("ram", 0, "Amount of RAM (in MB) to allocate")
-	cmd.Flags().String("volumegroup", "", "ID of volumegroup to use for instance")
+	cmd.Flags().String("volume-group", "", "ID of volume-group to use for instance")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the instance has been completely updated")
 
 	return cmd
@@ -236,8 +236,8 @@ func ecloudInstanceUpdate(service ecloud.ECloudService, cmd *cobra.Command, args
 		patchRequest.RAMCapacity = ram
 	}
 
-	if cmd.Flags().Changed("volumegroup") {
-		volGroup, _ := cmd.Flags().GetString("volumegroup")
+	if cmd.Flags().Changed("volume-group") {
+		volGroup, _ := cmd.Flags().GetString("volume-group")
 		patchRequest.VolumeGroupID = ptr.String(volGroup)
 	}
 

@@ -70,7 +70,7 @@ func ecloudVolumeGroupShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ukfast ecloud volumegroup show vol-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing volumegroup")
+				return errors.New("Missing volume-group")
 			}
 
 			return nil
@@ -104,12 +104,12 @@ func ecloudVolumeGroupCreateCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	// Setup flags
-	cmd.Flags().String("name", "", "Name of volumegroup")
+	cmd.Flags().String("name", "", "Name of volume-group")
 	cmd.Flags().String("vpc", "", "ID of VPC")
 	cmd.MarkFlagRequired("vpc")
 	cmd.Flags().String("availability-zone", "", "ID of Availability Zone")
 	cmd.MarkFlagRequired("availability-zone")
-	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the volumegroup has been completely created")
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the volume-group has been completely created")
 
 	return cmd
 }
@@ -151,7 +151,7 @@ func ecloudVolumeGroupUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ukfast ecloud volumegroup update volgroup-abcdef12 --name \"my volumegroup\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing volumegroup")
+				return errors.New("Missing volume-group")
 			}
 
 			return nil
@@ -159,8 +159,8 @@ func ecloudVolumeGroupUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		RunE: ecloudCobraRunEFunc(f, ecloudVolumeGroupUpdate),
 	}
 
-	cmd.Flags().String("name", "", "Name of volumegroup")
-	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the volumegroup has been updated")
+	cmd.Flags().String("name", "", "Name of volume-group")
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the volume-group has been updated")
 
 	return cmd
 }
@@ -209,7 +209,7 @@ func ecloudVolumeGroupDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ukfast ecloud volumegroup delete vol-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing volumegroup")
+				return errors.New("Missing volume-group")
 			}
 
 			return nil

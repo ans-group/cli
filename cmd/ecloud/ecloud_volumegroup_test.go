@@ -64,7 +64,7 @@ func Test_ecloudVolumeGroupShowCmd_Args(t *testing.T) {
 		err := ecloudVolumeGroupShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing volumegroup", err.Error())
+		assert.Equal(t, "Missing volume-group", err.Error())
 	})
 }
 
@@ -245,7 +245,7 @@ func Test_ecloudVolumeGroupUpdateCmd_Args(t *testing.T) {
 		err := ecloudVolumeGroupUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing volumegroup", err.Error())
+		assert.Equal(t, "Missing volume-group", err.Error())
 	})
 }
 
@@ -375,7 +375,7 @@ func Test_ecloudVolumeGroupDeleteCmd_Args(t *testing.T) {
 		err := ecloudVolumeGroupDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing volumegroup", err.Error())
+		assert.Equal(t, "Missing volume-group", err.Error())
 	})
 }
 
