@@ -10,6 +10,7 @@ import (
 	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/connection"
+	"github.com/ukfast/sdk-go/pkg/ptr"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
@@ -212,6 +213,7 @@ func ecloudInstanceUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().String("name", "", "Name of instance")
 	cmd.Flags().Int("vcpu", 0, "Number of vCPU cores to allocate")
 	cmd.Flags().Int("ram", 0, "Amount of RAM (in MB) to allocate")
+	cmd.Flags().String("volume-group", "", "ID of volume-group to use for instance")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the instance has been completely updated")
 
 	return cmd
@@ -232,6 +234,11 @@ func ecloudInstanceUpdate(service ecloud.ECloudService, cmd *cobra.Command, args
 	if cmd.Flags().Changed("ram") {
 		ram, _ := cmd.Flags().GetInt("ram")
 		patchRequest.RAMCapacity = ram
+	}
+
+	if cmd.Flags().Changed("volume-group") {
+		volGroup, _ := cmd.Flags().GetString("volume-group")
+		patchRequest.VolumeGroupID = ptr.String(volGroup)
 	}
 
 	var instances []ecloud.Instance

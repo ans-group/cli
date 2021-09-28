@@ -437,6 +437,21 @@ func (mr *MockECloudServiceMockRecorder) CreateVolume(arg0 interface{}) *gomock.
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateVolume", reflect.TypeOf((*MockECloudService)(nil).CreateVolume), arg0)
 }
 
+// CreateVolumeGroup mocks base method
+func (m *MockECloudService) CreateVolumeGroup(arg0 ecloud.CreateVolumeGroupRequest) (ecloud.TaskReference, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateVolumeGroup", arg0)
+	ret0, _ := ret[0].(ecloud.TaskReference)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateVolumeGroup indicates an expected call of CreateVolumeGroup
+func (mr *MockECloudServiceMockRecorder) CreateVolumeGroup(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateVolumeGroup", reflect.TypeOf((*MockECloudService)(nil).CreateVolumeGroup), arg0)
+}
+
 // DeleteFirewallPolicy mocks base method
 func (m *MockECloudService) DeleteFirewallPolicy(arg0 string) (string, error) {
 	m.ctrl.T.Helper()
@@ -770,6 +785,21 @@ func (m *MockECloudService) DeleteVolume(arg0 string) (string, error) {
 func (mr *MockECloudServiceMockRecorder) DeleteVolume(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteVolume", reflect.TypeOf((*MockECloudService)(nil).DeleteVolume), arg0)
+}
+
+// DeleteVolumeGroup mocks base method
+func (m *MockECloudService) DeleteVolumeGroup(arg0 string) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteVolumeGroup", arg0)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DeleteVolumeGroup indicates an expected call of DeleteVolumeGroup
+func (mr *MockECloudServiceMockRecorder) DeleteVolumeGroup(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteVolumeGroup", reflect.TypeOf((*MockECloudService)(nil).DeleteVolumeGroup), arg0)
 }
 
 // DeployRouterDefaultFirewallPolicies mocks base method
@@ -3695,6 +3725,81 @@ func (mr *MockECloudServiceMockRecorder) GetVolume(arg0 interface{}) *gomock.Cal
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVolume", reflect.TypeOf((*MockECloudService)(nil).GetVolume), arg0)
 }
 
+// GetVolumeGroup mocks base method
+func (m *MockECloudService) GetVolumeGroup(arg0 string) (ecloud.VolumeGroup, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVolumeGroup", arg0)
+	ret0, _ := ret[0].(ecloud.VolumeGroup)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVolumeGroup indicates an expected call of GetVolumeGroup
+func (mr *MockECloudServiceMockRecorder) GetVolumeGroup(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVolumeGroup", reflect.TypeOf((*MockECloudService)(nil).GetVolumeGroup), arg0)
+}
+
+// GetVolumeGroupVolumes mocks base method
+func (m *MockECloudService) GetVolumeGroupVolumes(arg0 string, arg1 connection.APIRequestParameters) ([]ecloud.Volume, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVolumeGroupVolumes", arg0, arg1)
+	ret0, _ := ret[0].([]ecloud.Volume)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVolumeGroupVolumes indicates an expected call of GetVolumeGroupVolumes
+func (mr *MockECloudServiceMockRecorder) GetVolumeGroupVolumes(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVolumeGroupVolumes", reflect.TypeOf((*MockECloudService)(nil).GetVolumeGroupVolumes), arg0, arg1)
+}
+
+// GetVolumeGroupVolumesPaginated mocks base method
+func (m *MockECloudService) GetVolumeGroupVolumesPaginated(arg0 string, arg1 connection.APIRequestParameters) (*ecloud.PaginatedVolume, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVolumeGroupVolumesPaginated", arg0, arg1)
+	ret0, _ := ret[0].(*ecloud.PaginatedVolume)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVolumeGroupVolumesPaginated indicates an expected call of GetVolumeGroupVolumesPaginated
+func (mr *MockECloudServiceMockRecorder) GetVolumeGroupVolumesPaginated(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVolumeGroupVolumesPaginated", reflect.TypeOf((*MockECloudService)(nil).GetVolumeGroupVolumesPaginated), arg0, arg1)
+}
+
+// GetVolumeGroups mocks base method
+func (m *MockECloudService) GetVolumeGroups(arg0 connection.APIRequestParameters) ([]ecloud.VolumeGroup, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVolumeGroups", arg0)
+	ret0, _ := ret[0].([]ecloud.VolumeGroup)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVolumeGroups indicates an expected call of GetVolumeGroups
+func (mr *MockECloudServiceMockRecorder) GetVolumeGroups(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVolumeGroups", reflect.TypeOf((*MockECloudService)(nil).GetVolumeGroups), arg0)
+}
+
+// GetVolumeGroupsPaginated mocks base method
+func (m *MockECloudService) GetVolumeGroupsPaginated(arg0 connection.APIRequestParameters) (*ecloud.PaginatedVolumeGroup, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVolumeGroupsPaginated", arg0)
+	ret0, _ := ret[0].(*ecloud.PaginatedVolumeGroup)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVolumeGroupsPaginated indicates an expected call of GetVolumeGroupsPaginated
+func (mr *MockECloudServiceMockRecorder) GetVolumeGroupsPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVolumeGroupsPaginated", reflect.TypeOf((*MockECloudService)(nil).GetVolumeGroupsPaginated), arg0)
+}
+
 // GetVolumeInstances mocks base method
 func (m *MockECloudService) GetVolumeInstances(arg0 string, arg1 connection.APIRequestParameters) ([]ecloud.Instance, error) {
 	m.ctrl.T.Helper()
@@ -4134,6 +4239,21 @@ func (m *MockECloudService) PatchVolume(arg0 string, arg1 ecloud.PatchVolumeRequ
 func (mr *MockECloudServiceMockRecorder) PatchVolume(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchVolume", reflect.TypeOf((*MockECloudService)(nil).PatchVolume), arg0, arg1)
+}
+
+// PatchVolumeGroup mocks base method
+func (m *MockECloudService) PatchVolumeGroup(arg0 string, arg1 ecloud.PatchVolumeGroupRequest) (ecloud.TaskReference, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PatchVolumeGroup", arg0, arg1)
+	ret0, _ := ret[0].(ecloud.TaskReference)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// PatchVolumeGroup indicates an expected call of PatchVolumeGroup
+func (mr *MockECloudServiceMockRecorder) PatchVolumeGroup(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchVolumeGroup", reflect.TypeOf((*MockECloudService)(nil).PatchVolumeGroup), arg0, arg1)
 }
 
 // PodConsoleAvailable mocks base method

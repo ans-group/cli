@@ -234,7 +234,8 @@ func ecloudNetworkRuleUpdate(service ecloud.ECloudService, cmd *cobra.Command, a
 	}
 
 	if cmd.Flags().Changed("sequence") {
-		patchRequest.Name, _ = cmd.Flags().GetString("sequence")
+		sequence, _ := cmd.Flags().GetInt("sequence")
+		patchRequest.Sequence = ptr.Int(sequence)
 	}
 
 	if cmd.Flags().Changed("enabled") {

@@ -10,6 +10,7 @@ import (
 	"github.com/ukfast/cli/internal/pkg/clierrors"
 	"github.com/ukfast/cli/test/mocks"
 	"github.com/ukfast/cli/test/test_output"
+	"github.com/ukfast/sdk-go/pkg/ptr"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
@@ -122,6 +123,35 @@ func Test_ecloudVolumeCreate(t *testing.T) {
 			VPCID:    "vpc-abcdef12",
 			Capacity: 20,
 			AvailabilityZoneID: "az-abcdef12",
+		}
+
+		resp := ecloud.TaskReference{
+			TaskID:     "task-abcdef12",
+			ResourceID: "vol-abcdef12",
+		}
+
+		gomock.InOrder(
+			service.EXPECT().CreateVolume(req).Return(resp, nil),
+			service.EXPECT().GetVolume("vol-abcdef12").Return(ecloud.Volume{}, nil),
+		)
+
+		ecloudVolumeCreate(service, cmd, []string{})
+	})
+
+	t.Run("CreateSharedWithVolumeGroup_Succeeds", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudVolumeCreateCmd(nil)
+		cmd.ParseFlags([]string{"--name=testvolume", "--vpc=vpc-abcdef12", "--capacity=20", "--availability-zone=az-abcdef12", "--volume-group=volgroup-abcdef12"})
+
+		req := ecloud.CreateVolumeRequest{
+			Name:     "testvolume",
+			VPCID:    "vpc-abcdef12",
+			Capacity: 20,
+			AvailabilityZoneID: "az-abcdef12",
+			VolumeGroupID: "volgroup-abcdef12",
 		}
 
 		resp := ecloud.TaskReference{
@@ -260,10 +290,64 @@ func Test_ecloudVolumeUpdate(t *testing.T) {
 		service := mocks.NewMockECloudService(mockCtrl)
 
 		cmd := ecloudVolumeUpdateCmd(nil)
-		cmd.ParseFlags([]string{"--name=testvolume"})
+		cmd.ParseFlags([]string{"--name=testvolume", "--iops=600", "--capacity=40"})
 
 		req := ecloud.PatchVolumeRequest{
 			Name: "testvolume",
+			IOPS: 600,
+			Capacity: 40,
+		}
+
+		resp := ecloud.TaskReference{
+			TaskID:     "task-abcdef12",
+			ResourceID: "vol-abcdef12",
+		}
+
+		gomock.InOrder(
+			service.EXPECT().PatchVolume("vol-abcdef12", req).Return(resp, nil),
+			service.EXPECT().GetVolume("vol-abcdef12").Return(ecloud.Volume{}, nil),
+		)
+
+		ecloudVolumeUpdate(service, cmd, []string{"vol-abcdef12"})
+	})
+
+	t.Run("AttachVolumeGroup_Succeeds", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		cmd := ecloudVolumeUpdateCmd(nil)
+		cmd.ParseFlags([]string{"--volume-group=volgroup-abcdef12"})
+
+		req := ecloud.PatchVolumeRequest{
+			VolumeGroupID: ptr.String("volgroup-abcdef12"),
+		}
+
+		resp := ecloud.TaskReference{
+			TaskID:     "task-abcdef12",
+			ResourceID: "vol-abcdef12",
+		}
+
+		gomock.InOrder(
+			service.EXPECT().PatchVolume("vol-abcdef12", req).Return(resp, nil),
+			service.EXPECT().GetVolume("vol-abcdef12").Return(ecloud.Volume{}, nil),
+		)
+
+		ecloudVolumeUpdate(service, cmd, []string{"vol-abcdef12"})
+	})
+
+	t.Run("DetachVolumeGroup_Succeeds", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		cmd := ecloudVolumeUpdateCmd(nil)
+		cmd.ParseFlags([]string{"--volume-group="})
+
+		req := ecloud.PatchVolumeRequest{
+			VolumeGroupID: ptr.String(""),
 		}
 
 		resp := ecloud.TaskReference{
