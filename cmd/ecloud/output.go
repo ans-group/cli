@@ -433,7 +433,7 @@ func OutputECloudVPNEndpointsProvider(endpoints []ecloud.VPNEndpoint) output.Out
 }
 
 func OutputECloudVPNSessionsProvider(sessions []ecloud.VPNSession) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(sessions).WithDefaultFields([]string{"id", "name", "vpn_service_id", "vpn_endpoint_id", "remote_ip", "sync_status"})
+	return output.NewSerializedOutputHandlerDataProvider(sessions).WithDefaultFields([]string{"id", "name", "vpn_service_id", "vpn_endpoint_id", "remote_ip", "sync_status", "tunnel_details_session_state"})
 }
 
 func OutputECloudVPNProfileGroupsProvider(groups []ecloud.VPNProfileGroup) output.OutputHandlerDataProvider {
