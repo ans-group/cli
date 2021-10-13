@@ -146,28 +146,29 @@ func ecloudInstanceCreate(service ecloud.ECloudService, cmd *cobra.Command, args
 		createRequest.SSHKeyPairIDs, _ = cmd.Flags().GetStringSlice("ssh-key-pair")
 	}
 
-	getImage := func(imageName string) (string, error) {
-		images, err := service.GetImages(connection.APIRequestParameters{})
-		if err != nil {
-			return "", fmt.Errorf("Error retrieving images: %s", err)
-		}
-
-		// Server-side filtering currently not possible, iterate slice for now
-		for _, image := range images {
-			if strings.ToLower(image.Name) == strings.ToLower(imageName) {
-				return image.ID, nil
-			}
-		}
-		return "", fmt.Errorf("Image not found with name '%s'", imageName)
-	}
-
 	imageFlag, _ := cmd.Flags().GetString("image")
 
 	if strings.HasPrefix(imageFlag, "img-") {
 		createRequest.ImageID = imageFlag
 	} else {
-		var err error
-		createRequest.ImageID, err = getImage(imageFlag)
+		images, err := service.GetImages(connection.APIRequestParameters{
+			Filtering: []connection.APIRequestFiltering{
+				{
+					Property: "name",
+					Operator: connection.EQOperator,
+					Value:    []string{imageFlag},
+				},
+			},
+		})
+		if err != nil {
+			return fmt.Errorf("Error retrieving images: %s", err)
+		}
+
+		if len(images) != 1 {
+			return fmt.Errorf("Expected 1 image, got %d images", len(images))
+		}
+
+		createRequest.ImageID = images[0].ID
 		if err != nil {
 			return err
 		}
