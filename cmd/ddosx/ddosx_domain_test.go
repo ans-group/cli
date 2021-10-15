@@ -172,9 +172,17 @@ func Test_ddosxDomainDelete(t *testing.T) {
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
 
-		service.EXPECT().DeleteDomain("testdomain1.co.uk").Return(nil)
+		cmd := ddosxDomainDeleteCmd(nil)
+		cmd.ParseFlags([]string{"--summary=testsummary", "--description=testdescription"})
 
-		ddosxDomainDelete(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
+		req := ddosx.DeleteDomainRequest{
+			Summary:     "testsummary",
+			Description: "testdescription",
+		}
+
+		service.EXPECT().DeleteDomain("testdomain1.co.uk", gomock.Eq(req)).Return(nil)
+
+		ddosxDomainDelete(service, cmd, []string{"testdomain1.co.uk"})
 	})
 
 	t.Run("MultipleDomains", func(t *testing.T) {
@@ -183,12 +191,20 @@ func Test_ddosxDomainDelete(t *testing.T) {
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
 
+		cmd := ddosxDomainDeleteCmd(nil)
+		cmd.ParseFlags([]string{"--summary=testsummary", "--description=testdescription"})
+
+		req := ddosx.DeleteDomainRequest{
+			Summary:     "testsummary",
+			Description: "testdescription",
+		}
+
 		gomock.InOrder(
-			service.EXPECT().DeleteDomain("testdomain1.co.uk").Return(nil),
-			service.EXPECT().DeleteDomain("testdomain2.co.uk").Return(nil),
+			service.EXPECT().DeleteDomain("testdomain1.co.uk", gomock.Eq(req)).Return(nil),
+			service.EXPECT().DeleteDomain("testdomain2.co.uk", gomock.Eq(req)).Return(nil),
 		)
 
-		ddosxDomainDelete(service, &cobra.Command{}, []string{"testdomain1.co.uk", "testdomain2.co.uk"})
+		ddosxDomainDelete(service, cmd, []string{"testdomain1.co.uk", "testdomain2.co.uk"})
 	})
 
 	t.Run("DeleteDomainError_OutputsError", func(t *testing.T) {
@@ -197,7 +213,7 @@ func Test_ddosxDomainDelete(t *testing.T) {
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
 
-		service.EXPECT().DeleteDomain("testdomain1.co.uk").Return(errors.New("test error"))
+		service.EXPECT().DeleteDomain("testdomain1.co.uk", ddosx.DeleteDomainRequest{}).Return(errors.New("test error"))
 
 		test_output.AssertErrorOutput(t, "Error removing domain [testdomain1.co.uk]: test error\n", func() {
 			ddosxDomainDelete(service, &cobra.Command{}, []string{"testdomain1.co.uk"})

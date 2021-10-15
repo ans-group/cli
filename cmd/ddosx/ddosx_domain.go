@@ -152,7 +152,7 @@ func ddosxDomainCreate(service ddosx.DDoSXService, cmd *cobra.Command, args []st
 }
 
 func ddosxDomainDeleteCmd(f factory.ClientFactory) *cobra.Command {
-	return &cobra.Command{
+	cmd := &cobra.Command{
 		Use:     "delete <domain: name>...",
 		Short:   "Deletes a domain",
 		Long:    "This command deletes one or more domains",
@@ -174,11 +174,20 @@ func ddosxDomainDeleteCmd(f factory.ClientFactory) *cobra.Command {
 			return nil
 		},
 	}
+
+	cmd.Flags().String("summary", "", "Specifies summary for domain removal")
+	cmd.Flags().String("description", "", "Specifies description for domain removal")
+
+	return cmd
 }
 
 func ddosxDomainDelete(service ddosx.DDoSXService, cmd *cobra.Command, args []string) {
+	req := ddosx.DeleteDomainRequest{}
+	req.Summary, _ = cmd.Flags().GetString("summary")
+	req.Description, _ = cmd.Flags().GetString("description")
+
 	for _, arg := range args {
-		err := service.DeleteDomain(arg)
+		err := service.DeleteDomain(arg, req)
 		if err != nil {
 			output.OutputWithErrorLevelf("Error removing domain [%s]: %s", arg, err)
 			continue
