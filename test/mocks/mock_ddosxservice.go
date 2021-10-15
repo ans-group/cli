@@ -240,17 +240,17 @@ func (mr *MockDDoSXServiceMockRecorder) DeactivateDomainDNSRouting(arg0 interfac
 }
 
 // DeleteDomain mocks base method
-func (m *MockDDoSXService) DeleteDomain(arg0 string) error {
+func (m *MockDDoSXService) DeleteDomain(arg0 string, arg1 ddosx.DeleteDomainRequest) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteDomain", arg0)
+	ret := m.ctrl.Call(m, "DeleteDomain", arg0, arg1)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // DeleteDomain indicates an expected call of DeleteDomain
-func (mr *MockDDoSXServiceMockRecorder) DeleteDomain(arg0 interface{}) *gomock.Call {
+func (mr *MockDDoSXServiceMockRecorder) DeleteDomain(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteDomain", reflect.TypeOf((*MockDDoSXService)(nil).DeleteDomain), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteDomain", reflect.TypeOf((*MockDDoSXService)(nil).DeleteDomain), arg0, arg1)
 }
 
 // DeleteDomainACLGeoIPRule mocks base method
