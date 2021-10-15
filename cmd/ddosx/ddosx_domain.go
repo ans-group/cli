@@ -176,7 +176,9 @@ func ddosxDomainDeleteCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("summary", "", "Specifies summary for domain removal")
+	cmd.MarkFlagRequired("summary")
 	cmd.Flags().String("description", "", "Specifies description for domain removal")
+	cmd.MarkFlagRequired("description")
 
 	return cmd
 }
