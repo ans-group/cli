@@ -38,6 +38,7 @@ func ecloudInstanceRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.AddCommand(ecloudInstanceNICRootCmd(f))
 	cmd.AddCommand(ecloudInstanceConsoleRootCmd(f))
 	cmd.AddCommand(ecloudInstanceTaskRootCmd(f))
+	cmd.AddCommand(ecloudInstanceFloatingIPRootCmd(f))
 
 	return cmd
 }
