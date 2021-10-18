@@ -1895,6 +1895,36 @@ func (mr *MockECloudServiceMockRecorder) GetInstanceCredentialsPaginated(arg0, a
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetInstanceCredentialsPaginated", reflect.TypeOf((*MockECloudService)(nil).GetInstanceCredentialsPaginated), arg0, arg1)
 }
 
+// GetInstanceFloatingIPs mocks base method
+func (m *MockECloudService) GetInstanceFloatingIPs(arg0 string, arg1 connection.APIRequestParameters) ([]ecloud.FloatingIP, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetInstanceFloatingIPs", arg0, arg1)
+	ret0, _ := ret[0].([]ecloud.FloatingIP)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetInstanceFloatingIPs indicates an expected call of GetInstanceFloatingIPs
+func (mr *MockECloudServiceMockRecorder) GetInstanceFloatingIPs(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetInstanceFloatingIPs", reflect.TypeOf((*MockECloudService)(nil).GetInstanceFloatingIPs), arg0, arg1)
+}
+
+// GetInstanceFloatingIPsPaginated mocks base method
+func (m *MockECloudService) GetInstanceFloatingIPsPaginated(arg0 string, arg1 connection.APIRequestParameters) (*ecloud.PaginatedFloatingIP, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetInstanceFloatingIPsPaginated", arg0, arg1)
+	ret0, _ := ret[0].(*ecloud.PaginatedFloatingIP)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetInstanceFloatingIPsPaginated indicates an expected call of GetInstanceFloatingIPsPaginated
+func (mr *MockECloudServiceMockRecorder) GetInstanceFloatingIPsPaginated(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetInstanceFloatingIPsPaginated", reflect.TypeOf((*MockECloudService)(nil).GetInstanceFloatingIPsPaginated), arg0, arg1)
+}
+
 // GetInstanceNICs mocks base method
 func (m *MockECloudService) GetInstanceNICs(arg0 string, arg1 connection.APIRequestParameters) ([]ecloud.NIC, error) {
 	m.ctrl.T.Helper()
