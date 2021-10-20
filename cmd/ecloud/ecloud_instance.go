@@ -127,6 +127,7 @@ func ecloudInstanceCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().String("image", "", "ID or name of image to deploy from")
 	cmd.MarkFlagRequired("image")
 	cmd.Flags().StringSlice("ssh-key-pair", []string{}, "ID of SSH key pair, can be repeated")
+	cmd.Flags().String("host-group", "", "ID host group to deploy to")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the instance has been completely created")
 
 	return cmd
