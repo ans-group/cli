@@ -140,10 +140,9 @@ func ecloudInstanceCreate(service ecloud.ECloudService, cmd *cobra.Command, args
 	createRequest.RAMCapacity, _ = cmd.Flags().GetInt("ram")
 	createRequest.VolumeCapacity, _ = cmd.Flags().GetInt("volume")
 	createRequest.NetworkID, _ = cmd.Flags().GetString("network")
+	createRequest.HostGroupID, _ = cmd.Flags().GetString("host-group")
+	createRequest.Name, _ = cmd.Flags().GetString("name")
 
-	if cmd.Flags().Changed("name") {
-		createRequest.Name, _ = cmd.Flags().GetString("name")
-	}
 	if cmd.Flags().Changed("ssh-key-pair") {
 		createRequest.SSHKeyPairIDs, _ = cmd.Flags().GetStringSlice("ssh-key-pair")
 	}
