@@ -15,10 +15,15 @@ func ManagedCloudflareRootCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Child root commands
 	cmd.AddCommand(managedcloudflareAccountRootCmd(f))
+	cmd.AddCommand(managedcloudflareSpendPlanRootCmd(f))
 
 	return cmd
 }
 
-func OutputManagedCloudflareAccountsProvider(projects []managedcloudflare.Account) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(projects).WithDefaultFields([]string{"id", "name", "status", "cloudflare_account_id"})
+func OutputManagedCloudflareAccountsProvider(accounts []managedcloudflare.Account) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(accounts).WithDefaultFields([]string{"id", "name", "status", "cloudflare_account_id"})
+}
+
+func OutputManagedCloudflareSpendPlansProvider(plans []managedcloudflare.SpendPlan) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(plans).WithDefaultFields([]string{"id", "amount", "started_at", "ended_at"})
 }

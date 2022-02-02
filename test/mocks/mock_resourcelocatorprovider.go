@@ -5,34 +5,35 @@
 package mocks
 
 import (
-	gomock "github.com/golang/mock/gomock"
 	reflect "reflect"
+
+	gomock "github.com/golang/mock/gomock"
 )
 
-// MockResourceLocatorProvider is a mock of ResourceLocatorProvider interface
+// MockResourceLocatorProvider is a mock of ResourceLocatorProvider interface.
 type MockResourceLocatorProvider struct {
 	ctrl     *gomock.Controller
 	recorder *MockResourceLocatorProviderMockRecorder
 }
 
-// MockResourceLocatorProviderMockRecorder is the mock recorder for MockResourceLocatorProvider
+// MockResourceLocatorProviderMockRecorder is the mock recorder for MockResourceLocatorProvider.
 type MockResourceLocatorProviderMockRecorder struct {
 	mock *MockResourceLocatorProvider
 }
 
-// NewMockResourceLocatorProvider creates a new mock instance
+// NewMockResourceLocatorProvider creates a new mock instance.
 func NewMockResourceLocatorProvider(ctrl *gomock.Controller) *MockResourceLocatorProvider {
 	mock := &MockResourceLocatorProvider{ctrl: ctrl}
 	mock.recorder = &MockResourceLocatorProviderMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockResourceLocatorProvider) EXPECT() *MockResourceLocatorProviderMockRecorder {
 	return m.recorder
 }
 
-// Locate mocks base method
+// Locate mocks base method.
 func (m *MockResourceLocatorProvider) Locate(arg0, arg1 string) (interface{}, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Locate", arg0, arg1)
@@ -41,13 +42,13 @@ func (m *MockResourceLocatorProvider) Locate(arg0, arg1 string) (interface{}, er
 	return ret0, ret1
 }
 
-// Locate indicates an expected call of Locate
+// Locate indicates an expected call of Locate.
 func (mr *MockResourceLocatorProviderMockRecorder) Locate(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Locate", reflect.TypeOf((*MockResourceLocatorProvider)(nil).Locate), arg0, arg1)
 }
 
-// SupportedProperties mocks base method
+// SupportedProperties mocks base method.
 func (m *MockResourceLocatorProvider) SupportedProperties() []string {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "SupportedProperties")
@@ -55,7 +56,7 @@ func (m *MockResourceLocatorProvider) SupportedProperties() []string {
 	return ret0
 }
 
-// SupportedProperties indicates an expected call of SupportedProperties
+// SupportedProperties indicates an expected call of SupportedProperties.
 func (mr *MockResourceLocatorProviderMockRecorder) SupportedProperties() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SupportedProperties", reflect.TypeOf((*MockResourceLocatorProvider)(nil).SupportedProperties))

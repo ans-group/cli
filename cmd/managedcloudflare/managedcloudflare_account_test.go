@@ -54,7 +54,7 @@ func Test_managedcloudflareAccountList(t *testing.T) {
 
 func Test_managedcloudflareAccountShowCmd_Args(t *testing.T) {
 	t.Run("ValidArgs_NoError", func(t *testing.T) {
-		err := managedcloudflareAccountShowCmd(nil).Args(nil, []string{"123"})
+		err := managedcloudflareAccountShowCmd(nil).Args(nil, []string{"00000000-0000-0000-0000-000000000000"})
 
 		assert.Nil(t, err)
 	})
@@ -74,34 +74,9 @@ func Test_managedcloudflareAccountShow(t *testing.T) {
 
 		service := mocks.NewMockManagedCloudflareService(mockCtrl)
 
-		service.EXPECT().GetAccount(123).Return(managedcloudflare.Account{}, nil).Times(1)
+		service.EXPECT().GetAccount("00000000-0000-0000-0000-000000000000").Return(managedcloudflare.Account{}, nil).Times(1)
 
-		managedcloudflareAccountShow(service, &cobra.Command{}, []string{"123"})
-	})
-
-	t.Run("MultipleAccounts", func(t *testing.T) {
-		mockCtrl := gomock.NewController(t)
-		defer mockCtrl.Finish()
-
-		service := mocks.NewMockManagedCloudflareService(mockCtrl)
-
-		gomock.InOrder(
-			service.EXPECT().GetAccount(123).Return(managedcloudflare.Account{}, nil),
-			service.EXPECT().GetAccount(456).Return(managedcloudflare.Account{}, nil),
-		)
-
-		managedcloudflareAccountShow(service, &cobra.Command{}, []string{"123", "456"})
-	})
-
-	t.Run("GetAccountID_OutputsError", func(t *testing.T) {
-		mockCtrl := gomock.NewController(t)
-		defer mockCtrl.Finish()
-
-		service := mocks.NewMockManagedCloudflareService(mockCtrl)
-
-		test_output.AssertErrorOutput(t, "Invalid account ID [abc]\n", func() {
-			managedcloudflareAccountShow(service, &cobra.Command{}, []string{"abc"})
-		})
+		managedcloudflareAccountShow(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000"})
 	})
 
 	t.Run("GetAccountError_OutputsError", func(t *testing.T) {
@@ -110,10 +85,10 @@ func Test_managedcloudflareAccountShow(t *testing.T) {
 
 		service := mocks.NewMockManagedCloudflareService(mockCtrl)
 
-		service.EXPECT().GetAccount(123).Return(managedcloudflare.Account{}, errors.New("test error"))
+		service.EXPECT().GetAccount("00000000-0000-0000-0000-000000000000").Return(managedcloudflare.Account{}, errors.New("test error"))
 
-		test_output.AssertErrorOutput(t, "Error retrieving account [123]: test error\n", func() {
-			managedcloudflareAccountShow(service, &cobra.Command{}, []string{"123"})
+		test_output.AssertErrorOutput(t, "Error retrieving account [00000000-0000-0000-0000-000000000000]: test error\n", func() {
+			managedcloudflareAccountShow(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000"})
 		})
 	})
 }
