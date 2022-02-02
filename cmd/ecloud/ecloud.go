@@ -170,6 +170,10 @@ func ResourceSyncStatusWaitFunc(fn GetResourceSyncStatusFunc, expectedStatus ecl
 	}
 }
 
+func WaitForTask(service ecloud.ECloudService, taskID string, expectedStatus ecloud.TaskStatus) error {
+	return helper.WaitForCommandWithStatus(TaskStatusWaitFunc(service, taskID, expectedStatus), fmt.Sprintf(" Waiting for task [%s] to reach status [%s]", taskID, expectedStatus))
+}
+
 func TaskStatusWaitFunc(service ecloud.ECloudService, taskID string, expectedStatus ecloud.TaskStatus) helper.WaitFunc {
 	return func() (finished bool, err error) {
 		task, err := service.GetTask(taskID)

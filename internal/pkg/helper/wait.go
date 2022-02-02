@@ -5,10 +5,22 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/briandowns/spinner"
 	"github.com/spf13/viper"
 )
 
 type WaitFunc func() (finished bool, err error)
+
+func WaitForCommandWithStatus(f WaitFunc, status string) error {
+	s := spinner.New(spinner.CharSets[9], 100*time.Millisecond)
+	s.Color("red")
+	s.Suffix = status
+	s.Start()
+
+	defer s.Stop()
+
+	return WaitForCommand(f)
+}
 
 func WaitForCommand(f WaitFunc) error {
 	waitTimeout := 1200
