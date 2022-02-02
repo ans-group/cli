@@ -17,7 +17,10 @@ func WaitForCommandWithStatus(f WaitFunc, status string) error {
 	s.Suffix = status
 	s.Start()
 
-	defer s.Stop()
+	defer func() {
+		s.Stop()
+		fmt.Println()
+	}()
 
 	return WaitForCommand(f)
 }

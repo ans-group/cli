@@ -83,8 +83,6 @@ func Execute(build build.BuildInfo) {
 	rootCmd.AddCommand(sslcmd.SSLRootCmd(clientFactory, fs))
 	rootCmd.AddCommand(storagecmd.StorageRootCmd(clientFactory))
 
-	rootCmd.AddCommand(testCmd())
-
 	if err := rootCmd.Execute(); err != nil {
 		output.Fatal(err.Error())
 	}
