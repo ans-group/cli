@@ -70,8 +70,6 @@ func NewSerializedOutputHandlerDataProvider(items interface{}) *SerializedOutput
 		GenericOutputHandlerDataProvider: NewGenericOutputHandlerDataProvider(
 			WithData(items),
 		),
-		fieldHandlers:      make(map[string]FieldHandlerFunc),
-		fieldValueHandlers: make(map[string]FieldValueHandlerFunc),
 	}
 }
 
@@ -86,18 +84,28 @@ func (o *SerializedOutputHandlerDataProvider) WithIgnoredFields(fields []string)
 }
 
 func (o *SerializedOutputHandlerDataProvider) WithMonetaryFields(fields []string) *SerializedOutputHandlerDataProvider {
-	for _, field := range fields {
-		o.fieldValueHandlers[field] = MonetaryFieldValueHandler
-	}
+	o.WithFieldValueHandler(MonetaryFieldValueHandler, fields...)
 	return o
 }
 
 func (o *SerializedOutputHandlerDataProvider) WithFieldHandler(f FieldHandlerFunc, fieldNames ...string) *SerializedOutputHandlerDataProvider {
+	if o.fieldHandlers == nil {
+		o.fieldHandlers = make(map[string]FieldHandlerFunc)
+	}
+
 	for _, fieldName := range fieldNames {
-		if o.fieldHandlers == nil {
-			o.fieldHandlers = make(map[string]FieldHandlerFunc)
-		}
 		o.fieldHandlers[fieldName] = f
+	}
+	return o
+}
+
+func (o *SerializedOutputHandlerDataProvider) WithFieldValueHandler(f FieldValueHandlerFunc, fieldNames ...string) *SerializedOutputHandlerDataProvider {
+	if o.fieldValueHandlers == nil {
+		o.fieldValueHandlers = make(map[string]FieldValueHandlerFunc)
+	}
+
+	for _, fieldName := range fieldNames {
+		o.fieldValueHandlers[fieldName] = f
 	}
 	return o
 }
@@ -122,11 +130,11 @@ func (o *SerializedOutputHandlerDataProvider) convert(reflectedValue reflect.Val
 }
 
 func (o *SerializedOutputHandlerDataProvider) convertField(v *OrderedFields, fieldName string, reflectedValue reflect.Value) *OrderedFields {
-	if o.fieldHandlers[fieldName] != nil {
+	if o.fieldHandlers != nil && o.fieldHandlers[fieldName] != nil {
 		return o.fieldHandlers[fieldName](v, fieldName, reflectedValue)
 	}
 
-	if o.fieldValueHandlers[fieldName] != nil {
+	if o.fieldValueHandlers != nil && o.fieldValueHandlers[fieldName] != nil {
 		return o.hydrateField(v, fieldName, o.fieldValueHandlers[fieldName](reflectedValue))
 	}
 

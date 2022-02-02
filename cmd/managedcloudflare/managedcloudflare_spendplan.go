@@ -12,7 +12,7 @@ import (
 
 func managedcloudflareSpendPlanRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "spendplans",
+		Use:   "spendplan",
 		Short: "sub-commands relating to spend plans",
 	}
 

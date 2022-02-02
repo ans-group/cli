@@ -16,6 +16,7 @@ func ManagedCloudflareRootCmd(f factory.ClientFactory) *cobra.Command {
 	// Child root commands
 	cmd.AddCommand(managedcloudflareAccountRootCmd(f))
 	cmd.AddCommand(managedcloudflareSpendPlanRootCmd(f))
+	cmd.AddCommand(managedcloudflareZoneRootCmd(f))
 
 	return cmd
 }
@@ -25,5 +26,11 @@ func OutputManagedCloudflareAccountsProvider(accounts []managedcloudflare.Accoun
 }
 
 func OutputManagedCloudflareSpendPlansProvider(plans []managedcloudflare.SpendPlan) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(plans).WithDefaultFields([]string{"id", "amount", "started_at", "ended_at"})
+	return output.NewSerializedOutputHandlerDataProvider(plans).
+		WithDefaultFields([]string{"id", "amount", "started_at", "ended_at"}).
+		WithMonetaryFields([]string{"amount"})
+}
+
+func OutputManagedCloudflareZonesProvider(zones []managedcloudflare.Zone) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(zones).WithDefaultFields([]string{"id", "name", "account_id"})
 }
