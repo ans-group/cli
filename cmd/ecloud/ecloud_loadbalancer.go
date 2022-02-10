@@ -24,6 +24,9 @@ func ecloudLoadBalancerRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.AddCommand(ecloudLoadBalancerUpdateCmd(f))
 	cmd.AddCommand(ecloudLoadBalancerDeleteCmd(f))
 
+	// Child root commands
+	cmd.AddCommand(ecloudLoadBalancerLoadBalancerNetworkRootCmd(f))
+
 	return cmd
 }
 

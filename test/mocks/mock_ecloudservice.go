@@ -2122,10 +2122,10 @@ func (mr *MockECloudServiceMockRecorder) GetLoadBalancer(arg0 interface{}) *gomo
 }
 
 // GetLoadBalancerLoadBalancerNetworks mocks base method.
-func (m *MockECloudService) GetLoadBalancerLoadBalancerNetworks(arg0 string, arg1 connection.APIRequestParameters) ([]ecloud.Network, error) {
+func (m *MockECloudService) GetLoadBalancerLoadBalancerNetworks(arg0 string, arg1 connection.APIRequestParameters) ([]ecloud.LoadBalancerNetwork, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetLoadBalancerLoadBalancerNetworks", arg0, arg1)
-	ret0, _ := ret[0].([]ecloud.Network)
+	ret0, _ := ret[0].([]ecloud.LoadBalancerNetwork)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -2137,10 +2137,10 @@ func (mr *MockECloudServiceMockRecorder) GetLoadBalancerLoadBalancerNetworks(arg
 }
 
 // GetLoadBalancerLoadBalancerNetworksPaginated mocks base method.
-func (m *MockECloudService) GetLoadBalancerLoadBalancerNetworksPaginated(arg0 string, arg1 connection.APIRequestParameters) (*ecloud.PaginatedNetwork, error) {
+func (m *MockECloudService) GetLoadBalancerLoadBalancerNetworksPaginated(arg0 string, arg1 connection.APIRequestParameters) (*ecloud.PaginatedLoadBalancerNetwork, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetLoadBalancerLoadBalancerNetworksPaginated", arg0, arg1)
-	ret0, _ := ret[0].(*ecloud.PaginatedNetwork)
+	ret0, _ := ret[0].(*ecloud.PaginatedLoadBalancerNetwork)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
