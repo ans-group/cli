@@ -455,3 +455,7 @@ func OutputECloudLoadBalancersProvider(lbs []ecloud.LoadBalancer) output.OutputH
 func OutputECloudLoadBalancerNetworksProvider(networks []ecloud.LoadBalancerNetwork) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(networks).WithDefaultFields([]string{"id", "name", "load_balancer_id", "network_id", "sync_status"})
 }
+
+func OutputECloudLoadBalancerSpecsProvider(specs []ecloud.LoadBalancerSpec) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(specs).WithDefaultFields([]string{"id", "name", "description"})
+}
