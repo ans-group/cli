@@ -20,6 +20,10 @@ func managedcloudflareAccountRootCmd(f factory.ClientFactory) *cobra.Command {
 	// Child commands
 	cmd.AddCommand(managedcloudflareAccountListCmd(f))
 	cmd.AddCommand(managedcloudflareAccountShowCmd(f))
+	cmd.AddCommand(managedcloudflareAccountCreateCmd(f))
+
+	// Child root commands
+	cmd.AddCommand(managedcloudflareAccountMemberRootCmd(f))
 
 	return cmd
 }
@@ -30,14 +34,7 @@ func managedcloudflareAccountListCmd(f factory.ClientFactory) *cobra.Command {
 		Short:   "Lists accounts",
 		Long:    "This command lists accounts",
 		Example: "ukfast managedcloudflare account list",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := f.NewClient()
-			if err != nil {
-				return err
-			}
-
-			return managedcloudflareAccountList(c.ManagedCloudflareService(), cmd, args)
-		},
+		RunE:    managedcloudflareCobraRunEFunc(f, managedcloudflareAccountList),
 	}
 }
 
@@ -68,14 +65,7 @@ func managedcloudflareAccountShowCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := f.NewClient()
-			if err != nil {
-				return err
-			}
-
-			return managedcloudflareAccountShow(c.ManagedCloudflareService(), cmd, args)
-		},
+		RunE: managedcloudflareCobraRunEFunc(f, managedcloudflareAccountShow),
 	}
 }
 
@@ -92,4 +82,35 @@ func managedcloudflareAccountShow(service managedcloudflare.ManagedCloudflareSer
 	}
 
 	return output.CommandOutput(cmd, OutputManagedCloudflareAccountsProvider(accounts))
+}
+
+func managedcloudflareAccountCreateCmd(f factory.ClientFactory) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:     "create <account: id>",
+		Short:   "Creates a account",
+		Long:    "This command creates a account",
+		Example: "ukfast managedcloudflare account create --cluster 123 --default-target-group 456 --name \"test-account\" --mode http",
+		RunE:    managedcloudflareCobraRunEFunc(f, managedcloudflareAccountCreate),
+	}
+
+	cmd.Flags().String("name", "", "Name of account")
+	cmd.MarkFlagRequired("name")
+
+	return cmd
+}
+
+func managedcloudflareAccountCreate(service managedcloudflare.ManagedCloudflareService, cmd *cobra.Command, args []string) error {
+	createRequest := managedcloudflare.CreateAccountRequest{}
+	createRequest.Name, _ = cmd.Flags().GetString("name")
+	accountID, err := service.CreateAccount(createRequest)
+	if err != nil {
+		return fmt.Errorf("Error creating account: %s", err)
+	}
+
+	account, err := service.GetAccount(accountID)
+	if err != nil {
+		return fmt.Errorf("Error retrieving new account: %s", err)
+	}
+
+	return output.CommandOutput(cmd, OutputManagedCloudflareAccountsProvider([]managedcloudflare.Account{account}))
 }

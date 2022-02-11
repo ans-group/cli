@@ -3,7 +3,6 @@ package managedcloudflare
 import (
 	"github.com/spf13/cobra"
 	"github.com/ukfast/cli/internal/pkg/factory"
-	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/service/managedcloudflare"
 )
 
@@ -21,16 +20,15 @@ func ManagedCloudflareRootCmd(f factory.ClientFactory) *cobra.Command {
 	return cmd
 }
 
-func OutputManagedCloudflareAccountsProvider(accounts []managedcloudflare.Account) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(accounts).WithDefaultFields([]string{"id", "name", "status", "cloudflare_account_id"})
-}
+type managedcloudflareServiceCobraRunEFunc func(service managedcloudflare.ManagedCloudflareService, cmd *cobra.Command, args []string) error
 
-func OutputManagedCloudflareSpendPlansProvider(plans []managedcloudflare.SpendPlan) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(plans).
-		WithDefaultFields([]string{"id", "amount", "started_at", "ended_at"}).
-		WithMonetaryFields([]string{"amount"})
-}
+func managedcloudflareCobraRunEFunc(f factory.ClientFactory, rf managedcloudflareServiceCobraRunEFunc) func(cmd *cobra.Command, args []string) error {
+	return func(cmd *cobra.Command, args []string) error {
+		c, err := f.NewClient()
+		if err != nil {
+			return err
+		}
 
-func OutputManagedCloudflareZonesProvider(zones []managedcloudflare.Zone) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(zones).WithDefaultFields([]string{"id", "name", "account_id"})
+		return rf(c.ManagedCloudflareService(), cmd, args)
+	}
 }

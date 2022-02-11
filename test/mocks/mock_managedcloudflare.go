@@ -36,11 +36,12 @@ func (m *MockManagedCloudflareService) EXPECT() *MockManagedCloudflareServiceMoc
 }
 
 // CreateAccount mocks base method.
-func (m *MockManagedCloudflareService) CreateAccount(arg0 managedcloudflare.CreateAccountRequest) error {
+func (m *MockManagedCloudflareService) CreateAccount(arg0 managedcloudflare.CreateAccountRequest) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateAccount", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // CreateAccount indicates an expected call of CreateAccount.

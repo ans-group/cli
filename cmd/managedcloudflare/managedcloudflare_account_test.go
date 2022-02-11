@@ -92,3 +92,58 @@ func Test_managedcloudflareAccountShow(t *testing.T) {
 		})
 	})
 }
+
+func Test_managedcloudflareAccountCreate(t *testing.T) {
+	t.Run("DefaultCreate", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockManagedCloudflareService(mockCtrl)
+		cmd := managedcloudflareAccountCreateCmd(nil)
+		cmd.ParseFlags([]string{"--name=testaccount"})
+
+		req := managedcloudflare.CreateAccountRequest{
+			Name: "testaccount",
+		}
+
+		gomock.InOrder(
+			service.EXPECT().CreateAccount(req).Return("00000000-0000-0000-0000-000000000000", nil),
+			service.EXPECT().GetAccount("00000000-0000-0000-0000-000000000000").Return(managedcloudflare.Account{}, nil),
+		)
+
+		managedcloudflareAccountCreate(service, cmd, []string{})
+	})
+
+	t.Run("CreateAccountError_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockManagedCloudflareService(mockCtrl)
+		cmd := managedcloudflareAccountCreateCmd(nil)
+		cmd.ParseFlags([]string{"--name=testaccount"})
+
+		service.EXPECT().CreateAccount(gomock.Any()).Return("", errors.New("test error"))
+
+		err := managedcloudflareAccountCreate(service, cmd, []string{})
+
+		assert.Equal(t, "Error creating account: test error", err.Error())
+	})
+
+	t.Run("GetAccountError_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockManagedCloudflareService(mockCtrl)
+		cmd := managedcloudflareAccountCreateCmd(nil)
+		cmd.ParseFlags([]string{"--name=testaccount"})
+
+		gomock.InOrder(
+			service.EXPECT().CreateAccount(gomock.Any()).Return("00000000-0000-0000-0000-000000000000", nil),
+			service.EXPECT().GetAccount("00000000-0000-0000-0000-000000000000").Return(managedcloudflare.Account{}, errors.New("test error")),
+		)
+
+		err := managedcloudflareAccountCreate(service, cmd, []string{})
+
+		assert.Equal(t, "Error retrieving new account: test error", err.Error())
+	})
+}
