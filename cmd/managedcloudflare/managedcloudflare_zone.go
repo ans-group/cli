@@ -20,6 +20,8 @@ func managedcloudflareZoneRootCmd(f factory.ClientFactory) *cobra.Command {
 	// Child commands
 	cmd.AddCommand(managedcloudflareZoneListCmd(f))
 	cmd.AddCommand(managedcloudflareZoneShowCmd(f))
+	cmd.AddCommand(managedcloudflareZoneCreateCmd(f))
+	cmd.AddCommand(managedcloudflareZoneDeleteCmd(f))
 
 	return cmd
 }
