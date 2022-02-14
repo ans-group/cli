@@ -28,14 +28,7 @@ func managedcloudflareSpendPlanListCmd(f factory.ClientFactory) *cobra.Command {
 		Short:   "Lists spend plans",
 		Long:    "This command lists spend plans",
 		Example: "ukfast managedcloudflare spendplan list",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := f.NewClient()
-			if err != nil {
-				return err
-			}
-
-			return managedcloudflareSpendPlanList(c.ManagedCloudflareService(), cmd, args)
-		},
+		RunE:    managedcloudflareCobraRunEFunc(f, managedcloudflareSpendPlanList),
 	}
 }
 

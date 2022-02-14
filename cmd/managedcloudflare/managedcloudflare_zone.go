@@ -30,14 +30,7 @@ func managedcloudflareZoneListCmd(f factory.ClientFactory) *cobra.Command {
 		Short:   "Lists zones",
 		Long:    "This command lists zones",
 		Example: "ukfast managedcloudflare zone list",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := f.NewClient()
-			if err != nil {
-				return err
-			}
-
-			return managedcloudflareZoneList(c.ManagedCloudflareService(), cmd, args)
-		},
+		RunE:    managedcloudflareCobraRunEFunc(f, managedcloudflareZoneList),
 	}
 }
 
@@ -68,14 +61,7 @@ func managedcloudflareZoneShowCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := f.NewClient()
-			if err != nil {
-				return err
-			}
-
-			return managedcloudflareZoneShow(c.ManagedCloudflareService(), cmd, args)
-		},
+		RunE: managedcloudflareCobraRunEFunc(f, managedcloudflareZoneShow),
 	}
 }
 
@@ -145,14 +131,7 @@ func managedcloudflareZoneDeleteCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := f.NewClient()
-			if err != nil {
-				return err
-			}
-
-			return managedcloudflareZoneDelete(c.ManagedCloudflareService(), cmd, args)
-		},
+		RunE: managedcloudflareCobraRunEFunc(f, managedcloudflareZoneDelete),
 	}
 }
 

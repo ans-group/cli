@@ -18,3 +18,7 @@ func OutputManagedCloudflareSpendPlansProvider(plans []managedcloudflare.SpendPl
 func OutputManagedCloudflareZonesProvider(zones []managedcloudflare.Zone) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(zones).WithDefaultFields([]string{"id", "name", "account_id"})
 }
+
+func OutputManagedCloudflareSubscriptionsProvider(subscriptions []managedcloudflare.Subscription) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(subscriptions).WithDefaultFields([]string{"id", "name", "type", "price"})
+}

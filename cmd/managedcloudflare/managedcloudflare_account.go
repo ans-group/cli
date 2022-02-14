@@ -86,10 +86,10 @@ func managedcloudflareAccountShow(service managedcloudflare.ManagedCloudflareSer
 
 func managedcloudflareAccountCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "create <account: id>",
-		Short:   "Creates a account",
-		Long:    "This command creates a account",
-		Example: "ukfast managedcloudflare account create --cluster 123 --default-target-group 456 --name \"test-account\" --mode http",
+		Use:     "create",
+		Short:   "Creates an account",
+		Long:    "This command creates an account",
+		Example: "ukfast managedcloudflare account create --name test",
 		RunE:    managedcloudflareCobraRunEFunc(f, managedcloudflareAccountCreate),
 	}
 
