@@ -93,3 +93,77 @@ func managedcloudflareZoneShow(service managedcloudflare.ManagedCloudflareServic
 
 	return output.CommandOutput(cmd, OutputManagedCloudflareZonesProvider(zones))
 }
+
+func managedcloudflareZoneCreateCmd(f factory.ClientFactory) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:     "create <zone: id>",
+		Short:   "Creates a zone",
+		Long:    "This command creates a zone",
+		Example: "ukfast managedcloudflare zone create --cluster 123 --default-target-group 456 --name \"test-zone\" --mode http",
+		RunE:    managedcloudflareCobraRunEFunc(f, managedcloudflareZoneCreate),
+	}
+
+	cmd.Flags().String("account", "", "ID of account")
+	cmd.MarkFlagRequired("account")
+	cmd.Flags().String("name", "", "Name of zone")
+	cmd.MarkFlagRequired("name")
+	cmd.Flags().String("subscription-type", "", "Type of subscription")
+	cmd.MarkFlagRequired("subscription-type")
+
+	return cmd
+}
+
+func managedcloudflareZoneCreate(service managedcloudflare.ManagedCloudflareService, cmd *cobra.Command, args []string) error {
+	createRequest := managedcloudflare.CreateZoneRequest{}
+	createRequest.AccountID, _ = cmd.Flags().GetString("account")
+	createRequest.Name, _ = cmd.Flags().GetString("name")
+	createRequest.SubscriptionType, _ = cmd.Flags().GetString("subscription-type")
+
+	zoneID, err := service.CreateZone(createRequest)
+	if err != nil {
+		return fmt.Errorf("Error creating zone: %s", err)
+	}
+
+	zone, err := service.GetZone(zoneID)
+	if err != nil {
+		return fmt.Errorf("Error retrieving new zone: %s", err)
+	}
+
+	return output.CommandOutput(cmd, OutputManagedCloudflareZonesProvider([]managedcloudflare.Zone{zone}))
+}
+
+func managedcloudflareZoneDeleteCmd(f factory.ClientFactory) *cobra.Command {
+	return &cobra.Command{
+		Use:     "delete <zone: id>...",
+		Short:   "Removes a zone",
+		Long:    "This command removes one or more zones",
+		Example: "ukfast managedcloudflare zone delete 123",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Missing zone")
+			}
+
+			return nil
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := f.NewClient()
+			if err != nil {
+				return err
+			}
+
+			return managedcloudflareZoneDelete(c.ManagedCloudflareService(), cmd, args)
+		},
+	}
+}
+
+func managedcloudflareZoneDelete(service managedcloudflare.ManagedCloudflareService, cmd *cobra.Command, args []string) error {
+	for _, arg := range args {
+		err := service.DeleteZone(arg)
+		if err != nil {
+			output.OutputWithErrorLevelf("Error removing zone [%s]: %s", arg, err)
+			continue
+		}
+	}
+
+	return nil
+}

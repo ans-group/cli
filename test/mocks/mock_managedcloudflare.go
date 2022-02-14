@@ -79,11 +79,12 @@ func (mr *MockManagedCloudflareServiceMockRecorder) CreateOrchestration(arg0 int
 }
 
 // CreateZone mocks base method.
-func (m *MockManagedCloudflareService) CreateZone(arg0 managedcloudflare.CreateZoneRequest) error {
+func (m *MockManagedCloudflareService) CreateZone(arg0 managedcloudflare.CreateZoneRequest) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateZone", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // CreateZone indicates an expected call of CreateZone.
