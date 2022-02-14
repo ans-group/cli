@@ -212,6 +212,21 @@ func (mr *MockManagedCloudflareServiceMockRecorder) GetSubscriptionsPaginated(ar
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSubscriptionsPaginated", reflect.TypeOf((*MockManagedCloudflareService)(nil).GetSubscriptionsPaginated), arg0)
 }
 
+// GetTotalSpendMonthToDate mocks base method.
+func (m *MockManagedCloudflareService) GetTotalSpendMonthToDate() (managedcloudflare.TotalSpend, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetTotalSpendMonthToDate")
+	ret0, _ := ret[0].(managedcloudflare.TotalSpend)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetTotalSpendMonthToDate indicates an expected call of GetTotalSpendMonthToDate.
+func (mr *MockManagedCloudflareServiceMockRecorder) GetTotalSpendMonthToDate() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTotalSpendMonthToDate", reflect.TypeOf((*MockManagedCloudflareService)(nil).GetTotalSpendMonthToDate))
+}
+
 // GetZone mocks base method.
 func (m *MockManagedCloudflareService) GetZone(arg0 string) (managedcloudflare.Zone, error) {
 	m.ctrl.T.Helper()

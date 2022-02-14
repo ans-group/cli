@@ -22,3 +22,7 @@ func OutputManagedCloudflareZonesProvider(zones []managedcloudflare.Zone) output
 func OutputManagedCloudflareSubscriptionsProvider(subscriptions []managedcloudflare.Subscription) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(subscriptions).WithDefaultFields([]string{"id", "name", "type", "price"})
 }
+
+func OutputManagedCloudflareTotalSpendsProvider(spends []managedcloudflare.TotalSpend) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(spends).WithDefaultFields([]string{"id", "name", "type", "price"})
+}

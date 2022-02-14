@@ -16,6 +16,7 @@ func ManagedCloudflareRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.AddCommand(managedcloudflareAccountRootCmd(f))
 	cmd.AddCommand(managedcloudflareSpendPlanRootCmd(f))
 	cmd.AddCommand(managedcloudflareSubscriptionRootCmd(f))
+	cmd.AddCommand(managedcloudflareTotalSpendRootCmd(f))
 	cmd.AddCommand(managedcloudflareZoneRootCmd(f))
 
 	return cmd
