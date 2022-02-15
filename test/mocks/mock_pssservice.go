@@ -5,37 +5,38 @@
 package mocks
 
 import (
+	io "io"
+	reflect "reflect"
+
 	gomock "github.com/golang/mock/gomock"
 	connection "github.com/ukfast/sdk-go/pkg/connection"
 	pss "github.com/ukfast/sdk-go/pkg/service/pss"
-	io "io"
-	reflect "reflect"
 )
 
-// MockPSSService is a mock of PSSService interface
+// MockPSSService is a mock of PSSService interface.
 type MockPSSService struct {
 	ctrl     *gomock.Controller
 	recorder *MockPSSServiceMockRecorder
 }
 
-// MockPSSServiceMockRecorder is the mock recorder for MockPSSService
+// MockPSSServiceMockRecorder is the mock recorder for MockPSSService.
 type MockPSSServiceMockRecorder struct {
 	mock *MockPSSService
 }
 
-// NewMockPSSService creates a new mock instance
+// NewMockPSSService creates a new mock instance.
 func NewMockPSSService(ctrl *gomock.Controller) *MockPSSService {
 	mock := &MockPSSService{ctrl: ctrl}
 	mock.recorder = &MockPSSServiceMockRecorder{mock}
 	return mock
 }
 
-// EXPECT returns an object that allows the caller to indicate expected use
+// EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockPSSService) EXPECT() *MockPSSServiceMockRecorder {
 	return m.recorder
 }
 
-// CreateRequest mocks base method
+// CreateRequest mocks base method.
 func (m *MockPSSService) CreateRequest(arg0 pss.CreateRequestRequest) (int, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateRequest", arg0)
@@ -44,13 +45,13 @@ func (m *MockPSSService) CreateRequest(arg0 pss.CreateRequestRequest) (int, erro
 	return ret0, ret1
 }
 
-// CreateRequest indicates an expected call of CreateRequest
+// CreateRequest indicates an expected call of CreateRequest.
 func (mr *MockPSSServiceMockRecorder) CreateRequest(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateRequest", reflect.TypeOf((*MockPSSService)(nil).CreateRequest), arg0)
 }
 
-// CreateRequestFeedback mocks base method
+// CreateRequestFeedback mocks base method.
 func (m *MockPSSService) CreateRequestFeedback(arg0 int, arg1 pss.CreateFeedbackRequest) (int, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateRequestFeedback", arg0, arg1)
@@ -59,13 +60,13 @@ func (m *MockPSSService) CreateRequestFeedback(arg0 int, arg1 pss.CreateFeedback
 	return ret0, ret1
 }
 
-// CreateRequestFeedback indicates an expected call of CreateRequestFeedback
+// CreateRequestFeedback indicates an expected call of CreateRequestFeedback.
 func (mr *MockPSSServiceMockRecorder) CreateRequestFeedback(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateRequestFeedback", reflect.TypeOf((*MockPSSService)(nil).CreateRequestFeedback), arg0, arg1)
 }
 
-// CreateRequestReply mocks base method
+// CreateRequestReply mocks base method.
 func (m *MockPSSService) CreateRequestReply(arg0 int, arg1 pss.CreateReplyRequest) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateRequestReply", arg0, arg1)
@@ -74,13 +75,13 @@ func (m *MockPSSService) CreateRequestReply(arg0 int, arg1 pss.CreateReplyReques
 	return ret0, ret1
 }
 
-// CreateRequestReply indicates an expected call of CreateRequestReply
+// CreateRequestReply indicates an expected call of CreateRequestReply.
 func (mr *MockPSSServiceMockRecorder) CreateRequestReply(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateRequestReply", reflect.TypeOf((*MockPSSService)(nil).CreateRequestReply), arg0, arg1)
 }
 
-// DeleteReplyAttachment mocks base method
+// DeleteReplyAttachment mocks base method.
 func (m *MockPSSService) DeleteReplyAttachment(arg0, arg1 string) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteReplyAttachment", arg0, arg1)
@@ -88,13 +89,13 @@ func (m *MockPSSService) DeleteReplyAttachment(arg0, arg1 string) error {
 	return ret0
 }
 
-// DeleteReplyAttachment indicates an expected call of DeleteReplyAttachment
+// DeleteReplyAttachment indicates an expected call of DeleteReplyAttachment.
 func (mr *MockPSSServiceMockRecorder) DeleteReplyAttachment(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteReplyAttachment", reflect.TypeOf((*MockPSSService)(nil).DeleteReplyAttachment), arg0, arg1)
 }
 
-// DownloadReplyAttachmentStream mocks base method
+// DownloadReplyAttachmentStream mocks base method.
 func (m *MockPSSService) DownloadReplyAttachmentStream(arg0, arg1 string) (io.ReadCloser, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DownloadReplyAttachmentStream", arg0, arg1)
@@ -103,13 +104,13 @@ func (m *MockPSSService) DownloadReplyAttachmentStream(arg0, arg1 string) (io.Re
 	return ret0, ret1
 }
 
-// DownloadReplyAttachmentStream indicates an expected call of DownloadReplyAttachmentStream
+// DownloadReplyAttachmentStream indicates an expected call of DownloadReplyAttachmentStream.
 func (mr *MockPSSServiceMockRecorder) DownloadReplyAttachmentStream(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DownloadReplyAttachmentStream", reflect.TypeOf((*MockPSSService)(nil).DownloadReplyAttachmentStream), arg0, arg1)
 }
 
-// GetReply mocks base method
+// GetReply mocks base method.
 func (m *MockPSSService) GetReply(arg0 string) (pss.Reply, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetReply", arg0)
@@ -118,13 +119,13 @@ func (m *MockPSSService) GetReply(arg0 string) (pss.Reply, error) {
 	return ret0, ret1
 }
 
-// GetReply indicates an expected call of GetReply
+// GetReply indicates an expected call of GetReply.
 func (mr *MockPSSServiceMockRecorder) GetReply(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetReply", reflect.TypeOf((*MockPSSService)(nil).GetReply), arg0)
 }
 
-// GetRequest mocks base method
+// GetRequest mocks base method.
 func (m *MockPSSService) GetRequest(arg0 int) (pss.Request, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetRequest", arg0)
@@ -133,13 +134,13 @@ func (m *MockPSSService) GetRequest(arg0 int) (pss.Request, error) {
 	return ret0, ret1
 }
 
-// GetRequest indicates an expected call of GetRequest
+// GetRequest indicates an expected call of GetRequest.
 func (mr *MockPSSServiceMockRecorder) GetRequest(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRequest", reflect.TypeOf((*MockPSSService)(nil).GetRequest), arg0)
 }
 
-// GetRequestConversation mocks base method
+// GetRequestConversation mocks base method.
 func (m *MockPSSService) GetRequestConversation(arg0 int, arg1 connection.APIRequestParameters) ([]pss.Reply, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetRequestConversation", arg0, arg1)
@@ -148,13 +149,13 @@ func (m *MockPSSService) GetRequestConversation(arg0 int, arg1 connection.APIReq
 	return ret0, ret1
 }
 
-// GetRequestConversation indicates an expected call of GetRequestConversation
+// GetRequestConversation indicates an expected call of GetRequestConversation.
 func (mr *MockPSSServiceMockRecorder) GetRequestConversation(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRequestConversation", reflect.TypeOf((*MockPSSService)(nil).GetRequestConversation), arg0, arg1)
 }
 
-// GetRequestConversationPaginated mocks base method
+// GetRequestConversationPaginated mocks base method.
 func (m *MockPSSService) GetRequestConversationPaginated(arg0 int, arg1 connection.APIRequestParameters) (*pss.PaginatedReply, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetRequestConversationPaginated", arg0, arg1)
@@ -163,13 +164,13 @@ func (m *MockPSSService) GetRequestConversationPaginated(arg0 int, arg1 connecti
 	return ret0, ret1
 }
 
-// GetRequestConversationPaginated indicates an expected call of GetRequestConversationPaginated
+// GetRequestConversationPaginated indicates an expected call of GetRequestConversationPaginated.
 func (mr *MockPSSServiceMockRecorder) GetRequestConversationPaginated(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRequestConversationPaginated", reflect.TypeOf((*MockPSSService)(nil).GetRequestConversationPaginated), arg0, arg1)
 }
 
-// GetRequestFeedback mocks base method
+// GetRequestFeedback mocks base method.
 func (m *MockPSSService) GetRequestFeedback(arg0 int) (pss.Feedback, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetRequestFeedback", arg0)
@@ -178,13 +179,13 @@ func (m *MockPSSService) GetRequestFeedback(arg0 int) (pss.Feedback, error) {
 	return ret0, ret1
 }
 
-// GetRequestFeedback indicates an expected call of GetRequestFeedback
+// GetRequestFeedback indicates an expected call of GetRequestFeedback.
 func (mr *MockPSSServiceMockRecorder) GetRequestFeedback(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRequestFeedback", reflect.TypeOf((*MockPSSService)(nil).GetRequestFeedback), arg0)
 }
 
-// GetRequestReplies mocks base method
+// GetRequestReplies mocks base method.
 func (m *MockPSSService) GetRequestReplies(arg0 int, arg1 connection.APIRequestParameters) ([]pss.Reply, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetRequestReplies", arg0, arg1)
@@ -193,13 +194,13 @@ func (m *MockPSSService) GetRequestReplies(arg0 int, arg1 connection.APIRequestP
 	return ret0, ret1
 }
 
-// GetRequestReplies indicates an expected call of GetRequestReplies
+// GetRequestReplies indicates an expected call of GetRequestReplies.
 func (mr *MockPSSServiceMockRecorder) GetRequestReplies(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRequestReplies", reflect.TypeOf((*MockPSSService)(nil).GetRequestReplies), arg0, arg1)
 }
 
-// GetRequestRepliesPaginated mocks base method
+// GetRequestRepliesPaginated mocks base method.
 func (m *MockPSSService) GetRequestRepliesPaginated(arg0 int, arg1 connection.APIRequestParameters) (*pss.PaginatedReply, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetRequestRepliesPaginated", arg0, arg1)
@@ -208,13 +209,13 @@ func (m *MockPSSService) GetRequestRepliesPaginated(arg0 int, arg1 connection.AP
 	return ret0, ret1
 }
 
-// GetRequestRepliesPaginated indicates an expected call of GetRequestRepliesPaginated
+// GetRequestRepliesPaginated indicates an expected call of GetRequestRepliesPaginated.
 func (mr *MockPSSServiceMockRecorder) GetRequestRepliesPaginated(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRequestRepliesPaginated", reflect.TypeOf((*MockPSSService)(nil).GetRequestRepliesPaginated), arg0, arg1)
 }
 
-// GetRequests mocks base method
+// GetRequests mocks base method.
 func (m *MockPSSService) GetRequests(arg0 connection.APIRequestParameters) ([]pss.Request, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetRequests", arg0)
@@ -223,13 +224,13 @@ func (m *MockPSSService) GetRequests(arg0 connection.APIRequestParameters) ([]ps
 	return ret0, ret1
 }
 
-// GetRequests indicates an expected call of GetRequests
+// GetRequests indicates an expected call of GetRequests.
 func (mr *MockPSSServiceMockRecorder) GetRequests(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRequests", reflect.TypeOf((*MockPSSService)(nil).GetRequests), arg0)
 }
 
-// GetRequestsPaginated mocks base method
+// GetRequestsPaginated mocks base method.
 func (m *MockPSSService) GetRequestsPaginated(arg0 connection.APIRequestParameters) (*pss.PaginatedRequest, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetRequestsPaginated", arg0)
@@ -238,13 +239,13 @@ func (m *MockPSSService) GetRequestsPaginated(arg0 connection.APIRequestParamete
 	return ret0, ret1
 }
 
-// GetRequestsPaginated indicates an expected call of GetRequestsPaginated
+// GetRequestsPaginated indicates an expected call of GetRequestsPaginated.
 func (mr *MockPSSServiceMockRecorder) GetRequestsPaginated(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRequestsPaginated", reflect.TypeOf((*MockPSSService)(nil).GetRequestsPaginated), arg0)
 }
 
-// PatchRequest mocks base method
+// PatchRequest mocks base method.
 func (m *MockPSSService) PatchRequest(arg0 int, arg1 pss.PatchRequestRequest) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PatchRequest", arg0, arg1)
@@ -252,13 +253,13 @@ func (m *MockPSSService) PatchRequest(arg0 int, arg1 pss.PatchRequestRequest) er
 	return ret0
 }
 
-// PatchRequest indicates an expected call of PatchRequest
+// PatchRequest indicates an expected call of PatchRequest.
 func (mr *MockPSSServiceMockRecorder) PatchRequest(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchRequest", reflect.TypeOf((*MockPSSService)(nil).PatchRequest), arg0, arg1)
 }
 
-// UploadReplyAttachmentStream mocks base method
+// UploadReplyAttachmentStream mocks base method.
 func (m *MockPSSService) UploadReplyAttachmentStream(arg0, arg1 string, arg2 io.Reader) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UploadReplyAttachmentStream", arg0, arg1, arg2)
@@ -266,7 +267,7 @@ func (m *MockPSSService) UploadReplyAttachmentStream(arg0, arg1 string, arg2 io.
 	return ret0
 }
 
-// UploadReplyAttachmentStream indicates an expected call of UploadReplyAttachmentStream
+// UploadReplyAttachmentStream indicates an expected call of UploadReplyAttachmentStream.
 func (mr *MockPSSServiceMockRecorder) UploadReplyAttachmentStream(arg0, arg1, arg2 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UploadReplyAttachmentStream", reflect.TypeOf((*MockPSSService)(nil).UploadReplyAttachmentStream), arg0, arg1, arg2)

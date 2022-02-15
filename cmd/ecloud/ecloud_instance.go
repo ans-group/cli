@@ -165,7 +165,11 @@ func ecloudInstanceCreate(service ecloud.ECloudService, cmd *cobra.Command, args
 			return fmt.Errorf("Error retrieving images: %s", err)
 		}
 
-		if len(images) != 1 {
+		if len(images) == 0 {
+			return fmt.Errorf("Image not found with name '%s'", imageFlag)
+		}
+
+		if len(images) > 1 {
 			return fmt.Errorf("Expected 1 image, got %d images", len(images))
 		}
 
