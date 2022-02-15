@@ -32,7 +32,7 @@ func ecloudLoadBalancerNetworkListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists load balancer networks",
 		Long:    "This command lists load balancer networks",
-		Example: "ukfast ecloud loadbalancer list",
+		Example: "ukfast ecloud loadbalancernetwork list",
 		RunE:    ecloudCobraRunEFunc(f, ecloudLoadBalancerNetworkList),
 	}
 
