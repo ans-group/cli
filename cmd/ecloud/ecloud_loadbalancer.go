@@ -24,9 +24,6 @@ func ecloudLoadBalancerRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.AddCommand(ecloudLoadBalancerUpdateCmd(f))
 	cmd.AddCommand(ecloudLoadBalancerDeleteCmd(f))
 
-	// Child root commands
-	cmd.AddCommand(ecloudLoadBalancerLoadBalancerNetworkRootCmd(f))
-
 	return cmd
 }
 
@@ -111,6 +108,8 @@ func ecloudLoadBalancerCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.MarkFlagRequired("availability-zone")
 	cmd.Flags().String("spec", "", "ID of load balancer specification")
 	cmd.MarkFlagRequired("spec")
+	cmd.Flags().String("network", "", "Network ID for load balancer")
+	cmd.MarkFlagRequired("network")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the load balancer has been completely created")
 
 	return cmd
@@ -122,6 +121,7 @@ func ecloudLoadBalancerCreate(service ecloud.ECloudService, cmd *cobra.Command, 
 	createRequest.VPCID, _ = cmd.Flags().GetString("vpc")
 	createRequest.AvailabilityZoneID, _ = cmd.Flags().GetString("availability-zone")
 	createRequest.LoadBalancerSpecID, _ = cmd.Flags().GetString("spec")
+	createRequest.NetworkID, _ = cmd.Flags().GetString("network")
 
 	taskRef, err := service.CreateLoadBalancer(createRequest)
 	if err != nil {

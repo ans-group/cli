@@ -216,21 +216,6 @@ func (mr *MockECloudServiceMockRecorder) CreateLoadBalancer(arg0 interface{}) *g
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateLoadBalancer", reflect.TypeOf((*MockECloudService)(nil).CreateLoadBalancer), arg0)
 }
 
-// CreateLoadBalancerNetwork mocks base method.
-func (m *MockECloudService) CreateLoadBalancerNetwork(arg0 ecloud.CreateLoadBalancerNetworkRequest) (ecloud.TaskReference, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateLoadBalancerNetwork", arg0)
-	ret0, _ := ret[0].(ecloud.TaskReference)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// CreateLoadBalancerNetwork indicates an expected call of CreateLoadBalancerNetwork.
-func (mr *MockECloudServiceMockRecorder) CreateLoadBalancerNetwork(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateLoadBalancerNetwork", reflect.TypeOf((*MockECloudService)(nil).CreateLoadBalancerNetwork), arg0)
-}
-
 // CreateNetwork mocks base method.
 func (m *MockECloudService) CreateNetwork(arg0 ecloud.CreateNetworkRequest) (string, error) {
 	m.ctrl.T.Helper()
@@ -600,21 +585,6 @@ func (m *MockECloudService) DeleteLoadBalancer(arg0 string) (string, error) {
 func (mr *MockECloudServiceMockRecorder) DeleteLoadBalancer(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteLoadBalancer", reflect.TypeOf((*MockECloudService)(nil).DeleteLoadBalancer), arg0)
-}
-
-// DeleteLoadBalancerNetwork mocks base method.
-func (m *MockECloudService) DeleteLoadBalancerNetwork(arg0 string) (string, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteLoadBalancerNetwork", arg0)
-	ret0, _ := ret[0].(string)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// DeleteLoadBalancerNetwork indicates an expected call of DeleteLoadBalancerNetwork.
-func (mr *MockECloudServiceMockRecorder) DeleteLoadBalancerNetwork(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteLoadBalancerNetwork", reflect.TypeOf((*MockECloudService)(nil).DeleteLoadBalancerNetwork), arg0)
 }
 
 // DeleteNetwork mocks base method.
@@ -2119,81 +2089,6 @@ func (m *MockECloudService) GetLoadBalancer(arg0 string) (ecloud.LoadBalancer, e
 func (mr *MockECloudServiceMockRecorder) GetLoadBalancer(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLoadBalancer", reflect.TypeOf((*MockECloudService)(nil).GetLoadBalancer), arg0)
-}
-
-// GetLoadBalancerLoadBalancerNetworks mocks base method.
-func (m *MockECloudService) GetLoadBalancerLoadBalancerNetworks(arg0 string, arg1 connection.APIRequestParameters) ([]ecloud.LoadBalancerNetwork, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetLoadBalancerLoadBalancerNetworks", arg0, arg1)
-	ret0, _ := ret[0].([]ecloud.LoadBalancerNetwork)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetLoadBalancerLoadBalancerNetworks indicates an expected call of GetLoadBalancerLoadBalancerNetworks.
-func (mr *MockECloudServiceMockRecorder) GetLoadBalancerLoadBalancerNetworks(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLoadBalancerLoadBalancerNetworks", reflect.TypeOf((*MockECloudService)(nil).GetLoadBalancerLoadBalancerNetworks), arg0, arg1)
-}
-
-// GetLoadBalancerLoadBalancerNetworksPaginated mocks base method.
-func (m *MockECloudService) GetLoadBalancerLoadBalancerNetworksPaginated(arg0 string, arg1 connection.APIRequestParameters) (*ecloud.PaginatedLoadBalancerNetwork, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetLoadBalancerLoadBalancerNetworksPaginated", arg0, arg1)
-	ret0, _ := ret[0].(*ecloud.PaginatedLoadBalancerNetwork)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetLoadBalancerLoadBalancerNetworksPaginated indicates an expected call of GetLoadBalancerLoadBalancerNetworksPaginated.
-func (mr *MockECloudServiceMockRecorder) GetLoadBalancerLoadBalancerNetworksPaginated(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLoadBalancerLoadBalancerNetworksPaginated", reflect.TypeOf((*MockECloudService)(nil).GetLoadBalancerLoadBalancerNetworksPaginated), arg0, arg1)
-}
-
-// GetLoadBalancerNetwork mocks base method.
-func (m *MockECloudService) GetLoadBalancerNetwork(arg0 string) (ecloud.LoadBalancerNetwork, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetLoadBalancerNetwork", arg0)
-	ret0, _ := ret[0].(ecloud.LoadBalancerNetwork)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetLoadBalancerNetwork indicates an expected call of GetLoadBalancerNetwork.
-func (mr *MockECloudServiceMockRecorder) GetLoadBalancerNetwork(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLoadBalancerNetwork", reflect.TypeOf((*MockECloudService)(nil).GetLoadBalancerNetwork), arg0)
-}
-
-// GetLoadBalancerNetworks mocks base method.
-func (m *MockECloudService) GetLoadBalancerNetworks(arg0 connection.APIRequestParameters) ([]ecloud.LoadBalancerNetwork, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetLoadBalancerNetworks", arg0)
-	ret0, _ := ret[0].([]ecloud.LoadBalancerNetwork)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetLoadBalancerNetworks indicates an expected call of GetLoadBalancerNetworks.
-func (mr *MockECloudServiceMockRecorder) GetLoadBalancerNetworks(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLoadBalancerNetworks", reflect.TypeOf((*MockECloudService)(nil).GetLoadBalancerNetworks), arg0)
-}
-
-// GetLoadBalancerNetworksPaginated mocks base method.
-func (m *MockECloudService) GetLoadBalancerNetworksPaginated(arg0 connection.APIRequestParameters) (*ecloud.PaginatedLoadBalancerNetwork, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetLoadBalancerNetworksPaginated", arg0)
-	ret0, _ := ret[0].(*ecloud.PaginatedLoadBalancerNetwork)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetLoadBalancerNetworksPaginated indicates an expected call of GetLoadBalancerNetworksPaginated.
-func (mr *MockECloudServiceMockRecorder) GetLoadBalancerNetworksPaginated(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLoadBalancerNetworksPaginated", reflect.TypeOf((*MockECloudService)(nil).GetLoadBalancerNetworksPaginated), arg0)
 }
 
 // GetLoadBalancerSpec mocks base method.
@@ -4292,21 +4187,6 @@ func (m *MockECloudService) PatchLoadBalancer(arg0 string, arg1 ecloud.PatchLoad
 func (mr *MockECloudServiceMockRecorder) PatchLoadBalancer(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchLoadBalancer", reflect.TypeOf((*MockECloudService)(nil).PatchLoadBalancer), arg0, arg1)
-}
-
-// PatchLoadBalancerNetwork mocks base method.
-func (m *MockECloudService) PatchLoadBalancerNetwork(arg0 string, arg1 ecloud.PatchLoadBalancerNetworkRequest) (ecloud.TaskReference, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "PatchLoadBalancerNetwork", arg0, arg1)
-	ret0, _ := ret[0].(ecloud.TaskReference)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// PatchLoadBalancerNetwork indicates an expected call of PatchLoadBalancerNetwork.
-func (mr *MockECloudServiceMockRecorder) PatchLoadBalancerNetwork(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchLoadBalancerNetwork", reflect.TypeOf((*MockECloudService)(nil).PatchLoadBalancerNetwork), arg0, arg1)
 }
 
 // PatchNetwork mocks base method.
