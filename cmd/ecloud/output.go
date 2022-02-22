@@ -449,9 +449,13 @@ func OutputECloudVolumeGroupsProvider(groups []ecloud.VolumeGroup) output.Output
 }
 
 func OutputECloudLoadBalancersProvider(lbs []ecloud.LoadBalancer) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(lbs).WithDefaultFields([]string{"id", "name", "vpc_id", "availability_zone_id", "sync_status"})
+	return output.NewSerializedOutputHandlerDataProvider(lbs).WithDefaultFields([]string{"id", "name", "vpc_id", "availability_zone_id", "config_id", "sync_status"})
 }
 
 func OutputECloudLoadBalancerSpecsProvider(specs []ecloud.LoadBalancerSpec) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(specs).WithDefaultFields([]string{"id", "name", "description"})
+}
+
+func OutputECloudVIPsProvider(vips []ecloud.VIP) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(vips).WithDefaultFields([]string{"id", "name", "load_balancer_id", "ip_address_id"})
 }
