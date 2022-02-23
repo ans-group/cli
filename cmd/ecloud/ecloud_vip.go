@@ -96,7 +96,7 @@ func ecloudVIPCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates a VIP",
 		Long:    "This command creates a VIP",
-		Example: "ukfast ecloud vip create --vpc vpc-abcdef12 --availability-zone az-abcdef12 --spec vips-abcdef12",
+		Example: "ukfast ecloud vip create --name testvip --load-balancer lb-abcdef12",
 		RunE:    ecloudCobraRunEFunc(f, ecloudVIPCreate),
 	}
 
