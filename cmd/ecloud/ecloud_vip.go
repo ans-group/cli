@@ -37,7 +37,7 @@ func ecloudVIPListCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("name", "", "Name for filtering")
-	cmd.Flags().String("vpc", "", "VPC ID for filtering")
+	cmd.Flags().String("load-balancer", "", "Load balancer ID for filtering")
 
 	return cmd
 }
