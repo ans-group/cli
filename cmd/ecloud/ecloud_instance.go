@@ -577,8 +577,9 @@ func ecloudInstanceSSH(service ecloud.ECloudService, cmd *cobra.Command, args []
 
 	user, _ := cmd.Flags().GetString("user")
 	port, _ := cmd.Flags().GetInt("port")
+	sshArgs, _ := cmd.Flags().GetString("args")
 
-	sshCmd := exec.Command("ssh", fmt.Sprintf("%s@%s", user, ipAddress), "-p", strconv.Itoa(port))
+	sshCmd := exec.Command("ssh", fmt.Sprintf("%s@%s", user, ipAddress), "-p", strconv.Itoa(port), sshArgs)
 	sshCmd.Stdout = os.Stdout
 	sshCmd.Stdin = os.Stdin
 	sshCmd.Stderr = os.Stderr
