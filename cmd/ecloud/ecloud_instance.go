@@ -527,7 +527,7 @@ func ecloudInstanceRestart(service ecloud.ECloudService, cmd *cobra.Command, arg
 func ecloudInstanceSSHCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "ssh <instance: id>",
-		Short:   "Invoes SSH for an instance",
+		Short:   "Invokes SSH for an instance",
 		Long:    "This command invokes SSH for an instance",
 		Example: "ukfast ecloud instance ssh i-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
