@@ -3,6 +3,9 @@ package ecloud
 import (
 	"errors"
 	"fmt"
+	"os"
+	"os/exec"
+	"strconv"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -31,6 +34,7 @@ func ecloudInstanceRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.AddCommand(ecloudInstanceStartCmd(f))
 	cmd.AddCommand(ecloudInstanceStopCmd(f))
 	cmd.AddCommand(ecloudInstanceRestartCmd(f))
+	cmd.AddCommand(ecloudInstanceSSHCmd(f))
 
 	// Child root commands
 	cmd.AddCommand(ecloudInstanceVolumeRootCmd(f))
@@ -518,6 +522,69 @@ func ecloudInstanceRestart(service ecloud.ECloudService, cmd *cobra.Command, arg
 		}
 	}
 	return nil
+}
+
+func ecloudInstanceSSHCmd(f factory.ClientFactory) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:     "ssh <instance: id>",
+		Short:   "Invoes SSH for an instance",
+		Long:    "This command invokes SSH for an instance",
+		Example: "ukfast ecloud instance ssh i-abcdef12",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Missing instance")
+			}
+
+			return nil
+		},
+		RunE: ecloudCobraRunEFunc(f, ecloudInstanceSSH),
+	}
+
+	cmd.Flags().Int("port", 2020, "Specifies port to connect to")
+	cmd.Flags().Bool("internal", false, "Specifies internal IP should be used")
+	cmd.Flags().String("user", "root", "Specifies user to connect with")
+	cmd.Flags().String("args", "", "Specifies additional arguments to pass to SSH")
+
+	return cmd
+}
+
+func ecloudInstanceSSH(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
+	var ipAddress string
+	internal, _ := cmd.Flags().GetBool("internal")
+	if internal {
+		nics, err := service.GetInstanceNICs(args[0], connection.APIRequestParameters{})
+		if err != nil {
+			return fmt.Errorf("Error retrieving instance NICs: %s", err)
+		}
+
+		if len(nics) < 1 {
+			return fmt.Errorf("No floating IPs found for instance")
+		}
+
+		ipAddress = nics[0].IPAddress
+	} else {
+		fips, err := service.GetInstanceFloatingIPs(args[0], connection.APIRequestParameters{})
+		if err != nil {
+			return fmt.Errorf("Error retrieving instance floating IPs: %s", err)
+		}
+
+		if len(fips) < 1 {
+			return fmt.Errorf("No floating IPs found for instance")
+		}
+
+		ipAddress = fips[0].IPAddress
+	}
+
+	user, _ := cmd.Flags().GetString("user")
+	port, _ := cmd.Flags().GetInt("port")
+
+	sshCmd := exec.Command("ssh", fmt.Sprintf("%s@%s", user, ipAddress), "-p", strconv.Itoa(port))
+	sshCmd.Stdout = os.Stdout
+	sshCmd.Stdin = os.Stdin
+	sshCmd.Stderr = os.Stderr
+
+	sshCmd.Start()
+	return sshCmd.Wait()
 }
 
 func InstanceResourceSyncStatusWaitFunc(service ecloud.ECloudService, instanceID string, status ecloud.SyncStatus) helper.WaitFunc {
