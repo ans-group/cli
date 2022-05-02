@@ -5,8 +5,6 @@ go 1.13
 require (
 	github.com/blang/semver v3.5.1+incompatible
 	github.com/golang/mock v1.4.4
-	github.com/google/uuid v1.1.1
-	github.com/guptarohit/asciigraph v0.4.2-0.20191006150553-f9506970428c
 	github.com/iancoleman/strcase v0.0.0-20191112232945-16388991a334
 	github.com/mattn/go-runewidth v0.0.4 // indirect
 	github.com/mitchellh/go-homedir v1.1.0
