@@ -52,7 +52,6 @@ type SerializedOutputHandlerDataProvider struct {
 	*GenericOutputHandlerDataProvider
 	defaultFields      []string
 	ignoredFields      []string
-	monetaryFields     []string
 	fieldHandlers      map[string]FieldHandlerFunc
 	fieldValueHandlers map[string]FieldValueHandlerFunc
 }

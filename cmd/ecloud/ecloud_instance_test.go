@@ -144,12 +144,69 @@ func Test_ecloudInstanceCreate(t *testing.T) {
 			ImageID: "img-abcdef12",
 		}
 
-		service.EXPECT().GetImages(connection.APIRequestParameters{}).Return([]ecloud.Image{{Name: "test", ID: "img-abcdef12"}}, nil)
+		service.EXPECT().GetImages(connection.APIRequestParameters{
+			Filtering: []connection.APIRequestFiltering{
+				{
+					Property: "name",
+					Operator: connection.EQOperator,
+					Value:    []string{"test"},
+				},
+			}}).Return([]ecloud.Image{{Name: "test", ID: "img-abcdef12"}}, nil)
 		service.EXPECT().CreateInstance(req).Return("i-abcdef12", nil)
 		service.EXPECT().GetInstance("i-abcdef12").Return(ecloud.Instance{}, nil)
 
 		err := ecloudInstanceCreate(service, cmd, []string{})
 		assert.Nil(t, err)
+	})
+
+	t.Run("ImageRetrievalError_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudInstanceCreateCmd(nil)
+		cmd.ParseFlags([]string{"--name=testinstance", "--image=unknown"})
+
+		service.EXPECT().GetImages(connection.APIRequestParameters{
+			Filtering: []connection.APIRequestFiltering{
+				{
+					Property: "name",
+					Operator: connection.EQOperator,
+					Value:    []string{"unknown"},
+				},
+			},
+		}).Return([]ecloud.Image{}, errors.New("test error"))
+
+		err := ecloudInstanceCreate(service, cmd, []string{})
+		assert.NotNil(t, err)
+		assert.Equal(t, "Error retrieving images: test error", err.Error())
+	})
+
+	t.Run("MultipleImagesRetrieved_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudInstanceCreateCmd(nil)
+		cmd.ParseFlags([]string{"--name=testinstance", "--image=unknown"})
+
+		service.EXPECT().GetImages(connection.APIRequestParameters{
+			Filtering: []connection.APIRequestFiltering{
+				{
+					Property: "name",
+					Operator: connection.EQOperator,
+					Value:    []string{"unknown"},
+				},
+			},
+		}).Return([]ecloud.Image{{
+			ID: "img-1",
+		}, {
+			ID: "img-2",
+		}}, nil)
+
+		err := ecloudInstanceCreate(service, cmd, []string{})
+		assert.NotNil(t, err)
+		assert.Equal(t, "Expected 1 image, got 2 images", err.Error())
 	})
 
 	t.Run("ImageNotFound_ReturnsError", func(t *testing.T) {
@@ -160,7 +217,15 @@ func Test_ecloudInstanceCreate(t *testing.T) {
 		cmd := ecloudInstanceCreateCmd(nil)
 		cmd.ParseFlags([]string{"--name=testinstance", "--image=unknown"})
 
-		service.EXPECT().GetImages(connection.APIRequestParameters{}).Return([]ecloud.Image{{Name: "test", ID: "img-abcdef12"}}, nil)
+		service.EXPECT().GetImages(connection.APIRequestParameters{
+			Filtering: []connection.APIRequestFiltering{
+				{
+					Property: "name",
+					Operator: connection.EQOperator,
+					Value:    []string{"unknown"},
+				},
+			},
+		}).Return([]ecloud.Image{}, nil)
 
 		err := ecloudInstanceCreate(service, cmd, []string{})
 		assert.NotNil(t, err)
@@ -270,7 +335,6 @@ func Test_ecloudInstanceUpdate(t *testing.T) {
 		cmd := ecloudInstanceUpdateCmd(nil)
 		cmd.ParseFlags([]string{"--volume-group=volgroup-abcdef12"})
 
-		
 		req := ecloud.PatchInstanceRequest{
 			VolumeGroupID: ptr.String("volgroup-abcdef12"),
 		}

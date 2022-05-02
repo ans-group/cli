@@ -1,4 +1,4 @@
-package managedcloudflare
+package cloudflare
 
 import (
 	"errors"
@@ -9,30 +9,30 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/ukfast/cli/internal/pkg/clierrors"
 	"github.com/ukfast/cli/test/mocks"
-	"github.com/ukfast/sdk-go/pkg/service/managedcloudflare"
+	"github.com/ukfast/sdk-go/pkg/service/cloudflare"
 )
 
-func Test_managedcloudflareSpendPlanList(t *testing.T) {
+func Test_cloudflareSpendPlanList(t *testing.T) {
 	t.Run("DefaultRetrieve", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
-		service := mocks.NewMockManagedCloudflareService(mockCtrl)
+		service := mocks.NewMockCloudflareService(mockCtrl)
 
-		service.EXPECT().GetSpendPlans(gomock.Any()).Return([]managedcloudflare.SpendPlan{}, nil).Times(1)
+		service.EXPECT().GetSpendPlans(gomock.Any()).Return([]cloudflare.SpendPlan{}, nil).Times(1)
 
-		managedcloudflareSpendPlanList(service, &cobra.Command{}, []string{})
+		cloudflareSpendPlanList(service, &cobra.Command{}, []string{})
 	})
 
 	t.Run("MalformedFlag_ReturnsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
-		service := mocks.NewMockManagedCloudflareService(mockCtrl)
+		service := mocks.NewMockCloudflareService(mockCtrl)
 		cmd := &cobra.Command{}
 		cmd.Flags().StringArray("filter", []string{"invalidfilter"}, "")
 
-		err := managedcloudflareSpendPlanList(service, cmd, []string{})
+		err := cloudflareSpendPlanList(service, cmd, []string{})
 
 		assert.IsType(t, &clierrors.ErrInvalidFlagValue{}, err)
 	})
@@ -41,11 +41,11 @@ func Test_managedcloudflareSpendPlanList(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
-		service := mocks.NewMockManagedCloudflareService(mockCtrl)
+		service := mocks.NewMockCloudflareService(mockCtrl)
 
-		service.EXPECT().GetSpendPlans(gomock.Any()).Return([]managedcloudflare.SpendPlan{}, errors.New("test error")).Times(1)
+		service.EXPECT().GetSpendPlans(gomock.Any()).Return([]cloudflare.SpendPlan{}, errors.New("test error")).Times(1)
 
-		err := managedcloudflareSpendPlanList(service, &cobra.Command{}, []string{})
+		err := cloudflareSpendPlanList(service, &cobra.Command{}, []string{})
 
 		assert.Equal(t, "Error retrieving spend plans: test error", err.Error())
 	})

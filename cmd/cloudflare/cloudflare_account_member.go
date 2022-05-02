@@ -1,4 +1,4 @@
-package managedcloudflare
+package cloudflare
 
 import (
 	"errors"
@@ -6,27 +6,27 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/ukfast/cli/internal/pkg/factory"
-	"github.com/ukfast/sdk-go/pkg/service/managedcloudflare"
+	"github.com/ukfast/sdk-go/pkg/service/cloudflare"
 )
 
-func managedcloudflareAccountMemberRootCmd(f factory.ClientFactory) *cobra.Command {
+func cloudflareAccountMemberRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "member",
 		Short: "sub-commands relating to account members",
 	}
 
 	// Child commands
-	cmd.AddCommand(managedcloudflareAccountMemberCreateCmd(f))
+	cmd.AddCommand(cloudflareAccountMemberCreateCmd(f))
 
 	return cmd
 }
 
-func managedcloudflareAccountMemberCreateCmd(f factory.ClientFactory) *cobra.Command {
+func cloudflareAccountMemberCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "create",
 		Short:   "Creates account members",
 		Long:    "This command creates account members",
-		Example: "ukfast managedcloudflare account member create",
+		Example: "ukfast cloudflare account member create",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing account")
@@ -34,7 +34,7 @@ func managedcloudflareAccountMemberCreateCmd(f factory.ClientFactory) *cobra.Com
 
 			return nil
 		},
-		RunE: managedcloudflareCobraRunEFunc(f, managedcloudflareAccountMemberCreate),
+		RunE: cloudflareCobraRunEFunc(f, cloudflareAccountMemberCreate),
 	}
 
 	cmd.Flags().String("email-address", "", "Email address for account member")
@@ -43,8 +43,8 @@ func managedcloudflareAccountMemberCreateCmd(f factory.ClientFactory) *cobra.Com
 	return cmd
 }
 
-func managedcloudflareAccountMemberCreate(service managedcloudflare.ManagedCloudflareService, cmd *cobra.Command, args []string) error {
-	createRequest := managedcloudflare.CreateAccountMemberRequest{}
+func cloudflareAccountMemberCreate(service cloudflare.CloudflareService, cmd *cobra.Command, args []string) error {
+	createRequest := cloudflare.CreateAccountMemberRequest{}
 	createRequest.EmailAddress, _ = cmd.Flags().GetString("email-address")
 	err := service.CreateAccountMember(args[0], createRequest)
 	if err != nil {

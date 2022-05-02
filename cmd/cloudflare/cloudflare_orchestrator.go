@@ -1,32 +1,32 @@
-package managedcloudflare
+package cloudflare
 
 import (
 	"fmt"
 
 	"github.com/spf13/cobra"
 	"github.com/ukfast/cli/internal/pkg/factory"
-	"github.com/ukfast/sdk-go/pkg/service/managedcloudflare"
+	"github.com/ukfast/sdk-go/pkg/service/cloudflare"
 )
 
-func managedcloudflareOrchestratorRootCmd(f factory.ClientFactory) *cobra.Command {
+func cloudflareOrchestratorRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "orchestrator",
 		Short: "sub-commands relating to orchestrator",
 	}
 
 	// Child commands
-	cmd.AddCommand(managedcloudflareOrchestratorCreateCmd(f))
+	cmd.AddCommand(cloudflareOrchestratorCreateCmd(f))
 
 	return cmd
 }
 
-func managedcloudflareOrchestratorCreateCmd(f factory.ClientFactory) *cobra.Command {
+func cloudflareOrchestratorCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "create",
 		Short:   "Creates an orchestration",
 		Long:    "This command creates an orchestration",
-		Example: "ukfast managedcloudflare orchestrator create --zone-name testzone --zone-subscription-type testtype --account-name testaccount --administrator-email-address test@test.com",
-		RunE:    managedcloudflareCobraRunEFunc(f, managedcloudflareOrchestratorCreate),
+		Example: "ukfast cloudflare orchestrator create --zone-name testzone --zone-subscription-type testtype --account-name testaccount --administrator-email-address test@test.com",
+		RunE:    cloudflareCobraRunEFunc(f, cloudflareOrchestratorCreate),
 	}
 
 	cmd.Flags().String("zone-name", "", "Name of zone")
@@ -40,8 +40,8 @@ func managedcloudflareOrchestratorCreateCmd(f factory.ClientFactory) *cobra.Comm
 	return cmd
 }
 
-func managedcloudflareOrchestratorCreate(service managedcloudflare.ManagedCloudflareService, cmd *cobra.Command, args []string) error {
-	createRequest := managedcloudflare.CreateOrchestrationRequest{}
+func cloudflareOrchestratorCreate(service cloudflare.CloudflareService, cmd *cobra.Command, args []string) error {
+	createRequest := cloudflare.CreateOrchestrationRequest{}
 	createRequest.ZoneName, _ = cmd.Flags().GetString("zone-name")
 	createRequest.ZoneSubscriptionType, _ = cmd.Flags().GetString("zone-subscription-type")
 	createRequest.AccountID, _ = cmd.Flags().GetString("account")

@@ -8,7 +8,7 @@ package mocks
 //go:generate mockgen -package mocks -destination mock_ecloudflexservice.go github.com/ukfast/sdk-go/pkg/service/ecloudflex ECloudFlexService
 //go:generate mockgen -package mocks -destination mock_loadbalancerservice.go github.com/ukfast/sdk-go/pkg/service/loadbalancer LoadBalancerService
 //go:generate mockgen -package mocks -destination mock_ltaasservice.go github.com/ukfast/sdk-go/pkg/service/ltaas LTaaSService
-//go:generate mockgen -package mocks -destination mock_managedcloudflare.go github.com/ukfast/sdk-go/pkg/service/managedcloudflare ManagedCloudflareService
+//go:generate mockgen -package mocks -destination mock_cloudflare.go github.com/ukfast/sdk-go/pkg/service/cloudflare CloudflareService
 //go:generate mockgen -package mocks -destination mock_pssservice.go github.com/ukfast/sdk-go/pkg/service/pss PSSService
 //go:generate mockgen -package mocks -destination mock_registrarservice.go github.com/ukfast/sdk-go/pkg/service/registrar RegistrarService
 //go:generate mockgen -package mocks -destination mock_resourcelocatorprovider.go github.com/ukfast/cli/internal/pkg/resource ResourceLocatorProvider

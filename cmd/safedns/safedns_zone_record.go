@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/spf13/cobra"
 	"github.com/ukfast/cli/internal/pkg/factory"
@@ -165,6 +166,10 @@ func safednsZoneRecordCreate(service safedns.SafeDNSService, cmd *cobra.Command,
 	recordName, _ := cmd.Flags().GetString("name")
 	recordType, _ := cmd.Flags().GetString("type")
 	recordContent, _ := cmd.Flags().GetString("content")
+
+	if strings.ToUpper(recordType) == "TXT" || strings.ToUpper(recordType) == "SPF" {
+		recordContent = fmt.Sprintf("%q", strings.Trim(recordContent, "\""))
+	}
 
 	createRequest := safedns.CreateRecordRequest{
 		Name:    recordName,

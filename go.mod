@@ -18,11 +18,11 @@ require (
 	github.com/spf13/cobra v0.0.5
 	github.com/spf13/viper v1.3.2
 	github.com/stretchr/testify v1.6.1
-	github.com/ukfast/sdk-go v1.4.26
+	github.com/ukfast/sdk-go v1.4.33
 	github.com/ulikunitz/xz v0.5.8 // indirect
-	golang.org/x/sys v0.0.0-20190507160741-ecd444e8653b // indirect
+	golang.org/x/sys v0.0.0-20220412211240-33da011f77ad // indirect
 	gopkg.in/go-playground/assert.v1 v1.2.1
 	k8s.io/client-go v11.0.0+incompatible
 )
 
-// replace github.com/ukfast/sdk-go => ../sdk-go
+replace github.com/ukfast/sdk-go => ../sdk-go

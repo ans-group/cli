@@ -1,4 +1,4 @@
-package managedcloudflare
+package cloudflare
 
 import (
 	"errors"
@@ -9,30 +9,30 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/ukfast/cli/internal/pkg/clierrors"
 	"github.com/ukfast/cli/test/mocks"
-	"github.com/ukfast/sdk-go/pkg/service/managedcloudflare"
+	"github.com/ukfast/sdk-go/pkg/service/cloudflare"
 )
 
-func Test_managedcloudflareSubscriptionList(t *testing.T) {
+func Test_cloudflareSubscriptionList(t *testing.T) {
 	t.Run("DefaultRetrieve", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
-		service := mocks.NewMockManagedCloudflareService(mockCtrl)
+		service := mocks.NewMockCloudflareService(mockCtrl)
 
-		service.EXPECT().GetSubscriptions(gomock.Any()).Return([]managedcloudflare.Subscription{}, nil).Times(1)
+		service.EXPECT().GetSubscriptions(gomock.Any()).Return([]cloudflare.Subscription{}, nil).Times(1)
 
-		managedcloudflareSubscriptionList(service, &cobra.Command{}, []string{})
+		cloudflareSubscriptionList(service, &cobra.Command{}, []string{})
 	})
 
 	t.Run("MalformedFlag_ReturnsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
-		service := mocks.NewMockManagedCloudflareService(mockCtrl)
+		service := mocks.NewMockCloudflareService(mockCtrl)
 		cmd := &cobra.Command{}
 		cmd.Flags().StringArray("filter", []string{"invalidfilter"}, "")
 
-		err := managedcloudflareSubscriptionList(service, cmd, []string{})
+		err := cloudflareSubscriptionList(service, cmd, []string{})
 
 		assert.IsType(t, &clierrors.ErrInvalidFlagValue{}, err)
 	})
@@ -41,11 +41,11 @@ func Test_managedcloudflareSubscriptionList(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
-		service := mocks.NewMockManagedCloudflareService(mockCtrl)
+		service := mocks.NewMockCloudflareService(mockCtrl)
 
-		service.EXPECT().GetSubscriptions(gomock.Any()).Return([]managedcloudflare.Subscription{}, errors.New("test error")).Times(1)
+		service.EXPECT().GetSubscriptions(gomock.Any()).Return([]cloudflare.Subscription{}, errors.New("test error")).Times(1)
 
-		err := managedcloudflareSubscriptionList(service, &cobra.Command{}, []string{})
+		err := cloudflareSubscriptionList(service, &cobra.Command{}, []string{})
 
 		assert.Equal(t, "Error retrieving subscriptions: test error", err.Error())
 	})

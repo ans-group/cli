@@ -1,28 +1,28 @@
-package managedcloudflare
+package cloudflare
 
 import (
 	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/sdk-go/pkg/service/managedcloudflare"
+	"github.com/ukfast/sdk-go/pkg/service/cloudflare"
 )
 
-func OutputManagedCloudflareAccountsProvider(accounts []managedcloudflare.Account) output.OutputHandlerDataProvider {
+func OutputCloudflareAccountsProvider(accounts []cloudflare.Account) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(accounts).WithDefaultFields([]string{"id", "name", "status", "cloudflare_account_id"})
 }
 
-func OutputManagedCloudflareSpendPlansProvider(plans []managedcloudflare.SpendPlan) output.OutputHandlerDataProvider {
+func OutputCloudflareSpendPlansProvider(plans []cloudflare.SpendPlan) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(plans).
 		WithDefaultFields([]string{"id", "amount", "started_at", "ended_at"}).
 		WithMonetaryFields([]string{"amount"})
 }
 
-func OutputManagedCloudflareZonesProvider(zones []managedcloudflare.Zone) output.OutputHandlerDataProvider {
+func OutputCloudflareZonesProvider(zones []cloudflare.Zone) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(zones).WithDefaultFields([]string{"id", "name", "account_id"})
 }
 
-func OutputManagedCloudflareSubscriptionsProvider(subscriptions []managedcloudflare.Subscription) output.OutputHandlerDataProvider {
+func OutputCloudflareSubscriptionsProvider(subscriptions []cloudflare.Subscription) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(subscriptions).WithDefaultFields([]string{"id", "name", "type", "price"})
 }
 
-func OutputManagedCloudflareTotalSpendsProvider(spends []managedcloudflare.TotalSpend) output.OutputHandlerDataProvider {
+func OutputCloudflareTotalSpendsProvider(spends []cloudflare.TotalSpend) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(spends).WithDefaultFields([]string{"id", "name", "type", "price"})
 }
