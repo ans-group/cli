@@ -21,6 +21,7 @@ func cloudflareAccountRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.AddCommand(cloudflareAccountListCmd(f))
 	cmd.AddCommand(cloudflareAccountShowCmd(f))
 	cmd.AddCommand(cloudflareAccountCreateCmd(f))
+	cmd.AddCommand(cloudflareAccountUpdateCmd(f))
 
 	// Child root commands
 	cmd.AddCommand(cloudflareAccountMemberRootCmd(f))
@@ -113,4 +114,40 @@ func cloudflareAccountCreate(service cloudflare.CloudflareService, cmd *cobra.Co
 	}
 
 	return output.CommandOutput(cmd, OutputCloudflareAccountsProvider([]cloudflare.Account{account}))
+}
+
+func cloudflareAccountUpdateCmd(f factory.ClientFactory) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:     "update <account: id>...",
+		Short:   "Updates an account",
+		Long:    "This command updates one or more accounts",
+		Example: "ukfast cloudflare account update 123",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Missing account")
+			}
+
+			return nil
+		},
+		RunE: cloudflareCobraRunEFunc(f, cloudflareAccountUpdate),
+	}
+
+	cmd.Flags().String("name", "", "Name of account")
+
+	return cmd
+}
+
+func cloudflareAccountUpdate(service cloudflare.CloudflareService, cmd *cobra.Command, args []string) error {
+	req := cloudflare.PatchAccountRequest{}
+	req.Name, _ = cmd.Flags().GetString("name")
+
+	for _, arg := range args {
+		err := service.PatchAccount(arg, req)
+		if err != nil {
+			output.OutputWithErrorLevelf("Error updating account [%s]: %s", arg, err)
+			continue
+		}
+	}
+
+	return nil
 }

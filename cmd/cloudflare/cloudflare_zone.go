@@ -21,6 +21,7 @@ func cloudflareZoneRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.AddCommand(cloudflareZoneListCmd(f))
 	cmd.AddCommand(cloudflareZoneShowCmd(f))
 	cmd.AddCommand(cloudflareZoneCreateCmd(f))
+	cmd.AddCommand(cloudflareZoneUpdateCmd(f))
 	cmd.AddCommand(cloudflareZoneDeleteCmd(f))
 
 	return cmd
@@ -118,6 +119,42 @@ func cloudflareZoneCreate(service cloudflare.CloudflareService, cmd *cobra.Comma
 	}
 
 	return output.CommandOutput(cmd, OutputCloudflareZonesProvider([]cloudflare.Zone{zone}))
+}
+
+func cloudflareZoneUpdateCmd(f factory.ClientFactory) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:     "update <zone: id>...",
+		Short:   "Removes a zone",
+		Long:    "This command removes one or more zones",
+		Example: "ukfast cloudflare zone update 123",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Missing zone")
+			}
+
+			return nil
+		},
+		RunE: cloudflareCobraRunEFunc(f, cloudflareZoneUpdate),
+	}
+
+	cmd.Flags().String("plan-subscription", "", "ID of plan subscription")
+
+	return cmd
+}
+
+func cloudflareZoneUpdate(service cloudflare.CloudflareService, cmd *cobra.Command, args []string) error {
+	req := cloudflare.PatchZoneRequest{}
+	req.PlanSubscriptionID, _ = cmd.Flags().GetString("plan-subscription")
+
+	for _, arg := range args {
+		err := service.PatchZone(arg, req)
+		if err != nil {
+			output.OutputWithErrorLevelf("Error updating zone [%s]: %s", arg, err)
+			continue
+		}
+	}
+
+	return nil
 }
 
 func cloudflareZoneDeleteCmd(f factory.ClientFactory) *cobra.Command {

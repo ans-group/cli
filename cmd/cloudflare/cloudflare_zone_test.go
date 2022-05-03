@@ -148,6 +148,54 @@ func Test_cloudflareZoneCreate(t *testing.T) {
 	})
 }
 
+func Test_cloudflareZoneUpdateCmd_Args(t *testing.T) {
+	t.Run("ValidArgs_NoError", func(t *testing.T) {
+		err := cloudflareZoneUpdateCmd(nil).Args(nil, []string{"00000000-0000-0000-0000-000000000000"})
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("InvalidArgs_Error", func(t *testing.T) {
+		err := cloudflareZoneUpdateCmd(nil).Args(nil, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing zone", err.Error())
+	})
+}
+
+func Test_cloudflareZoneUpdate(t *testing.T) {
+	t.Run("SingleZone", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockCloudflareService(mockCtrl)
+
+		cmd := cloudflareZoneUpdateCmd(nil)
+		cmd.Flags().Set("plan-subscription", "00000000-0000-0000-0000-000000000000")
+
+		req := cloudflare.PatchZoneRequest{
+			PlanSubscriptionID: "00000000-0000-0000-0000-000000000000",
+		}
+
+		service.EXPECT().PatchZone("00000000-0000-0000-0000-000000000000", req).Return(nil).Times(1)
+
+		cloudflareZoneUpdate(service, cmd, []string{"00000000-0000-0000-0000-000000000000"})
+	})
+
+	t.Run("UpdateZoneError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockCloudflareService(mockCtrl)
+
+		service.EXPECT().PatchZone("00000000-0000-0000-0000-000000000000", cloudflare.PatchZoneRequest{}).Return(errors.New("test error"))
+
+		test_output.AssertErrorOutput(t, "Error updating zone [00000000-0000-0000-0000-000000000000]: test error\n", func() {
+			cloudflareZoneUpdate(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000"})
+		})
+	})
+}
+
 func Test_cloudflareZoneDeleteCmd_Args(t *testing.T) {
 	t.Run("ValidArgs_NoError", func(t *testing.T) {
 		err := cloudflareZoneDeleteCmd(nil).Args(nil, []string{"00000000-0000-0000-0000-000000000000"})

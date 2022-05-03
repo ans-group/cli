@@ -271,3 +271,31 @@ func (mr *MockCloudflareServiceMockRecorder) GetZonesPaginated(arg0 interface{})
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetZonesPaginated", reflect.TypeOf((*MockCloudflareService)(nil).GetZonesPaginated), arg0)
 }
+
+// PatchAccount mocks base method.
+func (m *MockCloudflareService) PatchAccount(arg0 string, arg1 cloudflare.PatchAccountRequest) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PatchAccount", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchAccount indicates an expected call of PatchAccount.
+func (mr *MockCloudflareServiceMockRecorder) PatchAccount(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchAccount", reflect.TypeOf((*MockCloudflareService)(nil).PatchAccount), arg0, arg1)
+}
+
+// PatchZone mocks base method.
+func (m *MockCloudflareService) PatchZone(arg0 string, arg1 cloudflare.PatchZoneRequest) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PatchZone", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchZone indicates an expected call of PatchZone.
+func (mr *MockCloudflareServiceMockRecorder) PatchZone(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchZone", reflect.TypeOf((*MockCloudflareService)(nil).PatchZone), arg0, arg1)
+}

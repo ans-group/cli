@@ -147,3 +147,51 @@ func Test_cloudflareAccountCreate(t *testing.T) {
 		assert.Equal(t, "Error retrieving new account: test error", err.Error())
 	})
 }
+
+func Test_cloudflareAccountUpdateCmd_Args(t *testing.T) {
+	t.Run("ValidArgs_NoError", func(t *testing.T) {
+		err := cloudflareAccountUpdateCmd(nil).Args(nil, []string{"00000000-0000-0000-0000-000000000000"})
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("InvalidArgs_Error", func(t *testing.T) {
+		err := cloudflareAccountUpdateCmd(nil).Args(nil, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing account", err.Error())
+	})
+}
+
+func Test_cloudflareAccountUpdate(t *testing.T) {
+	t.Run("SingleAccount", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockCloudflareService(mockCtrl)
+
+		cmd := cloudflareAccountUpdateCmd(nil)
+		cmd.Flags().Set("name", "test")
+
+		req := cloudflare.PatchAccountRequest{
+			Name: "test",
+		}
+
+		service.EXPECT().PatchAccount("00000000-0000-0000-0000-000000000000", req).Return(nil).Times(1)
+
+		cloudflareAccountUpdate(service, cmd, []string{"00000000-0000-0000-0000-000000000000"})
+	})
+
+	t.Run("UpdateAccountError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockCloudflareService(mockCtrl)
+
+		service.EXPECT().PatchAccount("00000000-0000-0000-0000-000000000000", cloudflare.PatchAccountRequest{}).Return(errors.New("test error"))
+
+		test_output.AssertErrorOutput(t, "Error updating account [00000000-0000-0000-0000-000000000000]: test error\n", func() {
+			cloudflareAccountUpdate(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000"})
+		})
+	})
+}
