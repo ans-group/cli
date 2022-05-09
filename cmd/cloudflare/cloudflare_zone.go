@@ -96,8 +96,8 @@ func cloudflareZoneCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.MarkFlagRequired("account")
 	cmd.Flags().String("name", "", "Name of zone")
 	cmd.MarkFlagRequired("name")
-	cmd.Flags().String("subscription-type", "", "Type of subscription")
-	cmd.MarkFlagRequired("subscription-type")
+	cmd.Flags().String("subscription", "", "ID of plan subscription")
+	cmd.MarkFlagRequired("subscription")
 
 	return cmd
 }
@@ -106,7 +106,7 @@ func cloudflareZoneCreate(service cloudflare.CloudflareService, cmd *cobra.Comma
 	createRequest := cloudflare.CreateZoneRequest{}
 	createRequest.AccountID, _ = cmd.Flags().GetString("account")
 	createRequest.Name, _ = cmd.Flags().GetString("name")
-	createRequest.SubscriptionType, _ = cmd.Flags().GetString("subscription-type")
+	createRequest.SubscriptionID, _ = cmd.Flags().GetString("subscription")
 
 	zoneID, err := service.CreateZone(createRequest)
 	if err != nil {
@@ -137,14 +137,14 @@ func cloudflareZoneUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		RunE: cloudflareCobraRunEFunc(f, cloudflareZoneUpdate),
 	}
 
-	cmd.Flags().String("plan-subscription", "", "ID of plan subscription")
+	cmd.Flags().String("subscription", "", "ID of plan subscription")
 
 	return cmd
 }
 
 func cloudflareZoneUpdate(service cloudflare.CloudflareService, cmd *cobra.Command, args []string) error {
 	req := cloudflare.PatchZoneRequest{}
-	req.PlanSubscriptionID, _ = cmd.Flags().GetString("plan-subscription")
+	req.SubscriptionID, _ = cmd.Flags().GetString("subscription")
 
 	for _, arg := range args {
 		err := service.PatchZone(arg, req)

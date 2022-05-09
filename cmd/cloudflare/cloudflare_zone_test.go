@@ -171,10 +171,10 @@ func Test_cloudflareZoneUpdate(t *testing.T) {
 		service := mocks.NewMockCloudflareService(mockCtrl)
 
 		cmd := cloudflareZoneUpdateCmd(nil)
-		cmd.Flags().Set("plan-subscription", "00000000-0000-0000-0000-000000000000")
+		cmd.Flags().Set("subscription", "00000000-0000-0000-0000-000000000000")
 
 		req := cloudflare.PatchZoneRequest{
-			PlanSubscriptionID: "00000000-0000-0000-0000-000000000000",
+			SubscriptionID: "00000000-0000-0000-0000-000000000000",
 		}
 
 		service.EXPECT().PatchZone("00000000-0000-0000-0000-000000000000", req).Return(nil).Times(1)
