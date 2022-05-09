@@ -92,6 +92,8 @@ github.com/tcnksm/go-gitconfig v0.1.2/go.mod h1:/8EhP4H7oJZdIPyT+/UIsG87kTzrzM4U
 github.com/ugorji/go/codec v0.0.0-20181204163529-d75b2dcb6bc8/go.mod h1:VFNgLljTbGfSG7qAOspJ7OScBnGdDN/yBr0sguwnwf0=
 github.com/ukfast/go-durationstring v1.1.0 h1:Ki0ubc5jqSt7XuAs+gkPNpHYolIwbcsRW4LS239tIHA=
 github.com/ukfast/go-durationstring v1.1.0/go.mod h1:Ci81n51kfxlKUIaLY9cINIKRO94VTqV+iCGbOMTb0V8=
+github.com/ukfast/sdk-go v1.5.0 h1:nrmGKE4UUwQvtk8XU0IoUpPRNQ83opvCj6P/Lr8r4is=
+github.com/ukfast/sdk-go v1.5.0/go.mod h1:vxlI1IHy2pp04AYqRMm0MHWSWOF0lwTkPJXHxTDLPok=
 github.com/ulikunitz/xz v0.5.5/go.mod h1:2bypXElzHzzJZwzH67Y6wb67pO62Rzfn7BSiF4ABRW8=
 github.com/ulikunitz/xz v0.5.8 h1:ERv8V6GKqVi23rgu5cj9pVfVzJbOqAY2Ntl88O6c2nQ=
 github.com/ulikunitz/xz v0.5.8/go.mod h1:nbz6k7qbPmH4IRqmfOplQw/tblSgqTqBwxkY0oWt/14=
