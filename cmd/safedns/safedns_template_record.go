@@ -307,8 +307,8 @@ func safednsTemplateRecordDeleteCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
 		Use:     "delete <template: id/name> <record: id>...",
 		Short:   "Removes a template record",
-		Long:    "This command removes one or more template records",
-		Example: "ukfast safedns template record remove \"main template\" 123",
+		Long:    "This command deletes one or more template records",
+		Example: "ukfast safedns template record delete \"main template\" 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing template")
