@@ -5,8 +5,6 @@ go 1.13
 require (
 	github.com/blang/semver v3.5.1+incompatible
 	github.com/golang/mock v1.4.4
-	github.com/google/uuid v1.1.1
-	github.com/guptarohit/asciigraph v0.4.2-0.20191006150553-f9506970428c
 	github.com/iancoleman/strcase v0.0.0-20191112232945-16388991a334
 	github.com/mattn/go-runewidth v0.0.4 // indirect
 	github.com/mitchellh/go-homedir v1.1.0
@@ -18,7 +16,7 @@ require (
 	github.com/spf13/cobra v0.0.5
 	github.com/spf13/viper v1.3.2
 	github.com/stretchr/testify v1.6.1
-	github.com/ukfast/sdk-go v1.4.33
+	github.com/ukfast/sdk-go v1.5.1
 	github.com/ulikunitz/xz v0.5.8 // indirect
 	golang.org/x/sys v0.0.0-20220412211240-33da011f77ad // indirect
 	gopkg.in/go-playground/assert.v1 v1.2.1

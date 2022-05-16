@@ -9,12 +9,12 @@ import (
 	"github.com/spf13/viper"
 	accountcmd "github.com/ukfast/cli/cmd/account"
 	billingcmd "github.com/ukfast/cli/cmd/billing"
+	"github.com/ukfast/cli/cmd/cloudflare"
 	ddosxcmd "github.com/ukfast/cli/cmd/ddosx"
 	draascmd "github.com/ukfast/cli/cmd/draas"
 	ecloudcmd "github.com/ukfast/cli/cmd/ecloud"
 	ecloudflexcmd "github.com/ukfast/cli/cmd/ecloudflex"
 	loadbalancercmd "github.com/ukfast/cli/cmd/loadbalancer"
-	loadtestcmd "github.com/ukfast/cli/cmd/loadtest"
 	psscmd "github.com/ukfast/cli/cmd/pss"
 	registrarcmd "github.com/ukfast/cli/cmd/registrar"
 	safednscmd "github.com/ukfast/cli/cmd/safedns"
@@ -75,7 +75,7 @@ func Execute(build build.BuildInfo) {
 	rootCmd.AddCommand(ecloudcmd.ECloudRootCmd(clientFactory, fs))
 	rootCmd.AddCommand(ecloudflexcmd.ECloudFlexRootCmd(clientFactory))
 	rootCmd.AddCommand(loadbalancercmd.LoadBalancerRootCmd(clientFactory, fs))
-	rootCmd.AddCommand(loadtestcmd.LoadTestRootCmd(clientFactory))
+	rootCmd.AddCommand(cloudflare.CloudflareRootCmd(clientFactory))
 	rootCmd.AddCommand(psscmd.PSSRootCmd(clientFactory, fs))
 	rootCmd.AddCommand(registrarcmd.RegistrarRootCmd(clientFactory))
 	rootCmd.AddCommand(safednscmd.SafeDNSRootCmd(clientFactory))
