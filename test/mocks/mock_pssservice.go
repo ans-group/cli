@@ -156,10 +156,10 @@ func (mr *MockPSSServiceMockRecorder) GetRequestConversation(arg0, arg1 interfac
 }
 
 // GetRequestConversationPaginated mocks base method.
-func (m *MockPSSService) GetRequestConversationPaginated(arg0 int, arg1 connection.APIRequestParameters) (*pss.PaginatedReply, error) {
+func (m *MockPSSService) GetRequestConversationPaginated(arg0 int, arg1 connection.APIRequestParameters) (*connection.Paginated[pss.Reply], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetRequestConversationPaginated", arg0, arg1)
-	ret0, _ := ret[0].(*pss.PaginatedReply)
+	ret0, _ := ret[0].(*connection.Paginated[pss.Reply])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -201,10 +201,10 @@ func (mr *MockPSSServiceMockRecorder) GetRequestReplies(arg0, arg1 interface{}) 
 }
 
 // GetRequestRepliesPaginated mocks base method.
-func (m *MockPSSService) GetRequestRepliesPaginated(arg0 int, arg1 connection.APIRequestParameters) (*pss.PaginatedReply, error) {
+func (m *MockPSSService) GetRequestRepliesPaginated(arg0 int, arg1 connection.APIRequestParameters) (*connection.Paginated[pss.Reply], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetRequestRepliesPaginated", arg0, arg1)
-	ret0, _ := ret[0].(*pss.PaginatedReply)
+	ret0, _ := ret[0].(*connection.Paginated[pss.Reply])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -231,10 +231,10 @@ func (mr *MockPSSServiceMockRecorder) GetRequests(arg0 interface{}) *gomock.Call
 }
 
 // GetRequestsPaginated mocks base method.
-func (m *MockPSSService) GetRequestsPaginated(arg0 connection.APIRequestParameters) (*pss.PaginatedRequest, error) {
+func (m *MockPSSService) GetRequestsPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[pss.Request], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetRequestsPaginated", arg0)
-	ret0, _ := ret[0].(*pss.PaginatedRequest)
+	ret0, _ := ret[0].(*connection.Paginated[pss.Request])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

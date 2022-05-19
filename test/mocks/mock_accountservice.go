@@ -81,10 +81,10 @@ func (mr *MockAccountServiceMockRecorder) GetContacts(arg0 interface{}) *gomock.
 }
 
 // GetContactsPaginated mocks base method.
-func (m *MockAccountService) GetContactsPaginated(arg0 connection.APIRequestParameters) (*account.PaginatedContact, error) {
+func (m *MockAccountService) GetContactsPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[account.Contact], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetContactsPaginated", arg0)
-	ret0, _ := ret[0].(*account.PaginatedContact)
+	ret0, _ := ret[0].(*connection.Paginated[account.Contact])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -156,10 +156,10 @@ func (mr *MockAccountServiceMockRecorder) GetInvoiceQueries(arg0 interface{}) *g
 }
 
 // GetInvoiceQueriesPaginated mocks base method.
-func (m *MockAccountService) GetInvoiceQueriesPaginated(arg0 connection.APIRequestParameters) (*account.PaginatedInvoiceQuery, error) {
+func (m *MockAccountService) GetInvoiceQueriesPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[account.InvoiceQuery], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetInvoiceQueriesPaginated", arg0)
-	ret0, _ := ret[0].(*account.PaginatedInvoiceQuery)
+	ret0, _ := ret[0].(*connection.Paginated[account.InvoiceQuery])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -201,10 +201,10 @@ func (mr *MockAccountServiceMockRecorder) GetInvoices(arg0 interface{}) *gomock.
 }
 
 // GetInvoicesPaginated mocks base method.
-func (m *MockAccountService) GetInvoicesPaginated(arg0 connection.APIRequestParameters) (*account.PaginatedInvoice, error) {
+func (m *MockAccountService) GetInvoicesPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[account.Invoice], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetInvoicesPaginated", arg0)
-	ret0, _ := ret[0].(*account.PaginatedInvoice)
+	ret0, _ := ret[0].(*connection.Paginated[account.Invoice])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

@@ -283,10 +283,10 @@ func (mr *MockLoadBalancerServiceMockRecorder) GetACLs(arg0 interface{}) *gomock
 }
 
 // GetACLsPaginated mocks base method.
-func (m *MockLoadBalancerService) GetACLsPaginated(arg0 connection.APIRequestParameters) (*loadbalancer.PaginatedACL, error) {
+func (m *MockLoadBalancerService) GetACLsPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[loadbalancer.ACL], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetACLsPaginated", arg0)
-	ret0, _ := ret[0].(*loadbalancer.PaginatedACL)
+	ret0, _ := ret[0].(*connection.Paginated[loadbalancer.ACL])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -328,10 +328,10 @@ func (mr *MockLoadBalancerServiceMockRecorder) GetBinds(arg0 interface{}) *gomoc
 }
 
 // GetBindsPaginated mocks base method.
-func (m *MockLoadBalancerService) GetBindsPaginated(arg0 connection.APIRequestParameters) (*loadbalancer.PaginatedBind, error) {
+func (m *MockLoadBalancerService) GetBindsPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[loadbalancer.Bind], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetBindsPaginated", arg0)
-	ret0, _ := ret[0].(*loadbalancer.PaginatedBind)
+	ret0, _ := ret[0].(*connection.Paginated[loadbalancer.Bind])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -388,10 +388,10 @@ func (mr *MockLoadBalancerServiceMockRecorder) GetClusters(arg0 interface{}) *go
 }
 
 // GetClustersPaginated mocks base method.
-func (m *MockLoadBalancerService) GetClustersPaginated(arg0 connection.APIRequestParameters) (*loadbalancer.PaginatedCluster, error) {
+func (m *MockLoadBalancerService) GetClustersPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[loadbalancer.Cluster], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetClustersPaginated", arg0)
-	ret0, _ := ret[0].(*loadbalancer.PaginatedCluster)
+	ret0, _ := ret[0].(*connection.Paginated[loadbalancer.Cluster])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -418,10 +418,10 @@ func (mr *MockLoadBalancerServiceMockRecorder) GetHeaders(arg0 interface{}) *gom
 }
 
 // GetHeadersPaginated mocks base method.
-func (m *MockLoadBalancerService) GetHeadersPaginated(arg0 connection.APIRequestParameters) (*loadbalancer.PaginatedHeader, error) {
+func (m *MockLoadBalancerService) GetHeadersPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[loadbalancer.Header], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetHeadersPaginated", arg0)
-	ret0, _ := ret[0].(*loadbalancer.PaginatedHeader)
+	ret0, _ := ret[0].(*connection.Paginated[loadbalancer.Header])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -463,10 +463,10 @@ func (mr *MockLoadBalancerServiceMockRecorder) GetListenerACLs(arg0, arg1 interf
 }
 
 // GetListenerACLsPaginated mocks base method.
-func (m *MockLoadBalancerService) GetListenerACLsPaginated(arg0 int, arg1 connection.APIRequestParameters) (*loadbalancer.PaginatedACL, error) {
+func (m *MockLoadBalancerService) GetListenerACLsPaginated(arg0 int, arg1 connection.APIRequestParameters) (*connection.Paginated[loadbalancer.ACL], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetListenerACLsPaginated", arg0, arg1)
-	ret0, _ := ret[0].(*loadbalancer.PaginatedACL)
+	ret0, _ := ret[0].(*connection.Paginated[loadbalancer.ACL])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -493,10 +493,10 @@ func (mr *MockLoadBalancerServiceMockRecorder) GetListenerAccessIPs(arg0, arg1 i
 }
 
 // GetListenerAccessIPsPaginated mocks base method.
-func (m *MockLoadBalancerService) GetListenerAccessIPsPaginated(arg0 int, arg1 connection.APIRequestParameters) (*loadbalancer.PaginatedAccessIP, error) {
+func (m *MockLoadBalancerService) GetListenerAccessIPsPaginated(arg0 int, arg1 connection.APIRequestParameters) (*connection.Paginated[loadbalancer.AccessIP], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetListenerAccessIPsPaginated", arg0, arg1)
-	ret0, _ := ret[0].(*loadbalancer.PaginatedAccessIP)
+	ret0, _ := ret[0].(*connection.Paginated[loadbalancer.AccessIP])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -538,10 +538,10 @@ func (mr *MockLoadBalancerServiceMockRecorder) GetListenerBinds(arg0, arg1 inter
 }
 
 // GetListenerBindsPaginated mocks base method.
-func (m *MockLoadBalancerService) GetListenerBindsPaginated(arg0 int, arg1 connection.APIRequestParameters) (*loadbalancer.PaginatedBind, error) {
+func (m *MockLoadBalancerService) GetListenerBindsPaginated(arg0 int, arg1 connection.APIRequestParameters) (*connection.Paginated[loadbalancer.Bind], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetListenerBindsPaginated", arg0, arg1)
-	ret0, _ := ret[0].(*loadbalancer.PaginatedBind)
+	ret0, _ := ret[0].(*connection.Paginated[loadbalancer.Bind])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -583,10 +583,10 @@ func (mr *MockLoadBalancerServiceMockRecorder) GetListenerCertificates(arg0, arg
 }
 
 // GetListenerCertificatesPaginated mocks base method.
-func (m *MockLoadBalancerService) GetListenerCertificatesPaginated(arg0 int, arg1 connection.APIRequestParameters) (*loadbalancer.PaginatedCertificate, error) {
+func (m *MockLoadBalancerService) GetListenerCertificatesPaginated(arg0 int, arg1 connection.APIRequestParameters) (*connection.Paginated[loadbalancer.Certificate], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetListenerCertificatesPaginated", arg0, arg1)
-	ret0, _ := ret[0].(*loadbalancer.PaginatedCertificate)
+	ret0, _ := ret[0].(*connection.Paginated[loadbalancer.Certificate])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -613,10 +613,10 @@ func (mr *MockLoadBalancerServiceMockRecorder) GetListeners(arg0 interface{}) *g
 }
 
 // GetListenersPaginated mocks base method.
-func (m *MockLoadBalancerService) GetListenersPaginated(arg0 connection.APIRequestParameters) (*loadbalancer.PaginatedListener, error) {
+func (m *MockLoadBalancerService) GetListenersPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[loadbalancer.Listener], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetListenersPaginated", arg0)
-	ret0, _ := ret[0].(*loadbalancer.PaginatedListener)
+	ret0, _ := ret[0].(*connection.Paginated[loadbalancer.Listener])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -658,10 +658,10 @@ func (mr *MockLoadBalancerServiceMockRecorder) GetTargetGroupACLs(arg0, arg1 int
 }
 
 // GetTargetGroupACLsPaginated mocks base method.
-func (m *MockLoadBalancerService) GetTargetGroupACLsPaginated(arg0 int, arg1 connection.APIRequestParameters) (*loadbalancer.PaginatedACL, error) {
+func (m *MockLoadBalancerService) GetTargetGroupACLsPaginated(arg0 int, arg1 connection.APIRequestParameters) (*connection.Paginated[loadbalancer.ACL], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetTargetGroupACLsPaginated", arg0, arg1)
-	ret0, _ := ret[0].(*loadbalancer.PaginatedACL)
+	ret0, _ := ret[0].(*connection.Paginated[loadbalancer.ACL])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -703,10 +703,10 @@ func (mr *MockLoadBalancerServiceMockRecorder) GetTargetGroupTargets(arg0, arg1 
 }
 
 // GetTargetGroupTargetsPaginated mocks base method.
-func (m *MockLoadBalancerService) GetTargetGroupTargetsPaginated(arg0 int, arg1 connection.APIRequestParameters) (*loadbalancer.PaginatedTarget, error) {
+func (m *MockLoadBalancerService) GetTargetGroupTargetsPaginated(arg0 int, arg1 connection.APIRequestParameters) (*connection.Paginated[loadbalancer.Target], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetTargetGroupTargetsPaginated", arg0, arg1)
-	ret0, _ := ret[0].(*loadbalancer.PaginatedTarget)
+	ret0, _ := ret[0].(*connection.Paginated[loadbalancer.Target])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -733,10 +733,10 @@ func (mr *MockLoadBalancerServiceMockRecorder) GetTargetGroups(arg0 interface{})
 }
 
 // GetTargetGroupsPaginated mocks base method.
-func (m *MockLoadBalancerService) GetTargetGroupsPaginated(arg0 connection.APIRequestParameters) (*loadbalancer.PaginatedTargetGroup, error) {
+func (m *MockLoadBalancerService) GetTargetGroupsPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[loadbalancer.TargetGroup], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetTargetGroupsPaginated", arg0)
-	ret0, _ := ret[0].(*loadbalancer.PaginatedTargetGroup)
+	ret0, _ := ret[0].(*connection.Paginated[loadbalancer.TargetGroup])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -778,10 +778,10 @@ func (mr *MockLoadBalancerServiceMockRecorder) GetVIPs(arg0 interface{}) *gomock
 }
 
 // GetVIPsPaginated mocks base method.
-func (m *MockLoadBalancerService) GetVIPsPaginated(arg0 connection.APIRequestParameters) (*loadbalancer.PaginatedVIP, error) {
+func (m *MockLoadBalancerService) GetVIPsPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[loadbalancer.VIP], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetVIPsPaginated", arg0)
-	ret0, _ := ret[0].(*loadbalancer.PaginatedVIP)
+	ret0, _ := ret[0].(*connection.Paginated[loadbalancer.VIP])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

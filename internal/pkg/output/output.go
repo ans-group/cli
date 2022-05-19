@@ -287,7 +287,7 @@ func Template(t string, i interface{}) error {
 	return nil
 }
 
-func CommandOutputPaginated(cmd *cobra.Command, out OutputHandlerDataProvider, paginated connection.Paginated) error {
+func CommandOutputPaginated[T any](cmd *cobra.Command, out OutputHandlerDataProvider, paginated *connection.Paginated[T]) error {
 	err := CommandOutput(cmd, out)
 	if err != nil {
 		return err

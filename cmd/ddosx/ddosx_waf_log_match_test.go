@@ -20,7 +20,7 @@ func Test_ddosxWAFLogMatchList(t *testing.T) {
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
 
-		service.EXPECT().GetWAFLogMatchesPaginated(gomock.Any()).Return(&ddosx.PaginatedWAFLogMatch{PaginatedBase: &connection.PaginatedBase{}}, nil).Times(1)
+		service.EXPECT().GetWAFLogMatchesPaginated(gomock.Any()).Return(connection.NewPaginated(&connection.APIResponseBodyData[[]ddosx.WAFLogMatch]{}, connection.APIRequestParameters{}, nil), nil).Times(1)
 
 		ddosxWAFLogMatchList(service, ddosxWAFLogMatchListCmd(nil), []string{})
 	})
@@ -34,7 +34,7 @@ func Test_ddosxWAFLogMatchList(t *testing.T) {
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
 
-		service.EXPECT().GetWAFLogRequestMatchesPaginated("abcdef", gomock.Any()).Return(&ddosx.PaginatedWAFLogMatch{PaginatedBase: &connection.PaginatedBase{}}, nil).Times(1)
+		service.EXPECT().GetWAFLogRequestMatchesPaginated("abcdef", gomock.Any()).Return(connection.NewPaginated(&connection.APIResponseBodyData[[]ddosx.WAFLogMatch]{}, connection.APIRequestParameters{}, nil), nil).Times(1)
 
 		ddosxWAFLogMatchList(service, cmd, []string{})
 	})
@@ -48,7 +48,7 @@ func Test_ddosxWAFLogMatchList(t *testing.T) {
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
 
-		service.EXPECT().GetWAFLogRequestMatchesPaginated("abcdef", gomock.Any()).Return(&ddosx.PaginatedWAFLogMatch{PaginatedBase: &connection.PaginatedBase{}}, errors.New("test error"))
+		service.EXPECT().GetWAFLogRequestMatchesPaginated("abcdef", gomock.Any()).Return(&connection.Paginated[ddosx.WAFLogMatch]{}, errors.New("test error"))
 
 		err := ddosxWAFLogMatchList(service, cmd, []string{})
 
@@ -61,7 +61,7 @@ func Test_ddosxWAFLogMatchList(t *testing.T) {
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
 
-		service.EXPECT().GetWAFLogMatchesPaginated(gomock.Any()).Return(&ddosx.PaginatedWAFLogMatch{PaginatedBase: &connection.PaginatedBase{}}, errors.New("test error"))
+		service.EXPECT().GetWAFLogMatchesPaginated(gomock.Any()).Return(&connection.Paginated[ddosx.WAFLogMatch]{}, errors.New("test error"))
 
 		err := ddosxWAFLogMatchList(service, ddosxWAFLogMatchListCmd(nil), []string{})
 

@@ -96,10 +96,10 @@ func (mr *MockSSLServiceMockRecorder) GetCertificates(arg0 interface{}) *gomock.
 }
 
 // GetCertificatesPaginated mocks base method.
-func (m *MockSSLService) GetCertificatesPaginated(arg0 connection.APIRequestParameters) (*ssl.PaginatedCertificate, error) {
+func (m *MockSSLService) GetCertificatesPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[ssl.Certificate], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetCertificatesPaginated", arg0)
-	ret0, _ := ret[0].(*ssl.PaginatedCertificate)
+	ret0, _ := ret[0].(*connection.Paginated[ssl.Certificate])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

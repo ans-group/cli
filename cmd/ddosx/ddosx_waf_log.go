@@ -59,7 +59,7 @@ func ddosxWAFLogList(service ddosx.DDoSXService, cmd *cobra.Command, args []stri
 		return fmt.Errorf("Error retrieving WAF logs: %s", err)
 	}
 
-	return output.CommandOutputPaginated(cmd, OutputDDoSXWAFLogsProvider(paginatedLogs.Items), paginatedLogs)
+	return output.CommandOutputPaginated(cmd, OutputDDoSXWAFLogsProvider(paginatedLogs.Items()), paginatedLogs)
 }
 
 func ddosxWAFLogShowCmd(f factory.ClientFactory) *cobra.Command {

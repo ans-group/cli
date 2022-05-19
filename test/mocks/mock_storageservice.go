@@ -66,10 +66,10 @@ func (mr *MockStorageServiceMockRecorder) GetHosts(arg0 interface{}) *gomock.Cal
 }
 
 // GetHostsPaginated mocks base method.
-func (m *MockStorageService) GetHostsPaginated(arg0 connection.APIRequestParameters) (*storage.PaginatedHost, error) {
+func (m *MockStorageService) GetHostsPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[storage.Host], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetHostsPaginated", arg0)
-	ret0, _ := ret[0].(*storage.PaginatedHost)
+	ret0, _ := ret[0].(*connection.Paginated[storage.Host])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -111,10 +111,10 @@ func (mr *MockStorageServiceMockRecorder) GetSolutions(arg0 interface{}) *gomock
 }
 
 // GetSolutionsPaginated mocks base method.
-func (m *MockStorageService) GetSolutionsPaginated(arg0 connection.APIRequestParameters) (*storage.PaginatedSolution, error) {
+func (m *MockStorageService) GetSolutionsPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[storage.Solution], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetSolutionsPaginated", arg0)
-	ret0, _ := ret[0].(*storage.PaginatedSolution)
+	ret0, _ := ret[0].(*connection.Paginated[storage.Solution])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -156,10 +156,10 @@ func (mr *MockStorageServiceMockRecorder) GetVolumes(arg0 interface{}) *gomock.C
 }
 
 // GetVolumesPaginated mocks base method.
-func (m *MockStorageService) GetVolumesPaginated(arg0 connection.APIRequestParameters) (*storage.PaginatedVolume, error) {
+func (m *MockStorageService) GetVolumesPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[storage.Volume], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetVolumesPaginated", arg0)
-	ret0, _ := ret[0].(*storage.PaginatedVolume)
+	ret0, _ := ret[0].(*connection.Paginated[storage.Volume])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

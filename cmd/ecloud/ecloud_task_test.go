@@ -21,7 +21,7 @@ func Test_ecloudTaskList(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().GetTasksPaginated(gomock.Any()).Return(&ecloud.PaginatedTask{PaginatedBase: &connection.PaginatedBase{}}, nil).Times(1)
+		service.EXPECT().GetTasksPaginated(gomock.Any()).Return(connection.NewPaginated(&connection.APIResponseBodyData[[]ecloud.Task]{}, connection.APIRequestParameters{}, nil), nil).Times(1)
 
 		ecloudTaskList(service, &cobra.Command{}, []string{})
 	})
@@ -46,7 +46,7 @@ func Test_ecloudTaskList(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().GetTasksPaginated(gomock.Any()).Return(&ecloud.PaginatedTask{PaginatedBase: &connection.PaginatedBase{}}, errors.New("test error")).Times(1)
+		service.EXPECT().GetTasksPaginated(gomock.Any()).Return(connection.NewPaginated(&connection.APIResponseBodyData[[]ecloud.Task]{}, connection.APIRequestParameters{}, nil), errors.New("test error")).Times(1)
 
 		err := ecloudTaskList(service, &cobra.Command{}, []string{})
 

@@ -8,6 +8,7 @@ import (
 	"github.com/ukfast/cli/internal/pkg/factory"
 	"github.com/ukfast/cli/internal/pkg/helper"
 	"github.com/ukfast/cli/internal/pkg/output"
+	"github.com/ukfast/sdk-go/pkg/connection"
 	"github.com/ukfast/sdk-go/pkg/service/ddosx"
 )
 
@@ -53,7 +54,7 @@ func ddosxWAFLogMatchList(service ddosx.DDoSXService, cmd *cobra.Command, args [
 		return err
 	}
 
-	var paginatedMatches *ddosx.PaginatedWAFLogMatch
+	var paginatedMatches *connection.Paginated[ddosx.WAFLogMatch]
 
 	if cmd.Flags().Changed("log") {
 		log, _ := cmd.Flags().GetString("log")
@@ -65,7 +66,7 @@ func ddosxWAFLogMatchList(service ddosx.DDoSXService, cmd *cobra.Command, args [
 		return fmt.Errorf("Error retrieving WAF log matches: %s", err)
 	}
 
-	return output.CommandOutputPaginated(cmd, OutputDDoSXWAFLogMatchesProvider(paginatedMatches.Items), paginatedMatches)
+	return output.CommandOutputPaginated(cmd, OutputDDoSXWAFLogMatchesProvider(paginatedMatches.Items()), paginatedMatches)
 }
 
 func ddosxWAFLogMatchShowCmd(f factory.ClientFactory) *cobra.Command {
