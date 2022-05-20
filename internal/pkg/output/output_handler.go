@@ -44,6 +44,8 @@ func (o *OutputHandler) Handle() error {
 	switch o.Format {
 	case "json":
 		return JSON(o.DataProvider.GetData())
+	case "yaml":
+		return YAML(o.DataProvider.GetData())
 	case "jsonpath":
 		return JSONPath(o.FormatArg, o.DataProvider.GetData())
 	case "template":

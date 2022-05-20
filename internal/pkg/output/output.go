@@ -12,6 +12,7 @@ import (
 
 	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
+	"gopkg.in/yaml.v3"
 	"k8s.io/client-go/util/jsonpath"
 
 	"github.com/ukfast/sdk-go/pkg/connection"
@@ -125,6 +126,18 @@ func JSON(v interface{}) error {
 	out, err := json.Marshal(v)
 	if err != nil {
 		return fmt.Errorf("failed to marshal json: %s", err)
+	}
+
+	_, err = fmt.Print(string(out[:]))
+
+	return err
+}
+
+// YAML marshals and outputs value v to stdout
+func YAML(v interface{}) error {
+	out, err := yaml.Marshal(v)
+	if err != nil {
+		return fmt.Errorf("failed to marshal yaml: %s", err)
 	}
 
 	_, err = fmt.Print(string(out[:]))
