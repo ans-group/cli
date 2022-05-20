@@ -19,6 +19,8 @@ func ecloudNICIPAddressRootCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Child commands
 	cmd.AddCommand(ecloudNICIPAddressListCmd(f))
+	cmd.AddCommand(ecloudNICIPAddressAssignCmd(f))
+	cmd.AddCommand(ecloudNICIPAddressUnassignCmd(f))
 
 	return cmd
 }
