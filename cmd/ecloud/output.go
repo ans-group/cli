@@ -459,3 +459,7 @@ func OutputECloudLoadBalancerSpecsProvider(specs []ecloud.LoadBalancerSpec) outp
 func OutputECloudVIPsProvider(vips []ecloud.VIP) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(vips).WithDefaultFields([]string{"id", "name", "load_balancer_id", "ip_address_id", "config_id", "sync_status"})
 }
+
+func OutputECloudIPAddressesProvider(ips []ecloud.IPAddress) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(ips).WithDefaultFields([]string{"id", "name", "ip_address", "sync_status"})
+}

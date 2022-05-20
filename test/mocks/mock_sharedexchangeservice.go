@@ -66,10 +66,10 @@ func (mr *MockSharedExchangeServiceMockRecorder) GetDomains(arg0 interface{}) *g
 }
 
 // GetDomainsPaginated mocks base method.
-func (m *MockSharedExchangeService) GetDomainsPaginated(arg0 connection.APIRequestParameters) (*sharedexchange.PaginatedDomain, error) {
+func (m *MockSharedExchangeService) GetDomainsPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[sharedexchange.Domain], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetDomainsPaginated", arg0)
-	ret0, _ := ret[0].(*sharedexchange.PaginatedDomain)
+	ret0, _ := ret[0].(*connection.Paginated[sharedexchange.Domain])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

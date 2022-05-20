@@ -66,10 +66,10 @@ func (mr *MockECloudFlexServiceMockRecorder) GetProjects(arg0 interface{}) *gomo
 }
 
 // GetProjectsPaginated mocks base method.
-func (m *MockECloudFlexService) GetProjectsPaginated(arg0 connection.APIRequestParameters) (*ecloudflex.PaginatedProject, error) {
+func (m *MockECloudFlexService) GetProjectsPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[ecloudflex.Project], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetProjectsPaginated", arg0)
-	ret0, _ := ret[0].(*ecloudflex.PaginatedProject)
+	ret0, _ := ret[0].(*connection.Paginated[ecloudflex.Project])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

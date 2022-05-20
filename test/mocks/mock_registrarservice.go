@@ -81,10 +81,10 @@ func (mr *MockRegistrarServiceMockRecorder) GetDomains(arg0 interface{}) *gomock
 }
 
 // GetDomainsPaginated mocks base method.
-func (m *MockRegistrarService) GetDomainsPaginated(arg0 connection.APIRequestParameters) (*registrar.PaginatedDomain, error) {
+func (m *MockRegistrarService) GetDomainsPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[registrar.Domain], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetDomainsPaginated", arg0)
-	ret0, _ := ret[0].(*registrar.PaginatedDomain)
+	ret0, _ := ret[0].(*connection.Paginated[registrar.Domain])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

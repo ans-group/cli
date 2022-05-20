@@ -138,10 +138,10 @@ func (mr *MockCloudflareServiceMockRecorder) GetAccounts(arg0 interface{}) *gomo
 }
 
 // GetAccountsPaginated mocks base method.
-func (m *MockCloudflareService) GetAccountsPaginated(arg0 connection.APIRequestParameters) (*cloudflare.PaginatedAccount, error) {
+func (m *MockCloudflareService) GetAccountsPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[cloudflare.Account], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetAccountsPaginated", arg0)
-	ret0, _ := ret[0].(*cloudflare.PaginatedAccount)
+	ret0, _ := ret[0].(*connection.Paginated[cloudflare.Account])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -168,10 +168,10 @@ func (mr *MockCloudflareServiceMockRecorder) GetSpendPlans(arg0 interface{}) *go
 }
 
 // GetSpendPlansPaginated mocks base method.
-func (m *MockCloudflareService) GetSpendPlansPaginated(arg0 connection.APIRequestParameters) (*cloudflare.PaginatedSpendPlan, error) {
+func (m *MockCloudflareService) GetSpendPlansPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[cloudflare.SpendPlan], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetSpendPlansPaginated", arg0)
-	ret0, _ := ret[0].(*cloudflare.PaginatedSpendPlan)
+	ret0, _ := ret[0].(*connection.Paginated[cloudflare.SpendPlan])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -198,10 +198,10 @@ func (mr *MockCloudflareServiceMockRecorder) GetSubscriptions(arg0 interface{}) 
 }
 
 // GetSubscriptionsPaginated mocks base method.
-func (m *MockCloudflareService) GetSubscriptionsPaginated(arg0 connection.APIRequestParameters) (*cloudflare.PaginatedSubscription, error) {
+func (m *MockCloudflareService) GetSubscriptionsPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[cloudflare.Subscription], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetSubscriptionsPaginated", arg0)
-	ret0, _ := ret[0].(*cloudflare.PaginatedSubscription)
+	ret0, _ := ret[0].(*connection.Paginated[cloudflare.Subscription])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -258,10 +258,10 @@ func (mr *MockCloudflareServiceMockRecorder) GetZones(arg0 interface{}) *gomock.
 }
 
 // GetZonesPaginated mocks base method.
-func (m *MockCloudflareService) GetZonesPaginated(arg0 connection.APIRequestParameters) (*cloudflare.PaginatedZone, error) {
+func (m *MockCloudflareService) GetZonesPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[cloudflare.Zone], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetZonesPaginated", arg0)
-	ret0, _ := ret[0].(*cloudflare.PaginatedZone)
+	ret0, _ := ret[0].(*connection.Paginated[cloudflare.Zone])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

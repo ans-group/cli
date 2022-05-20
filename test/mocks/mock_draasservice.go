@@ -66,10 +66,10 @@ func (mr *MockDRaaSServiceMockRecorder) GetBillingTypes(arg0 interface{}) *gomoc
 }
 
 // GetBillingTypesPaginated mocks base method.
-func (m *MockDRaaSService) GetBillingTypesPaginated(arg0 connection.APIRequestParameters) (*draas.PaginatedBillingType, error) {
+func (m *MockDRaaSService) GetBillingTypesPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[draas.BillingType], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetBillingTypesPaginated", arg0)
-	ret0, _ := ret[0].(*draas.PaginatedBillingType)
+	ret0, _ := ret[0].(*connection.Paginated[draas.BillingType])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -141,10 +141,10 @@ func (mr *MockDRaaSServiceMockRecorder) GetSolutionBackupResources(arg0, arg1 in
 }
 
 // GetSolutionBackupResourcesPaginated mocks base method.
-func (m *MockDRaaSService) GetSolutionBackupResourcesPaginated(arg0 string, arg1 connection.APIRequestParameters) (*draas.PaginatedBackupResource, error) {
+func (m *MockDRaaSService) GetSolutionBackupResourcesPaginated(arg0 string, arg1 connection.APIRequestParameters) (*connection.Paginated[draas.BackupResource], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetSolutionBackupResourcesPaginated", arg0, arg1)
-	ret0, _ := ret[0].(*draas.PaginatedBackupResource)
+	ret0, _ := ret[0].(*connection.Paginated[draas.BackupResource])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -201,10 +201,10 @@ func (mr *MockDRaaSServiceMockRecorder) GetSolutionComputeResources(arg0, arg1 i
 }
 
 // GetSolutionComputeResourcesPaginated mocks base method.
-func (m *MockDRaaSService) GetSolutionComputeResourcesPaginated(arg0 string, arg1 connection.APIRequestParameters) (*draas.PaginatedComputeResource, error) {
+func (m *MockDRaaSService) GetSolutionComputeResourcesPaginated(arg0 string, arg1 connection.APIRequestParameters) (*connection.Paginated[draas.ComputeResource], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetSolutionComputeResourcesPaginated", arg0, arg1)
-	ret0, _ := ret[0].(*draas.PaginatedComputeResource)
+	ret0, _ := ret[0].(*connection.Paginated[draas.ComputeResource])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -246,10 +246,10 @@ func (mr *MockDRaaSServiceMockRecorder) GetSolutionFailoverPlans(arg0, arg1 inte
 }
 
 // GetSolutionFailoverPlansPaginated mocks base method.
-func (m *MockDRaaSService) GetSolutionFailoverPlansPaginated(arg0 string, arg1 connection.APIRequestParameters) (*draas.PaginatedFailoverPlan, error) {
+func (m *MockDRaaSService) GetSolutionFailoverPlansPaginated(arg0 string, arg1 connection.APIRequestParameters) (*connection.Paginated[draas.FailoverPlan], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetSolutionFailoverPlansPaginated", arg0, arg1)
-	ret0, _ := ret[0].(*draas.PaginatedFailoverPlan)
+	ret0, _ := ret[0].(*connection.Paginated[draas.FailoverPlan])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -306,10 +306,10 @@ func (mr *MockDRaaSServiceMockRecorder) GetSolutionHardwarePlans(arg0, arg1 inte
 }
 
 // GetSolutionHardwarePlansPaginated mocks base method.
-func (m *MockDRaaSService) GetSolutionHardwarePlansPaginated(arg0 string, arg1 connection.APIRequestParameters) (*draas.PaginatedHardwarePlan, error) {
+func (m *MockDRaaSService) GetSolutionHardwarePlansPaginated(arg0 string, arg1 connection.APIRequestParameters) (*connection.Paginated[draas.HardwarePlan], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetSolutionHardwarePlansPaginated", arg0, arg1)
-	ret0, _ := ret[0].(*draas.PaginatedHardwarePlan)
+	ret0, _ := ret[0].(*connection.Paginated[draas.HardwarePlan])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -336,10 +336,10 @@ func (mr *MockDRaaSServiceMockRecorder) GetSolutions(arg0 interface{}) *gomock.C
 }
 
 // GetSolutionsPaginated mocks base method.
-func (m *MockDRaaSService) GetSolutionsPaginated(arg0 connection.APIRequestParameters) (*draas.PaginatedSolution, error) {
+func (m *MockDRaaSService) GetSolutionsPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[draas.Solution], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetSolutionsPaginated", arg0)
-	ret0, _ := ret[0].(*draas.PaginatedSolution)
+	ret0, _ := ret[0].(*connection.Paginated[draas.Solution])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

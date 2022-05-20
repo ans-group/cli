@@ -21,6 +21,9 @@ func ecloudNICRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.AddCommand(ecloudNICListCmd(f))
 	cmd.AddCommand(ecloudNICShowCmd(f))
 
+	// Child root commands
+	cmd.AddCommand(ecloudNICIPAddressRootCmd(f))
+
 	return cmd
 }
 
