@@ -17,6 +17,7 @@ require (
 	github.com/stretchr/testify v1.6.1
 	github.com/ukfast/sdk-go v1.6.0
 	gopkg.in/go-playground/assert.v1 v1.2.1
+	gopkg.in/yaml.v3 v3.0.0-20220512140231-539c8e751b99
 	k8s.io/client-go v11.0.0+incompatible
 )
 
@@ -50,7 +51,6 @@ require (
 	google.golang.org/appengine v1.3.0 // indirect
 	gopkg.in/go-playground/validator.v9 v9.27.0 // indirect
 	gopkg.in/yaml.v2 v2.2.2 // indirect
-	gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c // indirect
 )
 
 // replace github.com/ukfast/sdk-go => ../sdk-go
