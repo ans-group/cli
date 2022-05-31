@@ -15,7 +15,7 @@ require (
 	github.com/spf13/cobra v0.0.5
 	github.com/spf13/viper v1.3.2
 	github.com/stretchr/testify v1.6.1
-	github.com/ukfast/sdk-go v1.6.0
+	github.com/ukfast/sdk-go v1.6.2
 	gopkg.in/go-playground/assert.v1 v1.2.1
 	gopkg.in/yaml.v3 v3.0.0-20220512140231-539c8e751b99
 	k8s.io/client-go v11.0.0+incompatible
