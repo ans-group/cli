@@ -4,8 +4,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
+	"github.com/ukfast/cli/internal/pkg/config"
 	"github.com/ukfast/cli/test"
 )
 
@@ -13,8 +13,9 @@ func TestWaitForCommand(t *testing.T) {
 
 	t.Run("SuccessAfter3Attempts", func(t *testing.T) {
 		test.TestResetViper()
+		config.Set("test", "command_wait_sleep_seconds", 1)
+		config.SwitchCurrentContext("test")
 		defer test.TestResetViper()
-		viper.SetDefault("command_wait_sleep_seconds", 1)
 
 		attempt := 1
 		f := func() (bool, error) {
@@ -34,8 +35,9 @@ func TestWaitForCommand(t *testing.T) {
 
 	t.Run("ErrorAfter3Attempts", func(t *testing.T) {
 		test.TestResetViper()
+		config.Set("test", "command_wait_sleep_seconds", 1)
+		config.SwitchCurrentContext("test")
 		defer test.TestResetViper()
-		viper.SetDefault("command_wait_sleep_seconds", 1)
 
 		attempt := 1
 		f := func() (bool, error) {

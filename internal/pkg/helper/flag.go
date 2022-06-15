@@ -8,8 +8,8 @@ import (
 
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 	"github.com/ukfast/cli/internal/pkg/clierrors"
+	"github.com/ukfast/cli/internal/pkg/config"
 	"github.com/ukfast/sdk-go/pkg/connection"
 )
 
@@ -165,7 +165,7 @@ func GetAPIRequestParametersFromFlags(cmd *cobra.Command, opts ...APIRequestPara
 		Sorting:   GetSortingFromStringFlagValue(flagSort),
 		Filtering: filtering,
 		Pagination: connection.APIRequestPagination{
-			PerPage: viper.GetInt("api_pagination_perpage"),
+			PerPage: config.GetInt("api_pagination_perpage"),
 			Page:    flagPage,
 		},
 	}

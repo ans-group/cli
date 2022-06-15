@@ -6,9 +6,9 @@ import (
 
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 	"github.com/ukfast/cli/internal/pkg/clierrors"
+	"github.com/ukfast/cli/internal/pkg/config"
 	"github.com/ukfast/cli/test"
 	"github.com/ukfast/cli/test/mocks"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
@@ -70,8 +70,8 @@ func Test_ecloudVirtualMachineTemplateCreate(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
-		viper.SetDefault("command_wait_timeout_seconds", 1200)
-		viper.SetDefault("command_wait_sleep_seconds", 1)
+		config.Set("test", "command_wait_timeout_seconds", 1200)
+		config.Set("test", "command_wait_sleep_seconds", 1)
 		defer test.TestResetViper()
 
 		service := mocks.NewMockECloudService(mockCtrl)

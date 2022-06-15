@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/spf13/viper"
+	"github.com/ukfast/cli/internal/pkg/config"
 )
 
 func dieOn(err error, t *testing.T) {
@@ -59,6 +59,6 @@ func CatchStdOutStdErr(t *testing.T, f func()) (stdOut string, stdErr string) {
 }
 
 func TestResetViper() {
-	viper.SetDefault("command_wait_timeout_seconds", 1200)
-	viper.SetDefault("command_wait_sleep_seconds", 5)
+	config.Set("test", "command_wait_timeout_seconds", 1200)
+	config.Set("test", "command_wait_sleep_seconds", 5)
 }
