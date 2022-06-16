@@ -63,34 +63,47 @@ Both of these methods are explained below.
 The configuration file is read from
 `$HOME/.ukfast{.extension}` by default (extension being one of the `viper` supported formats such as `yml`, `yaml`, `json`, `toml` etc.). This path can be overridden with the `--config` flag.
 
-The API key can be written to the configuration file:
-```
-> ukfast config set --api_key="123456789abcdefghijklmnopqrstuvw"
-```
-Check that this has been written:
-```
-> cat ~/.ukfast.yml 
-api_key: 123456789abcdefghijklmnopqrstuvw
-```
 Values defined in the configuration file take precedence over environment variables.
 
-#### Required
+### Schema
 
-* `api_key`: API key for interacting with UKFast APIs
-
-#### Debug
-
+* `api_key`: (String) *Required* API key for authenticating with API
 * `api_timeout_seconds`: (int) HTTP timeout for API requests. Default: `90`
 * `api_uri`: (string) API URI. Default: `api.ukfast.io`
 * `api_insecure`: (bool) Specifies to ignore API certificate validation checks
 * `api_debug`: (bool) Specifies for debug messages to be output to stderr
 * `api_pagination_perpage` (int) Specifies the per-page for paginated requests
 
+### Contexts
+
+Contexts can be defined in the config file to allow for different sets of configuration to be defined:
+
+```yaml
+contexts:
+  testcontext1:
+    api_key: mykey1
+  testcontext2:
+    api_key: mykey2
+current_context: testcontext1
+```
+
+The current context can also be overridden with the `--context` flag
+
+### Commands
+
+The configuration file can be manipulated using the `config` subcommand, for example:
+
+
+```
+> ukfast config context update --current --api-key test1
+> ukfast config context update someothercontext --api-key test1
+> ukfast config context switch someothercontext
+```
+
 ### Environment variables
 
 Environment variables can be used to configure/manipulate the CLI. These variables match the naming of directives in the configuration file 
 defined above, however are uppercased and prefixed with `UKF`, such as `UKF_API_KEY`
-
 
 ## Output Formatting
 

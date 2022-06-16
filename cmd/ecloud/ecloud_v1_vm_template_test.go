@@ -9,7 +9,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/ukfast/cli/internal/pkg/clierrors"
 	"github.com/ukfast/cli/internal/pkg/config"
-	"github.com/ukfast/cli/test"
 	"github.com/ukfast/cli/test/mocks"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
@@ -72,7 +71,7 @@ func Test_ecloudVirtualMachineTemplateCreate(t *testing.T) {
 
 		config.Set("test", "command_wait_timeout_seconds", 1200)
 		config.Set("test", "command_wait_sleep_seconds", 1)
-		defer test.TestResetViper()
+		defer config.Reset()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 		cmd := ecloudVirtualMachineTemplateCreateCmd(nil)

@@ -20,7 +20,7 @@ func configContextRootCmd(fs afero.Fs) *cobra.Command {
 	// Child commands
 	cmd.AddCommand(configContextUpdateCmd(fs))
 	cmd.AddCommand(configContextListCmd())
-	cmd.AddCommand(configContextSwitchCmd())
+	cmd.AddCommand(configContextSwitchCmd(fs))
 
 	return cmd
 }
@@ -58,10 +58,16 @@ func configContextUpdate(fs afero.Fs, cmd *cobra.Command, args []string) error {
 	set := func(name string, flagName string, value interface{}) {
 		if cmd.Flags().Changed(flagName) {
 			if updateCurrentContext {
-				config.SetCurrentContext(name, value)
+				err := config.SetCurrentContext(name, value)
+				if err != nil {
+					output.Fatalf("failed to update current context: %s", err)
+				}
 			} else {
 				for _, context := range args {
-					config.Set(context, name, value)
+					err := config.Set(context, name, value)
+					if err != nil {
+						output.Fatalf("failed to update context '%s': %s", context, err)
+					}
 				}
 			}
 			updated = true
@@ -134,7 +140,7 @@ func configContextList(cmd *cobra.Command) error {
 	))
 }
 
-func configContextSwitchCmd() *cobra.Command {
+func configContextSwitchCmd(fs afero.Fs) *cobra.Command {
 	return &cobra.Command{
 		Use:     "switch",
 		Short:   "Switches current context",
@@ -149,16 +155,17 @@ func configContextSwitchCmd() *cobra.Command {
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return configContextSwitch(cmd, args)
+			return configContextSwitch(fs, cmd, args)
 		},
 	}
 }
 
-func configContextSwitch(cmd *cobra.Command, args []string) error {
+func configContextSwitch(fs afero.Fs, cmd *cobra.Command, args []string) error {
 	err := config.SwitchCurrentContext(args[0])
 	if err != nil {
 		return fmt.Errorf("failed to switch context: %s", err)
 	}
 
-	return nil
+	config.SetFs(fs)
+	return config.Save()
 }

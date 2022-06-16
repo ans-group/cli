@@ -9,7 +9,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/ukfast/cli/internal/pkg/clierrors"
 	"github.com/ukfast/cli/internal/pkg/config"
-	"github.com/ukfast/cli/test"
 	"github.com/ukfast/cli/test/mocks"
 	"github.com/ukfast/cli/test/test_output"
 	"github.com/ukfast/sdk-go/pkg/service/ecloud"
@@ -183,7 +182,7 @@ func Test_ecloudSolutionTemplateUpdate(t *testing.T) {
 		config.Set("test", "command_wait_timeout_seconds", 1200)
 		config.Set("test", "command_wait_sleep_seconds", 1)
 		config.SwitchCurrentContext("test")
-		defer test.TestResetViper()
+		defer config.Reset()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 		cmd := ecloudSolutionTemplateUpdateCmd(nil)
@@ -237,7 +236,7 @@ func Test_ecloudSolutionTemplateUpdate(t *testing.T) {
 		config.Set("test", "command_wait_timeout_seconds", 1200)
 		config.Set("test", "command_wait_sleep_seconds", 1)
 		config.SwitchCurrentContext("test")
-		defer test.TestResetViper()
+		defer config.Reset()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 		cmd := ecloudSolutionTemplateUpdateCmd(nil)
@@ -324,7 +323,7 @@ func Test_ecloudSolutionTemplateDelete(t *testing.T) {
 		config.Set("test", "command_wait_timeout_seconds", 1200)
 		config.Set("test", "command_wait_sleep_seconds", 1)
 		config.SwitchCurrentContext("test")
-		defer test.TestResetViper()
+		defer config.Reset()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 		cmd := ecloudSolutionTemplateDeleteCmd(nil)
@@ -369,7 +368,7 @@ func Test_ecloudSolutionTemplateDelete(t *testing.T) {
 		config.Set("test", "command_wait_timeout_seconds", 1200)
 		config.Set("test", "command_wait_sleep_seconds", 1)
 		config.SwitchCurrentContext("test")
-		defer test.TestResetViper()
+		defer config.Reset()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 		cmd := ecloudSolutionTemplateDeleteCmd(nil)

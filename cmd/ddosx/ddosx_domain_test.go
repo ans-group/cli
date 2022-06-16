@@ -9,7 +9,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/ukfast/cli/internal/pkg/clierrors"
 	"github.com/ukfast/cli/internal/pkg/config"
-	"github.com/ukfast/cli/test"
 	"github.com/ukfast/cli/test/mocks"
 	"github.com/ukfast/cli/test/test_output"
 	"github.com/ukfast/sdk-go/pkg/service/ddosx"
@@ -274,7 +273,7 @@ func Test_ddosxDomainDeploy(t *testing.T) {
 		config.Set("test", "command_wait_timeout_seconds", 1200)
 		config.Set("test", "command_wait_sleep_seconds", 1)
 		config.SwitchCurrentContext("test")
-		defer test.TestResetViper()
+		defer config.Reset()
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
 		cmd := ddosxDomainDeployCmd(nil)
@@ -296,7 +295,7 @@ func Test_ddosxDomainDeploy(t *testing.T) {
 		config.Set("test", "command_wait_timeout_seconds", 1200)
 		config.Set("test", "command_wait_sleep_seconds", 1)
 		config.SwitchCurrentContext("test")
-		defer test.TestResetViper()
+		defer config.Reset()
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
 		cmd := ddosxDomainDeployCmd(nil)
@@ -350,7 +349,7 @@ func TestDomainStatusWaitFunc(t *testing.T) {
 		config.Set("test", "command_wait_timeout_seconds", 1200)
 		config.Set("test", "command_wait_sleep_seconds", 1)
 		config.SwitchCurrentContext("test")
-		defer test.TestResetViper()
+		defer config.Reset()
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
 
@@ -370,7 +369,7 @@ func TestDomainStatusWaitFunc(t *testing.T) {
 		config.Set("test", "command_wait_timeout_seconds", 1200)
 		config.Set("test", "command_wait_sleep_seconds", 1)
 		config.SwitchCurrentContext("test")
-		defer test.TestResetViper()
+		defer config.Reset()
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
 
@@ -390,7 +389,7 @@ func TestDomainStatusWaitFunc(t *testing.T) {
 		config.Set("test", "command_wait_timeout_seconds", 1200)
 		config.Set("test", "command_wait_sleep_seconds", 1)
 		config.SwitchCurrentContext("test")
-		defer test.TestResetViper()
+		defer config.Reset()
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
 
@@ -409,7 +408,7 @@ func TestDomainStatusWaitFunc(t *testing.T) {
 		config.Set("test", "command_wait_timeout_seconds", 1200)
 		config.Set("test", "command_wait_sleep_seconds", 1)
 		config.SwitchCurrentContext("test")
-		defer test.TestResetViper()
+		defer config.Reset()
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
 

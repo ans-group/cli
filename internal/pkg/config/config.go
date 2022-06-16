@@ -71,7 +71,7 @@ func GetCurrentContextName() string {
 func GetContextNames() []string {
 	var contextNames []string
 	contexts := viper.GetStringMap(getContextBaseKey())
-	for contextName, _ := range contexts {
+	for contextName := range contexts {
 		contextNames = append(contextNames, contextName)
 	}
 
@@ -79,7 +79,10 @@ func GetContextNames() []string {
 }
 
 func getCurrentContextKeyOrDefault(key string) string {
-	contextName := GetCurrentContextName()
+	return getContextKeyOrDefault(GetCurrentContextName(), key)
+}
+
+func getContextKeyOrDefault(contextName string, key string) string {
 	if len(contextName) > 0 {
 		return getContextSubKey(contextName, key)
 	}
@@ -99,12 +102,22 @@ func getContextSubKey(name string, key string) string {
 	return fmt.Sprintf("%s.%s", getContextKey(name), key)
 }
 
-func SetCurrentContext(key string, value any) {
-	Set(GetCurrentContextName(), key, value)
+func SetCurrentContext(key string, value any) error {
+	contextName := GetCurrentContextName()
+	if len(contextName) < 1 {
+		return errors.New("current context not set")
+	}
+
+	return Set(GetCurrentContextName(), key, value)
 }
 
-func Set(contextName string, key string, value any) {
+func Set(contextName string, key string, value any) error {
+	if len(contextName) < 1 {
+		return errors.New("context name not provided")
+	}
+
 	viper.Set(getContextSubKey(contextName, key), value)
+	return nil
 }
 
 func SetDefault(contextName string, key string, value any) {
@@ -112,12 +125,20 @@ func SetDefault(contextName string, key string, value any) {
 }
 
 func SwitchCurrentContext(contextName string) error {
-	if !viper.IsSet(getContextKey(contextName)) {
+	if !ContextExists(contextName) {
 		return fmt.Errorf("context not defined with name '%s'", contextName)
 	}
 
 	viper.Set("current_context", contextName)
 	return nil
+}
+
+func ContextExists(contextName string) bool {
+	return viper.IsSet(getContextKey(contextName))
+}
+
+func Reset() {
+	viper.Reset()
 }
 
 func GetString(key string) string {
