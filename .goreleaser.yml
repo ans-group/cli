@@ -2,7 +2,6 @@ project_name: ukfast
 before:
   hooks:
     - go mod download
-    - go generate ./...
 builds:
 - env:
   - CGO_ENABLED=0

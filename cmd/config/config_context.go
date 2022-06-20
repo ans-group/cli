@@ -64,10 +64,7 @@ func configContextUpdate(fs afero.Fs, cmd *cobra.Command, args []string) error {
 				}
 			} else {
 				for _, context := range args {
-					err := config.Set(context, name, value)
-					if err != nil {
-						output.Fatalf("failed to update context '%s': %s", context, err)
-					}
+					config.Set(context, name, value)
 				}
 			}
 			updated = true

@@ -108,20 +108,16 @@ func SetCurrentContext(key string, value any) error {
 		return errors.New("current context not set")
 	}
 
-	return Set(GetCurrentContextName(), key, value)
-}
-
-func Set(contextName string, key string, value any) error {
-	if len(contextName) < 1 {
-		return errors.New("context name not provided")
-	}
-
-	viper.Set(getContextSubKey(contextName, key), value)
+	Set(contextName, key, value)
 	return nil
 }
 
+func Set(contextName string, key string, value any) {
+	viper.Set(getContextKeyOrDefault(contextName, key), value)
+}
+
 func SetDefault(contextName string, key string, value any) {
-	viper.SetDefault(getContextSubKey(contextName, key), value)
+	viper.SetDefault(getContextKeyOrDefault(contextName, key), value)
 }
 
 func SwitchCurrentContext(contextName string) error {

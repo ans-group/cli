@@ -169,11 +169,23 @@ func TestSet(t *testing.T) {
 		assert.Equal(t, "somenewvalue", value)
 	})
 
-	t.Run("ContextEmptyReturnsError", func(t *testing.T) {
+	t.Run("SetsDefaultValue", func(t *testing.T) {
 		defer Reset()
-		err := Set("", "somekey", "somenewvalue")
+		fs := afero.NewMemMapFs()
+		SetFs(fs)
 
-		assert.NotNil(t, err)
+		afero.WriteFile(fs, "/tmp/testconfig.yml", []byte(defaultConfig), 0644)
+
+		Init("/tmp/testconfig.yml")
+
+		Set("", "somekey", "somenewvalue")
+		value := GetString("somekey")
+
+		Set("", "current_context", "")
+		defaultValue := GetString("somekey")
+
+		assert.Equal(t, "somevalue", value)
+		assert.Equal(t, "somenewvalue", defaultValue)
 	})
 }
 
