@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/spf13/viper"
+	"github.com/ukfast/cli/internal/pkg/config"
 	"github.com/ukfast/cli/internal/pkg/output"
 	"github.com/ukfast/sdk-go/pkg/client"
 	"github.com/ukfast/sdk-go/pkg/connection"
@@ -38,29 +38,29 @@ func NewUKFastClientFactory(opts ...UKFastClientFactoryOption) *UKFastClientFact
 }
 
 func (f *UKFastClientFactory) NewClient() (client.Client, error) {
-	apiKey := viper.GetString("api_key")
+	apiKey := config.GetString("api_key")
 	if len(apiKey) < 1 {
 		return nil, errors.New("Missing api_key")
 	}
 
 	conn := connection.NewAPIConnection(&connection.APIKeyCredentials{APIKey: apiKey})
 	conn.UserAgent = f.apiUserAgent
-	apiURI := viper.GetString("api_uri")
+	apiURI := config.GetString("api_uri")
 	if apiURI != "" {
 		conn.APIURI = apiURI
 	}
-	apiTimeoutSeconds := viper.GetInt("api_timeout_seconds")
+	apiTimeoutSeconds := config.GetInt("api_timeout_seconds")
 	if apiTimeoutSeconds > 0 {
 		conn.HTTPClient.Timeout = (time.Duration(apiTimeoutSeconds) * time.Second)
 	}
-	if viper.GetBool("api_insecure") {
+	if config.GetBool("api_insecure") {
 		conn.HTTPClient.Transport = &http.Transport{
 			TLSClientConfig: &tls.Config{
 				InsecureSkipVerify: true,
 			},
 		}
 	}
-	apiHeaders := viper.GetStringMapString("api_headers")
+	apiHeaders := config.GetStringMapString("api_headers")
 	if apiHeaders != nil {
 		conn.Headers = http.Header{}
 		for headerKey, headerValue := range apiHeaders {
@@ -68,7 +68,7 @@ func (f *UKFastClientFactory) NewClient() (client.Client, error) {
 		}
 	}
 
-	if viper.GetBool("api_debug") {
+	if config.GetBool("api_debug") {
 		logging.SetLogger(&output.DebugLogger{})
 	}
 

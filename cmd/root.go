@@ -1,15 +1,12 @@
 package cmd
 
 import (
-	"fmt"
-
-	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 	accountcmd "github.com/ukfast/cli/cmd/account"
 	billingcmd "github.com/ukfast/cli/cmd/billing"
-	"github.com/ukfast/cli/cmd/cloudflare"
+	cloudflarecmd "github.com/ukfast/cli/cmd/cloudflare"
+	configcmd "github.com/ukfast/cli/cmd/config"
 	ddosxcmd "github.com/ukfast/cli/cmd/ddosx"
 	draascmd "github.com/ukfast/cli/cmd/draas"
 	ecloudcmd "github.com/ukfast/cli/cmd/ecloud"
@@ -22,12 +19,12 @@ import (
 	sslcmd "github.com/ukfast/cli/cmd/ssl"
 	storagecmd "github.com/ukfast/cli/cmd/storage"
 	"github.com/ukfast/cli/internal/pkg/build"
+	"github.com/ukfast/cli/internal/pkg/config"
 	"github.com/ukfast/cli/internal/pkg/factory"
 	"github.com/ukfast/cli/internal/pkg/output"
 )
 
 var appVersion string
-var defaultConfigFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -46,6 +43,7 @@ func Execute(build build.BuildInfo) {
 
 	// Global flags
 	rootCmd.PersistentFlags().String("config", "", "config file (default is $HOME/.ukfast.yml)")
+	rootCmd.PersistentFlags().String("context", "", "specific context to use")
 	rootCmd.PersistentFlags().StringP("output", "o", "", "output type {table, json, yaml, jsonpath, template, value, csv, list}, with optional argument provided as 'outputname=outputargument'")
 	rootCmd.PersistentFlags().StringP("format", "f", "", "")
 	rootCmd.PersistentFlags().MarkDeprecated("format", "please use --output/-o instead")
@@ -66,7 +64,7 @@ func Execute(build build.BuildInfo) {
 	rootCmd.AddCommand(updateCmd())
 
 	// Child root commands
-	rootCmd.AddCommand(ConfigRootCmd(fs))
+	rootCmd.AddCommand(configcmd.ConfigRootCmd(fs))
 	rootCmd.AddCommand(CompletionRootCmd())
 	rootCmd.AddCommand(accountcmd.AccountRootCmd(clientFactory))
 	rootCmd.AddCommand(billingcmd.BillingRootCmd(clientFactory))
@@ -75,7 +73,7 @@ func Execute(build build.BuildInfo) {
 	rootCmd.AddCommand(ecloudcmd.ECloudRootCmd(clientFactory, fs))
 	rootCmd.AddCommand(ecloudflexcmd.ECloudFlexRootCmd(clientFactory))
 	rootCmd.AddCommand(loadbalancercmd.LoadBalancerRootCmd(clientFactory, fs))
-	rootCmd.AddCommand(cloudflare.CloudflareRootCmd(clientFactory))
+	rootCmd.AddCommand(cloudflarecmd.CloudflareRootCmd(clientFactory))
 	rootCmd.AddCommand(psscmd.PSSRootCmd(clientFactory, fs))
 	rootCmd.AddCommand(registrarcmd.RegistrarRootCmd(clientFactory))
 	rootCmd.AddCommand(safednscmd.SafeDNSRootCmd(clientFactory))
@@ -90,33 +88,19 @@ func Execute(build build.BuildInfo) {
 	output.ExitWithErrorLevel()
 }
 
-// initConfig reads in config file and ENV variables if set.
+// initConfig initialises config
 func initConfig() {
-	viper.SetEnvPrefix("ukf")
-	viper.AutomaticEnv() // read in environment variables that match
-
-	var configFilePath string
-	configFile := rootCmd.Flags().Changed("config")
-	if configFile {
-		configFilePath, _ = rootCmd.Flags().GetString("config")
-		// Use config file from the flag.
-		viper.SetConfigFile(configFilePath)
-	} else {
-		// Find home directory.
-		home, err := homedir.Dir()
-		if err != nil {
-			output.Fatal(err.Error())
-		}
-
-		// Search config in home directory with name ".ukfast" (without extension).
-		viper.AddConfigPath(home)
-		viper.SetConfigName(".ukfast")
-		defaultConfigFile = fmt.Sprintf("%s/.ukfast.yml", home)
+	configPath, _ := rootCmd.Flags().GetString("config")
+	err := config.Init(configPath)
+	if err != nil {
+		output.Fatalf("Failed to initialise config: %s", err.Error())
 	}
 
-	// If a config file is found, read it in.
-	err := viper.ReadInConfig()
-	if configFile && err != nil {
-		output.Fatalf("Failed to read config from file '%s': %s", configFilePath, err.Error())
+	if rootCmd.Flags().Changed("context") {
+		contextName, _ := rootCmd.Flags().GetString("context")
+		err := config.SwitchCurrentContext(contextName)
+		if err != nil {
+			output.Fatalf("Failed to set context: %s", err)
+		}
 	}
 }

@@ -6,10 +6,9 @@ import (
 
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 	"github.com/ukfast/cli/internal/pkg/clierrors"
-	"github.com/ukfast/cli/test"
+	"github.com/ukfast/cli/internal/pkg/config"
 	"github.com/ukfast/cli/test/mocks"
 	"github.com/ukfast/cli/test/test_output"
 	"github.com/ukfast/sdk-go/pkg/connection"
@@ -245,9 +244,10 @@ func Test_ecloudVirtualMachineCreate(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
-		viper.SetDefault("command_wait_timeout_seconds", 1200)
-		viper.SetDefault("command_wait_sleep_seconds", 1)
-		defer test.TestResetViper()
+		config.Set("test", "command_wait_timeout_seconds", 1200)
+		config.Set("test", "command_wait_sleep_seconds", 1)
+		config.SwitchCurrentContext("test")
+		defer config.Reset()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 		cmd := ecloudVirtualMachineCreateCmd(nil)
@@ -266,9 +266,10 @@ func Test_ecloudVirtualMachineCreate(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
-		viper.SetDefault("command_wait_timeout_seconds", 1200)
-		viper.SetDefault("command_wait_sleep_seconds", 1)
-		defer test.TestResetViper()
+		config.Set("test", "command_wait_timeout_seconds", 1200)
+		config.Set("test", "command_wait_sleep_seconds", 1)
+		config.SwitchCurrentContext("test")
+		defer config.Reset()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 		cmd := ecloudVirtualMachineCreateCmd(nil)
@@ -288,9 +289,10 @@ func Test_ecloudVirtualMachineCreate(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
-		viper.SetDefault("command_wait_timeout_seconds", 1200)
-		viper.SetDefault("command_wait_sleep_seconds", 1)
-		defer test.TestResetViper()
+		config.Set("test", "command_wait_timeout_seconds", 1200)
+		config.Set("test", "command_wait_sleep_seconds", 1)
+		config.SwitchCurrentContext("test")
+		defer config.Reset()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 		cmd := ecloudVirtualMachineCreateCmd(nil)
@@ -356,9 +358,10 @@ func Test_ecloudVirtualMachineUpdate(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
-		viper.SetDefault("command_wait_timeout_seconds", 1200)
-		viper.SetDefault("command_wait_sleep_seconds", 1)
-		defer test.TestResetViper()
+		config.Set("test", "command_wait_timeout_seconds", 1200)
+		config.Set("test", "command_wait_sleep_seconds", 1)
+		config.SwitchCurrentContext("test")
+		defer config.Reset()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 		cmd := ecloudVirtualMachineUpdateCmd(nil)
@@ -389,9 +392,10 @@ func Test_ecloudVirtualMachineUpdate(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
-		viper.SetDefault("command_wait_timeout_seconds", 1200)
-		viper.SetDefault("command_wait_sleep_seconds", 1)
-		defer test.TestResetViper()
+		config.Set("test", "command_wait_timeout_seconds", 1200)
+		config.Set("test", "command_wait_sleep_seconds", 1)
+		config.SwitchCurrentContext("test")
+		defer config.Reset()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 		cmd := ecloudVirtualMachineUpdateCmd(nil)
@@ -802,9 +806,10 @@ func Test_ecloudVirtualMachineDelete(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
-		viper.SetDefault("command_wait_timeout_seconds", 1200)
-		viper.SetDefault("command_wait_sleep_seconds", 1)
-		defer test.TestResetViper()
+		config.Set("test", "command_wait_timeout_seconds", 1200)
+		config.Set("test", "command_wait_sleep_seconds", 1)
+		config.SwitchCurrentContext("test")
+		defer config.Reset()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 		cmd := ecloudVirtualMachineDeleteCmd(nil)
@@ -822,9 +827,10 @@ func Test_ecloudVirtualMachineDelete(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
-		viper.SetDefault("command_wait_timeout_seconds", 1200)
-		viper.SetDefault("command_wait_sleep_seconds", 1)
-		defer test.TestResetViper()
+		config.Set("test", "command_wait_timeout_seconds", 1200)
+		config.Set("test", "command_wait_sleep_seconds", 1)
+		config.SwitchCurrentContext("test")
+		defer config.Reset()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 		cmd := ecloudVirtualMachineDeleteCmd(nil)
@@ -844,9 +850,10 @@ func Test_ecloudVirtualMachineDelete(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
-		viper.SetDefault("command_wait_timeout_seconds", 1200)
-		viper.SetDefault("command_wait_sleep_seconds", 1)
-		defer test.TestResetViper()
+		config.Set("test", "command_wait_timeout_seconds", 1200)
+		config.Set("test", "command_wait_sleep_seconds", 1)
+		config.SwitchCurrentContext("test")
+		defer config.Reset()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 		cmd := ecloudVirtualMachineDeleteCmd(nil)
@@ -892,9 +899,10 @@ func TestVirtualMachineNotFoundWaitFunc(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
-		viper.SetDefault("command_wait_timeout_seconds", 1200)
-		viper.SetDefault("command_wait_sleep_seconds", 1)
-		defer test.TestResetViper()
+		config.Set("test", "command_wait_timeout_seconds", 1200)
+		config.Set("test", "command_wait_sleep_seconds", 1)
+		config.SwitchCurrentContext("test")
+		defer config.Reset()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
@@ -910,9 +918,10 @@ func TestVirtualMachineNotFoundWaitFunc(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
-		viper.SetDefault("command_wait_timeout_seconds", 1200)
-		viper.SetDefault("command_wait_sleep_seconds", 1)
-		defer test.TestResetViper()
+		config.Set("test", "command_wait_timeout_seconds", 1200)
+		config.Set("test", "command_wait_sleep_seconds", 1)
+		config.SwitchCurrentContext("test")
+		defer config.Reset()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
@@ -929,9 +938,10 @@ func TestVirtualMachineNotFoundWaitFunc(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
-		viper.SetDefault("command_wait_timeout_seconds", 1200)
-		viper.SetDefault("command_wait_sleep_seconds", 1)
-		defer test.TestResetViper()
+		config.Set("test", "command_wait_timeout_seconds", 1200)
+		config.Set("test", "command_wait_sleep_seconds", 1)
+		config.SwitchCurrentContext("test")
+		defer config.Reset()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
@@ -948,9 +958,10 @@ func TestVirtualMachineNotFoundWaitFunc(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
-		viper.SetDefault("command_wait_timeout_seconds", 1200)
-		viper.SetDefault("command_wait_sleep_seconds", 1)
-		defer test.TestResetViper()
+		config.Set("test", "command_wait_timeout_seconds", 1200)
+		config.Set("test", "command_wait_sleep_seconds", 1)
+		config.SwitchCurrentContext("test")
+		defer config.Reset()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
@@ -968,9 +979,10 @@ func TestVirtualMachineStatusWaitFunc(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
-		viper.SetDefault("command_wait_timeout_seconds", 1200)
-		viper.SetDefault("command_wait_sleep_seconds", 1)
-		defer test.TestResetViper()
+		config.Set("test", "command_wait_timeout_seconds", 1200)
+		config.Set("test", "command_wait_sleep_seconds", 1)
+		config.SwitchCurrentContext("test")
+		defer config.Reset()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
@@ -987,9 +999,10 @@ func TestVirtualMachineStatusWaitFunc(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
-		viper.SetDefault("command_wait_timeout_seconds", 1200)
-		viper.SetDefault("command_wait_sleep_seconds", 1)
-		defer test.TestResetViper()
+		config.Set("test", "command_wait_timeout_seconds", 1200)
+		config.Set("test", "command_wait_sleep_seconds", 1)
+		config.SwitchCurrentContext("test")
+		defer config.Reset()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
@@ -1006,9 +1019,10 @@ func TestVirtualMachineStatusWaitFunc(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
-		viper.SetDefault("command_wait_timeout_seconds", 1200)
-		viper.SetDefault("command_wait_sleep_seconds", 1)
-		defer test.TestResetViper()
+		config.Set("test", "command_wait_timeout_seconds", 1200)
+		config.Set("test", "command_wait_sleep_seconds", 1)
+		config.SwitchCurrentContext("test")
+		defer config.Reset()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
@@ -1024,9 +1038,10 @@ func TestVirtualMachineStatusWaitFunc(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
-		viper.SetDefault("command_wait_timeout_seconds", 1200)
-		viper.SetDefault("command_wait_sleep_seconds", 1)
-		defer test.TestResetViper()
+		config.Set("test", "command_wait_timeout_seconds", 1200)
+		config.Set("test", "command_wait_sleep_seconds", 1)
+		config.SwitchCurrentContext("test")
+		defer config.Reset()
 
 		service := mocks.NewMockECloudService(mockCtrl)
 

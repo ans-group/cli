@@ -6,10 +6,9 @@ import (
 
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 	"github.com/ukfast/cli/internal/pkg/clierrors"
-	"github.com/ukfast/cli/test"
+	"github.com/ukfast/cli/internal/pkg/config"
 	"github.com/ukfast/cli/test/mocks"
 	"github.com/ukfast/cli/test/test_output"
 	"github.com/ukfast/sdk-go/pkg/service/ddosx"
@@ -271,9 +270,10 @@ func Test_ddosxDomainDeploy(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
-		viper.SetDefault("command_wait_timeout_seconds", 1200)
-		viper.SetDefault("command_wait_sleep_seconds", 1)
-		defer test.TestResetViper()
+		config.Set("test", "command_wait_timeout_seconds", 1200)
+		config.Set("test", "command_wait_sleep_seconds", 1)
+		config.SwitchCurrentContext("test")
+		defer config.Reset()
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
 		cmd := ddosxDomainDeployCmd(nil)
@@ -292,9 +292,10 @@ func Test_ddosxDomainDeploy(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
-		viper.SetDefault("command_wait_timeout_seconds", 1200)
-		viper.SetDefault("command_wait_sleep_seconds", 1)
-		defer test.TestResetViper()
+		config.Set("test", "command_wait_timeout_seconds", 1200)
+		config.Set("test", "command_wait_sleep_seconds", 1)
+		config.SwitchCurrentContext("test")
+		defer config.Reset()
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
 		cmd := ddosxDomainDeployCmd(nil)
@@ -345,9 +346,10 @@ func TestDomainStatusWaitFunc(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
-		viper.SetDefault("command_wait_timeout_seconds", 1200)
-		viper.SetDefault("command_wait_sleep_seconds", 1)
-		defer test.TestResetViper()
+		config.Set("test", "command_wait_timeout_seconds", 1200)
+		config.Set("test", "command_wait_sleep_seconds", 1)
+		config.SwitchCurrentContext("test")
+		defer config.Reset()
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
 
@@ -364,9 +366,10 @@ func TestDomainStatusWaitFunc(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
-		viper.SetDefault("command_wait_timeout_seconds", 1200)
-		viper.SetDefault("command_wait_sleep_seconds", 1)
-		defer test.TestResetViper()
+		config.Set("test", "command_wait_timeout_seconds", 1200)
+		config.Set("test", "command_wait_sleep_seconds", 1)
+		config.SwitchCurrentContext("test")
+		defer config.Reset()
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
 
@@ -383,9 +386,10 @@ func TestDomainStatusWaitFunc(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
-		viper.SetDefault("command_wait_timeout_seconds", 1200)
-		viper.SetDefault("command_wait_sleep_seconds", 1)
-		defer test.TestResetViper()
+		config.Set("test", "command_wait_timeout_seconds", 1200)
+		config.Set("test", "command_wait_sleep_seconds", 1)
+		config.SwitchCurrentContext("test")
+		defer config.Reset()
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
 
@@ -401,9 +405,10 @@ func TestDomainStatusWaitFunc(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
-		viper.SetDefault("command_wait_timeout_seconds", 1200)
-		viper.SetDefault("command_wait_sleep_seconds", 1)
-		defer test.TestResetViper()
+		config.Set("test", "command_wait_timeout_seconds", 1200)
+		config.Set("test", "command_wait_sleep_seconds", 1)
+		config.SwitchCurrentContext("test")
+		defer config.Reset()
 
 		service := mocks.NewMockDDoSXService(mockCtrl)
 

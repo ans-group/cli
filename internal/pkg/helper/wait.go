@@ -5,19 +5,19 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/spf13/viper"
+	"github.com/ukfast/cli/internal/pkg/config"
 )
 
 type WaitFunc func() (finished bool, err error)
 
 func WaitForCommand(f WaitFunc) error {
 	waitTimeout := 1200
-	if viper.GetInt("command_wait_timeout_seconds") > 0 {
-		waitTimeout = viper.GetInt("command_wait_timeout_seconds")
+	if config.GetInt("command_wait_timeout_seconds") > 0 {
+		waitTimeout = config.GetInt("command_wait_timeout_seconds")
 	}
 	sleepTimeout := 5
-	if viper.GetInt("command_wait_sleep_seconds") > 0 {
-		sleepTimeout = viper.GetInt("command_wait_sleep_seconds")
+	if config.GetInt("command_wait_sleep_seconds") > 0 {
+		sleepTimeout = config.GetInt("command_wait_sleep_seconds")
 	}
 
 	timeStart := time.Now()
