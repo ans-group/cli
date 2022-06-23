@@ -26,7 +26,7 @@ snapshot:
   name_template: "{{ .Tag }}-next"
 release:
   github:
-    owner: ukfast
+    owner: ans-group
     name: cli
 changelog:
   sort: asc
