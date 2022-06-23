@@ -120,7 +120,7 @@ func ddosxSSLCreateCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 
 	cmd.Flags().String("friendly-name", "", "Friendly name for SSL")
 	cmd.MarkFlagRequired("friendly-name")
-	cmd.Flags().Int("ukfast-ssl-id", 0, "Optional ID of UKFast SSL to retrieve certificate, key and bundle")
+	cmd.Flags().Int("ans-ssl-id", 0, "Optional ID of ANS SSL to retrieve certificate, key and bundle")
 	cmd.Flags().String("key", "", "Key contents for SSL")
 	cmd.Flags().String("key-file", "", "Path to file containing key contents for SSL")
 	cmd.Flags().String("certificate", "", "Certificate contents for SSL")
@@ -135,8 +135,8 @@ func ddosxSSLCreate(service ddosx.DDoSXService, cmd *cobra.Command, fs afero.Fs,
 	createRequest := ddosx.CreateSSLRequest{}
 	createRequest.FriendlyName, _ = cmd.Flags().GetString("friendly-name")
 
-	if cmd.Flags().Changed("ukfast-ssl-id") {
-		createRequest.UKFastSSLID, _ = cmd.Flags().GetInt("ukfast-ssl-id")
+	if cmd.Flags().Changed("ans-ssl-id") {
+		createRequest.UKFastSSLID, _ = cmd.Flags().GetInt("ans-ssl-id")
 	} else {
 		var err error
 		createRequest.Key, err = helper.GetContentsFromLiteralOrFilePathFlag(cmd, fs, "key", "key-file")
@@ -190,7 +190,7 @@ func ddosxSSLUpdateCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 	}
 
 	cmd.Flags().String("friendly-name", "", "Friendly name for SSL")
-	cmd.Flags().Int("ukfast-ssl-id", 0, "Optional ID of UKFast SSL to retrieve certificate, key and bundle")
+	cmd.Flags().Int("ans-ssl-id", 0, "Optional ID of ANS SSL to retrieve certificate, key and bundle")
 	cmd.Flags().String("key", "", "Key contents for SSL")
 	cmd.Flags().String("key-file", "", "Path to file containing key contents for SSL")
 	cmd.Flags().String("certificate", "", "Certificate contents for SSL")
@@ -205,8 +205,8 @@ func ddosxSSLUpdate(service ddosx.DDoSXService, cmd *cobra.Command, fs afero.Fs,
 	patchRequest := ddosx.PatchSSLRequest{}
 	patchRequest.FriendlyName, _ = cmd.Flags().GetString("friendly-name")
 
-	if cmd.Flags().Changed("ukfast-ssl-id") {
-		patchRequest.UKFastSSLID, _ = cmd.Flags().GetInt("ukfast-ssl-id")
+	if cmd.Flags().Changed("ans-ssl-id") {
+		patchRequest.UKFastSSLID, _ = cmd.Flags().GetInt("ans-ssl-id")
 	} else {
 		var err error
 		patchRequest.Key, err = helper.GetContentsFromLiteralOrFilePathFlag(cmd, fs, "key", "key-file")

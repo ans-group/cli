@@ -29,7 +29,7 @@ var appVersion string
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:     "ans",
-	Short:   "Utility for manipulating UKFast services",
+	Short:   "Utility for manipulating ANS services",
 	Version: "UNKNOWN",
 }
 
@@ -56,7 +56,7 @@ func Execute(build build.BuildInfo) {
 
 	cobra.OnInitialize(initConfig)
 	fs := afero.NewOsFs()
-	clientFactory := factory.NewUKFastClientFactory(
+	clientFactory := factory.NewANSClientFactory(
 		factory.WithUserAgent("ans-cli"),
 	)
 

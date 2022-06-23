@@ -37,10 +37,10 @@ Pre-compiled binaries are available at [Releases](https://github.com/ans-group/c
 To get started, we will define a single environment variable to store our API key:
 
 Bash:
-> export UKF_API_KEY="iqmxgom0kairfnxzcopte5hx"
+> export ANS_API_KEY="iqmxgom0kairfnxzcopte5hx"
 
 PowerShell:
-> $env:UKF_API_KEY="iqmxgom0kairfnxzcopte5hx"
+> $env:ANS_API_KEY="iqmxgom0kairfnxzcopte5hx"
 
 And away we go!
 
@@ -103,7 +103,7 @@ The configuration file can be manipulated using the `config` subcommand, for exa
 ### Environment variables
 
 Environment variables can be used to configure/manipulate the CLI. These variables match the naming of directives in the configuration file 
-defined above, however are uppercased and prefixed with `UKF`, such as `UKF_API_KEY`
+defined above, however are uppercased and prefixed with `UKF`, such as `ANS_API_KEY`
 
 ## Output Formatting
 
@@ -120,9 +120,9 @@ is `table` or unspecified:
 +---------+--------------------+------+-----------------------------------------------------------------------+---------------------------+----------+-------+
 |   ID    |        NAME        | TYPE |                                CONTENT                                |        UPDATED AT         | PRIORITY |  TTL  |
 +---------+--------------------+------+-----------------------------------------------------------------------+---------------------------+----------+-------+
-| 3337865 | ns0.ukfast.net     | NS   | 185.226.220.128                                                       | 2019-03-19T16:31:48+00:00 |        0 |     0 |
-| 3337868 | ns1.ukfast.net     | NS   | 185.226.221.128                                                       | 2019-03-19T16:31:48+00:00 |        0 |     0 |
-| 3337871 | example.co.uk      | SOA  | ns0.ukfast.net support.ans.co.uk 2019031901 7200 3600 604800 86400 | 2019-03-19T16:31:48+00:00 |        0 | 86400 |
+| 3337865 | ns0.ans.uk         | NS   | 185.226.220.128                                                       | 2019-03-19T16:31:48+00:00 |        0 |     0 |
+| 3337868 | ns1.ans.uk         | NS   | 185.226.221.128                                                       | 2019-03-19T16:31:48+00:00 |        0 |     0 |
+| 3337871 | example.co.uk      | SOA  | ns0.ans.uk support.ans.co.uk 2019031901 7200 3600 604800 86400        | 2019-03-19T16:31:48+00:00 |        0 | 86400 |
 | 3337874 | test.example.co.uk | A    | 1.2.3.4                                                               | 2019-03-19T16:33:55+00:00 |        0 |     0 |
 +---------+--------------------+------+-----------------------------------------------------------------------+---------------------------+----------+-------+
 ```
@@ -206,8 +206,8 @@ in conjunction with output arguments, e.g.
 
 ```
 > ans safedns zone record list example.co.uk --output template="Record name: {{ .Name }}, Type: {{ .Type }}"
-Record name: ns0.ukfast.net, Type: NS
-Record name: ns1.ukfast.net, Type: NS
+Record name: ns0.ans.uk, Type: NS
+Record name: ns1.ans.uk, Type: NS
 Record name: example.co.uk, Type: SOA
 Record name: test.example.co.uk, Type: A
 ```
@@ -281,6 +281,10 @@ The CLI has self-update functionality, which can be invoked via the command `upd
 
 This command in-place updates the CLI, with the old binary moved to `ans.old` (`ans.old.exe` on Windows), should roll-back be required.
 
+### Migrating from the UKFast CLI
+
+If you are upgrading from the old `ukfast` client, you will need to install this client from scratch. You will need to rename `~/.ukfast.yml` to `~/.ans.yml` and ensure any environment variables are updated to use the new `ANS_` prefix, e.g. `UKF_ECLOUD_VPC=true` becomes `ANS_ECLOUD_VPC=true`.
+
 ## Shell autocompletions
 
 The CLI supports generating shell completions for the following shells:
@@ -298,11 +302,11 @@ eCloud VPC resource commands are available by default under the `ecloud` subcomm
 To display only VPC commands, the following environment variable can be set:
 
 ```
-> export UKF_ECLOUD_VPC=true
+> export ANS_ECLOUD_VPC=true
 ```
 
 To display only original commands, the following environment variable can be set:
 
 ```
-> export UKF_ECLOUD=true
+> export ANS_ECLOUD=true
 ```

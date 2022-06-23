@@ -116,7 +116,7 @@ func Test_ddosxSSLCreate(t *testing.T) {
 		service := mocks.NewMockDDoSXService(mockCtrl)
 		cmd := ddosxSSLCreateCmd(nil, nil)
 		cmd.Flags().Set("friendly-name", "testssl1")
-		cmd.Flags().Set("ukfast-ssl-id", "123")
+		cmd.Flags().Set("ans-ssl-id", "123")
 
 		expectedRequest := ddosx.CreateSSLRequest{
 			FriendlyName: "testssl1",
@@ -216,7 +216,7 @@ func Test_ddosxSSLUpdate(t *testing.T) {
 		service := mocks.NewMockDDoSXService(mockCtrl)
 		cmd := ddosxSSLUpdateCmd(nil, nil)
 		cmd.Flags().Set("friendly-name", "testssl1")
-		cmd.Flags().Set("ukfast-ssl-id", "123")
+		cmd.Flags().Set("ans-ssl-id", "123")
 
 		expectedRequest := ddosx.PatchSSLRequest{
 			FriendlyName: "testssl1",

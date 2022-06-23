@@ -20,8 +20,8 @@ func ECloudRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 	}
 
 	// Child root commands
-	v1envset := len(os.Getenv("UKF_ECLOUD")) > 0
-	vpcEnvSet := len(os.Getenv("UKF_ECLOUD_VPC")) > 0
+	v1envset := len(os.Getenv("ANS_ECLOUD")) > 0
+	vpcEnvSet := len(os.Getenv("ANS_ECLOUD_VPC")) > 0
 
 	if v1envset || !vpcEnvSet {
 		cmd.AddCommand(ecloudVirtualMachineRootCmd(f))
