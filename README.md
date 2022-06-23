@@ -103,7 +103,7 @@ The configuration file can be manipulated using the `config` subcommand, for exa
 ### Environment variables
 
 Environment variables can be used to configure/manipulate the CLI. These variables match the naming of directives in the configuration file 
-defined above, however are uppercased and prefixed with `UKF`, such as `ANS_API_KEY`
+defined above, however are uppercased and prefixed with `ANS_`, such as `ANS_API_KEY`
 
 ## Output Formatting
 
