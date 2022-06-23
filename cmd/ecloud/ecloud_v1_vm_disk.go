@@ -31,7 +31,7 @@ func ecloudVirtualMachineDiskListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list <virtualmachine: id>",
 		Short:   "lists virtual machine disks",
 		Long:    "This command lists virtual machine disks",
-		Example: "ukfast ecloud vm disk list 123",
+		Example: "ans ecloud vm disk list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing virtual machine")
@@ -73,7 +73,7 @@ func ecloudVirtualMachineDiskUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <virtualmachine: id> <disk: id>",
 		Short:   "Updates a virtual machine disk",
 		Long:    "This command updates a virtual machine disk",
-		Example: "ukfast ecloud vm disk update 123 00000000-0000-0000-0000-000000000000 --capacity 25",
+		Example: "ans ecloud vm disk update 123 00000000-0000-0000-0000-000000000000 --capacity 25",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing virtual machine")

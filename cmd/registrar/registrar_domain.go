@@ -32,7 +32,7 @@ func registrarDomainListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists domains",
 		Long:    "This command lists domains",
-		Example: "ukfast registrar domain list",
+		Example: "ans registrar domain list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -63,7 +63,7 @@ func registrarDomainShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <domain: name>...",
 		Short:   "Shows a domain",
 		Long:    "This command shows one or more domains",
-		Example: "ukfast registrar domain show example.com",
+		Example: "ans registrar domain show example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")

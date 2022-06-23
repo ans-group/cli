@@ -36,7 +36,7 @@ func ecloudFirewallRuleListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists firewall rules",
 		Long:    "This command lists firewall rules",
-		Example: "ukfast ecloud firewallrule list",
+		Example: "ans ecloud firewallrule list",
 		RunE:    ecloudCobraRunEFunc(f, ecloudFirewallRuleList),
 	}
 
@@ -67,7 +67,7 @@ func ecloudFirewallRuleShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <rule: id>...",
 		Short:   "Shows an firewall rule",
 		Long:    "This command shows one or more firewall rules",
-		Example: "ukfast ecloud firewallrule show fwr-abcdef12",
+		Example: "ans ecloud firewallrule show fwr-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing firewall rule")
@@ -99,7 +99,7 @@ func ecloudFirewallRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates a firewall rule",
 		Long:    "This command creates a firewall rule",
-		Example: "ukfast ecloud firewallrule create --policy fwp-abcdef12",
+		Example: "ans ecloud firewallrule create --policy fwp-abcdef12",
 		RunE:    ecloudCobraRunEFunc(f, ecloudFirewallRuleCreate),
 	}
 
@@ -176,7 +176,7 @@ func ecloudFirewallRuleUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <rule: id>...",
 		Short:   "Updates a firewall rule",
 		Long:    "This command updates one or more firewall rules",
-		Example: "ukfast ecloud firewallrule update fwp-abcdef12 --name \"my rule\"",
+		Example: "ans ecloud firewallrule update fwp-abcdef12 --name \"my rule\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing firewall rule")
@@ -277,7 +277,7 @@ func ecloudFirewallRuleDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <rule: id>...",
 		Short:   "Removes a firewall rule",
 		Long:    "This command removes one or more firewall rules",
-		Example: "ukfast ecloud firewallrule delete fwr-abcdef12",
+		Example: "ans ecloud firewallrule delete fwr-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing firewall rule")

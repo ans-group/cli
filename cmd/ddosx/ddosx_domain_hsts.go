@@ -31,7 +31,7 @@ func ddosxDomainHSTSShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <domain: name>...",
 		Short:   "Shows HSTS for a domain",
 		Long:    "This command shows HSTS for one or more domains",
-		Example: "ukfast ddosx domain hsts show example.com",
+		Example: "ans ddosx domain hsts show example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -71,7 +71,7 @@ func ddosxDomainHSTSEnableCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "enable <domain: name>...",
 		Short:   "Enables HSTS for a domain",
 		Long:    "This command enables HSTS for one or more domains",
-		Example: "ukfast ddosx domain hsts enable example.com",
+		Example: "ans ddosx domain hsts enable example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -117,7 +117,7 @@ func ddosxDomainHSTSDisableCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "disable <domain: name>...",
 		Short:   "Disables HSTS for a domain",
 		Long:    "This command disables HSTS for one or more domains",
-		Example: "ukfast ddosx domain hsts disable example.com",
+		Example: "ans ddosx domain hsts disable example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")

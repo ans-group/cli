@@ -25,7 +25,7 @@ func draasSolutionReplicaIOPSUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <solution: id> <replica: id>...",
 		Short:   "Updates the IOPS for a replica",
 		Long:    "This command updates the IOPS for one or more replicas",
-		Example: "ukfast draas solution update 00000000-0000-0000-0000-000000000000 --name test",
+		Example: "ans draas solution update 00000000-0000-0000-0000-000000000000 --name test",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing solution")

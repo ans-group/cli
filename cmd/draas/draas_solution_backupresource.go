@@ -30,7 +30,7 @@ func draasSolutionBackupResourceListCmd(f factory.ClientFactory) *cobra.Command 
 		Use:     "list <solution: id>",
 		Short:   "Lists a solution",
 		Long:    "This command lists the backup resources for a solution",
-		Example: "ukfast draas solution backupresource list 00000000-0000-0000-0000-000000000000",
+		Example: "ans draas solution backupresource list 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing solution")

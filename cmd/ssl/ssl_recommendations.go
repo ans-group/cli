@@ -26,7 +26,7 @@ func sslRecommendationsShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <recommendations: id>...",
 		Short:   "Shows SSL recommendations",
 		Long:    "This command shows one or more SSL recommendations",
-		Example: "ukfast ssl recommendations show example.com",
+		Example: "ans ssl recommendations show example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")

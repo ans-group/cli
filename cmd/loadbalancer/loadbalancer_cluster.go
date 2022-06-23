@@ -36,7 +36,7 @@ func loadbalancerClusterListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists clusters",
 		Long:    "This command lists clusters",
-		Example: "ukfast loadbalancer cluster list",
+		Example: "ans loadbalancer cluster list",
 		RunE:    loadbalancerCobraRunEFunc(f, loadbalancerClusterList),
 	}
 }
@@ -60,7 +60,7 @@ func loadbalancerClusterShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <cluster: id>...",
 		Short:   "Shows a cluster",
 		Long:    "This command shows one or more clusters",
-		Example: "ukfast loadbalancer cluster show 123",
+		Example: "ans loadbalancer cluster show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing cluster")
@@ -98,7 +98,7 @@ func loadbalancerClusterUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <cluster: id>...",
 		Short:   "Updates a cluster",
 		Long:    "This command updates one or more clusters",
-		Example: "ukfast loadbalancer cluster update 123 --name mycluster",
+		Example: "ans loadbalancer cluster update 123 --name mycluster",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing cluster")
@@ -152,7 +152,7 @@ func loadbalancerClusterDeployCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "deploy <cluster: id>...",
 		Short:   "Deploys a cluster",
 		Long:    "This command deploys one or more clusters",
-		Example: "ukfast loadbalancer cluster deploy 123",
+		Example: "ans loadbalancer cluster deploy 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing cluster")
@@ -187,7 +187,7 @@ func loadbalancerClusterValidateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "validate <cluster: id>...",
 		Short:   "Validates a cluster",
 		Long:    "This command validates one or more clusters",
-		Example: "ukfast loadbalancer cluster validate 123",
+		Example: "ans loadbalancer cluster validate 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing cluster")

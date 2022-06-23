@@ -32,7 +32,7 @@ func ecloudVPNEndpointListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists VPN endpoints",
 		Long:    "This command lists VPN endpoints",
-		Example: "ukfast ecloud vpnendpoint list",
+		Example: "ans ecloud vpnendpoint list",
 		RunE:    ecloudCobraRunEFunc(f, ecloudVPNEndpointList),
 	}
 
@@ -62,7 +62,7 @@ func ecloudVPNEndpointShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <endpoint: id>...",
 		Short:   "Shows a VPN endpoint",
 		Long:    "This command shows one or more VPN endpoints",
-		Example: "ukfast ecloud vpnendpoint show vpne-abcdef12",
+		Example: "ans ecloud vpnendpoint show vpne-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing VPN endpoint")
@@ -94,7 +94,7 @@ func ecloudVPNEndpointCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates a VPN endpoint",
 		Long:    "This command creates a VPN endpoint",
-		Example: "ukfast ecloud vpnendpoint create --router rtr-abcdef12",
+		Example: "ans ecloud vpnendpoint create --router rtr-abcdef12",
 		RunE:    ecloudCobraRunEFunc(f, ecloudVPNEndpointCreate),
 	}
 
@@ -140,7 +140,7 @@ func ecloudVPNEndpointUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <endpoint: id>...",
 		Short:   "Updates a VPN endpoint",
 		Long:    "This command updates one or more VPN endpoints",
-		Example: "ukfast ecloud vpnendpoint update vpne-abcdef12 --name \"my endpoint\"",
+		Example: "ans ecloud vpnendpoint update vpne-abcdef12 --name \"my endpoint\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing VPN endpoint")
@@ -198,7 +198,7 @@ func ecloudVPNEndpointDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <endpoint: id>...",
 		Short:   "Removes a VPN endpoint",
 		Long:    "This command removes one or more VPN endpoints",
-		Example: "ukfast ecloud vpnendpoint delete vpne-abcdef12",
+		Example: "ans ecloud vpnendpoint delete vpne-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing VPN endpoint")

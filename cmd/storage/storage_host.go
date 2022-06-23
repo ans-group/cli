@@ -30,7 +30,7 @@ func storageHostListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists hosts",
 		Long:    "This command lists hosts",
-		Example: "ukfast storage host list",
+		Example: "ans storage host list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -61,7 +61,7 @@ func storageHostShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <host: id>...",
 		Short:   "Shows a host",
 		Long:    "This command shows one or more hosts",
-		Example: "ukfast storage host show 123",
+		Example: "ans storage host show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing host")

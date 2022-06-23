@@ -42,7 +42,7 @@ func ecloudSolutionListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists solutions",
 		Long:    "This command lists solutions",
-		Example: "ukfast ecloud solution list",
+		Example: "ans ecloud solution list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -77,7 +77,7 @@ func ecloudSolutionShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <solution: id>...",
 		Short:   "Shows a solution",
 		Long:    "This command shows one or more solutions",
-		Example: "ukfast ecloud solution show 123",
+		Example: "ans ecloud solution show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing solution")
@@ -122,7 +122,7 @@ func ecloudSolutionUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <solution: id>",
 		Short:   "Updates a solution",
 		Long:    "This command updates a solution",
-		Example: "ukfast ecloud solution update 123 --name \"new name\"",
+		Example: "ans ecloud solution update 123 --name \"new name\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing solution")

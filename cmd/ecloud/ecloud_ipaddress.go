@@ -33,7 +33,7 @@ func ecloudIPAddressListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists IP addresses",
 		Long:    "This command lists IP addresses",
-		Example: "ukfast ecloud ipaddress list",
+		Example: "ans ecloud ipaddress list",
 		RunE:    ecloudCobraRunEFunc(f, ecloudIPAddressList),
 	}
 
@@ -63,7 +63,7 @@ func ecloudIPAddressShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <ip: id>...",
 		Short:   "Shows a IP address",
 		Long:    "This command shows one or more IP addresses",
-		Example: "ukfast ecloud ipaddress show ip-abcdef12",
+		Example: "ans ecloud ipaddress show ip-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing IP address")
@@ -95,7 +95,7 @@ func ecloudIPAddressCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates a IP address",
 		Long:    "This command creates a IP address",
-		Example: "ukfast ecloud ipaddress create --network net-abcdef12",
+		Example: "ans ecloud ipaddress create --network net-abcdef12",
 		RunE:    ecloudCobraRunEFunc(f, ecloudIPAddressCreate),
 	}
 
@@ -142,7 +142,7 @@ func ecloudIPAddressUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <ip: id>...",
 		Short:   "Updates a IP address",
 		Long:    "This command updates one or more IP addresses",
-		Example: "ukfast ecloud ipaddress update ip-abcdef12 --name \"my ip\"",
+		Example: "ans ecloud ipaddress update ip-abcdef12 --name \"my ip\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing IP address")
@@ -197,7 +197,7 @@ func ecloudIPAddressDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <ip: id>...",
 		Short:   "Removes a IP address",
 		Long:    "This command removes one or more IP addresses",
-		Example: "ukfast ecloud ipaddress delete ip-abcdef12",
+		Example: "ans ecloud ipaddress delete ip-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing IP address")

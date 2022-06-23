@@ -29,7 +29,7 @@ func loadbalancerListenerACLListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list <listener: id>",
 		Short:   "Lists ACLs",
 		Long:    "This command lists ACLs",
-		Example: "ukfast loadbalancer listener acl list 123",
+		Example: "ans loadbalancer listener acl list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing listener")

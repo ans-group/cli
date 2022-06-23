@@ -33,7 +33,7 @@ func pssRequestReplyListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list <request: id>",
 		Short:   "Lists a request",
 		Long:    "This command lists the replies for a request",
-		Example: "ukfast pss request reply list 123",
+		Example: "ans pss request reply list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing request")
@@ -76,7 +76,7 @@ func pssRequestReplyCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates a reply",
 		Long:    "This command creates a new reply",
-		Example: "ukfast pss request reply create --description 'example' --author 123",
+		Example: "ans pss request reply create --description 'example' --author 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing request")

@@ -31,7 +31,7 @@ func ddosxDomainPropertyListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list <domain: name>",
 		Short:   "Lists domain properties",
 		Long:    "This command lists domain properties",
-		Example: "ukfast ddosx domain property list example.com",
+		Example: "ans ddosx domain property list example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -73,7 +73,7 @@ func ddosxDomainPropertyShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <domain: name>",
 		Short:   "Shows domain properties",
 		Long:    "This command shows a domain property",
-		Example: "ukfast ddosx domain property show example.com 00000000-0000-0000-0000-000000000000",
+		Example: "ans ddosx domain property show example.com 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -117,7 +117,7 @@ func ddosxDomainPropertyUpdateCmd(f factory.ClientFactory, fs afero.Fs) *cobra.C
 		Use:     "update <domain: name>...",
 		Short:   "Updates domain properties",
 		Long:    "This command updates one or more domain properties",
-		Example: "ukfast ddosx domain property update example.com 00000000-0000-0000-0000-000000000000 --value false",
+		Example: "ans ddosx domain property update example.com 00000000-0000-0000-0000-000000000000 --value false",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")

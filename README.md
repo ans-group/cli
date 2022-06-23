@@ -1,12 +1,12 @@
-# UKFast CLI
+# ANS CLI
 
-[![Build Status](https://travis-ci.org/ukfast/cli.svg?branch=master)](https://travis-ci.org/ukfast/cli)
+[![Build Status](https://travis-ci.org/ans/cli.svg?branch=master)](https://travis-ci.org/ans/cli)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-This is the official UKFast command-line client, allowing for querying and controlling
-supported UKFast services.
+This is the official ANS command-line client, allowing for querying and controlling
+supported ANS services.
 
-The client utilises UKFast APIs to provide access to most service features. You should refer to the 
+The client utilises ANS APIs to provide access to most service features. You should refer to the 
 [Getting Started](https://developers.ukfast.io/getting-started) section of the API documentation before 
 proceeding below
 
@@ -45,7 +45,7 @@ PowerShell:
 And away we go!
 
 ```
-> ukfast safedns zone record show example.co.uk 3337874
+> ans safedns zone record show example.co.uk 3337874
 +---------+--------------------+------+---------+---------------------------+----------+-----+
 |   ID    |        NAME        | TYPE | CONTENT |        UPDATED AT         | PRIORITY | TTL |
 +---------+--------------------+------+---------+---------------------------+----------+-----+
@@ -61,7 +61,7 @@ Both of these methods are explained below.
 ### Configuration File
 
 The configuration file is read from
-`$HOME/.ukfast{.extension}` by default (extension being one of the `viper` supported formats such as `yml`, `yaml`, `json`, `toml` etc.). This path can be overridden with the `--config` flag.
+`$HOME/.ans{.extension}` by default (extension being one of the `viper` supported formats such as `yml`, `yaml`, `json`, `toml` etc.). This path can be overridden with the `--config` flag.
 
 Values defined in the configuration file take precedence over environment variables.
 
@@ -95,9 +95,9 @@ The configuration file can be manipulated using the `config` subcommand, for exa
 
 
 ```
-> ukfast config context update --current --api-key test1
-> ukfast config context update someothercontext --api-key test1
-> ukfast config context switch someothercontext
+> ans config context update --current --api-key test1
+> ans config context update someothercontext --api-key test1
+> ans config context switch someothercontext
 ```
 
 ### Environment variables
@@ -116,13 +116,13 @@ The default output format for the CLI is `Table`, which will be used when the va
 is `table` or unspecified:
 
 ```
-> ukfast safedns zone record list example.co.uk
+> ans safedns zone record list example.co.uk
 +---------+--------------------+------+-----------------------------------------------------------------------+---------------------------+----------+-------+
 |   ID    |        NAME        | TYPE |                                CONTENT                                |        UPDATED AT         | PRIORITY |  TTL  |
 +---------+--------------------+------+-----------------------------------------------------------------------+---------------------------+----------+-------+
 | 3337865 | ns0.ukfast.net     | NS   | 185.226.220.128                                                       | 2019-03-19T16:31:48+00:00 |        0 |     0 |
 | 3337868 | ns1.ukfast.net     | NS   | 185.226.221.128                                                       | 2019-03-19T16:31:48+00:00 |        0 |     0 |
-| 3337871 | example.co.uk      | SOA  | ns0.ukfast.net support.ukfast.co.uk 2019031901 7200 3600 604800 86400 | 2019-03-19T16:31:48+00:00 |        0 | 86400 |
+| 3337871 | example.co.uk      | SOA  | ns0.ukfast.net support.ans.co.uk 2019031901 7200 3600 604800 86400 | 2019-03-19T16:31:48+00:00 |        0 | 86400 |
 | 3337874 | test.example.co.uk | A    | 1.2.3.4                                                               | 2019-03-19T16:33:55+00:00 |        0 |     0 |
 +---------+--------------------+------+-----------------------------------------------------------------------+---------------------------+----------+-------+
 ```
@@ -134,7 +134,7 @@ The [Property Modifier](#property) is available for this format
 Results can be output as a list using the `list` format:
 
 ```
-> ukfast safedns zone record show example.co.uk 3337874 --output list
+> ans safedns zone record show example.co.uk 3337874 --output list
 id         : 3337874
 name       : test.example.co.uk
 type       : A
@@ -151,7 +151,7 @@ The [Property Modifier](#property) is available for this format
 Results can be output in JSON using the `json` format:
 
 ```
-> ukfast safedns zone record show example.co.uk 3337874 --output json
+> ans safedns zone record show example.co.uk 3337874 --output json
 [{"id":3337874,"template_id":0,"name":"test.example.co.uk","type":"A","content":"1.2.3.4","updated_at":"2019-03-19T16:33:55+00:00","ttl":0,"priority":0}]
 ```
 
@@ -160,7 +160,7 @@ Results can be output in JSON using the `json` format:
 Results can be output in YAML using the `yaml` format:
 
 ```
-> ukfast safedns zone record show example.co.uk 3337874 --output yaml
+> ans safedns zone record show example.co.uk 3337874 --output yaml
 - id: 3337874
   templateid: 0
   name: test.example.co.uk
@@ -176,12 +176,12 @@ Results can be output in YAML using the `yaml` format:
 Results can be output with a value or set of values using the `value` format:
 
 ```
-> ukfast safedns zone record show example.co.uk 3337874 --output value
+> ans safedns zone record show example.co.uk 3337874 --output value
 3337874 test.example.co.uk A 1.2.3.4 2019-03-19T16:33:55+00:00 0 0
 ```
 
 ```
-> ukfast safedns zone record show example.co.uk 3337874 --output value --property id
+> ans safedns zone record show example.co.uk 3337874 --output value --property id
 3337874
 ```
 
@@ -192,7 +192,7 @@ The [Property Modifier](#property) is available for this format
 Results can be output as CSV using the `csv` format:
 
 ```
-> ukfast safedns zone record show example.co.uk 3337874 --output csv
+> ans safedns zone record show example.co.uk 3337874 --output csv
 id,name,type,content,updated_at,priority,ttl
 3337874,test.example.co.uk,A,1.2.3.4,2019-03-19T16:33:55+00:00,0,0
 ```
@@ -205,7 +205,7 @@ Results can be output using a supplied Golang template string using the `templat
 in conjunction with output arguments, e.g.
 
 ```
-> ukfast safedns zone record list example.co.uk --output template="Record name: {{ .Name }}, Type: {{ .Type }}"
+> ans safedns zone record list example.co.uk --output template="Record name: {{ .Name }}, Type: {{ .Type }}"
 Record name: ns0.ukfast.net, Type: NS
 Record name: ns1.ukfast.net, Type: NS
 Record name: example.co.uk, Type: SOA
@@ -218,7 +218,7 @@ Results can be output via JSON Path using the `jsonpath` format
 in conjunction with output arguments, e.g.
 
 ```
-> ukfast safedns zone record list example.co.uk --output jsonpath="{[*].name}"
+> ans safedns zone record list example.co.uk --output jsonpath="{[*].name}"
 example.co.uk example.co.uk example.co.uk test.example.co.uk
 ```
 
@@ -232,14 +232,14 @@ Some output formats support the `--property` output modifier.
 Required properties can be specified with the `--property` format modifer flag:
 
 ```
-> ukfast safedns zone record show example.co.uk 3337874 --output value --property name
+> ans safedns zone record show example.co.uk 3337874 --output value --property name
 test.example.co.uk
 ```
 
 The property modifier accepts a comma-delimited list of property names, and is also repeatable:
 
 ```
-> ukfast safedns zone record show example.co.uk 3337874 --output value --property id,name --property content
+> ans safedns zone record show example.co.uk 3337874 --output value --property id,name --property content
 3337874 test.example.co.uk 1.2.3.4
 ```
 
@@ -276,10 +276,10 @@ When using `list` commands, sorting is available via the `--sort` flag.
 The CLI has self-update functionality, which can be invoked via the command `update`:
 
 ```
-> ukfast update
+> ans update
 ```
 
-This command in-place updates the CLI, with the old binary moved to `ukfast.old` (`ukfast.old.exe` on Windows), should roll-back be required.
+This command in-place updates the CLI, with the old binary moved to `ans.old` (`ans.old.exe` on Windows), should roll-back be required.
 
 ## Shell autocompletions
 
@@ -289,7 +289,7 @@ The CLI supports generating shell completions for the following shells:
 * Zsh
 * PowerShell
 
-The commands at `ukfast completion <shell: bash|zsh|powershell>` provide help for installation on different platforms
+The commands at `ans completion <shell: bash|zsh|powershell>` provide help for installation on different platforms
 
 ## eCloud VPC resources
 

@@ -30,7 +30,7 @@ func pssReplyShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <reply: id>...",
 		Short:   "Shows a reply",
 		Long:    "This command shows one or more replies",
-		Example: "ukfast pss reply show 123",
+		Example: "ans pss reply show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing reply")

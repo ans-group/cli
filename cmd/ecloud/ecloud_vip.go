@@ -32,7 +32,7 @@ func ecloudVIPListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists VIPs",
 		Long:    "This command lists VIPs",
-		Example: "ukfast ecloud vip list",
+		Example: "ans ecloud vip list",
 		RunE:    ecloudCobraRunEFunc(f, ecloudVIPList),
 	}
 
@@ -64,7 +64,7 @@ func ecloudVIPShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <vip: id>...",
 		Short:   "Shows an VIP",
 		Long:    "This command shows one or more VIPs",
-		Example: "ukfast ecloud vip show vip-abcdef12",
+		Example: "ans ecloud vip show vip-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing VIP")
@@ -96,7 +96,7 @@ func ecloudVIPCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates a VIP",
 		Long:    "This command creates a VIP",
-		Example: "ukfast ecloud vip create --name testvip --load-balancer lb-abcdef12",
+		Example: "ans ecloud vip create --name testvip --load-balancer lb-abcdef12",
 		RunE:    ecloudCobraRunEFunc(f, ecloudVIPCreate),
 	}
 
@@ -142,7 +142,7 @@ func ecloudVIPUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <vip: id>...",
 		Short:   "Updates a VIP",
 		Long:    "This command updates one or more VIPs",
-		Example: "ukfast ecloud vip update vip-abcdef12 --name \"my vip\"",
+		Example: "ans ecloud vip update vip-abcdef12 --name \"my vip\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing VIP")
@@ -200,7 +200,7 @@ func ecloudVIPDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <vip: id>...",
 		Short:   "Removes a VIP",
 		Long:    "This command removes one or more VIPs",
-		Example: "ukfast ecloud vip delete vip-abcdef12",
+		Example: "ans ecloud vip delete vip-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing VIP")

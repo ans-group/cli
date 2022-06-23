@@ -38,7 +38,7 @@ func pssRequestListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists requests",
 		Long:    "This command lists requests",
-		Example: "ukfast pss request list",
+		Example: "ans pss request list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -69,7 +69,7 @@ func pssRequestShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <request: id>...",
 		Short:   "Shows a request",
 		Long:    "This command shows one or more requests",
-		Example: "ukfast pss request show 123",
+		Example: "ans pss request show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing request")
@@ -114,7 +114,7 @@ func pssRequestCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates a request",
 		Long:    "This command creates a new request",
-		Example: "ukfast pss request create --subject 'example ticket' --details 'example' --author 123",
+		Example: "ans pss request create --subject 'example ticket' --details 'example' --author 123",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -194,7 +194,7 @@ func pssRequestUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <request: id>...",
 		Short:   "Updates requests",
 		Long:    "This command updates one or more requests",
-		Example: "ukfast pss request update 123 --priority high",
+		Example: "ans pss request update 123 --priority high",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing request")
@@ -293,7 +293,7 @@ func pssRequestCloseCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "close <request: id>...",
 		Short:   "Closes requests",
 		Long:    "This command closes one or more requests",
-		Example: "ukfast pss request close 123",
+		Example: "ans pss request close 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing request")

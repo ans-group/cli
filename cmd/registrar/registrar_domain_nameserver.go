@@ -27,7 +27,7 @@ func registrarDomainNameserverListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists domain nameservers",
 		Long:    "This command lists a domain's nameservers",
-		Example: "ukfast registrar domain nameserver list example.com",
+		Example: "ans registrar domain nameserver list example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")

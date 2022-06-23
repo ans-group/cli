@@ -28,7 +28,7 @@ func ecloudInstanceConsoleSessionCreateCmd(f factory.ClientFactory) *cobra.Comma
 		Use:     "create <instance: id>",
 		Short:   "Creates an instance console session",
 		Long:    "This command creates one or more instance console sessions",
-		Example: "ukfast ecloud instance consolesession create i-abcdef12",
+		Example: "ans ecloud instance consolesession create i-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing instance")

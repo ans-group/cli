@@ -43,7 +43,7 @@ func ddosxDomainListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists domains",
 		Long:    "This command lists domains",
-		Example: "ukfast ddosx domain list",
+		Example: "ans ddosx domain list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -74,7 +74,7 @@ func ddosxDomainShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <domain: name>...",
 		Short:   "Shows a domain",
 		Long:    "This command shows one or more domains",
-		Example: "ukfast ddosx domain show example.com",
+		Example: "ans ddosx domain show example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -113,7 +113,7 @@ func ddosxDomainCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates a domain",
 		Long:    "This command creates a new domain",
-		Example: "ukfast ddosx domain create --name example.com",
+		Example: "ans ddosx domain create --name example.com",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -156,7 +156,7 @@ func ddosxDomainDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <domain: name>...",
 		Short:   "Deletes a domain",
 		Long:    "This command deletes one or more domains",
-		Example: "ukfast ddosx domain delete example.com",
+		Example: "ans ddosx domain delete example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -202,7 +202,7 @@ func ddosxDomainDeployCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "deploy <domain: name>...",
 		Short:   "Deploys a domain",
 		Long:    "This command deploys one or more domains",
-		Example: "ukfast ddosx domain deploy example.com",
+		Example: "ans ddosx domain deploy example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")

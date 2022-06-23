@@ -32,7 +32,7 @@ func ecloudVPNServiceListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists VPN services",
 		Long:    "This command lists VPN services",
-		Example: "ukfast ecloud vpnservice list",
+		Example: "ans ecloud vpnservice list",
 		RunE:    ecloudCobraRunEFunc(f, ecloudVPNServiceList),
 	}
 
@@ -62,7 +62,7 @@ func ecloudVPNServiceShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <service: id>...",
 		Short:   "Shows a VPN service",
 		Long:    "This command shows one or more VPN services",
-		Example: "ukfast ecloud vpnservice show vpn-abcdef12",
+		Example: "ans ecloud vpnservice show vpn-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing VPN service")
@@ -94,7 +94,7 @@ func ecloudVPNServiceCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates a VPN service",
 		Long:    "This command creates a VPN service",
-		Example: "ukfast ecloud vpnservice create --router rtr-abcdef12",
+		Example: "ans ecloud vpnservice create --router rtr-abcdef12",
 		RunE:    ecloudCobraRunEFunc(f, ecloudVPNServiceCreate),
 	}
 
@@ -138,7 +138,7 @@ func ecloudVPNServiceUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <service: id>...",
 		Short:   "Updates a VPN service",
 		Long:    "This command updates one or more VPN services",
-		Example: "ukfast ecloud vpnservice update vpn-abcdef12 --name \"my service\"",
+		Example: "ans ecloud vpnservice update vpn-abcdef12 --name \"my service\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing VPN service")
@@ -196,7 +196,7 @@ func ecloudVPNServiceDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <service: id>...",
 		Short:   "Removes a VPN service",
 		Long:    "This command removes one or more VPN services",
-		Example: "ukfast ecloud vpnservice delete vpn-abcdef12",
+		Example: "ans ecloud vpnservice delete vpn-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing VPN service")

@@ -35,7 +35,7 @@ func ecloudNetworkListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists networks",
 		Long:    "This command lists networks",
-		Example: "ukfast ecloud network list",
+		Example: "ans ecloud network list",
 		RunE:    ecloudCobraRunEFunc(f, ecloudNetworkList),
 	}
 
@@ -67,7 +67,7 @@ func ecloudNetworkShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <network: id>...",
 		Short:   "Shows a network",
 		Long:    "This command shows one or more networks",
-		Example: "ukfast ecloud network show net-abcdef12",
+		Example: "ans ecloud network show net-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing network")
@@ -99,7 +99,7 @@ func ecloudNetworkCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates an network",
 		Long:    "This command creates an network",
-		Example: "ukfast ecloud network create --router rtr-abcdef12",
+		Example: "ans ecloud network create --router rtr-abcdef12",
 		RunE:    ecloudCobraRunEFunc(f, ecloudNetworkCreate),
 	}
 
@@ -148,7 +148,7 @@ func ecloudNetworkUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <network: id>...",
 		Short:   "Updates an network",
 		Long:    "This command updates one or more networks",
-		Example: "ukfast ecloud network update net-abcdef12 --name \"my network\"",
+		Example: "ans ecloud network update net-abcdef12 --name \"my network\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing network")
@@ -206,7 +206,7 @@ func ecloudNetworkDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <network: id>...",
 		Short:   "Removes an network",
 		Long:    "This command removes one or more networks",
-		Example: "ukfast ecloud network delete net-abcdef12",
+		Example: "ans ecloud network delete net-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing network")

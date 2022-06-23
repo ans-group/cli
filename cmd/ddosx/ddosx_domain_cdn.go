@@ -32,7 +32,7 @@ func ddosxDomainCDNEnableCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "enable <domain: name>...",
 		Short:   "Enables CDN for a domain",
 		Long:    "This command enables CDN for one or more domains",
-		Example: "ukfast ddosx domain cdn enable example.com",
+		Example: "ans ddosx domain cdn enable example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -78,7 +78,7 @@ func ddosxDomainCDNDisableCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "disable <domain: name>...",
 		Short:   "Disables CDN for a domain",
 		Long:    "This command disables CDN for one or more domains",
-		Example: "ukfast ddosx domain cdn disable example.com",
+		Example: "ans ddosx domain cdn disable example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -124,7 +124,7 @@ func ddosxDomainCDNPurgeCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "purge <domain: name>",
 		Short:   "Purges CDN content for a domain",
 		Long:    "This command purges CDN content for a domain",
-		Example: "ukfast ddosx domain cdn purge example.com --record-name something.example.com --uri /test",
+		Example: "ans ddosx domain cdn purge example.com --record-name something.example.com --uri /test",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")

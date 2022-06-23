@@ -28,7 +28,7 @@ func ecloudNetworkRuleNetworkRulePortListCmd(f factory.ClientFactory) *cobra.Com
 		Use:     "list",
 		Short:   "Lists ports for network rule",
 		Long:    "This command lists ports for network rule",
-		Example: "ukfast ecloud networkrule networkport list np-abcdef12",
+		Example: "ans ecloud networkrule networkport list np-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing network rule")

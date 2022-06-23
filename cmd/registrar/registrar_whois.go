@@ -27,7 +27,7 @@ func registrarWhoisShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <domain: name>...",
 		Short:   "Shows whois for a domain",
 		Long:    "This command shows whois for one or more domains",
-		Example: "ukfast registrar whois show example.com",
+		Example: "ans registrar whois show example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")

@@ -30,7 +30,7 @@ func accountContactListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists contacts",
 		Long:    "This command lists contacts",
-		Example: "ukfast account contact list",
+		Example: "ans account contact list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -61,7 +61,7 @@ func accountContactShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <contact: id>...",
 		Short:   "Shows a contact",
 		Long:    "This command shows one or more contacts",
-		Example: "ukfast account contact show 123",
+		Example: "ans account contact show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing contact")

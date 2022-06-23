@@ -29,7 +29,7 @@ func ecloudVPNProfileGroupListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists VPN sessions",
 		Long:    "This command lists VPN sessions",
-		Example: "ukfast ecloud vpnprofilegroup list",
+		Example: "ans ecloud vpnprofilegroup list",
 		RunE:    ecloudCobraRunEFunc(f, ecloudVPNProfileGroupList),
 	}
 
@@ -59,7 +59,7 @@ func ecloudVPNProfileGroupShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <session: id>...",
 		Short:   "Shows a VPN session",
 		Long:    "This command shows one or more VPN sessions",
-		Example: "ukfast ecloud vpnprofilegroup show vpns-abcdef12",
+		Example: "ans ecloud vpnprofilegroup show vpns-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing VPN session")

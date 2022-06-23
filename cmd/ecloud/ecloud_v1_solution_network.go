@@ -29,7 +29,7 @@ func ecloudSolutionNetworkListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists solution networks",
 		Long:    "This command lists solution networks",
-		Example: "ukfast ecloud solution network list 123",
+		Example: "ans ecloud solution network list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing solution")

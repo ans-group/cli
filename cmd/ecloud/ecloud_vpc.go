@@ -38,7 +38,7 @@ func ecloudVPCListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists VPCs",
 		Long:    "This command lists VPCs",
-		Example: "ukfast ecloud vpc list",
+		Example: "ans ecloud vpc list",
 		RunE:    ecloudCobraRunEFunc(f, ecloudVPCList),
 	}
 
@@ -66,7 +66,7 @@ func ecloudVPCShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <vpc: id>...",
 		Short:   "Shows a VPC",
 		Long:    "This command shows one or more VPCs",
-		Example: "ukfast ecloud vpc show vpc-abcdef12",
+		Example: "ans ecloud vpc show vpc-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing vpc")
@@ -98,7 +98,7 @@ func ecloudVPCCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates a VPC",
 		Long:    "This command creates a VPC",
-		Example: "ukfast ecloud vpc create",
+		Example: "ans ecloud vpc create",
 		RunE:    ecloudCobraRunEFunc(f, ecloudVPCCreate),
 	}
 
@@ -147,7 +147,7 @@ func ecloudVPCUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <vpc: id>...",
 		Short:   "Updates a VPC",
 		Long:    "This command updates one or more VPCs",
-		Example: "ukfast ecloud vpc update vpc-abcdef12 --name \"my vpc\"",
+		Example: "ans ecloud vpc update vpc-abcdef12 --name \"my vpc\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing vpc")
@@ -206,7 +206,7 @@ func ecloudVPCDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <vpc: id>...",
 		Short:   "Removes a VPC",
 		Long:    "This command removes one or more VPCs",
-		Example: "ukfast ecloud vpc delete vpc-abcdef12",
+		Example: "ans ecloud vpc delete vpc-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing vpc")
@@ -254,7 +254,7 @@ func ecloudVPCDeployDefaultsCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "deploydefaults <vpc: id>...",
 		Short:   "Deploys default resources for a VPC",
 		Long:    "This command deploys default resources for one or more VPCs",
-		Example: "ukfast ecloud vpc deploydefaults vpc-abcdef12",
+		Example: "ans ecloud vpc deploydefaults vpc-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing vpc")

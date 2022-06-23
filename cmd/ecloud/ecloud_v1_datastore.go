@@ -30,7 +30,7 @@ func ecloudDatastoreListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists datastores",
 		Long:    "This command lists datastores",
-		Example: "ukfast ecloud datastore list",
+		Example: "ans ecloud datastore list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -61,7 +61,7 @@ func ecloudDatastoreShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <datastore: id>...",
 		Short:   "Shows a datastore",
 		Long:    "This command shows one or more datastores",
-		Example: "ukfast ecloud vm datastore 123",
+		Example: "ans ecloud vm datastore 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing datastore")

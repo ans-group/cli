@@ -27,7 +27,7 @@ func accountCreditListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists credits",
 		Long:    "This command lists credits",
-		Example: "ukfast account credit list",
+		Example: "ans account credit list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {

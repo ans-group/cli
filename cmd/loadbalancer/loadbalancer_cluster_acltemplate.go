@@ -28,7 +28,7 @@ func loadbalancerClusterACLTemplateShowCmd(f factory.ClientFactory) *cobra.Comma
 		Use:     "show <cluster: id>",
 		Short:   "Shows ACL templates",
 		Long:    "This command shows ACL templates",
-		Example: "ukfast loadbalancer cluster acltemplate show 123",
+		Example: "ans loadbalancer cluster acltemplate show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing cluster")

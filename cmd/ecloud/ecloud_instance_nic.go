@@ -28,7 +28,7 @@ func ecloudInstanceNICListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists instance nics",
 		Long:    "This command lists instance nics",
-		Example: "ukfast ecloud instance nic list i-abcdef12",
+		Example: "ans ecloud instance nic list i-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing instance")

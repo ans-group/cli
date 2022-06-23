@@ -28,7 +28,7 @@ func ecloudVPCVolumeListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists VPC volumes",
 		Long:    "This command lists VPC volumes",
-		Example: "ukfast ecloud vpc volume list vpc-abcdef12",
+		Example: "ans ecloud vpc volume list vpc-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing VPC")

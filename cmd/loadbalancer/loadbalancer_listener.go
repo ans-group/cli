@@ -40,7 +40,7 @@ func loadbalancerListenerListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists listeners",
 		Long:    "This command lists listeners",
-		Example: "ukfast loadbalancer listener list",
+		Example: "ans loadbalancer listener list",
 		RunE:    loadbalancerCobraRunEFunc(f, loadbalancerListenerList),
 	}
 }
@@ -64,7 +64,7 @@ func loadbalancerListenerShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <listener: id>...",
 		Short:   "Shows a listener",
 		Long:    "This command shows one or more listeners",
-		Example: "ukfast loadbalancer listener show 123",
+		Example: "ans loadbalancer listener show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing listener")
@@ -102,7 +102,7 @@ func loadbalancerListenerCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create <listener: id>",
 		Short:   "Creates a listener",
 		Long:    "This command creates a listener",
-		Example: "ukfast loadbalancer listener create --cluster 123 --default-target-group 456 --name \"test-listener\" --mode http",
+		Example: "ans loadbalancer listener create --cluster 123 --default-target-group 456 --name \"test-listener\" --mode http",
 		RunE:    loadbalancerCobraRunEFunc(f, loadbalancerListenerCreate),
 	}
 
@@ -169,7 +169,7 @@ func loadbalancerListenerUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <listener: id>...",
 		Short:   "Updates a listener",
 		Long:    "This command updates one or more listeners",
-		Example: "ukfast loadbalancer listener update 123 --name mylistener",
+		Example: "ans loadbalancer listener update 123 --name mylistener",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing listener")
@@ -243,7 +243,7 @@ func loadbalancerListenerDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <listener: id>...",
 		Short:   "Removes a listener",
 		Long:    "This command removes one or more listeners",
-		Example: "ukfast loadbalancer listener delete 123",
+		Example: "ans loadbalancer listener delete 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing listener")

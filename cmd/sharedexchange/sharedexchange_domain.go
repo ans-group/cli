@@ -30,7 +30,7 @@ func sharedexchangeDomainListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists domains",
 		Long:    "This command lists domains",
-		Example: "ukfast sharedexchange domain list",
+		Example: "ans sharedexchange domain list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -61,7 +61,7 @@ func sharedexchangeDomainShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <domain: id>...",
 		Short:   "Shows a domain",
 		Long:    "This command shows one or more domains",
-		Example: "ukfast sharedexchange domain show 123",
+		Example: "ans sharedexchange domain show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")

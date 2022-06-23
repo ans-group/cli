@@ -25,7 +25,7 @@ func cloudflareOrchestratorCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates an orchestration",
 		Long:    "This command creates an orchestration",
-		Example: "ukfast cloudflare orchestrator create --zone-name testzone --zone-subscription c46411f8-13e3-484e-a114-9d0ce5d53502 --account-name testaccount --administrator-email-address test@test.com",
+		Example: "ans cloudflare orchestrator create --zone-name testzone --zone-subscription c46411f8-13e3-484e-a114-9d0ce5d53502 --account-name testaccount --administrator-email-address test@test.com",
 		RunE:    cloudflareCobraRunEFunc(f, cloudflareOrchestratorCreate),
 	}
 

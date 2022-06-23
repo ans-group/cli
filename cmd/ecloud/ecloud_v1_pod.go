@@ -34,7 +34,7 @@ func ecloudPodListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists pods",
 		Long:    "This command lists pods",
-		Example: "ukfast ecloud pod list",
+		Example: "ans ecloud pod list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -65,7 +65,7 @@ func ecloudPodShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <pod: id>...",
 		Short:   "Shows a pod",
 		Long:    "This command shows one or more pods",
-		Example: "ukfast ecloud vm pod 123",
+		Example: "ans ecloud vm pod 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing pod")

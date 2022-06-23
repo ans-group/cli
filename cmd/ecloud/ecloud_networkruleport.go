@@ -32,7 +32,7 @@ func ecloudNetworkRulePortListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists network rule ports",
 		Long:    "This command lists network rule ports",
-		Example: "ukfast ecloud networkruleport list",
+		Example: "ans ecloud networkruleport list",
 		RunE:    ecloudCobraRunEFunc(f, ecloudNetworkRulePortList),
 	}
 
@@ -63,7 +63,7 @@ func ecloudNetworkRulePortShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <port: id>...",
 		Short:   "Shows a network rule port",
 		Long:    "This command shows one or more network rule ports",
-		Example: "ukfast ecloud networkruleport show nrp-abcdef12",
+		Example: "ans ecloud networkruleport show nrp-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing network rule port")
@@ -95,7 +95,7 @@ func ecloudNetworkRulePortCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates a network rule port",
 		Long:    "This command creates a network rule port",
-		Example: "ukfast ecloud networkruleport create --rule nr-abcdef12",
+		Example: "ans ecloud networkruleport create --rule nr-abcdef12",
 		RunE:    ecloudCobraRunEFunc(f, ecloudNetworkRulePortCreate),
 	}
 
@@ -155,7 +155,7 @@ func ecloudNetworkRulePortUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <port: id>...",
 		Short:   "Updates a network rule port",
 		Long:    "This command updates one or more network rule ports",
-		Example: "ukfast ecloud networkruleport update nrp-abcdef12 --name \"my port\"",
+		Example: "ans ecloud networkruleport update nrp-abcdef12 --name \"my port\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing network rule port")
@@ -234,7 +234,7 @@ func ecloudNetworkRulePortDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <port: id>...",
 		Short:   "Removes a network rule port",
 		Long:    "This command removes one or more network rule ports",
-		Example: "ukfast ecloud networkruleport delete nrp-abcdef12",
+		Example: "ans ecloud networkruleport delete nrp-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing network rule port")

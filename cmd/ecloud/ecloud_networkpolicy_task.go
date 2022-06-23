@@ -28,7 +28,7 @@ func ecloudNetworkPolicyTaskListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list <policy: id>",
 		Short:   "Lists network policy tasks",
 		Long:    "This command lists network policy tasks",
-		Example: "ukfast ecloud network policy task list i-abcdef12",
+		Example: "ans ecloud network policy task list i-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing network policy")

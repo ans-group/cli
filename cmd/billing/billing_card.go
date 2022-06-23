@@ -34,7 +34,7 @@ func billingCardListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists cards",
 		Long:    "This command lists cards",
-		Example: "ukfast billing card list",
+		Example: "ans billing card list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -65,7 +65,7 @@ func billingCardShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <card: id>...",
 		Short:   "Shows a card",
 		Long:    "This command shows one or more cards",
-		Example: "ukfast billing card show 123",
+		Example: "ans billing card show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing card")
@@ -110,7 +110,7 @@ func billingCardCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates a card",
 		Long:    "This command creates a card",
-		Example: "ukfast billing card create",
+		Example: "ans billing card create",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -174,7 +174,7 @@ func billingCardUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <virtualmachine: id>...",
 		Short:   "Updates a card",
 		Long:    "This command updates one or more cards",
-		Example: "ukfast billing card update 123 --name \"test card 1\"",
+		Example: "ans billing card update 123 --name \"test card 1\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing card")
@@ -257,7 +257,7 @@ func billingCardDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <card: id>...",
 		Short:   "Removes a card",
 		Long:    "This command removes one or more cards",
-		Example: "ukfast billing card delete 123",
+		Example: "ans billing card delete 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing card")

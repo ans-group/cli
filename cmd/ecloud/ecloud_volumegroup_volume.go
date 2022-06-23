@@ -28,7 +28,7 @@ func ecloudVolumeGroupVolumeListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists volumegroup volumes",
 		Long:    "This command lists volumegroup volumes",
-		Example: "ukfast ecloud volumegroup volume list volgroup-abcdef12",
+		Example: "ans ecloud volumegroup volume list volgroup-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing volume-group")

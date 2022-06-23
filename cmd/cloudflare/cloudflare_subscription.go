@@ -27,7 +27,7 @@ func cloudflareSubscriptionListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists subscriptions",
 		Long:    "This command lists subscriptions",
-		Example: "ukfast cloudflare subscription list",
+		Example: "ans cloudflare subscription list",
 		RunE:    cloudflareCobraRunEFunc(f, cloudflareSubscriptionList),
 	}
 }

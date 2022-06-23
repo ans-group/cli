@@ -37,7 +37,7 @@ func ddosxSSLListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists ssls",
 		Long:    "This command lists ssls",
-		Example: "ukfast ddosx ssl list",
+		Example: "ans ddosx ssl list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -68,7 +68,7 @@ func ddosxSSLShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <ssl: id>...",
 		Short:   "Shows a ssl",
 		Long:    "This command shows one or more ssls",
-		Example: "ukfast ddosx ssl show 00000000-0000-0000-0000-000000000000",
+		Example: "ans ddosx ssl show 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing ssl")
@@ -107,7 +107,7 @@ func ddosxSSLCreateCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates an ssl",
 		Long:    "This command creates an SSL",
-		Example: "ukfast ddosx ssl create",
+		Example: "ans ddosx ssl create",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -171,7 +171,7 @@ func ddosxSSLUpdateCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 		Use:     "update <ssl: id>",
 		Short:   "Updates an ssl",
 		Long:    "This command updates an SSL",
-		Example: "ukfast ddosx ssl update 00000000-0000-0000-0000-000000000000 --friendly-name myssl",
+		Example: "ans ddosx ssl update 00000000-0000-0000-0000-000000000000 --friendly-name myssl",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing ssl")
@@ -243,7 +243,7 @@ func ddosxSSLDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <ssl: id>...",
 		Short:   "Deletes a ssl",
 		Long:    "This command deletes one or more ssls",
-		Example: "ukfast ddosx ssl delete 00000000-0000-0000-0000-000000000000",
+		Example: "ans ddosx ssl delete 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing ssl")

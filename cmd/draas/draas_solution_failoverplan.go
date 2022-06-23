@@ -32,7 +32,7 @@ func draasSolutionFailoverPlanListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list <solution: id>",
 		Short:   "Lists solution failover plans",
 		Long:    "This command lists solution failover plan",
-		Example: "ukfast draas solution failoverplan list 00000000-0000-0000-0000-000000000000",
+		Example: "ans draas solution failoverplan list 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing solution")
@@ -70,7 +70,7 @@ func draasSolutionFailoverPlanShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <solution: id> <failoverplan: id>...",
 		Short:   "Shows solution failover plans",
 		Long:    "This command shows a solution failover plan",
-		Example: "ukfast draas solution failoverplan show 00000000-0000-0000-0000-000000000000 00000000-0000-0000-0000-000000000001",
+		Example: "ans draas solution failoverplan show 00000000-0000-0000-0000-000000000000 00000000-0000-0000-0000-000000000001",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing solution")
@@ -113,7 +113,7 @@ func draasSolutionFailoverPlanStartCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "start <solution: id> <failoverplan: id>...",
 		Short:   "Starts solution failover plan",
 		Long:    "This command starts one or more solution failover plans",
-		Example: "ukfast draas solution failoverplan start 00000000-0000-0000-0000-000000000000 00000000-0000-0000-0000-000000000001",
+		Example: "ans draas solution failoverplan start 00000000-0000-0000-0000-000000000000 00000000-0000-0000-0000-000000000001",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing solution")
@@ -162,7 +162,7 @@ func draasSolutionFailoverPlanStopCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "stop <solution: id> <failoverplan: id>...",
 		Short:   "Stops solution failover plan",
 		Long:    "This command stops one or more solution failover plans",
-		Example: "ukfast draas solution failoverplan stop 00000000-0000-0000-0000-000000000000 00000000-0000-0000-0000-000000000001",
+		Example: "ans draas solution failoverplan stop 00000000-0000-0000-0000-000000000000 00000000-0000-0000-0000-000000000001",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing solution")

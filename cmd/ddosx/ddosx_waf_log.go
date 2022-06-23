@@ -32,7 +32,7 @@ func ddosxWAFLogListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists WAF logs",
 		Long:    "This command lists WAF logs",
-		Example: "ukfast ddosx waf log list",
+		Example: "ans ddosx waf log list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -67,7 +67,7 @@ func ddosxWAFLogShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <log: id>...",
 		Short:   "Shows WAF logs",
 		Long:    "This command shows a WAF log",
-		Example: "ukfast ddosx waf log show 2d8556677081cecf112b555c359a78c6",
+		Example: "ans ddosx waf log show 2d8556677081cecf112b555c359a78c6",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing log")

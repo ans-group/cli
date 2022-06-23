@@ -28,7 +28,7 @@ func ecloudImageParameterListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists image parameters",
 		Long:    "This command lists image parameters",
-		Example: "ukfast ecloud image parameter list img-abcdef12",
+		Example: "ans ecloud image parameter list img-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing image")

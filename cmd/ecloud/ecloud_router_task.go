@@ -28,7 +28,7 @@ func ecloudRouterTaskListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list <router: id>",
 		Short:   "Lists router tasks",
 		Long:    "This command lists router tasks",
-		Example: "ukfast ecloud router task list rtr-abcdef12",
+		Example: "ans ecloud router task list rtr-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing router")

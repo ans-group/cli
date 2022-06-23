@@ -28,7 +28,7 @@ func draasSolutionHardwarePlanReplicaListCmd(f factory.ClientFactory) *cobra.Com
 		Use:     "list <solution: id> <hardwareplan: id>",
 		Short:   "Lists solution harware plan replicas",
 		Long:    "This command lists solution harware plan replicas",
-		Example: "ukfast draas solution hardwareplan replica list 00000000-0000-0000-0000-000000000000 00000000-0000-0000-0000-000000000001",
+		Example: "ans draas solution hardwareplan replica list 00000000-0000-0000-0000-000000000000 00000000-0000-0000-0000-000000000001",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing solution")

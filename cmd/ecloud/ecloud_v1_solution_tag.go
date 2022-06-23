@@ -34,7 +34,7 @@ func ecloudSolutionTagListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list <solution: id>",
 		Short:   "lists solution tags",
 		Long:    "This command lists solution tags",
-		Example: "ukfast ecloud solution tag list 123",
+		Example: "ans ecloud solution tag list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing solution")
@@ -77,7 +77,7 @@ func ecloudSolutionTagShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <solution: id> <tag: key>...",
 		Short:   "Shows a solution tag",
 		Long:    "This command shows one or more solution tags",
-		Example: "ukfast ecloud solution tag show 123 foo",
+		Example: "ans ecloud solution tag show 123 foo",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing solution")
@@ -125,7 +125,7 @@ func ecloudSolutionTagCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create <solution: id>",
 		Short:   "Creates a solution tag",
 		Long:    "This command creates a solution tag",
-		Example: "ukfast ecloud solution tag create 123 --key foo --value bar",
+		Example: "ans ecloud solution tag create 123 --key foo --value bar",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing solution")
@@ -183,7 +183,7 @@ func ecloudSolutionTagUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <solution: id> <tag: key>...",
 		Short:   "Updates a solution tag",
 		Long:    "This command updates one or more solution tags",
-		Example: "ukfast ecloud solution tag update 123 foo --value \"new value\"",
+		Example: "ans ecloud solution tag update 123 foo --value \"new value\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing solution")
@@ -248,7 +248,7 @@ func ecloudSolutionTagDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <solution: id> <tag: key>...",
 		Short:   "Removes a solution tag ",
 		Long:    "This command removes one or more solution tags",
-		Example: "ukfast ecloud solution tag delete 123 foo",
+		Example: "ans ecloud solution tag delete 123 foo",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing solution")

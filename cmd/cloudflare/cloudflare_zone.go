@@ -32,7 +32,7 @@ func cloudflareZoneListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists zones",
 		Long:    "This command lists zones",
-		Example: "ukfast cloudflare zone list",
+		Example: "ans cloudflare zone list",
 		RunE:    cloudflareCobraRunEFunc(f, cloudflareZoneList),
 	}
 }
@@ -56,7 +56,7 @@ func cloudflareZoneShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <zone: id>...",
 		Short:   "Shows a zone",
 		Long:    "This command shows one or more zones",
-		Example: "ukfast cloudflare zone show 00000000-0000-0000-0000-000000000000",
+		Example: "ans cloudflare zone show 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing zone")
@@ -88,7 +88,7 @@ func cloudflareZoneCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create <zone: id>",
 		Short:   "Creates a zone",
 		Long:    "This command creates a zone",
-		Example: "ukfast cloudflare zone create --account 621e88d4-c401-4063-bdcf-07ca3c09efed --name \"test-zone\" --subscription a144257d-df53-414e-a44d-3dd84ac90395",
+		Example: "ans cloudflare zone create --account 621e88d4-c401-4063-bdcf-07ca3c09efed --name \"test-zone\" --subscription a144257d-df53-414e-a44d-3dd84ac90395",
 		RunE:    cloudflareCobraRunEFunc(f, cloudflareZoneCreate),
 	}
 
@@ -126,7 +126,7 @@ func cloudflareZoneUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <zone: id>...",
 		Short:   "Removes a zone",
 		Long:    "This command removes one or more zones",
-		Example: "ukfast cloudflare zone update 83d70af6-80ba-4463-abda-2880613efbc1",
+		Example: "ans cloudflare zone update 83d70af6-80ba-4463-abda-2880613efbc1",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing zone")
@@ -162,7 +162,7 @@ func cloudflareZoneDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <zone: id>...",
 		Short:   "Removes a zone",
 		Long:    "This command removes one or more zones",
-		Example: "ukfast cloudflare zone delete 1c3081b2-d65e-41d1-8077-c86f21759366",
+		Example: "ans cloudflare zone delete 1c3081b2-d65e-41d1-8077-c86f21759366",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing zone")

@@ -26,7 +26,7 @@ func ddosxDomainVerificationDNSVerifyCmd(f factory.ClientFactory) *cobra.Command
 		Use:     "verify <domain: name>...",
 		Short:   "Verifies a domain via DNS verification method",
 		Long:    "This command verifies one or more domains via the DNS verification method",
-		Example: "ukfast ddosx domain verification dns verify example.com",
+		Example: "ans ddosx domain verification dns verify example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")

@@ -28,7 +28,7 @@ func ecloudVolumeInstanceListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists volume instances",
 		Long:    "This command lists volume instances",
-		Example: "ukfast ecloud volume instance list vol-abcdef12",
+		Example: "ans ecloud volume instance list vol-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing volume")

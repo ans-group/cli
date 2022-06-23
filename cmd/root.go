@@ -28,7 +28,7 @@ var appVersion string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:     "ukfast",
+	Use:     "ans",
 	Short:   "Utility for manipulating UKFast services",
 	Version: "UNKNOWN",
 }
@@ -42,7 +42,7 @@ func Execute(build build.BuildInfo) {
 	rootCmd.SilenceUsage = true
 
 	// Global flags
-	rootCmd.PersistentFlags().String("config", "", "config file (default is $HOME/.ukfast.yml)")
+	rootCmd.PersistentFlags().String("config", "", "config file (default is $HOME/.ans.yml)")
 	rootCmd.PersistentFlags().String("context", "", "specific context to use")
 	rootCmd.PersistentFlags().StringP("output", "o", "", "output type {table, json, yaml, jsonpath, template, value, csv, list}, with optional argument provided as 'outputname=outputargument'")
 	rootCmd.PersistentFlags().StringP("format", "f", "", "")
@@ -57,7 +57,7 @@ func Execute(build build.BuildInfo) {
 	cobra.OnInitialize(initConfig)
 	fs := afero.NewOsFs()
 	clientFactory := factory.NewUKFastClientFactory(
-		factory.WithUserAgent("ukfast-cli"),
+		factory.WithUserAgent("ans-cli"),
 	)
 
 	// Child commands

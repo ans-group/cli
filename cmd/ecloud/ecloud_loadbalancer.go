@@ -32,7 +32,7 @@ func ecloudLoadBalancerListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists load balancers",
 		Long:    "This command lists load balancers",
-		Example: "ukfast ecloud loadbalancer list",
+		Example: "ans ecloud loadbalancer list",
 		RunE:    ecloudCobraRunEFunc(f, ecloudLoadBalancerList),
 	}
 
@@ -64,7 +64,7 @@ func ecloudLoadBalancerShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <lb: id>...",
 		Short:   "Shows an load balancer",
 		Long:    "This command shows one or more load balancers",
-		Example: "ukfast ecloud loadbalancer show lb-abcdef12",
+		Example: "ans ecloud loadbalancer show lb-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing load balancer")
@@ -96,7 +96,7 @@ func ecloudLoadBalancerCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates a load balancer",
 		Long:    "This command creates a load balancer",
-		Example: "ukfast ecloud loadbalancer create --vpc vpc-abcdef12 --availability-zone az-abcdef12 --spec lbs-abcdef12",
+		Example: "ans ecloud loadbalancer create --vpc vpc-abcdef12 --availability-zone az-abcdef12 --spec lbs-abcdef12",
 		RunE:    ecloudCobraRunEFunc(f, ecloudLoadBalancerCreate),
 	}
 
@@ -149,7 +149,7 @@ func ecloudLoadBalancerUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <lb: id>...",
 		Short:   "Updates a load balancer",
 		Long:    "This command updates one or more load balancers",
-		Example: "ukfast ecloud loadbalancer update lb-abcdef12 --name \"my lb\"",
+		Example: "ans ecloud loadbalancer update lb-abcdef12 --name \"my lb\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing load balancer")
@@ -207,7 +207,7 @@ func ecloudLoadBalancerDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <lb: id>...",
 		Short:   "Removes a load balancer",
 		Long:    "This command removes one or more load balancers",
-		Example: "ukfast ecloud loadbalancer delete lb-abcdef12",
+		Example: "ans ecloud loadbalancer delete lb-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing load balancer")

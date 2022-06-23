@@ -36,7 +36,7 @@ func ecloudNetworkPolicyListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists network policies",
 		Long:    "This command lists network policies",
-		Example: "ukfast ecloud networkpolicy list",
+		Example: "ans ecloud networkpolicy list",
 		RunE:    ecloudCobraRunEFunc(f, ecloudNetworkPolicyList),
 	}
 
@@ -68,7 +68,7 @@ func ecloudNetworkPolicyShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <policy: id>...",
 		Short:   "Shows a network policy",
 		Long:    "This command shows one or more network policies",
-		Example: "ukfast ecloud networkpolicy show np-abcdef12",
+		Example: "ans ecloud networkpolicy show np-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing network policy")
@@ -100,7 +100,7 @@ func ecloudNetworkPolicyCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates a network policy",
 		Long:    "This command creates a network policy",
-		Example: "ukfast ecloud networkpolicy create --network rtr-abcdef12",
+		Example: "ans ecloud networkpolicy create --network rtr-abcdef12",
 		RunE:    ecloudCobraRunEFunc(f, ecloudNetworkPolicyCreate),
 	}
 
@@ -155,7 +155,7 @@ func ecloudNetworkPolicyUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <policy: id>...",
 		Short:   "Updates a network policy",
 		Long:    "This command updates one or more network policies",
-		Example: "ukfast ecloud networkpolicy update np-abcdef12 --name \"my policy\"",
+		Example: "ans ecloud networkpolicy update np-abcdef12 --name \"my policy\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing network policy")
@@ -222,7 +222,7 @@ func ecloudNetworkPolicyDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <policy: id>...",
 		Short:   "Removes a network policy",
 		Long:    "This command removes one or more network policies",
-		Example: "ukfast ecloud networkpolicy delete np-abcdef12",
+		Example: "ans ecloud networkpolicy delete np-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing network policy")

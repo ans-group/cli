@@ -28,7 +28,7 @@ func sslCertificateContentShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <certificate: id>...",
 		Short:   "Shows a certificate content",
 		Long:    "This command shows one or more certificate contents",
-		Example: "ukfast ssl certificate content show 123",
+		Example: "ans ssl certificate content show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing certificate")

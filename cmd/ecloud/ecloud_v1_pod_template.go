@@ -32,7 +32,7 @@ func ecloudPodTemplateListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists pod templates",
 		Long:    "This command lists pod templates",
-		Example: "ukfast ecloud pod template list 123",
+		Example: "ans ecloud pod template list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing pod")
@@ -75,7 +75,7 @@ func ecloudPodTemplateShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <pod: id> <template: name>...",
 		Short:   "Shows a pod template",
 		Long:    "This command shows one or more pod templates",
-		Example: "ukfast ecloud pod template show 123 foo",
+		Example: "ans ecloud pod template show 123 foo",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing pod")
@@ -123,7 +123,7 @@ func ecloudPodTemplateUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <pod: id> <template: name>...",
 		Short:   "Updates a pod template",
 		Long:    "This command updates a pod template",
-		Example: "ukfast ecloud pod template update 123 foo --name \"bar\"",
+		Example: "ans ecloud pod template update 123 foo --name \"bar\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing pod")
@@ -189,7 +189,7 @@ func ecloudPodTemplateDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <pod: id> <template: name>...",
 		Short:   "Removes a pod template ",
 		Long:    "This command removes one or more pod templates",
-		Example: "ukfast ecloud pod template delete 123 foo",
+		Example: "ans ecloud pod template delete 123 foo",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing pod")

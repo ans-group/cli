@@ -32,7 +32,7 @@ func ecloudNICListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists NICs",
 		Long:    "This command lists NICs",
-		Example: "ukfast ecloud nic list",
+		Example: "ans ecloud nic list",
 		RunE:    ecloudCobraRunEFunc(f, ecloudNICList),
 	}
 
@@ -60,7 +60,7 @@ func ecloudNICShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <nic: id>...",
 		Short:   "Shows a NIC",
 		Long:    "This command shows one or more NICs",
-		Example: "ukfast ecloud nic show nic-abcdef12",
+		Example: "ans ecloud nic show nic-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing nic")

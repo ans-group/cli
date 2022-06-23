@@ -36,7 +36,7 @@ func ecloudVPNSessionListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists VPN sessions",
 		Long:    "This command lists VPN sessions",
-		Example: "ukfast ecloud vpnsession list",
+		Example: "ans ecloud vpnsession list",
 		RunE:    ecloudCobraRunEFunc(f, ecloudVPNSessionList),
 	}
 
@@ -66,7 +66,7 @@ func ecloudVPNSessionShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <session: id>...",
 		Short:   "Shows a VPN session",
 		Long:    "This command shows one or more VPN sessions",
-		Example: "ukfast ecloud vpnsession show vpns-abcdef12",
+		Example: "ans ecloud vpnsession show vpns-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing VPN session")
@@ -98,7 +98,7 @@ func ecloudVPNSessionCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates a VPN session",
 		Long:    "This command creates a VPN session",
-		Example: "ukfast ecloud vpnsession create --router rtr-abcdef12",
+		Example: "ans ecloud vpnsession create --router rtr-abcdef12",
 		RunE:    ecloudCobraRunEFunc(f, ecloudVPNSessionCreate),
 	}
 
@@ -158,7 +158,7 @@ func ecloudVPNSessionUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <session: id>...",
 		Short:   "Updates a VPN session",
 		Long:    "This command updates one or more VPN sessions",
-		Example: "ukfast ecloud vpnsession update vpns-abcdef12 --name \"my session\"",
+		Example: "ans ecloud vpnsession update vpns-abcdef12 --name \"my session\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing VPN session")
@@ -226,7 +226,7 @@ func ecloudVPNSessionDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <session: id>...",
 		Short:   "Removes a VPN session",
 		Long:    "This command removes one or more VPN sessions",
-		Example: "ukfast ecloud vpnsession delete vpns-abcdef12",
+		Example: "ans ecloud vpnsession delete vpns-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing VPN session")

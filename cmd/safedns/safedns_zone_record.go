@@ -35,7 +35,7 @@ func safednsZoneRecordListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list <zone: name>",
 		Short:   "Lists zone records",
 		Long:    "This command lists zone records",
-		Example: "ukfast safedns zone record list ukfast.co.uk\nukfast safedns zone record list 123",
+		Example: "ans safedns zone record list ans.co.uk\nans safedns zone record list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing zone")
@@ -83,7 +83,7 @@ func safednsZoneRecordShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <zone: name> <record: id>...",
 		Short:   "Shows a zone record",
 		Long:    "This command shows one or more zone records",
-		Example: "ukfast safedns zone record show ukfast.co.uk 123",
+		Example: "ans safedns zone record show ans.co.uk 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing zone")
@@ -132,7 +132,7 @@ func safednsZoneRecordCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create <zone: name>",
 		Short:   "Creates a zone record",
 		Long:    "This command creates a zone record",
-		Example: "ukfast safedns zone record create ukfast.co.uk --name subdomain.ukfast.co.uk --type A --content 1.2.3.4",
+		Example: "ans safedns zone record create ans.co.uk --name subdomain.ans.co.uk --type A --content 1.2.3.4",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing zone")
@@ -200,7 +200,7 @@ func safednsZoneRecordUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <zone: name> <record: id>...",
 		Short:   "Updates a zone record",
 		Long:    "This command updates one or more zone records",
-		Example: "ukfast safedns zone record update ukfast.co.uk 123 --content 1.2.3.4",
+		Example: "ans safedns zone record update ans.co.uk 123 --content 1.2.3.4",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing zone")
@@ -280,7 +280,7 @@ func safednsZoneRecordDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <zone: name> <record: id>...",
 		Short:   "Removes a zone record",
 		Long:    "This command deletes one or more zone records",
-		Example: "ukfast safedns zone record delete ukfast.co.uk 123",
+		Example: "ans safedns zone record delete ans.co.uk 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing zone")

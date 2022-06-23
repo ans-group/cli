@@ -32,7 +32,7 @@ func ecloudSolutionTemplateListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists solution templates",
 		Long:    "This command lists solution templates",
-		Example: "ukfast ecloud solution template list 123",
+		Example: "ans ecloud solution template list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing solution")
@@ -75,7 +75,7 @@ func ecloudSolutionTemplateShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <solution: id> <template: name>...",
 		Short:   "Shows a solution template",
 		Long:    "This command shows one or more solution templates",
-		Example: "ukfast ecloud solution template show 123 foo",
+		Example: "ans ecloud solution template show 123 foo",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing solution")
@@ -123,7 +123,7 @@ func ecloudSolutionTemplateUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <solution: id> <template: name>...",
 		Short:   "Updates a solution template",
 		Long:    "This command updates a solution template",
-		Example: "ukfast ecloud solution template update 123 foo --name \"bar\"",
+		Example: "ans ecloud solution template update 123 foo --name \"bar\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing solution")
@@ -189,7 +189,7 @@ func ecloudSolutionTemplateDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <solution: id> <template: name>...",
 		Short:   "Removes a solution template ",
 		Long:    "This command removes one or more solution templates",
-		Example: "ukfast ecloud solution template delete 123 foo",
+		Example: "ans ecloud solution template delete 123 foo",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing solution")

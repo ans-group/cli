@@ -28,7 +28,7 @@ func ecloudNetworkPolicyNetworkRuleListCmd(f factory.ClientFactory) *cobra.Comma
 		Use:     "list",
 		Short:   "Lists network rules for network policy",
 		Long:    "This command lists network rules for network policy",
-		Example: "ukfast ecloud networkpolicy networkrule list np-abcdef12",
+		Example: "ans ecloud networkpolicy networkrule list np-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing network policy")

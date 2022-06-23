@@ -30,7 +30,7 @@ func billingInvoiceListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists invoices",
 		Long:    "This command lists invoices",
-		Example: "ukfast billing invoice list",
+		Example: "ans billing invoice list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -61,7 +61,7 @@ func billingInvoiceShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <invoice: id>...",
 		Short:   "Shows a invoice",
 		Long:    "This command shows one or more invoices",
-		Example: "ukfast billing invoice show 123",
+		Example: "ans billing invoice show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing invoice")

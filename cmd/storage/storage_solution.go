@@ -30,7 +30,7 @@ func storageSolutionListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists solutions",
 		Long:    "This command lists solutions",
-		Example: "ukfast storage solution list",
+		Example: "ans storage solution list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -61,7 +61,7 @@ func storageSolutionShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <solution: id>...",
 		Short:   "Shows a solution",
 		Long:    "This command shows one or more solutions",
-		Example: "ukfast storage solution show 123",
+		Example: "ans storage solution show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing solution")

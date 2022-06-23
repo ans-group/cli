@@ -26,7 +26,7 @@ func accountDetailsShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show",
 		Short:   "Shows account details",
 		Long:    "This command shows account details",
-		Example: "ukfast account detail show",
+		Example: "ans account detail show",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {

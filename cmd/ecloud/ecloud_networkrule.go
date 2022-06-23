@@ -36,7 +36,7 @@ func ecloudNetworkRuleListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists network rules",
 		Long:    "This command lists network rules",
-		Example: "ukfast ecloud networkrule list",
+		Example: "ans ecloud networkrule list",
 		RunE:    ecloudCobraRunEFunc(f, ecloudNetworkRuleList),
 	}
 
@@ -67,7 +67,7 @@ func ecloudNetworkRuleShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <rule: id>...",
 		Short:   "Shows an network rule",
 		Long:    "This command shows one or more network rules",
-		Example: "ukfast ecloud networkrule show nr-abcdef12",
+		Example: "ans ecloud networkrule show nr-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing network rule")
@@ -99,7 +99,7 @@ func ecloudNetworkRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates a network rule",
 		Long:    "This command creates a network rule",
-		Example: "ukfast ecloud networkrule create --policy np-abcdef12",
+		Example: "ans ecloud networkrule create --policy np-abcdef12",
 		RunE:    ecloudCobraRunEFunc(f, ecloudNetworkRuleCreate),
 	}
 
@@ -176,7 +176,7 @@ func ecloudNetworkRuleUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <rule: id>...",
 		Short:   "Updates a network rule",
 		Long:    "This command updates one or more network rules",
-		Example: "ukfast ecloud networkrule update np-abcdef12 --name \"my rule\"",
+		Example: "ans ecloud networkrule update np-abcdef12 --name \"my rule\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing network rule")
@@ -277,7 +277,7 @@ func ecloudNetworkRuleDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <rule: id>...",
 		Short:   "Removes a network rule",
 		Long:    "This command removes one or more network rules",
-		Example: "ukfast ecloud networkrule delete nr-abcdef12",
+		Example: "ans ecloud networkrule delete nr-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing network rule")

@@ -34,7 +34,7 @@ func loadbalancerListenerCertificateListCmd(f factory.ClientFactory) *cobra.Comm
 		Use:     "list <listener: id>",
 		Short:   "Lists certificates",
 		Long:    "This command lists certificates",
-		Example: "ukfast loadbalancer listener certificate list 123",
+		Example: "ans loadbalancer listener certificate list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing listener")
@@ -70,7 +70,7 @@ func loadbalancerListenerCertificateShowCmd(f factory.ClientFactory) *cobra.Comm
 		Use:     "show <listener: id> <certificate: id>...",
 		Short:   "Shows a certificate",
 		Long:    "This command shows one or more certificates",
-		Example: "ukfast loadbalancer listener certificate show 123 345",
+		Example: "ans loadbalancer listener certificate show 123 345",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing listener")
@@ -117,7 +117,7 @@ func loadbalancerListenerCertificateCreateCmd(f factory.ClientFactory, fs afero.
 		Use:     "create <listener: id>",
 		Short:   "Creates a certificate",
 		Long:    "This command creates a certificate",
-		Example: "ukfast loadbalancer listener certificate create 123 --key-file /tmp/cert.key --certificate-file /tmp/cert.crt --ca-bundle-file /tmp/ca.crt",
+		Example: "ans loadbalancer listener certificate create 123 --key-file /tmp/cert.key --certificate-file /tmp/cert.crt --ca-bundle-file /tmp/ca.crt",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing listener")
@@ -185,7 +185,7 @@ func loadbalancerListenerCertificateUpdateCmd(f factory.ClientFactory, fs afero.
 		Use:     "update <listener: id> <certificate: id>...",
 		Short:   "Updates a certificate",
 		Long:    "This command updates one or more certificates",
-		Example: "ukfast loadbalancer listener certificate update 123 456 --name mycertificate",
+		Example: "ans loadbalancer listener certificate update 123 456 --name mycertificate",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing listener")
@@ -269,7 +269,7 @@ func loadbalancerListenerCertificateDeleteCmd(f factory.ClientFactory) *cobra.Co
 		Use:     "delete <listener: id> <certificate: id>...",
 		Short:   "Removes a certificate",
 		Long:    "This command removes one or more certificates",
-		Example: "ukfast loadbalancer listener certificate delete 123 456",
+		Example: "ans loadbalancer listener certificate delete 123 456",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing listener")

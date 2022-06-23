@@ -32,7 +32,7 @@ func loadbalancerACLShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <acl: id>...",
 		Short:   "Shows an ACL",
 		Long:    "This command shows one or more ACLs",
-		Example: "ukfast loadbalancer acl show 123",
+		Example: "ans loadbalancer acl show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing ACL")
@@ -70,7 +70,7 @@ func loadbalancerACLCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create <acl: id>",
 		Short:   "Creates an ACL",
 		Long:    "This command creates a ACLs with a single condition/action. Additional conditions/actions can be added with subcommands",
-		Example: "ukfast loadbalancer acl create --name \"test ACL\" --host-group 1 --condition \"header_matches:host=ukfast.co.uk,accept=application/json\" --action \"redirect:location=developers.ukfast.io,status=302\"",
+		Example: "ans loadbalancer acl create --name \"test ACL\" --host-group 1 --condition \"header_matches:host=ans.co.uk,accept=application/json\" --action \"redirect:location=developers.ukfast.io,status=302\"",
 		RunE:    loadbalancerCobraRunEFunc(f, loadbalancerACLCreate),
 	}
 
@@ -78,7 +78,7 @@ func loadbalancerACLCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.MarkFlagRequired("name")
 	cmd.Flags().Int("listener", 0, "ID of listener")
 	cmd.Flags().Int("target-group", 0, "ID of target group")
-	cmd.Flags().StringArray("condition", []string{}, "Name and arguments of condition. Can be repeated. Example: --condition \"header_matches:host=ukfast.co.uk,accept=application/json\"")
+	cmd.Flags().StringArray("condition", []string{}, "Name and arguments of condition. Can be repeated. Example: --condition \"header_matches:host=ans.co.uk,accept=application/json\"")
 	cmd.Flags().StringArray("action", []string{}, "Name and arguments of action. Can be repeated. Example: --action \"redirect:location=developers.ukfast.io,status=302\"")
 	cmd.MarkFlagRequired("action")
 
@@ -127,7 +127,7 @@ func loadbalancerACLUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <acl: id>...",
 		Short:   "Updates an ACL",
 		Long:    "This command updates one or more ACLs",
-		Example: "ukfast loadbalancer acl update 123 --name myacl",
+		Example: "ans loadbalancer acl update 123 --name myacl",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing ACL")
@@ -139,7 +139,7 @@ func loadbalancerACLUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("name", "", "Name of ACL")
-	cmd.Flags().StringArray("condition", []string{}, "Name and arguments of condition. Can be repeated. Example: --condition \"header_matches:host=ukfast.co.uk,accept=application/json\"")
+	cmd.Flags().StringArray("condition", []string{}, "Name and arguments of condition. Can be repeated. Example: --condition \"header_matches:host=ans.co.uk,accept=application/json\"")
 	cmd.Flags().StringArray("action", []string{}, "Name and arguments of action. Can be repeated. Example: --action \"redirect:location=developers.ukfast.io,status=302\"")
 
 	return cmd
@@ -198,7 +198,7 @@ func loadbalancerACLDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <acl: id>...",
 		Short:   "Removes a acl",
 		Long:    "This command removes one or more acls",
-		Example: "ukfast loadbalancer acl delete 123",
+		Example: "ans loadbalancer acl delete 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing ACL")

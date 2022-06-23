@@ -29,7 +29,7 @@ func draasBillingTypeListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists billing types",
 		Long:    "This command lists billing types",
-		Example: "ukfast draas billingtype list",
+		Example: "ans draas billingtype list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -60,7 +60,7 @@ func draasBillingTypeShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <billingtype: id>...",
 		Short:   "Shows a billing type",
 		Long:    "This command shows one or more billing types",
-		Example: "ukfast draas billingtype show 00000000-0000-0000-0000-000000000000",
+		Example: "ans draas billingtype show 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing billing type")

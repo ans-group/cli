@@ -34,7 +34,7 @@ func ecloudFloatingIPListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists floating IPs",
 		Long:    "This command lists floating IPs",
-		Example: "ukfast ecloud floatingip list",
+		Example: "ans ecloud floatingip list",
 		RunE:    ecloudCobraRunEFunc(f, ecloudFloatingIPList),
 	}
 }
@@ -58,7 +58,7 @@ func ecloudFloatingIPShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <floatingip: id>...",
 		Short:   "Shows a floating IP",
 		Long:    "This command shows one or more floating IPs",
-		Example: "ukfast ecloud floatingip show fip-abcdef12",
+		Example: "ans ecloud floatingip show fip-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing floating IP")
@@ -90,7 +90,7 @@ func ecloudFloatingIPCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates a floating IP",
 		Long:    "This command creates a floating IP address",
-		Example: "ukfast ecloud floatingip create --vpc vpc-abcdef12 --availability-zone az-abcdef12",
+		Example: "ans ecloud floatingip create --vpc vpc-abcdef12 --availability-zone az-abcdef12",
 		RunE:    ecloudCobraRunEFunc(f, ecloudFloatingIPCreate),
 	}
 
@@ -139,7 +139,7 @@ func ecloudFloatingIPUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <fip: id>...",
 		Short:   "Updates a floating IP",
 		Long:    "This command updates one or more floating IPs",
-		Example: "ukfast ecloud floatingip update fip-abcdef12 --name \"my fip\"",
+		Example: "ans ecloud floatingip update fip-abcdef12 --name \"my fip\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing floating IP")
@@ -197,7 +197,7 @@ func ecloudFloatingIPDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <fip: id>...",
 		Short:   "Removes a floating IP",
 		Long:    "This command removes one or more floating IPs",
-		Example: "ukfast ecloud floatingip delete fip-abcdef12",
+		Example: "ans ecloud floatingip delete fip-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing floating IP")
@@ -238,7 +238,7 @@ func ecloudFloatingIPAssignCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "assign <fip: id>",
 		Short:   "Assigns a floating IP to a resource",
 		Long:    "This command assigns a floating IP to a resource",
-		Example: "ukfast ecloud floatingip assign fip-abcdef12 --resource i-abcdef12",
+		Example: "ans ecloud floatingip assign fip-abcdef12 --resource i-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing floating IP")
@@ -289,7 +289,7 @@ func ecloudFloatingIPUnassignCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "unassign <fip: id>...",
 		Short:   "Unassigns a floating IP",
 		Long:    "This command unassigns one or more floating IPs from connected resources",
-		Example: "ukfast ecloud floatingip unassign fip-abcdef12",
+		Example: "ans ecloud floatingip unassign fip-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing floating IP")

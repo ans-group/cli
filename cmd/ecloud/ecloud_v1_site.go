@@ -30,7 +30,7 @@ func ecloudSiteListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists sites",
 		Long:    "This command lists sites",
-		Example: "ukfast ecloud site list",
+		Example: "ans ecloud site list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -65,7 +65,7 @@ func ecloudSiteShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <site: id>...",
 		Short:   "Shows a site",
 		Long:    "This command shows one or more sites",
-		Example: "ukfast ecloud vm site 123",
+		Example: "ans ecloud vm site 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing site")
