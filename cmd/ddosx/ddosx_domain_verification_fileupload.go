@@ -34,7 +34,7 @@ func ddosxDomainVerificationFileUploadShowCmd(f factory.ClientFactory) *cobra.Co
 		Use:     "show <domain: name>...",
 		Short:   "Shows the verification file for a domain",
 		Long:    "This command shows the verification file for one or more domains, for use with the file upload verification method",
-		Example: "ukfast ddosx domain verification fileupload show example.com",
+		Example: "ans ddosx domain verification fileupload show example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -77,7 +77,7 @@ func ddosxDomainVerificationFileUploadDownloadCmd(f factory.ClientFactory, fs af
 		Use:     "download <domain: name>",
 		Short:   "Downloads the verification file for a domain",
 		Long:    "This command downloads the verification file for a domain, for use with the file upload verification method",
-		Example: "ukfast ddosx domain verification fileupload download example.com",
+		Example: "ans ddosx domain verification fileupload download example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -130,7 +130,7 @@ func ddosxDomainVerificationFileUploadVerifyCmd(f factory.ClientFactory) *cobra.
 		Use:     "verify <domain: name>...",
 		Short:   "Verifies a domain via verification file method",
 		Long:    "This command verifies one or more domains via the verification file method",
-		Example: "ukfast ddosx domain verification fileupload verify example.com",
+		Example: "ans ddosx domain verification fileupload verify example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")

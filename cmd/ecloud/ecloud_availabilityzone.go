@@ -32,7 +32,7 @@ func ecloudAvailabilityZoneListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists availability zones",
 		Long:    "This command lists availability zones",
-		Example: "ukfast ecloud availabilityzone list",
+		Example: "ans ecloud availabilityzone list",
 		RunE:    ecloudCobraRunEFunc(f, ecloudAvailabilityZoneList),
 	}
 
@@ -64,7 +64,7 @@ func ecloudAvailabilityZoneShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <zone: id>...",
 		Short:   "Shows an availability zone",
 		Long:    "This command shows one or more availability zones",
-		Example: "ukfast ecloud availabilityzone show az-abcdef12",
+		Example: "ans ecloud availabilityzone show az-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing availability zone")

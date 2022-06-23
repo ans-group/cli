@@ -38,7 +38,7 @@ func ecloudRouterListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists routers",
 		Long:    "This command lists routers",
-		Example: "ukfast ecloud router list",
+		Example: "ans ecloud router list",
 		RunE:    ecloudCobraRunEFunc(f, ecloudRouterList),
 	}
 
@@ -70,7 +70,7 @@ func ecloudRouterShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <router: id>...",
 		Short:   "Shows a router",
 		Long:    "This command shows one or more routers",
-		Example: "ukfast ecloud router show rtr-abcdef12",
+		Example: "ans ecloud router show rtr-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing router")
@@ -102,7 +102,7 @@ func ecloudRouterCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates an router",
 		Long:    "This command creates an router",
-		Example: "ukfast ecloud router create --vpc vpc-abcdef12 --availability-zone az-abcdef12",
+		Example: "ans ecloud router create --vpc vpc-abcdef12 --availability-zone az-abcdef12",
 		RunE:    ecloudCobraRunEFunc(f, ecloudRouterCreate),
 	}
 
@@ -157,7 +157,7 @@ func ecloudRouterUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <router: id>...",
 		Short:   "Updates an router",
 		Long:    "This command updates one or more routers",
-		Example: "ukfast ecloud router update rtr-abcdef12 --name \"my router\"",
+		Example: "ans ecloud router update rtr-abcdef12 --name \"my router\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing router")
@@ -220,7 +220,7 @@ func ecloudRouterDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <router: id>...",
 		Short:   "Removes an router",
 		Long:    "This command removes one or more routers",
-		Example: "ukfast ecloud router delete rtr-abcdef12",
+		Example: "ans ecloud router delete rtr-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing router")
@@ -261,7 +261,7 @@ func ecloudRouterDeployDefaultFirewallPoliciesCmd(f factory.ClientFactory) *cobr
 		Use:     "deploydefaults <router: id>...",
 		Short:   "Deploys default firewall policies for a router",
 		Long:    "This command deploys default firewall policies for one or more routers",
-		Example: "ukfast ecloud router deploydefaultfirewallpolicies rtr-abcdef12",
+		Example: "ans ecloud router deploydefaultfirewallpolicies rtr-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing router")

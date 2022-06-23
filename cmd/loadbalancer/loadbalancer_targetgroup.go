@@ -38,7 +38,7 @@ func loadbalancerTargetGroupListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists target groups",
 		Long:    "This command lists target groups",
-		Example: "ukfast loadbalancer targetgroup list",
+		Example: "ans loadbalancer targetgroup list",
 		RunE:    loadbalancerCobraRunEFunc(f, loadbalancerTargetGroupList),
 	}
 }
@@ -62,7 +62,7 @@ func loadbalancerTargetGroupShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <targetgroup: id>...",
 		Short:   "Shows a target group",
 		Long:    "This command shows one or more target groups",
-		Example: "ukfast loadbalancer targetgroup show 123",
+		Example: "ans loadbalancer targetgroup show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing target group")
@@ -100,7 +100,7 @@ func loadbalancerTargetGroupCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create <targetgroup: id>",
 		Short:   "Creates a target group",
 		Long:    "This command creates a target group",
-		Example: "ukfast loadbalancer targetgroup create --cluster 123 --name \"test-targetgroup\" --balance roundrobin --mode http",
+		Example: "ans loadbalancer targetgroup create --cluster 123 --name \"test-targetgroup\" --balance roundrobin --mode http",
 		RunE:    loadbalancerCobraRunEFunc(f, loadbalancerTargetGroupCreate),
 	}
 
@@ -199,7 +199,7 @@ func loadbalancerTargetGroupUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <targetgroup: id>...",
 		Short:   "Updates a target group",
 		Long:    "This command updates one or more target groups",
-		Example: "ukfast loadbalancer targetgroup update 123 --name mytargetgroup",
+		Example: "ans loadbalancer targetgroup update 123 --name mytargetgroup",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing target group")
@@ -315,7 +315,7 @@ func loadbalancerTargetGroupDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <targetgroup: id>...",
 		Short:   "Removes a target group",
 		Long:    "This command removes one or more target groups",
-		Example: "ukfast loadbalancer targetgroup delete 123",
+		Example: "ans loadbalancer targetgroup delete 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing target group")

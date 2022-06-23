@@ -27,7 +27,7 @@ func cloudflareSpendPlanListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists spend plans",
 		Long:    "This command lists spend plans",
-		Example: "ukfast cloudflare spendplan list",
+		Example: "ans cloudflare spendplan list",
 		RunE:    cloudflareCobraRunEFunc(f, cloudflareSpendPlanList),
 	}
 }

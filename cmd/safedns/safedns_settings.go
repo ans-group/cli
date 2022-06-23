@@ -26,7 +26,7 @@ func safednsSettingsShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show",
 		Short:   "Shows settings for account",
 		Long:    "This command shows SafeDNS settings for account",
-		Example: "ukfast safedns settings show",
+		Example: "ans safedns settings show",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {

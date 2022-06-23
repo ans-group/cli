@@ -29,7 +29,7 @@ func ecloudLoadBalancerSpecListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists load balancer specs",
 		Long:    "This command lists load balancer specs",
-		Example: "ukfast ecloud loadbalancer list",
+		Example: "ans ecloud loadbalancer list",
 		RunE:    ecloudCobraRunEFunc(f, ecloudLoadBalancerSpecList),
 	}
 
@@ -59,7 +59,7 @@ func ecloudLoadBalancerSpecShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <spec: id>...",
 		Short:   "Shows an load balancer spec",
 		Long:    "This command shows one or more load balancer specs",
-		Example: "ukfast ecloud loadbalancerspec show lbn-abcdef12",
+		Example: "ans ecloud loadbalancerspec show lbn-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing load balancer spec")

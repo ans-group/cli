@@ -26,7 +26,7 @@ func billingDirectDebitShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show",
 		Short:   "Shows direct debit details",
 		Long:    "This command shows direct debit details",
-		Example: "ukfast billing directdebit show",
+		Example: "ans billing directdebit show",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {

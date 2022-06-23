@@ -27,7 +27,7 @@ func billingCloudCostListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists cloud costs",
 		Long:    "This command lists cloud costs",
-		Example: "ukfast billing cloudcost list",
+		Example: "ans billing cloudcost list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {

@@ -20,7 +20,7 @@ switch ($OS)
     }
 }
 
-$output = "ukfast"
+$output = "ans"
 if ($env:GOOS -eq "windows" -or ([string]::IsNullOrEmpty($env:GOOS) -and $Env:OS -eq "Windows_NT"))
 {
     $output = $output+".exe"

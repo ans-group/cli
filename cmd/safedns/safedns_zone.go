@@ -35,7 +35,7 @@ func safednsZoneListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists zones",
 		Long:    "This command lists zones",
-		Example: "ukfast safedns zone list",
+		Example: "ans safedns zone list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -70,7 +70,7 @@ func safednsZoneShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <zone: name>...",
 		Short:   "Shows a zone",
 		Long:    "This command shows one or more zones",
-		Example: "ukfast safedns zone show ukfast.co.uk\nukfast safedns zone show 123",
+		Example: "ans safedns zone show ans.co.uk\nans safedns zone show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing zone")
@@ -109,7 +109,7 @@ func safednsZoneCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates a zone",
 		Long:    "This command creates a zone",
-		Example: "ukfast safedns zone create",
+		Example: "ans safedns zone create",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -155,7 +155,7 @@ func safednsZoneUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <zone: name>...",
 		Short:   "Updates a zone",
 		Long:    "This command updates one or more zones",
-		Example: "ukfast safedns zone update ukfast.co.uk --description \"some description\"",
+		Example: "ans safedns zone update ans.co.uk --description \"some description\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing zone")
@@ -207,7 +207,7 @@ func safednsZoneDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <zone: name>...",
 		Short:   "Removes a zone",
 		Long:    "This command removes one or more zones",
-		Example: "ukfast safedns zone delete ukfast.co.uk\nukfast safedns zone delete 123",
+		Example: "ans safedns zone delete ans.co.uk\nans safedns zone delete 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing zone")

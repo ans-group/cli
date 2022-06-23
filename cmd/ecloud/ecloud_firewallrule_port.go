@@ -28,7 +28,7 @@ func ecloudFirewallRuleFirewallRulePortListCmd(f factory.ClientFactory) *cobra.C
 		Use:     "list",
 		Short:   "Lists ports for firewall rule",
 		Long:    "This command lists ports for firewall rule",
-		Example: "ukfast ecloud firewallrule firewallport list fwp-abcdef12",
+		Example: "ans ecloud firewallrule firewallport list fwp-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing firewall rule")

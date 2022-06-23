@@ -27,7 +27,7 @@ func loadbalancerBindListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists binds",
 		Long:    "This command lists binds",
-		Example: "ukfast loadbalancer bind list",
+		Example: "ans loadbalancer bind list",
 		RunE:    loadbalancerCobraRunEFunc(f, loadbalancerBindList),
 	}
 }

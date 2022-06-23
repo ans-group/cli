@@ -52,7 +52,7 @@ func ecloudInstanceListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists instances",
 		Long:    "This command lists instances",
-		Example: "ukfast ecloud instance list",
+		Example: "ans ecloud instance list",
 		RunE:    ecloudCobraRunEFunc(f, ecloudInstanceList),
 	}
 
@@ -80,7 +80,7 @@ func ecloudInstanceShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <instance: id>...",
 		Short:   "Shows a instance",
 		Long:    "This command shows one or more instances",
-		Example: "ukfast ecloud instance show i-abcdef12",
+		Example: "ans ecloud instance show i-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing instance")
@@ -112,7 +112,7 @@ func ecloudInstanceCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates an instance",
 		Long:    "This command creates an instance",
-		Example: "ukfast ecloud instance create --vpc vpc-abcdef12 --vcpu 2 --ram 2048 --volume 20 --image \"CentOS 7\"",
+		Example: "ans ecloud instance create --vpc vpc-abcdef12 --vcpu 2 --ram 2048 --volume 20 --image \"CentOS 7\"",
 		RunE:    ecloudCobraRunEFunc(f, ecloudInstanceCreate),
 	}
 
@@ -209,7 +209,7 @@ func ecloudInstanceUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <instance: id>...",
 		Short:   "Updates an instance",
 		Long:    "This command updates one or more instances",
-		Example: "ukfast ecloud instance update i-abcdef12 --name \"my instance\"",
+		Example: "ans ecloud instance update i-abcdef12 --name \"my instance\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing instance")
@@ -285,7 +285,7 @@ func ecloudInstanceDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <instance: id>...",
 		Short:   "Removes an instance",
 		Long:    "This command removes one or more instances",
-		Example: "ukfast ecloud instance delete i-abcdef12",
+		Example: "ans ecloud instance delete i-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing instance")
@@ -326,7 +326,7 @@ func ecloudInstanceLockCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "lock <instance: id>...",
 		Short:   "Locks an instance",
 		Long:    "This command locks one or more instances",
-		Example: "ukfast ecloud instance lock i-abcdef12",
+		Example: "ans ecloud instance lock i-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing instance")
@@ -353,7 +353,7 @@ func ecloudInstanceUnlockCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "unlock <instance: id>...",
 		Short:   "Unlocks an instance",
 		Long:    "This command unlocks one or more instances",
-		Example: "ukfast ecloud instance unlock i-abcdef12",
+		Example: "ans ecloud instance unlock i-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing instance")
@@ -380,7 +380,7 @@ func ecloudInstanceStartCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "start <instance: id>...",
 		Short:   "Starts an instance",
 		Long:    "This command powers on one or more instances",
-		Example: "ukfast ecloud instance start i-abcdef12",
+		Example: "ans ecloud instance start i-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing instance")
@@ -421,7 +421,7 @@ func ecloudInstanceStopCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "stop <instance: id>...",
 		Short:   "Stops an instance",
 		Long:    "This command powers off one or more instances",
-		Example: "ukfast ecloud instance stop i-abcdef12",
+		Example: "ans ecloud instance stop i-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing instance")
@@ -475,7 +475,7 @@ func ecloudInstanceRestartCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "restart <instance: id>...",
 		Short:   "Restarts an instance",
 		Long:    "This command restarts one or more instances",
-		Example: "ukfast ecloud instance restart i-abcdef12",
+		Example: "ans ecloud instance restart i-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing instance")
@@ -529,7 +529,7 @@ func ecloudInstanceSSHCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "ssh <instance: id>",
 		Short:   "Invokes SSH for an instance",
 		Long:    "This command invokes SSH for an instance",
-		Example: "ukfast ecloud instance ssh i-abcdef12",
+		Example: "ans ecloud instance ssh i-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing instance")

@@ -37,7 +37,7 @@ func draasSolutionListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists solutions",
 		Long:    "This command lists solutions",
-		Example: "ukfast draas solution list",
+		Example: "ans draas solution list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -68,7 +68,7 @@ func draasSolutionShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <solution: id>...",
 		Short:   "Shows a solution",
 		Long:    "This command shows one or more solutions",
-		Example: "ukfast draas solution show 00000000-0000-0000-0000-000000000000",
+		Example: "ans draas solution show 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing solution")
@@ -107,7 +107,7 @@ func draasSolutionUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <solution: id>",
 		Short:   "Updates a solution",
 		Long:    "This command updates a solution",
-		Example: "ukfast draas solution update 00000000-0000-0000-0000-000000000000 --name test",
+		Example: "ans draas solution update 00000000-0000-0000-0000-000000000000 --name test",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing solution")

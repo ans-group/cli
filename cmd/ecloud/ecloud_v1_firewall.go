@@ -30,7 +30,7 @@ func ecloudFirewallListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists firewalls",
 		Long:    "This command lists firewalls",
-		Example: "ukfast ecloud firewall list",
+		Example: "ans ecloud firewall list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -61,7 +61,7 @@ func ecloudFirewallShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <firewall: id>...",
 		Short:   "Shows a firewall",
 		Long:    "This command shows one or more firewalls",
-		Example: "ukfast ecloud vm firewall 123",
+		Example: "ans ecloud vm firewall 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing firewall")

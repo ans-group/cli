@@ -29,7 +29,7 @@ func ecloudRouterThroughputListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists router throughputs",
 		Long:    "This command lists router throughputs",
-		Example: "ukfast ecloud routerthroughput list",
+		Example: "ans ecloud routerthroughput list",
 		RunE:    ecloudCobraRunEFunc(f, ecloudRouterThroughputList),
 	}
 
@@ -61,7 +61,7 @@ func ecloudRouterThroughputShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <routerthroughput: id>...",
 		Short:   "Shows a router throughput",
 		Long:    "This command shows one or more router throughputs",
-		Example: "ukfast ecloud routerthroughput show rtp-abcdef12",
+		Example: "ans ecloud routerthroughput show rtp-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing router throughput")

@@ -29,7 +29,7 @@ func ecloudVPNSessionPreSharedKeyShowCmd(f factory.ClientFactory) *cobra.Command
 		Use:     "show",
 		Short:   "Shows VPN session pre-shared keys",
 		Long:    "This command shows VPN session pre-shared keys",
-		Example: "ukfast ecloud vpnsession presharedkey show vpns-abcdef12",
+		Example: "ans ecloud vpnsession presharedkey show vpns-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing VPN session")
@@ -61,7 +61,7 @@ func ecloudVPNSessionPreSharedKeyUpdateCmd(f factory.ClientFactory) *cobra.Comma
 		Use:     "update <session: id>...",
 		Short:   "Updates the pre-shared key for a VPN session",
 		Long:    "This command updates the pre-shared key for a VPN session",
-		Example: "ukfast ecloud vpnsession presharedkey update vpns-abcdef12 --psk \"s3curePSK\"",
+		Example: "ans ecloud vpnsession presharedkey update vpns-abcdef12 --psk \"s3curePSK\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing VPN session")

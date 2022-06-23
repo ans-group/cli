@@ -28,7 +28,7 @@ func ecloudNetworkNICListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists network nics",
 		Long:    "This command lists network nics",
-		Example: "ukfast ecloud network nic list net-abcdef12",
+		Example: "ans ecloud network nic list net-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing network")

@@ -30,7 +30,7 @@ func billingRecurringCostListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists recurring costs",
 		Long:    "This command lists recurring costs",
-		Example: "ukfast billing recurringcost list",
+		Example: "ans billing recurringcost list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -61,7 +61,7 @@ func billingRecurringCostShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <recurringcost: id>...",
 		Short:   "Shows a recurring cost",
 		Long:    "This command shows one or more recurring costs",
-		Example: "ukfast billing recurringcost show 123",
+		Example: "ans billing recurringcost show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing recurring cost")

@@ -35,7 +35,7 @@ func ddosxDomainACLGeoIPRuleListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list <domain: name>",
 		Short:   "Lists ACL GeoIP rules",
 		Long:    "This command lists domain ACL GeoIP rules",
-		Example: "ukfast ddosx domain acl geoip list",
+		Example: "ans ddosx domain acl geoip list",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -73,7 +73,7 @@ func ddosxDomainACLGeoIPRuleShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <domain: name> <rule: id>...",
 		Short:   "Shows domain ACL GeoIP rules",
 		Long:    "This command shows an ACL GeoIP rule",
-		Example: "ukfast ddosx domain acl geoip show example.com 00000000-0000-0000-0000-000000000000",
+		Example: "ans ddosx domain acl geoip show example.com 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -117,7 +117,7 @@ func ddosxDomainACLGeoIPRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create <domain: name>",
 		Short:   "Creates ACL GeoIP rules",
 		Long:    "This command creates domain ACL GeoIP rules",
-		Example: "ukfast ddosx domain acl geoip create example.com --code gb",
+		Example: "ans ddosx domain acl geoip create example.com --code gb",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -164,7 +164,7 @@ func ddosxDomainACLGeoIPRuleUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <domain: name> <rule: id>...",
 		Short:   "Updates ACL GeoIP rules",
 		Long:    "This command updates one or more domain ACL GeoIP rules",
-		Example: "ukfast ddosx domain acl geoip update example.com 00000000-0000-0000-0000-000000000000 --code GB",
+		Example: "ans ddosx domain acl geoip update example.com 00000000-0000-0000-0000-000000000000 --code GB",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -222,7 +222,7 @@ func ddosxDomainACLGeoIPRuleDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <domain: name> <rule: id>...",
 		Short:   "Deletes ACL GeoIP rules",
 		Long:    "This command deletes one or more domain ACL GeoIP rules",
-		Example: "ukfast ddosx domain acl geoip delete example.com 00000000-0000-0000-0000-000000000000",
+		Example: "ans ddosx domain acl geoip delete example.com 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")

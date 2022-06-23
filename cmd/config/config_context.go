@@ -30,7 +30,7 @@ func configContextUpdateCmd(fs afero.Fs) *cobra.Command {
 		Use:     "update",
 		Short:   "Updates context configuration",
 		Long:    "This command updates context configuration",
-		Example: "ukfast config context update mycontext --api-key \"secretkey\"",
+		Example: "ans config context update mycontext --api-key \"secretkey\"",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return configContextUpdate(fs, cmd, args)
 		},
@@ -101,7 +101,7 @@ func configContextListCmd() *cobra.Command {
 		Use:     "list",
 		Short:   "Lists contexts",
 		Long:    "This command lists contexts",
-		Example: "ukfast config context list",
+		Example: "ans config context list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return configContextList(cmd)
 		},
@@ -142,7 +142,7 @@ func configContextSwitchCmd(fs afero.Fs) *cobra.Command {
 		Use:     "switch",
 		Short:   "Switches current context",
 		Long:    "This command switches the current context",
-		Example: "ukfast config context switch mycontext",
+		Example: "ans config context switch mycontext",
 		Aliases: []string{"use"},
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {

@@ -34,7 +34,7 @@ func sslCertificateListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists certificates",
 		Long:    "This command lists certificates",
-		Example: "ukfast ssl certificate list",
+		Example: "ans ssl certificate list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -65,7 +65,7 @@ func sslCertificateShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <certificate: id>...",
 		Short:   "Shows a certificate",
 		Long:    "This command shows one or more certificates",
-		Example: "ukfast ssl certificate show 123",
+		Example: "ans ssl certificate show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing certificate")

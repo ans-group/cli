@@ -36,7 +36,7 @@ func ddosxDomainACLIPRuleListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list <domain: name>",
 		Short:   "Lists ACL IP rules",
 		Long:    "This command lists domain ACL IP rules",
-		Example: "ukfast ddosx domain acl ip list",
+		Example: "ans ddosx domain acl ip list",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -74,7 +74,7 @@ func ddosxDomainACLIPRuleShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <domain: name> <rule: id>...",
 		Short:   "Shows domain ACL IP rules",
 		Long:    "This command shows an ACL IP rule",
-		Example: "ukfast ddosx domain acl ip show example.com 00000000-0000-0000-0000-000000000000",
+		Example: "ans ddosx domain acl ip show example.com 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -118,7 +118,7 @@ func ddosxDomainACLIPRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create <domain: name>",
 		Short:   "Creates ACL IP rules",
 		Long:    "This command creates domain ACL IP rules",
-		Example: "ukfast ddosx domain acl ip create example.com --ip 1.2.3.4 --mode Deny --uri blog",
+		Example: "ans ddosx domain acl ip create example.com --ip 1.2.3.4 --mode Deny --uri blog",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -176,7 +176,7 @@ func ddosxDomainACLIPRuleUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <domain: name> <rule: id>...",
 		Short:   "Updates ACL IP rules",
 		Long:    "This command updates one or more domain ACL IP rules",
-		Example: "ukfast ddosx domain acl ip update example.com 00000000-0000-0000-0000-000000000000 --ip 1.2.3.4",
+		Example: "ans ddosx domain acl ip update example.com 00000000-0000-0000-0000-000000000000 --ip 1.2.3.4",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -251,7 +251,7 @@ func ddosxDomainACLIPRuleDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <domain: name> <rule: id>...",
 		Short:   "Deletes ACL IP rules",
 		Long:    "This command deletes one or more domain ACL IP rules",
-		Example: "ukfast ddosx domain acl ip delete example.com 00000000-0000-0000-0000-000000000000",
+		Example: "ans ddosx domain acl ip delete example.com 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")

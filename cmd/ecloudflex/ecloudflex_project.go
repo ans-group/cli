@@ -30,7 +30,7 @@ func ecloudflexProjectListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists projects",
 		Long:    "This command lists projects",
-		Example: "ukfast ecloudflex project list",
+		Example: "ans ecloudflex project list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -61,7 +61,7 @@ func ecloudflexProjectShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <project: id>...",
 		Short:   "Shows a project",
 		Long:    "This command shows one or more projects",
-		Example: "ukfast ecloudflex project show 123",
+		Example: "ans ecloudflex project show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing project")

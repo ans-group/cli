@@ -31,7 +31,7 @@ func loadbalancerListenerAccessIPListCmd(f factory.ClientFactory) *cobra.Command
 		Use:     "list <listener: id>",
 		Short:   "Lists access IPs",
 		Long:    "This command lists access IPs",
-		Example: "ukfast loadbalancer listener accessip list 123",
+		Example: "ans loadbalancer listener accessip list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing listener")
@@ -67,7 +67,7 @@ func loadbalancerListenerAccessIPCreateCmd(f factory.ClientFactory) *cobra.Comma
 		Use:     "create <listener: id>",
 		Short:   "Creates an access IP",
 		Long:    "This command creates an access IP",
-		Example: "ukfast loadbalancer listener accessip create 123 --ip 1.2.3.4",
+		Example: "ans loadbalancer listener accessip create 123 --ip 1.2.3.4",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing listener")

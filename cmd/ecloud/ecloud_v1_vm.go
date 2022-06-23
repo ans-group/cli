@@ -43,7 +43,7 @@ func ecloudVirtualMachineListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists virtual machines",
 		Long:    "This command lists virtual machines",
-		Example: "ukfast ecloud vm list",
+		Example: "ans ecloud vm list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -78,7 +78,7 @@ func ecloudVirtualMachineShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <virtualmachine: id>...",
 		Short:   "Shows a virtual machine",
 		Long:    "This command shows one or more virtual machines",
-		Example: "ukfast ecloud vm show 123",
+		Example: "ans ecloud vm show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing virtual machine")
@@ -123,7 +123,7 @@ func ecloudVirtualMachineCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates a virtual machine",
 		Long:    "This command creates a virtual machine",
-		Example: "ukfast ecloud vm create",
+		Example: "ans ecloud vm create",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -248,7 +248,7 @@ func ecloudVirtualMachineUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <virtualmachine: id>...",
 		Short:   "Updates a virtual machine",
 		Long:    "This command updates one or more virtual machines",
-		Example: "ukfast ecloud vm update 123 --name \"test vm 1\"",
+		Example: "ans ecloud vm update 123 --name \"test vm 1\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing virtual machine")
@@ -329,7 +329,7 @@ func ecloudVirtualMachineStartCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "start <virtualmachine: id>...",
 		Short:   "Starts a virtual machine",
 		Long:    "This command starts one or more virtual machines",
-		Example: "ukfast ecloud vm start 123",
+		Example: "ans ecloud vm start 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing virtual machine")
@@ -370,7 +370,7 @@ func ecloudVirtualMachineStopCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "stop <virtualmachine: id>...",
 		Short:   "Stops a virtual machine",
 		Long:    "This command stops one or more virtual machines",
-		Example: "ukfast ecloud vm stop 123",
+		Example: "ans ecloud vm stop 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing virtual machine")
@@ -425,7 +425,7 @@ func ecloudVirtualMachineRestartCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "restart <virtualmachine: id>...",
 		Short:   "Restarts a virtual machine",
 		Long:    "This command restarts one or more virtual machines",
-		Example: "ukfast ecloud vm restart 123",
+		Example: "ans ecloud vm restart 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing virtual machine")
@@ -480,7 +480,7 @@ func ecloudVirtualMachineDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <virtualmachine: id>...",
 		Short:   "Removes a virtual machine",
 		Long:    "This command removes one or more virtual machines",
-		Example: "ukfast ecloud vm delete 123",
+		Example: "ans ecloud vm delete 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing virtual machine")

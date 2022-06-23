@@ -34,7 +34,7 @@ func safednsTemplateRecordListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list <template: id/name>",
 		Short:   "Lists template records",
 		Long:    "This command lists template records",
-		Example: "ukfast safedns template record list \"main template\"\nukfast safedns template record list 123",
+		Example: "ans safedns template record list \"main template\"\nans safedns template record list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing template")
@@ -86,7 +86,7 @@ func safednsTemplateRecordShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <template: id/name> <record: id>...",
 		Short:   "Shows a template record",
 		Long:    "This command shows one or more template records",
-		Example: "ukfast safedns template record show \"main template\" 123",
+		Example: "ans safedns template record show \"main template\" 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing template")
@@ -140,7 +140,7 @@ func safednsTemplateRecordCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create <template: id/name>",
 		Short:   "Creates a template record",
 		Long:    "This command creates a template record",
-		Example: "ukfast safedns template record create \"main template\" --name subdomain.ukfast.co.uk --type A --content 1.2.3.4",
+		Example: "ans safedns template record create \"main template\" --name subdomain.ans.co.uk --type A --content 1.2.3.4",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing template")
@@ -216,7 +216,7 @@ func safednsTemplateRecordUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <template: id/name> <record: id>...",
 		Short:   "Updates a template record",
 		Long:    "This command updates one or more template records",
-		Example: "ukfast safedns template record update \"main template\" 123 --content 1.2.3.4",
+		Example: "ans safedns template record update \"main template\" 123 --content 1.2.3.4",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing template")
@@ -308,7 +308,7 @@ func safednsTemplateRecordDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <template: id/name> <record: id>...",
 		Short:   "Removes a template record",
 		Long:    "This command deletes one or more template records",
-		Example: "ukfast safedns template record delete \"main template\" 123",
+		Example: "ans safedns template record delete \"main template\" 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing template")

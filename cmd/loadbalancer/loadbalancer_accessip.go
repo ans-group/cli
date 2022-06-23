@@ -30,7 +30,7 @@ func loadbalancerAccessIPShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <accessip: id>...",
 		Short:   "Shows an access IP",
 		Long:    "This command shows one or more access IPs",
-		Example: "ukfast loadbalancer accessip show 123",
+		Example: "ans loadbalancer accessip show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing access IP")
@@ -68,7 +68,7 @@ func loadbalancerAccessIPUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <accessip: id>...",
 		Short:   "Updates an access IP",
 		Long:    "This command updates one or more access IPs",
-		Example: "ukfast loadbalancer accessip update 123 --ip 1.2.3.4",
+		Example: "ans loadbalancer accessip update 123 --ip 1.2.3.4",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing access IP")
@@ -122,7 +122,7 @@ func loadbalancerAccessIPDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <accessip: id>...",
 		Short:   "Removes an access IP",
 		Long:    "This command removes one or more access IPs",
-		Example: "ukfast loadbalancer accessip delete 123",
+		Example: "ans loadbalancer accessip delete 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing access IP")

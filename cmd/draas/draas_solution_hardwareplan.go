@@ -32,7 +32,7 @@ func draasSolutionHardwarePlanListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list <solution: id>",
 		Short:   "Lists solution hardware plans",
 		Long:    "This command lists solution hardware plan",
-		Example: "ukfast draas solution hardwareplan list 00000000-0000-0000-0000-000000000000",
+		Example: "ans draas solution hardwareplan list 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing solution")
@@ -70,7 +70,7 @@ func draasSolutionHardwarePlanShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <solution: id> <hardwareplan: id>...",
 		Short:   "Shows solution hardware plans",
 		Long:    "This command shows one or more solution hardware plans",
-		Example: "ukfast draas solution hardwareplan show 00000000-0000-0000-0000-000000000000 00000000-0000-0000-0000-000000000001",
+		Example: "ans draas solution hardwareplan show 00000000-0000-0000-0000-000000000000 00000000-0000-0000-0000-000000000001",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing solution")

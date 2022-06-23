@@ -34,7 +34,7 @@ func ecloudVirtualMachineTagListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list <virtualmachine: id>",
 		Short:   "lists virtual machine tags",
 		Long:    "This command lists virtual machine tags",
-		Example: "ukfast ecloud vm tag list 123",
+		Example: "ans ecloud vm tag list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing virtual machine")
@@ -77,7 +77,7 @@ func ecloudVirtualMachineTagShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <virtualmachine: id> <tag: key>...",
 		Short:   "Shows a virtual machine tag",
 		Long:    "This command shows one or more virtual machine tags",
-		Example: "ukfast ecloud vm tag show 123 foo",
+		Example: "ans ecloud vm tag show 123 foo",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing virtual machine")
@@ -125,7 +125,7 @@ func ecloudVirtualMachineTagCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create <virtualmachine: id>",
 		Short:   "Creates a virtual machine tag",
 		Long:    "This command creates a virtual machine tag",
-		Example: "ukfast ecloud vm tag create 123 --key foo --value bar",
+		Example: "ans ecloud vm tag create 123 --key foo --value bar",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing virtual machine")
@@ -183,7 +183,7 @@ func ecloudVirtualMachineTagUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <virtualmachine: id> <tag: key>...",
 		Short:   "Updates a virtual machine tag",
 		Long:    "This command updates one or more virtual machine tags",
-		Example: "ukfast ecloud vm tag update 123 foo --value \"new value\"",
+		Example: "ans ecloud vm tag update 123 foo --value \"new value\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing virtual machine")
@@ -248,7 +248,7 @@ func ecloudVirtualMachineTagDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <virtualmachine: id> <tag: key>...",
 		Short:   "Removes a virtual machine tag ",
 		Long:    "This command removes one or more virtual machine tags",
-		Example: "ukfast ecloud vm tag delete 123 foo",
+		Example: "ans ecloud vm tag delete 123 foo",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing virtual machine")

@@ -1,8 +1,8 @@
 /debug
 .vscode/
 *.test
-/ukfast.exe
-/ukfast
+/ans.exe
+/ans
 cover.out
 dist/
 __debug_bin

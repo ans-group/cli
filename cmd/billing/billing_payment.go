@@ -30,7 +30,7 @@ func billingPaymentListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists payments",
 		Long:    "This command lists payments",
-		Example: "ukfast billing payment list",
+		Example: "ans billing payment list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -61,7 +61,7 @@ func billingPaymentShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <payment: id>...",
 		Short:   "Shows a payment",
 		Long:    "This command shows one or more payments",
-		Example: "ukfast billing payment show 123",
+		Example: "ans billing payment show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing payment")

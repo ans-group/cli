@@ -32,7 +32,7 @@ func ecloudFirewallRulePortListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists firewall rule ports",
 		Long:    "This command lists firewall rule ports",
-		Example: "ukfast ecloud firewallruleport list",
+		Example: "ans ecloud firewallruleport list",
 		RunE:    ecloudCobraRunEFunc(f, ecloudFirewallRulePortList),
 	}
 
@@ -63,7 +63,7 @@ func ecloudFirewallRulePortShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <port: id>...",
 		Short:   "Shows a firewall rule port",
 		Long:    "This command shows one or more firewall rule ports",
-		Example: "ukfast ecloud firewallruleport show fwrp-abcdef12",
+		Example: "ans ecloud firewallruleport show fwrp-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing firewall rule port")
@@ -95,7 +95,7 @@ func ecloudFirewallRulePortCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates a firewall rule port",
 		Long:    "This command creates a firewall rule port",
-		Example: "ukfast ecloud firewallruleport create --rule fwr-abcdef12",
+		Example: "ans ecloud firewallruleport create --rule fwr-abcdef12",
 		RunE:    ecloudCobraRunEFunc(f, ecloudFirewallRulePortCreate),
 	}
 
@@ -155,7 +155,7 @@ func ecloudFirewallRulePortUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <port: id>...",
 		Short:   "Updates a firewall rule port",
 		Long:    "This command updates one or more firewall rule ports",
-		Example: "ukfast ecloud firewallruleport update fwrp-abcdef12 --name \"my port\"",
+		Example: "ans ecloud firewallruleport update fwrp-abcdef12 --name \"my port\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing firewall rule port")
@@ -234,7 +234,7 @@ func ecloudFirewallRulePortDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <port: id>...",
 		Short:   "Removes a firewall rule port",
 		Long:    "This command removes one or more firewall rule ports",
-		Example: "ukfast ecloud firewallruleport delete fwrp-abcdef12",
+		Example: "ans ecloud firewallruleport delete fwrp-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing firewall rule port")

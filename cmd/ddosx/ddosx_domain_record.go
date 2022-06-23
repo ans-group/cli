@@ -32,7 +32,7 @@ func ddosxDomainRecordListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list <domain: name>",
 		Short:   "Lists domain records",
 		Long:    "This command lists domain record",
-		Example: "ukfast ddosx domain record list example.com",
+		Example: "ans ddosx domain record list example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -70,7 +70,7 @@ func ddosxDomainRecordShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <domain: name> <record: id>...",
 		Short:   "Shows domain records",
 		Long:    "This command shows a domain record",
-		Example: "ukfast ddosx domain record show example.com 00000000-0000-0000-0000-000000000000",
+		Example: "ans ddosx domain record show example.com 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -114,7 +114,7 @@ func ddosxDomainRecordCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create <domain: name>",
 		Short:   "Creates a domain record",
 		Long:    "This command creates a new domain record",
-		Example: "ukfast ddosx domain record create example.com --name sub.example.com --type A",
+		Example: "ans ddosx domain record create example.com --name sub.example.com --type A",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -176,7 +176,7 @@ func ddosxDomainRecordUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <domain: name>...",
 		Short:   "Updates a domain record",
 		Long:    "This command updates one or more domain records",
-		Example: "ukfast ddosx domain record update example.com 00000000-0000-0000-0000-000000000000 --content 1.2.3.4",
+		Example: "ans ddosx domain record update example.com 00000000-0000-0000-0000-000000000000 --content 1.2.3.4",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -252,7 +252,7 @@ func ddosxDomainRecordDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <domain: name>...",
 		Short:   "Deletes a domain record",
 		Long:    "This command deletes one or more domain records",
-		Example: "ukfast ddosx domain record delete example.com 00000000-0000-0000-0000-000000000000",
+		Example: "ans ddosx domain record delete example.com 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")

@@ -28,7 +28,7 @@ func ddosxDomainACLGeoIPRulesModeShowCmd(f factory.ClientFactory) *cobra.Command
 		Use:     "show <domain: name>...",
 		Short:   "Shows a domain",
 		Long:    "This command shows one or more domains",
-		Example: "ukfast ddosx domain show example.com",
+		Example: "ans ddosx domain show example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -67,7 +67,7 @@ func ddosxDomainACLGeoIPRulesModeUpdateCmd(f factory.ClientFactory) *cobra.Comma
 		Use:     "update <domain: name>",
 		Short:   "Updates a domain ACL GeoIP rule filtering mode",
 		Long:    "This command updates a domain ACL GeoIP rule filtering mode",
-		Example: "ukfast ddosx domain acl geoip mode update example.com --mode whitelist",
+		Example: "ans ddosx domain acl geoip mode update example.com --mode whitelist",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")

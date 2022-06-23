@@ -26,7 +26,7 @@ func cloudflareAccountMemberCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates account members",
 		Long:    "This command creates account members",
-		Example: "ukfast cloudflare account member create e84d6820-870a-4d69-89a4-30e9f1016518",
+		Example: "ans cloudflare account member create e84d6820-870a-4d69-89a4-30e9f1016518",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing account")

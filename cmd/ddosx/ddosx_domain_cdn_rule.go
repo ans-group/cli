@@ -33,7 +33,7 @@ func ddosxDomainCDNRuleListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list <domain: name>",
 		Short:   "Lists domain CDN rules",
 		Long:    "This command lists CDN rules",
-		Example: "ukfast ddosx domain cdn rule list",
+		Example: "ans ddosx domain cdn rule list",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -71,7 +71,7 @@ func ddosxDomainCDNRuleShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <domain: name> <rule: id>...",
 		Short:   "Shows CDN rules",
 		Long:    "This command shows one or more CDN rules",
-		Example: "ukfast ddosx domain cdn rule show example.com 00000000-0000-0000-0000-000000000000",
+		Example: "ans ddosx domain cdn rule show example.com 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -113,7 +113,7 @@ func ddosxDomainCDNRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create <domain: name>",
 		Short:   "Creates domain CDN rules",
 		Long:    "This command creates domain CDN rules",
-		Example: "ukfast ddosx domain cdn rule create example.com --uri example.html --cache-control custom --mime-type image/* --type global",
+		Example: "ans ddosx domain cdn rule create example.com --uri example.html --cache-control custom --mime-type image/* --type global",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -191,7 +191,7 @@ func ddosxDomainCDNRuleUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <domain: name> <rule: id>...",
 		Short:   "Updates CDN rules",
 		Long:    "This command updates one or more domain CDN rules",
-		Example: "ukfast ddosx domain cdn rule update example.com 00000000-0000-0000-0000-000000000000 --mime-type image/*",
+		Example: "ans ddosx domain cdn rule update example.com 00000000-0000-0000-0000-000000000000 --mime-type image/*",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -288,7 +288,7 @@ func ddosxDomainCDNRuleDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <domain: name> <rule: id>...",
 		Short:   "Deletes CDN rules",
 		Long:    "This command deletes one or more domain CDN rules",
-		Example: "ukfast ddosx domain cdn rule delete example.com 00000000-0000-0000-0000-000000000000",
+		Example: "ans ddosx domain cdn rule delete example.com 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")

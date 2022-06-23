@@ -33,7 +33,7 @@ func pssReplyAttachmentDownloadCmd(f factory.ClientFactory, fs afero.Fs) *cobra.
 		Use:     "download <reply: id> <attachment: name>",
 		Short:   "Downloads a reply attachment",
 		Long:    "This command downloads a reply attachment",
-		Example: "ukfast pss reply attachment download 123 file.txt --path /path/to/file",
+		Example: "ans pss reply attachment download 123 file.txt --path /path/to/file",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing reply")
@@ -89,7 +89,7 @@ func pssReplyAttachmentUploadCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Co
 		Use:     "upload <reply: id>",
 		Short:   "Uploads a reply attachment",
 		Long:    "This command uploads a reply attachment",
-		Example: "ukfast pss reply attachment upload 123 --path /path/to/file",
+		Example: "ans pss reply attachment upload 123 --path /path/to/file",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing reply")
@@ -134,7 +134,7 @@ func pssReplyAttachmentDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <reply: id> <attachment: name>...",
 		Short:   "Deletes a reply attachment",
 		Long:    "This command deletes one or more reply attachments",
-		Example: "ukfast pss reply attachment delete 123 file.txt",
+		Example: "ans pss reply attachment delete 123 file.txt",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing reply")

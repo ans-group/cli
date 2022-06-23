@@ -29,7 +29,7 @@ func ecloudSolutionFirewallListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists solution firewalls",
 		Long:    "This command lists solution firewalls",
-		Example: "ukfast ecloud solution firewall list 123",
+		Example: "ans ecloud solution firewall list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing solution")

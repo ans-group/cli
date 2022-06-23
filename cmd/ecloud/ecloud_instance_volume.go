@@ -30,7 +30,7 @@ func ecloudInstanceVolumeListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists instance volumes",
 		Long:    "This command lists instance volumes",
-		Example: "ukfast ecloud instance volume list i-abcdef12",
+		Example: "ans ecloud instance volume list i-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing instance")
@@ -65,7 +65,7 @@ func ecloudInstanceVolumeAttachCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "attach",
 		Short:   "Attaches a volume to an instances",
 		Long:    "This command attaches a volume to an instance",
-		Example: "ukfast ecloud instance volume attach i-abcdef12 --volume vol-abcdef12",
+		Example: "ans ecloud instance volume attach i-abcdef12 --volume vol-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing instance")
@@ -108,7 +108,7 @@ func ecloudInstanceVolumeDetachCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "detach",
 		Short:   "Detaches a volume from an instance",
 		Long:    "This command detaches a volume from an instance",
-		Example: "ukfast ecloud instance volume detach i-abcdef12 --volume vol-abcdef12",
+		Example: "ans ecloud instance volume detach i-abcdef12 --volume vol-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing instance")

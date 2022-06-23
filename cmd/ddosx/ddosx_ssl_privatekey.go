@@ -26,7 +26,7 @@ func ddosxSSLPrivateKeyShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <ssl: id>...",
 		Short:   "Shows a ssl's private key",
 		Long:    "This command shows one or more ssl's private key",
-		Example: "ukfast ddosx ssl privatekey show 00000000-0000-0000-0000-000000000000",
+		Example: "ans ddosx ssl privatekey show 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing ssl")

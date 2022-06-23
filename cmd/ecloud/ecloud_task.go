@@ -30,7 +30,7 @@ func ecloudTaskListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists tasks",
 		Long:    "This command lists tasks",
-		Example: "ukfast ecloud task list",
+		Example: "ans ecloud task list",
 		RunE:    ecloudCobraRunEFunc(f, ecloudTaskList),
 	}
 
@@ -60,7 +60,7 @@ func ecloudTaskShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <task: id>...",
 		Short:   "Shows a task",
 		Long:    "This command shows one or more tasks",
-		Example: "ukfast ecloud task show vol-abcdef12",
+		Example: "ans ecloud task show vol-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing task")
@@ -92,7 +92,7 @@ func ecloudTaskWaitCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "wait <task: id>...",
 		Short:   "Waits for a task",
 		Long:    "This command waits for one or more tasks to have expected status",
-		Example: "ukfast ecloud task wait task-abcdef12",
+		Example: "ans ecloud task wait task-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing task")

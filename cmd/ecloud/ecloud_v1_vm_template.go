@@ -30,7 +30,7 @@ func ecloudVirtualMachineTemplateCreateCmd(f factory.ClientFactory) *cobra.Comma
 		Use:     "create <virtualmachine: id>",
 		Short:   "Creates a virtual machine template",
 		Long:    "This command creates a virtual machine template",
-		Example: "ukfast ecloud vm template create 123 --name \"foo\" --type \"solution\"",
+		Example: "ans ecloud vm template create 123 --name \"foo\" --type \"solution\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing virtual machine")

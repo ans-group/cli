@@ -33,7 +33,7 @@ func loadbalancerListenerBindListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list <listener: id>",
 		Short:   "Lists binds",
 		Long:    "This command lists binds",
-		Example: "ukfast loadbalancer listener bind list 123",
+		Example: "ans loadbalancer listener bind list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing listener")
@@ -69,7 +69,7 @@ func loadbalancerListenerBindShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <listener: id> <bind: id>...",
 		Short:   "Shows a bind",
 		Long:    "This command shows one or more binds",
-		Example: "ukfast loadbalancer listener bind show 123 345",
+		Example: "ans loadbalancer listener bind show 123 345",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing listener")
@@ -116,7 +116,7 @@ func loadbalancerListenerBindCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create <listener: id>",
 		Short:   "Creates a bind",
 		Long:    "This command creates a bind",
-		Example: "ukfast loadbalancer listener bind create 123 --vip 456 --port 443",
+		Example: "ans loadbalancer listener bind create 123 --vip 456 --port 443",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing listener")
@@ -163,7 +163,7 @@ func loadbalancerListenerBindUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <listener: id> <bind: id>...",
 		Short:   "Updates a bind",
 		Long:    "This command updates one or more binds",
-		Example: "ukfast loadbalancer listener bind update 123 456 --port 443",
+		Example: "ans loadbalancer listener bind update 123 456 --port 443",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing listener")
@@ -224,7 +224,7 @@ func loadbalancerListenerBindDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <listener: id> <bind: id>...",
 		Short:   "Removes a bind",
 		Long:    "This command removes one or more binds",
-		Example: "ukfast loadbalancer listener bind delete 123 456",
+		Example: "ans loadbalancer listener bind delete 123 456",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing listener")

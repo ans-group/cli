@@ -37,7 +37,7 @@ func ecloudVolumeListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists volumes",
 		Long:    "This command lists volumes",
-		Example: "ukfast ecloud volume list",
+		Example: "ans ecloud volume list",
 		RunE:    ecloudCobraRunEFunc(f, ecloudVolumeList),
 	}
 
@@ -69,7 +69,7 @@ func ecloudVolumeShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <volume: id>...",
 		Short:   "Shows a volume",
 		Long:    "This command shows one or more volumes",
-		Example: "ukfast ecloud volume show vol-abcdef12",
+		Example: "ans ecloud volume show vol-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing volume")
@@ -101,7 +101,7 @@ func ecloudVolumeCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates a volume",
 		Long:    "This command creates a volume",
-		Example: "ukfast ecloud volume create",
+		Example: "ans ecloud volume create",
 		RunE:    ecloudCobraRunEFunc(f, ecloudVolumeCreate),
 	}
 
@@ -157,7 +157,7 @@ func ecloudVolumeUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <volume: id>...",
 		Short:   "Updates a volume",
 		Long:    "This command updates one or more volumes",
-		Example: "ukfast ecloud volume update vol-abcdef12 --name \"my volume\"",
+		Example: "ans ecloud volume update vol-abcdef12 --name \"my volume\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing volume")
@@ -231,7 +231,7 @@ func ecloudVolumeDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <volume: id>...",
 		Short:   "Removes a volume",
 		Long:    "This command removes one or more volumes",
-		Example: "ukfast ecloud volume delete vol-abcdef12",
+		Example: "ans ecloud volume delete vol-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing volume")

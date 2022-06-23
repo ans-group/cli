@@ -1,11 +1,7 @@
-project_name: ukfast
-before:
-  hooks:
-    - go mod download
+project_name: ans
 builds:
 - env:
   - CGO_ENABLED=0
-  - GO111MODULE=on
   ldflags:
     - -s -X main.VERSION={{.Version}} -X main.BUILDDATE={{.Date}}
   goos:

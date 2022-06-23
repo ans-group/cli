@@ -30,7 +30,7 @@ func storageVolumeListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists volumes",
 		Long:    "This command lists volumes",
-		Example: "ukfast storage volume list",
+		Example: "ans storage volume list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -61,7 +61,7 @@ func storageVolumeShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <volume: id>...",
 		Short:   "Shows a volume",
 		Long:    "This command shows one or more volumes",
-		Example: "ukfast storage volume show 123",
+		Example: "ans storage volume show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing volume")

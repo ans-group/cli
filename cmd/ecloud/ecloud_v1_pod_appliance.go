@@ -29,7 +29,7 @@ func ecloudPodApplianceListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists pod appliances",
 		Long:    "This command lists pod appliances",
-		Example: "ukfast ecloud pod appliance list 123",
+		Example: "ans ecloud pod appliance list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing pod")

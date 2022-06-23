@@ -29,7 +29,7 @@ func draasSolutionComputeResourceListCmd(f factory.ClientFactory) *cobra.Command
 		Use:     "list <solution: id>",
 		Short:   "Lists solution compute resources",
 		Long:    "This command lists solution compute resource",
-		Example: "ukfast draas solution computeresource list 00000000-0000-0000-0000-000000000000",
+		Example: "ans draas solution computeresource list 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing solution")
@@ -67,7 +67,7 @@ func draasSolutionComputeResourceShowCmd(f factory.ClientFactory) *cobra.Command
 		Use:     "show <solution: id> <computeresource: id>...",
 		Short:   "Shows solution compute resources",
 		Long:    "This command shows a solution compute resource",
-		Example: "ukfast draas solution computeresource show 00000000-0000-0000-0000-000000000000 00000000-0000-0000-0000-000000000001",
+		Example: "ans draas solution computeresource show 00000000-0000-0000-0000-000000000000 00000000-0000-0000-0000-000000000001",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing solution")

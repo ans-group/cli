@@ -28,7 +28,7 @@ func ecloudFirewallPolicyFirewallRuleListCmd(f factory.ClientFactory) *cobra.Com
 		Use:     "list",
 		Short:   "Lists firewall rules for firewall policy",
 		Long:    "This command lists firewall rules for firewall policy",
-		Example: "ukfast ecloud firewallpolicy firewallrule list fwp-abcdef12",
+		Example: "ans ecloud firewallpolicy firewallrule list fwp-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing firewall policy")

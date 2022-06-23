@@ -34,7 +34,7 @@ func ddosxDomainWAFAdvancedRuleListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list <domain: name>",
 		Short:   "Lists domain WAF advanced rules",
 		Long:    "This command lists domain WAF advanced rules",
-		Example: "ukfast ddosx domain waf advancedrule list",
+		Example: "ans ddosx domain waf advancedrule list",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -72,7 +72,7 @@ func ddosxDomainWAFAdvancedRuleShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <domain: name> <rule: id>...",
 		Short:   "Shows domain WAF advanced rules",
 		Long:    "This command shows a WAF advanced rule",
-		Example: "ukfast ddosx domain waf advancedrule show example.com 00000000-0000-0000-0000-000000000000",
+		Example: "ans ddosx domain waf advancedrule show example.com 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -116,7 +116,7 @@ func ddosxDomainWAFAdvancedRuleCreateCmd(f factory.ClientFactory) *cobra.Command
 		Use:     "create <domain: name>",
 		Short:   "Creates domain WAF advanced rules",
 		Long:    "This command creates domain WAF advanced rules",
-		Example: "ukfast ddosx domain waf advancedrule create --section REQUEST_URI --modifier beginswith --phrase test --ip 1.2.3.4",
+		Example: "ans ddosx domain waf advancedrule create --section REQUEST_URI --modifier beginswith --phrase test --ip 1.2.3.4",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -179,7 +179,7 @@ func ddosxDomainWAFAdvancedRuleUpdateCmd(f factory.ClientFactory) *cobra.Command
 		Use:     "update <domain: name> <advancedrule: id>...",
 		Short:   "Updates domain WAF advanced rules",
 		Long:    "This command updates one or more domain WAF advanced rules",
-		Example: "ukfast ddosx domain waf advancedrule update example.com 00000000-0000-0000-0000-000000000000 --ip 1.2.3.4",
+		Example: "ans ddosx domain waf advancedrule update example.com 00000000-0000-0000-0000-000000000000 --ip 1.2.3.4",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -256,7 +256,7 @@ func ddosxDomainWAFAdvancedRuleDeleteCmd(f factory.ClientFactory) *cobra.Command
 		Use:     "delete <domain: name> <advancedrule: id>...",
 		Short:   "Deletes domain WAF advanced rules",
 		Long:    "This command deletes one or more domain WAF advanced rules",
-		Example: "ukfast ddosx domain waf advancedrule delete example.com 00000000-0000-0000-0000-000000000000",
+		Example: "ans ddosx domain waf advancedrule delete example.com 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")

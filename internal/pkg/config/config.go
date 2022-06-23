@@ -10,12 +10,12 @@ import (
 )
 
 var defaultConfigFile string
-var configName = ".ukfast"
+var configName = ".ans"
 var initialised bool
 
 // Init initialises the config package
 func Init(configPath string) error {
-	viper.SetEnvPrefix("ukf")
+	viper.SetEnvPrefix("ans")
 	viper.AutomaticEnv()
 
 	if len(configPath) > 0 {
@@ -27,7 +27,7 @@ func Init(configPath string) error {
 			return err
 		}
 
-		// Search config in home directory with name ".ukfast" (without extension)
+		// Search config in home directory with name ".ans" (without extension)
 		viper.AddConfigPath(home)
 		viper.SetConfigName(configName)
 		defaultConfigFile = fmt.Sprintf("%s/%s.yml", home, configName)

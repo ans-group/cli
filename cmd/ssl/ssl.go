@@ -33,7 +33,7 @@ func sslValidateCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 		Use:     "validate",
 		Short:   "Validates a certificate",
 		Long:    "This command validates an SSL certificate",
-		Example: "ukfast ssl validate --certificate-file /tmp/cert.crt --key-file /tmp/cert.key --ca-bundle-file /tmp/ca.crt",
+		Example: "ans ssl validate --certificate-file /tmp/cert.crt --key-file /tmp/cert.key --ca-bundle-file /tmp/ca.crt",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {

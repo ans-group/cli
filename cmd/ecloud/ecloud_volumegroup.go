@@ -35,7 +35,7 @@ func ecloudVolumeGroupListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists volumegroups",
 		Long:    "This command lists volumegroups",
-		Example: "ukfast ecloud volumegroup list",
+		Example: "ans ecloud volumegroup list",
 		RunE:    ecloudCobraRunEFunc(f, ecloudVolumeGroupList),
 	}
 
@@ -67,7 +67,7 @@ func ecloudVolumeGroupShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <volumegroup: id>...",
 		Short:   "Shows a volumegroup",
 		Long:    "This command shows one or more volumegroups",
-		Example: "ukfast ecloud volumegroup show vol-abcdef12",
+		Example: "ans ecloud volumegroup show vol-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing volume-group")
@@ -99,7 +99,7 @@ func ecloudVolumeGroupCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates a volumegroup",
 		Long:    "This command creates a volumegroup",
-		Example: "ukfast ecloud volumegroup create",
+		Example: "ans ecloud volumegroup create",
 		RunE:    ecloudCobraRunEFunc(f, ecloudVolumeGroupCreate),
 	}
 
@@ -148,7 +148,7 @@ func ecloudVolumeGroupUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <volumegroup: id>...",
 		Short:   "Updates a volumegroup",
 		Long:    "This command updates one or more volumegroups",
-		Example: "ukfast ecloud volumegroup update volgroup-abcdef12 --name \"my volumegroup\"",
+		Example: "ans ecloud volumegroup update volgroup-abcdef12 --name \"my volumegroup\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing volume-group")
@@ -206,7 +206,7 @@ func ecloudVolumeGroupDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <volumegroup: id>...",
 		Short:   "Removes a volumegroup",
 		Long:    "This command removes one or more volumegroups",
-		Example: "ukfast ecloud volumegroup delete vol-abcdef12",
+		Example: "ans ecloud volumegroup delete vol-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing volume-group")

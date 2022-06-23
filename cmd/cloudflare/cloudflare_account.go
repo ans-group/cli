@@ -34,7 +34,7 @@ func cloudflareAccountListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists accounts",
 		Long:    "This command lists accounts",
-		Example: "ukfast cloudflare account list",
+		Example: "ans cloudflare account list",
 		RunE:    cloudflareCobraRunEFunc(f, cloudflareAccountList),
 	}
 }
@@ -58,7 +58,7 @@ func cloudflareAccountShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <account: id>...",
 		Short:   "Shows a account",
 		Long:    "This command shows one or more accounts",
-		Example: "ukfast cloudflare account show e3f8baa0-b7c3-4a7a-958d-68e1aca3ea25",
+		Example: "ans cloudflare account show e3f8baa0-b7c3-4a7a-958d-68e1aca3ea25",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing account")
@@ -90,7 +90,7 @@ func cloudflareAccountCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates an account",
 		Long:    "This command creates an account",
-		Example: "ukfast cloudflare account create --name test",
+		Example: "ans cloudflare account create --name test",
 		RunE:    cloudflareCobraRunEFunc(f, cloudflareAccountCreate),
 	}
 
@@ -121,7 +121,7 @@ func cloudflareAccountUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <account: id>...",
 		Short:   "Updates an account",
 		Long:    "This command updates one or more accounts",
-		Example: "ukfast cloudflare account update e3f8baa0-b7c3-4a7a-958d-68e1aca3ea25",
+		Example: "ans cloudflare account update e3f8baa0-b7c3-4a7a-958d-68e1aca3ea25",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing account")

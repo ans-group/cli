@@ -33,7 +33,7 @@ func ecloudSSHKeyPairListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists SSH key pairs",
 		Long:    "This command lists SSH key pairs",
-		Example: "ukfast ecloud sshkeypair list",
+		Example: "ans ecloud sshkeypair list",
 		RunE:    ecloudCobraRunEFunc(f, ecloudSSHKeyPairList),
 	}
 
@@ -63,7 +63,7 @@ func ecloudSSHKeyPairShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <keypair: id>...",
 		Short:   "Shows a SSH key pair",
 		Long:    "This command shows one or more SSH key pairs",
-		Example: "ukfast ecloud sshkeypair show ssh-abcdef12",
+		Example: "ans ecloud sshkeypair show ssh-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing SSH key pair")
@@ -95,7 +95,7 @@ func ecloudSSHKeyPairCreateCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Comm
 		Use:     "create",
 		Short:   "Creates a SSH key pair",
 		Long:    "This command creates a SSH key pair",
-		Example: "ukfast ecloud sshkeypair create --name test --public-key-file ~/.ssh/id_rsa.pub",
+		Example: "ans ecloud sshkeypair create --name test --public-key-file ~/.ssh/id_rsa.pub",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -144,7 +144,7 @@ func ecloudSSHKeyPairUpdateCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Comm
 		Use:     "update <keypair: id>...",
 		Short:   "Updates an SSH key pair",
 		Long:    "This command updates one or more SSH key pairs",
-		Example: "ukfast ecloud sshkeypair update ssh-abcdef12 --name \"my keypair\"",
+		Example: "ans ecloud sshkeypair update ssh-abcdef12 --name \"my keypair\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing SSH key pair")
@@ -210,7 +210,7 @@ func ecloudSSHKeyPairDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <keypair: id>...",
 		Short:   "Removes an SSH key pair",
 		Long:    "This command removes one or more SSH key pairs",
-		Example: "ukfast ecloud sshkeypair delete ssh-abcdef12",
+		Example: "ans ecloud sshkeypair delete ssh-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing SSH key pair")

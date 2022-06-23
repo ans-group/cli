@@ -30,7 +30,7 @@ func ecloudNICIPAddressListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists IP addresses for NIC",
 		Long:    "This command lists IP addresses for NIC",
-		Example: "ukfast ecloud nic ipaddress list ip-abcdef12",
+		Example: "ans ecloud nic ipaddress list ip-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing NIC")
@@ -65,7 +65,7 @@ func ecloudNICIPAddressAssignCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "assign",
 		Short:   "Assigns an IP address to a NIC",
 		Long:    "This command assigns an IP address to one or more NICs",
-		Example: "ukfast ecloud nic ipaddress assign nic-abcdef12 --ip-address ip-abcdef12",
+		Example: "ans ecloud nic ipaddress assign nic-abcdef12 --ip-address ip-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing NIC")
@@ -112,7 +112,7 @@ func ecloudNICIPAddressUnassignCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "unassign",
 		Short:   "Unassigns an IP address from a NIC",
 		Long:    "This command unassigns an IP address from one or more NICs",
-		Example: "ukfast ecloud nic ipaddress unassign nic-abcdef12 --ip-address ip-abcdef12",
+		Example: "ans ecloud nic ipaddress unassign nic-abcdef12 --ip-address ip-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing NIC")

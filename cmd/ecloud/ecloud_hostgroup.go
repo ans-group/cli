@@ -32,7 +32,7 @@ func ecloudHostGroupListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists host groups",
 		Long:    "This command lists host groups",
-		Example: "ukfast ecloud hostgroup list",
+		Example: "ans ecloud hostgroup list",
 		RunE:    ecloudCobraRunEFunc(f, ecloudHostGroupList),
 	}
 
@@ -62,7 +62,7 @@ func ecloudHostGroupShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <group: id>...",
 		Short:   "Shows an host group",
 		Long:    "This command shows one or more host groups",
-		Example: "ukfast ecloud hostgroup show hg-abcdef12",
+		Example: "ans ecloud hostgroup show hg-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing host group")
@@ -94,7 +94,7 @@ func ecloudHostGroupCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates a host group",
 		Long:    "This command creates a host group",
-		Example: "ukfast ecloud hostgroup create --policy hg-abcdef12",
+		Example: "ans ecloud hostgroup create --policy hg-abcdef12",
 		RunE:    ecloudCobraRunEFunc(f, ecloudHostGroupCreate),
 	}
 
@@ -145,7 +145,7 @@ func ecloudHostGroupUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <group: id>...",
 		Short:   "Updates a host group",
 		Long:    "This command updates one or more host groups",
-		Example: "ukfast ecloud hostgroup update hg-abcdef12 --name \"my group\"",
+		Example: "ans ecloud hostgroup update hg-abcdef12 --name \"my group\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing host group")
@@ -203,7 +203,7 @@ func ecloudHostGroupDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <group: id>...",
 		Short:   "Removes a host group",
 		Long:    "This command removes one or more host groups",
-		Example: "ukfast ecloud hostgroup delete hg-abcdef12",
+		Example: "ans ecloud hostgroup delete hg-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing host group")

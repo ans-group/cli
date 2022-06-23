@@ -26,7 +26,7 @@ func ddosxSSLContentShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <ssl: id>...",
 		Short:   "Shows a ssl's content",
 		Long:    "This command shows one or more ssl's content",
-		Example: "ukfast ddosx ssl content show 00000000-0000-0000-0000-000000000000",
+		Example: "ans ddosx ssl content show 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing ssl")

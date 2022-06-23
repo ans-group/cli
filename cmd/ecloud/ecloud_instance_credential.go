@@ -28,7 +28,7 @@ func ecloudInstanceCredentialListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists instance credentials",
 		Long:    "This command lists instance credentials",
-		Example: "ukfast ecloud instance credential list i-abcdef12",
+		Example: "ans ecloud instance credential list i-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing instance")

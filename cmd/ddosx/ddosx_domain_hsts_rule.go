@@ -33,7 +33,7 @@ func ddosxDomainHSTSRuleListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list <domain: name>",
 		Short:   "Lists domain HSTS rules",
 		Long:    "This command lists HSTS rules",
-		Example: "ukfast ddosx domain hsts rule list",
+		Example: "ans ddosx domain hsts rule list",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -71,7 +71,7 @@ func ddosxDomainHSTSRuleShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <domain: name> <rule: id>...",
 		Short:   "Shows HSTS rules",
 		Long:    "This command shows one or more HSTS rules",
-		Example: "ukfast ddosx domain hsts rule show example.com 00000000-0000-0000-0000-000000000000",
+		Example: "ans ddosx domain hsts rule show example.com 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -113,7 +113,7 @@ func ddosxDomainHSTSRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create <domain: name>",
 		Short:   "Creates domain HSTS rules",
 		Long:    "This command creates domain HSTS rules",
-		Example: "ukfast ddosx domain hsts rule create example.com --uri example.html --cache-control custom --mime-type image/* --type global",
+		Example: "ans ddosx domain hsts rule create example.com --uri example.html --cache-control custom --mime-type image/* --type global",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -177,7 +177,7 @@ func ddosxDomainHSTSRuleUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <domain: name> <rule: id>...",
 		Short:   "Updates HSTS rules",
 		Long:    "This command updates one or more domain HSTS rules",
-		Example: "ukfast ddosx domain hsts rule update example.com 00000000-0000-0000-0000-000000000000 --mime-type image/*",
+		Example: "ans ddosx domain hsts rule update example.com 00000000-0000-0000-0000-000000000000 --mime-type image/*",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")
@@ -248,7 +248,7 @@ func ddosxDomainHSTSRuleDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <domain: name> <rule: id>...",
 		Short:   "Deletes HSTS rules",
 		Long:    "This command deletes one or more domain HSTS rules",
-		Example: "ukfast ddosx domain hsts rule delete example.com 00000000-0000-0000-0000-000000000000",
+		Example: "ans ddosx domain hsts rule delete example.com 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing domain")

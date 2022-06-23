@@ -29,7 +29,7 @@ func ecloudSolutionDatastoreListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists solution datastores",
 		Long:    "This command lists solution datastores",
-		Example: "ukfast ecloud solution datastore list 123",
+		Example: "ans ecloud solution datastore list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing solution")

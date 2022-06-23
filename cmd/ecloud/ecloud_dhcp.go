@@ -29,7 +29,7 @@ func ecloudDHCPListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists DHCPs",
 		Long:    "This command lists DHCPs",
-		Example: "ukfast ecloud dhcp list",
+		Example: "ans ecloud dhcp list",
 		RunE:    ecloudCobraRunEFunc(f, ecloudDHCPList),
 	}
 
@@ -61,7 +61,7 @@ func ecloudDHCPShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <dhcp: id>...",
 		Short:   "Shows a DHCP",
 		Long:    "This command shows one or more DHCPs",
-		Example: "ukfast ecloud dhcp show dhcp-abcdef12",
+		Example: "ans ecloud dhcp show dhcp-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing dhcp")

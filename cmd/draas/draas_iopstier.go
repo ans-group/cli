@@ -29,7 +29,7 @@ func draasIOPSTierListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists available IOPS tiers",
 		Long:    "This command lists available IOPS tiers",
-		Example: "ukfast draas iopstier list",
+		Example: "ans draas iopstier list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -60,7 +60,7 @@ func draasIOPSTierShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <iopstier: id>...",
 		Short:   "Shows an IOPS tier",
 		Long:    "This command shows one or more IOPS tiers",
-		Example: "ukfast draas iopstier show 00000000-0000-0000-0000-000000000000",
+		Example: "ans draas iopstier show 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing IOPS tier")

@@ -36,7 +36,7 @@ func ecloudFirewallPolicyListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists firewall policies",
 		Long:    "This command lists firewall policies",
-		Example: "ukfast ecloud firewallpolicy list",
+		Example: "ans ecloud firewallpolicy list",
 		RunE:    ecloudCobraRunEFunc(f, ecloudFirewallPolicyList),
 	}
 
@@ -68,7 +68,7 @@ func ecloudFirewallPolicyShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <policy: id>...",
 		Short:   "Shows a firewall policy",
 		Long:    "This command shows one or more firewall policies",
-		Example: "ukfast ecloud firewallpolicy show fwp-abcdef12",
+		Example: "ans ecloud firewallpolicy show fwp-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing firewall policy")
@@ -100,7 +100,7 @@ func ecloudFirewallPolicyCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates a firewall policy",
 		Long:    "This command creates a firewall policy",
-		Example: "ukfast ecloud firewallpolicy create --router rtr-abcdef12",
+		Example: "ans ecloud firewallpolicy create --router rtr-abcdef12",
 		RunE:    ecloudCobraRunEFunc(f, ecloudFirewallPolicyCreate),
 	}
 
@@ -151,7 +151,7 @@ func ecloudFirewallPolicyUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <policy: id>...",
 		Short:   "Updates a firewall policy",
 		Long:    "This command updates one or more firewall policies",
-		Example: "ukfast ecloud firewallpolicy update fwp-abcdef12 --name \"my policy\"",
+		Example: "ans ecloud firewallpolicy update fwp-abcdef12 --name \"my policy\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing firewall policy")
@@ -209,7 +209,7 @@ func ecloudFirewallPolicyDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <policy: id>...",
 		Short:   "Removes a firewall policy",
 		Long:    "This command removes one or more firewall policies",
-		Example: "ukfast ecloud firewallpolicy delete fwp-abcdef12",
+		Example: "ans ecloud firewallpolicy delete fwp-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing firewall policy")

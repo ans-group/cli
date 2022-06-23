@@ -28,7 +28,7 @@ func draasSolutionBackupServiceShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <solution: id>",
 		Short:   "Shows the backup service for a solution",
 		Long:    "This command shows the backup service for a solution",
-		Example: "ukfast draas solution backupservice show 00000000-0000-0000-0000-000000000000",
+		Example: "ans draas solution backupservice show 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing solution")
@@ -61,7 +61,7 @@ func draasSolutionBackupServiceResetCredentialsCmd(f factory.ClientFactory) *cob
 		Use:     "resetcredentials <solution: id>",
 		Short:   "Resets the backup service credentials for a solution",
 		Long:    "This command resets the backup service credentials for a solution",
-		Example: "ukfast draas solution backupservice resetcredentials 00000000-0000-0000-0000-000000000000",
+		Example: "ans draas solution backupservice resetcredentials 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing solution")

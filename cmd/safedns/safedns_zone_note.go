@@ -31,7 +31,7 @@ func safednsZoneNoteListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list <zone: name>",
 		Short:   "Lists zone notes",
 		Long:    "This command lists zone notes",
-		Example: "ukfast safedns zone note list ukfast.co.uk\nukfast safedns zone note list 123",
+		Example: "ans safedns zone note list ans.co.uk\nans safedns zone note list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing zone")
@@ -73,7 +73,7 @@ func safednsZoneNoteShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <zone: name> <note: id>...",
 		Short:   "Shows a zone note",
 		Long:    "This command shows one or more zone notes",
-		Example: "ukfast safedns zone note show ukfast.co.uk 123",
+		Example: "ans safedns zone note show ans.co.uk 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing zone")
@@ -122,7 +122,7 @@ func safednsZoneNoteCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create <zone: name>",
 		Short:   "Creates a zone note",
 		Long:    "This command creates a zone note",
-		Example: "ukfast safedns zone note create ukfast.co.uk --notes \"test note\"",
+		Example: "ans safedns zone note create ans.co.uk --notes \"test note\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing zone")

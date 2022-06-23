@@ -32,7 +32,7 @@ func ecloudApplianceListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists appliances",
 		Long:    "This command lists appliances",
-		Example: "ukfast ecloud appliance list",
+		Example: "ans ecloud appliance list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := f.NewClient()
 			if err != nil {
@@ -63,7 +63,7 @@ func ecloudApplianceShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <appliance: id>...",
 		Short:   "Shows a appliance",
 		Long:    "This command shows one or more appliances",
-		Example: "ukfast ecloud vm appliance 00000000-0000-0000-0000-000000000000",
+		Example: "ans ecloud vm appliance 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing appliance")

@@ -26,7 +26,7 @@ func cloudflareTotalSpendShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show",
 		Short:   "Shows total spend",
 		Long:    "This command shows total spend",
-		Example: "ukfast cloudflare totalspend show",
+		Example: "ans cloudflare totalspend show",
 		RunE:    cloudflareCobraRunEFunc(f, cloudflareTotalSpendShow),
 	}
 }

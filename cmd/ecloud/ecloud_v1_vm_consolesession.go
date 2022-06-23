@@ -30,7 +30,7 @@ func ecloudVirtualMachineConsoleSessionCreateCmd(f factory.ClientFactory) *cobra
 		Use:     "create <virtualmachine: id>",
 		Short:   "Creates a virtual machine console session",
 		Long:    "This command creates a virtual machine console session",
-		Example: "ukfast ecloud vm consolesession create 123",
+		Example: "ans ecloud vm consolesession create 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing virtual machine")

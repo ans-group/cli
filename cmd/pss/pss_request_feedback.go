@@ -29,7 +29,7 @@ func pssRequestFeedbackShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <request: id>...",
 		Short:   "Shows feedback for a request",
 		Long:    "This command shows feedback for one or more requests",
-		Example: "ukfast pss request feedback show 123",
+		Example: "ans pss request feedback show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing request")
@@ -74,7 +74,7 @@ func pssRequestFeedbackCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create <request: id>",
 		Short:   "Creates feedback for a request",
 		Long:    "This command creates feedback for a request",
-		Example: "ukfast pss request feedback create 123",
+		Example: "ans pss request feedback create 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing request")

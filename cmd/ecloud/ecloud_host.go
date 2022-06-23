@@ -32,7 +32,7 @@ func ecloudHostListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists hosts",
 		Long:    "This command lists hosts",
-		Example: "ukfast ecloud host list",
+		Example: "ans ecloud host list",
 		RunE:    ecloudCobraRunEFunc(f, ecloudHostList),
 	}
 
@@ -62,7 +62,7 @@ func ecloudHostShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <group: id>...",
 		Short:   "Shows an host",
 		Long:    "This command shows one or more hosts",
-		Example: "ukfast ecloud host show h-abcdef12",
+		Example: "ans ecloud host show h-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing host")
@@ -94,7 +94,7 @@ func ecloudHostCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates a host",
 		Long:    "This command creates a host",
-		Example: "ukfast ecloud host create --policy np-abcdef12",
+		Example: "ans ecloud host create --policy np-abcdef12",
 		RunE:    ecloudCobraRunEFunc(f, ecloudHostCreate),
 	}
 
@@ -138,7 +138,7 @@ func ecloudHostUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <group: id>...",
 		Short:   "Updates a host",
 		Long:    "This command updates one or more hosts",
-		Example: "ukfast ecloud host update np-abcdef12 --name \"my group\"",
+		Example: "ans ecloud host update np-abcdef12 --name \"my group\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing host")
@@ -196,7 +196,7 @@ func ecloudHostDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "delete <group: id>...",
 		Short:   "Removes a host",
 		Long:    "This command removes one or more hosts",
-		Example: "ukfast ecloud host delete h-abcdef12",
+		Example: "ans ecloud host delete h-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing host")

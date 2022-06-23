@@ -29,7 +29,7 @@ func ecloudRegionListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists regions",
 		Long:    "This command lists regions",
-		Example: "ukfast ecloud region list",
+		Example: "ans ecloud region list",
 		RunE:    ecloudCobraRunEFunc(f, ecloudRegionList),
 	}
 
@@ -57,7 +57,7 @@ func ecloudRegionShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <region: id>...",
 		Short:   "Shows a region",
 		Long:    "This command shows one or more regions",
-		Example: "ukfast ecloud region show reg-abcdef12",
+		Example: "ans ecloud region show reg-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing region")
