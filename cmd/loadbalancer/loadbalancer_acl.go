@@ -70,7 +70,7 @@ func loadbalancerACLCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create <acl: id>",
 		Short:   "Creates an ACL",
 		Long:    "This command creates a ACLs with a single condition/action. Additional conditions/actions can be added with subcommands",
-		Example: "ans loadbalancer acl create --name \"test ACL\" --host-group 1 --condition \"header_matches:host=ans.co.uk,accept=application/json\" --action \"redirect:location=developers.ukfast.io,status=302\"",
+		Example: "ans loadbalancer acl create --name \"test ACL\" --host-group 1 --condition \"header_matches:host=ans.co.uk,accept=application/json\" --action \"redirect:location=developers.ans.co.uk,status=302\"",
 		RunE:    loadbalancerCobraRunEFunc(f, loadbalancerACLCreate),
 	}
 
@@ -79,7 +79,7 @@ func loadbalancerACLCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().Int("listener", 0, "ID of listener")
 	cmd.Flags().Int("target-group", 0, "ID of target group")
 	cmd.Flags().StringArray("condition", []string{}, "Name and arguments of condition. Can be repeated. Example: --condition \"header_matches:host=ans.co.uk,accept=application/json\"")
-	cmd.Flags().StringArray("action", []string{}, "Name and arguments of action. Can be repeated. Example: --action \"redirect:location=developers.ukfast.io,status=302\"")
+	cmd.Flags().StringArray("action", []string{}, "Name and arguments of action. Can be repeated. Example: --action \"redirect:location=developers.ans.co.uk,status=302\"")
 	cmd.MarkFlagRequired("action")
 
 	return cmd
@@ -140,7 +140,7 @@ func loadbalancerACLUpdateCmd(f factory.ClientFactory) *cobra.Command {
 
 	cmd.Flags().String("name", "", "Name of ACL")
 	cmd.Flags().StringArray("condition", []string{}, "Name and arguments of condition. Can be repeated. Example: --condition \"header_matches:host=ans.co.uk,accept=application/json\"")
-	cmd.Flags().StringArray("action", []string{}, "Name and arguments of action. Can be repeated. Example: --action \"redirect:location=developers.ukfast.io,status=302\"")
+	cmd.Flags().StringArray("action", []string{}, "Name and arguments of action. Can be repeated. Example: --action \"redirect:location=developers.ans.co.uk,status=302\"")
 
 	return cmd
 }

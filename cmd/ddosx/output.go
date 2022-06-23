@@ -37,7 +37,7 @@ func OutputDDoSXWAFAdvancedRulesProvider(rules []ddosx.WAFAdvancedRule) output.O
 
 func OutputDDoSXSSLsProvider(ssls []ddosx.SSL) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(ssls).
-		WithDefaultFields([]string{"id", "ukfast_ssl_id", "domains", "friendly_name"})
+		WithDefaultFields([]string{"id", "ans_ssl_id", "domains", "friendly_name"})
 }
 
 func OutputDDoSXSSLContentsProvider(sslContents []ddosx.SSLContent) output.OutputHandlerDataProvider {

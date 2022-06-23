@@ -17,27 +17,27 @@ type ClientFactory interface {
 	NewClient() (client.Client, error)
 }
 
-type UKFastClientFactoryOption func(f *UKFastClientFactory)
+type ANSClientFactoryOption func(f *ANSClientFactory)
 
-type UKFastClientFactory struct {
+type ANSClientFactory struct {
 	apiUserAgent string
 }
 
-func WithUserAgent(userAgent string) UKFastClientFactoryOption {
-	return func(p *UKFastClientFactory) {
+func WithUserAgent(userAgent string) ANSClientFactoryOption {
+	return func(p *ANSClientFactory) {
 		p.apiUserAgent = userAgent
 	}
 }
 
-func NewUKFastClientFactory(opts ...UKFastClientFactoryOption) *UKFastClientFactory {
-	f := &UKFastClientFactory{}
+func NewANSClientFactory(opts ...ANSClientFactoryOption) *ANSClientFactory {
+	f := &ANSClientFactory{}
 	for _, opt := range opts {
 		opt(f)
 	}
 	return f
 }
 
-func (f *UKFastClientFactory) NewClient() (client.Client, error) {
+func (f *ANSClientFactory) NewClient() (client.Client, error) {
 	apiKey := config.GetString("api_key")
 	if len(apiKey) < 1 {
 		return nil, errors.New("Missing api_key")
