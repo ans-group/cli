@@ -3,10 +3,10 @@ package helper_test
 import (
 	"testing"
 
+	"github.com/ans-group/cli/internal/pkg/helper"
+	"github.com/ans-group/sdk-go/pkg/connection"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/internal/pkg/helper"
-	"github.com/ukfast/sdk-go/pkg/connection"
 )
 
 func TestInferTypeFromStringFlagValue_InfersInteger(t *testing.T) {

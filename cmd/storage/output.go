@@ -3,8 +3,8 @@ package storage
 import (
 	"strconv"
 
-	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/sdk-go/pkg/service/storage"
+	"github.com/ans-group/cli/internal/pkg/output"
+	"github.com/ans-group/sdk-go/pkg/service/storage"
 )
 
 func OutputStorageSolutionsProvider(solutions []storage.Solution) output.OutputHandlerDataProvider {

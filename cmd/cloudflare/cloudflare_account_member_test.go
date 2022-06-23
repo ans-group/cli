@@ -4,10 +4,10 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/ans-group/cli/test/mocks"
+	"github.com/ans-group/sdk-go/pkg/service/cloudflare"
 	gomock "github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/test/mocks"
-	"github.com/ukfast/sdk-go/pkg/service/cloudflare"
 )
 
 func Test_cloudflareAccountMemberCreateCmd_Args(t *testing.T) {

@@ -3,8 +3,8 @@ package helper_test
 import (
 	"testing"
 
+	"github.com/ans-group/cli/internal/pkg/helper"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/internal/pkg/helper"
 )
 
 func TestJoinInt_EmptyArray_ReturnsEmptyString(t *testing.T) {

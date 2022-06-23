@@ -3,8 +3,8 @@ package output_test
 import (
 	"testing"
 
+	"github.com/ans-group/cli/internal/pkg/output"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/internal/pkg/output"
 )
 
 func TestOrderedFields_Set(t *testing.T) {

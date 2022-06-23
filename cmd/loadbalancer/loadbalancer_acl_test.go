@@ -4,12 +4,12 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/ans-group/cli/test/mocks"
+	"github.com/ans-group/cli/test/test_output"
+	"github.com/ans-group/sdk-go/pkg/service/loadbalancer"
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/test/mocks"
-	"github.com/ukfast/cli/test/test_output"
-	"github.com/ukfast/sdk-go/pkg/service/loadbalancer"
 )
 
 func Test_loadbalancerACLShowCmd_Args(t *testing.T) {

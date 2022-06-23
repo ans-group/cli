@@ -8,7 +8,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/ukfast/cli/internal/pkg/output"
+	"github.com/ans-group/cli/internal/pkg/output"
 )
 
 var InputReader = func() io.Reader {

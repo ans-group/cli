@@ -6,13 +6,13 @@ import (
 	"io/ioutil"
 	"testing"
 
+	"github.com/ans-group/cli/test/mocks"
+	"github.com/ans-group/cli/test/test_output"
+	"github.com/ans-group/sdk-go/test"
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/test/mocks"
-	"github.com/ukfast/cli/test/test_output"
-	"github.com/ukfast/sdk-go/test"
 )
 
 func Test_pssReplyAttachmentDownloadCmd_Args(t *testing.T) {

@@ -5,8 +5,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/sdk-go/pkg/service/draas"
+	"github.com/ans-group/cli/internal/pkg/output"
+	"github.com/ans-group/sdk-go/pkg/service/draas"
 )
 
 func OutputDRaaSSolutionsProvider(solutions []draas.Solution) output.OutputHandlerDataProvider {

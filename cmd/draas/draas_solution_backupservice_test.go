@@ -4,11 +4,11 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/ans-group/cli/test/mocks"
+	"github.com/ans-group/sdk-go/pkg/service/draas"
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/test/mocks"
-	"github.com/ukfast/sdk-go/pkg/service/draas"
 )
 
 func Test_draasSolutionBackupServiceShowCmd_Args(t *testing.T) {

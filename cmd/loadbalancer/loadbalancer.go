@@ -1,10 +1,10 @@
 package loadbalancer
 
 import (
+	"github.com/ans-group/cli/internal/pkg/factory"
+	"github.com/ans-group/sdk-go/pkg/service/loadbalancer"
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
-	"github.com/ukfast/cli/internal/pkg/factory"
-	"github.com/ukfast/sdk-go/pkg/service/loadbalancer"
 )
 
 func LoadBalancerRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {

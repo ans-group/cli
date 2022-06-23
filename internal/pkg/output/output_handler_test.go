@@ -4,8 +4,8 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/ans-group/cli/test"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/test"
 )
 
 var testOutputHandlerDataProvider = NewGenericOutputHandlerDataProvider(

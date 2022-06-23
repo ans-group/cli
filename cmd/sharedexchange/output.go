@@ -1,8 +1,8 @@
 package sharedexchange
 
 import (
-	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/sdk-go/pkg/service/sharedexchange"
+	"github.com/ans-group/cli/internal/pkg/output"
+	"github.com/ans-group/sdk-go/pkg/service/sharedexchange"
 )
 
 func OutputSharedExchangeDomainsProvider(domains []sharedexchange.Domain) output.OutputHandlerDataProvider {

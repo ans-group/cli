@@ -1,8 +1,8 @@
 package account
 
 import (
-	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/sdk-go/pkg/service/account"
+	"github.com/ans-group/cli/internal/pkg/output"
+	"github.com/ans-group/sdk-go/pkg/service/account"
 )
 
 func OutputAccountContactsProvider(contacts []account.Contact) output.OutputHandlerDataProvider {

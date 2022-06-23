@@ -4,13 +4,13 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/ans-group/cli/internal/pkg/clierrors"
+	"github.com/ans-group/cli/test/mocks"
+	"github.com/ans-group/cli/test/test_output"
+	"github.com/ans-group/sdk-go/pkg/service/ecloud"
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/internal/pkg/clierrors"
-	"github.com/ukfast/cli/test/mocks"
-	"github.com/ukfast/cli/test/test_output"
-	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
 func Test_ecloudVolumeGroupList(t *testing.T) {
@@ -118,8 +118,8 @@ func Test_ecloudVolumeGroupCreate(t *testing.T) {
 		cmd.ParseFlags([]string{"--name=testvolumegroup", "--vpc=vpc-abcdef12", "--availability-zone=az-abcdef12"})
 
 		req := ecloud.CreateVolumeGroupRequest{
-			Name:     "testvolumegroup",
-			VPCID:    "vpc-abcdef12",
+			Name:               "testvolumegroup",
+			VPCID:              "vpc-abcdef12",
 			AvailabilityZoneID: "az-abcdef12",
 		}
 
@@ -145,8 +145,8 @@ func Test_ecloudVolumeGroupCreate(t *testing.T) {
 		cmd.ParseFlags([]string{"--name=testvolumegroup", "--vpc=vpc-abcdef12", "--availability-zone=az-abcdef12", "--wait"})
 
 		req := ecloud.CreateVolumeGroupRequest{
-			Name:     "testvolumegroup",
-			VPCID:    "vpc-abcdef12",
+			Name:               "testvolumegroup",
+			VPCID:              "vpc-abcdef12",
 			AvailabilityZoneID: "az-abcdef12",
 		}
 
@@ -173,8 +173,8 @@ func Test_ecloudVolumeGroupCreate(t *testing.T) {
 		cmd.ParseFlags([]string{"--name=testvolumegroup", "--vpc=vpc-abcdef12", "--availability-zone=az-abcdef12", "--wait"})
 
 		req := ecloud.CreateVolumeGroupRequest{
-			Name:     "testvolumegroup",
-			VPCID:    "vpc-abcdef12",
+			Name:               "testvolumegroup",
+			VPCID:              "vpc-abcdef12",
 			AvailabilityZoneID: "az-abcdef12",
 		}
 

@@ -4,10 +4,10 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/ans-group/cli/test/mocks"
+	"github.com/ans-group/sdk-go/pkg/service/account"
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
-	"github.com/ukfast/cli/test/mocks"
-	"github.com/ukfast/sdk-go/pkg/service/account"
 	"gopkg.in/go-playground/assert.v1"
 )
 

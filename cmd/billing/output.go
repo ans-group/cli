@@ -1,8 +1,8 @@
 package billing
 
 import (
-	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/sdk-go/pkg/service/billing"
+	"github.com/ans-group/cli/internal/pkg/output"
+	"github.com/ans-group/sdk-go/pkg/service/billing"
 )
 
 func OutputBillingCardsProvider(cards []billing.Card) output.OutputHandlerDataProvider {

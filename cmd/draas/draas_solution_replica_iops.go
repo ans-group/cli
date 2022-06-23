@@ -4,9 +4,9 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/ans-group/cli/internal/pkg/factory"
+	"github.com/ans-group/sdk-go/pkg/service/draas"
 	"github.com/spf13/cobra"
-	"github.com/ukfast/cli/internal/pkg/factory"
-	"github.com/ukfast/sdk-go/pkg/service/draas"
 )
 
 func draasSolutionReplicaIOPSRootCmd(f factory.ClientFactory) *cobra.Command {

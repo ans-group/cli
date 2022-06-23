@@ -7,8 +7,8 @@ import (
 	"io/ioutil"
 	"testing"
 
+	"github.com/ans-group/cli/test/test_input"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/test/test_input"
 )
 
 func TestReadInput(t *testing.T) {

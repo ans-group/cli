@@ -4,8 +4,8 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/ans-group/cli/internal/pkg/config"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/internal/pkg/config"
 )
 
 func TestWaitForCommand(t *testing.T) {

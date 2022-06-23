@@ -15,7 +15,7 @@ import (
 	"gopkg.in/yaml.v3"
 	"k8s.io/client-go/util/jsonpath"
 
-	"github.com/ukfast/sdk-go/pkg/connection"
+	"github.com/ans-group/sdk-go/pkg/connection"
 )
 
 var outputExit func(code int) = os.Exit

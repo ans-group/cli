@@ -3,9 +3,9 @@ package output
 import (
 	"testing"
 
+	"github.com/ans-group/cli/test"
+	"github.com/ans-group/sdk-go/pkg/service/safedns"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/test"
-	"github.com/ukfast/sdk-go/pkg/service/safedns"
 )
 
 func TestOutputExit_SetsHandler(t *testing.T) {

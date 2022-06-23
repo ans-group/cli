@@ -1,8 +1,8 @@
 package ecloudflex
 
 import (
-	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/sdk-go/pkg/service/ecloudflex"
+	"github.com/ans-group/cli/internal/pkg/output"
+	"github.com/ans-group/sdk-go/pkg/service/ecloudflex"
 )
 
 func OutputECloudFlexProjectsProvider(projects []ecloudflex.Project) output.OutputHandlerDataProvider {

@@ -4,12 +4,12 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/ans-group/cli/internal/pkg/config"
+	"github.com/ans-group/cli/test/mocks"
+	"github.com/ans-group/sdk-go/pkg/service/ecloud"
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/internal/pkg/config"
-	"github.com/ukfast/cli/test/mocks"
-	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
 func Test_ecloudVirtualMachineDiskListCmd_Args(t *testing.T) {

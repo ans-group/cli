@@ -3,8 +3,8 @@ package test_output
 import (
 	"testing"
 
-	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/cli/test"
+	"github.com/ans-group/cli/internal/pkg/output"
+	"github.com/ans-group/cli/test"
 	"gopkg.in/go-playground/assert.v1"
 )
 

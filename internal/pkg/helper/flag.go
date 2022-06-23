@@ -6,11 +6,11 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/ans-group/cli/internal/pkg/clierrors"
+	"github.com/ans-group/cli/internal/pkg/config"
+	"github.com/ans-group/sdk-go/pkg/connection"
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
-	"github.com/ukfast/cli/internal/pkg/clierrors"
-	"github.com/ukfast/cli/internal/pkg/config"
-	"github.com/ukfast/sdk-go/pkg/connection"
 )
 
 // InferTypeFromStringFlagValue will return a int, bool or string, based on value of flag

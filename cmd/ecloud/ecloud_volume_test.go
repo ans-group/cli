@@ -4,14 +4,14 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/ans-group/cli/internal/pkg/clierrors"
+	"github.com/ans-group/cli/test/mocks"
+	"github.com/ans-group/cli/test/test_output"
+	"github.com/ans-group/sdk-go/pkg/ptr"
+	"github.com/ans-group/sdk-go/pkg/service/ecloud"
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/internal/pkg/clierrors"
-	"github.com/ukfast/cli/test/mocks"
-	"github.com/ukfast/cli/test/test_output"
-	"github.com/ukfast/sdk-go/pkg/ptr"
-	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
 func Test_ecloudVolumeList(t *testing.T) {
@@ -119,9 +119,9 @@ func Test_ecloudVolumeCreate(t *testing.T) {
 		cmd.ParseFlags([]string{"--name=testvolume", "--vpc=vpc-abcdef12", "--capacity=20", "--availability-zone=az-abcdef12"})
 
 		req := ecloud.CreateVolumeRequest{
-			Name:     "testvolume",
-			VPCID:    "vpc-abcdef12",
-			Capacity: 20,
+			Name:               "testvolume",
+			VPCID:              "vpc-abcdef12",
+			Capacity:           20,
 			AvailabilityZoneID: "az-abcdef12",
 		}
 
@@ -147,11 +147,11 @@ func Test_ecloudVolumeCreate(t *testing.T) {
 		cmd.ParseFlags([]string{"--name=testvolume", "--vpc=vpc-abcdef12", "--capacity=20", "--availability-zone=az-abcdef12", "--volume-group=volgroup-abcdef12"})
 
 		req := ecloud.CreateVolumeRequest{
-			Name:     "testvolume",
-			VPCID:    "vpc-abcdef12",
-			Capacity: 20,
+			Name:               "testvolume",
+			VPCID:              "vpc-abcdef12",
+			Capacity:           20,
 			AvailabilityZoneID: "az-abcdef12",
-			VolumeGroupID: "volgroup-abcdef12",
+			VolumeGroupID:      "volgroup-abcdef12",
 		}
 
 		resp := ecloud.TaskReference{
@@ -176,9 +176,9 @@ func Test_ecloudVolumeCreate(t *testing.T) {
 		cmd.ParseFlags([]string{"--name=testvolume", "--vpc=vpc-abcdef12", "--capacity=20", "--availability-zone=az-abcdef12", "--wait"})
 
 		req := ecloud.CreateVolumeRequest{
-			Name:     "testvolume",
-			VPCID:    "vpc-abcdef12",
-			Capacity: 20,
+			Name:               "testvolume",
+			VPCID:              "vpc-abcdef12",
+			Capacity:           20,
 			AvailabilityZoneID: "az-abcdef12",
 		}
 
@@ -205,9 +205,9 @@ func Test_ecloudVolumeCreate(t *testing.T) {
 		cmd.ParseFlags([]string{"--name=testvolume", "--vpc=vpc-abcdef12", "--capacity=20", "--availability-zone=az-abcdef12", "--wait"})
 
 		req := ecloud.CreateVolumeRequest{
-			Name:     "testvolume",
-			VPCID:    "vpc-abcdef12",
-			Capacity: 20,
+			Name:               "testvolume",
+			VPCID:              "vpc-abcdef12",
+			Capacity:           20,
 			AvailabilityZoneID: "az-abcdef12",
 		}
 
@@ -293,8 +293,8 @@ func Test_ecloudVolumeUpdate(t *testing.T) {
 		cmd.ParseFlags([]string{"--name=testvolume", "--iops=600", "--capacity=40"})
 
 		req := ecloud.PatchVolumeRequest{
-			Name: "testvolume",
-			IOPS: 600,
+			Name:     "testvolume",
+			IOPS:     600,
 			Capacity: 40,
 		}
 

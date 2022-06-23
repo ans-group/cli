@@ -3,10 +3,10 @@ package config
 import (
 	"testing"
 
+	"github.com/ans-group/cli/internal/pkg/config"
+	"github.com/ans-group/cli/test/test_output"
 	"github.com/spf13/afero"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/internal/pkg/config"
-	"github.com/ukfast/cli/test/test_output"
 )
 
 func Test_configContextUpdate(t *testing.T) {

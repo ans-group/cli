@@ -6,11 +6,11 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/ukfast/cli/internal/pkg/config"
-	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/sdk-go/pkg/client"
-	"github.com/ukfast/sdk-go/pkg/connection"
-	"github.com/ukfast/sdk-go/pkg/logging"
+	"github.com/ans-group/cli/internal/pkg/config"
+	"github.com/ans-group/cli/internal/pkg/output"
+	"github.com/ans-group/sdk-go/pkg/client"
+	"github.com/ans-group/sdk-go/pkg/connection"
+	"github.com/ans-group/sdk-go/pkg/logging"
 )
 
 type ClientFactory interface {

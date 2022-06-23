@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ukfast/cli/internal/pkg/config"
+	"github.com/ans-group/cli/internal/pkg/config"
 )
 
 type WaitFunc func() (finished bool, err error)

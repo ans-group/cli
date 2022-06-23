@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/ans-group/cli/internal/pkg/factory"
+	"github.com/ans-group/cli/internal/pkg/resource"
+	"github.com/ans-group/sdk-go/pkg/connection"
+	"github.com/ans-group/sdk-go/pkg/service/safedns"
 	"github.com/spf13/cobra"
-	"github.com/ukfast/cli/internal/pkg/factory"
-	"github.com/ukfast/cli/internal/pkg/resource"
-	"github.com/ukfast/sdk-go/pkg/connection"
-	"github.com/ukfast/sdk-go/pkg/service/safedns"
 )
 
 func SafeDNSRootCmd(f factory.ClientFactory) *cobra.Command {

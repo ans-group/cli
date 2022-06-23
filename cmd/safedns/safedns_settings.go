@@ -3,10 +3,10 @@ package safedns
 import (
 	"fmt"
 
+	"github.com/ans-group/cli/internal/pkg/factory"
+	"github.com/ans-group/cli/internal/pkg/output"
+	"github.com/ans-group/sdk-go/pkg/service/safedns"
 	"github.com/spf13/cobra"
-	"github.com/ukfast/cli/internal/pkg/factory"
-	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/sdk-go/pkg/service/safedns"
 )
 
 func safednsSettingsRootCmd(f factory.ClientFactory) *cobra.Command {

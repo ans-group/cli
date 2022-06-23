@@ -1,9 +1,9 @@
 package ddosx
 
 import (
+	"github.com/ans-group/cli/internal/pkg/factory"
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
-	"github.com/ukfast/cli/internal/pkg/factory"
 )
 
 func DDoSXRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {

@@ -1,8 +1,8 @@
 package cloudflare
 
 import (
-	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/sdk-go/pkg/service/cloudflare"
+	"github.com/ans-group/cli/internal/pkg/output"
+	"github.com/ans-group/sdk-go/pkg/service/cloudflare"
 )
 
 func OutputCloudflareAccountsProvider(accounts []cloudflare.Account) output.OutputHandlerDataProvider {

@@ -4,13 +4,13 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/ans-group/cli/internal/pkg/clierrors"
+	"github.com/ans-group/cli/test/mocks"
+	"github.com/ans-group/cli/test/test_output"
+	"github.com/ans-group/sdk-go/pkg/service/ecloud"
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/internal/pkg/clierrors"
-	"github.com/ukfast/cli/test/mocks"
-	"github.com/ukfast/cli/test/test_output"
-	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 )
 
 func Test_ecloudFloatingIPList(t *testing.T) {
@@ -118,13 +118,13 @@ func Test_ecloudFloatingIPCreate(t *testing.T) {
 		cmd.ParseFlags([]string{"--name=testfip", "--vpc=vpc-abcdef12", "--availability-zone=az-abcdef12"})
 
 		req := ecloud.CreateFloatingIPRequest{
-			Name: "testfip",
-			VPCID: "vpc-abcdef12",
+			Name:               "testfip",
+			VPCID:              "vpc-abcdef12",
 			AvailabilityZoneID: "az-abcdef12",
 		}
 
 		resp := ecloud.TaskReference{
-			TaskID: "task-abcdef12",
+			TaskID:     "task-abcdef12",
 			ResourceID: "fip-abcdef12",
 		}
 
@@ -145,13 +145,13 @@ func Test_ecloudFloatingIPCreate(t *testing.T) {
 		cmd.ParseFlags([]string{"--name=testfip", "--vpc=vpc-abcdef12", "--availability-zone=az-abcdef12", "--wait"})
 
 		req := ecloud.CreateFloatingIPRequest{
-			Name: "testfip",
-			VPCID: "vpc-abcdef12",
+			Name:               "testfip",
+			VPCID:              "vpc-abcdef12",
 			AvailabilityZoneID: "az-abcdef12",
 		}
 
 		resp := ecloud.TaskReference{
-			TaskID: "task-abcdef12",
+			TaskID:     "task-abcdef12",
 			ResourceID: "fip-abcdef12",
 		}
 
@@ -173,13 +173,13 @@ func Test_ecloudFloatingIPCreate(t *testing.T) {
 		cmd.ParseFlags([]string{"--name=testfip", "--vpc=vpc-abcdef12", "--availability-zone=az-abcdef12", "--wait"})
 
 		req := ecloud.CreateFloatingIPRequest{
-			Name: "testfip",
-			VPCID: "vpc-abcdef12",
+			Name:               "testfip",
+			VPCID:              "vpc-abcdef12",
 			AvailabilityZoneID: "az-abcdef12",
 		}
 
 		resp := ecloud.TaskReference{
-			TaskID: "task-abcdef12",
+			TaskID:     "task-abcdef12",
 			ResourceID: "fip-abcdef12",
 		}
 
@@ -342,7 +342,7 @@ func Test_ecloudFloatingIPUpdate(t *testing.T) {
 		test_output.AssertErrorOutput(t, "Error waiting for task to complete for floating ip [fip-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
 			ecloudFloatingIPUpdate(service, cmd, []string{"fip-abcdef12"})
 		})
-	})	
+	})
 
 	t.Run("PatchFloatingIPError_OutputsError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
@@ -506,7 +506,7 @@ func Test_ecloudFloatingIPAssign(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		cmd := ecloudFloatingIPAssignCmd(nil)
-		cmd.ParseFlags([]string{"--resource=i-abcdef12","--wait"})
+		cmd.ParseFlags([]string{"--resource=i-abcdef12", "--wait"})
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
@@ -530,7 +530,7 @@ func Test_ecloudFloatingIPAssign(t *testing.T) {
 		service := mocks.NewMockECloudService(mockCtrl)
 
 		cmd := ecloudFloatingIPAssignCmd(nil)
-		cmd.ParseFlags([]string{"--resource=i-abcdef12","--wait"})
+		cmd.ParseFlags([]string{"--resource=i-abcdef12", "--wait"})
 
 		gomock.InOrder(
 			service.EXPECT().AssignFloatingIP("fip-abcdef12", gomock.Any()).Return("task-abcdef12", nil),

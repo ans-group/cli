@@ -3,8 +3,8 @@ package ecloud
 import (
 	"strconv"
 
-	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/sdk-go/pkg/service/ecloud"
+	"github.com/ans-group/cli/internal/pkg/output"
+	"github.com/ans-group/sdk-go/pkg/service/ecloud"
 )
 
 func OutputECloudVirtualMachinesProvider(vms []ecloud.VirtualMachine) output.OutputHandlerDataProvider {

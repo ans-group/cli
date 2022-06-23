@@ -30,7 +30,7 @@ The CLI is distributed as a single binary, and is available for Windows, Linux a
 should be downloaded and placed into a directory included in your `PATH`. This would typically 
 be `/usr/local/bin` on most Linux distributions
 
-Pre-compiled binaries are available at [Releases](https://github.com/ukfast/cli/releases)
+Pre-compiled binaries are available at [Releases](https://github.com/ans-group/cli/releases)
 
 ## Getting started
 

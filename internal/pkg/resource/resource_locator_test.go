@@ -4,9 +4,9 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/ans-group/cli/test/mocks"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
-	"github.com/ukfast/cli/test/mocks"
 )
 
 func TestResourceLocator_Invoke(t *testing.T) {

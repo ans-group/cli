@@ -3,10 +3,10 @@ package ecloud
 import (
 	"errors"
 
+	"github.com/ans-group/cli/internal/pkg/factory"
+	"github.com/ans-group/cli/internal/pkg/output"
+	"github.com/ans-group/sdk-go/pkg/service/ecloud"
 	"github.com/pkg/browser"
-	"github.com/ukfast/cli/internal/pkg/factory"
-	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/sdk-go/pkg/service/ecloud"
 
 	"github.com/spf13/cobra"
 )

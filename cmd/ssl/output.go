@@ -4,8 +4,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/sdk-go/pkg/service/ssl"
+	"github.com/ans-group/cli/internal/pkg/output"
+	"github.com/ans-group/sdk-go/pkg/service/ssl"
 )
 
 func OutputSSLCertificatesProvider(certificates []ssl.Certificate) output.OutputHandlerDataProvider {

@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/ans-group/cli/internal/pkg/factory"
+	"github.com/ans-group/cli/internal/pkg/helper"
+	"github.com/ans-group/cli/internal/pkg/input"
+	"github.com/ans-group/cli/internal/pkg/output"
+	"github.com/ans-group/sdk-go/pkg/service/pss"
 	"github.com/spf13/cobra"
-	"github.com/ukfast/cli/internal/pkg/factory"
-	"github.com/ukfast/cli/internal/pkg/helper"
-	"github.com/ukfast/cli/internal/pkg/input"
-	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/sdk-go/pkg/service/pss"
 )
 
 func pssRequestRootCmd(f factory.ClientFactory) *cobra.Command {

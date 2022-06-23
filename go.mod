@@ -1,8 +1,9 @@
-module github.com/ukfast/cli
+module github.com/ans-group/cli
 
 go 1.18
 
 require (
+	github.com/ans-group/sdk-go v1.7.0
 	github.com/blang/semver v3.5.1+incompatible
 	github.com/golang/mock v1.6.0
 	github.com/iancoleman/strcase v0.0.0-20191112232945-16388991a334
@@ -15,13 +16,13 @@ require (
 	github.com/spf13/cobra v0.0.5
 	github.com/spf13/viper v1.3.2
 	github.com/stretchr/testify v1.6.1
-	github.com/ukfast/sdk-go v1.6.2
 	gopkg.in/go-playground/assert.v1 v1.2.1
 	gopkg.in/yaml.v3 v3.0.0-20220512140231-539c8e751b99
 	k8s.io/client-go v11.0.0+incompatible
 )
 
 require (
+	github.com/ans-group/go-durationstring v1.2.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fsnotify/fsnotify v1.4.7 // indirect
 	github.com/go-playground/locales v0.12.1 // indirect
@@ -42,7 +43,6 @@ require (
 	github.com/spf13/jwalterweatherman v1.0.0 // indirect
 	github.com/spf13/pflag v1.0.3 // indirect
 	github.com/tcnksm/go-gitconfig v0.1.2 // indirect
-	github.com/ukfast/go-durationstring v1.1.0 // indirect
 	github.com/ulikunitz/xz v0.5.8 // indirect
 	golang.org/x/net v0.0.0-20210405180319-a5a99cb37ef4 // indirect
 	golang.org/x/oauth2 v0.0.0-20181106182150-f42d05182288 // indirect
@@ -53,4 +53,4 @@ require (
 	gopkg.in/yaml.v2 v2.2.2 // indirect
 )
 
-// replace github.com/ukfast/sdk-go => ../sdk-go
+// replace github.com/ans-group/sdk-go => ../sdk-go

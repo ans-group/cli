@@ -1,8 +1,8 @@
 package ddosx
 
 import (
-	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/sdk-go/pkg/service/ddosx"
+	"github.com/ans-group/cli/internal/pkg/output"
+	"github.com/ans-group/sdk-go/pkg/service/ddosx"
 )
 
 func OutputDDoSXDomainsProvider(domains []ddosx.Domain) output.OutputHandlerDataProvider {

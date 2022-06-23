@@ -1,8 +1,8 @@
 package loadbalancer
 
 import (
-	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/sdk-go/pkg/service/loadbalancer"
+	"github.com/ans-group/cli/internal/pkg/output"
+	"github.com/ans-group/sdk-go/pkg/service/loadbalancer"
 )
 
 func OutputLoadBalancerClustersProvider(clusters []loadbalancer.Cluster) output.OutputHandlerDataProvider {

@@ -15,8 +15,8 @@
 package main
 
 import (
-	"github.com/ukfast/cli/cmd"
-	"github.com/ukfast/cli/internal/pkg/build"
+	"github.com/ans-group/cli/cmd"
+	"github.com/ans-group/cli/internal/pkg/build"
 )
 
 func main() {

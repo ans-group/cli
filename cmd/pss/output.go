@@ -1,8 +1,8 @@
 package pss
 
 import (
-	"github.com/ukfast/cli/internal/pkg/output"
-	"github.com/ukfast/sdk-go/pkg/service/pss"
+	"github.com/ans-group/cli/internal/pkg/output"
+	"github.com/ans-group/sdk-go/pkg/service/pss"
 )
 
 func OutputPSSRequestsProvider(requests []pss.Request) output.OutputHandlerDataProvider {
