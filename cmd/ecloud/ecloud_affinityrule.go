@@ -26,7 +26,7 @@ func ecloudAffinityRuleRootCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Child root commands
 	cmd.AddCommand(ecloudAffinityRuleAffinityMemberRootCmd(f))
-	
+
 	return cmd
 }
 
@@ -65,7 +65,7 @@ func ecloudAffinityRuleShowCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "show <rule: id>...",
 		Short:   "Shows an affinity rule",
 		Long:    "This command shows one or more affinity rules",
-		Example: "ans ecloud affinityrule show fwp-abcdef12",
+		Example: "ans ecloud affinityrule show ar-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing affinity rule")
