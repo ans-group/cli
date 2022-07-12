@@ -463,3 +463,11 @@ func OutputECloudVIPsProvider(vips []ecloud.VIP) output.OutputHandlerDataProvide
 func OutputECloudIPAddressesProvider(ips []ecloud.IPAddress) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(ips).WithDefaultFields([]string{"id", "name", "ip_address", "sync_status"})
 }
+
+func OutputECloudAffinityRuleProvider(rules []ecloud.AffinityRule) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(rules).WithDefaultFields([]string{"id", "name", "vpc_id", "availability_zone_id", "type", "sync_status"})
+}
+
+func OutputECloudAffinityRuleMemberProvider(members []ecloud.AffinityRuleMember) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(members).WithDefaultFields([]string{"id", "instance_id", "affinity_rule_id", "sync_status"})
+}

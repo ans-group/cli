@@ -111,20 +111,20 @@ func (mr *MockECloudServiceMockRecorder) CreateAffinityRule(arg0 interface{}) *g
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateAffinityRule", reflect.TypeOf((*MockECloudService)(nil).CreateAffinityRule), arg0)
 }
 
-// CreateAffinityRuleMember mocks base method.
-func (m *MockECloudService) CreateAffinityRuleMember(arg0 string, arg1 ecloud.CreateAffinityRuleMemberRequest) (ecloud.TaskReference, error) {
+// CreateAffinityRuleMember mocks base method
+func (m *MockECloudService) CreateAffinityRuleMember(arg0 ecloud.CreateAffinityRuleMemberRequest) (ecloud.TaskReference, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateAffinityRuleMember", arg0, arg1)
+	ret := m.ctrl.Call(m, "CreateAffinityRuleMember", arg0)
 	ret0, _ := ret[0].(ecloud.TaskReference)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
-}
-
-// CreateAffinityRuleMember indicates an expected call of CreateAffinityRuleMember.
-func (mr *MockECloudServiceMockRecorder) CreateAffinityRuleMember(arg0, arg1 interface{}) *gomock.Call {
+  }
+  
+  // CreateAffinityRuleMember indicates an expected call of CreateAffinityRuleMember
+  func (mr *MockECloudServiceMockRecorder) CreateAffinityRuleMember(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateAffinityRuleMember", reflect.TypeOf((*MockECloudService)(nil).CreateAffinityRuleMember), arg0, arg1)
-}
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateAffinityRuleMember", reflect.TypeOf((*MockECloudService)(nil).CreateAffinityRuleMember), arg0)
+  }
 
 // CreateFirewallPolicy mocks base method.
 func (m *MockECloudService) CreateFirewallPolicy(arg0 ecloud.CreateFirewallPolicyRequest) (ecloud.TaskReference, error) {
@@ -558,19 +558,19 @@ func (mr *MockECloudServiceMockRecorder) DeleteAffinityRule(arg0 interface{}) *g
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAffinityRule", reflect.TypeOf((*MockECloudService)(nil).DeleteAffinityRule), arg0)
 }
 
-// DeleteAffinityRuleMember mocks base method.
-func (m *MockECloudService) DeleteAffinityRuleMember(arg0, arg1 string) (string, error) {
+// DeleteAffinityRuleMember mocks base method
+func (m *MockECloudService) DeleteAffinityRuleMember(arg0 string) (string, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteAffinityRuleMember", arg0, arg1)
+	ret := m.ctrl.Call(m, "DeleteAffinityRuleMember", arg0)
 	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// DeleteAffinityRuleMember indicates an expected call of DeleteAffinityRuleMember.
-func (mr *MockECloudServiceMockRecorder) DeleteAffinityRuleMember(arg0, arg1 interface{}) *gomock.Call {
+// DeleteAffinityRuleMember indicates an expected call of DeleteAffinityRuleMember
+func (mr *MockECloudServiceMockRecorder) DeleteAffinityRuleMember(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAffinityRuleMember", reflect.TypeOf((*MockECloudService)(nil).DeleteAffinityRuleMember), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAffinityRuleMember", reflect.TypeOf((*MockECloudService)(nil).DeleteAffinityRuleMember), arg0)
 }
 
 // DeleteFirewallPolicy mocks base method.
@@ -1071,22 +1071,22 @@ func (mr *MockECloudServiceMockRecorder) GetAffinityRule(arg0 interface{}) *gomo
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAffinityRule", reflect.TypeOf((*MockECloudService)(nil).GetAffinityRule), arg0)
 }
 
-// GetAffinityRuleMember mocks base method.
-func (m *MockECloudService) GetAffinityRuleMember(arg0, arg1 string) (ecloud.AffinityRuleMember, error) {
+// GetAffinityRuleMember mocks base method
+func (m *MockECloudService) GetAffinityRuleMember(arg0 string) (ecloud.AffinityRuleMember, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetAffinityRuleMember", arg0, arg1)
+	ret := m.ctrl.Call(m, "GetAffinityRuleMember", arg0)
 	ret0, _ := ret[0].(ecloud.AffinityRuleMember)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetAffinityRuleMember indicates an expected call of GetAffinityRuleMember.
-func (mr *MockECloudServiceMockRecorder) GetAffinityRuleMember(arg0, arg1 interface{}) *gomock.Call {
+// GetAffinityRuleMember indicates an expected call of GetAffinityRuleMember
+func (mr *MockECloudServiceMockRecorder) GetAffinityRuleMember(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAffinityRuleMember", reflect.TypeOf((*MockECloudService)(nil).GetAffinityRuleMember), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAffinityRuleMember", reflect.TypeOf((*MockECloudService)(nil).GetAffinityRuleMember), arg0)
 }
 
-// GetAffinityRuleMembers mocks base method.
+// GetAffinityRuleMembers mocks base method
 func (m *MockECloudService) GetAffinityRuleMembers(arg0 string, arg1 connection.APIRequestParameters) ([]ecloud.AffinityRuleMember, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetAffinityRuleMembers", arg0, arg1)
@@ -1095,13 +1095,13 @@ func (m *MockECloudService) GetAffinityRuleMembers(arg0 string, arg1 connection.
 	return ret0, ret1
 }
 
-// GetAffinityRuleMembers indicates an expected call of GetAffinityRuleMembers.
+// GetAffinityRuleMembers indicates an expected call of GetAffinityRuleMembers
 func (mr *MockECloudServiceMockRecorder) GetAffinityRuleMembers(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAffinityRuleMembers", reflect.TypeOf((*MockECloudService)(nil).GetAffinityRuleMembers), arg0, arg1)
 }
 
-// GetAffinityRuleMembersPaginated mocks base method.
+// GetAffinityRuleMembersPaginated mocks base method
 func (m *MockECloudService) GetAffinityRuleMembersPaginated(arg0 string, arg1 connection.APIRequestParameters) (*connection.Paginated[ecloud.AffinityRuleMember], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetAffinityRuleMembersPaginated", arg0, arg1)
@@ -1110,7 +1110,7 @@ func (m *MockECloudService) GetAffinityRuleMembersPaginated(arg0 string, arg1 co
 	return ret0, ret1
 }
 
-// GetAffinityRuleMembersPaginated indicates an expected call of GetAffinityRuleMembersPaginated.
+// GetAffinityRuleMembersPaginated indicates an expected call of GetAffinityRuleMembersPaginated
 func (mr *MockECloudServiceMockRecorder) GetAffinityRuleMembersPaginated(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAffinityRuleMembersPaginated", reflect.TypeOf((*MockECloudService)(nil).GetAffinityRuleMembersPaginated), arg0, arg1)
