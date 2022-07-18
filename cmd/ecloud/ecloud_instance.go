@@ -35,6 +35,7 @@ func ecloudInstanceRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.AddCommand(ecloudInstanceStopCmd(f))
 	cmd.AddCommand(ecloudInstanceRestartCmd(f))
 	cmd.AddCommand(ecloudInstanceSSHCmd(f))
+	cmd.AddCommand(ecloudInstanceMigrateCmd(f))
 
 	// Child root commands
 	cmd.AddCommand(ecloudInstanceVolumeRootCmd(f))
@@ -131,7 +132,8 @@ func ecloudInstanceCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().String("image", "", "ID or name of image to deploy from")
 	cmd.MarkFlagRequired("image")
 	cmd.Flags().StringSlice("ssh-key-pair", []string{}, "ID of SSH key pair, can be repeated")
-	cmd.Flags().String("host-group", "", "ID host group to deploy to")
+	cmd.Flags().String("host-group", "", "ID of host group to deploy to")
+	cmd.Flags().String("resource-tier", "", "ID of resource tier to deploy to. A default tier is chosen if not specified")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the instance has been completely created")
 
 	return cmd
@@ -145,6 +147,7 @@ func ecloudInstanceCreate(service ecloud.ECloudService, cmd *cobra.Command, args
 	createRequest.VolumeCapacity, _ = cmd.Flags().GetInt("volume")
 	createRequest.NetworkID, _ = cmd.Flags().GetString("network")
 	createRequest.HostGroupID, _ = cmd.Flags().GetString("host-group")
+	createRequest.ResourceTierID, _ = cmd.Flags().GetString("resource-tier")
 	createRequest.Name, _ = cmd.Flags().GetString("name")
 
 	if cmd.Flags().Changed("ssh-key-pair") {
@@ -586,6 +589,64 @@ func ecloudInstanceSSH(service ecloud.ECloudService, cmd *cobra.Command, args []
 
 	sshCmd.Start()
 	return sshCmd.Wait()
+}
+
+func ecloudInstanceMigrateCmd(f factory.ClientFactory) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:     "migrate <instance: id>",
+		Short:   "Migrates an instance",
+		Long:    "This command migrates an instance to another resource tier or dedicated host group",
+		Example: "ans ecloud instance migrate i-abcdef12 --resource-tier rt-abcdef12",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Missing instance")
+			}
+
+			return nil
+		},
+		PreRun: func(cmd *cobra.Command, args []string) {
+			hostgroup, _ := cmd.Flags().GetString("host-group")
+			if hostgroup == "" {
+				cmd.MarkFlagRequired("resource-tier")
+			}
+		},
+		RunE: ecloudCobraRunEFunc(f, ecloudInstanceMigrate),
+	}
+
+	cmd.Flags().String("resource-tier", "", "Specifies the resource-tier to migrate the instance to")
+	cmd.Flags().String("host-group", "", "Specifies the host-group to migrate the instance to")
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the instance migrate task has been completed")
+
+	return cmd
+}
+
+func ecloudInstanceMigrate(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
+	migrateRequest := ecloud.MigrateInstanceRequest{}
+
+	if cmd.Flags().Changed("resource-tier") {
+		migrateRequest.ResourceTierID, _ = cmd.Flags().GetString("resource-tier")
+	}
+	if cmd.Flags().Changed("host-group") {
+		migrateRequest.HostGroupID, _ = cmd.Flags().GetString("host-group")
+	}
+
+	for _, arg := range args {
+		taskID, err := service.MigrateInstance(arg, migrateRequest)
+		if err != nil {
+			output.OutputWithErrorLevelf("Error migrating instance [%s]: %s", arg, err)
+			continue
+		}
+
+		waitFlag, _ := cmd.Flags().GetBool("wait")
+		if waitFlag {
+			err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskID, ecloud.TaskStatusComplete))
+			if err != nil {
+				output.OutputWithErrorLevelf("Error waiting for task to complete for instance [%s]: %s", arg, err)
+				continue
+			}
+		}
+	}
+	return nil
 }
 
 func InstanceResourceSyncStatusWaitFunc(service ecloud.ECloudService, instanceID string, status ecloud.SyncStatus) helper.WaitFunc {

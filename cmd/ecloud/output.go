@@ -471,3 +471,7 @@ func OutputECloudAffinityRuleProvider(rules []ecloud.AffinityRule) output.Output
 func OutputECloudAffinityRuleMemberProvider(members []ecloud.AffinityRuleMember) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(members).WithDefaultFields([]string{"id", "instance_id", "affinity_rule_id", "sync_status"})
 }
+
+func OutputECloudResourceTiersProvider(tiers []ecloud.ResourceTier) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(tiers).WithDefaultFields([]string{"id", "name", "availability_zone_id"})
+}

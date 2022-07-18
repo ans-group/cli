@@ -830,3 +830,104 @@ func Test_ecloudInstanceRestart(t *testing.T) {
 		})
 	})
 }
+
+func Test_ecloudInstanceMigrateCmd_Args(t *testing.T) {
+	t.Run("ValidArgs_NoError", func(t *testing.T) {
+		err := ecloudInstanceMigrateCmd(nil).Args(nil, []string{"i-abcdef12"})
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("InvalidArgs_Error", func(t *testing.T) {
+		err := ecloudInstanceMigrateCmd(nil).Args(nil, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing instance", err.Error())
+	})
+}
+
+func Test_ecloudInstanceMigrate(t *testing.T) {
+	t.Run("WithResourceTier_CallsMigrate", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		cmd := ecloudInstanceMigrateCmd(nil)
+		cmd.ParseFlags([]string{"--resource-tier=rt-abcdef12"})
+
+		req := ecloud.MigrateInstanceRequest{
+			ResourceTierID: "rt-abcdef12",
+		}
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		service.EXPECT().MigrateInstance("i-abcdef12", req).Return("task-abcdef12", nil)
+
+		ecloudInstanceMigrate(service, cmd, []string{"i-abcdef12"})
+	})
+
+	t.Run("WithHostGroup_CallsMigrate", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		cmd := ecloudInstanceMigrateCmd(nil)
+		cmd.ParseFlags([]string{"--host-group=hg-abcdef12"})
+
+		req := ecloud.MigrateInstanceRequest{
+			HostGroupID: "hg-abcdef12",
+		}
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		service.EXPECT().MigrateInstance("i-abcdef12", req).Return("task-abcdef12", nil)
+
+		ecloudInstanceMigrate(service, cmd, []string{"i-abcdef12"})
+	})
+
+	t.Run("WithWaitFlag_NoError_Succeeds", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		cmd := ecloudInstanceMigrateCmd(nil)
+		cmd.ParseFlags([]string{"--resource-tier=rt-abcdef12", "--wait"})
+
+		req := ecloud.MigrateInstanceRequest{
+			ResourceTierID: "rt-abcdef12",
+		}
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		service.EXPECT().MigrateInstance("i-abcdef12", req).Return("task-abcdef12", nil)
+		service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, nil)
+
+		ecloudInstanceMigrate(service, cmd, []string{"i-abcdef12"})
+	})
+
+	t.Run("WithWaitFlag_GetTaskError_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		cmd := ecloudInstanceMigrateCmd(nil)
+		cmd.ParseFlags([]string{"--resource-tier=rt-abcdef12", "--wait"})
+
+		req := ecloud.MigrateInstanceRequest{
+			ResourceTierID: "rt-abcdef12",
+		}
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		service.EXPECT().MigrateInstance("i-abcdef12", req).Return("task-abcdef12", nil)
+		service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{}, errors.New("test error"))
+
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for instance [i-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+			ecloudInstanceMigrate(service, cmd, []string{"i-abcdef12"})
+		})
+	})
+
+	t.Run("MigrateInstanceError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		service.EXPECT().MigrateInstance("i-abcdef12", ecloud.MigrateInstanceRequest{}).Return("", errors.New("test error")).Times(1)
+
+		test_output.AssertErrorOutput(t, "Error migrating instance [i-abcdef12]: test error\n", func() {
+			ecloudInstanceMigrate(service, &cobra.Command{}, []string{"i-abcdef12"})
+		})
+	})
+}
