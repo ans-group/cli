@@ -3036,6 +3036,51 @@ func (mr *MockECloudServiceMockRecorder) GetRegionsPaginated(arg0 interface{}) *
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRegionsPaginated", reflect.TypeOf((*MockECloudService)(nil).GetRegionsPaginated), arg0)
 }
 
+// GetResourceTier mocks base method
+func (m *MockECloudService) GetResourceTier(arg0 string) (ecloud.ResourceTier, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetResourceTier", arg0)
+	ret0, _ := ret[0].(ecloud.ResourceTier)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetResourceTier indicates an expected call of GetResourceTier
+func (mr *MockECloudServiceMockRecorder) GetResourceTier(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetResourceTier", reflect.TypeOf((*MockECloudService)(nil).GetResourceTier), arg0)
+}
+
+// GetResourceTiers mocks base method
+func (m *MockECloudService) GetResourceTiers(arg0 connection.APIRequestParameters) ([]ecloud.ResourceTier, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetResourceTiers", arg0)
+	ret0, _ := ret[0].([]ecloud.ResourceTier)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetResourceTiers indicates an expected call of GetResourceTiers
+func (mr *MockECloudServiceMockRecorder) GetResourceTiers(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetResourceTiers", reflect.TypeOf((*MockECloudService)(nil).GetResourceTiers), arg0)
+}
+
+// GetResourceTiersPaginated mocks base method
+func (m *MockECloudService) GetResourceTiersPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[ecloud.ResourceTier], error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetResourceTiersPaginated", arg0)
+	ret0, _ := ret[0].(*connection.Paginated[ecloud.ResourceTier])
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetResourceTiersPaginated indicates an expected call of GetResourceTiersPaginated
+func (mr *MockECloudServiceMockRecorder) GetResourceTiersPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetResourceTiersPaginated", reflect.TypeOf((*MockECloudService)(nil).GetResourceTiersPaginated), arg0)
+}
+
 // GetRouter mocks base method.
 func (m *MockECloudService) GetRouter(arg0 string) (ecloud.Router, error) {
 	m.ctrl.T.Helper()

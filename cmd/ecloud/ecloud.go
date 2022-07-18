@@ -70,6 +70,7 @@ func ECloudRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 		cmd.AddCommand(ecloudVolumeGroupRootCmd(f))
 		cmd.AddCommand(ecloudAffinityRuleRootCmd(f))
 		cmd.AddCommand(ecloudAffinityRuleMemberRootCmd(f))
+		cmd.AddCommand(ecloudResourceTierRootCmd(f))
 	}
 
 	return cmd
