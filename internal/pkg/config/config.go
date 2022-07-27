@@ -78,13 +78,24 @@ func GetContextNames() []string {
 	return contextNames
 }
 
-func getCurrentContextKeyOrDefault(key string) string {
-	return getContextKeyOrDefault(GetCurrentContextName(), key)
-}
-
 func getContextKeyOrDefault(contextName string, key string) string {
 	if len(contextName) > 0 {
 		return getContextSubKey(contextName, key)
+	}
+
+	return key
+}
+
+func getCurrentContextKeyIfSetOrDefault(key string) string {
+	return getContextKeyIfSetOrDefault(GetCurrentContextName(), key)
+}
+
+func getContextKeyIfSetOrDefault(contextName string, key string) string {
+	if len(contextName) > 0 {
+		contextSubKey := getContextSubKey(contextName, key)
+		if viper.IsSet(contextSubKey) {
+			return contextSubKey
+		}
 	}
 
 	return key
@@ -138,17 +149,17 @@ func Reset() {
 }
 
 func GetString(key string) string {
-	return viper.GetString(getCurrentContextKeyOrDefault(key))
+	return viper.GetString(getCurrentContextKeyIfSetOrDefault(key))
 }
 
 func GetInt(key string) int {
-	return viper.GetInt(getCurrentContextKeyOrDefault(key))
+	return viper.GetInt(getCurrentContextKeyIfSetOrDefault(key))
 }
 
 func GetBool(key string) bool {
-	return viper.GetBool(getCurrentContextKeyOrDefault(key))
+	return viper.GetBool(getCurrentContextKeyIfSetOrDefault(key))
 }
 
 func GetStringMapString(key string) map[string]string {
-	return viper.GetStringMapString(getCurrentContextKeyOrDefault(key))
+	return viper.GetStringMapString(getCurrentContextKeyIfSetOrDefault(key))
 }
