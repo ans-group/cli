@@ -2,8 +2,8 @@ github.com/BurntSushi/toml v0.3.1 h1:WXkYYl6Yr3qBf1K79EBnL4mak0OimBfB0XUf9Vl28OQ
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/ans-group/go-durationstring v1.2.0 h1:UJIuQATkp0t1rBvZsHRwki33YHV9E+Ulro+3NbMB7MM=
 github.com/ans-group/go-durationstring v1.2.0/go.mod h1:QGF9Mdpq9058QXaut8r55QWu6lcHX6i/GvF1PZVkV6o=
-github.com/ans-group/sdk-go v1.8.0 h1:qXps4vUuraiWr2IhRn7HN9LFmZOdevgBYe4xhVVCuXM=
-github.com/ans-group/sdk-go v1.8.0/go.mod h1:XSKXEDfKobnDtZoyia5DhJxxaDMcCjr76e1KJ9dU/xc=
+github.com/ans-group/sdk-go v1.8.1 h1:PHPcYHujevWvCMiI7ujXvvrYHf5zpHIcZw7FfJ1rXw0=
+github.com/ans-group/sdk-go v1.8.1/go.mod h1:XSKXEDfKobnDtZoyia5DhJxxaDMcCjr76e1KJ9dU/xc=
 github.com/armon/consul-api v0.0.0-20180202201655-eb2c6b5be1b6/go.mod h1:grANhF5doyWs3UAsr3K4I6qtAmlQcZDesFNEHPZAzj8=
 github.com/blang/semver v3.5.1+incompatible h1:cQNTCjp13qL8KC3Nbxr/y2Bqb63oX6wdnnjpJbkM4JQ=
 github.com/blang/semver v3.5.1+incompatible/go.mod h1:kRBLl5iJ+tD4TcOOxsy/0fnwebNt5EWlYSAyrTnjyyk=
