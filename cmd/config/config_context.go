@@ -20,6 +20,7 @@ func configContextRootCmd(fs afero.Fs) *cobra.Command {
 	// Child commands
 	cmd.AddCommand(configContextUpdateCmd(fs))
 	cmd.AddCommand(configContextListCmd())
+	cmd.AddCommand(configContextShowCmd())
 	cmd.AddCommand(configContextSwitchCmd(fs))
 
 	return cmd
@@ -137,13 +138,52 @@ func configContextList(cmd *cobra.Command) error {
 	))
 }
 
+func configContextShowCmd() *cobra.Command {
+	return &cobra.Command{
+		Use:     "show",
+		Short:   "Shows current context",
+		Long:    "This command shows the current context",
+		Example: "ans config context show",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return configContextShow(cmd)
+		},
+	}
+}
+
+func configContextShow(cmd *cobra.Command) error {
+	currentContextName := config.GetCurrentContextName()
+
+	if len(currentContextName) < 1 {
+		return errors.New("no context set")
+	}
+
+	data := struct {
+		Name   string `json:"name"`
+		Active bool   `json:"active"`
+	}{
+		Name:   currentContextName,
+		Active: true,
+	}
+
+	return output.CommandOutput(cmd, output.NewGenericOutputHandlerDataProvider(
+		output.WithData(data),
+		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
+			field := output.NewOrderedFields()
+			field.Set("name", output.NewFieldValue(currentContextName, true))
+			field.Set("active", output.NewFieldValue(strconv.FormatBool(true), true))
+
+			return []*output.OrderedFields{field}, nil
+		}),
+	))
+}
+
 func configContextSwitchCmd(fs afero.Fs) *cobra.Command {
 	return &cobra.Command{
 		Use:     "switch",
 		Short:   "Switches current context",
 		Long:    "This command switches the current context",
 		Example: "ans config context switch mycontext",
-		Aliases: []string{"use"},
+		Aliases: []string{"use", "select"},
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing context")
