@@ -79,6 +79,30 @@ current_context: testcontext1
 	})
 }
 
+func Test_configContextShow(t *testing.T) {
+	t.Run("ShowsCurrentContext", func(t *testing.T) {
+		defer config.Reset()
+		fs := afero.NewMemMapFs()
+		config.SetFs(fs)
+
+		afero.WriteFile(fs, "/tmp/testconfig.yml", []byte(`contexts:
+  testcontext1:
+    api_key: testkey
+  testcontext2:
+    api_key: testkey2
+current_context: testcontext1
+`), 0644)
+		config.Init("/tmp/testconfig.yml")
+
+		cmd := configContextShowCmd()
+		cmd.Flags().String("output", "value", "")
+
+		test_output.AssertCombinedOutput(t, "testcontext1 true\n", "", func() {
+			configContextShow(cmd)
+		})
+	})
+}
+
 func Test_configContextSwitchCmd_Args(t *testing.T) {
 	t.Run("ValidArgs_NoError", func(t *testing.T) {
 		err := configContextSwitchCmd(nil).Args(nil, []string{"testcontext"})

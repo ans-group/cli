@@ -203,3 +203,51 @@ func TestSwitchCurrentContext(t *testing.T) {
 
 	assert.Equal(t, "testcontext2", currentContext)
 }
+
+func TestGet(t *testing.T) {
+	t.Run("GetsContextValueWhenExists", func(t *testing.T) {
+		defer Reset()
+		fs := afero.NewMemMapFs()
+		SetFs(fs)
+
+		var config = `contexts:
+  testcontext1:
+    somekey: somevalue1
+  testcontext2:
+    somekey: somevalue2
+current_context: testcontext1
+somekey: someothervalue
+`
+
+		afero.WriteFile(fs, "/tmp/testconfig.yml", []byte(config), 0644)
+
+		Init("/tmp/testconfig.yml")
+
+		value := GetString("somekey")
+
+		assert.Equal(t, "somevalue1", value)
+	})
+
+	t.Run("GetsDefaultValueWhenNotExistInContext", func(t *testing.T) {
+		defer Reset()
+		fs := afero.NewMemMapFs()
+		SetFs(fs)
+
+		var config = `contexts:
+  testcontext1:
+    somekey: somevalue1
+  testcontext2:
+    somekey: somevalue2
+current_context: testcontext1
+someotherkey: someothervalue
+`
+
+		afero.WriteFile(fs, "/tmp/testconfig.yml", []byte(config), 0644)
+
+		Init("/tmp/testconfig.yml")
+
+		value := GetString("someotherkey")
+
+		assert.Equal(t, "someothervalue", value)
+	})
+}
