@@ -60,7 +60,7 @@ func configContextUpdate(fs afero.Fs, cmd *cobra.Command, args []string) error {
 			if updateCurrentContext {
 				err := config.SetCurrentContext(name, value)
 				if err != nil {
-					output.Fatalf("failed to update current context: %s", err)
+					output.Fatalf("Failed to update current context: %s", err)
 				}
 			} else {
 				for _, context := range args {
@@ -140,7 +140,7 @@ func configContextShow(cmd *cobra.Command) error {
 	currentContextName := config.GetCurrentContextName()
 
 	if len(currentContextName) < 1 {
-		return errors.New("no context set")
+		return errors.New("No context set")
 	}
 
 	context := Context{
@@ -172,11 +172,18 @@ func configContextSwitchCmd(fs afero.Fs) *cobra.Command {
 }
 
 func configContextSwitch(fs afero.Fs, cmd *cobra.Command, args []string) error {
+	config.SetFs(fs)
+
 	err := config.SwitchCurrentContext(args[0])
 	if err != nil {
-		return fmt.Errorf("failed to switch context: %s", err)
+		return fmt.Errorf("Failed to switch context: %s", err)
 	}
 
-	config.SetFs(fs)
-	return config.Save()
+	err = config.Save()
+	if err != nil {
+		return fmt.Errorf("Failed to write new context: %s", err)
+	}
+
+	fmt.Printf("Switched to context \"%s\"\n", args[0])
+	return nil
 }
