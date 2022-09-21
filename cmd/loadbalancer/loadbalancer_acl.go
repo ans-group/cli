@@ -127,7 +127,7 @@ func loadbalancerACLUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "update <acl: id>...",
 		Short:   "Updates an ACL",
 		Long:    "This command updates one or more ACLs",
-		Example: "ans loadbalancer acl update 123 --name myacl",
+		Example: "ans loadbalancer acl update 123 --name myacl --condition \"header_matches:host=ans.co.uk,accept=application/json\" --action \"redirect:location=developers.ans.co.uk,status=302\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("Missing ACL")
@@ -139,8 +139,8 @@ func loadbalancerACLUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("name", "", "Name of ACL")
-	cmd.Flags().StringArray("condition", []string{}, "Name and arguments of condition. Can be repeated. Example: --condition \"header_matches:host=ans.co.uk,accept=application/json\"")
-	cmd.Flags().StringArray("action", []string{}, "Name and arguments of action. Can be repeated. Example: --action \"redirect:location=developers.ans.co.uk,status=302\"")
+	cmd.Flags().StringArray("condition", []string{}, "Name and arguments of condition. Can be repeated. Array values can be expressed as: somearray[]=somevalue")
+	cmd.Flags().StringArray("action", []string{}, "Name and arguments of action. Can be repeated. Array values can be expressed as: somearray[]=somevalue")
 
 	return cmd
 }
@@ -275,19 +275,58 @@ func parseACLStatementFlag(flag string) (string, map[string]loadbalancer.ACLArgu
 	return flagNameSplit[0], arguments, nil
 }
 
+type aclArgument struct {
+	Name  string
+	Value interface{}
+	Array bool
+}
+
 func parseACLArguments(args []string) (map[string]loadbalancer.ACLArgument, error) {
-	arguments := make(map[string]loadbalancer.ACLArgument)
+	var tmpArguments []*aclArgument
 	for _, arg := range args {
 		parts := strings.Split(arg, "=")
 		if len(parts) != 2 {
-			return nil, fmt.Errorf("Invalid arguments format. Expected format name=value")
+			return nil, errors.New("Invalid arguments format. Expected format name=value")
 		}
 
-		arguments[parts[0]] = loadbalancer.ACLArgument{
-			Name:  parts[0],
-			Value: parts[1],
+		argName := parts[0]
+		argValue := parts[1]
+		existingArg := false
+
+		if strings.HasSuffix(argName, "[]") {
+			argNameTrimmed := strings.TrimSuffix(argName, "[]")
+
+			for _, searchArg := range tmpArguments {
+				if searchArg.Name == argNameTrimmed && searchArg.Array {
+					existingArg = true
+					searchArg.Value = append(searchArg.Value.([]string), argValue)
+					break
+				}
+			}
+
+			if !existingArg {
+				tmpArguments = append(tmpArguments, &aclArgument{
+					Name:  argNameTrimmed,
+					Value: []string{argValue},
+					Array: true,
+				})
+			}
+
+			continue
 		}
+
+		tmpArguments = append(tmpArguments, &aclArgument{
+			Name:  argName,
+			Value: argValue,
+		})
 	}
 
+	arguments := make(map[string]loadbalancer.ACLArgument)
+	for _, tmpArgument := range tmpArguments {
+		arguments[tmpArgument.Name] = loadbalancer.ACLArgument{
+			Name:  tmpArgument.Name,
+			Value: tmpArgument.Value,
+		}
+	}
 	return arguments, nil
 }

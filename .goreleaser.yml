@@ -18,6 +18,16 @@ archives:
     format: zip
 checksum:
   name_template: 'checksums.txt'
+signs:
+  - artifacts: checksum
+    args:
+      - "--batch"
+      - "--local-user"
+      - "{{ .Env.GPG_FINGERPRINT }}"
+      - "--output"
+      - "${signature}"
+      - "--detach-sign"
+      - "${artifact}"
 snapshot:
   name_template: "{{ .Tag }}-next"
 release:
