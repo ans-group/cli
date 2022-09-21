@@ -78,8 +78,8 @@ func loadbalancerACLCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.MarkFlagRequired("name")
 	cmd.Flags().Int("listener", 0, "ID of listener")
 	cmd.Flags().Int("target-group", 0, "ID of target group")
-	cmd.Flags().StringArray("condition", []string{}, "Name and arguments of condition. Can be repeated. Example: --condition \"header_matches:host=ans.co.uk,accept=application/json\"")
-	cmd.Flags().StringArray("action", []string{}, "Name and arguments of action. Can be repeated. Example: --action \"redirect:location=developers.ans.co.uk,status=302\"")
+	cmd.Flags().StringArray("condition", []string{}, "Name and arguments of condition. Can be repeated. Array values can be expressed as: somearray[]=somevalue")
+	cmd.Flags().StringArray("action", []string{}, "Name and arguments of action. Can be repeated. Array values can be expressed as: somearray[]=somevalue")
 	cmd.MarkFlagRequired("action")
 
 	return cmd
