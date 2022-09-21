@@ -295,6 +295,26 @@ The CLI supports generating shell completions for the following shells:
 
 The commands at `ans completion <shell: bash|zsh|powershell>` provide help for installation on different platforms
 
+## Releasing
+
+`goreleaser` is used to release the provider on Github. First, obtain your GPG fingerprint:
+
+gpg -k
+
+Cache GPG passphrase:
+
+gpg --armor --detach-sign -n main.go
+
+Finally tag and invoke `goreleaser`:
+
+git tag v1.10.0
+git push --tags
+export GITHUB_TOKEN=<token>
+export GPG_FINGERPRINT=<fingerprint>
+export GPG_TTY=$(tty)
+goreleaser --rm-dist
+
+
 ## eCloud VPC resources
 
 eCloud VPC resource commands are available by default under the `ecloud` subcommand.
