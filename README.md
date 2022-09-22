@@ -1,6 +1,5 @@
 # ANS CLI
 
-[![Build Status](https://travis-ci.org/ans/cli.svg?branch=master)](https://travis-ci.org/ans/cli)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 This is the official ANS command-line client, allowing for querying and controlling
