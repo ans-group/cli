@@ -307,12 +307,14 @@ gpg --armor --detach-sign -n main.go
 
 Finally tag and invoke `goreleaser`:
 
+```
 git tag v1.10.0
 git push --tags
 export GITHUB_TOKEN=<token>
 export GPG_FINGERPRINT=<fingerprint>
 export GPG_TTY=$(tty)
 goreleaser --rm-dist
+```
 
 
 ## eCloud VPC resources
