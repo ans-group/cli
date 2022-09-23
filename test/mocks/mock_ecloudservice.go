@@ -5,12 +5,11 @@
 package mocks
 
 import (
-	reflect "reflect"
-
-	gomock "github.com/golang/mock/gomock"
 	connection "github.com/ans-group/sdk-go/pkg/connection"
-	ecloud "github.com/ans-group/sdk-go/pkg/service/ecloud"
 	account "github.com/ans-group/sdk-go/pkg/service/account"
+	ecloud "github.com/ans-group/sdk-go/pkg/service/ecloud"
+	gomock "github.com/golang/mock/gomock"
+	reflect "reflect"
 )
 
 // MockECloudService is a mock of ECloudService interface.
@@ -111,20 +110,20 @@ func (mr *MockECloudServiceMockRecorder) CreateAffinityRule(arg0 interface{}) *g
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateAffinityRule", reflect.TypeOf((*MockECloudService)(nil).CreateAffinityRule), arg0)
 }
 
-// CreateAffinityRuleMember mocks base method
+// CreateAffinityRuleMember mocks base method.
 func (m *MockECloudService) CreateAffinityRuleMember(arg0 ecloud.CreateAffinityRuleMemberRequest) (ecloud.TaskReference, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateAffinityRuleMember", arg0)
 	ret0, _ := ret[0].(ecloud.TaskReference)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
-  }
-  
-  // CreateAffinityRuleMember indicates an expected call of CreateAffinityRuleMember
-  func (mr *MockECloudServiceMockRecorder) CreateAffinityRuleMember(arg0 interface{}) *gomock.Call {
+}
+
+// CreateAffinityRuleMember indicates an expected call of CreateAffinityRuleMember.
+func (mr *MockECloudServiceMockRecorder) CreateAffinityRuleMember(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateAffinityRuleMember", reflect.TypeOf((*MockECloudService)(nil).CreateAffinityRuleMember), arg0)
-  }
+}
 
 // CreateFirewallPolicy mocks base method.
 func (m *MockECloudService) CreateFirewallPolicy(arg0 ecloud.CreateFirewallPolicyRequest) (ecloud.TaskReference, error) {
@@ -259,6 +258,21 @@ func (m *MockECloudService) CreateInstanceConsoleSession(arg0 string) (ecloud.Co
 func (mr *MockECloudServiceMockRecorder) CreateInstanceConsoleSession(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateInstanceConsoleSession", reflect.TypeOf((*MockECloudService)(nil).CreateInstanceConsoleSession), arg0)
+}
+
+// CreateInstanceImage mocks base method.
+func (m *MockECloudService) CreateInstanceImage(arg0 string, arg1 ecloud.CreateInstanceImageRequest) (ecloud.TaskReference, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateInstanceImage", arg0, arg1)
+	ret0, _ := ret[0].(ecloud.TaskReference)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateInstanceImage indicates an expected call of CreateInstanceImage.
+func (mr *MockECloudServiceMockRecorder) CreateInstanceImage(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateInstanceImage", reflect.TypeOf((*MockECloudService)(nil).CreateInstanceImage), arg0, arg1)
 }
 
 // CreateLoadBalancer mocks base method.
@@ -558,7 +572,7 @@ func (mr *MockECloudServiceMockRecorder) DeleteAffinityRule(arg0 interface{}) *g
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAffinityRule", reflect.TypeOf((*MockECloudService)(nil).DeleteAffinityRule), arg0)
 }
 
-// DeleteAffinityRuleMember mocks base method
+// DeleteAffinityRuleMember mocks base method.
 func (m *MockECloudService) DeleteAffinityRuleMember(arg0 string) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteAffinityRuleMember", arg0)
@@ -567,7 +581,7 @@ func (m *MockECloudService) DeleteAffinityRuleMember(arg0 string) (string, error
 	return ret0, ret1
 }
 
-// DeleteAffinityRuleMember indicates an expected call of DeleteAffinityRuleMember
+// DeleteAffinityRuleMember indicates an expected call of DeleteAffinityRuleMember.
 func (mr *MockECloudServiceMockRecorder) DeleteAffinityRuleMember(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAffinityRuleMember", reflect.TypeOf((*MockECloudService)(nil).DeleteAffinityRuleMember), arg0)
@@ -676,6 +690,21 @@ func (m *MockECloudService) DeleteIPAddress(arg0 string) (string, error) {
 func (mr *MockECloudServiceMockRecorder) DeleteIPAddress(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteIPAddress", reflect.TypeOf((*MockECloudService)(nil).DeleteIPAddress), arg0)
+}
+
+// DeleteImage mocks base method.
+func (m *MockECloudService) DeleteImage(arg0 string) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteImage", arg0)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DeleteImage indicates an expected call of DeleteImage.
+func (mr *MockECloudServiceMockRecorder) DeleteImage(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteImage", reflect.TypeOf((*MockECloudService)(nil).DeleteImage), arg0)
 }
 
 // DeleteInstance mocks base method.
@@ -1071,7 +1100,7 @@ func (mr *MockECloudServiceMockRecorder) GetAffinityRule(arg0 interface{}) *gomo
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAffinityRule", reflect.TypeOf((*MockECloudService)(nil).GetAffinityRule), arg0)
 }
 
-// GetAffinityRuleMember mocks base method
+// GetAffinityRuleMember mocks base method.
 func (m *MockECloudService) GetAffinityRuleMember(arg0 string) (ecloud.AffinityRuleMember, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetAffinityRuleMember", arg0)
@@ -1080,13 +1109,13 @@ func (m *MockECloudService) GetAffinityRuleMember(arg0 string) (ecloud.AffinityR
 	return ret0, ret1
 }
 
-// GetAffinityRuleMember indicates an expected call of GetAffinityRuleMember
+// GetAffinityRuleMember indicates an expected call of GetAffinityRuleMember.
 func (mr *MockECloudServiceMockRecorder) GetAffinityRuleMember(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAffinityRuleMember", reflect.TypeOf((*MockECloudService)(nil).GetAffinityRuleMember), arg0)
 }
 
-// GetAffinityRuleMembers mocks base method
+// GetAffinityRuleMembers mocks base method.
 func (m *MockECloudService) GetAffinityRuleMembers(arg0 string, arg1 connection.APIRequestParameters) ([]ecloud.AffinityRuleMember, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetAffinityRuleMembers", arg0, arg1)
@@ -1095,13 +1124,13 @@ func (m *MockECloudService) GetAffinityRuleMembers(arg0 string, arg1 connection.
 	return ret0, ret1
 }
 
-// GetAffinityRuleMembers indicates an expected call of GetAffinityRuleMembers
+// GetAffinityRuleMembers indicates an expected call of GetAffinityRuleMembers.
 func (mr *MockECloudServiceMockRecorder) GetAffinityRuleMembers(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAffinityRuleMembers", reflect.TypeOf((*MockECloudService)(nil).GetAffinityRuleMembers), arg0, arg1)
 }
 
-// GetAffinityRuleMembersPaginated mocks base method
+// GetAffinityRuleMembersPaginated mocks base method.
 func (m *MockECloudService) GetAffinityRuleMembersPaginated(arg0 string, arg1 connection.APIRequestParameters) (*connection.Paginated[ecloud.AffinityRuleMember], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetAffinityRuleMembersPaginated", arg0, arg1)
@@ -1110,7 +1139,7 @@ func (m *MockECloudService) GetAffinityRuleMembersPaginated(arg0 string, arg1 co
 	return ret0, ret1
 }
 
-// GetAffinityRuleMembersPaginated indicates an expected call of GetAffinityRuleMembersPaginated
+// GetAffinityRuleMembersPaginated indicates an expected call of GetAffinityRuleMembersPaginated.
 func (mr *MockECloudServiceMockRecorder) GetAffinityRuleMembersPaginated(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAffinityRuleMembersPaginated", reflect.TypeOf((*MockECloudService)(nil).GetAffinityRuleMembersPaginated), arg0, arg1)
@@ -3036,7 +3065,7 @@ func (mr *MockECloudServiceMockRecorder) GetRegionsPaginated(arg0 interface{}) *
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRegionsPaginated", reflect.TypeOf((*MockECloudService)(nil).GetRegionsPaginated), arg0)
 }
 
-// GetResourceTier mocks base method
+// GetResourceTier mocks base method.
 func (m *MockECloudService) GetResourceTier(arg0 string) (ecloud.ResourceTier, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetResourceTier", arg0)
@@ -3045,13 +3074,13 @@ func (m *MockECloudService) GetResourceTier(arg0 string) (ecloud.ResourceTier, e
 	return ret0, ret1
 }
 
-// GetResourceTier indicates an expected call of GetResourceTier
+// GetResourceTier indicates an expected call of GetResourceTier.
 func (mr *MockECloudServiceMockRecorder) GetResourceTier(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetResourceTier", reflect.TypeOf((*MockECloudService)(nil).GetResourceTier), arg0)
 }
 
-// GetResourceTiers mocks base method
+// GetResourceTiers mocks base method.
 func (m *MockECloudService) GetResourceTiers(arg0 connection.APIRequestParameters) ([]ecloud.ResourceTier, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetResourceTiers", arg0)
@@ -3060,13 +3089,13 @@ func (m *MockECloudService) GetResourceTiers(arg0 connection.APIRequestParameter
 	return ret0, ret1
 }
 
-// GetResourceTiers indicates an expected call of GetResourceTiers
+// GetResourceTiers indicates an expected call of GetResourceTiers.
 func (mr *MockECloudServiceMockRecorder) GetResourceTiers(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetResourceTiers", reflect.TypeOf((*MockECloudService)(nil).GetResourceTiers), arg0)
 }
 
-// GetResourceTiersPaginated mocks base method
+// GetResourceTiersPaginated mocks base method.
 func (m *MockECloudService) GetResourceTiersPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[ecloud.ResourceTier], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetResourceTiersPaginated", arg0)
@@ -3075,7 +3104,7 @@ func (m *MockECloudService) GetResourceTiersPaginated(arg0 connection.APIRequest
 	return ret0, ret1
 }
 
-// GetResourceTiersPaginated indicates an expected call of GetResourceTiersPaginated
+// GetResourceTiersPaginated indicates an expected call of GetResourceTiersPaginated.
 func (mr *MockECloudServiceMockRecorder) GetResourceTiersPaginated(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetResourceTiersPaginated", reflect.TypeOf((*MockECloudService)(nil).GetResourceTiersPaginated), arg0)
@@ -5087,6 +5116,21 @@ func (m *MockECloudService) UnlockInstance(arg0 string) error {
 func (mr *MockECloudServiceMockRecorder) UnlockInstance(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UnlockInstance", reflect.TypeOf((*MockECloudService)(nil).UnlockInstance), arg0)
+}
+
+// UpdateImage mocks base method.
+func (m *MockECloudService) UpdateImage(arg0 string, arg1 ecloud.UpdateImageRequest) (ecloud.TaskReference, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateImage", arg0, arg1)
+	ret0, _ := ret[0].(ecloud.TaskReference)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateImage indicates an expected call of UpdateImage.
+func (mr *MockECloudServiceMockRecorder) UpdateImage(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateImage", reflect.TypeOf((*MockECloudService)(nil).UpdateImage), arg0, arg1)
 }
 
 // UpdateVPNSessionPreSharedKey mocks base method.

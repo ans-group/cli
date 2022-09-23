@@ -15,3 +15,6 @@ package mocks
 //go:generate mockgen -package mocks -destination mock_sharedexchangeservice.go -imports=github.com/ans-group/sdk-go/pkg/service/sharedexchange github.com/ans-group/sdk-go/pkg/service/sharedexchange SharedExchangeService
 //go:generate mockgen -package mocks -destination mock_sslservice.go -imports=github.com/ans-group/sdk-go/pkg/service/ssl github.com/ans-group/sdk-go/pkg/service/ssl SSLService
 //go:generate mockgen -package mocks -destination mock_storageservice.go -imports=github.com/ans-group/sdk-go/pkg/service/storage github.com/ans-group/sdk-go/pkg/service/storage StorageService
+
+// NOTE: gomock currently doesn't support generics in reflect mode. For now, generating mocks will fail. We can hack around this as below:
+// $(cd test/mocks; mockgen -package mocks -destination mock_ecloudservice.go -imports=github.com/ans-group/sdk-go/pkg/service/ecloud github.com/ans-group/sdk-go/pkg/service/ecloud ECloudService 2>&1 | tail -n +2 | sed -e 's/\[github.com\/ans-group\/sdk-go\/pkg\/service\//[/g' > mock_ecloudservice.go)
