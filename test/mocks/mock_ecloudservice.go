@@ -261,10 +261,10 @@ func (mr *MockECloudServiceMockRecorder) CreateInstanceConsoleSession(arg0 inter
 }
 
 // CreateInstanceImage mocks base method.
-func (m *MockECloudService) CreateInstanceImage(arg0 string, arg1 ecloud.CreateInstanceImageRequest) (string, error) {
+func (m *MockECloudService) CreateInstanceImage(arg0 string, arg1 ecloud.CreateInstanceImageRequest) (ecloud.TaskReference, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateInstanceImage", arg0, arg1)
-	ret0, _ := ret[0].(string)
+	ret0, _ := ret[0].(ecloud.TaskReference)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
