@@ -141,6 +141,7 @@ func loadbalancerTargetGroupTargetCreateCmd(f factory.ClientFactory) *cobra.Comm
 	cmd.Flags().Bool("disable-http2", false, "Specifies HTTP2 should be disabled for target")
 	cmd.Flags().Bool("http2-only", false, "Specifies only HTTP2 should be enabled for target")
 	cmd.Flags().Bool("active", true, "Specifies target should be active. Defaults to true")
+	cmd.Flags().String("session-cookie-value", "", "Specifies value of session cookie for target")
 
 	return cmd
 }
@@ -165,6 +166,7 @@ func loadbalancerTargetGroupTargetCreate(service loadbalancer.LoadBalancerServic
 	createRequest.DisableHTTP2, _ = cmd.Flags().GetBool("disable-http2")
 	createRequest.HTTP2Only, _ = cmd.Flags().GetBool("http2-only")
 	createRequest.Active, _ = cmd.Flags().GetBool("active")
+	createRequest.SessionCookieValue, _ = cmd.Flags().GetString("session-cookie-value")
 
 	targetID, err := service.CreateTargetGroupTarget(targetGroupID, createRequest)
 	if err != nil {
@@ -209,6 +211,7 @@ func loadbalancerTargetGroupTargetUpdateCmd(f factory.ClientFactory) *cobra.Comm
 	cmd.Flags().Bool("disable-http2", false, "Specifies HTTP2 should be disabled for target")
 	cmd.Flags().Bool("http2-only", false, "Specifies only HTTP2 should be enabled for target")
 	cmd.Flags().Bool("active", true, "Specifies target should be active")
+	cmd.Flags().String("session-cookie-value", "", "Specifies value of session cookie for target")
 
 	return cmd
 }
@@ -233,6 +236,7 @@ func loadbalancerTargetGroupTargetUpdate(service loadbalancer.LoadBalancerServic
 	patchRequest.DisableHTTP2 = helper.GetBoolPtrFlagIfChanged(cmd, "disable-http2")
 	patchRequest.HTTP2Only = helper.GetBoolPtrFlagIfChanged(cmd, "http2-only")
 	patchRequest.Active = helper.GetBoolPtrFlagIfChanged(cmd, "active")
+	patchRequest.SessionCookieValue, _ = cmd.Flags().GetString("session-cookie-value")
 
 	var targets []loadbalancer.Target
 	for _, arg := range args[1:] {
