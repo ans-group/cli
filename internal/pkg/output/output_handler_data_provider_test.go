@@ -224,6 +224,17 @@ func TestSerializedOutputHandlerDataProvider_convertField(t *testing.T) {
 		assert.Equal(t, "field1value", output.Get("struct1_field1").Value)
 	})
 
+	t.Run("StructTypeWithNil_ReturnsExpectedString", func(t *testing.T) {
+		o := NewSerializedOutputHandlerDataProvider(nil)
+		type somestruct struct {
+			Field1 *string `json:"field1"`
+		}
+		v := somestruct{}
+
+		output := o.convertField(NewOrderedFields(), "", reflect.ValueOf(v))
+		assert.Equal(t, "<nil>", output.Get("field1").Value)
+	})
+
 	t.Run("WithJsonTags_ReturnsExpectedFieldNames", func(t *testing.T) {
 		type testType struct {
 			Property1 string `json:"new_property_1"`

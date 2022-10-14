@@ -76,6 +76,7 @@ func loadbalancerACLCreateCmd(f factory.ClientFactory) *cobra.Command {
 
 	cmd.Flags().String("name", "", "Name of ACL")
 	cmd.MarkFlagRequired("name")
+	cmd.Flags().Int("priority", 0, "Priority of ACL")
 	cmd.Flags().Int("listener", 0, "ID of listener")
 	cmd.Flags().Int("target-group", 0, "ID of target group")
 	cmd.Flags().StringArray("condition", []string{}, "Name and arguments of condition. Can be repeated. Array values can be expressed as: somearray[]=somevalue")
@@ -88,6 +89,7 @@ func loadbalancerACLCreateCmd(f factory.ClientFactory) *cobra.Command {
 func loadbalancerACLCreate(service loadbalancer.LoadBalancerService, cmd *cobra.Command, args []string) error {
 	createRequest := loadbalancer.CreateACLRequest{}
 	createRequest.Name, _ = cmd.Flags().GetString("name")
+	createRequest.Priority, _ = cmd.Flags().GetInt("priority")
 	createRequest.ListenerID, _ = cmd.Flags().GetInt("listener")
 	createRequest.TargetGroupID, _ = cmd.Flags().GetInt("target-group")
 
@@ -139,6 +141,7 @@ func loadbalancerACLUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("name", "", "Name of ACL")
+	cmd.Flags().Int("priority", 0, "Priority of ACL")
 	cmd.Flags().StringArray("condition", []string{}, "Name and arguments of condition. Can be repeated. Array values can be expressed as: somearray[]=somevalue")
 	cmd.Flags().StringArray("action", []string{}, "Name and arguments of action. Can be repeated. Array values can be expressed as: somearray[]=somevalue")
 
@@ -148,6 +151,7 @@ func loadbalancerACLUpdateCmd(f factory.ClientFactory) *cobra.Command {
 func loadbalancerACLUpdate(service loadbalancer.LoadBalancerService, cmd *cobra.Command, args []string) error {
 	patchRequest := loadbalancer.PatchACLRequest{}
 	patchRequest.Name, _ = cmd.Flags().GetString("name")
+	patchRequest.Priority, _ = cmd.Flags().GetInt("priority")
 
 	if cmd.Flags().Changed("condition") {
 		conditionsFlag, _ := cmd.Flags().GetStringArray("condition")
