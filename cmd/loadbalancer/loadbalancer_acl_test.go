@@ -271,82 +271,82 @@ func Test_loadbalancerACLDelete(t *testing.T) {
 	})
 }
 
-func Test_parseACLStatementFlag(t *testing.T) {
-	t.Run("SingleArgumentExpectedReturnValue", func(t *testing.T) {
-		name, parsedArgs, err := parseACLStatementFlag("name1:arg1=testvalue1")
+// func Test_parseACLStatementFlag(t *testing.T) {
+// 	t.Run("SingleArgumentExpectedReturnValue", func(t *testing.T) {
+// 		name, parsedArgs, err := parseACLStatementFlag("name1:arg1=testvalue1")
 
-		assert.Nil(t, err)
-		assert.Equal(t, "name1", name)
-		assert.Equal(t, "arg1", parsedArgs["arg1"].Name)
-		assert.Equal(t, "testvalue1", parsedArgs["arg1"].Value)
-	})
+// 		assert.Nil(t, err)
+// 		assert.Equal(t, "name1", name)
+// 		assert.Equal(t, "arg1", parsedArgs["arg1"].Name)
+// 		assert.Equal(t, "testvalue1", parsedArgs["arg1"].Value)
+// 	})
 
-	t.Run("MultipleArgumentsExpectedReturnValue", func(t *testing.T) {
-		name, parsedArgs, err := parseACLStatementFlag("name1:arg1=testvalue1,arg2=testvalue2")
+// 	t.Run("MultipleArgumentsExpectedReturnValue", func(t *testing.T) {
+// 		name, parsedArgs, err := parseACLStatementFlag("name1:arg1=testvalue1,arg2=testvalue2")
 
-		assert.Nil(t, err)
-		assert.Equal(t, "name1", name)
-		assert.Equal(t, "arg1", parsedArgs["arg1"].Name)
-		assert.Equal(t, "testvalue1", parsedArgs["arg1"].Value)
-		assert.Equal(t, "arg2", parsedArgs["arg2"].Name)
-		assert.Equal(t, "testvalue2", parsedArgs["arg2"].Value)
-	})
+// 		assert.Nil(t, err)
+// 		assert.Equal(t, "name1", name)
+// 		assert.Equal(t, "arg1", parsedArgs["arg1"].Name)
+// 		assert.Equal(t, "testvalue1", parsedArgs["arg1"].Value)
+// 		assert.Equal(t, "arg2", parsedArgs["arg2"].Name)
+// 		assert.Equal(t, "testvalue2", parsedArgs["arg2"].Value)
+// 	})
 
-	t.Run("InvalidNameReturnsError", func(t *testing.T) {
-		_, _, err := parseACLStatementFlag("arg1=testvalue1,arg2=testvalue2")
+// 	t.Run("InvalidNameReturnsError", func(t *testing.T) {
+// 		_, _, err := parseACLStatementFlag("arg1=testvalue1,arg2=testvalue2")
 
-		assert.NotNil(t, err)
-		assert.Equal(t, "invalid flag format. Expected format name:arguments", err.Error())
-	})
-}
+// 		assert.NotNil(t, err)
+// 		assert.Equal(t, "invalid flag format. Expected format name:arguments", err.Error())
+// 	})
+// }
 
-func Test_parseACLArguments(t *testing.T) {
-	t.Run("SingleArgumentExpectedReturnValue", func(t *testing.T) {
-		parsedArgs := []string{
-			"arg1=testvalue1",
-		}
-		parsed, err := parseACLArguments(parsedArgs)
+// func Test_parseACLArguments(t *testing.T) {
+// 	t.Run("SingleArgumentExpectedReturnValue", func(t *testing.T) {
+// 		parsedArgs := []string{
+// 			"arg1=testvalue1",
+// 		}
+// 		parsed, err := parseACLArguments(parsedArgs)
 
-		assert.Nil(t, err)
-		assert.Equal(t, "arg1", parsed["arg1"].Name)
-		assert.Equal(t, "testvalue1", parsed["arg1"].Value)
-	})
+// 		assert.Nil(t, err)
+// 		assert.Equal(t, "arg1", parsed["arg1"].Name)
+// 		assert.Equal(t, "testvalue1", parsed["arg1"].Value)
+// 	})
 
-	t.Run("MultipleArgumentsExpectedReturnValue", func(t *testing.T) {
-		parsedArgs := []string{
-			"arg1=testvalue1",
-			"arg2=testvalue2",
-		}
-		parsed, err := parseACLArguments(parsedArgs)
+// 	t.Run("MultipleArgumentsExpectedReturnValue", func(t *testing.T) {
+// 		parsedArgs := []string{
+// 			"arg1=testvalue1",
+// 			"arg2=testvalue2",
+// 		}
+// 		parsed, err := parseACLArguments(parsedArgs)
 
-		assert.Nil(t, err)
-		assert.Equal(t, "arg1", parsed["arg1"].Name)
-		assert.Equal(t, "testvalue1", parsed["arg1"].Value)
-		assert.Equal(t, "arg2", parsed["arg2"].Name)
-		assert.Equal(t, "testvalue2", parsed["arg2"].Value)
-	})
+// 		assert.Nil(t, err)
+// 		assert.Equal(t, "arg1", parsed["arg1"].Name)
+// 		assert.Equal(t, "testvalue1", parsed["arg1"].Value)
+// 		assert.Equal(t, "arg2", parsed["arg2"].Name)
+// 		assert.Equal(t, "testvalue2", parsed["arg2"].Value)
+// 	})
 
-	t.Run("ArrayValueArgumentExpectedReturnValue", func(t *testing.T) {
-		parsedArgs := []string{
-			"arg1[]=testvalue1",
-		}
-		parsed, err := parseACLArguments(parsedArgs)
+// 	t.Run("ArrayValueArgumentExpectedReturnValue", func(t *testing.T) {
+// 		parsedArgs := []string{
+// 			"arg1[]=testvalue1",
+// 		}
+// 		parsed, err := parseACLArguments(parsedArgs)
 
-		assert.Nil(t, err)
-		assert.Equal(t, "arg1", parsed["arg1"].Name)
-		assert.Equal(t, "testvalue1", parsed["arg1"].Value.([]string)[0])
-	})
+// 		assert.Nil(t, err)
+// 		assert.Equal(t, "arg1", parsed["arg1"].Name)
+// 		assert.Equal(t, "testvalue1", parsed["arg1"].Value.([]string)[0])
+// 	})
 
-	t.Run("MultipleArrayValueArgumentsExpectedReturnValue", func(t *testing.T) {
-		parsedArgs := []string{
-			"arg1[]=testvalue1",
-			"arg1[]=testvalue2",
-		}
-		parsed, err := parseACLArguments(parsedArgs)
+// 	t.Run("MultipleArrayValueArgumentsExpectedReturnValue", func(t *testing.T) {
+// 		parsedArgs := []string{
+// 			"arg1[]=testvalue1",
+// 			"arg1[]=testvalue2",
+// 		}
+// 		parsed, err := parseACLArguments(parsedArgs)
 
-		assert.Nil(t, err)
-		assert.Equal(t, "arg1", parsed["arg1"].Name)
-		assert.Equal(t, "testvalue1", parsed["arg1"].Value.([]string)[0])
-		assert.Equal(t, "testvalue2", parsed["arg1"].Value.([]string)[1])
-	})
-}
+// 		assert.Nil(t, err)
+// 		assert.Equal(t, "arg1", parsed["arg1"].Name)
+// 		assert.Equal(t, "testvalue1", parsed["arg1"].Value.([]string)[0])
+// 		assert.Equal(t, "testvalue2", parsed["arg1"].Value.([]string)[1])
+// 	})
+// }

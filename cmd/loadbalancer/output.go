@@ -45,6 +45,17 @@ func OutputLoadBalancerACLsProvider(acls []loadbalancer.ACL) output.OutputHandle
 		WithDefaultFields([]string{"id", "name", "conditions", "actions"})
 }
 
+// ACLCondition represents an ACL condition
+type ACLCondition struct {
+	loadbalancer.ACLCondition
+	Index int `json:"index"`
+}
+
+func OutputLoadBalancerACLConditionsProvider(acls []ACLCondition) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(acls).
+		WithDefaultFields([]string{"index", "name", "inverted", "arguments"})
+}
+
 func OutputLoadBalancerACLTemplatesProvider(templates []loadbalancer.ACLTemplates) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(templates).
 		WithDefaultFields([]string{"id", "conditions", "actions"})
