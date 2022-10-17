@@ -90,7 +90,7 @@ func loadbalancerACLConditionShow(service loadbalancer.LoadBalancerService, cmd 
 	}
 
 	for _, arg := range args[1:] {
-		conditionIndex, err := strconv.Atoi(args[1])
+		conditionIndex, err := strconv.Atoi(arg)
 		if err != nil {
 			output.OutputWithErrorLevelf("Invalid ACL condition index [%s]", arg)
 			continue
@@ -183,7 +183,7 @@ func loadbalancerACLConditionUpdateCmd(f factory.ClientFactory) *cobra.Command {
 			if len(args) < 1 {
 				return errors.New("Missing ACL")
 			}
-			if len(args) < 1 {
+			if len(args) < 2 {
 				return errors.New("Missing ACL condition index")
 			}
 
@@ -262,7 +262,7 @@ func loadbalancerACLConditionUpdate(service loadbalancer.LoadBalancerService, cm
 
 func loadbalancerACLConditionDeleteCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
-		Use:     "delete <acl: id>...",
+		Use:     "delete <acl: id> <condition: index>...",
 		Short:   "Removes a acl",
 		Long:    "This command removes one or more acls",
 		Example: "ans loadbalancer acl delete 123",
@@ -270,7 +270,7 @@ func loadbalancerACLConditionDeleteCmd(f factory.ClientFactory) *cobra.Command {
 			if len(args) < 1 {
 				return errors.New("Missing ACL")
 			}
-			if len(args) < 1 {
+			if len(args) < 2 {
 				return errors.New("Missing ACL condition index")
 			}
 
