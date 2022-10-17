@@ -19,6 +19,7 @@ func LoadBalancerRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 	cmd.AddCommand(loadbalancerBindRootCmd(f))
 	cmd.AddCommand(loadbalancerCertificateRootCmd(f))
 	cmd.AddCommand(loadbalancerClusterRootCmd(f))
+	cmd.AddCommand(loadbalancerDeploymentRootCmd(f))
 	cmd.AddCommand(loadbalancerListenerRootCmd(f, fs))
 	cmd.AddCommand(loadbalancerTargetGroupRootCmd(f))
 
