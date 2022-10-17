@@ -26,6 +26,7 @@ func loadbalancerACLRootCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Child root commands
 	cmd.AddCommand(loadbalancerACLConditionRootCmd(f))
+	cmd.AddCommand(loadbalancerACLActionRootCmd(f))
 
 	return cmd
 }

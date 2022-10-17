@@ -51,9 +51,20 @@ type ACLCondition struct {
 	Index int `json:"index"`
 }
 
-func OutputLoadBalancerACLConditionsProvider(acls []ACLCondition) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(acls).
+func OutputLoadBalancerACLConditionsProvider(conditions []ACLCondition) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(conditions).
 		WithDefaultFields([]string{"index", "name", "inverted", "arguments"})
+}
+
+// ACLAction represents an ACL action
+type ACLAction struct {
+	loadbalancer.ACLAction
+	Index int `json:"index"`
+}
+
+func OutputLoadBalancerACLActionsProvider(actions []ACLAction) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(actions).
+		WithDefaultFields([]string{"index", "name", "arguments"})
 }
 
 func OutputLoadBalancerACLTemplatesProvider(templates []loadbalancer.ACLTemplates) output.OutputHandlerDataProvider {
