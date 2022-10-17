@@ -5,10 +5,10 @@
 package mocks
 
 import (
+	reflect "reflect"
 	connection "github.com/ans-group/sdk-go/pkg/connection"
 	loadbalancer "github.com/ans-group/sdk-go/pkg/service/loadbalancer"
 	gomock "github.com/golang/mock/gomock"
-	reflect "reflect"
 )
 
 // MockLoadBalancerService is a mock of LoadBalancerService interface.
@@ -429,6 +429,51 @@ func (m *MockLoadBalancerService) GetClustersPaginated(arg0 connection.APIReques
 func (mr *MockLoadBalancerServiceMockRecorder) GetClustersPaginated(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetClustersPaginated", reflect.TypeOf((*MockLoadBalancerService)(nil).GetClustersPaginated), arg0)
+}
+
+// GetDeployment mocks base method.
+func (m *MockLoadBalancerService) GetDeployment(arg0 int) (loadbalancer.Deployment, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetDeployment", arg0)
+	ret0, _ := ret[0].(loadbalancer.Deployment)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetDeployment indicates an expected call of GetDeployment.
+func (mr *MockLoadBalancerServiceMockRecorder) GetDeployment(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDeployment", reflect.TypeOf((*MockLoadBalancerService)(nil).GetDeployment), arg0)
+}
+
+// GetDeployments mocks base method.
+func (m *MockLoadBalancerService) GetDeployments(arg0 connection.APIRequestParameters) ([]loadbalancer.Deployment, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetDeployments", arg0)
+	ret0, _ := ret[0].([]loadbalancer.Deployment)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetDeployments indicates an expected call of GetDeployments.
+func (mr *MockLoadBalancerServiceMockRecorder) GetDeployments(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDeployments", reflect.TypeOf((*MockLoadBalancerService)(nil).GetDeployments), arg0)
+}
+
+// GetDeploymentsPaginated mocks base method.
+func (m *MockLoadBalancerService) GetDeploymentsPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[loadbalancer.Deployment], error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetDeploymentsPaginated", arg0)
+	ret0, _ := ret[0].(*connection.Paginated[loadbalancer.Deployment])
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetDeploymentsPaginated indicates an expected call of GetDeploymentsPaginated.
+func (mr *MockLoadBalancerServiceMockRecorder) GetDeploymentsPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDeploymentsPaginated", reflect.TypeOf((*MockLoadBalancerService)(nil).GetDeploymentsPaginated), arg0)
 }
 
 // GetListener mocks base method.

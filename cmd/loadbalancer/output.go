@@ -71,3 +71,8 @@ func OutputLoadBalancerACLTemplatesProvider(templates []loadbalancer.ACLTemplate
 	return output.NewSerializedOutputHandlerDataProvider(templates).
 		WithDefaultFields([]string{"id", "conditions", "actions"})
 }
+
+func OutputLoadBalancerDeploymentsProvider(deployments []loadbalancer.Deployment) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(deployments).
+		WithDefaultFields([]string{"id", "cluster_id", "successful", "created_at"})
+}
