@@ -5,11 +5,10 @@
 package mocks
 
 import (
-	reflect "reflect"
-
-	gomock "github.com/golang/mock/gomock"
 	connection "github.com/ans-group/sdk-go/pkg/connection"
 	loadbalancer "github.com/ans-group/sdk-go/pkg/service/loadbalancer"
+	gomock "github.com/golang/mock/gomock"
+	reflect "reflect"
 )
 
 // MockLoadBalancerService is a mock of LoadBalancerService interface.
@@ -342,6 +341,36 @@ func (mr *MockLoadBalancerServiceMockRecorder) GetBindsPaginated(arg0 interface{
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBindsPaginated", reflect.TypeOf((*MockLoadBalancerService)(nil).GetBindsPaginated), arg0)
 }
 
+// GetCertificates mocks base method.
+func (m *MockLoadBalancerService) GetCertificates(arg0 connection.APIRequestParameters) ([]loadbalancer.Certificate, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetCertificates", arg0)
+	ret0, _ := ret[0].([]loadbalancer.Certificate)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetCertificates indicates an expected call of GetCertificates.
+func (mr *MockLoadBalancerServiceMockRecorder) GetCertificates(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCertificates", reflect.TypeOf((*MockLoadBalancerService)(nil).GetCertificates), arg0)
+}
+
+// GetCertificatesPaginated mocks base method.
+func (m *MockLoadBalancerService) GetCertificatesPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[loadbalancer.Certificate], error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetCertificatesPaginated", arg0)
+	ret0, _ := ret[0].(*connection.Paginated[loadbalancer.Certificate])
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetCertificatesPaginated indicates an expected call of GetCertificatesPaginated.
+func (mr *MockLoadBalancerServiceMockRecorder) GetCertificatesPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCertificatesPaginated", reflect.TypeOf((*MockLoadBalancerService)(nil).GetCertificatesPaginated), arg0)
+}
+
 // GetCluster mocks base method.
 func (m *MockLoadBalancerService) GetCluster(arg0 int) (loadbalancer.Cluster, error) {
 	m.ctrl.T.Helper()
@@ -400,36 +429,6 @@ func (m *MockLoadBalancerService) GetClustersPaginated(arg0 connection.APIReques
 func (mr *MockLoadBalancerServiceMockRecorder) GetClustersPaginated(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetClustersPaginated", reflect.TypeOf((*MockLoadBalancerService)(nil).GetClustersPaginated), arg0)
-}
-
-// GetHeaders mocks base method.
-func (m *MockLoadBalancerService) GetHeaders(arg0 connection.APIRequestParameters) ([]loadbalancer.Header, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetHeaders", arg0)
-	ret0, _ := ret[0].([]loadbalancer.Header)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetHeaders indicates an expected call of GetHeaders.
-func (mr *MockLoadBalancerServiceMockRecorder) GetHeaders(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetHeaders", reflect.TypeOf((*MockLoadBalancerService)(nil).GetHeaders), arg0)
-}
-
-// GetHeadersPaginated mocks base method.
-func (m *MockLoadBalancerService) GetHeadersPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[loadbalancer.Header], error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetHeadersPaginated", arg0)
-	ret0, _ := ret[0].(*connection.Paginated[loadbalancer.Header])
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetHeadersPaginated indicates an expected call of GetHeadersPaginated.
-func (mr *MockLoadBalancerServiceMockRecorder) GetHeadersPaginated(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetHeadersPaginated", reflect.TypeOf((*MockLoadBalancerService)(nil).GetHeadersPaginated), arg0)
 }
 
 // GetListener mocks base method.
