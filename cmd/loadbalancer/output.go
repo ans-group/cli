@@ -32,7 +32,7 @@ func OutputLoadBalancerBindsProvider(binds []loadbalancer.Bind) output.OutputHan
 
 func OutputLoadBalancerCertificatesProvider(certs []loadbalancer.Certificate) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(certs).
-		WithDefaultFields([]string{"id", "listener_id", "name"})
+		WithDefaultFields([]string{"id", "listener_id", "name", "expires_at"})
 }
 
 func OutputLoadBalancerAccessIPsProvider(accessIPs []loadbalancer.AccessIP) output.OutputHandlerDataProvider {
