@@ -254,7 +254,7 @@ func loadbalancerACLActionUpdate(service loadbalancer.LoadBalancerService, cmd *
 
 func loadbalancerACLActionDeleteCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
-		Use:     "delete <acl: id> <action: index>...",
+		Use:     "delete <acl: id> <action: index>",
 		Short:   "Removes a acl",
 		Long:    "This command removes one or more acls",
 		Example: "ans loadbalancer acl delete 123",

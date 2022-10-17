@@ -262,7 +262,7 @@ func loadbalancerACLConditionUpdate(service loadbalancer.LoadBalancerService, cm
 
 func loadbalancerACLConditionDeleteCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
-		Use:     "delete <acl: id> <condition: index>...",
+		Use:     "delete <acl: id> <condition: index>",
 		Short:   "Removes a acl",
 		Long:    "This command removes one or more acls",
 		Example: "ans loadbalancer acl delete 123",
