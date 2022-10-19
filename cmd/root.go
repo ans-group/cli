@@ -67,6 +67,7 @@ func Execute(build build.BuildInfo) {
 	// Child root commands
 	rootCmd.AddCommand(configcmd.ConfigRootCmd(fs))
 	rootCmd.AddCommand(CompletionRootCmd())
+	rootCmd.AddCommand(rawCmd(connectionFactory))
 	rootCmd.AddCommand(accountcmd.AccountRootCmd(clientFactory))
 	rootCmd.AddCommand(billingcmd.BillingRootCmd(clientFactory))
 	rootCmd.AddCommand(ddosxcmd.DDoSXRootCmd(clientFactory, fs))
