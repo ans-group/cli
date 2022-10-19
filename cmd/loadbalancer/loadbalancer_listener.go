@@ -124,6 +124,10 @@ func loadbalancerListenerCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().Bool("disable-tlsv12", false, "Specifies TLSv1.2 should be disabled")
 	cmd.Flags().Bool("disable-http2", false, "Specifies HTTP2 should be disabled")
 	cmd.Flags().String("custom-ciphers", "", "Specifies custom ciphers for listener")
+	cmd.Flags().String("geoip-restriction", "", "Specifies restriction for GeoIP")
+	cmd.Flags().StringSlice("geoip-continent", []string{""}, "Specifies continent for GeoIP. Can be repeated")
+	cmd.Flags().StringSlice("geoip-country", []string{""}, "Specifies country for GeoIP. Can be repeated")
+	cmd.Flags().Bool("geoip-european-union", false, "Specifies European Union for GeoIP. Can be repeated")
 
 	return cmd
 }
@@ -143,6 +147,41 @@ func loadbalancerListenerCreate(service loadbalancer.LoadBalancerService, cmd *c
 	createRequest.DisableTLSV12, _ = cmd.Flags().GetBool("disable-tlsv12")
 	createRequest.DisableHTTP2, _ = cmd.Flags().GetBool("disable-http2")
 	createRequest.CustomCiphers, _ = cmd.Flags().GetString("custom-ciphers")
+
+	geoip := &loadbalancer.ListenerGeoIPRequest{}
+	geoipChanged := false
+
+	if cmd.Flags().Changed("geoip-restriction") {
+		geoipChanged = true
+
+		geoipRestrictionFlag, _ := cmd.Flags().GetString("geoip-restriction")
+		geoipRestriction, err := loadbalancer.ParseListenerGeoIPRestriction(geoipRestrictionFlag)
+		if err != nil {
+			return clierrors.NewErrInvalidFlagValue("geoip-restriction", geoipRestrictionFlag, err)
+		}
+
+		geoip.Restriction = geoipRestriction
+	}
+
+	if cmd.Flags().Changed("geoip-continent") {
+		geoipChanged = true
+		geoip.Continents, _ = cmd.Flags().GetStringSlice("geoip-continent")
+	}
+
+	if cmd.Flags().Changed("geoip-country") {
+		geoipChanged = true
+		geoip.Countries, _ = cmd.Flags().GetStringSlice("geoip-country")
+	}
+
+	if cmd.Flags().Changed("geoip-european-union") {
+		geoipChanged = true
+		geoipEuropeanUnion, _ := cmd.Flags().GetBool("geoip-european-union")
+		geoip.EuropeanUnion = &geoipEuropeanUnion
+	}
+
+	if geoipChanged {
+		createRequest.GeoIP = geoip
+	}
 
 	mode, _ := cmd.Flags().GetString("mode")
 	parsedMode, err := loadbalancer.ParseMode(mode)
@@ -193,6 +232,11 @@ func loadbalancerListenerUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().Bool("disable-tlsv12", false, "Specifies TLSv1.2 should be disabled")
 	cmd.Flags().Bool("disable-http2", false, "Specifies HTTP2 should be disabled")
 	cmd.Flags().String("custom-ciphers", "", "Specifies custom ciphers for listener")
+	cmd.Flags().Bool("geoip-disabled", false, "Specifies GeoIP should be disabled for listener")
+	cmd.Flags().String("geoip-restriction", "", "Specifies restriction for GeoIP")
+	cmd.Flags().StringSlice("geoip-continent", []string{""}, "Specifies continent for GeoIP. Can be repeated")
+	cmd.Flags().StringSlice("geoip-country", []string{""}, "Specifies country for GeoIP. Can be repeated")
+	cmd.Flags().Bool("geoip-european-union", false, "Specifies European Union for GeoIP. Can be repeated")
 
 	return cmd
 }
@@ -212,12 +256,55 @@ func loadbalancerListenerUpdate(service loadbalancer.LoadBalancerService, cmd *c
 	patchRequest.DisableHTTP2 = helper.GetBoolPtrFlagIfChanged(cmd, "disable-http2")
 	patchRequest.CustomCiphers, _ = cmd.Flags().GetString("custom-ciphers")
 
+	geoip := &loadbalancer.ListenerGeoIPRequest{}
+	geoipChanged := false
+
+	if cmd.Flags().Changed("geoip-restriction") {
+		geoipChanged = true
+
+		geoipRestrictionFlag, _ := cmd.Flags().GetString("geoip-restriction")
+		geoipRestriction, err := loadbalancer.ParseListenerGeoIPRestriction(geoipRestrictionFlag)
+		if err != nil {
+			return clierrors.NewErrInvalidFlagValue("geoip-restriction", geoipRestrictionFlag, err)
+		}
+
+		geoip.Restriction = geoipRestriction
+	}
+
+	if cmd.Flags().Changed("geoip-continent") {
+		geoipChanged = true
+		geoip.Continents, _ = cmd.Flags().GetStringSlice("geoip-continent")
+	}
+
+	if cmd.Flags().Changed("geoip-country") {
+		geoipChanged = true
+		geoip.Countries, _ = cmd.Flags().GetStringSlice("geoip-country")
+	}
+
+	if cmd.Flags().Changed("geoip-european-union") {
+		geoipChanged = true
+		geoipEuropeanUnion, _ := cmd.Flags().GetBool("geoip-european-union")
+		geoip.EuropeanUnion = &geoipEuropeanUnion
+	}
+
+	if geoipChanged {
+		patchRequest.GeoIP = geoip
+	}
+
 	var listeners []loadbalancer.Listener
 	for _, arg := range args {
 		listenerID, err := strconv.Atoi(arg)
 		if err != nil {
 			output.OutputWithErrorLevelf("Invalid listener ID [%s]", arg)
 			continue
+		}
+
+		if geoipDisabled, _ := cmd.Flags().GetBool("geoip-disabled"); geoipDisabled {
+			err = service.DisableListenerGeoIP(listenerID)
+			if err != nil {
+				output.OutputWithErrorLevelf("Error disabling GeoIP for listener [%d]: %s", listenerID, err)
+				continue
+			}
 		}
 
 		err = service.PatchListener(listenerID, patchRequest)
