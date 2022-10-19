@@ -124,6 +124,7 @@ func loadbalancerListenerCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().Bool("disable-tlsv12", false, "Specifies TLSv1.2 should be disabled")
 	cmd.Flags().Bool("disable-http2", false, "Specifies HTTP2 should be disabled")
 	cmd.Flags().String("custom-ciphers", "", "Specifies custom ciphers for listener")
+	cmd.Flags().String("custom-options", "", "Specifies custom options for listener")
 	cmd.Flags().Int("timeouts-client", 0, "Specifies client timeout for listener")
 	cmd.Flags().String("geoip-restriction", "", "Specifies restriction for GeoIP")
 	cmd.Flags().StringSlice("geoip-continent", []string{""}, "Specifies continent for GeoIP. Can be repeated")
@@ -148,6 +149,7 @@ func loadbalancerListenerCreate(service loadbalancer.LoadBalancerService, cmd *c
 	createRequest.DisableTLSV12, _ = cmd.Flags().GetBool("disable-tlsv12")
 	createRequest.DisableHTTP2, _ = cmd.Flags().GetBool("disable-http2")
 	createRequest.CustomCiphers, _ = cmd.Flags().GetString("custom-ciphers")
+	createRequest.CustomOptions, _ = cmd.Flags().GetString("custom-options")
 	createRequest.TimeoutsClient, _ = cmd.Flags().GetInt("timeouts-client")
 
 	geoip := &loadbalancer.ListenerGeoIPRequest{}
@@ -234,6 +236,7 @@ func loadbalancerListenerUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().Bool("disable-tlsv12", false, "Specifies TLSv1.2 should be disabled")
 	cmd.Flags().Bool("disable-http2", false, "Specifies HTTP2 should be disabled")
 	cmd.Flags().String("custom-ciphers", "", "Specifies custom ciphers for listener")
+	cmd.Flags().String("custom-options", "", "Specifies custom options for listener")
 	cmd.Flags().Int("timeouts-client", 0, "Specifies client timeout for listener")
 	cmd.Flags().Bool("geoip-disabled", false, "Specifies GeoIP should be disabled for listener")
 	cmd.Flags().String("geoip-restriction", "", "Specifies restriction for GeoIP")
@@ -258,6 +261,7 @@ func loadbalancerListenerUpdate(service loadbalancer.LoadBalancerService, cmd *c
 	patchRequest.DisableTLSV12 = helper.GetBoolPtrFlagIfChanged(cmd, "disable-tlsv12")
 	patchRequest.DisableHTTP2 = helper.GetBoolPtrFlagIfChanged(cmd, "disable-http2")
 	patchRequest.CustomCiphers, _ = cmd.Flags().GetString("custom-ciphers")
+	patchRequest.CustomOptions, _ = cmd.Flags().GetString("custom-options")
 	patchRequest.TimeoutsClient, _ = cmd.Flags().GetInt("timeouts-client")
 
 	geoip := &loadbalancer.ListenerGeoIPRequest{}
