@@ -232,6 +232,7 @@ func loadbalancerListenerUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().Bool("disable-tlsv12", false, "Specifies TLSv1.2 should be disabled")
 	cmd.Flags().Bool("disable-http2", false, "Specifies HTTP2 should be disabled")
 	cmd.Flags().String("custom-ciphers", "", "Specifies custom ciphers for listener")
+	cmd.Flags().Bool("geoip-disabled", false, "Specifies GeoIP should be disabled for listener")
 	cmd.Flags().String("geoip-restriction", "", "Specifies restriction for GeoIP")
 	cmd.Flags().StringSlice("geoip-continent", []string{""}, "Specifies continent for GeoIP. Can be repeated")
 	cmd.Flags().StringSlice("geoip-country", []string{""}, "Specifies country for GeoIP. Can be repeated")
@@ -296,6 +297,14 @@ func loadbalancerListenerUpdate(service loadbalancer.LoadBalancerService, cmd *c
 		if err != nil {
 			output.OutputWithErrorLevelf("Invalid listener ID [%s]", arg)
 			continue
+		}
+
+		if geoipDisabled, _ := cmd.Flags().GetBool("geoip-disabled"); geoipDisabled {
+			err = service.DisableListenerGeoIP(listenerID)
+			if err != nil {
+				output.OutputWithErrorLevelf("Error disabling GeoIP for listener [%d]: %s", listenerID, err)
+				continue
+			}
 		}
 
 		err = service.PatchListener(listenerID, patchRequest)

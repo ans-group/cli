@@ -5,10 +5,10 @@
 package mocks
 
 import (
-	reflect "reflect"
 	connection "github.com/ans-group/sdk-go/pkg/connection"
 	loadbalancer "github.com/ans-group/sdk-go/pkg/service/loadbalancer"
 	gomock "github.com/golang/mock/gomock"
+	reflect "reflect"
 )
 
 // MockLoadBalancerService is a mock of LoadBalancerService interface.
@@ -249,6 +249,20 @@ func (m *MockLoadBalancerService) DeployCluster(arg0 int) error {
 func (mr *MockLoadBalancerServiceMockRecorder) DeployCluster(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeployCluster", reflect.TypeOf((*MockLoadBalancerService)(nil).DeployCluster), arg0)
+}
+
+// DisableListenerGeoIP mocks base method.
+func (m *MockLoadBalancerService) DisableListenerGeoIP(arg0 int) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DisableListenerGeoIP", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DisableListenerGeoIP indicates an expected call of DisableListenerGeoIP.
+func (mr *MockLoadBalancerServiceMockRecorder) DisableListenerGeoIP(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DisableListenerGeoIP", reflect.TypeOf((*MockLoadBalancerService)(nil).DisableListenerGeoIP), arg0)
 }
 
 // GetACL mocks base method.
