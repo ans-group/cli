@@ -41,7 +41,7 @@ func rawCmd(f factory.ConnectionFactory) *cobra.Command {
 
 type rawCommandOutput string
 
-func (r *rawCommandOutput) Deserializer() func(resp *connection.APIResponse, out interface{}) error {
+func (r *rawCommandOutput) Deserializer() connection.ResponseDeserializerFunc {
 	return func(resp *connection.APIResponse, out interface{}) error {
 		defer resp.Response.Body.Close()
 		bodyBytes, err := ioutil.ReadAll(resp.Response.Body)
