@@ -54,8 +54,15 @@ func (r *rawCommandOutput) Deserializer() connection.ResponseDeserializerFunc {
 		return nil
 	}
 }
+
 func (r *rawCommandOutput) Error() string {
 	return string(*r)
+}
+
+type rawCommandData string
+
+func (d *rawCommandData) MarshalJSON() ([]byte, error) {
+	return []byte(*d), nil
 }
 
 func raw(c connection.Connection, cmd *cobra.Command, args []string) error {
@@ -80,7 +87,9 @@ func raw(c connection.Connection, cmd *cobra.Command, args []string) error {
 	}
 
 	if cmd.Flags().Changed("data") {
-		req.Body, _ = cmd.Flags().GetString("data")
+		data, _ := cmd.Flags().GetString("data")
+		commandData := rawCommandData(data)
+		req.Body = &commandData
 	}
 
 	resp, err := c.Invoke(req)
