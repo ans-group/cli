@@ -56,9 +56,10 @@ func Execute(build build.BuildInfo) {
 
 	cobra.OnInitialize(initConfig)
 	fs := afero.NewOsFs()
-	clientFactory := factory.NewANSClientFactory(
+	connectionFactory := factory.NewANSConnectionFactory(
 		factory.WithUserAgent("ans-cli"),
 	)
+	clientFactory := factory.NewANSClientFactory(connectionFactory)
 
 	// Child commands
 	rootCmd.AddCommand(updateCmd())
@@ -66,6 +67,7 @@ func Execute(build build.BuildInfo) {
 	// Child root commands
 	rootCmd.AddCommand(configcmd.ConfigRootCmd(fs))
 	rootCmd.AddCommand(CompletionRootCmd())
+	rootCmd.AddCommand(rawCmd(connectionFactory))
 	rootCmd.AddCommand(accountcmd.AccountRootCmd(clientFactory))
 	rootCmd.AddCommand(billingcmd.BillingRootCmd(clientFactory))
 	rootCmd.AddCommand(ddosxcmd.DDoSXRootCmd(clientFactory, fs))
