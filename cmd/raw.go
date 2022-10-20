@@ -41,18 +41,15 @@ func rawCmd(f factory.ConnectionFactory) *cobra.Command {
 
 type rawCommandOutput string
 
-func (r *rawCommandOutput) Deserializer() connection.ResponseDeserializerFunc {
-	return func(resp *connection.APIResponse, out interface{}) error {
-		defer resp.Response.Body.Close()
-		bodyBytes, err := ioutil.ReadAll(resp.Response.Body)
-		if err != nil {
-			return err
-		}
-
-		outRef, _ := out.(*rawCommandOutput)
-		*outRef = rawCommandOutput(string(bodyBytes))
-		return nil
+func (r *rawCommandOutput) Deserialize(resp *connection.APIResponse) error {
+	defer resp.Response.Body.Close()
+	bodyBytes, err := ioutil.ReadAll(resp.Response.Body)
+	if err != nil {
+		return err
 	}
+
+	*r = rawCommandOutput(string(bodyBytes))
+	return nil
 }
 
 func (r *rawCommandOutput) Error() string {
@@ -61,8 +58,8 @@ func (r *rawCommandOutput) Error() string {
 
 type rawCommandData string
 
-func (d *rawCommandData) MarshalJSON() ([]byte, error) {
-	return []byte(*d), nil
+func (r *rawCommandData) Serialize() ([]byte, error) {
+	return []byte(*r), nil
 }
 
 func raw(c connection.Connection, cmd *cobra.Command, args []string) error {
