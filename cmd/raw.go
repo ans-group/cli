@@ -54,6 +54,9 @@ func (r *rawCommandOutput) Deserializer() connection.ResponseDeserializerFunc {
 		return nil
 	}
 }
+func (r *rawCommandOutput) Error() string {
+	return string(*r)
+}
 
 func raw(c connection.Connection, cmd *cobra.Command, args []string) error {
 	req := connection.APIRequest{
