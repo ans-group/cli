@@ -477,5 +477,5 @@ func OutputECloudResourceTiersProvider(tiers []ecloud.ResourceTier) output.Outpu
 }
 
 func OutputECloudNATOverloadRulesProvider(rules []ecloud.NATOverloadRule) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(rules).WithDefaultFields([]string{"id", "name", "availability_zone_id"})
+	return output.NewSerializedOutputHandlerDataProvider(rules).WithDefaultFields([]string{"id", "name", "network_id", "subnet", "floating_ip_id", "action"})
 }
