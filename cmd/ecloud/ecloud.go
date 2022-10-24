@@ -50,6 +50,7 @@ func ECloudRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 		cmd.AddCommand(ecloudIPAddressRootCmd(f))
 		cmd.AddCommand(ecloudLoadBalancerRootCmd(f))
 		cmd.AddCommand(ecloudLoadBalancerSpecRootCmd(f))
+		cmd.AddCommand(ecloudNATOverloadRuleRootCmd(f))
 		cmd.AddCommand(ecloudNetworkRootCmd(f))
 		cmd.AddCommand(ecloudNetworkPolicyRootCmd(f))
 		cmd.AddCommand(ecloudNetworkRuleRootCmd(f))
