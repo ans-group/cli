@@ -290,6 +290,21 @@ func (mr *MockECloudServiceMockRecorder) CreateLoadBalancer(arg0 interface{}) *g
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateLoadBalancer", reflect.TypeOf((*MockECloudService)(nil).CreateLoadBalancer), arg0)
 }
 
+// CreateNATOverloadRule mocks base method.
+func (m *MockECloudService) CreateNATOverloadRule(arg0 ecloud.CreateNATOverloadRuleRequest) (ecloud.TaskReference, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateNATOverloadRule", arg0)
+	ret0, _ := ret[0].(ecloud.TaskReference)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateNATOverloadRule indicates an expected call of CreateNATOverloadRule.
+func (mr *MockECloudServiceMockRecorder) CreateNATOverloadRule(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateNATOverloadRule", reflect.TypeOf((*MockECloudService)(nil).CreateNATOverloadRule), arg0)
+}
+
 // CreateNetwork mocks base method.
 func (m *MockECloudService) CreateNetwork(arg0 ecloud.CreateNetworkRequest) (string, error) {
 	m.ctrl.T.Helper()
@@ -734,6 +749,21 @@ func (m *MockECloudService) DeleteLoadBalancer(arg0 string) (string, error) {
 func (mr *MockECloudServiceMockRecorder) DeleteLoadBalancer(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteLoadBalancer", reflect.TypeOf((*MockECloudService)(nil).DeleteLoadBalancer), arg0)
+}
+
+// DeleteNATOverloadRule mocks base method.
+func (m *MockECloudService) DeleteNATOverloadRule(arg0 string) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteNATOverloadRule", arg0)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DeleteNATOverloadRule indicates an expected call of DeleteNATOverloadRule.
+func (mr *MockECloudServiceMockRecorder) DeleteNATOverloadRule(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteNATOverloadRule", reflect.TypeOf((*MockECloudService)(nil).DeleteNATOverloadRule), arg0)
 }
 
 // DeleteNetwork mocks base method.
@@ -2463,6 +2493,51 @@ func (m *MockECloudService) GetLoadBalancersPaginated(arg0 connection.APIRequest
 func (mr *MockECloudServiceMockRecorder) GetLoadBalancersPaginated(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLoadBalancersPaginated", reflect.TypeOf((*MockECloudService)(nil).GetLoadBalancersPaginated), arg0)
+}
+
+// GetNATOverloadRule mocks base method.
+func (m *MockECloudService) GetNATOverloadRule(arg0 string) (ecloud.NATOverloadRule, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetNATOverloadRule", arg0)
+	ret0, _ := ret[0].(ecloud.NATOverloadRule)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetNATOverloadRule indicates an expected call of GetNATOverloadRule.
+func (mr *MockECloudServiceMockRecorder) GetNATOverloadRule(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetNATOverloadRule", reflect.TypeOf((*MockECloudService)(nil).GetNATOverloadRule), arg0)
+}
+
+// GetNATOverloadRules mocks base method.
+func (m *MockECloudService) GetNATOverloadRules(arg0 connection.APIRequestParameters) ([]ecloud.NATOverloadRule, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetNATOverloadRules", arg0)
+	ret0, _ := ret[0].([]ecloud.NATOverloadRule)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetNATOverloadRules indicates an expected call of GetNATOverloadRules.
+func (mr *MockECloudServiceMockRecorder) GetNATOverloadRules(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetNATOverloadRules", reflect.TypeOf((*MockECloudService)(nil).GetNATOverloadRules), arg0)
+}
+
+// GetNATOverloadRulesPaginated mocks base method.
+func (m *MockECloudService) GetNATOverloadRulesPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[ecloud.NATOverloadRule], error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetNATOverloadRulesPaginated", arg0)
+	ret0, _ := ret[0].(*connection.Paginated[ecloud.NATOverloadRule])
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetNATOverloadRulesPaginated indicates an expected call of GetNATOverloadRulesPaginated.
+func (mr *MockECloudServiceMockRecorder) GetNATOverloadRulesPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetNATOverloadRulesPaginated", reflect.TypeOf((*MockECloudService)(nil).GetNATOverloadRulesPaginated), arg0)
 }
 
 // GetNIC mocks base method.
@@ -4636,6 +4711,21 @@ func (m *MockECloudService) PatchLoadBalancer(arg0 string, arg1 ecloud.PatchLoad
 func (mr *MockECloudServiceMockRecorder) PatchLoadBalancer(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchLoadBalancer", reflect.TypeOf((*MockECloudService)(nil).PatchLoadBalancer), arg0, arg1)
+}
+
+// PatchNATOverloadRule mocks base method.
+func (m *MockECloudService) PatchNATOverloadRule(arg0 string, arg1 ecloud.PatchNATOverloadRuleRequest) (ecloud.TaskReference, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PatchNATOverloadRule", arg0, arg1)
+	ret0, _ := ret[0].(ecloud.TaskReference)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// PatchNATOverloadRule indicates an expected call of PatchNATOverloadRule.
+func (mr *MockECloudServiceMockRecorder) PatchNATOverloadRule(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchNATOverloadRule", reflect.TypeOf((*MockECloudService)(nil).PatchNATOverloadRule), arg0, arg1)
 }
 
 // PatchNetwork mocks base method.

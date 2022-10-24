@@ -53,4 +53,4 @@ require (
 	gopkg.in/yaml.v2 v2.2.2 // indirect
 )
 
-// replace github.com/ans-group/sdk-go => ../sdk-go
+replace github.com/ans-group/sdk-go => ../sdk-go
