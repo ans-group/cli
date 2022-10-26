@@ -3,8 +3,8 @@ package config
 import (
 	"testing"
 
-	"github.com/ans-group/cli/internal/pkg/config"
 	"github.com/ans-group/cli/test/test_output"
+	"github.com/ans-group/sdk-go/pkg/config"
 	"github.com/spf13/afero"
 	"github.com/stretchr/testify/assert"
 )

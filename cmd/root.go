@@ -17,9 +17,9 @@ import (
 	sslcmd "github.com/ans-group/cli/cmd/ssl"
 	storagecmd "github.com/ans-group/cli/cmd/storage"
 	"github.com/ans-group/cli/internal/pkg/build"
-	"github.com/ans-group/cli/internal/pkg/config"
 	"github.com/ans-group/cli/internal/pkg/factory"
 	"github.com/ans-group/cli/internal/pkg/output"
+	"github.com/ans-group/sdk-go/pkg/config"
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
 )
