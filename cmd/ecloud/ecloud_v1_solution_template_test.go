@@ -5,9 +5,9 @@ import (
 	"testing"
 
 	"github.com/ans-group/cli/internal/pkg/clierrors"
-	"github.com/ans-group/cli/internal/pkg/config"
 	"github.com/ans-group/cli/test/mocks"
 	"github.com/ans-group/cli/test/test_output"
+	"github.com/ans-group/sdk-go/pkg/config"
 	"github.com/ans-group/sdk-go/pkg/service/ecloud"
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"

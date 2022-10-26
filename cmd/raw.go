@@ -6,13 +6,12 @@ import (
 	"io/ioutil"
 	"strings"
 
-	"github.com/ans-group/cli/internal/pkg/factory"
 	"github.com/ans-group/cli/internal/pkg/helper"
 	"github.com/ans-group/sdk-go/pkg/connection"
 	"github.com/spf13/cobra"
 )
 
-func rawCmd(f factory.ConnectionFactory) *cobra.Command {
+func rawCmd(f connection.ConnectionFactory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "raw",
 		Short: "Executes raw commands against API",

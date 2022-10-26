@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/ans-group/cli/internal/pkg/config"
+	"github.com/ans-group/sdk-go/pkg/config"
 	"github.com/stretchr/testify/assert"
 )
 

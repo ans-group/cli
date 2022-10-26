@@ -2,6 +2,7 @@ package factory
 
 import (
 	"github.com/ans-group/sdk-go/pkg/client"
+	"github.com/ans-group/sdk-go/pkg/connection"
 )
 
 type ClientFactory interface {
@@ -9,10 +10,10 @@ type ClientFactory interface {
 }
 
 type ANSClientFactory struct {
-	connectionFactory ConnectionFactory
+	connectionFactory connection.ConnectionFactory
 }
 
-func NewANSClientFactory(connectionFactory ConnectionFactory) *ANSClientFactory {
+func NewANSClientFactory(connectionFactory connection.ConnectionFactory) *ANSClientFactory {
 	return &ANSClientFactory{
 		connectionFactory: connectionFactory,
 	}

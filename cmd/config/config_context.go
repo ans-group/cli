@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/ans-group/cli/internal/pkg/config"
 	"github.com/ans-group/cli/internal/pkg/output"
+	"github.com/ans-group/sdk-go/pkg/config"
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
 )
