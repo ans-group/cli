@@ -20,6 +20,8 @@ import (
 	"github.com/ans-group/cli/internal/pkg/factory"
 	"github.com/ans-group/cli/internal/pkg/output"
 	"github.com/ans-group/sdk-go/pkg/config"
+	"github.com/ans-group/sdk-go/pkg/connection"
+	"github.com/ans-group/sdk-go/pkg/logging"
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
 )
@@ -55,9 +57,10 @@ func Execute(build build.BuildInfo) {
 	rootCmd.PersistentFlags().Int("page", 0, "page to retrieve for paginated requests")
 
 	cobra.OnInitialize(initConfig)
+
 	fs := afero.NewOsFs()
-	connectionFactory := factory.NewANSConnectionFactory(
-		factory.WithUserAgent("ans-cli"),
+	connectionFactory := connection.NewDefaultConnectionFactory(
+		connection.WithDefaultConnectionUserAgent("ans-cli"),
 	)
 	clientFactory := factory.NewANSClientFactory(connectionFactory)
 
@@ -104,5 +107,9 @@ func initConfig() {
 		if err != nil {
 			output.Fatalf("Failed to set context: %s", err)
 		}
+	}
+
+	if config.GetBool("api_debug") {
+		logging.SetLogger(&output.DebugLogger{})
 	}
 }
