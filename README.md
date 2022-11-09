@@ -296,22 +296,33 @@ The commands at `ans completion <shell: bash|zsh|powershell>` provide help for i
 
 ## Releasing
 
-`goreleaser` is used to release the provider on Github. First, obtain your GPG fingerprint:
+`goreleaser` is used to release the provider on Github. 
 
+First, we'll obtain our GPG fingerprint:
+
+```
 gpg -k
+```
 
-Cache GPG passphrase:
+Next, we'll set some environment variables - including GPG fingerprint from above:
 
+```
+export GITHUB_TOKEN=<token>
+export GPG_FINGERPRINT=<fingerprint>
+export GPG_TTY=$(tty)
+```
+
+We'll then need to cache our GPG passphrase:
+
+```
 gpg --armor --detach-sign -n main.go
+```
 
-Finally tag and invoke `goreleaser`:
+Finally push a new tag and invoke `goreleaser`:
 
 ```
 git tag v1.10.0
 git push --tags
-export GITHUB_TOKEN=<token>
-export GPG_FINGERPRINT=<fingerprint>
-export GPG_TTY=$(tty)
 goreleaser --rm-dist
 ```
 
