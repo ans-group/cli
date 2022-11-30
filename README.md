@@ -54,55 +54,28 @@ And away we go!
 
 ## Configuration
 
-There are two available methods for configuring the CLI; Environment variables and configuration file. 
-Both of these methods are explained below.
-
-### Configuration File
-
-The configuration file is read from
-`$HOME/.ans{.extension}` by default (extension being one of the `viper` supported formats such as `yml`, `yaml`, `json`, `toml` etc.). This path can be overridden with the `--config` flag.
-
-Values defined in the configuration file take precedence over environment variables.
+The CLI utilises the common config from the underlying SDK, with details available [here](https://github.com/ans-group/sdk-go#config).
 
 ### Schema
 
-* `api_key`: (String) *Required* API key for authenticating with API
-* `api_timeout_seconds`: (int) HTTP timeout for API requests. Default: `90`
-* `api_uri`: (string) API URI. Default: `api.ukfast.io`
-* `api_insecure`: (bool) Specifies to ignore API certificate validation checks
+The CLI adds the following to the config schema:
+
 * `api_debug`: (bool) Specifies for debug messages to be output to stderr
 * `api_pagination_perpage` (int) Specifies the per-page for paginated requests
 
 ### Contexts
 
-Contexts can be defined in the config file to allow for different sets of configuration to be defined:
-
-```yaml
-contexts:
-  testcontext1:
-    api_key: mykey1
-  testcontext2:
-    api_key: mykey2
-current_context: testcontext1
-```
-
-The current context can also be overridden with the `--context` flag
+Contexts can be defined in the config file to allow for different sets of configuration to be defined. The current context can be overridden with the `--context` flag
 
 ### Commands
 
 The configuration file can be manipulated using the `config` subcommand, for example:
-
 
 ```
 > ans config context update --current --api-key test1
 > ans config context update someothercontext --api-key test1
 > ans config context switch someothercontext
 ```
-
-### Environment variables
-
-Environment variables can be used to configure/manipulate the CLI. These variables match the naming of directives in the configuration file 
-defined above, however are uppercased and prefixed with `ANS_`, such as `ANS_API_KEY`
 
 ## Output Formatting
 
