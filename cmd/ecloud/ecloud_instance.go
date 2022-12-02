@@ -114,7 +114,7 @@ func ecloudInstanceCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates an instance",
 		Long:    "This command creates an instance",
-		Example: "ans ecloud instance create --vpc vpc-abcdef12 --vcpu 2 --ram 2048 --volume 20 --image \"CentOS 7\"",
+		Example: "ans ecloud instance create --vpc vpc-abcdef12 --network net-abcdef12 --vcpu 2 --ram 2048 --volume 20 --image \"CentOS 7\"",
 		RunE:    ecloudCobraRunEFunc(f, ecloudInstanceCreate),
 	}
 
@@ -135,6 +135,7 @@ func ecloudInstanceCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().StringSlice("ssh-key-pair", []string{}, "ID of SSH key pair, can be repeated")
 	cmd.Flags().String("host-group", "", "ID of host group to deploy to")
 	cmd.Flags().String("resource-tier", "", "ID of resource tier to deploy to. A default tier is chosen if not specified")
+	cmd.Flags().String("ip-address", "", "IP address to allocate for DHCP")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the instance has been completely created")
 
 	return cmd
@@ -153,6 +154,11 @@ func ecloudInstanceCreate(service ecloud.ECloudService, cmd *cobra.Command, args
 
 	if cmd.Flags().Changed("ssh-key-pair") {
 		createRequest.SSHKeyPairIDs, _ = cmd.Flags().GetStringSlice("ssh-key-pair")
+	}
+
+	if cmd.Flags().Changed("ip-address") {
+		ipAddress, _ := cmd.Flags().GetString("ip-address")
+		createRequest.CustomIPAddress = connection.IPAddress(ipAddress)
 	}
 
 	imageFlag, _ := cmd.Flags().GetString("image")
