@@ -124,8 +124,8 @@ func cloudflareZoneCreate(service cloudflare.CloudflareService, cmd *cobra.Comma
 func cloudflareZoneUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "update <zone: id>...",
-		Short:   "Removes a zone",
-		Long:    "This command removes one or more zones",
+		Short:   "Updates a zone",
+		Long:    "This command updates one or more zones",
 		Example: "ans cloudflare zone update 83d70af6-80ba-4463-abda-2880613efbc1",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
