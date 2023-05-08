@@ -3,7 +3,7 @@ module github.com/ans-group/cli
 go 1.18
 
 require (
-	github.com/ans-group/sdk-go v1.16.1
+	github.com/ans-group/sdk-go v1.16.3
 	github.com/blang/semver v3.5.1+incompatible
 	github.com/golang/mock v1.6.0
 	github.com/iancoleman/strcase v0.0.0-20191112232945-16388991a334
@@ -46,12 +46,12 @@ require (
 	github.com/ulikunitz/xz v0.5.8 // indirect
 	golang.org/x/net v0.0.0-20210405180319-a5a99cb37ef4 // indirect
 	golang.org/x/oauth2 v0.0.0-20210218202405-ba52d332ba99 // indirect
-	golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a // indirect
-	golang.org/x/text v0.3.7 // indirect
+	golang.org/x/sys v0.0.0-20220722155257-8c9f86f7a55f // indirect
+	golang.org/x/text v0.3.8 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/protobuf v1.25.0 // indirect
 	gopkg.in/go-playground/validator.v9 v9.27.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
-// replace github.com/ans-group/sdk-go => ../sdk-go
+//replace github.com/ans-group/sdk-go => ../sdk-go

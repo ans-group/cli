@@ -36,6 +36,8 @@ func ecloudInstanceRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.AddCommand(ecloudInstanceRestartCmd(f))
 	cmd.AddCommand(ecloudInstanceSSHCmd(f))
 	cmd.AddCommand(ecloudInstanceMigrateCmd(f))
+	cmd.AddCommand(ecloudInstanceEncryptCmd(f))
+	cmd.AddCommand(ecloudInstanceDecryptCmd(f))
 
 	// Child root commands
 	cmd.AddCommand(ecloudInstanceVolumeRootCmd(f))
@@ -644,6 +646,86 @@ func ecloudInstanceMigrate(service ecloud.ECloudService, cmd *cobra.Command, arg
 			continue
 		}
 
+		waitFlag, _ := cmd.Flags().GetBool("wait")
+		if waitFlag {
+			err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskID, ecloud.TaskStatusComplete))
+			if err != nil {
+				output.OutputWithErrorLevelf("Error waiting for task to complete for instance [%s]: %s", arg, err)
+				continue
+			}
+		}
+	}
+	return nil
+}
+
+func ecloudInstanceEncryptCmd(f factory.ClientFactory) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:     "encrypt <instance: id>",
+		Short:   "Encrypts an instance",
+		Long:    "This command encrypts an instance.",
+		Example: "ans ecloud instance encrypt i-abcdef12",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Missing instance")
+			}
+
+			return nil
+		},
+		RunE: ecloudCobraRunEFunc(f, ecloudInstanceEncrypt),
+	}
+
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the instance encrypt task has been completed")
+
+	return cmd
+}
+
+func ecloudInstanceEncrypt(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
+	for _, arg := range args {
+		taskID, err := service.EncryptInstance(arg)
+		if err != nil {
+			output.OutputWithErrorLevelf("Error encrypting instance [%s]: %s", arg, err)
+			continue
+		}
+		waitFlag, _ := cmd.Flags().GetBool("wait")
+		if waitFlag {
+			err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskID, ecloud.TaskStatusComplete))
+			if err != nil {
+				output.OutputWithErrorLevelf("Error waiting for task to complete for instance [%s]: %s", arg, err)
+				continue
+			}
+		}
+	}
+	return nil
+}
+
+func ecloudInstanceDecryptCmd(f factory.ClientFactory) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:     "decrypt <instance: id>",
+		Short:   "Decrypts an encrypted instance",
+		Long:    "This command decrypts a previously encrypted instance..",
+		Example: "ans ecloud instance decrypt i-abcdef12",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Missing instance")
+			}
+
+			return nil
+		},
+		RunE: ecloudCobraRunEFunc(f, ecloudInstanceEncrypt),
+	}
+
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the instance decrypt task has been completed")
+
+	return cmd
+}
+
+func ecloudInstanceDecrypt(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
+	for _, arg := range args {
+		taskID, err := service.DecryptInstance(arg)
+		if err != nil {
+			output.OutputWithErrorLevelf("Error decrypting instance [%s]: %s", arg, err)
+			continue
+		}
 		waitFlag, _ := cmd.Flags().GetBool("wait")
 		if waitFlag {
 			err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskID, ecloud.TaskStatusComplete))

@@ -572,6 +572,21 @@ func (mr *MockECloudServiceMockRecorder) CreateVolumeGroup(arg0 interface{}) *go
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateVolumeGroup", reflect.TypeOf((*MockECloudService)(nil).CreateVolumeGroup), arg0)
 }
 
+// DecryptInstance mocks base method.
+func (m *MockECloudService) DecryptInstance(arg0 string) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DecryptInstance", arg0)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DecryptInstance indicates an expected call of DecryptInstance.
+func (mr *MockECloudServiceMockRecorder) DecryptInstance(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DecryptInstance", reflect.TypeOf((*MockECloudService)(nil).DecryptInstance), arg0)
+}
+
 // DeleteAffinityRule mocks base method.
 func (m *MockECloudService) DeleteAffinityRule(arg0 string) (string, error) {
 	m.ctrl.T.Helper()
@@ -1068,6 +1083,21 @@ func (m *MockECloudService) DetachInstanceVolume(arg0 string, arg1 ecloud.Attach
 func (mr *MockECloudServiceMockRecorder) DetachInstanceVolume(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DetachInstanceVolume", reflect.TypeOf((*MockECloudService)(nil).DetachInstanceVolume), arg0, arg1)
+}
+
+// EncryptInstance mocks base method.
+func (m *MockECloudService) EncryptInstance(arg0 string) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "EncryptInstance", arg0)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// EncryptInstance indicates an expected call of EncryptInstance.
+func (mr *MockECloudServiceMockRecorder) EncryptInstance(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "EncryptInstance", reflect.TypeOf((*MockECloudService)(nil).EncryptInstance), arg0)
 }
 
 // GetActiveDirectoryDomain mocks base method.

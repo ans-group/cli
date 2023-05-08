@@ -931,3 +931,145 @@ func Test_ecloudInstanceMigrate(t *testing.T) {
 		})
 	})
 }
+
+func Test_ecloudInstanceEncryptCmd_Args(t *testing.T) {
+	t.Run("ValidArgs_NoError", func(t *testing.T) {
+		err := ecloudInstanceEncryptCmd(nil).Args(nil, []string{"i-abcdef12"})
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("InvalidArgs_Error", func(t *testing.T) {
+		err := ecloudInstanceEncryptCmd(nil).Args(nil, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing instance", err.Error())
+	})
+}
+
+func Test_ecloudInstanceEncrypt(t *testing.T) {
+	t.Run("WithNoWaitFlag_ReturnsTaskID", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		cmd := ecloudInstanceEncryptCmd(nil)
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		service.EXPECT().EncryptInstance("i-abcdef12").Return("task-abcdef12", nil)
+
+		ecloudInstanceEncrypt(service, cmd, []string{"i-abcdef12"})
+	})
+
+	t.Run("WithWaitFlag_NoError_Succeeds", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		cmd := ecloudInstanceEncryptCmd(nil)
+		cmd.ParseFlags([]string{"--wait"})
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		service.EXPECT().EncryptInstance("i-abcdef12").Return("task-abcdef12", nil)
+		service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, nil)
+
+		ecloudInstanceEncrypt(service, cmd, []string{"i-abcdef12"})
+	})
+
+	t.Run("WithWaitFlag_GetTaskError_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		cmd := ecloudInstanceEncryptCmd(nil)
+		cmd.ParseFlags([]string{"--wait"})
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		service.EXPECT().EncryptInstance("i-abcdef12").Return("task-abcdef12", nil)
+		service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{}, errors.New("test error"))
+
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for instance [i-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+			ecloudInstanceEncrypt(service, cmd, []string{"i-abcdef12"})
+		})
+	})
+
+	t.Run("EncryptInstanceError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		service.EXPECT().EncryptInstance("i-abcdef12").Return("", errors.New("test error")).Times(1)
+
+		test_output.AssertErrorOutput(t, "Error encrypting instance [i-abcdef12]: test error\n", func() {
+			ecloudInstanceEncrypt(service, &cobra.Command{}, []string{"i-abcdef12"})
+		})
+	})
+}
+
+func Test_ecloudInstanceDecryptCmd_Args(t *testing.T) {
+	t.Run("ValidArgs_NoError", func(t *testing.T) {
+		err := ecloudInstanceDecryptCmd(nil).Args(nil, []string{"i-abcdef12"})
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("InvalidArgs_Error", func(t *testing.T) {
+		err := ecloudInstanceDecryptCmd(nil).Args(nil, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing instance", err.Error())
+	})
+}
+
+func Test_ecloudInstanceDecrypt(t *testing.T) {
+	t.Run("WithNoWaitFlag_ReturnsTaskID", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		cmd := ecloudInstanceDecryptCmd(nil)
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		service.EXPECT().DecryptInstance("i-abcdef12").Return("task-abcdef12", nil)
+
+		ecloudInstanceDecrypt(service, cmd, []string{"i-abcdef12"})
+	})
+
+	t.Run("WithWaitFlag_NoError_Succeeds", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		cmd := ecloudInstanceDecryptCmd(nil)
+		cmd.ParseFlags([]string{"--wait"})
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		service.EXPECT().DecryptInstance("i-abcdef12").Return("task-abcdef12", nil)
+		service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, nil)
+
+		ecloudInstanceDecrypt(service, cmd, []string{"i-abcdef12"})
+	})
+
+	t.Run("WithWaitFlag_GetTaskError_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		cmd := ecloudInstanceDecryptCmd(nil)
+		cmd.ParseFlags([]string{"--wait"})
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		service.EXPECT().DecryptInstance("i-abcdef12").Return("task-abcdef12", nil)
+		service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{}, errors.New("test error"))
+
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for instance [i-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+			ecloudInstanceDecrypt(service, cmd, []string{"i-abcdef12"})
+		})
+	})
+
+	t.Run("DecryptInstanceError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		service.EXPECT().DecryptInstance("i-abcdef12").Return("", errors.New("test error")).Times(1)
+
+		test_output.AssertErrorOutput(t, "Error decrypting instance [i-abcdef12]: test error\n", func() {
+			ecloudInstanceDecrypt(service, &cobra.Command{}, []string{"i-abcdef12"})
+		})
+	})
+}
