@@ -711,7 +711,7 @@ func ecloudInstanceDecryptCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		RunE: ecloudCobraRunEFunc(f, ecloudInstanceEncrypt),
+		RunE: ecloudCobraRunEFunc(f, ecloudInstanceDecrypt),
 	}
 
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the instance decrypt task has been completed")
