@@ -9,7 +9,15 @@ The client utilises ANS APIs to provide access to most service features. You sho
 [Getting Started](https://developers.ukfast.io/getting-started) section of the API documentation before 
 proceeding below
 
-## Building from source
+## Installation
+
+The CLI is distributed as a single binary, and is available for Windows, Linux and Mac. This binary 
+should be downloaded and placed into a directory included in your `PATH`. This would typically 
+be `/usr/local/bin` on most Linux distributions
+
+Pre-compiled binaries are available at [Releases](https://github.com/ans-group/cli/releases)
+
+### Building from source
 
 Install the dependencies, golang and make, then build from the Makefile.
 
@@ -22,14 +30,6 @@ To copy to /usr/local/bin, as root or using sudo
 ```
 # make install
 ```
-
-## Installation
-
-The CLI is distributed as a single binary, and is available for Windows, Linux and Mac. This binary 
-should be downloaded and placed into a directory included in your `PATH`. This would typically 
-be `/usr/local/bin` on most Linux distributions
-
-Pre-compiled binaries are available at [Releases](https://github.com/ans-group/cli/releases)
 
 ## Getting started
 
@@ -269,7 +269,7 @@ The commands at `ans completion <shell: bash|zsh|powershell>` provide help for i
 
 ## Releasing
 
-`goreleaser` is used to release the provider on Github. 
+`goreleaser` is used to release the CLI on Github. 
 
 First, we'll obtain our GPG fingerprint:
 
