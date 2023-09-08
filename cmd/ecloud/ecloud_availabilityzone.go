@@ -24,6 +24,9 @@ func ecloudAvailabilityZoneRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.AddCommand(ecloudAvailabilityZoneListCmd(f))
 	cmd.AddCommand(ecloudAvailabilityZoneShowCmd(f))
 
+	// Child root commands
+	cmd.AddCommand(ecloudAvailabilityZoneIOPSRootCmd(f))
+
 	return cmd
 }
 
