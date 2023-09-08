@@ -64,7 +64,7 @@ func Test_ecloudIOPSTierShowCmd_Args(t *testing.T) {
 		err := ecloudIOPSTierShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing IOPS", err.Error())
+		assert.Equal(t, "Missing IOPS tier", err.Error())
 	})
 }
 

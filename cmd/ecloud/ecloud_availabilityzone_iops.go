@@ -57,7 +57,7 @@ func ecloudAvailabilityZoneIOPSTierList(service ecloud.ECloudService, cmd *cobra
 
 	zones, err := service.GetAvailabilityZoneIOPSTiers(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving availability zones: %s", err)
+		return fmt.Errorf("Error retrieving availability zone IOPS tiers: %s", err)
 	}
 
 	return output.CommandOutput(cmd, OutputECloudIOPSTierProvider(zones))

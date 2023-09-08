@@ -14,7 +14,7 @@ import (
 
 func Test_ecloudAvailabilityZoneIOPSTiersListCmd_Args(t *testing.T) {
 	t.Run("ValidArgs_NoError", func(t *testing.T) {
-		err := ecloudAvailabilityZoneIOPSTierListCmd(nil).Args(nil, []string{"fwp-abcdef12"})
+		err := ecloudAvailabilityZoneIOPSTierListCmd(nil).Args(nil, []string{"iops-abcdef12"})
 
 		assert.Nil(t, err)
 	})
@@ -34,9 +34,9 @@ func Test_ecloudAvailabilityZoneIOPSTiersList(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().GetAvailabilityZoneIOPSTiers("fwp-abcdef12", gomock.Any()).Return([]ecloud.IOPSTier{}, nil).Times(1)
+		service.EXPECT().GetAvailabilityZoneIOPSTiers("iops-abcdef12", gomock.Any()).Return([]ecloud.IOPSTier{}, nil).Times(1)
 
-		ecloudAvailabilityZoneIOPSTierList(service, &cobra.Command{}, []string{"fwp-abcdef12"})
+		ecloudAvailabilityZoneIOPSTierList(service, &cobra.Command{}, []string{"iops-abcdef12"})
 	})
 
 	t.Run("MalformedFlag_ReturnsError", func(t *testing.T) {
@@ -59,10 +59,10 @@ func Test_ecloudAvailabilityZoneIOPSTiersList(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().GetAvailabilityZoneIOPSTiers("fwp-abcdef12", gomock.Any()).Return([]ecloud.IOPSTier{}, errors.New("test error")).Times(1)
+		service.EXPECT().GetAvailabilityZoneIOPSTiers("iops-abcdef12", gomock.Any()).Return([]ecloud.IOPSTier{}, errors.New("test error")).Times(1)
 
-		err := ecloudAvailabilityZoneIOPSTierList(service, &cobra.Command{}, []string{"fwp-abcdef12"})
+		err := ecloudAvailabilityZoneIOPSTierList(service, &cobra.Command{}, []string{"iops-abcdef12"})
 
-		assert.Equal(t, "Error retrieving availability zone ports: test error", err.Error())
+		assert.Equal(t, "Error retrieving availability zone IOPS tiers: test error", err.Error())
 	})
 }
