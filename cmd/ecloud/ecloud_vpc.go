@@ -106,6 +106,7 @@ func ecloudVPCCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().String("name", "", "Name of VPC")
 	cmd.Flags().String("region", "", "ID of region")
 	cmd.MarkFlagRequired("region")
+	cmd.Flags().Int("client-id", 0, "ID of client")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the VPC has been completely created")
 
 	return cmd
@@ -115,10 +116,12 @@ func ecloudVPCCreate(service ecloud.ECloudService, cmd *cobra.Command, args []st
 
 	name, _ := cmd.Flags().GetString("name")
 	regionID, _ := cmd.Flags().GetString("region")
+	clientID, _ := cmd.Flags().GetInt("client-id")
 
 	createRequest := ecloud.CreateVPCRequest{
 		Name:     name,
 		RegionID: regionID,
+		ClientID: clientID,
 	}
 
 	vpcID, err := service.CreateVPC(createRequest)
