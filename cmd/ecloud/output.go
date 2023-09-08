@@ -479,3 +479,7 @@ func OutputECloudResourceTiersProvider(tiers []ecloud.ResourceTier) output.Outpu
 func OutputECloudNATOverloadRulesProvider(rules []ecloud.NATOverloadRule) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(rules).WithDefaultFields([]string{"id", "name", "network_id", "subnet", "floating_ip_id", "action"})
 }
+
+func OutputECloudIOPSTierProvider(tiers []ecloud.IOPSTier) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(tiers).WithDefaultFields([]string{"id", "name", "level"})
+}

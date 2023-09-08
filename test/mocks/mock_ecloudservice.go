@@ -1325,6 +1325,36 @@ func (mr *MockECloudServiceMockRecorder) GetAvailabilityZone(arg0 interface{}) *
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAvailabilityZone", reflect.TypeOf((*MockECloudService)(nil).GetAvailabilityZone), arg0)
 }
 
+// GetAvailabilityZoneIOPSTiers mocks base method.
+func (m *MockECloudService) GetAvailabilityZoneIOPSTiers(arg0 string, arg1 connection.APIRequestParameters) ([]ecloud.IOPSTier, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetAvailabilityZoneIOPSTiers", arg0, arg1)
+	ret0, _ := ret[0].([]ecloud.IOPSTier)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAvailabilityZoneIOPSTiers indicates an expected call of GetAvailabilityZoneIOPSTiers.
+func (mr *MockECloudServiceMockRecorder) GetAvailabilityZoneIOPSTiers(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAvailabilityZoneIOPSTiers", reflect.TypeOf((*MockECloudService)(nil).GetAvailabilityZoneIOPSTiers), arg0, arg1)
+}
+
+// GetAvailabilityZoneIOPSTiersPaginated mocks base method.
+func (m *MockECloudService) GetAvailabilityZoneIOPSTiersPaginated(arg0 string, arg1 connection.APIRequestParameters) (*connection.Paginated[ecloud.IOPSTier], error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetAvailabilityZoneIOPSTiersPaginated", arg0, arg1)
+	ret0, _ := ret[0].(*connection.Paginated[ecloud.IOPSTier])
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAvailabilityZoneIOPSTiersPaginated indicates an expected call of GetAvailabilityZoneIOPSTiersPaginated.
+func (mr *MockECloudServiceMockRecorder) GetAvailabilityZoneIOPSTiersPaginated(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAvailabilityZoneIOPSTiersPaginated", reflect.TypeOf((*MockECloudService)(nil).GetAvailabilityZoneIOPSTiersPaginated), arg0, arg1)
+}
+
 // GetAvailabilityZones mocks base method.
 func (m *MockECloudService) GetAvailabilityZones(arg0 connection.APIRequestParameters) ([]ecloud.AvailabilityZone, error) {
 	m.ctrl.T.Helper()
@@ -2088,6 +2118,51 @@ func (m *MockECloudService) GetHostsPaginated(arg0 connection.APIRequestParamete
 func (mr *MockECloudServiceMockRecorder) GetHostsPaginated(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetHostsPaginated", reflect.TypeOf((*MockECloudService)(nil).GetHostsPaginated), arg0)
+}
+
+// GetIOPSTier mocks base method.
+func (m *MockECloudService) GetIOPSTier(arg0 string) (ecloud.IOPSTier, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetIOPSTier", arg0)
+	ret0, _ := ret[0].(ecloud.IOPSTier)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetIOPSTier indicates an expected call of GetIOPSTier.
+func (mr *MockECloudServiceMockRecorder) GetIOPSTier(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetIOPSTier", reflect.TypeOf((*MockECloudService)(nil).GetIOPSTier), arg0)
+}
+
+// GetIOPSTiers mocks base method.
+func (m *MockECloudService) GetIOPSTiers(arg0 connection.APIRequestParameters) ([]ecloud.IOPSTier, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetIOPSTiers", arg0)
+	ret0, _ := ret[0].([]ecloud.IOPSTier)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetIOPSTiers indicates an expected call of GetIOPSTiers.
+func (mr *MockECloudServiceMockRecorder) GetIOPSTiers(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetIOPSTiers", reflect.TypeOf((*MockECloudService)(nil).GetIOPSTiers), arg0)
+}
+
+// GetIOPSTiersPaginated mocks base method.
+func (m *MockECloudService) GetIOPSTiersPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[ecloud.IOPSTier], error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetIOPSTiersPaginated", arg0)
+	ret0, _ := ret[0].(*connection.Paginated[ecloud.IOPSTier])
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetIOPSTiersPaginated indicates an expected call of GetIOPSTiersPaginated.
+func (mr *MockECloudServiceMockRecorder) GetIOPSTiersPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetIOPSTiersPaginated", reflect.TypeOf((*MockECloudService)(nil).GetIOPSTiersPaginated), arg0)
 }
 
 // GetIPAddress mocks base method.
