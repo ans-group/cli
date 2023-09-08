@@ -19,3 +19,8 @@ func OutputAccountCreditsProvider(credits []account.Credit) output.OutputHandler
 	return output.NewSerializedOutputHandlerDataProvider(credits).
 		WithDefaultFields([]string{"type", "total", "remaining"})
 }
+
+func OutputAccountClientsProvider(clients []account.Client) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(clients).
+		WithDefaultFields([]string{"id", "company_name"})
+}

@@ -12,6 +12,7 @@ func AccountRootCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	// Child root commands
+	cmd.AddCommand(accountClientRootCmd(f))
 	cmd.AddCommand(accountContactRootCmd(f))
 	cmd.AddCommand(accountDetailsRootCmd(f))
 	cmd.AddCommand(accountCreditRootCmd(f))
