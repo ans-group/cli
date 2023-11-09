@@ -7,3 +7,4 @@ cover.out
 dist/
 __debug_bin
 cli
+/.idea

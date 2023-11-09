@@ -116,7 +116,7 @@ func ecloudInstanceCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "create",
 		Short:   "Creates an instance",
 		Long:    "This command creates an instance",
-		Example: "ans ecloud instance create --vpc vpc-abcdef12 --network net-abcdef12 --vcpu 2 --ram 2048 --volume 20 --image \"CentOS 7\"",
+		Example: "ans ecloud instance create --vpc vpc-abcdef12 --network net-abcdef12 --vcpu-sockets 2 --vcpu-cores-per-socket 2 --ram 2048 --volume 20 --image \"CentOS 7\"",
 		RunE:    ecloudCobraRunEFunc(f, ecloudInstanceCreate),
 	}
 
@@ -124,8 +124,10 @@ func ecloudInstanceCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().String("name", "", "Name of instance")
 	cmd.Flags().String("vpc", "", "ID of VPC")
 	cmd.MarkFlagRequired("vpc")
-	cmd.Flags().Int("vcpu", 0, "Number of vCPU cores to allocate")
-	cmd.MarkFlagRequired("vcpu")
+	cmd.Flags().Int("vcpu", 0, "Number of vCPU sockets to allocate")
+	cmd.Flags().MarkDeprecated("vcpu", "use --vcpu-sockets / --vcpu-cores-per-socket flags instead")
+	cmd.Flags().Int("vcpu-sockets", 1, "Number of vCPU sockets to allocate")
+	cmd.Flags().Int("vcpu-cores-per-socket", 1, "Number of vCPU cores to allocate per socket")
 	cmd.Flags().Int("ram", 0, "Amount of RAM (in MB) to allocate")
 	cmd.MarkFlagRequired("ram")
 	cmd.Flags().Int("volume", 0, "Size of volume to allocate")
@@ -146,13 +148,22 @@ func ecloudInstanceCreateCmd(f factory.ClientFactory) *cobra.Command {
 func ecloudInstanceCreate(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	createRequest := ecloud.CreateInstanceRequest{}
 	createRequest.VPCID, _ = cmd.Flags().GetString("vpc")
-	createRequest.VCPUCores, _ = cmd.Flags().GetInt("vcpu")
 	createRequest.RAMCapacity, _ = cmd.Flags().GetInt("ram")
 	createRequest.VolumeCapacity, _ = cmd.Flags().GetInt("volume")
 	createRequest.NetworkID, _ = cmd.Flags().GetString("network")
 	createRequest.HostGroupID, _ = cmd.Flags().GetString("host-group")
 	createRequest.ResourceTierID, _ = cmd.Flags().GetString("resource-tier")
 	createRequest.Name, _ = cmd.Flags().GetString("name")
+
+	if cmd.Flags().Changed("vcpu") {
+		if cmd.Flags().Changed("vcpu-sockets") || cmd.Flags().Changed("vcpu-cores-per-socket") {
+			return fmt.Errorf("Flag --vcpu is mutually exclusive with --vcpu-sockets and --vcpu-cores-per-socket")
+		}
+		createRequest.VCPUCores, _ = cmd.Flags().GetInt("vcpu")
+	} else {
+		createRequest.VCPUSockets, _ = cmd.Flags().GetInt("vcpu-sockets")
+		createRequest.VCPUCoresPerSocket, _ = cmd.Flags().GetInt("vcpu-cores-per-socket")
+	}
 
 	if cmd.Flags().Changed("ssh-key-pair") {
 		createRequest.SSHKeyPairIDs, _ = cmd.Flags().GetStringSlice("ssh-key-pair")
@@ -233,7 +244,10 @@ func ecloudInstanceUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("name", "", "Name of instance")
-	cmd.Flags().Int("vcpu", 0, "Number of vCPU cores to allocate")
+	cmd.Flags().Int("vcpu", 0, "Number of vCPU sockets to allocate")
+	cmd.Flags().MarkDeprecated("vcpu", "use --vcpu-sockets / --vcpu-cores-per-socket flags instead")
+	cmd.Flags().Int("vcpu-sockets", 0, "Number of vCPU sockets to allocate")
+	cmd.Flags().Int("vcpu-cores-per-socket", 0, "Number of vCPU cores to allocate per socket")
 	cmd.Flags().Int("ram", 0, "Amount of RAM (in MB) to allocate")
 	cmd.Flags().String("volume-group", "", "ID of volume-group to use for instance")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the instance has been completely updated")
@@ -249,13 +263,22 @@ func ecloudInstanceUpdate(service ecloud.ECloudService, cmd *cobra.Command, args
 	}
 
 	if cmd.Flags().Changed("vcpu") {
-		vcpu, _ := cmd.Flags().GetInt("vcpu")
-		patchRequest.VCPUCores = vcpu
+		if cmd.Flags().Changed("vcpu-sockets") || cmd.Flags().Changed("vcpu-cores-per-socket") {
+			return fmt.Errorf("Flag --vcpu is mutually exclusive with --vcpu-sockets and --vcpu-cores-per-socket")
+		}
+		patchRequest.VCPUCores, _ = cmd.Flags().GetInt("vcpu")
+	} else {
+		if cmd.Flags().Changed("vcpu-sockets") {
+			patchRequest.VCPUSockets, _ = cmd.Flags().GetInt("vcpu-sockets")
+		}
+
+		if cmd.Flags().Changed("vcpu-cores-per-socket") {
+			patchRequest.VCPUCoresPerSocket, _ = cmd.Flags().GetInt("vcpu-cores-per-socket")
+		}
 	}
 
 	if cmd.Flags().Changed("ram") {
-		ram, _ := cmd.Flags().GetInt("ram")
-		patchRequest.RAMCapacity = ram
+		patchRequest.RAMCapacity, _ = cmd.Flags().GetInt("ram")
 	}
 
 	if cmd.Flags().Changed("volume-group") {
