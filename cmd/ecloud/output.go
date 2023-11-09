@@ -325,7 +325,7 @@ func OutputECloudVPCsProvider(vpcs []ecloud.VPC) output.OutputHandlerDataProvide
 }
 
 func OutputECloudInstancesProvider(instances []ecloud.Instance) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(instances).WithDefaultFields([]string{"id", "name", "vpc_id", "vcpu_cores", "ram_capacity", "sync_status"})
+	return output.NewSerializedOutputHandlerDataProvider(instances).WithDefaultFields([]string{"id", "name", "vpc_id", "vcpu_sockets", "vcpu_cores_per_socket", "ram_capacity", "sync_status"})
 }
 
 func OutputECloudFloatingIPsProvider(fips []ecloud.FloatingIP) output.OutputHandlerDataProvider {
