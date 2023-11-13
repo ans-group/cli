@@ -120,8 +120,10 @@ func Test_ecloudInstanceCreate(t *testing.T) {
 		cmd.ParseFlags([]string{"--name=testinstance", "--image=img-abcdef12"})
 
 		req := ecloud.CreateInstanceRequest{
-			Name:    "testinstance",
-			ImageID: "img-abcdef12",
+			Name:               "testinstance",
+			ImageID:            "img-abcdef12",
+			VCPUSockets:        1,
+			VCPUCoresPerSocket: 1,
 		}
 
 		service.EXPECT().CreateInstance(req).Return("i-abcdef12", nil)
@@ -140,8 +142,10 @@ func Test_ecloudInstanceCreate(t *testing.T) {
 		cmd.ParseFlags([]string{"--name=testinstance", "--image=test"})
 
 		req := ecloud.CreateInstanceRequest{
-			Name:    "testinstance",
-			ImageID: "img-abcdef12",
+			Name:               "testinstance",
+			ImageID:            "img-abcdef12",
+			VCPUSockets:        1,
+			VCPUCoresPerSocket: 1,
 		}
 
 		service.EXPECT().GetImages(connection.APIRequestParameters{
@@ -241,9 +245,11 @@ func Test_ecloudInstanceCreate(t *testing.T) {
 		cmd.ParseFlags([]string{"--name=testinstance", "--image=img-abcdef12", "--network=net-abcdef12"})
 
 		req := ecloud.CreateInstanceRequest{
-			Name:      "testinstance",
-			ImageID:   "img-abcdef12",
-			NetworkID: "net-abcdef12",
+			Name:               "testinstance",
+			ImageID:            "img-abcdef12",
+			NetworkID:          "net-abcdef12",
+			VCPUSockets:        1,
+			VCPUCoresPerSocket: 1,
 		}
 
 		service.EXPECT().CreateInstance(req).Return("i-abcdef12", nil)
