@@ -127,7 +127,7 @@ func TestOutputHandler_Handle(t *testing.T) {
 			handler.Handle()
 		})
 
-		assert.Equal(t, "{testvalue1 testvalue2}", output)
+		assert.Equal(t, "{\"TestProperty1\":\"testvalue1\",\"TestProperty2\":\"testvalue2\"}", output)
 	})
 
 	t.Run("TableFormat_ExpectedOutput", func(t *testing.T) {
