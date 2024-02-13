@@ -76,3 +76,8 @@ func OutputLoadBalancerDeploymentsProvider(deployments []loadbalancer.Deployment
 	return output.NewSerializedOutputHandlerDataProvider(deployments).
 		WithDefaultFields([]string{"id", "cluster_id", "successful", "created_at"})
 }
+
+func OutputLoadBalancerVIPsProvider(vips []loadbalancer.VIP) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(vips).
+		WithDefaultFields([]string{"id", "cluster_id", "internal_cidr", "external_cidr"})
+}
