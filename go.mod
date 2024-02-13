@@ -1,6 +1,6 @@
 module github.com/ans-group/cli
 
-go 1.20
+go 1.21
 
 require (
 	github.com/ans-group/sdk-go v1.17.0
