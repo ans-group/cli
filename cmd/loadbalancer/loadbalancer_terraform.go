@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"slices"
+	"strconv"
 	"strings"
 
 	"github.com/ans-group/cli/internal/pkg/factory"
@@ -15,6 +16,34 @@ import (
 )
 
 const clusterIDsOutputKey string = "loadbalancer_cluster_ids"
+
+type clusterIDList []int
+
+func (c *clusterIDList) UnmarshalJSON(data []byte) error {
+	var v []any
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+
+	for _, item := range v {
+		switch v := item.(type) {
+		case int:
+			*c = append(*c, v)
+		case float64:
+			*c = append(*c, int(v))
+		case string:
+			if intValue, err := strconv.Atoi(v); err == nil {
+				*c = append(*c, intValue)
+			} else {
+				return err
+			}
+		default:
+			return fmt.Errorf("unsupported type: %T", item)
+		}
+	}
+
+	return nil
+}
 
 func loadbalancerTerraformCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
@@ -118,7 +147,7 @@ func getClusterIDs(binPath string) ([]int, error) {
 			clusterIDsOutputKey, err)
 	}
 
-	var clusterIDs []int
+	var clusterIDs clusterIDList
 	err = json.Unmarshal(output, &clusterIDs)
 	if err != nil {
 		return nil, fmt.Errorf("ans: deployment failed: failed to unmarshal Terraform output from key '%s': %s",
