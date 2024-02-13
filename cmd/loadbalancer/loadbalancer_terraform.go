@@ -27,6 +27,8 @@ func (c *clusterIDList) UnmarshalJSON(data []byte) error {
 
 	for _, item := range v {
 		switch v := item.(type) {
+		case int:
+			*c = append(*c, v)
 		case float64:
 			*c = append(*c, int(v))
 		case string:
