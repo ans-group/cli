@@ -15,6 +15,7 @@ func PSSRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 	// Child root commands
 	cmd.AddCommand(pssRequestRootCmd(f))
 	cmd.AddCommand(pssReplyRootCmd(f, fs))
+	cmd.AddCommand(pssCaseOptionRootCmd(f))
 
 	return cmd
 }

@@ -5,12 +5,11 @@
 package mocks
 
 import (
-	io "io"
-	reflect "reflect"
-
-	gomock "github.com/golang/mock/gomock"
 	connection "github.com/ans-group/sdk-go/pkg/connection"
 	pss "github.com/ans-group/sdk-go/pkg/service/pss"
+	gomock "github.com/golang/mock/gomock"
+	io "io"
+	reflect "reflect"
 )
 
 // MockPSSService is a mock of PSSService interface.
@@ -108,6 +107,186 @@ func (m *MockPSSService) DownloadReplyAttachmentStream(arg0, arg1 string) (io.Re
 func (mr *MockPSSServiceMockRecorder) DownloadReplyAttachmentStream(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DownloadReplyAttachmentStream", reflect.TypeOf((*MockPSSService)(nil).DownloadReplyAttachmentStream), arg0, arg1)
+}
+
+// GetCaseCategories mocks base method.
+func (m *MockPSSService) GetCaseCategories(arg0 connection.APIRequestParameters) ([]pss.CaseCategory, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetCaseCategories", arg0)
+	ret0, _ := ret[0].([]pss.CaseCategory)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetCaseCategories indicates an expected call of GetCaseCategories.
+func (mr *MockPSSServiceMockRecorder) GetCaseCategories(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCaseCategories", reflect.TypeOf((*MockPSSService)(nil).GetCaseCategories), arg0)
+}
+
+// GetCaseCategoriesPaginated mocks base method.
+func (m *MockPSSService) GetCaseCategoriesPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[pss.CaseCategory], error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetCaseCategoriesPaginated", arg0)
+	ret0, _ := ret[0].(*connection.Paginated[pss.CaseCategory])
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetCaseCategoriesPaginated indicates an expected call of GetCaseCategoriesPaginated.
+func (mr *MockPSSServiceMockRecorder) GetCaseCategoriesPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCaseCategoriesPaginated", reflect.TypeOf((*MockPSSService)(nil).GetCaseCategoriesPaginated), arg0)
+}
+
+// GetChangeImpactCaseOptions mocks base method.
+func (m *MockPSSService) GetChangeImpactCaseOptions(arg0 connection.APIRequestParameters) ([]pss.CaseOption, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetChangeImpactCaseOptions", arg0)
+	ret0, _ := ret[0].([]pss.CaseOption)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetChangeImpactCaseOptions indicates an expected call of GetChangeImpactCaseOptions.
+func (mr *MockPSSServiceMockRecorder) GetChangeImpactCaseOptions(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetChangeImpactCaseOptions", reflect.TypeOf((*MockPSSService)(nil).GetChangeImpactCaseOptions), arg0)
+}
+
+// GetChangeImpactCaseOptionsPaginated mocks base method.
+func (m *MockPSSService) GetChangeImpactCaseOptionsPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[pss.CaseOption], error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetChangeImpactCaseOptionsPaginated", arg0)
+	ret0, _ := ret[0].(*connection.Paginated[pss.CaseOption])
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetChangeImpactCaseOptionsPaginated indicates an expected call of GetChangeImpactCaseOptionsPaginated.
+func (mr *MockPSSServiceMockRecorder) GetChangeImpactCaseOptionsPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetChangeImpactCaseOptionsPaginated", reflect.TypeOf((*MockPSSService)(nil).GetChangeImpactCaseOptionsPaginated), arg0)
+}
+
+// GetChangeRiskCaseOptions mocks base method.
+func (m *MockPSSService) GetChangeRiskCaseOptions(arg0 connection.APIRequestParameters) ([]pss.CaseOption, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetChangeRiskCaseOptions", arg0)
+	ret0, _ := ret[0].([]pss.CaseOption)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetChangeRiskCaseOptions indicates an expected call of GetChangeRiskCaseOptions.
+func (mr *MockPSSServiceMockRecorder) GetChangeRiskCaseOptions(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetChangeRiskCaseOptions", reflect.TypeOf((*MockPSSService)(nil).GetChangeRiskCaseOptions), arg0)
+}
+
+// GetChangeRiskCaseOptionsPaginated mocks base method.
+func (m *MockPSSService) GetChangeRiskCaseOptionsPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[pss.CaseOption], error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetChangeRiskCaseOptionsPaginated", arg0)
+	ret0, _ := ret[0].(*connection.Paginated[pss.CaseOption])
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetChangeRiskCaseOptionsPaginated indicates an expected call of GetChangeRiskCaseOptionsPaginated.
+func (mr *MockPSSServiceMockRecorder) GetChangeRiskCaseOptionsPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetChangeRiskCaseOptionsPaginated", reflect.TypeOf((*MockPSSService)(nil).GetChangeRiskCaseOptionsPaginated), arg0)
+}
+
+// GetIncidentCases mocks base method.
+func (m *MockPSSService) GetIncidentCases(arg0 connection.APIRequestParameters) ([]pss.IncidentCase, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetIncidentCases", arg0)
+	ret0, _ := ret[0].([]pss.IncidentCase)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetIncidentCases indicates an expected call of GetIncidentCases.
+func (mr *MockPSSServiceMockRecorder) GetIncidentCases(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetIncidentCases", reflect.TypeOf((*MockPSSService)(nil).GetIncidentCases), arg0)
+}
+
+// GetIncidentCasesPaginated mocks base method.
+func (m *MockPSSService) GetIncidentCasesPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[pss.IncidentCase], error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetIncidentCasesPaginated", arg0)
+	ret0, _ := ret[0].(*connection.Paginated[pss.IncidentCase])
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetIncidentCasesPaginated indicates an expected call of GetIncidentCasesPaginated.
+func (mr *MockPSSServiceMockRecorder) GetIncidentCasesPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetIncidentCasesPaginated", reflect.TypeOf((*MockPSSService)(nil).GetIncidentCasesPaginated), arg0)
+}
+
+// GetIncidentImpactCaseOptions mocks base method.
+func (m *MockPSSService) GetIncidentImpactCaseOptions(arg0 connection.APIRequestParameters) ([]pss.CaseOption, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetIncidentImpactCaseOptions", arg0)
+	ret0, _ := ret[0].([]pss.CaseOption)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetIncidentImpactCaseOptions indicates an expected call of GetIncidentImpactCaseOptions.
+func (mr *MockPSSServiceMockRecorder) GetIncidentImpactCaseOptions(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetIncidentImpactCaseOptions", reflect.TypeOf((*MockPSSService)(nil).GetIncidentImpactCaseOptions), arg0)
+}
+
+// GetIncidentImpactCaseOptionsPaginated mocks base method.
+func (m *MockPSSService) GetIncidentImpactCaseOptionsPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[pss.CaseOption], error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetIncidentImpactCaseOptionsPaginated", arg0)
+	ret0, _ := ret[0].(*connection.Paginated[pss.CaseOption])
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetIncidentImpactCaseOptionsPaginated indicates an expected call of GetIncidentImpactCaseOptionsPaginated.
+func (mr *MockPSSServiceMockRecorder) GetIncidentImpactCaseOptionsPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetIncidentImpactCaseOptionsPaginated", reflect.TypeOf((*MockPSSService)(nil).GetIncidentImpactCaseOptionsPaginated), arg0)
+}
+
+// GetIncidentTypeCaseOptions mocks base method.
+func (m *MockPSSService) GetIncidentTypeCaseOptions(arg0 connection.APIRequestParameters) ([]pss.CaseOption, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetIncidentTypeCaseOptions", arg0)
+	ret0, _ := ret[0].([]pss.CaseOption)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetIncidentTypeCaseOptions indicates an expected call of GetIncidentTypeCaseOptions.
+func (mr *MockPSSServiceMockRecorder) GetIncidentTypeCaseOptions(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetIncidentTypeCaseOptions", reflect.TypeOf((*MockPSSService)(nil).GetIncidentTypeCaseOptions), arg0)
+}
+
+// GetIncidentTypeCaseOptionsPaginated mocks base method.
+func (m *MockPSSService) GetIncidentTypeCaseOptionsPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[pss.CaseOption], error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetIncidentTypeCaseOptionsPaginated", arg0)
+	ret0, _ := ret[0].(*connection.Paginated[pss.CaseOption])
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetIncidentTypeCaseOptionsPaginated indicates an expected call of GetIncidentTypeCaseOptionsPaginated.
+func (mr *MockPSSServiceMockRecorder) GetIncidentTypeCaseOptionsPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetIncidentTypeCaseOptionsPaginated", reflect.TypeOf((*MockPSSService)(nil).GetIncidentTypeCaseOptionsPaginated), arg0)
 }
 
 // GetReply mocks base method.

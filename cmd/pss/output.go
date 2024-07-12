@@ -16,3 +16,7 @@ func OutputPSSRepliesProvider(replies []pss.Reply) output.OutputHandlerDataProvi
 func OutputPSSFeedbackProvider(feedback []pss.Feedback) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(feedback).WithDefaultFields([]string{"id", "score", "created_at"})
 }
+
+func OutputPSSCaseOptionsProvider(options []pss.CaseOption) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(options).WithDefaultFields([]string{"option"})
+}
