@@ -8,19 +8,19 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func pssCaseOptionChangeRiskRootCmd(f factory.ClientFactory) *cobra.Command {
+func pssChangeRiskRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "changerisk",
+		Use:   "risk",
 		Short: "sub-commands relating to change risk case options",
 	}
 
 	// Child commands
-	cmd.AddCommand(pssCaseOptionChangeRiskListCmd(f))
+	cmd.AddCommand(pssChangeRiskListCmd(f))
 
 	return cmd
 }
 
-func pssCaseOptionChangeRiskListCmd(f factory.ClientFactory) *cobra.Command {
+func pssChangeRiskListCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
 		Use:     "list",
 		Short:   "Lists change risk case options",
@@ -32,21 +32,21 @@ func pssCaseOptionChangeRiskListCmd(f factory.ClientFactory) *cobra.Command {
 				return err
 			}
 
-			return pssCaseOptionChangeRiskList(c.PSSService(), cmd, args)
+			return pssChangeRiskList(c.PSSService(), cmd, args)
 		},
 	}
 }
 
-func pssCaseOptionChangeRiskList(service pss.PSSService, cmd *cobra.Command, args []string) error {
+func pssChangeRiskList(service pss.PSSService, cmd *cobra.Command, args []string) error {
 	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		return err
 	}
 
-	requests, err := service.GetChangeRiskCaseOptions(params)
+	options, err := service.GetChangeRiskCaseOptions(params)
 	if err != nil {
 		return err
 	}
 
-	return output.CommandOutput(cmd, OutputPSSCaseOptionsProvider(requests))
+	return output.CommandOutput(cmd, OutputPSSCaseOptionsProvider(options))
 }

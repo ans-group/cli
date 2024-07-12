@@ -8,19 +8,19 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func pssCaseOptionIncidentImpactRootCmd(f factory.ClientFactory) *cobra.Command {
+func pssIncidentImpactRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "incidentimpact",
+		Use:   "impact",
 		Short: "sub-commands relating to incident impact case options",
 	}
 
 	// Child commands
-	cmd.AddCommand(pssCaseOptionIncidentImpactListCmd(f))
+	cmd.AddCommand(pssIncidentImpactListCmd(f))
 
 	return cmd
 }
 
-func pssCaseOptionIncidentImpactListCmd(f factory.ClientFactory) *cobra.Command {
+func pssIncidentImpactListCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
 		Use:     "list",
 		Short:   "Lists incident impact case options",
@@ -32,21 +32,21 @@ func pssCaseOptionIncidentImpactListCmd(f factory.ClientFactory) *cobra.Command 
 				return err
 			}
 
-			return pssCaseOptionIncidentImpactList(c.PSSService(), cmd, args)
+			return pssIncidentImpactList(c.PSSService(), cmd, args)
 		},
 	}
 }
 
-func pssCaseOptionIncidentImpactList(service pss.PSSService, cmd *cobra.Command, args []string) error {
+func pssIncidentImpactList(service pss.PSSService, cmd *cobra.Command, args []string) error {
 	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
 	if err != nil {
 		return err
 	}
 
-	requests, err := service.GetIncidentImpactCaseOptions(params)
+	options, err := service.GetIncidentImpactCaseOptions(params)
 	if err != nil {
 		return err
 	}
 
-	return output.CommandOutput(cmd, OutputPSSCaseOptionsProvider(requests))
+	return output.CommandOutput(cmd, OutputPSSCaseOptionsProvider(options))
 }

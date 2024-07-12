@@ -12,16 +12,16 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_pssCaseOptionChangeRiskList(t *testing.T) {
+func Test_pssIncidentTypeList(t *testing.T) {
 	t.Run("DefaultRetrieve", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockPSSService(mockCtrl)
 
-		service.EXPECT().GetChangeRiskCaseOptions(gomock.Any()).Return([]pss.CaseOption{}, nil).Times(1)
+		service.EXPECT().GetIncidentTypeCaseOptions(gomock.Any()).Return([]pss.CaseOption{}, nil).Times(1)
 
-		pssCaseOptionChangeRiskList(service, &cobra.Command{}, []string{})
+		pssIncidentTypeList(service, &cobra.Command{}, []string{})
 	})
 
 	t.Run("MalformedFlag_ReturnsError", func(t *testing.T) {
@@ -32,7 +32,7 @@ func Test_pssCaseOptionChangeRiskList(t *testing.T) {
 		cmd := &cobra.Command{}
 		cmd.Flags().StringArray("filter", []string{"invalidfilter"}, "")
 
-		err := pssCaseOptionChangeRiskList(service, cmd, []string{})
+		err := pssIncidentTypeList(service, cmd, []string{})
 		assert.IsType(t, &clierrors.ErrInvalidFlagValue{}, err)
 	})
 
@@ -43,9 +43,9 @@ func Test_pssCaseOptionChangeRiskList(t *testing.T) {
 
 		service := mocks.NewMockPSSService(mockCtrl)
 
-		service.EXPECT().GetChangeRiskCaseOptions(gomock.Any()).Return([]pss.CaseOption{}, errors.New("test error")).Times(1)
+		service.EXPECT().GetIncidentTypeCaseOptions(gomock.Any()).Return([]pss.CaseOption{}, errors.New("test error")).Times(1)
 
-		err := pssCaseOptionChangeRiskList(service, &cobra.Command{}, []string{})
+		err := pssIncidentTypeList(service, &cobra.Command{}, []string{})
 		assert.Equal(t, "test error", err.Error())
 	})
 }

@@ -20,3 +20,19 @@ func OutputPSSFeedbackProvider(feedback []pss.Feedback) output.OutputHandlerData
 func OutputPSSCaseOptionsProvider(options []pss.CaseOption) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(options).WithDefaultFields([]string{"option"})
 }
+
+func OutputPSSIncidentCasesProvider(options []pss.IncidentCase) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(options).WithDefaultFields([]string{"id", "title"})
+}
+
+func OutputPSSChangeCasesProvider(options []pss.ChangeCase) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(options).WithDefaultFields([]string{"id", "title"})
+}
+
+func OutputPSSProblemCasesProvider(options []pss.ProblemCase) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(options).WithDefaultFields([]string{"id", "title"})
+}
+
+func OutputPSSCaseCategoriesProvider(options []pss.CaseCategory) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(options).WithDefaultFields([]string{"id", "name"})
+}
