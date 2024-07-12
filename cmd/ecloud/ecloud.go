@@ -186,7 +186,7 @@ func TaskStatusWaitFunc(service ecloud.ECloudService, taskID string, expectedSta
 			return false, fmt.Errorf("Failed to retrieve task status: %s", err)
 		}
 		if task.Status == ecloud.TaskStatusFailed {
-			return false, fmt.Errorf("Task in [%s] state", ecloud.TaskStatusFailed.String())
+			return false, fmt.Errorf("Task in [%s] state", ecloud.TaskStatusFailed)
 		}
 		if task.Status == expectedStatus {
 			return true, nil

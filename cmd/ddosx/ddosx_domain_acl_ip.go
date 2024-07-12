@@ -148,7 +148,7 @@ func ddosxDomainACLIPRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
 func ddosxDomainACLIPRuleCreate(service ddosx.DDoSXService, cmd *cobra.Command, args []string) error {
 	ip, _ := cmd.Flags().GetString("ip")
 	mode, _ := cmd.Flags().GetString("mode")
-	parsedMode, err := ddosx.ParseACLIPMode(mode)
+	parsedMode, err := ddosx.ACLIPModeEnum.Parse(mode)
 	if err != nil {
 		return clierrors.NewErrInvalidFlagValue("mode", mode, err)
 	}
@@ -219,7 +219,7 @@ func ddosxDomainACLIPRuleUpdate(service ddosx.DDoSXService, cmd *cobra.Command, 
 
 	if cmd.Flags().Changed("mode") {
 		mode, _ := cmd.Flags().GetString("mode")
-		parsedMode, err := ddosx.ParseACLIPMode(mode)
+		parsedMode, err := ddosx.ACLIPModeEnum.Parse(mode)
 		if err != nil {
 			return err
 		}

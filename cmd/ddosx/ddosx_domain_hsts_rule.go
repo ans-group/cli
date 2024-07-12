@@ -143,7 +143,7 @@ func ddosxDomainHSTSRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
 
 func ddosxDomainHSTSRuleCreate(service ddosx.DDoSXService, cmd *cobra.Command, args []string) error {
 	ruleType, _ := cmd.Flags().GetString("type")
-	parsedRuleType, err := ddosx.ParseHSTSRuleType(ruleType)
+	parsedRuleType, err := ddosx.HSTSRuleTypeEnum.Parse(ruleType)
 	if err != nil {
 		return clierrors.NewErrInvalidFlagValue("type", ruleType, err)
 	}

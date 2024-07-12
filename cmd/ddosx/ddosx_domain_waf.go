@@ -102,12 +102,12 @@ func ddosxDomainWAFCreateCmd(f factory.ClientFactory) *cobra.Command {
 
 func ddosxDomainWAFCreate(service ddosx.DDoSXService, cmd *cobra.Command, args []string) error {
 	mode, _ := cmd.Flags().GetString("mode")
-	parsedMode, err := ddosx.ParseWAFMode(mode)
+	parsedMode, err := ddosx.WAFModeEnum.Parse(mode)
 	if err != nil {
 		return err
 	}
 	paranoiaLevel, _ := cmd.Flags().GetString("paranoia-level")
-	parsedParanoiaLevel, err := ddosx.ParseWAFParanoiaLevel(paranoiaLevel)
+	parsedParanoiaLevel, err := ddosx.WAFParanoiaLevelEnum.Parse(paranoiaLevel)
 	if err != nil {
 		return err
 	}
@@ -164,7 +164,7 @@ func ddosxDomainWAFUpdate(service ddosx.DDoSXService, cmd *cobra.Command, args [
 
 	if cmd.Flags().Changed("mode") {
 		mode, _ := cmd.Flags().GetString("mode")
-		parsedMode, err := ddosx.ParseWAFMode(mode)
+		parsedMode, err := ddosx.WAFModeEnum.Parse(mode)
 		if err != nil {
 			return err
 		}
@@ -174,7 +174,7 @@ func ddosxDomainWAFUpdate(service ddosx.DDoSXService, cmd *cobra.Command, args [
 
 	if cmd.Flags().Changed("paranoia-level") {
 		paranoiaLevel, _ := cmd.Flags().GetString("paranoia-level")
-		parsedParanoiaLevel, err := ddosx.ParseWAFParanoiaLevel(paranoiaLevel)
+		parsedParanoiaLevel, err := ddosx.WAFParanoiaLevelEnum.Parse(paranoiaLevel)
 		if err != nil {
 			return err
 		}

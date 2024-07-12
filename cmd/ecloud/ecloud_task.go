@@ -112,7 +112,7 @@ func ecloudTaskWait(service ecloud.ECloudService, cmd *cobra.Command, args []str
 	var expectedStatus ecloud.TaskStatus = ecloud.TaskStatusComplete
 	if cmd.Flags().Changed("status") {
 		status, _ := cmd.Flags().GetString("status")
-		parsedStatus, err := ecloud.ParseTaskStatus(status)
+		parsedStatus, err := ecloud.TaskStatusEnum.Parse(status)
 		if err != nil {
 			return fmt.Errorf("Failed to parse status: %s", err)
 		}

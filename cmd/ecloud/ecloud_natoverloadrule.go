@@ -121,7 +121,7 @@ func ecloudNATOverloadRuleCreate(service ecloud.ECloudService, cmd *cobra.Comman
 	createRequest.Name, _ = cmd.Flags().GetString("name")
 
 	action, _ := cmd.Flags().GetString("action")
-	actionParsed, err := ecloud.ParseNATOverloadRuleAction(action)
+	actionParsed, err := ecloud.NATOverloadRuleActionEnum.Parse(action)
 	if err != nil {
 		return err
 	}

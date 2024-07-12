@@ -169,14 +169,14 @@ func loadbalancerTargetGroupCreate(service loadbalancer.LoadBalancerService, cmd
 	createRequest.SNI, _ = cmd.Flags().GetBool("sni")
 
 	balance, _ := cmd.Flags().GetString("balance")
-	parsedBalance, err := loadbalancer.ParseTargetGroupBalance(balance)
+	parsedBalance, err := loadbalancer.TargetGroupBalanceEnum.Parse(balance)
 	if err != nil {
 		return clierrors.NewErrInvalidFlagValue("balance", balance, err)
 	}
 	createRequest.Balance = parsedBalance
 
 	mode, _ := cmd.Flags().GetString("mode")
-	parsedMode, err := loadbalancer.ParseMode(mode)
+	parsedMode, err := loadbalancer.ModeEnum.Parse(mode)
 	if err != nil {
 		return clierrors.NewErrInvalidFlagValue("mode", mode, err)
 	}
@@ -184,7 +184,7 @@ func loadbalancerTargetGroupCreate(service loadbalancer.LoadBalancerService, cmd
 
 	if cmd.Flags().Changed("monitor-method") {
 		monitorMethod, _ := cmd.Flags().GetString("monitor-method")
-		parsedMonitorMethod, err := loadbalancer.ParseTargetGroupMonitorMethod(monitorMethod)
+		parsedMonitorMethod, err := loadbalancer.TargetGroupMonitorMethodEnum.Parse(monitorMethod)
 		if err != nil {
 			return clierrors.NewErrInvalidFlagValue("monitor-method", monitorMethod, err)
 		}
@@ -279,7 +279,7 @@ func loadbalancerTargetGroupUpdate(service loadbalancer.LoadBalancerService, cmd
 
 	if cmd.Flags().Changed("balance") {
 		balance, _ := cmd.Flags().GetString("balance")
-		parsedBalance, err := loadbalancer.ParseTargetGroupBalance(balance)
+		parsedBalance, err := loadbalancer.TargetGroupBalanceEnum.Parse(balance)
 		if err != nil {
 			return clierrors.NewErrInvalidFlagValue("balance", balance, err)
 		}
@@ -288,7 +288,7 @@ func loadbalancerTargetGroupUpdate(service loadbalancer.LoadBalancerService, cmd
 
 	if cmd.Flags().Changed("mode") {
 		mode, _ := cmd.Flags().GetString("mode")
-		parsedMode, err := loadbalancer.ParseMode(mode)
+		parsedMode, err := loadbalancer.ModeEnum.Parse(mode)
 		if err != nil {
 			return clierrors.NewErrInvalidFlagValue("mode", mode, err)
 		}
@@ -297,7 +297,7 @@ func loadbalancerTargetGroupUpdate(service loadbalancer.LoadBalancerService, cmd
 
 	if cmd.Flags().Changed("monitor-method") {
 		monitorMethod, _ := cmd.Flags().GetString("monitor-method")
-		parsedMonitorMethod, err := loadbalancer.ParseTargetGroupMonitorMethod(monitorMethod)
+		parsedMonitorMethod, err := loadbalancer.TargetGroupMonitorMethodEnum.Parse(monitorMethod)
 		if err != nil {
 			return clierrors.NewErrInvalidFlagValue("monitor-method", monitorMethod, err)
 		}

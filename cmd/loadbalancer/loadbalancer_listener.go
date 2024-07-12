@@ -159,7 +159,7 @@ func loadbalancerListenerCreate(service loadbalancer.LoadBalancerService, cmd *c
 		geoipChanged = true
 
 		geoipRestrictionFlag, _ := cmd.Flags().GetString("geoip-restriction")
-		geoipRestriction, err := loadbalancer.ParseListenerGeoIPRestriction(geoipRestrictionFlag)
+		geoipRestriction, err := loadbalancer.ListenerGeoIPRestrictionEnum.Parse(geoipRestrictionFlag)
 		if err != nil {
 			return clierrors.NewErrInvalidFlagValue("geoip-restriction", geoipRestrictionFlag, err)
 		}
@@ -188,7 +188,7 @@ func loadbalancerListenerCreate(service loadbalancer.LoadBalancerService, cmd *c
 	}
 
 	mode, _ := cmd.Flags().GetString("mode")
-	parsedMode, err := loadbalancer.ParseMode(mode)
+	parsedMode, err := loadbalancer.ModeEnum.Parse(mode)
 	if err != nil {
 		return clierrors.NewErrInvalidFlagValue("mode", mode, err)
 	}
@@ -271,7 +271,7 @@ func loadbalancerListenerUpdate(service loadbalancer.LoadBalancerService, cmd *c
 		geoipChanged = true
 
 		geoipRestrictionFlag, _ := cmd.Flags().GetString("geoip-restriction")
-		geoipRestriction, err := loadbalancer.ParseListenerGeoIPRestriction(geoipRestrictionFlag)
+		geoipRestriction, err := loadbalancer.ListenerGeoIPRestrictionEnum.Parse(geoipRestrictionFlag)
 		if err != nil {
 			return clierrors.NewErrInvalidFlagValue("geoip-restriction", geoipRestrictionFlag, err)
 		}

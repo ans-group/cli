@@ -130,14 +130,14 @@ func ecloudFirewallRuleCreate(service ecloud.ECloudService, cmd *cobra.Command, 
 	createRequest.Enabled, _ = cmd.Flags().GetBool("enabled")
 
 	direction, _ := cmd.Flags().GetString("direction")
-	directionParsed, err := ecloud.ParseFirewallRuleDirection(direction)
+	directionParsed, err := ecloud.FirewallRuleDirectionEnum.Parse(direction)
 	if err != nil {
 		return err
 	}
 	createRequest.Direction = directionParsed
 
 	action, _ := cmd.Flags().GetString("action")
-	actionParsed, err := ecloud.ParseFirewallRuleAction(action)
+	actionParsed, err := ecloud.FirewallRuleActionEnum.Parse(action)
 	if err != nil {
 		return err
 	}
@@ -212,7 +212,7 @@ func ecloudFirewallRuleUpdate(service ecloud.ECloudService, cmd *cobra.Command, 
 
 	if cmd.Flags().Changed("direction") {
 		direction, _ := cmd.Flags().GetString("direction")
-		directionParsed, err := ecloud.ParseFirewallRuleDirection(direction)
+		directionParsed, err := ecloud.FirewallRuleDirectionEnum.Parse(direction)
 		if err != nil {
 			return err
 		}
@@ -222,7 +222,7 @@ func ecloudFirewallRuleUpdate(service ecloud.ECloudService, cmd *cobra.Command, 
 
 	if cmd.Flags().Changed("action") {
 		action, _ := cmd.Flags().GetString("action")
-		actionParsed, err := ecloud.ParseFirewallRuleAction(action)
+		actionParsed, err := ecloud.FirewallRuleActionEnum.Parse(action)
 		if err != nil {
 			return err
 		}

@@ -119,7 +119,7 @@ func ecloudNetworkRulePortCreate(service ecloud.ECloudService, cmd *cobra.Comman
 	createRequest.Destination, _ = cmd.Flags().GetString("destination")
 
 	protocol, _ := cmd.Flags().GetString("protocol")
-	protocolParsed, err := ecloud.ParseNetworkRulePortProtocol(protocol)
+	protocolParsed, err := ecloud.NetworkRulePortProtocolEnum.Parse(protocol)
 	if err != nil {
 		return err
 	}
@@ -189,7 +189,7 @@ func ecloudNetworkRulePortUpdate(service ecloud.ECloudService, cmd *cobra.Comman
 	if cmd.Flags().Changed("protocol") {
 
 		protocol, _ := cmd.Flags().GetString("protocol")
-		protocolParsed, err := ecloud.ParseNetworkRulePortProtocol(protocol)
+		protocolParsed, err := ecloud.NetworkRulePortProtocolEnum.Parse(protocol)
 		if err != nil {
 			return err
 		}

@@ -64,7 +64,7 @@ func ecloudVirtualMachineTemplateCreate(service ecloud.ECloudService, cmd *cobra
 	}
 
 	templateType, _ := cmd.Flags().GetString("type")
-	parsedTemplateType, err := ecloud.ParseTemplateType(templateType)
+	parsedTemplateType, err := ecloud.TemplateTypeEnum.Parse(templateType)
 	if err != nil {
 		return clierrors.NewErrInvalidFlagValue("type", templateType, err)
 	}

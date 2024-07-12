@@ -130,14 +130,14 @@ func ecloudNetworkRuleCreate(service ecloud.ECloudService, cmd *cobra.Command, a
 	createRequest.Enabled, _ = cmd.Flags().GetBool("enabled")
 
 	direction, _ := cmd.Flags().GetString("direction")
-	directionParsed, err := ecloud.ParseNetworkRuleDirection(direction)
+	directionParsed, err := ecloud.NetworkRuleDirectionEnum.Parse(direction)
 	if err != nil {
 		return err
 	}
 	createRequest.Direction = directionParsed
 
 	action, _ := cmd.Flags().GetString("action")
-	actionParsed, err := ecloud.ParseNetworkRuleAction(action)
+	actionParsed, err := ecloud.NetworkRuleActionEnum.Parse(action)
 	if err != nil {
 		return err
 	}
@@ -212,7 +212,7 @@ func ecloudNetworkRuleUpdate(service ecloud.ECloudService, cmd *cobra.Command, a
 
 	if cmd.Flags().Changed("direction") {
 		direction, _ := cmd.Flags().GetString("direction")
-		directionParsed, err := ecloud.ParseNetworkRuleDirection(direction)
+		directionParsed, err := ecloud.NetworkRuleDirectionEnum.Parse(direction)
 		if err != nil {
 			return err
 		}
@@ -222,7 +222,7 @@ func ecloudNetworkRuleUpdate(service ecloud.ECloudService, cmd *cobra.Command, a
 
 	if cmd.Flags().Changed("action") {
 		action, _ := cmd.Flags().GetString("action")
-		actionParsed, err := ecloud.ParseNetworkRuleAction(action)
+		actionParsed, err := ecloud.NetworkRuleActionEnum.Parse(action)
 		if err != nil {
 			return err
 		}

@@ -542,7 +542,7 @@ func VirtualMachineNotFoundWaitFunc(service ecloud.ECloudService, vmID int) help
 		}
 
 		if vm.Status == ecloud.VirtualMachineStatusFailed {
-			return false, fmt.Errorf("Virtual machine [%d] in [%s] state", vmID, ecloud.VirtualMachineStatusFailed.String())
+			return false, fmt.Errorf("Virtual machine [%d] in [%s] state", vmID, ecloud.VirtualMachineStatusFailed)
 		}
 
 		return false, nil
@@ -556,7 +556,7 @@ func VirtualMachineStatusWaitFunc(service ecloud.ECloudService, vmID int, status
 			return false, fmt.Errorf("Failed to retrieve virtual machine [%d]: %s", vmID, err)
 		}
 		if vm.Status == ecloud.VirtualMachineStatusFailed {
-			return false, fmt.Errorf("Virtual machine [%d] in [%s] state", vmID, ecloud.VirtualMachineStatusFailed.String())
+			return false, fmt.Errorf("Virtual machine [%d] in [%s] state", vmID, ecloud.VirtualMachineStatusFailed)
 		}
 		if vm.Status == status {
 			return true, nil
