@@ -5,12 +5,11 @@
 package mocks
 
 import (
-	io "io"
-	reflect "reflect"
-
-	gomock "github.com/golang/mock/gomock"
 	connection "github.com/ans-group/sdk-go/pkg/connection"
 	ddosx "github.com/ans-group/sdk-go/pkg/service/ddosx"
+	gomock "github.com/golang/mock/gomock"
+	io "io"
+	reflect "reflect"
 )
 
 // MockDDoSXService is a mock of DDoSXService interface.
