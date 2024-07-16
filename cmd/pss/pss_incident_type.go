@@ -26,14 +26,7 @@ func pssIncidentTypeListCmd(f factory.ClientFactory) *cobra.Command {
 		Short:   "Lists incident type case options",
 		Long:    "This command lists incident type case options",
 		Example: "ans pss request list",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := f.NewClient()
-			if err != nil {
-				return err
-			}
-
-			return pssIncidentTypeList(c.PSSService(), cmd, args)
-		},
+		RunE:    pssCobraRunEFunc(f, pssIncidentTypeList),
 	}
 }
 

@@ -6,6 +6,7 @@ import (
 
 	"github.com/ans-group/cli/internal/pkg/clierrors"
 	"github.com/ans-group/cli/test/mocks"
+	"github.com/ans-group/cli/test/test_output"
 	"github.com/ans-group/sdk-go/pkg/service/pss"
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
@@ -50,296 +51,201 @@ func Test_pssChangeList(t *testing.T) {
 	})
 }
 
-// func Test_pssChangeShowCmd_Args(t *testing.T) {
-// 	t.Run("ValidArgs_NoError", func(t *testing.T) {
-// 		err := pssChangeShowCmd(nil).Args(nil, []string{"123"})
-
-// 		assert.Nil(t, err)
-// 	})
-
-// 	t.Run("InvalidArgs_Error", func(t *testing.T) {
-// 		err := pssChangeShowCmd(nil).Args(nil, []string{})
-
-// 		assert.NotNil(t, err)
-// 		assert.Equal(t, "Missing change", err.Error())
-// 	})
-// }
-
-// func Test_pssChangeShow(t *testing.T) {
-// 	t.Run("SingleChange", func(t *testing.T) {
-// 		mockCtrl := gomock.NewController(t)
-// 		defer mockCtrl.Finish()
-
-// 		service := mocks.NewMockPSSService(mockCtrl)
-
-// 		service.EXPECT().GetChange(123).Return(pss.Change{}, nil).Times(1)
-
-// 		pssChangeShow(service, &cobra.Command{}, []string{"123"})
-// 	})
-
-// 	t.Run("MultipleChanges", func(t *testing.T) {
-// 		mockCtrl := gomock.NewController(t)
-// 		defer mockCtrl.Finish()
-
-// 		service := mocks.NewMockPSSService(mockCtrl)
-
-// 		gomock.InOrder(
-// 			service.EXPECT().GetChange(123).Return(pss.Change{}, nil),
-// 			service.EXPECT().GetChange(456).Return(pss.Change{}, nil),
-// 		)
-
-// 		pssChangeShow(service, &cobra.Command{}, []string{"123", "456"})
-// 	})
-
-// 	t.Run("GetChangeID_OutputsError", func(t *testing.T) {
-// 		mockCtrl := gomock.NewController(t)
-// 		defer mockCtrl.Finish()
-
-// 		service := mocks.NewMockPSSService(mockCtrl)
-
-// 		test_output.AssertErrorOutput(t, "Invalid change ID [abc]\n", func() {
-// 			pssChangeShow(service, &cobra.Command{}, []string{"abc"})
-// 		})
-// 	})
-
-// 	t.Run("GetChangeError_OutputsError", func(t *testing.T) {
-// 		mockCtrl := gomock.NewController(t)
-// 		defer mockCtrl.Finish()
-
-// 		service := mocks.NewMockPSSService(mockCtrl)
-
-// 		service.EXPECT().GetChange(123).Return(pss.Change{}, errors.New("test error"))
-
-// 		test_output.AssertErrorOutput(t, "Error retrieving change [123]: test error\n", func() {
-// 			pssChangeShow(service, &cobra.Command{}, []string{"123"})
-// 		})
-// 	})
-// }
-
-// func Test_pssChangeCreate(t *testing.T) {
-// 	t.Run("DefaultCreate", func(t *testing.T) {
-// 		mockCtrl := gomock.NewController(t)
-// 		defer mockCtrl.Finish()
-
-// 		service := mocks.NewMockPSSService(mockCtrl)
-// 		cmd := pssChangeCreateCmd(nil)
-// 		cmd.Flags().Set("subject", "test subject")
-// 		cmd.Flags().Set("product-id", "456")
-// 		cmd.Flags().Set("product-name", "testname")
-// 		cmd.Flags().Set("product-type", "testtype")
-
-// 		gomock.InOrder(
-// 			service.EXPECT().CreateChange(gomock.Any()).Do(func(req pss.CreateChangeChange) {
-// 				assert.Equal(t, "test subject", req.Subject)
-// 				assert.Equal(t, 456, req.Product.ID)
-// 				assert.Equal(t, "testname", req.Product.Name)
-// 				assert.Equal(t, "testtype", req.Product.Type)
-// 			}).Return(123, nil),
-// 			service.EXPECT().GetChange(123).Return(pss.Change{}, nil),
-// 		)
-
-// 		pssChangeCreate(service, cmd, []string{})
-// 	})
-
-// 	t.Run("InvalidPriority_ReturnsError", func(t *testing.T) {
-// 		mockCtrl := gomock.NewController(t)
-// 		defer mockCtrl.Finish()
-
-// 		service := mocks.NewMockPSSService(mockCtrl)
-// 		cmd := pssChangeCreateCmd(nil)
-// 		cmd.Flags().Set("priority", "invalid")
-
-// 		err := pssChangeCreate(service, cmd, []string{})
-// 		assert.Contains(t, err.Error(), "Invalid pss.ChangePriority")
-// 	})
-
-// 	t.Run("CreateChangeError_ReturnsError", func(t *testing.T) {
-// 		mockCtrl := gomock.NewController(t)
-// 		defer mockCtrl.Finish()
-
-// 		service := mocks.NewMockPSSService(mockCtrl)
-// 		cmd := pssChangeCreateCmd(nil)
-
-// 		service.EXPECT().CreateChange(gomock.Any()).Return(0, errors.New("test error")).Times(1)
-
-// 		err := pssChangeCreate(service, cmd, []string{})
-// 		assert.Equal(t, "Error creating change: test error", err.Error())
-// 	})
-
-// 	t.Run("GetChangeError_ReturnsError", func(t *testing.T) {
-// 		mockCtrl := gomock.NewController(t)
-// 		defer mockCtrl.Finish()
-
-// 		service := mocks.NewMockPSSService(mockCtrl)
-// 		cmd := pssChangeCreateCmd(nil)
-
-// 		gomock.InOrder(
-// 			service.EXPECT().CreateChange(gomock.Any()).Return(123, nil),
-// 			service.EXPECT().GetChange(123).Return(pss.Change{}, errors.New("test error")),
-// 		)
-
-// 		err := pssChangeCreate(service, cmd, []string{})
-// 		assert.Equal(t, "Error retrieving new change: test error", err.Error())
-// 	})
-// }
-
-// func Test_pssChangeUpdateCmd_Args(t *testing.T) {
-// 	t.Run("ValidArgs_NoError", func(t *testing.T) {
-// 		err := pssChangeUpdateCmd(nil).Args(nil, []string{"123"})
-
-// 		assert.Nil(t, err)
-// 	})
-
-// 	t.Run("InvalidArgs_Error", func(t *testing.T) {
-// 		err := pssChangeUpdateCmd(nil).Args(nil, []string{})
-
-// 		assert.NotNil(t, err)
-// 		assert.Equal(t, "Missing change", err.Error())
-// 	})
-// }
-
-// func Test_pssChangeUpdate(t *testing.T) {
-// 	t.Run("DefaultUpdate", func(t *testing.T) {
-// 		mockCtrl := gomock.NewController(t)
-// 		defer mockCtrl.Finish()
-
-// 		service := mocks.NewMockPSSService(mockCtrl)
-// 		cmd := pssChangeUpdateCmd(nil)
-// 		cmd.Flags().Set("secure", "true")
-// 		cmd.Flags().Set("read", "true")
-// 		cmd.Flags().Set("change-sms", "true")
-// 		cmd.Flags().Set("archived", "true")
-// 		cmd.Flags().Set("priority", "High")
-
-// 		gomock.InOrder(
-// 			service.EXPECT().PatchChange(123, gomock.Any()).Do(func(changeID int, req pss.PatchChangeChange) {
-// 				assert.Equal(t, 123, changeID)
-// 				assert.Equal(t, true, *req.Secure)
-// 				assert.Equal(t, true, *req.Read)
-// 				assert.Equal(t, true, *req.ChangeSMS)
-// 				assert.Equal(t, true, *req.Archived)
-// 				assert.Equal(t, pss.ChangePriorityHigh, req.Priority)
-// 			}).Return(nil),
-// 			service.EXPECT().GetChange(123).Return(pss.Change{}, nil),
-// 		)
-
-// 		pssChangeUpdate(service, cmd, []string{"123"})
-// 	})
-
-// 	t.Run("InvalidPriority_ReturnsError", func(t *testing.T) {
-// 		mockCtrl := gomock.NewController(t)
-// 		defer mockCtrl.Finish()
-
-// 		service := mocks.NewMockPSSService(mockCtrl)
-// 		cmd := pssChangeUpdateCmd(nil)
-// 		cmd.Flags().Set("priority", "invalid")
-
-// 		err := pssChangeUpdate(service, cmd, []string{"123"})
-// 		assert.Contains(t, err.Error(), "Invalid pss.ChangePriority")
-// 	})
-
-// 	t.Run("InvalidChangeID_OutputsError", func(t *testing.T) {
-// 		mockCtrl := gomock.NewController(t)
-// 		defer mockCtrl.Finish()
-
-// 		service := mocks.NewMockPSSService(mockCtrl)
-// 		cmd := pssChangeUpdateCmd(nil)
-
-// 		test_output.AssertErrorOutput(t, "Invalid change ID [abc]\n", func() {
-// 			pssChangeUpdate(service, cmd, []string{"abc"})
-// 		})
-// 	})
-
-// 	t.Run("PatchChangeError_OutputsError", func(t *testing.T) {
-// 		mockCtrl := gomock.NewController(t)
-// 		defer mockCtrl.Finish()
-
-// 		service := mocks.NewMockPSSService(mockCtrl)
-// 		cmd := pssChangeUpdateCmd(nil)
-
-// 		service.EXPECT().PatchChange(123, gomock.Any()).Return(errors.New("test error")).Times(1)
-
-// 		test_output.AssertErrorOutput(t, "Error updating change [123]: test error\n", func() {
-// 			pssChangeUpdate(service, cmd, []string{"123"})
-// 		})
-// 	})
-
-// 	t.Run("GetChangeError_OutputsError", func(t *testing.T) {
-// 		mockCtrl := gomock.NewController(t)
-// 		defer mockCtrl.Finish()
-
-// 		service := mocks.NewMockPSSService(mockCtrl)
-// 		cmd := pssChangeUpdateCmd(nil)
-
-// 		gomock.InOrder(
-// 			service.EXPECT().PatchChange(123, gomock.Any()).Return(nil),
-// 			service.EXPECT().GetChange(123).Return(pss.Change{}, errors.New("test error")),
-// 		)
-
-// 		test_output.AssertErrorOutput(t, "Error retrieving updated change [123]: test error\n", func() {
-// 			pssChangeUpdate(service, cmd, []string{"123"})
-// 		})
-// 	})
-// }
-
-// func Test_pssChangeCloseCmd_Args(t *testing.T) {
-// 	t.Run("ValidArgs_NoError", func(t *testing.T) {
-// 		err := pssChangeCloseCmd(nil).Args(nil, []string{"123"})
-
-// 		assert.Nil(t, err)
-// 	})
-
-// 	t.Run("InvalidArgs_Error", func(t *testing.T) {
-// 		err := pssChangeCloseCmd(nil).Args(nil, []string{})
-
-// 		assert.NotNil(t, err)
-// 		assert.Equal(t, "Missing change", err.Error())
-// 	})
-// }
-
-// func Test_pssChangeClose(t *testing.T) {
-// 	t.Run("DefaultClose", func(t *testing.T) {
-// 		mockCtrl := gomock.NewController(t)
-// 		defer mockCtrl.Finish()
-
-// 		service := mocks.NewMockPSSService(mockCtrl)
-
-// 		gomock.InOrder(
-// 			service.EXPECT().PatchChange(123, gomock.Any()).Return(nil),
-// 			service.EXPECT().GetChange(123).Return(pss.Change{}, nil),
-// 		)
-
-// 		pssChangeClose(service, pssChangeCloseCmd(nil), []string{"123"})
-// 	})
-
-// 	t.Run("PatchChangeError_OutputsError", func(t *testing.T) {
-// 		mockCtrl := gomock.NewController(t)
-// 		defer mockCtrl.Finish()
-
-// 		service := mocks.NewMockPSSService(mockCtrl)
-// 		cmd := pssChangeCloseCmd(nil)
-
-// 		service.EXPECT().PatchChange(123, gomock.Any()).Return(errors.New("test error")).Times(1)
-
-// 		test_output.AssertErrorOutput(t, "Error closing change [123]: test error\n", func() {
-// 			pssChangeClose(service, cmd, []string{"123"})
-// 		})
-// 	})
-
-// 	t.Run("GetChangeError_OutputsError", func(t *testing.T) {
-// 		mockCtrl := gomock.NewController(t)
-// 		defer mockCtrl.Finish()
-
-// 		service := mocks.NewMockPSSService(mockCtrl)
-// 		cmd := pssChangeCloseCmd(nil)
-
-// 		gomock.InOrder(
-// 			service.EXPECT().PatchChange(123, gomock.Any()).Return(nil),
-// 			service.EXPECT().GetChange(123).Return(pss.Change{}, errors.New("test error")),
-// 		)
-
-// 		test_output.AssertErrorOutput(t, "Error retrieving updated change [123]: test error\n", func() {
-// 			pssChangeClose(service, cmd, []string{"123"})
-// 		})
-// 	})
-// }
+func Test_pssChangeShowCmd_Args(t *testing.T) {
+	t.Run("ValidArgs_NoError", func(t *testing.T) {
+		err := pssChangeShowCmd(nil).Args(nil, []string{"CHG123456"})
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("InvalidArgs_Error", func(t *testing.T) {
+		err := pssChangeShowCmd(nil).Args(nil, []string{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing change", err.Error())
+	})
+}
+
+func Test_pssChangeShow(t *testing.T) {
+	t.Run("SingleChange", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockPSSService(mockCtrl)
+
+		service.EXPECT().GetChangeCase("CHG123456").Return(pss.ChangeCase{}, nil)
+
+		pssChangeShow(service, &cobra.Command{}, []string{"CHG123456"})
+	})
+
+	t.Run("MultipleChanges", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockPSSService(mockCtrl)
+
+		gomock.InOrder(
+			service.EXPECT().GetChangeCase("CHG123").Return(pss.ChangeCase{}, nil),
+			service.EXPECT().GetChangeCase("CHG456").Return(pss.ChangeCase{}, nil),
+		)
+
+		pssChangeShow(service, &cobra.Command{}, []string{"CHG123", "CHG456"})
+	})
+
+	t.Run("GetChangeError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockPSSService(mockCtrl)
+
+		service.EXPECT().GetChangeCase("CHG123456").Return(pss.ChangeCase{}, errors.New("test error"))
+
+		test_output.AssertErrorOutput(t, "Error retrieving change [CHG123456]: test error\n", func() {
+			pssChangeShow(service, &cobra.Command{}, []string{"CHG123456"})
+		})
+	})
+}
+
+func Test_pssChangeCreate(t *testing.T) {
+	setFlags := func(cmd *cobra.Command) {
+		cmd.Flags().Set("title", "test change")
+		cmd.Flags().Set("description", "test description")
+		cmd.Flags().Set("risk", string(pss.ChangeCaseRiskLow))
+		cmd.Flags().Set("category", "04f48547-96ee-4c49-901f-875a72396a60")
+		cmd.Flags().Set("supported-service", "5dda44db-dd06-466b-85f6-14669d471bfd")
+		cmd.Flags().Set("impact", string(pss.ChangeCaseImpactLow))
+	}
+
+	t.Run("DefaultCreate", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockPSSService(mockCtrl)
+		cmd := pssChangeCreateCmd(nil)
+		setFlags(cmd)
+
+		gomock.InOrder(
+			service.EXPECT().CreateChangeCase(gomock.Any()).Do(func(req pss.CreateChangeCaseRequest) {
+				assert.Equal(t, "test change", req.Title)
+				assert.Equal(t, "test description", req.Description)
+				assert.Equal(t, pss.ChangeCaseRiskLow, req.Risk)
+				assert.Equal(t, "04f48547-96ee-4c49-901f-875a72396a60", req.CategoryID)
+				assert.Equal(t, "5dda44db-dd06-466b-85f6-14669d471bfd", req.SupportedServiceID)
+				assert.Equal(t, pss.ChangeCaseImpactLow, req.Impact)
+			}).Return("CHG123456", nil),
+			service.EXPECT().GetChangeCase("CHG123456").Return(pss.ChangeCase{}, nil),
+		)
+
+		pssChangeCreate(service, cmd, []string{})
+	})
+
+	t.Run("InvalidRisk_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockPSSService(mockCtrl)
+		cmd := pssChangeCreateCmd(nil)
+		setFlags(cmd)
+		cmd.Flags().Set("risk", "invalid")
+
+		err := pssChangeCreate(service, cmd, []string{})
+		assert.Contains(t, err.Error(), "Invalid pss.ChangeCaseRisk")
+	})
+
+	t.Run("InvalidImpact_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockPSSService(mockCtrl)
+		cmd := pssChangeCreateCmd(nil)
+		setFlags(cmd)
+		cmd.Flags().Set("impact", "invalid")
+
+		err := pssChangeCreate(service, cmd, []string{})
+		assert.Contains(t, err.Error(), "Invalid pss.ChangeCaseImpact")
+	})
+
+	t.Run("CreateChangeError_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockPSSService(mockCtrl)
+		cmd := pssChangeCreateCmd(nil)
+		setFlags(cmd)
+
+		service.EXPECT().CreateChangeCase(gomock.Any()).Return("", errors.New("test error"))
+
+		err := pssChangeCreate(service, cmd, []string{})
+		assert.Equal(t, "Error creating change: test error", err.Error())
+	})
+
+	t.Run("GetChangeError_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockPSSService(mockCtrl)
+		cmd := pssChangeCreateCmd(nil)
+		setFlags(cmd)
+
+		gomock.InOrder(
+			service.EXPECT().CreateChangeCase(gomock.Any()).Return("CHG123456", nil),
+			service.EXPECT().GetChangeCase("CHG123456").Return(pss.ChangeCase{}, errors.New("test error")),
+		)
+
+		err := pssChangeCreate(service, cmd, []string{})
+		assert.Equal(t, "Error retrieving new change: test error", err.Error())
+	})
+}
+
+func Test_pssChangeApprove(t *testing.T) {
+	t.Run("DefaultApprove", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockPSSService(mockCtrl)
+		cmd := pssChangeApproveCmd(nil)
+		cmd.Flags().Set("reason", "test reason")
+		cmd.Flags().Set("contact", "123")
+
+		gomock.InOrder(
+			service.EXPECT().ApproveChangeCase("CHG123456", gomock.Any()).Do(func(changeID string, req pss.ApproveChangeCaseRequest) {
+				assert.Equal(t, "test reason", req.Reason)
+				assert.Equal(t, 123, req.ContactID)
+			}).Return("CHG123456", nil),
+			service.EXPECT().GetChangeCase("CHG123456").Return(pss.ChangeCase{}, nil),
+		)
+
+		pssChangeApprove(service, cmd, []string{"CHG123456"})
+	})
+
+	t.Run("ApproveChangeCaseError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockPSSService(mockCtrl)
+		cmd := pssChangeApproveCmd(nil)
+
+		service.EXPECT().ApproveChangeCase("CHG123456", gomock.Any()).Return("", errors.New("test error"))
+
+		test_output.AssertErrorOutput(t, "Failed to approve change [CHG123456]: test error\n", func() {
+			pssChangeApprove(service, cmd, []string{"CHG123456"})
+		})
+	})
+
+	t.Run("GetChangeCaseError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockPSSService(mockCtrl)
+		cmd := pssChangeApproveCmd(nil)
+
+		gomock.InOrder(
+			service.EXPECT().ApproveChangeCase("CHG123456", gomock.Any()).Return("CHG123456", nil),
+			service.EXPECT().GetChangeCase("CHG123456").Return(pss.ChangeCase{}, errors.New("test error")),
+		)
+
+		test_output.AssertErrorOutput(t, "Error retrieving approved change [CHG123456]: test error\n", func() {
+			pssChangeApprove(service, cmd, []string{"CHG123456"})
+		})
+	})
+}

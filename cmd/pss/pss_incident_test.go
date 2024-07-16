@@ -106,230 +106,161 @@ func Test_pssIncidentShow(t *testing.T) {
 	})
 }
 
-// func Test_pssIncidentCreate(t *testing.T) {
-// 	t.Run("DefaultCreate", func(t *testing.T) {
-// 		mockCtrl := gomock.NewController(t)
-// 		defer mockCtrl.Finish()
+func Test_pssIncidentCreate(t *testing.T) {
+	setFlags := func(cmd *cobra.Command) {
+		cmd.Flags().Set("title", "test incident")
+		cmd.Flags().Set("description", "test description")
+		cmd.Flags().Set("type", string(pss.IncidentCaseTypeServiceRequest))
+		cmd.Flags().Set("category", "04f48547-96ee-4c49-901f-875a72396a60")
+		cmd.Flags().Set("supported-service", "5dda44db-dd06-466b-85f6-14669d471bfd")
+		cmd.Flags().Set("impact", string(pss.IncidentCaseImpactMinor))
+	}
 
-// 		service := mocks.NewMockPSSService(mockCtrl)
-// 		cmd := pssIncidentCreateCmd(nil)
-// 		cmd.Flags().Set("subject", "test subject")
-// 		cmd.Flags().Set("product-id", "456")
-// 		cmd.Flags().Set("product-name", "testname")
-// 		cmd.Flags().Set("product-type", "testtype")
+	t.Run("DefaultCreate", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
 
-// 		gomock.InOrder(
-// 			service.EXPECT().CreateIncident(gomock.Any()).Do(func(req pss.CreateIncidentIncident) {
-// 				assert.Equal(t, "test subject", req.Subject)
-// 				assert.Equal(t, 456, req.Product.ID)
-// 				assert.Equal(t, "testname", req.Product.Name)
-// 				assert.Equal(t, "testtype", req.Product.Type)
-// 			}).Return(123, nil),
-// 			service.EXPECT().GetIncident(123).Return(pss.Incident{}, nil),
-// 		)
+		service := mocks.NewMockPSSService(mockCtrl)
+		cmd := pssIncidentCreateCmd(nil)
+		setFlags(cmd)
 
-// 		pssIncidentCreate(service, cmd, []string{})
-// 	})
+		gomock.InOrder(
+			service.EXPECT().CreateIncidentCase(gomock.Any()).Do(func(req pss.CreateIncidentCaseRequest) {
+				assert.Equal(t, "test incident", req.Title)
+				assert.Equal(t, "test description", req.Description)
+				assert.Equal(t, pss.IncidentCaseTypeServiceRequest, req.Type)
+				assert.Equal(t, "04f48547-96ee-4c49-901f-875a72396a60", req.CategoryID)
+				assert.Equal(t, "5dda44db-dd06-466b-85f6-14669d471bfd", req.SupportedServiceID)
+				assert.Equal(t, pss.IncidentCaseImpactMinor, req.Impact)
+			}).Return("INC123456", nil),
+			service.EXPECT().GetIncidentCase("INC123456").Return(pss.IncidentCase{}, nil),
+		)
 
-// 	t.Run("InvalidPriority_ReturnsError", func(t *testing.T) {
-// 		mockCtrl := gomock.NewController(t)
-// 		defer mockCtrl.Finish()
+		pssIncidentCreate(service, cmd, []string{})
+	})
 
-// 		service := mocks.NewMockPSSService(mockCtrl)
-// 		cmd := pssIncidentCreateCmd(nil)
-// 		cmd.Flags().Set("priority", "invalid")
+	t.Run("InvalidType_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
 
-// 		err := pssIncidentCreate(service, cmd, []string{})
-// 		assert.Contains(t, err.Error(), "Invalid pss.IncidentPriority")
-// 	})
+		service := mocks.NewMockPSSService(mockCtrl)
+		cmd := pssIncidentCreateCmd(nil)
+		setFlags(cmd)
+		cmd.Flags().Set("type", "invalid")
 
-// 	t.Run("CreateIncidentError_ReturnsError", func(t *testing.T) {
-// 		mockCtrl := gomock.NewController(t)
-// 		defer mockCtrl.Finish()
+		err := pssIncidentCreate(service, cmd, []string{})
+		assert.Contains(t, err.Error(), "Invalid pss.IncidentCaseType")
+	})
 
-// 		service := mocks.NewMockPSSService(mockCtrl)
-// 		cmd := pssIncidentCreateCmd(nil)
+	t.Run("InvalidImpact_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
 
-// 		service.EXPECT().CreateIncident(gomock.Any()).Return(0, errors.New("test error")).Times(1)
+		service := mocks.NewMockPSSService(mockCtrl)
+		cmd := pssIncidentCreateCmd(nil)
+		setFlags(cmd)
+		cmd.Flags().Set("impact", "invalid")
 
-// 		err := pssIncidentCreate(service, cmd, []string{})
-// 		assert.Equal(t, "Error creating incident: test error", err.Error())
-// 	})
+		err := pssIncidentCreate(service, cmd, []string{})
+		assert.Contains(t, err.Error(), "Invalid pss.IncidentCaseImpact")
+	})
 
-// 	t.Run("GetIncidentError_ReturnsError", func(t *testing.T) {
-// 		mockCtrl := gomock.NewController(t)
-// 		defer mockCtrl.Finish()
+	t.Run("CreateIncidentError_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
 
-// 		service := mocks.NewMockPSSService(mockCtrl)
-// 		cmd := pssIncidentCreateCmd(nil)
+		service := mocks.NewMockPSSService(mockCtrl)
+		cmd := pssIncidentCreateCmd(nil)
+		setFlags(cmd)
 
-// 		gomock.InOrder(
-// 			service.EXPECT().CreateIncident(gomock.Any()).Return(123, nil),
-// 			service.EXPECT().GetIncident(123).Return(pss.Incident{}, errors.New("test error")),
-// 		)
+		service.EXPECT().CreateIncidentCase(gomock.Any()).Return("", errors.New("test error"))
 
-// 		err := pssIncidentCreate(service, cmd, []string{})
-// 		assert.Equal(t, "Error retrieving new incident: test error", err.Error())
-// 	})
-// }
+		err := pssIncidentCreate(service, cmd, []string{})
+		assert.Equal(t, "Error creating incident: test error", err.Error())
+	})
 
-// func Test_pssIncidentUpdateCmd_Args(t *testing.T) {
-// 	t.Run("ValidArgs_NoError", func(t *testing.T) {
-// 		err := pssIncidentUpdateCmd(nil).Args(nil, []string{"123"})
+	t.Run("GetIncidentError_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
 
-// 		assert.Nil(t, err)
-// 	})
+		service := mocks.NewMockPSSService(mockCtrl)
+		cmd := pssIncidentCreateCmd(nil)
+		setFlags(cmd)
 
-// 	t.Run("InvalidArgs_Error", func(t *testing.T) {
-// 		err := pssIncidentUpdateCmd(nil).Args(nil, []string{})
+		gomock.InOrder(
+			service.EXPECT().CreateIncidentCase(gomock.Any()).Return("INC123456", nil),
+			service.EXPECT().GetIncidentCase("INC123456").Return(pss.IncidentCase{}, errors.New("test error")),
+		)
 
-// 		assert.NotNil(t, err)
-// 		assert.Equal(t, "Missing incident", err.Error())
-// 	})
-// }
+		err := pssIncidentCreate(service, cmd, []string{})
+		assert.Equal(t, "Error retrieving new incident: test error", err.Error())
+	})
+}
 
-// func Test_pssIncidentUpdate(t *testing.T) {
-// 	t.Run("DefaultUpdate", func(t *testing.T) {
-// 		mockCtrl := gomock.NewController(t)
-// 		defer mockCtrl.Finish()
+func Test_pssIncidentCloseCmd_Args(t *testing.T) {
+	t.Run("ValidArgs_NoError", func(t *testing.T) {
+		err := pssIncidentCloseCmd(nil).Args(nil, []string{"INC123456"})
 
-// 		service := mocks.NewMockPSSService(mockCtrl)
-// 		cmd := pssIncidentUpdateCmd(nil)
-// 		cmd.Flags().Set("secure", "true")
-// 		cmd.Flags().Set("read", "true")
-// 		cmd.Flags().Set("incident-sms", "true")
-// 		cmd.Flags().Set("archived", "true")
-// 		cmd.Flags().Set("priority", "High")
+		assert.Nil(t, err)
+	})
 
-// 		gomock.InOrder(
-// 			service.EXPECT().PatchIncident(123, gomock.Any()).Do(func(incidentID int, req pss.PatchIncidentIncident) {
-// 				assert.Equal(t, 123, incidentID)
-// 				assert.Equal(t, true, *req.Secure)
-// 				assert.Equal(t, true, *req.Read)
-// 				assert.Equal(t, true, *req.IncidentSMS)
-// 				assert.Equal(t, true, *req.Archived)
-// 				assert.Equal(t, pss.IncidentPriorityHigh, req.Priority)
-// 			}).Return(nil),
-// 			service.EXPECT().GetIncident(123).Return(pss.Incident{}, nil),
-// 		)
+	t.Run("InvalidArgs_Error", func(t *testing.T) {
+		err := pssIncidentCloseCmd(nil).Args(nil, []string{})
 
-// 		pssIncidentUpdate(service, cmd, []string{"123"})
-// 	})
+		assert.NotNil(t, err)
+		assert.Equal(t, "Missing incident", err.Error())
+	})
+}
 
-// 	t.Run("InvalidPriority_ReturnsError", func(t *testing.T) {
-// 		mockCtrl := gomock.NewController(t)
-// 		defer mockCtrl.Finish()
+func Test_pssIncidentClose(t *testing.T) {
+	t.Run("DefaultClose", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
 
-// 		service := mocks.NewMockPSSService(mockCtrl)
-// 		cmd := pssIncidentUpdateCmd(nil)
-// 		cmd.Flags().Set("priority", "invalid")
+		service := mocks.NewMockPSSService(mockCtrl)
+		cmd := pssIncidentCloseCmd(nil)
+		cmd.Flags().Set("reason", "test reason")
+		cmd.Flags().Set("contact", "123")
 
-// 		err := pssIncidentUpdate(service, cmd, []string{"123"})
-// 		assert.Contains(t, err.Error(), "Invalid pss.IncidentPriority")
-// 	})
+		gomock.InOrder(
+			service.EXPECT().CloseIncidentCase("INC123456", gomock.Any()).Do(func(incidentID string, req pss.CloseIncidentCaseRequest) {
+				assert.Equal(t, "test reason", req.Reason)
+				assert.Equal(t, 123, req.ContactID)
+			}).Return("INC123456", nil),
+			service.EXPECT().GetIncidentCase("INC123456").Return(pss.IncidentCase{}, nil),
+		)
 
-// 	t.Run("InvalidIncidentID_OutputsError", func(t *testing.T) {
-// 		mockCtrl := gomock.NewController(t)
-// 		defer mockCtrl.Finish()
+		pssIncidentClose(service, cmd, []string{"INC123456"})
+	})
 
-// 		service := mocks.NewMockPSSService(mockCtrl)
-// 		cmd := pssIncidentUpdateCmd(nil)
+	t.Run("CloseIncidentCaseError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
 
-// 		test_output.AssertErrorOutput(t, "Invalid incident ID [abc]\n", func() {
-// 			pssIncidentUpdate(service, cmd, []string{"abc"})
-// 		})
-// 	})
+		service := mocks.NewMockPSSService(mockCtrl)
+		cmd := pssIncidentCloseCmd(nil)
 
-// 	t.Run("PatchIncidentError_OutputsError", func(t *testing.T) {
-// 		mockCtrl := gomock.NewController(t)
-// 		defer mockCtrl.Finish()
+		service.EXPECT().CloseIncidentCase("INC123456", gomock.Any()).Return("", errors.New("test error"))
 
-// 		service := mocks.NewMockPSSService(mockCtrl)
-// 		cmd := pssIncidentUpdateCmd(nil)
+		test_output.AssertErrorOutput(t, "Failed to close incident [INC123456]: test error\n", func() {
+			pssIncidentClose(service, cmd, []string{"INC123456"})
+		})
+	})
 
-// 		service.EXPECT().PatchIncident(123, gomock.Any()).Return(errors.New("test error")).Times(1)
+	t.Run("GetIncidentCaseError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
 
-// 		test_output.AssertErrorOutput(t, "Error updating incident [123]: test error\n", func() {
-// 			pssIncidentUpdate(service, cmd, []string{"123"})
-// 		})
-// 	})
+		service := mocks.NewMockPSSService(mockCtrl)
+		cmd := pssIncidentCloseCmd(nil)
 
-// 	t.Run("GetIncidentError_OutputsError", func(t *testing.T) {
-// 		mockCtrl := gomock.NewController(t)
-// 		defer mockCtrl.Finish()
+		gomock.InOrder(
+			service.EXPECT().CloseIncidentCase("INC123456", gomock.Any()).Return("INC123456", nil),
+			service.EXPECT().GetIncidentCase("INC123456").Return(pss.IncidentCase{}, errors.New("test error")),
+		)
 
-// 		service := mocks.NewMockPSSService(mockCtrl)
-// 		cmd := pssIncidentUpdateCmd(nil)
-
-// 		gomock.InOrder(
-// 			service.EXPECT().PatchIncident(123, gomock.Any()).Return(nil),
-// 			service.EXPECT().GetIncident(123).Return(pss.Incident{}, errors.New("test error")),
-// 		)
-
-// 		test_output.AssertErrorOutput(t, "Error retrieving updated incident [123]: test error\n", func() {
-// 			pssIncidentUpdate(service, cmd, []string{"123"})
-// 		})
-// 	})
-// }
-
-// func Test_pssIncidentCloseCmd_Args(t *testing.T) {
-// 	t.Run("ValidArgs_NoError", func(t *testing.T) {
-// 		err := pssIncidentCloseCmd(nil).Args(nil, []string{"123"})
-
-// 		assert.Nil(t, err)
-// 	})
-
-// 	t.Run("InvalidArgs_Error", func(t *testing.T) {
-// 		err := pssIncidentCloseCmd(nil).Args(nil, []string{})
-
-// 		assert.NotNil(t, err)
-// 		assert.Equal(t, "Missing incident", err.Error())
-// 	})
-// }
-
-// func Test_pssIncidentClose(t *testing.T) {
-// 	t.Run("DefaultClose", func(t *testing.T) {
-// 		mockCtrl := gomock.NewController(t)
-// 		defer mockCtrl.Finish()
-
-// 		service := mocks.NewMockPSSService(mockCtrl)
-
-// 		gomock.InOrder(
-// 			service.EXPECT().PatchIncident(123, gomock.Any()).Return(nil),
-// 			service.EXPECT().GetIncident(123).Return(pss.Incident{}, nil),
-// 		)
-
-// 		pssIncidentClose(service, pssIncidentCloseCmd(nil), []string{"123"})
-// 	})
-
-// 	t.Run("PatchIncidentError_OutputsError", func(t *testing.T) {
-// 		mockCtrl := gomock.NewController(t)
-// 		defer mockCtrl.Finish()
-
-// 		service := mocks.NewMockPSSService(mockCtrl)
-// 		cmd := pssIncidentCloseCmd(nil)
-
-// 		service.EXPECT().PatchIncident(123, gomock.Any()).Return(errors.New("test error")).Times(1)
-
-// 		test_output.AssertErrorOutput(t, "Error closing incident [123]: test error\n", func() {
-// 			pssIncidentClose(service, cmd, []string{"123"})
-// 		})
-// 	})
-
-// 	t.Run("GetIncidentError_OutputsError", func(t *testing.T) {
-// 		mockCtrl := gomock.NewController(t)
-// 		defer mockCtrl.Finish()
-
-// 		service := mocks.NewMockPSSService(mockCtrl)
-// 		cmd := pssIncidentCloseCmd(nil)
-
-// 		gomock.InOrder(
-// 			service.EXPECT().PatchIncident(123, gomock.Any()).Return(nil),
-// 			service.EXPECT().GetIncident(123).Return(pss.Incident{}, errors.New("test error")),
-// 		)
-
-// 		test_output.AssertErrorOutput(t, "Error retrieving updated incident [123]: test error\n", func() {
-// 			pssIncidentClose(service, cmd, []string{"123"})
-// 		})
-// 	})
-// }
+		test_output.AssertErrorOutput(t, "Error retrieving closed incident [INC123456]: test error\n", func() {
+			pssIncidentClose(service, cmd, []string{"INC123456"})
+		})
+	})
+}

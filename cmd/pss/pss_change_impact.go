@@ -26,14 +26,7 @@ func pssChangeImpactListCmd(f factory.ClientFactory) *cobra.Command {
 		Short:   "Lists change impact case options",
 		Long:    "This command lists change impact case options",
 		Example: "ans pss request list",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := f.NewClient()
-			if err != nil {
-				return err
-			}
-
-			return pssChangeImpactList(c.PSSService(), cmd, args)
-		},
+		RunE:    pssCobraRunEFunc(f, pssChangeImpactList),
 	}
 }
 

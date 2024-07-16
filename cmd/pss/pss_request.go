@@ -15,8 +15,9 @@ import (
 
 func pssRequestRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "request",
-		Short: "sub-commands relating to requests",
+		Use:        "request",
+		Short:      "sub-commands relating to requests",
+		Deprecated: "Case commands should be used instead",
 	}
 
 	// Child commands

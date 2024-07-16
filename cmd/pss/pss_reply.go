@@ -12,8 +12,9 @@ import (
 
 func pssReplyRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "reply",
-		Short: "sub-commands relating to replies",
+		Use:        "reply",
+		Short:      "sub-commands relating to replies",
+		Deprecated: "Case commands should be used instead",
 	}
 
 	// Child commands

@@ -2,6 +2,7 @@ package pss
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/ans-group/cli/internal/pkg/factory"
 	"github.com/ans-group/cli/internal/pkg/helper"
@@ -19,13 +20,16 @@ func pssIncidentRootCmd(f factory.ClientFactory) *cobra.Command {
 	// Child commands
 	cmd.AddCommand(pssIncidentListCmd(f))
 	cmd.AddCommand(pssIncidentShowCmd(f))
-	// cmd.AddCommand(pssIncidentCreateCmd(f))
-	// cmd.AddCommand(pssIncidentUpdateCmd(f))
-	// cmd.AddCommand(pssIncidentCloseCmd(f))
+	cmd.AddCommand(pssIncidentCreateCmd(f))
+	cmd.AddCommand(pssIncidentCloseCmd(f))
 
 	// Child root commands
 	cmd.AddCommand(pssIncidentTypeRootCmd(f))
 	cmd.AddCommand(pssIncidentImpactRootCmd(f))
+
+	// Additional root commands (generic case commands)
+	cmd.AddCommand(pssCaseUpdateRootCmd(f))
+	cmd.AddCommand(pssCaseCategoryRootCmd(f))
 
 	return cmd
 }
@@ -36,14 +40,7 @@ func pssIncidentListCmd(f factory.ClientFactory) *cobra.Command {
 		Short:   "Lists incident cases",
 		Long:    "This command lists incident cases",
 		Example: "ans pss incident list",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := f.NewClient()
-			if err != nil {
-				return err
-			}
-
-			return pssIncidentList(c.PSSService(), cmd, args)
-		},
+		RunE:    pssCobraRunEFunc(f, pssIncidentList),
 	}
 }
 
@@ -74,14 +71,7 @@ func pssIncidentShowCmd(f factory.ClientFactory) *cobra.Command {
 
 			return nil
 		},
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := f.NewClient()
-			if err != nil {
-				return err
-			}
-
-			return pssIncidentShow(c.PSSService(), cmd, args)
-		},
+		RunE: pssCobraRunEFunc(f, pssIncidentShow),
 	}
 }
 
@@ -100,237 +90,117 @@ func pssIncidentShow(service pss.PSSService, cmd *cobra.Command, args []string) 
 	return output.CommandOutput(cmd, OutputPSSIncidentCasesProvider(incidents))
 }
 
-// func pssIncidentCreateCmd(f factory.ClientFactory) *cobra.Command {
-// 	cmd := &cobra.Command{
-// 		Use:     "create",
-// 		Short:   "Creates a incident",
-// 		Long:    "This command creates a new incident",
-// 		Example: "ans pss incident create --subject 'example ticket' --details 'example' --author 123",
-// 		RunE: func(cmd *cobra.Command, args []string) error {
-// 			c, err := f.NewClient()
-// 			if err != nil {
-// 				return err
-// 			}
+func pssIncidentCreateCmd(f factory.ClientFactory) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:     "create",
+		Short:   "Creates an incident",
+		Long:    "This command creates a new incident",
+		Example: "ans pss incident create --title 'test incident' --description 'test incident' --type Fault --category 70b67a49-7ace-4146-a295-11590a0b1203 --supported-service 1b684067-a587-4997-acb9-da2f4cb7be81 --impact Minor",
+		RunE:    pssCobraRunEFunc(f, pssIncidentCreate),
+	}
 
-// 			return pssIncidentCreate(c.PSSService(), cmd, args)
-// 		},
-// 	}
+	// Setup flags
+	cmd.Flags().String("title", "", "Specifies the title for incident case")
+	cmd.MarkFlagRequired("title")
+	cmd.Flags().String("description", "", "Specifies the description for incident case")
+	cmd.MarkFlagRequired("description")
+	cmd.Flags().String("type", "", "Specifies the type of incident case")
+	cmd.MarkFlagRequired("type")
+	cmd.Flags().String("category", "", "Category ID for incident case")
+	cmd.MarkFlagRequired("category")
+	cmd.Flags().String("supported-service", "", "Supported service ID for incident case")
+	cmd.MarkFlagRequired("supported-service")
+	cmd.Flags().String("impact", "", "Impact for incident case")
+	cmd.MarkFlagRequired("impact")
+	cmd.Flags().Bool("security", false, "Specifies whether incident case is a security incident")
+	cmd.Flags().String("customer-reference", "", "Specifies the customer reference for incident case")
+	cmd.Flags().Int("contact", 0, "Contact ID for incident case")
 
-// 	// Setup flags
-// 	cmd.Flags().String("subject", "", "Specifies subject for incident")
-// 	cmd.MarkFlagRequired("subject")
-// 	cmd.Flags().String("details", "", "Specifies details for incident")
-// 	cmd.Flags().Int("author", 0, "Specifies author ID for incident")
-// 	cmd.MarkFlagRequired("author")
-// 	cmd.Flags().String("priority", "Normal", "Specifies priority for incident")
-// 	cmd.Flags().Bool("secure", false, "Specifies whether incident is secure")
-// 	cmd.Flags().StringSlice("cc", []string{}, "Specifies CC email addresses for incident")
-// 	cmd.Flags().Bool("incident-sms", false, "Specifies whether SMS updates are required")
-// 	cmd.Flags().String("customer-reference", "", "Specifies customer reference for incident")
-// 	cmd.Flags().Int("product-id", 0, "Specifies product ID for incident")
-// 	cmd.Flags().String("product-name", "", "Specifies product name for incident")
-// 	cmd.Flags().String("product-type", "", "Specifies product type for incident")
+	return cmd
+}
 
-// 	return cmd
-// }
+func pssIncidentCreate(service pss.PSSService, cmd *cobra.Command, args []string) error {
+	createIncidentCase := pss.CreateIncidentCaseRequest{}
 
-// func pssIncidentCreate(service pss.PSSService, cmd *cobra.Command, args []string) error {
-// 	createIncident := pss.CreateIncidentIncident{}
+	createIncidentCase.Title, _ = cmd.Flags().GetString("title")
+	createIncidentCase.Description, _ = cmd.Flags().GetString("description")
+	createIncidentCase.IsSecurity, _ = cmd.Flags().GetBool("security")
+	createIncidentCase.CustomerReference, _ = cmd.Flags().GetString("customer-reference")
+	createIncidentCase.ContactID, _ = cmd.Flags().GetInt("contact")
+	createIncidentCase.CategoryID, _ = cmd.Flags().GetString("category")
+	createIncidentCase.SupportedServiceID, _ = cmd.Flags().GetString("supported-service")
 
-// 	priority, _ := cmd.Flags().GetString("priority")
-// 	parsedPriority, err := pss.IncidentPriorityEnum.Parse(priority)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	createIncident.Priority = parsedPriority
+	incidentCaseType, _ := cmd.Flags().GetString("type")
+	parsedIncidentCaseType, err := pss.IncidentCaseTypeEnum.Parse(incidentCaseType)
+	if err != nil {
+		return err
+	}
+	createIncidentCase.Type = parsedIncidentCaseType
 
-// 	if cmd.Flags().Changed("product-id") || cmd.Flags().Changed("product-name") || cmd.Flags().Changed("product-type") {
-// 		createIncident.Product = &pss.Product{}
-// 		createIncident.Product.ID, _ = cmd.Flags().GetInt("product-id")
-// 		createIncident.Product.Name, _ = cmd.Flags().GetString("product-name")
-// 		createIncident.Product.Type, _ = cmd.Flags().GetString("product-type")
-// 	}
+	incidentCaseImpact, _ := cmd.Flags().GetString("impact")
+	parsedIncidentCaseImpact, err := pss.IncidentCaseImpactEnum.Parse(incidentCaseImpact)
+	if err != nil {
+		return err
+	}
+	createIncidentCase.Impact = parsedIncidentCaseImpact
 
-// 	createIncident.Subject, _ = cmd.Flags().GetString("subject")
-// 	createIncident.Author.ID, _ = cmd.Flags().GetInt("author")
-// 	createIncident.Secure, _ = cmd.Flags().GetBool("secure")
-// 	createIncident.CC, _ = cmd.Flags().GetStringSlice("cc")
-// 	createIncident.IncidentSMS, _ = cmd.Flags().GetBool("incident-sms")
-// 	createIncident.CustomerReference, _ = cmd.Flags().GetString("customer-reference")
+	incidentID, err := service.CreateIncidentCase(createIncidentCase)
+	if err != nil {
+		return fmt.Errorf("Error creating incident: %s", err)
+	}
 
-// 	if cmd.Flags().Changed("details") {
-// 		createIncident.Details, _ = cmd.Flags().GetString("details")
-// 	} else {
-// 		createIncident.Details, err = input.ReadInput("details")
-// 		if err != nil {
-// 			return err
-// 		}
-// 	}
+	incident, err := service.GetIncidentCase(incidentID)
+	if err != nil {
+		return fmt.Errorf("Error retrieving new incident: %s", err)
+	}
 
-// 	incidentID, err := service.CreateIncident(createIncident)
-// 	if err != nil {
-// 		return fmt.Errorf("Error creating incident: %s", err)
-// 	}
+	return output.CommandOutput(cmd, OutputPSSIncidentCasesProvider([]pss.IncidentCase{incident}))
+}
 
-// 	incident, err := service.GetIncident(incidentID)
-// 	if err != nil {
-// 		return fmt.Errorf("Error retrieving new incident: %s", err)
-// 	}
+func pssIncidentCloseCmd(f factory.ClientFactory) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:     "close <incident: id>...",
+		Short:   "Closes an incident",
+		Long:    "This command closes one or more incidents",
+		Example: "ans pss incident close CHG123456",
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				return errors.New("Missing incident")
+			}
 
-// 	return output.CommandOutput(cmd, OutputPSSIncidentsProvider([]pss.Incident{incident}))
-// }
+			return nil
+		},
+		RunE: pssCobraRunEFunc(f, pssIncidentClose),
+	}
 
-// func pssIncidentUpdateCmd(f factory.ClientFactory) *cobra.Command {
-// 	cmd := &cobra.Command{
-// 		Use:     "update <incident: id>...",
-// 		Short:   "Updates incidents",
-// 		Long:    "This command updates one or more incidents",
-// 		Example: "ans pss incident update 123 --priority high",
-// 		Args: func(cmd *cobra.Command, args []string) error {
-// 			if len(args) < 1 {
-// 				return errors.New("Missing incident")
-// 			}
+	cmd.Flags().String("reason", "", "Reason for incident case approval")
+	cmd.MarkFlagRequired("reason")
+	cmd.Flags().Int("contact", 0, "Contact ID for incident case approval")
 
-// 			return nil
-// 		},
-// 		RunE: func(cmd *cobra.Command, args []string) error {
-// 			c, err := f.NewClient()
-// 			if err != nil {
-// 				return err
-// 			}
+	return cmd
+}
 
-// 			return pssIncidentUpdate(c.PSSService(), cmd, args)
-// 		},
-// 	}
+func pssIncidentClose(service pss.PSSService, cmd *cobra.Command, args []string) error {
+	closeIncidentRequest := pss.CloseIncidentCaseRequest{}
+	closeIncidentRequest.Reason, _ = cmd.Flags().GetString("reason")
+	closeIncidentRequest.ContactID, _ = cmd.Flags().GetInt("contact")
 
-// 	// Setup flags
-// 	cmd.Flags().String("priority", "", "Specifies priority for incident")
-// 	cmd.Flags().String("status", "", "Specifies status for incident")
-// 	cmd.Flags().Bool("secure", false, "Specifies whether incident is secure")
-// 	cmd.Flags().Bool("read", false, "Specifies whether incident is marked as read")
-// 	cmd.Flags().Bool("incident-sms", false, "Specifies whether SMS updates are required")
-// 	cmd.Flags().Bool("archived", false, "Specifies whether incident is archived")
+	var incidents []pss.IncidentCase
+	for _, arg := range args {
+		_, err := service.CloseIncidentCase(arg, closeIncidentRequest)
+		if err != nil {
+			output.OutputWithErrorLevelf("Failed to close incident [%s]: %s", arg, err)
+			continue
+		}
 
-// 	return cmd
-// }
+		incident, err := service.GetIncidentCase(arg)
+		if err != nil {
+			output.OutputWithErrorLevelf("Error retrieving closed incident [%s]: %s", arg, err)
+			continue
+		}
 
-// func pssIncidentUpdate(service pss.PSSService, cmd *cobra.Command, args []string) error {
-// 	patchIncident := pss.PatchIncidentIncident{}
+		incidents = append(incidents, incident)
+	}
 
-// 	if cmd.Flags().Changed("priority") {
-// 		priority, _ := cmd.Flags().GetString("priority")
-// 		parsedPriority, err := pss.IncidentPriorityEnum.Parse(priority)
-// 		if err != nil {
-// 			return err
-// 		}
-// 		patchIncident.Priority = parsedPriority
-// 	}
-
-// 	if cmd.Flags().Changed("status") {
-// 		status, _ := cmd.Flags().GetString("status")
-// 		parsedStatus, err := pss.IncidentStatusEnum.Parse(status)
-// 		if err != nil {
-// 			return err
-// 		}
-// 		patchIncident.Status = parsedStatus
-// 	}
-
-// 	if cmd.Flags().Changed("secure") {
-// 		secure, _ := cmd.Flags().GetBool("secure")
-// 		patchIncident.Secure = &secure
-// 	}
-// 	if cmd.Flags().Changed("read") {
-// 		read, _ := cmd.Flags().GetBool("read")
-// 		patchIncident.Read = &read
-// 	}
-// 	if cmd.Flags().Changed("incident-sms") {
-// 		incidentSMS, _ := cmd.Flags().GetBool("incident-sms")
-// 		patchIncident.IncidentSMS = &incidentSMS
-// 	}
-// 	if cmd.Flags().Changed("archived") {
-// 		archived, _ := cmd.Flags().GetBool("archived")
-// 		patchIncident.Archived = &archived
-// 	}
-
-// 	var incidents []pss.Incident
-
-// 	for _, arg := range args {
-// 		incidentID, err := strconv.Atoi(arg)
-// 		if err != nil {
-// 			output.OutputWithErrorLevelf("Invalid incident ID [%s]", arg)
-// 			continue
-// 		}
-
-// 		err = service.PatchIncident(incidentID, patchIncident)
-// 		if err != nil {
-// 			output.OutputWithErrorLevelf("Error updating incident [%d]: %s", incidentID, err)
-// 			continue
-// 		}
-
-// 		incident, err := service.GetIncident(incidentID)
-// 		if err != nil {
-// 			output.OutputWithErrorLevelf("Error retrieving updated incident [%d]: %s", incidentID, err)
-// 			continue
-// 		}
-
-// 		incidents = append(incidents, incident)
-// 	}
-
-// 	return output.CommandOutput(cmd, OutputPSSIncidentsProvider(incidents))
-// }
-
-// func pssIncidentCloseCmd(f factory.ClientFactory) *cobra.Command {
-// 	return &cobra.Command{
-// 		Use:     "close <incident: id>...",
-// 		Short:   "Closes incidents",
-// 		Long:    "This command closes one or more incidents",
-// 		Example: "ans pss incident close 123",
-// 		Args: func(cmd *cobra.Command, args []string) error {
-// 			if len(args) < 1 {
-// 				return errors.New("Missing incident")
-// 			}
-
-// 			return nil
-// 		},
-// 		RunE: func(cmd *cobra.Command, args []string) error {
-// 			c, err := f.NewClient()
-// 			if err != nil {
-// 				return err
-// 			}
-
-// 			return pssIncidentClose(c.PSSService(), cmd, args)
-// 		},
-// 	}
-// }
-
-// func pssIncidentClose(service pss.PSSService, cmd *cobra.Command, args []string) error {
-// 	patchIncident := pss.PatchIncidentIncident{
-// 		Status: pss.IncidentStatusCompleted,
-// 	}
-
-// 	var incidents []pss.Incident
-
-// 	for _, arg := range args {
-// 		incidentID, err := strconv.Atoi(arg)
-// 		if err != nil {
-// 			output.OutputWithErrorLevelf("Invalid incident ID [%s]", arg)
-// 			continue
-// 		}
-
-// 		err = service.PatchIncident(incidentID, patchIncident)
-// 		if err != nil {
-// 			output.OutputWithErrorLevelf("Error closing incident [%d]: %s", incidentID, err)
-// 			continue
-// 		}
-
-// 		incident, err := service.GetIncident(incidentID)
-// 		if err != nil {
-// 			output.OutputWithErrorLevelf("Error retrieving updated incident [%d]: %s", incidentID, err)
-// 			continue
-// 		}
-
-// 		incidents = append(incidents, incident)
-// 	}
-
-// 	return output.CommandOutput(cmd, OutputPSSIncidentsProvider(incidents))
-// }
+	return output.CommandOutput(cmd, OutputPSSIncidentCasesProvider(incidents))
+}

@@ -36,3 +36,15 @@ func OutputPSSProblemCasesProvider(options []pss.ProblemCase) output.OutputHandl
 func OutputPSSCaseCategoriesProvider(options []pss.CaseCategory) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(options).WithDefaultFields([]string{"id", "name"})
 }
+
+func OutputPSSSupportedServicesProvider(options []pss.SupportedService) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(options).WithDefaultFields([]string{"id", "name"})
+}
+
+func OutputPSSCaseUpdatesProvider(cases []pss.CaseUpdate) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(cases).WithDefaultFields([]string{"id", "subject", "created_at", "updated_at"})
+}
+
+func OutputPSSCasesProvider(cases []pss.Case) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(cases).WithDefaultFields([]string{"id", "title"})
+}

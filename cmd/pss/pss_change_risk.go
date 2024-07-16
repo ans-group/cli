@@ -26,14 +26,7 @@ func pssChangeRiskListCmd(f factory.ClientFactory) *cobra.Command {
 		Short:   "Lists change risk case options",
 		Long:    "This command lists change risk case options",
 		Example: "ans pss request list",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := f.NewClient()
-			if err != nil {
-				return err
-			}
-
-			return pssChangeRiskList(c.PSSService(), cmd, args)
-		},
+		RunE:    pssCobraRunEFunc(f, pssChangeRiskList),
 	}
 }
 

@@ -10,7 +10,7 @@ import (
 
 func pssCaseCategoryRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "casecategory",
+		Use:   "category",
 		Short: "sub-commands relating to case categories",
 	}
 
@@ -25,15 +25,8 @@ func pssCaseCategoryListCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "list",
 		Short:   "Lists case categories",
 		Long:    "This command lists case categories",
-		Example: "ans pss casecategory list",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := f.NewClient()
-			if err != nil {
-				return err
-			}
-
-			return pssCaseCategoryList(c.PSSService(), cmd, args)
-		},
+		Example: "ans pss case category list",
+		RunE:    pssCobraRunEFunc(f, pssCaseCategoryList),
 	}
 }
 
