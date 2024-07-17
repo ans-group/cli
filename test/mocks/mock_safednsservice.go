@@ -5,11 +5,10 @@
 package mocks
 
 import (
-	reflect "reflect"
-
-	gomock "github.com/golang/mock/gomock"
-	connection "github.com/ans-group/sdk-go/pkg/connection"
 	safedns "github.com/ans-group/sdk-go/pkg/service/safedns"
+	gomock "github.com/golang/mock/gomock"
+	reflect "reflect"
+	connection "github.com/ans-group/sdk-go/pkg/connection"
 )
 
 // MockSafeDNSService is a mock of SafeDNSService interface.

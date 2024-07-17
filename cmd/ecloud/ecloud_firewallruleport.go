@@ -119,7 +119,7 @@ func ecloudFirewallRulePortCreate(service ecloud.ECloudService, cmd *cobra.Comma
 	createRequest.Destination, _ = cmd.Flags().GetString("destination")
 
 	protocol, _ := cmd.Flags().GetString("protocol")
-	protocolParsed, err := ecloud.ParseFirewallRulePortProtocol(protocol)
+	protocolParsed, err := ecloud.FirewallRulePortProtocolEnum.Parse(protocol)
 	if err != nil {
 		return err
 	}
@@ -189,7 +189,7 @@ func ecloudFirewallRulePortUpdate(service ecloud.ECloudService, cmd *cobra.Comma
 	if cmd.Flags().Changed("protocol") {
 
 		protocol, _ := cmd.Flags().GetString("protocol")
-		protocolParsed, err := ecloud.ParseFirewallRulePortProtocol(protocol)
+		protocolParsed, err := ecloud.FirewallRulePortProtocolEnum.Parse(protocol)
 		if err != nil {
 			return err
 		}

@@ -118,9 +118,9 @@ func ecloudAffinityRuleCreate(service ecloud.ECloudService, cmd *cobra.Command, 
 	createRequest := ecloud.CreateAffinityRuleRequest{}
 	createRequest.VPCID, _ = cmd.Flags().GetString("vpc")
 	createRequest.AvailabilityZoneID, _ = cmd.Flags().GetString("availability-zone")
-	
+
 	ruleType, _ := cmd.Flags().GetString("type")
-	parsedType, err := ecloud.ParseAffinityRuleType(ruleType)
+	parsedType, err := ecloud.AffinityRuleTypeEnum.Parse(ruleType)
 	if err != nil {
 		return err
 	}

@@ -146,13 +146,13 @@ func ddosxDomainCDNRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
 
 func ddosxDomainCDNRuleCreate(service ddosx.DDoSXService, cmd *cobra.Command, args []string) error {
 	cacheControl, _ := cmd.Flags().GetString("cache-control")
-	parsedCacheControl, err := ddosx.ParseCDNRuleCacheControl(cacheControl)
+	parsedCacheControl, err := ddosx.CDNRuleCacheControlEnum.Parse(cacheControl)
 	if err != nil {
 		return clierrors.NewErrInvalidFlagValue("cache-control", cacheControl, err)
 	}
 
 	ruleType, _ := cmd.Flags().GetString("type")
-	parsedRuleType, err := ddosx.ParseCDNRuleType(ruleType)
+	parsedRuleType, err := ddosx.CDNRuleTypeEnum.Parse(ruleType)
 	if err != nil {
 		return clierrors.NewErrInvalidFlagValue("type", ruleType, err)
 	}
@@ -230,7 +230,7 @@ func ddosxDomainCDNRuleUpdate(service ddosx.DDoSXService, cmd *cobra.Command, ar
 
 	if cmd.Flags().Changed("cache-control") {
 		cacheControl, _ := cmd.Flags().GetString("cache-control")
-		parsedCacheControl, err := ddosx.ParseCDNRuleCacheControl(cacheControl)
+		parsedCacheControl, err := ddosx.CDNRuleCacheControlEnum.Parse(cacheControl)
 		if err != nil {
 			return clierrors.NewErrInvalidFlagValue("cache-control", cacheControl, err)
 		}
@@ -254,7 +254,7 @@ func ddosxDomainCDNRuleUpdate(service ddosx.DDoSXService, cmd *cobra.Command, ar
 
 	if cmd.Flags().Changed("type") {
 		ruleType, _ := cmd.Flags().GetString("type")
-		parsedRuleType, err := ddosx.ParseCDNRuleType(ruleType)
+		parsedRuleType, err := ddosx.CDNRuleTypeEnum.Parse(ruleType)
 		if err != nil {
 			return clierrors.NewErrInvalidFlagValue("type", ruleType, err)
 		}

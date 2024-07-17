@@ -262,7 +262,7 @@ func DomainStatusWaitFunc(service ddosx.DDoSXService, domainName string, status 
 			return false, fmt.Errorf("Failed to retrieve domain [%s]: %s", domainName, err)
 		}
 		if domain.Status == ddosx.DomainStatusFailed {
-			return false, fmt.Errorf("Domain [%s] in [%s] state", domainName, domain.Status.String())
+			return false, fmt.Errorf("Domain [%s] in [%s] state", domainName, domain.Status)
 		}
 		if domain.Status == status {
 			return true, nil

@@ -150,7 +150,7 @@ func ddosxDomainWAFAdvancedRuleCreate(service ddosx.DDoSXService, cmd *cobra.Com
 	createRequest := ddosx.CreateWAFAdvancedRuleRequest{}
 
 	modifier, _ := cmd.Flags().GetString("modifier")
-	parsedModifier, err := ddosx.ParseWAFAdvancedRuleModifier(modifier)
+	parsedModifier, err := ddosx.WAFAdvancedRuleModifierEnum.Parse(modifier)
 	if err != nil {
 		return err
 	}
@@ -213,7 +213,7 @@ func ddosxDomainWAFAdvancedRuleUpdate(service ddosx.DDoSXService, cmd *cobra.Com
 
 	if cmd.Flags().Changed("modifier") {
 		modifier, _ := cmd.Flags().GetString("modifier")
-		parsedModifier, err := ddosx.ParseWAFAdvancedRuleModifier(modifier)
+		parsedModifier, err := ddosx.WAFAdvancedRuleModifierEnum.Parse(modifier)
 		if err != nil {
 			return err
 		}

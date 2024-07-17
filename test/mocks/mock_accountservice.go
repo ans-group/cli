@@ -5,299 +5,299 @@
 package mocks
 
 import (
-        connection "github.com/ans-group/sdk-go/pkg/connection"
-        account "github.com/ans-group/sdk-go/pkg/service/account"
-        gomock "github.com/golang/mock/gomock"
-        reflect "reflect"
+	connection "github.com/ans-group/sdk-go/pkg/connection"
+	account "github.com/ans-group/sdk-go/pkg/service/account"
+	gomock "github.com/golang/mock/gomock"
+	reflect "reflect"
 )
 
 // MockAccountService is a mock of AccountService interface.
 type MockAccountService struct {
-        ctrl     *gomock.Controller
-        recorder *MockAccountServiceMockRecorder
+	ctrl     *gomock.Controller
+	recorder *MockAccountServiceMockRecorder
 }
 
 // MockAccountServiceMockRecorder is the mock recorder for MockAccountService.
 type MockAccountServiceMockRecorder struct {
-        mock *MockAccountService
+	mock *MockAccountService
 }
 
 // NewMockAccountService creates a new mock instance.
 func NewMockAccountService(ctrl *gomock.Controller) *MockAccountService {
-        mock := &MockAccountService{ctrl: ctrl}
-        mock.recorder = &MockAccountServiceMockRecorder{mock}
-        return mock
+	mock := &MockAccountService{ctrl: ctrl}
+	mock.recorder = &MockAccountServiceMockRecorder{mock}
+	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockAccountService) EXPECT() *MockAccountServiceMockRecorder {
-        return m.recorder
+	return m.recorder
 }
 
 // CreateClient mocks base method.
 func (m *MockAccountService) CreateClient(arg0 account.CreateClientRequest) (int, error) {
-        m.ctrl.T.Helper()
-        ret := m.ctrl.Call(m, "CreateClient", arg0)
-        ret0, _ := ret[0].(int)
-        ret1, _ := ret[1].(error)
-        return ret0, ret1
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateClient", arg0)
+	ret0, _ := ret[0].(int)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // CreateClient indicates an expected call of CreateClient.
 func (mr *MockAccountServiceMockRecorder) CreateClient(arg0 interface{}) *gomock.Call {
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateClient", reflect.TypeOf((*MockAccountService)(nil).CreateClient), arg0)
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateClient", reflect.TypeOf((*MockAccountService)(nil).CreateClient), arg0)
 }
 
 // CreateInvoiceQuery mocks base method.
 func (m *MockAccountService) CreateInvoiceQuery(arg0 account.CreateInvoiceQueryRequest) (int, error) {
-        m.ctrl.T.Helper()
-        ret := m.ctrl.Call(m, "CreateInvoiceQuery", arg0)
-        ret0, _ := ret[0].(int)
-        ret1, _ := ret[1].(error)
-        return ret0, ret1
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateInvoiceQuery", arg0)
+	ret0, _ := ret[0].(int)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // CreateInvoiceQuery indicates an expected call of CreateInvoiceQuery.
 func (mr *MockAccountServiceMockRecorder) CreateInvoiceQuery(arg0 interface{}) *gomock.Call {
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateInvoiceQuery", reflect.TypeOf((*MockAccountService)(nil).CreateInvoiceQuery), arg0)
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateInvoiceQuery", reflect.TypeOf((*MockAccountService)(nil).CreateInvoiceQuery), arg0)
 }
 
 // DeleteClient mocks base method.
 func (m *MockAccountService) DeleteClient(arg0 int) error {
-        m.ctrl.T.Helper()
-        ret := m.ctrl.Call(m, "DeleteClient", arg0)
-        ret0, _ := ret[0].(error)
-        return ret0
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteClient", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // DeleteClient indicates an expected call of DeleteClient.
 func (mr *MockAccountServiceMockRecorder) DeleteClient(arg0 interface{}) *gomock.Call {
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteClient", reflect.TypeOf((*MockAccountService)(nil).DeleteClient), arg0)
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteClient", reflect.TypeOf((*MockAccountService)(nil).DeleteClient), arg0)
 }
 
 // GetClient mocks base method.
 func (m *MockAccountService) GetClient(arg0 int) (account.Client, error) {
-        m.ctrl.T.Helper()
-        ret := m.ctrl.Call(m, "GetClient", arg0)
-        ret0, _ := ret[0].(account.Client)
-        ret1, _ := ret[1].(error)
-        return ret0, ret1
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetClient", arg0)
+	ret0, _ := ret[0].(account.Client)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // GetClient indicates an expected call of GetClient.
 func (mr *MockAccountServiceMockRecorder) GetClient(arg0 interface{}) *gomock.Call {
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetClient", reflect.TypeOf((*MockAccountService)(nil).GetClient), arg0)
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetClient", reflect.TypeOf((*MockAccountService)(nil).GetClient), arg0)
 }
 
 // GetClients mocks base method.
 func (m *MockAccountService) GetClients(arg0 connection.APIRequestParameters) ([]account.Client, error) {
-        m.ctrl.T.Helper()
-        ret := m.ctrl.Call(m, "GetClients", arg0)
-        ret0, _ := ret[0].([]account.Client)
-        ret1, _ := ret[1].(error)
-        return ret0, ret1
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetClients", arg0)
+	ret0, _ := ret[0].([]account.Client)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // GetClients indicates an expected call of GetClients.
 func (mr *MockAccountServiceMockRecorder) GetClients(arg0 interface{}) *gomock.Call {
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetClients", reflect.TypeOf((*MockAccountService)(nil).GetClients), arg0)
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetClients", reflect.TypeOf((*MockAccountService)(nil).GetClients), arg0)
 }
 
 // GetClientsPaginated mocks base method.
 func (m *MockAccountService) GetClientsPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[account.Client], error) {
-        m.ctrl.T.Helper()
-        ret := m.ctrl.Call(m, "GetClientsPaginated", arg0)
-        ret0, _ := ret[0].(*connection.Paginated[account.Client])
-        ret1, _ := ret[1].(error)
-        return ret0, ret1
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetClientsPaginated", arg0)
+	ret0, _ := ret[0].(*connection.Paginated[account.Client])
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // GetClientsPaginated indicates an expected call of GetClientsPaginated.
 func (mr *MockAccountServiceMockRecorder) GetClientsPaginated(arg0 interface{}) *gomock.Call {
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetClientsPaginated", reflect.TypeOf((*MockAccountService)(nil).GetClientsPaginated), arg0)
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetClientsPaginated", reflect.TypeOf((*MockAccountService)(nil).GetClientsPaginated), arg0)
 }
 
 // GetContact mocks base method.
 func (m *MockAccountService) GetContact(arg0 int) (account.Contact, error) {
-        m.ctrl.T.Helper()
-        ret := m.ctrl.Call(m, "GetContact", arg0)
-        ret0, _ := ret[0].(account.Contact)
-        ret1, _ := ret[1].(error)
-        return ret0, ret1
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetContact", arg0)
+	ret0, _ := ret[0].(account.Contact)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // GetContact indicates an expected call of GetContact.
 func (mr *MockAccountServiceMockRecorder) GetContact(arg0 interface{}) *gomock.Call {
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetContact", reflect.TypeOf((*MockAccountService)(nil).GetContact), arg0)
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetContact", reflect.TypeOf((*MockAccountService)(nil).GetContact), arg0)
 }
 
 // GetContacts mocks base method.
 func (m *MockAccountService) GetContacts(arg0 connection.APIRequestParameters) ([]account.Contact, error) {
-        m.ctrl.T.Helper()
-        ret := m.ctrl.Call(m, "GetContacts", arg0)
-        ret0, _ := ret[0].([]account.Contact)
-        ret1, _ := ret[1].(error)
-        return ret0, ret1
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetContacts", arg0)
+	ret0, _ := ret[0].([]account.Contact)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // GetContacts indicates an expected call of GetContacts.
 func (mr *MockAccountServiceMockRecorder) GetContacts(arg0 interface{}) *gomock.Call {
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetContacts", reflect.TypeOf((*MockAccountService)(nil).GetContacts), arg0)
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetContacts", reflect.TypeOf((*MockAccountService)(nil).GetContacts), arg0)
 }
 
 // GetContactsPaginated mocks base method.
 func (m *MockAccountService) GetContactsPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[account.Contact], error) {
-        m.ctrl.T.Helper()
-        ret := m.ctrl.Call(m, "GetContactsPaginated", arg0)
-        ret0, _ := ret[0].(*connection.Paginated[account.Contact])
-        ret1, _ := ret[1].(error)
-        return ret0, ret1
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetContactsPaginated", arg0)
+	ret0, _ := ret[0].(*connection.Paginated[account.Contact])
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // GetContactsPaginated indicates an expected call of GetContactsPaginated.
 func (mr *MockAccountServiceMockRecorder) GetContactsPaginated(arg0 interface{}) *gomock.Call {
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetContactsPaginated", reflect.TypeOf((*MockAccountService)(nil).GetContactsPaginated), arg0)
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetContactsPaginated", reflect.TypeOf((*MockAccountService)(nil).GetContactsPaginated), arg0)
 }
 
 // GetCredits mocks base method.
 func (m *MockAccountService) GetCredits(arg0 connection.APIRequestParameters) ([]account.Credit, error) {
-        m.ctrl.T.Helper()
-        ret := m.ctrl.Call(m, "GetCredits", arg0)
-        ret0, _ := ret[0].([]account.Credit)
-        ret1, _ := ret[1].(error)
-        return ret0, ret1
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetCredits", arg0)
+	ret0, _ := ret[0].([]account.Credit)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // GetCredits indicates an expected call of GetCredits.
 func (mr *MockAccountServiceMockRecorder) GetCredits(arg0 interface{}) *gomock.Call {
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCredits", reflect.TypeOf((*MockAccountService)(nil).GetCredits), arg0)
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCredits", reflect.TypeOf((*MockAccountService)(nil).GetCredits), arg0)
 }
 
 // GetDetails mocks base method.
 func (m *MockAccountService) GetDetails() (account.Details, error) {
-        m.ctrl.T.Helper()
-        ret := m.ctrl.Call(m, "GetDetails")
-        ret0, _ := ret[0].(account.Details)
-        ret1, _ := ret[1].(error)
-        return ret0, ret1
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetDetails")
+	ret0, _ := ret[0].(account.Details)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // GetDetails indicates an expected call of GetDetails.
 func (mr *MockAccountServiceMockRecorder) GetDetails() *gomock.Call {
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDetails", reflect.TypeOf((*MockAccountService)(nil).GetDetails))
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDetails", reflect.TypeOf((*MockAccountService)(nil).GetDetails))
 }
 
 // GetInvoice mocks base method.
 func (m *MockAccountService) GetInvoice(arg0 int) (account.Invoice, error) {
-        m.ctrl.T.Helper()
-        ret := m.ctrl.Call(m, "GetInvoice", arg0)
-        ret0, _ := ret[0].(account.Invoice)
-        ret1, _ := ret[1].(error)
-        return ret0, ret1
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetInvoice", arg0)
+	ret0, _ := ret[0].(account.Invoice)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // GetInvoice indicates an expected call of GetInvoice.
 func (mr *MockAccountServiceMockRecorder) GetInvoice(arg0 interface{}) *gomock.Call {
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetInvoice", reflect.TypeOf((*MockAccountService)(nil).GetInvoice), arg0)
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetInvoice", reflect.TypeOf((*MockAccountService)(nil).GetInvoice), arg0)
 }
 
 // GetInvoiceQueries mocks base method.
 func (m *MockAccountService) GetInvoiceQueries(arg0 connection.APIRequestParameters) ([]account.InvoiceQuery, error) {
-        m.ctrl.T.Helper()
-        ret := m.ctrl.Call(m, "GetInvoiceQueries", arg0)
-        ret0, _ := ret[0].([]account.InvoiceQuery)
-        ret1, _ := ret[1].(error)
-        return ret0, ret1
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetInvoiceQueries", arg0)
+	ret0, _ := ret[0].([]account.InvoiceQuery)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // GetInvoiceQueries indicates an expected call of GetInvoiceQueries.
 func (mr *MockAccountServiceMockRecorder) GetInvoiceQueries(arg0 interface{}) *gomock.Call {
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetInvoiceQueries", reflect.TypeOf((*MockAccountService)(nil).GetInvoiceQueries), arg0)
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetInvoiceQueries", reflect.TypeOf((*MockAccountService)(nil).GetInvoiceQueries), arg0)
 }
 
 // GetInvoiceQueriesPaginated mocks base method.
 func (m *MockAccountService) GetInvoiceQueriesPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[account.InvoiceQuery], error) {
-        m.ctrl.T.Helper()
-        ret := m.ctrl.Call(m, "GetInvoiceQueriesPaginated", arg0)
-        ret0, _ := ret[0].(*connection.Paginated[account.InvoiceQuery])
-        ret1, _ := ret[1].(error)
-        return ret0, ret1
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetInvoiceQueriesPaginated", arg0)
+	ret0, _ := ret[0].(*connection.Paginated[account.InvoiceQuery])
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // GetInvoiceQueriesPaginated indicates an expected call of GetInvoiceQueriesPaginated.
 func (mr *MockAccountServiceMockRecorder) GetInvoiceQueriesPaginated(arg0 interface{}) *gomock.Call {
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetInvoiceQueriesPaginated", reflect.TypeOf((*MockAccountService)(nil).GetInvoiceQueriesPaginated), arg0)
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetInvoiceQueriesPaginated", reflect.TypeOf((*MockAccountService)(nil).GetInvoiceQueriesPaginated), arg0)
 }
 
 // GetInvoiceQuery mocks base method.
 func (m *MockAccountService) GetInvoiceQuery(arg0 int) (account.InvoiceQuery, error) {
-        m.ctrl.T.Helper()
-        ret := m.ctrl.Call(m, "GetInvoiceQuery", arg0)
-        ret0, _ := ret[0].(account.InvoiceQuery)
-        ret1, _ := ret[1].(error)
-        return ret0, ret1
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetInvoiceQuery", arg0)
+	ret0, _ := ret[0].(account.InvoiceQuery)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // GetInvoiceQuery indicates an expected call of GetInvoiceQuery.
 func (mr *MockAccountServiceMockRecorder) GetInvoiceQuery(arg0 interface{}) *gomock.Call {
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetInvoiceQuery", reflect.TypeOf((*MockAccountService)(nil).GetInvoiceQuery), arg0)
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetInvoiceQuery", reflect.TypeOf((*MockAccountService)(nil).GetInvoiceQuery), arg0)
 }
 
 // GetInvoices mocks base method.
 func (m *MockAccountService) GetInvoices(arg0 connection.APIRequestParameters) ([]account.Invoice, error) {
-        m.ctrl.T.Helper()
-        ret := m.ctrl.Call(m, "GetInvoices", arg0)
-        ret0, _ := ret[0].([]account.Invoice)
-        ret1, _ := ret[1].(error)
-        return ret0, ret1
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetInvoices", arg0)
+	ret0, _ := ret[0].([]account.Invoice)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // GetInvoices indicates an expected call of GetInvoices.
 func (mr *MockAccountServiceMockRecorder) GetInvoices(arg0 interface{}) *gomock.Call {
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetInvoices", reflect.TypeOf((*MockAccountService)(nil).GetInvoices), arg0)
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetInvoices", reflect.TypeOf((*MockAccountService)(nil).GetInvoices), arg0)
 }
 
 // GetInvoicesPaginated mocks base method.
 func (m *MockAccountService) GetInvoicesPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[account.Invoice], error) {
-        m.ctrl.T.Helper()
-        ret := m.ctrl.Call(m, "GetInvoicesPaginated", arg0)
-        ret0, _ := ret[0].(*connection.Paginated[account.Invoice])
-        ret1, _ := ret[1].(error)
-        return ret0, ret1
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetInvoicesPaginated", arg0)
+	ret0, _ := ret[0].(*connection.Paginated[account.Invoice])
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // GetInvoicesPaginated indicates an expected call of GetInvoicesPaginated.
 func (mr *MockAccountServiceMockRecorder) GetInvoicesPaginated(arg0 interface{}) *gomock.Call {
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetInvoicesPaginated", reflect.TypeOf((*MockAccountService)(nil).GetInvoicesPaginated), arg0)
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetInvoicesPaginated", reflect.TypeOf((*MockAccountService)(nil).GetInvoicesPaginated), arg0)
 }
 
 // PatchClient mocks base method.
 func (m *MockAccountService) PatchClient(arg0 int, arg1 account.PatchClientRequest) error {
-        m.ctrl.T.Helper()
-        ret := m.ctrl.Call(m, "PatchClient", arg0, arg1)
-        ret0, _ := ret[0].(error)
-        return ret0
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PatchClient", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // PatchClient indicates an expected call of PatchClient.
 func (mr *MockAccountServiceMockRecorder) PatchClient(arg0, arg1 interface{}) *gomock.Call {
-        mr.mock.ctrl.T.Helper()
-        return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchClient", reflect.TypeOf((*MockAccountService)(nil).PatchClient), arg0, arg1)
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchClient", reflect.TypeOf((*MockAccountService)(nil).PatchClient), arg0, arg1)
 }

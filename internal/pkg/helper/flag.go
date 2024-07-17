@@ -105,9 +105,9 @@ func GetFilteringFromStringFlagValue(filter string) (connection.APIRequestFilter
 		}
 
 		// Parse the operator, returning parse error if any
-		parsedOperator, err := connection.ParseOperator(filteringPropertyOperatorParts[1])
+		parsedOperator, err := connection.APIRequestFilteringOperatorEnum.Parse(filteringPropertyOperatorParts[1])
 		if err != nil {
-			return filtering, err
+			return filtering, errors.New("Invalid filtering operator")
 		}
 
 		operator = parsedOperator

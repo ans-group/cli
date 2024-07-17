@@ -122,7 +122,7 @@ func ecloudNetworkPolicyCreate(service ecloud.ECloudService, cmd *cobra.Command,
 	}
 	if cmd.Flags().Changed("catchall-rule-action") {
 		catchallRuleAction, _ := cmd.Flags().GetString("catchall-rule-action")
-		catchallRuleActionParsed, err := ecloud.ParseNetworkPolicyCatchallRuleAction(catchallRuleAction)
+		catchallRuleActionParsed, err := ecloud.NetworkPolicyCatchallRuleActionEnum.Parse(catchallRuleAction)
 		if err != nil {
 			return err
 		}
@@ -181,7 +181,7 @@ func ecloudNetworkPolicyUpdate(service ecloud.ECloudService, cmd *cobra.Command,
 	}
 	if cmd.Flags().Changed("catchall-rule-action") {
 		catchallRuleAction, _ := cmd.Flags().GetString("catchall-rule-action")
-		catchallRuleActionParsed, err := ecloud.ParseNetworkPolicyCatchallRuleAction(catchallRuleAction)
+		catchallRuleActionParsed, err := ecloud.NetworkPolicyCatchallRuleActionEnum.Parse(catchallRuleAction)
 		if err != nil {
 			return err
 		}

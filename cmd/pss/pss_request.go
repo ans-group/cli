@@ -15,8 +15,9 @@ import (
 
 func pssRequestRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "request",
-		Short: "sub-commands relating to requests",
+		Use:        "request",
+		Short:      "sub-commands relating to requests",
+		Deprecated: "Case commands should be used instead",
 	}
 
 	// Child commands
@@ -147,7 +148,7 @@ func pssRequestCreate(service pss.PSSService, cmd *cobra.Command, args []string)
 	createRequest := pss.CreateRequestRequest{}
 
 	priority, _ := cmd.Flags().GetString("priority")
-	parsedPriority, err := pss.ParseRequestPriority(priority)
+	parsedPriority, err := pss.RequestPriorityEnum.Parse(priority)
 	if err != nil {
 		return err
 	}
@@ -228,7 +229,7 @@ func pssRequestUpdate(service pss.PSSService, cmd *cobra.Command, args []string)
 
 	if cmd.Flags().Changed("priority") {
 		priority, _ := cmd.Flags().GetString("priority")
-		parsedPriority, err := pss.ParseRequestPriority(priority)
+		parsedPriority, err := pss.RequestPriorityEnum.Parse(priority)
 		if err != nil {
 			return err
 		}
@@ -237,7 +238,7 @@ func pssRequestUpdate(service pss.PSSService, cmd *cobra.Command, args []string)
 
 	if cmd.Flags().Changed("status") {
 		status, _ := cmd.Flags().GetString("status")
-		parsedStatus, err := pss.ParseRequestStatus(status)
+		parsedStatus, err := pss.RequestStatusEnum.Parse(status)
 		if err != nil {
 			return err
 		}
