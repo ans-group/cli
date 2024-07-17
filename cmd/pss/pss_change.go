@@ -38,7 +38,7 @@ func pssChangeListCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
 		Use:     "list",
 		Short:   "Lists change cases",
-		Long:    "This command lists change cases",
+		Long:    "This command lists change cases (paginated)",
 		Example: "ans pss change list",
 		RunE:    pssCobraRunEFunc(f, pssChangeList),
 	}
@@ -50,12 +50,12 @@ func pssChangeList(service pss.PSSService, cmd *cobra.Command, args []string) er
 		return err
 	}
 
-	changes, err := service.GetChangeCases(params)
+	paginatedChanges, err := service.GetChangeCasesPaginated(params)
 	if err != nil {
 		return err
 	}
 
-	return output.CommandOutput(cmd, OutputPSSChangeCasesProvider(changes))
+	return output.CommandOutputPaginated(cmd, OutputPSSChangeCasesProvider(paginatedChanges.Items()), paginatedChanges)
 }
 
 func pssChangeShowCmd(f factory.ClientFactory) *cobra.Command {

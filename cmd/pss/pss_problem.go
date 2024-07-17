@@ -31,7 +31,7 @@ func pssProblemListCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
 		Use:     "list",
 		Short:   "Lists problem cases",
-		Long:    "This command lists problem cases",
+		Long:    "This command lists problem cases (paginated)",
 		Example: "ans pss problem list",
 		RunE:    pssCobraRunEFunc(f, pssProblemList),
 	}
@@ -43,12 +43,12 @@ func pssProblemList(service pss.PSSService, cmd *cobra.Command, args []string) e
 		return err
 	}
 
-	problems, err := service.GetProblemCases(params)
+	paginatedProblems, err := service.GetProblemCasesPaginated(params)
 	if err != nil {
 		return err
 	}
 
-	return output.CommandOutput(cmd, OutputPSSProblemCasesProvider(problems))
+	return output.CommandOutputPaginated(cmd, OutputPSSProblemCasesProvider(paginatedProblems.Items()), paginatedProblems)
 }
 
 func pssProblemShowCmd(f factory.ClientFactory) *cobra.Command {
