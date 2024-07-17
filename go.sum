@@ -40,8 +40,8 @@ github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/ans-group/go-durationstring v1.2.0 h1:UJIuQATkp0t1rBvZsHRwki33YHV9E+Ulro+3NbMB7MM=
 github.com/ans-group/go-durationstring v1.2.0/go.mod h1:QGF9Mdpq9058QXaut8r55QWu6lcHX6i/GvF1PZVkV6o=
-github.com/ans-group/sdk-go v1.17.0 h1:lrZyVux4642UcTykuMsMMB4LTtVI+hEtgPiXxiFZqFo=
-github.com/ans-group/sdk-go v1.17.0/go.mod h1:w4tX8raa9y3j7pug6TLcF8ZW1j9G05AmNoQLBloYxEY=
+github.com/ans-group/sdk-go v1.18.2 h1:PsifyxpaLP8mQTJ8Pu832sYSstQff/6p+h5mDAvdKCg=
+github.com/ans-group/sdk-go v1.18.2/go.mod h1:w4tX8raa9y3j7pug6TLcF8ZW1j9G05AmNoQLBloYxEY=
 github.com/blang/semver v3.5.1+incompatible h1:cQNTCjp13qL8KC3Nbxr/y2Bqb63oX6wdnnjpJbkM4JQ=
 github.com/blang/semver v3.5.1+incompatible/go.mod h1:kRBLl5iJ+tD4TcOOxsy/0fnwebNt5EWlYSAyrTnjyyk=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=

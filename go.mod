@@ -3,7 +3,7 @@ module github.com/ans-group/cli
 go 1.21
 
 require (
-	github.com/ans-group/sdk-go v1.17.0
+	github.com/ans-group/sdk-go v1.18.2
 	github.com/blang/semver v3.5.1+incompatible
 	github.com/golang/mock v1.6.0
 	github.com/iancoleman/strcase v0.3.0
