@@ -22,15 +22,15 @@ func OutputPSSCaseOptionsProvider(options []pss.CaseOption) output.OutputHandler
 }
 
 func OutputPSSIncidentCasesProvider(options []pss.IncidentCase) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(options).WithDefaultFields([]string{"id", "title"})
+	return output.NewSerializedOutputHandlerDataProvider(options).WithDefaultFields([]string{"id", "title", "status", "created_at", "updated_at"})
 }
 
 func OutputPSSChangeCasesProvider(options []pss.ChangeCase) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(options).WithDefaultFields([]string{"id", "title"})
+	return output.NewSerializedOutputHandlerDataProvider(options).WithDefaultFields([]string{"id", "title", "status", "created_at", "updated_at"})
 }
 
 func OutputPSSProblemCasesProvider(options []pss.ProblemCase) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(options).WithDefaultFields([]string{"id", "title"})
+	return output.NewSerializedOutputHandlerDataProvider(options).WithDefaultFields([]string{"id", "title", "status", "created_at", "updated_at"})
 }
 
 func OutputPSSCaseCategoriesProvider(options []pss.CaseCategory) output.OutputHandlerDataProvider {
@@ -46,5 +46,5 @@ func OutputPSSCaseUpdatesProvider(cases []pss.CaseUpdate) output.OutputHandlerDa
 }
 
 func OutputPSSCasesProvider(cases []pss.Case) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(cases).WithDefaultFields([]string{"id", "title"})
+	return output.NewSerializedOutputHandlerDataProvider(cases).WithDefaultFields([]string{"id", "case_type", "title", "status", "created_at", "updated_at"})
 }
