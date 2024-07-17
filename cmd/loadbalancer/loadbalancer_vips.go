@@ -66,7 +66,7 @@ func loadbalancerVipsShow(service loadbalancer.LoadBalancerService, cmd *cobra.C
 
 		vip, err := service.GetVIP(vipID)
 		if err != nil {
-			output.OutputWithErrorLevelf("Error retrieving VIP [%d]: %s", vip, err)
+			output.OutputWithErrorLevelf("Error retrieving VIP [%d]: %s", vipID, err)
 			continue
 		}
 
