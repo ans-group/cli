@@ -485,7 +485,7 @@ func OutputECloudIOPSTierProvider(tiers []ecloud.IOPSTier) output.OutputHandlerD
 }
 
 func OutputECloudVPNGatewaysProvider(gateways []ecloud.VPNGateway) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(gateways).WithDefaultFields([]string{"id", "name", "router_id", "specification_id", "sync_status"})
+	return output.NewSerializedOutputHandlerDataProvider(gateways).WithDefaultFields([]string{"id", "name", "fqdn", "router_id", "specification_id", "sync_status"})
 }
 
 func OutputECloudVPNGatewaySpecificationsProvider(specs []ecloud.VPNGatewaySpecification) output.OutputHandlerDataProvider {
