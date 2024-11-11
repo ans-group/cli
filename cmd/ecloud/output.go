@@ -483,3 +483,15 @@ func OutputECloudNATOverloadRulesProvider(rules []ecloud.NATOverloadRule) output
 func OutputECloudIOPSTierProvider(tiers []ecloud.IOPSTier) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(tiers).WithDefaultFields([]string{"id", "name", "level"})
 }
+
+func OutputECloudVPNGatewaysProvider(gateways []ecloud.VPNGateway) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(gateways).WithDefaultFields([]string{"id", "name", "router_id", "specification_id", "sync_status"})
+}
+
+func OutputECloudVPNGatewaySpecificationsProvider(specs []ecloud.VPNGatewaySpecification) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(specs).WithDefaultFields([]string{"id", "name", "description"})
+}
+
+func OutputECloudVPNGatewayUsersProvider(users []ecloud.VPNGatewayUser) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(users).WithDefaultFields([]string{"id", "name", "username", "vpn_gateway_id", "sync_status"})
+}
