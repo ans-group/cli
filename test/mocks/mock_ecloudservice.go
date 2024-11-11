@@ -5,11 +5,11 @@
 package mocks
 
 import (
-	gomock "github.com/golang/mock/gomock"
-	reflect "reflect"
 	connection "github.com/ans-group/sdk-go/pkg/connection"
 	account "github.com/ans-group/sdk-go/pkg/service/account"
 	ecloud "github.com/ans-group/sdk-go/pkg/service/ecloud"
+	gomock "github.com/golang/mock/gomock"
+	reflect "reflect"
 )
 
 // MockECloudService is a mock of ECloudService interface.
@@ -452,6 +452,36 @@ func (m *MockECloudService) CreateVPNEndpoint(arg0 ecloud.CreateVPNEndpointReque
 func (mr *MockECloudServiceMockRecorder) CreateVPNEndpoint(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateVPNEndpoint", reflect.TypeOf((*MockECloudService)(nil).CreateVPNEndpoint), arg0)
+}
+
+// CreateVPNGateway mocks base method.
+func (m *MockECloudService) CreateVPNGateway(arg0 ecloud.CreateVPNGatewayRequest) (ecloud.TaskReference, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateVPNGateway", arg0)
+	ret0, _ := ret[0].(ecloud.TaskReference)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateVPNGateway indicates an expected call of CreateVPNGateway.
+func (mr *MockECloudServiceMockRecorder) CreateVPNGateway(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateVPNGateway", reflect.TypeOf((*MockECloudService)(nil).CreateVPNGateway), arg0)
+}
+
+// CreateVPNGatewayUser mocks base method.
+func (m *MockECloudService) CreateVPNGatewayUser(arg0 ecloud.CreateVPNGatewayUserRequest) (ecloud.TaskReference, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateVPNGatewayUser", arg0)
+	ret0, _ := ret[0].(ecloud.TaskReference)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateVPNGatewayUser indicates an expected call of CreateVPNGatewayUser.
+func (mr *MockECloudServiceMockRecorder) CreateVPNGatewayUser(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateVPNGatewayUser", reflect.TypeOf((*MockECloudService)(nil).CreateVPNGatewayUser), arg0)
 }
 
 // CreateVPNService mocks base method.
@@ -954,6 +984,36 @@ func (mr *MockECloudServiceMockRecorder) DeleteVPNEndpoint(arg0 interface{}) *go
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteVPNEndpoint", reflect.TypeOf((*MockECloudService)(nil).DeleteVPNEndpoint), arg0)
 }
 
+// DeleteVPNGateway mocks base method.
+func (m *MockECloudService) DeleteVPNGateway(arg0 string) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteVPNGateway", arg0)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DeleteVPNGateway indicates an expected call of DeleteVPNGateway.
+func (mr *MockECloudServiceMockRecorder) DeleteVPNGateway(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteVPNGateway", reflect.TypeOf((*MockECloudService)(nil).DeleteVPNGateway), arg0)
+}
+
+// DeleteVPNGatewayUser mocks base method.
+func (m *MockECloudService) DeleteVPNGatewayUser(arg0 string) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteVPNGatewayUser", arg0)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DeleteVPNGatewayUser indicates an expected call of DeleteVPNGatewayUser.
+func (mr *MockECloudServiceMockRecorder) DeleteVPNGatewayUser(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteVPNGatewayUser", reflect.TypeOf((*MockECloudService)(nil).DeleteVPNGatewayUser), arg0)
+}
+
 // DeleteVPNService mocks base method.
 func (m *MockECloudService) DeleteVPNService(arg0 string) (string, error) {
 	m.ctrl.T.Helper()
@@ -1098,6 +1158,21 @@ func (m *MockECloudService) EncryptInstance(arg0 string) (string, error) {
 func (mr *MockECloudServiceMockRecorder) EncryptInstance(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "EncryptInstance", reflect.TypeOf((*MockECloudService)(nil).EncryptInstance), arg0)
+}
+
+// ExecuteInstanceScript mocks base method.
+func (m *MockECloudService) ExecuteInstanceScript(arg0 string, arg1 ecloud.ExecuteInstanceScriptRequest) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ExecuteInstanceScript", arg0, arg1)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ExecuteInstanceScript indicates an expected call of ExecuteInstanceScript.
+func (mr *MockECloudServiceMockRecorder) ExecuteInstanceScript(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ExecuteInstanceScript", reflect.TypeOf((*MockECloudService)(nil).ExecuteInstanceScript), arg0, arg1)
 }
 
 // GetActiveDirectoryDomain mocks base method.
@@ -4220,6 +4295,201 @@ func (mr *MockECloudServiceMockRecorder) GetVPNEndpointsPaginated(arg0 interface
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNEndpointsPaginated", reflect.TypeOf((*MockECloudService)(nil).GetVPNEndpointsPaginated), arg0)
 }
 
+// GetVPNGateway mocks base method.
+func (m *MockECloudService) GetVPNGateway(arg0 string) (ecloud.VPNGateway, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVPNGateway", arg0)
+	ret0, _ := ret[0].(ecloud.VPNGateway)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVPNGateway indicates an expected call of GetVPNGateway.
+func (mr *MockECloudServiceMockRecorder) GetVPNGateway(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNGateway", reflect.TypeOf((*MockECloudService)(nil).GetVPNGateway), arg0)
+}
+
+// GetVPNGatewaySpecification mocks base method.
+func (m *MockECloudService) GetVPNGatewaySpecification(arg0 string) (ecloud.VPNGatewaySpecification, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVPNGatewaySpecification", arg0)
+	ret0, _ := ret[0].(ecloud.VPNGatewaySpecification)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVPNGatewaySpecification indicates an expected call of GetVPNGatewaySpecification.
+func (mr *MockECloudServiceMockRecorder) GetVPNGatewaySpecification(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNGatewaySpecification", reflect.TypeOf((*MockECloudService)(nil).GetVPNGatewaySpecification), arg0)
+}
+
+// GetVPNGatewaySpecificationAvailabilityZones mocks base method.
+func (m *MockECloudService) GetVPNGatewaySpecificationAvailabilityZones(arg0 string, arg1 connection.APIRequestParameters) ([]ecloud.AvailabilityZone, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVPNGatewaySpecificationAvailabilityZones", arg0, arg1)
+	ret0, _ := ret[0].([]ecloud.AvailabilityZone)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVPNGatewaySpecificationAvailabilityZones indicates an expected call of GetVPNGatewaySpecificationAvailabilityZones.
+func (mr *MockECloudServiceMockRecorder) GetVPNGatewaySpecificationAvailabilityZones(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNGatewaySpecificationAvailabilityZones", reflect.TypeOf((*MockECloudService)(nil).GetVPNGatewaySpecificationAvailabilityZones), arg0, arg1)
+}
+
+// GetVPNGatewaySpecificationAvailabilityZonesPaginated mocks base method.
+func (m *MockECloudService) GetVPNGatewaySpecificationAvailabilityZonesPaginated(arg0 string, arg1 connection.APIRequestParameters) (*connection.Paginated[ecloud.AvailabilityZone], error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVPNGatewaySpecificationAvailabilityZonesPaginated", arg0, arg1)
+	ret0, _ := ret[0].(*connection.Paginated[ecloud.AvailabilityZone])
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVPNGatewaySpecificationAvailabilityZonesPaginated indicates an expected call of GetVPNGatewaySpecificationAvailabilityZonesPaginated.
+func (mr *MockECloudServiceMockRecorder) GetVPNGatewaySpecificationAvailabilityZonesPaginated(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNGatewaySpecificationAvailabilityZonesPaginated", reflect.TypeOf((*MockECloudService)(nil).GetVPNGatewaySpecificationAvailabilityZonesPaginated), arg0, arg1)
+}
+
+// GetVPNGatewaySpecifications mocks base method.
+func (m *MockECloudService) GetVPNGatewaySpecifications(arg0 connection.APIRequestParameters) ([]ecloud.VPNGatewaySpecification, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVPNGatewaySpecifications", arg0)
+	ret0, _ := ret[0].([]ecloud.VPNGatewaySpecification)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVPNGatewaySpecifications indicates an expected call of GetVPNGatewaySpecifications.
+func (mr *MockECloudServiceMockRecorder) GetVPNGatewaySpecifications(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNGatewaySpecifications", reflect.TypeOf((*MockECloudService)(nil).GetVPNGatewaySpecifications), arg0)
+}
+
+// GetVPNGatewaySpecificationsPaginated mocks base method.
+func (m *MockECloudService) GetVPNGatewaySpecificationsPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[ecloud.VPNGatewaySpecification], error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVPNGatewaySpecificationsPaginated", arg0)
+	ret0, _ := ret[0].(*connection.Paginated[ecloud.VPNGatewaySpecification])
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVPNGatewaySpecificationsPaginated indicates an expected call of GetVPNGatewaySpecificationsPaginated.
+func (mr *MockECloudServiceMockRecorder) GetVPNGatewaySpecificationsPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNGatewaySpecificationsPaginated", reflect.TypeOf((*MockECloudService)(nil).GetVPNGatewaySpecificationsPaginated), arg0)
+}
+
+// GetVPNGatewayTasks mocks base method.
+func (m *MockECloudService) GetVPNGatewayTasks(arg0 string, arg1 connection.APIRequestParameters) ([]ecloud.Task, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVPNGatewayTasks", arg0, arg1)
+	ret0, _ := ret[0].([]ecloud.Task)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVPNGatewayTasks indicates an expected call of GetVPNGatewayTasks.
+func (mr *MockECloudServiceMockRecorder) GetVPNGatewayTasks(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNGatewayTasks", reflect.TypeOf((*MockECloudService)(nil).GetVPNGatewayTasks), arg0, arg1)
+}
+
+// GetVPNGatewayTasksPaginated mocks base method.
+func (m *MockECloudService) GetVPNGatewayTasksPaginated(arg0 string, arg1 connection.APIRequestParameters) (*connection.Paginated[ecloud.Task], error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVPNGatewayTasksPaginated", arg0, arg1)
+	ret0, _ := ret[0].(*connection.Paginated[ecloud.Task])
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVPNGatewayTasksPaginated indicates an expected call of GetVPNGatewayTasksPaginated.
+func (mr *MockECloudServiceMockRecorder) GetVPNGatewayTasksPaginated(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNGatewayTasksPaginated", reflect.TypeOf((*MockECloudService)(nil).GetVPNGatewayTasksPaginated), arg0, arg1)
+}
+
+// GetVPNGatewayUser mocks base method.
+func (m *MockECloudService) GetVPNGatewayUser(arg0 string) (ecloud.VPNGatewayUser, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVPNGatewayUser", arg0)
+	ret0, _ := ret[0].(ecloud.VPNGatewayUser)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVPNGatewayUser indicates an expected call of GetVPNGatewayUser.
+func (mr *MockECloudServiceMockRecorder) GetVPNGatewayUser(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNGatewayUser", reflect.TypeOf((*MockECloudService)(nil).GetVPNGatewayUser), arg0)
+}
+
+// GetVPNGatewayUsers mocks base method.
+func (m *MockECloudService) GetVPNGatewayUsers(arg0 connection.APIRequestParameters) ([]ecloud.VPNGatewayUser, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVPNGatewayUsers", arg0)
+	ret0, _ := ret[0].([]ecloud.VPNGatewayUser)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVPNGatewayUsers indicates an expected call of GetVPNGatewayUsers.
+func (mr *MockECloudServiceMockRecorder) GetVPNGatewayUsers(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNGatewayUsers", reflect.TypeOf((*MockECloudService)(nil).GetVPNGatewayUsers), arg0)
+}
+
+// GetVPNGatewayUsersPaginated mocks base method.
+func (m *MockECloudService) GetVPNGatewayUsersPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[ecloud.VPNGatewayUser], error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVPNGatewayUsersPaginated", arg0)
+	ret0, _ := ret[0].(*connection.Paginated[ecloud.VPNGatewayUser])
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVPNGatewayUsersPaginated indicates an expected call of GetVPNGatewayUsersPaginated.
+func (mr *MockECloudServiceMockRecorder) GetVPNGatewayUsersPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNGatewayUsersPaginated", reflect.TypeOf((*MockECloudService)(nil).GetVPNGatewayUsersPaginated), arg0)
+}
+
+// GetVPNGateways mocks base method.
+func (m *MockECloudService) GetVPNGateways(arg0 connection.APIRequestParameters) ([]ecloud.VPNGateway, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVPNGateways", arg0)
+	ret0, _ := ret[0].([]ecloud.VPNGateway)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVPNGateways indicates an expected call of GetVPNGateways.
+func (mr *MockECloudServiceMockRecorder) GetVPNGateways(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNGateways", reflect.TypeOf((*MockECloudService)(nil).GetVPNGateways), arg0)
+}
+
+// GetVPNGatewaysPaginated mocks base method.
+func (m *MockECloudService) GetVPNGatewaysPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[ecloud.VPNGateway], error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetVPNGatewaysPaginated", arg0)
+	ret0, _ := ret[0].(*connection.Paginated[ecloud.VPNGateway])
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVPNGatewaysPaginated indicates an expected call of GetVPNGatewaysPaginated.
+func (mr *MockECloudServiceMockRecorder) GetVPNGatewaysPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVPNGatewaysPaginated", reflect.TypeOf((*MockECloudService)(nil).GetVPNGatewaysPaginated), arg0)
+}
+
 // GetVPNProfileGroup mocks base method.
 func (m *MockECloudService) GetVPNProfileGroup(arg0 string) (ecloud.VPNProfileGroup, error) {
 	m.ctrl.T.Helper()
@@ -4991,6 +5261,36 @@ func (m *MockECloudService) PatchVPNEndpoint(arg0 string, arg1 ecloud.PatchVPNEn
 func (mr *MockECloudServiceMockRecorder) PatchVPNEndpoint(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchVPNEndpoint", reflect.TypeOf((*MockECloudService)(nil).PatchVPNEndpoint), arg0, arg1)
+}
+
+// PatchVPNGateway mocks base method.
+func (m *MockECloudService) PatchVPNGateway(arg0 string, arg1 ecloud.PatchVPNGatewayRequest) (ecloud.TaskReference, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PatchVPNGateway", arg0, arg1)
+	ret0, _ := ret[0].(ecloud.TaskReference)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// PatchVPNGateway indicates an expected call of PatchVPNGateway.
+func (mr *MockECloudServiceMockRecorder) PatchVPNGateway(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchVPNGateway", reflect.TypeOf((*MockECloudService)(nil).PatchVPNGateway), arg0, arg1)
+}
+
+// PatchVPNGatewayUser mocks base method.
+func (m *MockECloudService) PatchVPNGatewayUser(arg0 string, arg1 ecloud.PatchVPNGatewayUserRequest) (ecloud.TaskReference, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PatchVPNGatewayUser", arg0, arg1)
+	ret0, _ := ret[0].(ecloud.TaskReference)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// PatchVPNGatewayUser indicates an expected call of PatchVPNGatewayUser.
+func (mr *MockECloudServiceMockRecorder) PatchVPNGatewayUser(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchVPNGatewayUser", reflect.TypeOf((*MockECloudService)(nil).PatchVPNGatewayUser), arg0, arg1)
 }
 
 // PatchVPNService mocks base method.
