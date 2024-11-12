@@ -495,3 +495,11 @@ func OutputECloudVPNGatewaySpecificationsProvider(specs []ecloud.VPNGatewaySpeci
 func OutputECloudVPNGatewayUsersProvider(users []ecloud.VPNGatewayUser) output.OutputHandlerDataProvider {
 	return output.NewSerializedOutputHandlerDataProvider(users).WithDefaultFields([]string{"id", "name", "username", "vpn_gateway_id", "sync_status"})
 }
+
+func OutputECloudBackupGatewaySpecificationsProvider(specs []ecloud.BackupGatewaySpecification) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(specs).WithDefaultFields([]string{"id", "name", "description"})
+}
+
+func OutputECloudBackupGatewaysProvider(gateways []ecloud.BackupGateway) output.OutputHandlerDataProvider {
+	return output.NewSerializedOutputHandlerDataProvider(gateways).WithDefaultFields([]string{"id", "name", "vpc_id", "availability_zone", "gateway_spec_id", "sync_status"})
+}
