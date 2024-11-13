@@ -5,11 +5,11 @@
 package mocks
 
 import (
-	connection "github.com/ans-group/sdk-go/pkg/connection"
 	account "github.com/ans-group/sdk-go/pkg/service/account"
 	ecloud "github.com/ans-group/sdk-go/pkg/service/ecloud"
 	gomock "github.com/golang/mock/gomock"
 	reflect "reflect"
+	connection "github.com/ans-group/sdk-go/pkg/connection"
 )
 
 // MockECloudService is a mock of ECloudService interface.
@@ -123,6 +123,21 @@ func (m *MockECloudService) CreateAffinityRuleMember(arg0 ecloud.CreateAffinityR
 func (mr *MockECloudServiceMockRecorder) CreateAffinityRuleMember(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateAffinityRuleMember", reflect.TypeOf((*MockECloudService)(nil).CreateAffinityRuleMember), arg0)
+}
+
+// CreateBackupGateway mocks base method.
+func (m *MockECloudService) CreateBackupGateway(arg0 ecloud.CreateBackupGatewayRequest) (ecloud.TaskReference, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateBackupGateway", arg0)
+	ret0, _ := ret[0].(ecloud.TaskReference)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateBackupGateway indicates an expected call of CreateBackupGateway.
+func (mr *MockECloudServiceMockRecorder) CreateBackupGateway(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateBackupGateway", reflect.TypeOf((*MockECloudService)(nil).CreateBackupGateway), arg0)
 }
 
 // CreateFirewallPolicy mocks base method.
@@ -645,6 +660,21 @@ func (m *MockECloudService) DeleteAffinityRuleMember(arg0 string) (string, error
 func (mr *MockECloudServiceMockRecorder) DeleteAffinityRuleMember(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteAffinityRuleMember", reflect.TypeOf((*MockECloudService)(nil).DeleteAffinityRuleMember), arg0)
+}
+
+// DeleteBackupGateway mocks base method.
+func (m *MockECloudService) DeleteBackupGateway(arg0 string) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteBackupGateway", arg0)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DeleteBackupGateway indicates an expected call of DeleteBackupGateway.
+func (mr *MockECloudServiceMockRecorder) DeleteBackupGateway(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteBackupGateway", reflect.TypeOf((*MockECloudService)(nil).DeleteBackupGateway), arg0)
 }
 
 // DeleteFirewallPolicy mocks base method.
@@ -1458,6 +1488,96 @@ func (m *MockECloudService) GetAvailabilityZonesPaginated(arg0 connection.APIReq
 func (mr *MockECloudServiceMockRecorder) GetAvailabilityZonesPaginated(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAvailabilityZonesPaginated", reflect.TypeOf((*MockECloudService)(nil).GetAvailabilityZonesPaginated), arg0)
+}
+
+// GetBackupGateway mocks base method.
+func (m *MockECloudService) GetBackupGateway(arg0 string) (ecloud.BackupGateway, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetBackupGateway", arg0)
+	ret0, _ := ret[0].(ecloud.BackupGateway)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetBackupGateway indicates an expected call of GetBackupGateway.
+func (mr *MockECloudServiceMockRecorder) GetBackupGateway(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBackupGateway", reflect.TypeOf((*MockECloudService)(nil).GetBackupGateway), arg0)
+}
+
+// GetBackupGatewaySpecification mocks base method.
+func (m *MockECloudService) GetBackupGatewaySpecification(arg0 string) (ecloud.BackupGatewaySpecification, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetBackupGatewaySpecification", arg0)
+	ret0, _ := ret[0].(ecloud.BackupGatewaySpecification)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetBackupGatewaySpecification indicates an expected call of GetBackupGatewaySpecification.
+func (mr *MockECloudServiceMockRecorder) GetBackupGatewaySpecification(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBackupGatewaySpecification", reflect.TypeOf((*MockECloudService)(nil).GetBackupGatewaySpecification), arg0)
+}
+
+// GetBackupGatewaySpecifications mocks base method.
+func (m *MockECloudService) GetBackupGatewaySpecifications(arg0 connection.APIRequestParameters) ([]ecloud.BackupGatewaySpecification, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetBackupGatewaySpecifications", arg0)
+	ret0, _ := ret[0].([]ecloud.BackupGatewaySpecification)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetBackupGatewaySpecifications indicates an expected call of GetBackupGatewaySpecifications.
+func (mr *MockECloudServiceMockRecorder) GetBackupGatewaySpecifications(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBackupGatewaySpecifications", reflect.TypeOf((*MockECloudService)(nil).GetBackupGatewaySpecifications), arg0)
+}
+
+// GetBackupGatewaySpecificationsPaginated mocks base method.
+func (m *MockECloudService) GetBackupGatewaySpecificationsPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[ecloud.BackupGatewaySpecification], error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetBackupGatewaySpecificationsPaginated", arg0)
+	ret0, _ := ret[0].(*connection.Paginated[ecloud.BackupGatewaySpecification])
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetBackupGatewaySpecificationsPaginated indicates an expected call of GetBackupGatewaySpecificationsPaginated.
+func (mr *MockECloudServiceMockRecorder) GetBackupGatewaySpecificationsPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBackupGatewaySpecificationsPaginated", reflect.TypeOf((*MockECloudService)(nil).GetBackupGatewaySpecificationsPaginated), arg0)
+}
+
+// GetBackupGateways mocks base method.
+func (m *MockECloudService) GetBackupGateways(arg0 connection.APIRequestParameters) ([]ecloud.BackupGateway, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetBackupGateways", arg0)
+	ret0, _ := ret[0].([]ecloud.BackupGateway)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetBackupGateways indicates an expected call of GetBackupGateways.
+func (mr *MockECloudServiceMockRecorder) GetBackupGateways(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBackupGateways", reflect.TypeOf((*MockECloudService)(nil).GetBackupGateways), arg0)
+}
+
+// GetBackupGatewaysPaginated mocks base method.
+func (m *MockECloudService) GetBackupGatewaysPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[ecloud.BackupGateway], error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetBackupGatewaysPaginated", arg0)
+	ret0, _ := ret[0].(*connection.Paginated[ecloud.BackupGateway])
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetBackupGatewaysPaginated indicates an expected call of GetBackupGatewaysPaginated.
+func (mr *MockECloudServiceMockRecorder) GetBackupGatewaysPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBackupGatewaysPaginated", reflect.TypeOf((*MockECloudService)(nil).GetBackupGatewaysPaginated), arg0)
 }
 
 // GetBillingMetric mocks base method.
@@ -4952,6 +5072,21 @@ func (m *MockECloudService) PatchAffinityRule(arg0 string, arg1 ecloud.PatchAffi
 func (mr *MockECloudServiceMockRecorder) PatchAffinityRule(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchAffinityRule", reflect.TypeOf((*MockECloudService)(nil).PatchAffinityRule), arg0, arg1)
+}
+
+// PatchBackupGateway mocks base method.
+func (m *MockECloudService) PatchBackupGateway(arg0 string, arg1 ecloud.PatchBackupGatewayRequest) (ecloud.TaskReference, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PatchBackupGateway", arg0, arg1)
+	ret0, _ := ret[0].(ecloud.TaskReference)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// PatchBackupGateway indicates an expected call of PatchBackupGateway.
+func (mr *MockECloudServiceMockRecorder) PatchBackupGateway(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchBackupGateway", reflect.TypeOf((*MockECloudService)(nil).PatchBackupGateway), arg0, arg1)
 }
 
 // PatchFirewallPolicy mocks base method.

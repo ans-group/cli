@@ -254,8 +254,7 @@ func Test_ecloudVPNGatewayUserUpdate(t *testing.T) {
 		cmd.ParseFlags([]string{"--name=testuser", "--username=user1"})
 
 		req := ecloud.PatchVPNGatewayUserRequest{
-			Name:     "testuser",
-			Username: "user1",
+			Name: "testuser",
 		}
 
 		resp := ecloud.TaskReference{
