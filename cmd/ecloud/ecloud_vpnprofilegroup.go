@@ -14,7 +14,7 @@ import (
 func ecloudVPNProfileGroupRootCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "vpnprofilegroup",
-		Short: "sub-commands relating to VPN sessions",
+		Short: "sub-commands relating to VPN profile groups",
 	}
 
 	// Child commands
@@ -27,8 +27,8 @@ func ecloudVPNProfileGroupRootCmd(f factory.ClientFactory) *cobra.Command {
 func ecloudVPNProfileGroupListCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "list",
-		Short:   "Lists VPN sessions",
-		Long:    "This command lists VPN sessions",
+		Short:   "Lists VPN profile groups",
+		Long:    "This command lists VPN profile groups",
 		Example: "ans ecloud vpnprofilegroup list",
 		RunE:    ecloudCobraRunEFunc(f, ecloudVPNProfileGroupList),
 	}
@@ -57,8 +57,8 @@ func ecloudVPNProfileGroupList(service ecloud.ECloudService, cmd *cobra.Command,
 func ecloudVPNProfileGroupShowCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
 		Use:     "show <session: id>...",
-		Short:   "Shows a VPN session",
-		Long:    "This command shows one or more VPN sessions",
+		Short:   "Shows a VPN profile group",
+		Long:    "This command shows one or more VPN profile groups",
 		Example: "ans ecloud vpnprofilegroup show vpns-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {

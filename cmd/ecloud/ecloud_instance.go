@@ -141,8 +141,7 @@ func ecloudInstanceCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().String("resource-tier", "", "ID of resource tier to deploy to. A default tier is chosen if not specified")
 	cmd.Flags().String("ip-address", "", "IP address to allocate for DHCP")
 	cmd.Flags().Bool("enable-vm-backups", false, "Enable VM-level backups")
-	cmd.Flags().Bool("enable-agent-backups", false, "Enable agent-level backups, requires a backup gateway")
-	cmd.Flags().String("backup-gateway-id", "", "Backup gateway ID, for use with agent level backups")
+	cmd.Flags().String("backup-gateway-id", "", "Backup gateway ID, enables agent-level backups")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the instance has been completely created")
 
 	return cmd
@@ -157,7 +156,6 @@ func ecloudInstanceCreate(service ecloud.ECloudService, cmd *cobra.Command, args
 	createRequest.HostGroupID, _ = cmd.Flags().GetString("host-group")
 	createRequest.ResourceTierID, _ = cmd.Flags().GetString("resource-tier")
 	createRequest.BackupEnabled, _ = cmd.Flags().GetBool("enable-vm-backups")
-	createRequest.BackupAgentEnabled, _ = cmd.Flags().GetBool("enable-agent-backups")
 	createRequest.BackupGatewayID, _ = cmd.Flags().GetString("backup-gateway-id")
 	createRequest.Name, _ = cmd.Flags().GetString("name")
 
@@ -181,10 +179,6 @@ func ecloudInstanceCreate(service ecloud.ECloudService, cmd *cobra.Command, args
 	}
 
 	imageFlag, _ := cmd.Flags().GetString("image")
-
-	if createRequest.BackupAgentEnabled && createRequest.BackupGatewayID == "" {
-		return fmt.Errorf("A backup gateway is required to use agent-level backups, please specify a backup gateway ID")
-	}
 
 	if strings.HasPrefix(imageFlag, "img-") {
 		createRequest.ImageID = imageFlag
