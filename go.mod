@@ -5,7 +5,7 @@ go 1.22.0
 toolchain go1.23.2
 
 require (
-	github.com/ans-group/sdk-go v1.22.0
+	github.com/ans-group/sdk-go v1.22.1
 	github.com/blang/semver v3.5.1+incompatible
 	github.com/golang/mock v1.6.0
 	github.com/iancoleman/strcase v0.3.0
