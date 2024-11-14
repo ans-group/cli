@@ -59,7 +59,7 @@ func ecloudAvailabilityZoneList(service ecloud.ECloudService, cmd *cobra.Command
 		return fmt.Errorf("Error retrieving availability zones: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudAvailabilityZonesProvider(zones))
+	return output.CommandOutput(cmd, AvailabilityZoneCollection(zones))
 }
 
 func ecloudAvailabilityZoneShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -91,5 +91,5 @@ func ecloudAvailabilityZoneShow(service ecloud.ECloudService, cmd *cobra.Command
 		zones = append(zones, zone)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudAvailabilityZonesProvider(zones))
+	return output.CommandOutput(cmd, AvailabilityZoneCollection(zones))
 }

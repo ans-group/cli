@@ -43,5 +43,5 @@ func loadbalancerBindList(service loadbalancer.LoadBalancerService, cmd *cobra.C
 		return fmt.Errorf("Error retrieving binds: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerBindsProvider(binds))
+	return output.CommandOutput(cmd, BindCollection(binds))
 }

@@ -62,7 +62,7 @@ func loadbalancerTargetGroupTargetList(service loadbalancer.LoadBalancerService,
 		return fmt.Errorf("Error retrieving targets: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerTargetsProvider(targets))
+	return output.CommandOutput(cmd, TargetCollection(targets))
 }
 
 func loadbalancerTargetGroupTargetShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -109,7 +109,7 @@ func loadbalancerTargetGroupTargetShow(service loadbalancer.LoadBalancerService,
 		targets = append(targets, target)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerTargetsProvider(targets))
+	return output.CommandOutput(cmd, TargetCollection(targets))
 }
 
 func loadbalancerTargetGroupTargetCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -178,7 +178,7 @@ func loadbalancerTargetGroupTargetCreate(service loadbalancer.LoadBalancerServic
 		return fmt.Errorf("Error retrieving new target: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerTargetsProvider([]loadbalancer.Target{target}))
+	return output.CommandOutput(cmd, TargetCollection([]loadbalancer.Target{target}))
 }
 
 func loadbalancerTargetGroupTargetUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -261,7 +261,7 @@ func loadbalancerTargetGroupTargetUpdate(service loadbalancer.LoadBalancerServic
 		targets = append(targets, target)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerTargetsProvider(targets))
+	return output.CommandOutput(cmd, TargetCollection(targets))
 }
 
 func loadbalancerTargetGroupTargetDeleteCmd(f factory.ClientFactory) *cobra.Command {

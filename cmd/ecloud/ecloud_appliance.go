@@ -55,7 +55,7 @@ func ecloudApplianceList(service ecloud.ECloudService, cmd *cobra.Command, args 
 		return fmt.Errorf("Error retrieving appliances: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudAppliancesProvider(appliances))
+	return output.CommandOutput(cmd, ApplianceCollection(appliances))
 }
 
 func ecloudApplianceShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -94,5 +94,5 @@ func ecloudApplianceShow(service ecloud.ECloudService, cmd *cobra.Command, args 
 		appliances = append(appliances, appliance)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudAppliancesProvider(appliances))
+	return output.CommandOutput(cmd, ApplianceCollection(appliances))
 }

@@ -58,7 +58,7 @@ func ecloudVPCList(service ecloud.ECloudService, cmd *cobra.Command, args []stri
 		return fmt.Errorf("Error retrieving VPCs: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVPCsProvider(vpcs))
+	return output.CommandOutput(cmd, VPCCollection(vpcs))
 }
 
 func ecloudVPCShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -90,7 +90,7 @@ func ecloudVPCShow(service ecloud.ECloudService, cmd *cobra.Command, args []stri
 		vpcs = append(vpcs, vpc)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVPCsProvider(vpcs))
+	return output.CommandOutput(cmd, VPCCollection(vpcs))
 }
 
 func ecloudVPCCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -142,7 +142,7 @@ func ecloudVPCCreate(service ecloud.ECloudService, cmd *cobra.Command, args []st
 		return fmt.Errorf("Error retrieving new VPC: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVPCsProvider([]ecloud.VPC{vpc}))
+	return output.CommandOutput(cmd, VPCCollection([]ecloud.VPC{vpc}))
 }
 
 func ecloudVPCUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -201,7 +201,7 @@ func ecloudVPCUpdate(service ecloud.ECloudService, cmd *cobra.Command, args []st
 		vpcs = append(vpcs, vpc)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVPCsProvider(vpcs))
+	return output.CommandOutput(cmd, VPCCollection(vpcs))
 }
 
 func ecloudVPCDeleteCmd(f factory.ClientFactory) *cobra.Command {

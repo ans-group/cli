@@ -66,7 +66,7 @@ func ddosxWAFLogMatchList(service ddosx.DDoSXService, cmd *cobra.Command, args [
 		return fmt.Errorf("Error retrieving WAF log matches: %s", err)
 	}
 
-	return output.CommandOutputPaginated(cmd, OutputDDoSXWAFLogMatchesProvider(paginatedMatches.Items()), paginatedMatches)
+	return output.CommandOutputPaginated(cmd, WAFLogMatchCollection(paginatedMatches.Items()), paginatedMatches)
 }
 
 func ddosxWAFLogMatchShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -110,5 +110,5 @@ func ddosxWAFLogMatchShow(service ddosx.DDoSXService, cmd *cobra.Command, args [
 		logs = append(logs, log)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXWAFLogMatchesProvider(logs))
+	return output.CommandOutput(cmd, WAFLogMatchCollection(logs))
 }

@@ -56,7 +56,7 @@ func ecloudVPNGatewayUserList(service ecloud.ECloudService, cmd *cobra.Command, 
 		return fmt.Errorf("Error retrieving VPN gateway users: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVPNGatewayUsersProvider(users))
+	return output.CommandOutput(cmd, VPNGatewayUserCollection(users))
 }
 
 func ecloudVPNGatewayUserShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -87,7 +87,7 @@ func ecloudVPNGatewayUserShow(service ecloud.ECloudService, cmd *cobra.Command, 
 		users = append(users, user)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVPNGatewayUsersProvider(users))
+	return output.CommandOutput(cmd, VPNGatewayUserCollection(users))
 }
 
 func ecloudVPNGatewayUserCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -136,7 +136,7 @@ func ecloudVPNGatewayUserCreate(service ecloud.ECloudService, cmd *cobra.Command
 		return fmt.Errorf("Error retrieving new VPN gateway user: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVPNGatewayUsersProvider([]ecloud.VPNGatewayUser{user}))
+	return output.CommandOutput(cmd, VPNGatewayUserCollection([]ecloud.VPNGatewayUser{user}))
 }
 
 func ecloudVPNGatewayUserUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -198,7 +198,7 @@ func ecloudVPNGatewayUserUpdate(service ecloud.ECloudService, cmd *cobra.Command
 		users = append(users, user)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVPNGatewayUsersProvider(users))
+	return output.CommandOutput(cmd, VPNGatewayUserCollection(users))
 }
 
 func ecloudVPNGatewayUserDeleteCmd(f factory.ClientFactory) *cobra.Command {

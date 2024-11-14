@@ -66,7 +66,7 @@ func ddosxDomainACLIPRuleList(service ddosx.DDoSXService, cmd *cobra.Command, ar
 		return fmt.Errorf("Error retrieving domain ACL IP rules: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXACLIPRulesProvider(domains))
+	return output.CommandOutput(cmd, ACLIPRuleCollection(domains))
 }
 
 func ddosxDomainACLIPRuleShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -110,7 +110,7 @@ func ddosxDomainACLIPRuleShow(service ddosx.DDoSXService, cmd *cobra.Command, ar
 		rules = append(rules, rule)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXACLIPRulesProvider(rules))
+	return output.CommandOutput(cmd, ACLIPRuleCollection(rules))
 }
 
 func ddosxDomainACLIPRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -168,7 +168,7 @@ func ddosxDomainACLIPRuleCreate(service ddosx.DDoSXService, cmd *cobra.Command, 
 		return fmt.Errorf("Error retrieving new domain ACL IP rule [%s]: %s", id, err)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXACLIPRulesProvider([]ddosx.ACLIPRule{rule}))
+	return output.CommandOutput(cmd, ACLIPRuleCollection([]ddosx.ACLIPRule{rule}))
 }
 
 func ddosxDomainACLIPRuleUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -243,7 +243,7 @@ func ddosxDomainACLIPRuleUpdate(service ddosx.DDoSXService, cmd *cobra.Command, 
 		rules = append(rules, rule)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXACLIPRulesProvider(rules))
+	return output.CommandOutput(cmd, ACLIPRuleCollection(rules))
 }
 
 func ddosxDomainACLIPRuleDeleteCmd(f factory.ClientFactory) *cobra.Command {

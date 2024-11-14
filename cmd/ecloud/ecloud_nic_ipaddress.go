@@ -57,7 +57,7 @@ func ecloudNICIPAddressList(service ecloud.ECloudService, cmd *cobra.Command, ar
 		return fmt.Errorf("Error retrieving NIC IP addresses: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudIPAddressesProvider(ips))
+	return output.CommandOutput(cmd, IPAddressCollection(ips))
 }
 
 func ecloudNICIPAddressAssignCmd(f factory.ClientFactory) *cobra.Command {

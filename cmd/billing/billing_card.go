@@ -57,7 +57,7 @@ func billingCardList(service billing.BillingService, cmd *cobra.Command, args []
 		return fmt.Errorf("Error retrieving cards: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputBillingCardsProvider(cards))
+	return output.CommandOutput(cmd, CardCollection(cards))
 }
 
 func billingCardShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -102,7 +102,7 @@ func billingCardShow(service billing.BillingService, cmd *cobra.Command, args []
 		cards = append(cards, card)
 	}
 
-	return output.CommandOutput(cmd, OutputBillingCardsProvider(cards))
+	return output.CommandOutput(cmd, CardCollection(cards))
 }
 
 func billingCardCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -166,7 +166,7 @@ func billingCardCreate(service billing.BillingService, cmd *cobra.Command, args 
 		return fmt.Errorf("Error retrieving new card: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputBillingCardsProvider([]billing.Card{card}))
+	return output.CommandOutput(cmd, CardCollection([]billing.Card{card}))
 }
 
 func billingCardUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -249,7 +249,7 @@ func billingCardUpdate(service billing.BillingService, cmd *cobra.Command, args 
 		cards = append(cards, card)
 	}
 
-	return output.CommandOutput(cmd, OutputBillingCardsProvider(cards))
+	return output.CommandOutput(cmd, CardCollection(cards))
 }
 
 func billingCardDeleteCmd(f factory.ClientFactory) *cobra.Command {

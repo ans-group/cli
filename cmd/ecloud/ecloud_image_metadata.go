@@ -51,5 +51,5 @@ func ecloudImageMetadataList(service ecloud.ECloudService, cmd *cobra.Command, a
 		return fmt.Errorf("Error retrieving image metadata: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudImageMetadataProvider(metadata))
+	return output.CommandOutput(cmd, ImageMetadataCollection(metadata))
 }

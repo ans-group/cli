@@ -51,7 +51,7 @@ func ecloudVPNProfileGroupList(service ecloud.ECloudService, cmd *cobra.Command,
 		return fmt.Errorf("Error retrieving VPN sessions: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVPNProfileGroupsProvider(sessions))
+	return output.CommandOutput(cmd, VPNProfileGroupCollection(sessions))
 }
 
 func ecloudVPNProfileGroupShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -83,5 +83,5 @@ func ecloudVPNProfileGroupShow(service ecloud.ECloudService, cmd *cobra.Command,
 		vpnProfileGroups = append(vpnProfileGroups, vpnProfileGroup)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVPNProfileGroupsProvider(vpnProfileGroups))
+	return output.CommandOutput(cmd, VPNProfileGroupCollection(vpnProfileGroups))
 }

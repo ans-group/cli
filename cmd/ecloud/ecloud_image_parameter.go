@@ -51,5 +51,5 @@ func ecloudImageParameterList(service ecloud.ECloudService, cmd *cobra.Command, 
 		return fmt.Errorf("Error retrieving image parameters: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudImageParametersProvider(parameters))
+	return output.CommandOutput(cmd, ImageParameterCollection(parameters))
 }

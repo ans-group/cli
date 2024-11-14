@@ -65,5 +65,5 @@ func sslCertificateContentShow(service ssl.SSLService, cmd *cobra.Command, args 
 		certificateContents = append(certificateContents, certificateContent)
 	}
 
-	return output.CommandOutput(cmd, OutputSSLCertificatesContentsProvider(certificateContents))
+	return output.CommandOutput(cmd, CertificateContentCollection(certificateContents))
 }

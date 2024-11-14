@@ -43,5 +43,5 @@ func cloudflareSubscriptionList(service cloudflare.CloudflareService, cmd *cobra
 		return fmt.Errorf("Error retrieving subscriptions: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputCloudflareSubscriptionsProvider(subscriptions))
+	return output.CommandOutput(cmd, SubscriptionCollection(subscriptions))
 }

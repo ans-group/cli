@@ -61,7 +61,7 @@ func loadbalancerListenerBindList(service loadbalancer.LoadBalancerService, cmd 
 		return fmt.Errorf("Error retrieving binds: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerBindsProvider(binds))
+	return output.CommandOutput(cmd, BindCollection(binds))
 }
 
 func loadbalancerListenerBindShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -108,7 +108,7 @@ func loadbalancerListenerBindShow(service loadbalancer.LoadBalancerService, cmd 
 		binds = append(binds, bind)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerBindsProvider(binds))
+	return output.CommandOutput(cmd, BindCollection(binds))
 }
 
 func loadbalancerListenerBindCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -155,7 +155,7 @@ func loadbalancerListenerBindCreate(service loadbalancer.LoadBalancerService, cm
 		return fmt.Errorf("Error retrieving new bind: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerBindsProvider([]loadbalancer.Bind{bind}))
+	return output.CommandOutput(cmd, BindCollection([]loadbalancer.Bind{bind}))
 }
 
 func loadbalancerListenerBindUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -216,7 +216,7 @@ func loadbalancerListenerBindUpdate(service loadbalancer.LoadBalancerService, cm
 		binds = append(binds, bind)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerBindsProvider(binds))
+	return output.CommandOutput(cmd, BindCollection(binds))
 }
 
 func loadbalancerListenerBindDeleteCmd(f factory.ClientFactory) *cobra.Command {

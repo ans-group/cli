@@ -56,7 +56,7 @@ func ecloudVIPList(service ecloud.ECloudService, cmd *cobra.Command, args []stri
 		return fmt.Errorf("Error retrieving VIPs: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVIPsProvider(vips))
+	return output.CommandOutput(cmd, VIPCollection(vips))
 }
 
 func ecloudVIPShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -88,7 +88,7 @@ func ecloudVIPShow(service ecloud.ECloudService, cmd *cobra.Command, args []stri
 		vips = append(vips, vip)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVIPsProvider(vips))
+	return output.CommandOutput(cmd, VIPCollection(vips))
 }
 
 func ecloudVIPCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -134,7 +134,7 @@ func ecloudVIPCreate(service ecloud.ECloudService, cmd *cobra.Command, args []st
 		return fmt.Errorf("Error retrieving new VIP: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVIPsProvider([]ecloud.VIP{vip}))
+	return output.CommandOutput(cmd, VIPCollection([]ecloud.VIP{vip}))
 }
 
 func ecloudVIPUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -192,7 +192,7 @@ func ecloudVIPUpdate(service ecloud.ECloudService, cmd *cobra.Command, args []st
 		vips = append(vips, vip)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVIPsProvider(vips))
+	return output.CommandOutput(cmd, VIPCollection(vips))
 }
 
 func ecloudVIPDeleteCmd(f factory.ClientFactory) *cobra.Command {

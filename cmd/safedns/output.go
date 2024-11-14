@@ -8,110 +8,115 @@ import (
 	"github.com/ans-group/sdk-go/pkg/service/safedns"
 )
 
-func OutputSafeDNSZonesProvider(zones []safedns.Zone) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(zones),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, zone := range zones {
-				fields := output.NewOrderedFields()
-				fields.Set("name", output.NewFieldValue(zone.Name, true))
-				fields.Set("description", output.NewFieldValue(zone.Description, true))
+type ZoneCollection []safedns.Zone
 
-				data = append(data, fields)
-			}
-
-			return data, nil
-		}),
-	)
+func (z ZoneCollection) DefaultColumns() []string {
+	return []string{"name", "description"}
 }
 
-func OutputSafeDNSRecordsProvider(records []safedns.Record) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(records),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, record := range records {
-				fields := output.NewOrderedFields()
-				fields.Set("id", output.NewFieldValue(strconv.Itoa(record.ID), true))
-				fields.Set("name", output.NewFieldValue(record.Name, true))
-				fields.Set("type", output.NewFieldValue(record.Type.String(), true))
-				fields.Set("content", output.NewFieldValue(record.Content, true))
-				fields.Set("updated_at", output.NewFieldValue(record.UpdatedAt.String(), true))
-				fields.Set("priority", output.NewFieldValue(strconv.Itoa(record.Priority), true))
-				fields.Set("ttl", output.NewFieldValue(strconv.Itoa(int(record.TTL)), true))
+func (z ZoneCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, zone := range z {
+		fields := output.NewOrderedFields()
+		fields.Set("name", zone.Name)
+		fields.Set("description", zone.Description)
 
-				data = append(data, fields)
-			}
+		data = append(data, fields)
+	}
 
-			return data, nil
-		}),
-	)
+	return data
 }
 
-func OutputSafeDNSNotesProvider(notes []safedns.Note) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(notes),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, note := range notes {
-				fields := output.NewOrderedFields()
-				fields.Set("id", output.NewFieldValue(strconv.Itoa(note.ID), true))
-				fields.Set("notes", output.NewFieldValue(note.Notes, true))
-				fields.Set("ip", output.NewFieldValue(note.IP.String(), true))
+type RecordCollection []safedns.Record
 
-				data = append(data, fields)
-			}
-
-			return data, nil
-		}),
-	)
+func (r RecordCollection) DefaultColumns() []string {
+	return []string{"name", "name", "type", "content", "updated_at", "priority", "ttl"}
 }
 
-func OutputSafeDNSTemplatesProvider(templates []safedns.Template) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(templates),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, template := range templates {
-				fields := output.NewOrderedFields()
-				fields.Set("id", output.NewFieldValue(strconv.Itoa(template.ID), true))
-				fields.Set("name", output.NewFieldValue(template.Name, true))
-				fields.Set("default", output.NewFieldValue(strconv.FormatBool(template.Default), true))
-				fields.Set("created_at", output.NewFieldValue(template.CreatedAt.String(), true))
+func (r RecordCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, record := range r {
+		fields := output.NewOrderedFields()
+		fields.Set("id", strconv.Itoa(record.ID))
+		fields.Set("name", record.Name)
+		fields.Set("type", record.Type.String())
+		fields.Set("content", record.Content)
+		fields.Set("updated_at", record.UpdatedAt.String())
+		fields.Set("priority", strconv.Itoa(record.Priority))
+		fields.Set("ttl", strconv.Itoa(int(record.TTL)))
 
-				data = append(data, fields)
-			}
+		data = append(data, fields)
+	}
 
-			return data, nil
-		}),
-	)
+	return data
 }
 
-func OutputSafeDNSSettingsProvider(settings []safedns.Settings) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(settings),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, setting := range settings {
-				nameservers := []string{}
-				for _, nameserver := range setting.Nameservers {
-					nameservers = append(nameservers, nameserver.Name)
-				}
+type NoteCollection []safedns.Note
 
-				fields := output.NewOrderedFields()
-				fields.Set("id", output.NewFieldValue(strconv.Itoa(setting.ID), true))
-				fields.Set("email", output.NewFieldValue(setting.Email, false))
-				fields.Set("nameservers", output.NewFieldValue(strings.Join(nameservers, ", "), false))
-				fields.Set("custom_soa_allowed", output.NewFieldValue(strconv.FormatBool(setting.CustomSOAAllowed), true))
-				fields.Set("custom_base_ns_allowed", output.NewFieldValue(strconv.FormatBool(setting.CustomBaseNSAllowed), true))
-				fields.Set("delegation_allowed", output.NewFieldValue(strconv.FormatBool(setting.DelegationAllowed), true))
-				fields.Set("product", output.NewFieldValue(setting.Product, true))
+func (n NoteCollection) DefaultColumns() []string {
+	return []string{"id", "notes", "ip"}
+}
 
-				data = append(data, fields)
-			}
+func (n NoteCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, note := range n {
+		fields := output.NewOrderedFields()
+		fields.Set("id", strconv.Itoa(note.ID))
+		fields.Set("notes", note.Notes)
+		fields.Set("ip", note.IP.String())
 
-			return data, nil
-		}),
-	)
+		data = append(data, fields)
+	}
+
+	return data
+}
+
+type TemplateCollection []safedns.Template
+
+func (t TemplateCollection) DefaultColumns() []string {
+	return []string{"id", "name", "default", "created_at"}
+}
+
+func (t TemplateCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, template := range t {
+		fields := output.NewOrderedFields()
+		fields.Set("id", strconv.Itoa(template.ID))
+		fields.Set("name", template.Name)
+		fields.Set("default", strconv.FormatBool(template.Default))
+		fields.Set("created_at", template.CreatedAt.String())
+
+		data = append(data, fields)
+	}
+
+	return data
+}
+
+type SettingsCollection []safedns.Settings
+
+func (s SettingsCollection) DefaultColumns() []string {
+	return []string{"id", "custom_soa_allowed", "custom_base_ns_allowed", "delegation_allowed", "product"}
+}
+
+func (s SettingsCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, setting := range s {
+		nameservers := []string{}
+		for _, nameserver := range setting.Nameservers {
+			nameservers = append(nameservers, nameserver.Name)
+		}
+
+		fields := output.NewOrderedFields()
+		fields.Set("id", strconv.Itoa(setting.ID))
+		fields.Set("email", setting.Email)
+		fields.Set("nameservers", strings.Join(nameservers, ", "))
+		fields.Set("custom_soa_allowed", strconv.FormatBool(setting.CustomSOAAllowed))
+		fields.Set("custom_base_ns_allowed", strconv.FormatBool(setting.CustomBaseNSAllowed))
+		fields.Set("delegation_allowed", strconv.FormatBool(setting.DelegationAllowed))
+		fields.Set("product", setting.Product)
+
+		data = append(data, fields)
+	}
+
+	return data
 }

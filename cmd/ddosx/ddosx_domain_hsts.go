@@ -63,7 +63,7 @@ func ddosxDomainHSTSShow(service ddosx.DDoSXService, cmd *cobra.Command, args []
 		configurations = append(configurations, configuration)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXHSTSConfigurationsProvider(configurations))
+	return output.CommandOutput(cmd, HSTSConfigurationCollection(configurations))
 }
 
 func ddosxDomainHSTSEnableCmd(f factory.ClientFactory) *cobra.Command {
@@ -109,7 +109,7 @@ func ddosxDomainHSTSEnable(service ddosx.DDoSXService, cmd *cobra.Command, args 
 		configurations = append(configurations, configuration)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXHSTSConfigurationsProvider(configurations))
+	return output.CommandOutput(cmd, HSTSConfigurationCollection(configurations))
 }
 
 func ddosxDomainHSTSDisableCmd(f factory.ClientFactory) *cobra.Command {
@@ -155,5 +155,5 @@ func ddosxDomainHSTSDisable(service ddosx.DDoSXService, cmd *cobra.Command, args
 		configurations = append(configurations, configuration)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXHSTSConfigurationsProvider(configurations))
+	return output.CommandOutput(cmd, HSTSConfigurationCollection(configurations))
 }

@@ -53,7 +53,7 @@ func billingInvoiceList(service billing.BillingService, cmd *cobra.Command, args
 		return fmt.Errorf("Error retrieving invoices: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputBillingInvoicesProvider(invoices))
+	return output.CommandOutput(cmd, InvoiceCollection(invoices))
 }
 
 func billingInvoiceShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -98,5 +98,5 @@ func billingInvoiceShow(service billing.BillingService, cmd *cobra.Command, args
 		invoices = append(invoices, invoice)
 	}
 
-	return output.CommandOutput(cmd, OutputBillingInvoicesProvider(invoices))
+	return output.CommandOutput(cmd, InvoiceCollection(invoices))
 }

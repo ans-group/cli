@@ -55,5 +55,5 @@ func ecloudRouterFirewallPolicyList(service ecloud.ECloudService, cmd *cobra.Com
 		return fmt.Errorf("Error retrieving router firewall policies: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudFirewallPoliciesProvider(policies))
+	return output.CommandOutput(cmd, FirewallPolicyCollection(policies))
 }

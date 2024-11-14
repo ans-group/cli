@@ -43,7 +43,7 @@ func loadbalancerVipsList(service loadbalancer.LoadBalancerService, cmd *cobra.C
 		return fmt.Errorf("Error retrieving VIPs: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerVIPsProvider(vips))
+	return output.CommandOutput(cmd, VIPCollection(vips))
 }
 
 func loadbalancerVipsShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -73,5 +73,5 @@ func loadbalancerVipsShow(service loadbalancer.LoadBalancerService, cmd *cobra.C
 		vips = append(vips, vip)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerVIPsProvider(vips))
+	return output.CommandOutput(cmd, VIPCollection(vips))
 }

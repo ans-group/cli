@@ -59,5 +59,5 @@ func ecloudVolumeTaskList(service ecloud.ECloudService, cmd *cobra.Command, args
 		return fmt.Errorf("Error retrieving volume tasks: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudTasksProvider(tasks))
+	return output.CommandOutput(cmd, TaskCollection(tasks))
 }

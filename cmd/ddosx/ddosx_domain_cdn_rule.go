@@ -63,7 +63,7 @@ func ddosxDomainCDNRuleList(service ddosx.DDoSXService, cmd *cobra.Command, args
 		return fmt.Errorf("Error retrieving CDN rules: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXCDNRulesProvider(domains))
+	return output.CommandOutput(cmd, CDNRuleCollection(domains))
 }
 
 func ddosxDomainCDNRuleShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -105,7 +105,7 @@ func ddosxDomainCDNRuleShow(service ddosx.DDoSXService, cmd *cobra.Command, args
 		rules = append(rules, rule)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXCDNRulesProvider(rules))
+	return output.CommandOutput(cmd, CDNRuleCollection(rules))
 }
 
 func ddosxDomainCDNRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -183,7 +183,7 @@ func ddosxDomainCDNRuleCreate(service ddosx.DDoSXService, cmd *cobra.Command, ar
 		return fmt.Errorf("Error retrieving new CDN rule [%s]: %s", id, err.Error())
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXCDNRulesProvider([]ddosx.CDNRule{rule}))
+	return output.CommandOutput(cmd, CDNRuleCollection([]ddosx.CDNRule{rule}))
 }
 
 func ddosxDomainCDNRuleUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -280,7 +280,7 @@ func ddosxDomainCDNRuleUpdate(service ddosx.DDoSXService, cmd *cobra.Command, ar
 		rules = append(rules, rule)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXCDNRulesProvider(rules))
+	return output.CommandOutput(cmd, CDNRuleCollection(rules))
 }
 
 func ddosxDomainCDNRuleDeleteCmd(f factory.ClientFactory) *cobra.Command {

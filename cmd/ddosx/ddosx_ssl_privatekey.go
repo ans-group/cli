@@ -57,5 +57,5 @@ func ddosxSSLPrivateKeyShow(service ddosx.DDoSXService, cmd *cobra.Command, args
 		sslPrivateKeys = append(sslPrivateKeys, sslPrivateKey)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXSSLPrivateKeysProvider(sslPrivateKeys))
+	return output.CommandOutput(cmd, SSLPrivateKeyCollection(sslPrivateKeys))
 }

@@ -63,7 +63,7 @@ func ddosxDomainHSTSRuleList(service ddosx.DDoSXService, cmd *cobra.Command, arg
 		return fmt.Errorf("Error retrieving HSTS rules: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXHSTSRulesProvider(domains))
+	return output.CommandOutput(cmd, HSTSRuleCollection(domains))
 }
 
 func ddosxDomainHSTSRuleShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -105,7 +105,7 @@ func ddosxDomainHSTSRuleShow(service ddosx.DDoSXService, cmd *cobra.Command, arg
 		rules = append(rules, rule)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXHSTSRulesProvider(rules))
+	return output.CommandOutput(cmd, HSTSRuleCollection(rules))
 }
 
 func ddosxDomainHSTSRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -169,7 +169,7 @@ func ddosxDomainHSTSRuleCreate(service ddosx.DDoSXService, cmd *cobra.Command, a
 		return fmt.Errorf("Error retrieving new HSTS rule [%s]: %s", id, err.Error())
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXHSTSRulesProvider([]ddosx.HSTSRule{rule}))
+	return output.CommandOutput(cmd, HSTSRuleCollection([]ddosx.HSTSRule{rule}))
 }
 
 func ddosxDomainHSTSRuleUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -240,7 +240,7 @@ func ddosxDomainHSTSRuleUpdate(service ddosx.DDoSXService, cmd *cobra.Command, a
 		rules = append(rules, rule)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXHSTSRulesProvider(rules))
+	return output.CommandOutput(cmd, HSTSRuleCollection(rules))
 }
 
 func ddosxDomainHSTSRuleDeleteCmd(f factory.ClientFactory) *cobra.Command {

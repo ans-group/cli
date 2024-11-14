@@ -53,7 +53,7 @@ func pssCaseList(service pss.PSSService, cmd *cobra.Command, args []string) erro
 		return err
 	}
 
-	return output.CommandOutputPaginated(cmd, OutputPSSCasesProvider(paginatedCases.Items()), paginatedCases)
+	return output.CommandOutputPaginated(cmd, CaseCollection(paginatedCases.Items()), paginatedCases)
 }
 
 func pssCaseShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -85,5 +85,5 @@ func pssCaseShow(service pss.PSSService, cmd *cobra.Command, args []string) erro
 		cases = append(cases, c)
 	}
 
-	return output.CommandOutput(cmd, OutputPSSCasesProvider(cases))
+	return output.CommandOutput(cmd, CaseCollection(cases))
 }

@@ -62,7 +62,7 @@ func loadbalancerListenerCertificateList(service loadbalancer.LoadBalancerServic
 		return fmt.Errorf("Error retrieving certificates: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerCertificatesProvider(certificates))
+	return output.CommandOutput(cmd, CertificateCollection(certificates))
 }
 
 func loadbalancerListenerCertificateShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -109,7 +109,7 @@ func loadbalancerListenerCertificateShow(service loadbalancer.LoadBalancerServic
 		certificates = append(certificates, certificate)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerCertificatesProvider(certificates))
+	return output.CommandOutput(cmd, CertificateCollection(certificates))
 }
 
 func loadbalancerListenerCertificateCreateCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
@@ -177,7 +177,7 @@ func loadbalancerListenerCertificateCreate(service loadbalancer.LoadBalancerServ
 		return fmt.Errorf("Error retrieving new certificate: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerCertificatesProvider([]loadbalancer.Certificate{certificate}))
+	return output.CommandOutput(cmd, CertificateCollection([]loadbalancer.Certificate{certificate}))
 }
 
 func loadbalancerListenerCertificateUpdateCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
@@ -261,7 +261,7 @@ func loadbalancerListenerCertificateUpdate(service loadbalancer.LoadBalancerServ
 		certificates = append(certificates, certificate)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerCertificatesProvider(certificates))
+	return output.CommandOutput(cmd, CertificateCollection(certificates))
 }
 
 func loadbalancerListenerCertificateDeleteCmd(f factory.ClientFactory) *cobra.Command {

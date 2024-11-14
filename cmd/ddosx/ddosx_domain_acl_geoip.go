@@ -65,7 +65,7 @@ func ddosxDomainACLGeoIPRuleList(service ddosx.DDoSXService, cmd *cobra.Command,
 		return fmt.Errorf("Error retrieving domain ACL GeoIP rules: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXACLGeoIPRulesProvider(domains))
+	return output.CommandOutput(cmd, ACLGeoIPRuleCollection(domains))
 }
 
 func ddosxDomainACLGeoIPRuleShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -109,7 +109,7 @@ func ddosxDomainACLGeoIPRuleShow(service ddosx.DDoSXService, cmd *cobra.Command,
 		rules = append(rules, rule)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXACLGeoIPRulesProvider(rules))
+	return output.CommandOutput(cmd, ACLGeoIPRuleCollection(rules))
 }
 
 func ddosxDomainACLGeoIPRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -156,7 +156,7 @@ func ddosxDomainACLGeoIPRuleCreate(service ddosx.DDoSXService, cmd *cobra.Comman
 		return fmt.Errorf("Error retrieving new domain ACL GeoIP rule [%s]: %s", id, err)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXACLGeoIPRulesProvider([]ddosx.ACLGeoIPRule{rule}))
+	return output.CommandOutput(cmd, ACLGeoIPRuleCollection([]ddosx.ACLGeoIPRule{rule}))
 }
 
 func ddosxDomainACLGeoIPRuleUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -214,7 +214,7 @@ func ddosxDomainACLGeoIPRuleUpdate(service ddosx.DDoSXService, cmd *cobra.Comman
 		rules = append(rules, rule)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXACLGeoIPRulesProvider(rules))
+	return output.CommandOutput(cmd, ACLGeoIPRuleCollection(rules))
 }
 
 func ddosxDomainACLGeoIPRuleDeleteCmd(f factory.ClientFactory) *cobra.Command {

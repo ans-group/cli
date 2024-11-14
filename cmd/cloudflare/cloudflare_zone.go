@@ -48,7 +48,7 @@ func cloudflareZoneList(service cloudflare.CloudflareService, cmd *cobra.Command
 		return fmt.Errorf("Error retrieving zones: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputCloudflareZonesProvider(zones))
+	return output.CommandOutput(cmd, ZoneCollection(zones))
 }
 
 func cloudflareZoneShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -80,7 +80,7 @@ func cloudflareZoneShow(service cloudflare.CloudflareService, cmd *cobra.Command
 		zones = append(zones, zone)
 	}
 
-	return output.CommandOutput(cmd, OutputCloudflareZonesProvider(zones))
+	return output.CommandOutput(cmd, ZoneCollection(zones))
 }
 
 func cloudflareZoneCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -118,7 +118,7 @@ func cloudflareZoneCreate(service cloudflare.CloudflareService, cmd *cobra.Comma
 		return fmt.Errorf("Error retrieving new zone: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputCloudflareZonesProvider([]cloudflare.Zone{zone}))
+	return output.CommandOutput(cmd, ZoneCollection([]cloudflare.Zone{zone}))
 }
 
 func cloudflareZoneUpdateCmd(f factory.ClientFactory) *cobra.Command {

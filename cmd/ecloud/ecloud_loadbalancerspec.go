@@ -51,7 +51,7 @@ func ecloudLoadBalancerSpecList(service ecloud.ECloudService, cmd *cobra.Command
 		return fmt.Errorf("Error retrieving load balancer specs: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudLoadBalancerSpecsProvider(lbs))
+	return output.CommandOutput(cmd, LoadBalancerSpecCollection(lbs))
 }
 
 func ecloudLoadBalancerSpecShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -83,5 +83,5 @@ func ecloudLoadBalancerSpecShow(service ecloud.ECloudService, cmd *cobra.Command
 		lbs = append(lbs, lb)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudLoadBalancerSpecsProvider(lbs))
+	return output.CommandOutput(cmd, LoadBalancerSpecCollection(lbs))
 }

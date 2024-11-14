@@ -37,5 +37,5 @@ func cloudflareTotalSpendShow(service cloudflare.CloudflareService, cmd *cobra.C
 		return fmt.Errorf("Error retrieving total spend: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputCloudflareTotalSpendsProvider([]cloudflare.TotalSpend{spend}))
+	return output.CommandOutput(cmd, TotalSpendCollection([]cloudflare.TotalSpend{spend}))
 }

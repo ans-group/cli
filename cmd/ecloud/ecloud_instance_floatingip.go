@@ -55,5 +55,5 @@ func ecloudInstanceFloatingIPList(service ecloud.ECloudService, cmd *cobra.Comma
 		return fmt.Errorf("Error retrieving instance floating IPs: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudFloatingIPsProvider(fips))
+	return output.CommandOutput(cmd, FloatingIPCollection(fips))
 }

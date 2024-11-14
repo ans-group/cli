@@ -56,7 +56,7 @@ func ecloudLoadBalancerList(service ecloud.ECloudService, cmd *cobra.Command, ar
 		return fmt.Errorf("Error retrieving load balancers: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudLoadBalancersProvider(lbs))
+	return output.CommandOutput(cmd, LoadBalancerCollection(lbs))
 }
 
 func ecloudLoadBalancerShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -88,7 +88,7 @@ func ecloudLoadBalancerShow(service ecloud.ECloudService, cmd *cobra.Command, ar
 		lbs = append(lbs, lb)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudLoadBalancersProvider(lbs))
+	return output.CommandOutput(cmd, LoadBalancerCollection(lbs))
 }
 
 func ecloudLoadBalancerCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -141,7 +141,7 @@ func ecloudLoadBalancerCreate(service ecloud.ECloudService, cmd *cobra.Command, 
 		return fmt.Errorf("Error retrieving new load balancer: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudLoadBalancersProvider([]ecloud.LoadBalancer{lb}))
+	return output.CommandOutput(cmd, LoadBalancerCollection([]ecloud.LoadBalancer{lb}))
 }
 
 func ecloudLoadBalancerUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -199,7 +199,7 @@ func ecloudLoadBalancerUpdate(service ecloud.ECloudService, cmd *cobra.Command, 
 		lbs = append(lbs, lb)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudLoadBalancersProvider(lbs))
+	return output.CommandOutput(cmd, LoadBalancerCollection(lbs))
 }
 
 func ecloudLoadBalancerDeleteCmd(f factory.ClientFactory) *cobra.Command {

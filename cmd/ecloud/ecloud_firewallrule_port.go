@@ -55,5 +55,5 @@ func ecloudFirewallRuleFirewallRulePortList(service ecloud.ECloudService, cmd *c
 		return fmt.Errorf("Error retrieving firewall rule ports: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudFirewallRulePortsProvider(ports))
+	return output.CommandOutput(cmd, FirewallRulePortCollection(ports))
 }

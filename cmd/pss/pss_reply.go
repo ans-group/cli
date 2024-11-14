@@ -62,5 +62,5 @@ func pssReplyShow(service pss.PSSService, cmd *cobra.Command, args []string) err
 		replies = append(replies, reply)
 	}
 
-	return output.CommandOutput(cmd, OutputPSSRepliesProvider(replies))
+	return output.CommandOutput(cmd, ReplyCollection(replies))
 }

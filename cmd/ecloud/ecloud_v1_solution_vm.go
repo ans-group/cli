@@ -64,5 +64,5 @@ func ecloudSolutionVirtualMachineList(service ecloud.ECloudService, cmd *cobra.C
 		return fmt.Errorf("Error retrieving solution virtual machines: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVirtualMachinesProvider(vms))
+	return output.CommandOutput(cmd, VirtualMachineCollection(vms))
 }

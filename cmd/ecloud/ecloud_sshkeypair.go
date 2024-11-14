@@ -55,7 +55,7 @@ func ecloudSSHKeyPairList(service ecloud.ECloudService, cmd *cobra.Command, args
 		return fmt.Errorf("Error retrieving SSH key pairs: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudSSHKeyPairsProvider(keypairs))
+	return output.CommandOutput(cmd, SSHKeyPairCollection(keypairs))
 }
 
 func ecloudSSHKeyPairShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -87,7 +87,7 @@ func ecloudSSHKeyPairShow(service ecloud.ECloudService, cmd *cobra.Command, args
 		keypairs = append(keypairs, keypair)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudSSHKeyPairsProvider(keypairs))
+	return output.CommandOutput(cmd, SSHKeyPairCollection(keypairs))
 }
 
 func ecloudSSHKeyPairCreateCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
@@ -136,7 +136,7 @@ func ecloudSSHKeyPairCreate(service ecloud.ECloudService, fs afero.Fs, cmd *cobr
 		return fmt.Errorf("Error retrieving new SSH key pair: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudSSHKeyPairsProvider([]ecloud.SSHKeyPair{keypair}))
+	return output.CommandOutput(cmd, SSHKeyPairCollection([]ecloud.SSHKeyPair{keypair}))
 }
 
 func ecloudSSHKeyPairUpdateCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
@@ -202,7 +202,7 @@ func ecloudSSHKeyPairUpdate(service ecloud.ECloudService, fs afero.Fs, cmd *cobr
 		keypairs = append(keypairs, keypair)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudSSHKeyPairsProvider(keypairs))
+	return output.CommandOutput(cmd, SSHKeyPairCollection(keypairs))
 }
 
 func ecloudSSHKeyPairDeleteCmd(f factory.ClientFactory) *cobra.Command {

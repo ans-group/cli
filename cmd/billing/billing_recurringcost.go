@@ -53,7 +53,7 @@ func billingRecurringCostList(service billing.BillingService, cmd *cobra.Command
 		return fmt.Errorf("Error retrieving recurring costs: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputBillingRecurringCostsProvider(costs))
+	return output.CommandOutput(cmd, RecurringCostCollection(costs))
 }
 
 func billingRecurringCostShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -98,5 +98,5 @@ func billingRecurringCostShow(service billing.BillingService, cmd *cobra.Command
 		costs = append(costs, cost)
 	}
 
-	return output.CommandOutput(cmd, OutputBillingRecurringCostsProvider(costs))
+	return output.CommandOutput(cmd, RecurringCostCollection(costs))
 }

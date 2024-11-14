@@ -67,7 +67,7 @@ func ecloudPodTemplateList(service ecloud.ECloudService, cmd *cobra.Command, arg
 		return fmt.Errorf("Error retrieving pod templates: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudTemplatesProvider(templates))
+	return output.CommandOutput(cmd, TemplateCollection(templates))
 }
 
 func ecloudPodTemplateShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -115,7 +115,7 @@ func ecloudPodTemplateShow(service ecloud.ECloudService, cmd *cobra.Command, arg
 		templates = append(templates, template)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudTemplatesProvider(templates))
+	return output.CommandOutput(cmd, TemplateCollection(templates))
 }
 
 func ecloudPodTemplateUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -181,7 +181,7 @@ func ecloudPodTemplateUpdate(service ecloud.ECloudService, cmd *cobra.Command, a
 		return fmt.Errorf("Error retrieving updated pod template: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudTemplatesProvider([]ecloud.Template{template}))
+	return output.CommandOutput(cmd, TemplateCollection([]ecloud.Template{template}))
 }
 
 func ecloudPodTemplateDeleteCmd(f factory.ClientFactory) *cobra.Command {

@@ -1,48 +1,55 @@
 package loadbalancer
 
 import (
-	"github.com/ans-group/cli/internal/pkg/output"
 	"github.com/ans-group/sdk-go/pkg/service/loadbalancer"
 )
 
-func OutputLoadBalancerClustersProvider(clusters []loadbalancer.Cluster) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(clusters).
-		WithDefaultFields([]string{"id", "name", "deployed", "deployed_at"})
+type ClusterCollection []loadbalancer.Cluster
+
+func (m ClusterCollection) DefaultColumns() []string {
+	return []string{"id", "name", "deployed", "deployed_at"}
 }
 
-func OutputLoadBalancerListenersProvider(listeners []loadbalancer.Listener) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(listeners).
-		WithDefaultFields([]string{"id", "name", "cluster_id"})
+type ListenerCollection []loadbalancer.Listener
+
+func (m ListenerCollection) DefaultColumns() []string {
+	return []string{"id", "name", "cluster_id"}
 }
 
-func OutputLoadBalancerTargetGroupsProvider(groups []loadbalancer.TargetGroup) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(groups).
-		WithDefaultFields([]string{"id", "name", "cluster_id", "mode"})
+type TargetGroupCollection []loadbalancer.TargetGroup
+
+func (m TargetGroupCollection) DefaultColumns() []string {
+	return []string{"id", "name", "cluster_id", "mode"}
 }
 
-func OutputLoadBalancerTargetsProvider(targets []loadbalancer.Target) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(targets).
-		WithDefaultFields([]string{"id", "name", "targetgroup_id", "ip", "port", "weight", "backup", "active"})
+type TargetCollection []loadbalancer.Target
+
+func (m TargetCollection) DefaultColumns() []string {
+	return []string{"id", "name", "targetgroup_id", "ip", "port", "weight", "backup", "active"}
 }
 
-func OutputLoadBalancerBindsProvider(binds []loadbalancer.Bind) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(binds).
-		WithDefaultFields([]string{"id", "listener_id", "vip_id", "port"})
+type BindCollection []loadbalancer.Bind
+
+func (m BindCollection) DefaultColumns() []string {
+	return []string{"id", "listener_id", "vip_id", "port"}
 }
 
-func OutputLoadBalancerCertificatesProvider(certs []loadbalancer.Certificate) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(certs).
-		WithDefaultFields([]string{"id", "listener_id", "name", "expires_at"})
+type CertificateCollection []loadbalancer.Certificate
+
+func (m CertificateCollection) DefaultColumns() []string {
+	return []string{"id", "listener_id", "name", "expires_at"}
 }
 
-func OutputLoadBalancerAccessIPsProvider(accessIPs []loadbalancer.AccessIP) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(accessIPs).
-		WithDefaultFields([]string{"id", "ip"})
+type AccessIPCollection []loadbalancer.AccessIP
+
+func (m AccessIPCollection) DefaultColumns() []string {
+	return []string{"id", "ip"}
 }
 
-func OutputLoadBalancerACLsProvider(acls []loadbalancer.ACL) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(acls).
-		WithDefaultFields([]string{"id", "name", "conditions", "actions"})
+type ACLCollection []loadbalancer.ACL
+
+func (m ACLCollection) DefaultColumns() []string {
+	return []string{"id", "name", "conditions", "actions"}
 }
 
 // ACLCondition represents an ACL condition
@@ -51,9 +58,10 @@ type ACLCondition struct {
 	Index int `json:"index"`
 }
 
-func OutputLoadBalancerACLConditionsProvider(conditions []ACLCondition) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(conditions).
-		WithDefaultFields([]string{"index", "name", "inverted", "arguments"})
+type ACLConditionCollection []ACLCondition
+
+func (m ACLConditionCollection) DefaultColumns() []string {
+	return []string{"index", "name", "inverted", "arguments"}
 }
 
 // ACLAction represents an ACL action
@@ -62,22 +70,26 @@ type ACLAction struct {
 	Index int `json:"index"`
 }
 
-func OutputLoadBalancerACLActionsProvider(actions []ACLAction) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(actions).
-		WithDefaultFields([]string{"index", "name", "arguments"})
+type ACLActionCollection []ACLAction
+
+func (m ACLActionCollection) DefaultColumns() []string {
+	return []string{"index", "name", "arguments"}
 }
 
-func OutputLoadBalancerACLTemplatesProvider(templates []loadbalancer.ACLTemplates) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(templates).
-		WithDefaultFields([]string{"id", "conditions", "actions"})
+type ACLTemplatesCollection []loadbalancer.ACLTemplates
+
+func (m ACLTemplatesCollection) DefaultColumns() []string {
+	return []string{"id", "conditions", "actions"}
 }
 
-func OutputLoadBalancerDeploymentsProvider(deployments []loadbalancer.Deployment) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(deployments).
-		WithDefaultFields([]string{"id", "cluster_id", "successful", "created_at"})
+type DeploymentCollection []loadbalancer.Deployment
+
+func (m DeploymentCollection) DefaultColumns() []string {
+	return []string{"id", "cluster_id", "successful", "created_at"}
 }
 
-func OutputLoadBalancerVIPsProvider(vips []loadbalancer.VIP) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(vips).
-		WithDefaultFields([]string{"id", "cluster_id", "internal_cidr", "external_cidr"})
+type VIPCollection []loadbalancer.VIP
+
+func (m VIPCollection) DefaultColumns() []string {
+	return []string{"id", "cluster_id", "internal_cidr", "external_cidr"}
 }

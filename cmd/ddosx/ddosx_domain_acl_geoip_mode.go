@@ -59,7 +59,7 @@ func ddosxDomainACLGeoIPRulesModeShow(service ddosx.DDoSXService, cmd *cobra.Com
 		modes = append(modes, mode)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXACLGeoIPRulesModesProvider(modes))
+	return output.CommandOutput(cmd, ACLGeoIPRulesModeCollection(modes))
 }
 
 func ddosxDomainACLGeoIPRulesModeUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -112,5 +112,5 @@ func ddosxDomainACLGeoIPRulesModeUpdate(service ddosx.DDoSXService, cmd *cobra.C
 		return fmt.Errorf("Error retrieving updated domain ACL GeoIP rule filtering mode: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXACLGeoIPRulesModesProvider([]ddosx.ACLGeoIPRulesMode{mode}))
+	return output.CommandOutput(cmd, ACLGeoIPRulesModeCollection([]ddosx.ACLGeoIPRulesMode{mode}))
 }

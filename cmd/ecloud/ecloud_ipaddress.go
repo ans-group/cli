@@ -55,7 +55,7 @@ func ecloudIPAddressList(service ecloud.ECloudService, cmd *cobra.Command, args 
 		return fmt.Errorf("Error retrieving IP addresses: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudIPAddressesProvider(ips))
+	return output.CommandOutput(cmd, IPAddressCollection(ips))
 }
 
 func ecloudIPAddressShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -87,7 +87,7 @@ func ecloudIPAddressShow(service ecloud.ECloudService, cmd *cobra.Command, args 
 		ips = append(ips, ip)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudIPAddressesProvider(ips))
+	return output.CommandOutput(cmd, IPAddressCollection(ips))
 }
 
 func ecloudIPAddressCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -134,7 +134,7 @@ func ecloudIPAddressCreate(service ecloud.ECloudService, cmd *cobra.Command, arg
 		return fmt.Errorf("Error retrieving new IP address: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudIPAddressesProvider([]ecloud.IPAddress{ip}))
+	return output.CommandOutput(cmd, IPAddressCollection([]ecloud.IPAddress{ip}))
 }
 
 func ecloudIPAddressUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -189,7 +189,7 @@ func ecloudIPAddressUpdate(service ecloud.ECloudService, cmd *cobra.Command, arg
 		ips = append(ips, ip)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudIPAddressesProvider(ips))
+	return output.CommandOutput(cmd, IPAddressCollection(ips))
 }
 
 func ecloudIPAddressDeleteCmd(f factory.ClientFactory) *cobra.Command {

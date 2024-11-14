@@ -55,5 +55,5 @@ func ecloudVPCInstanceList(service ecloud.ECloudService, cmd *cobra.Command, arg
 		return fmt.Errorf("Error retrieving VPC instances: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudInstancesProvider(instances))
+	return output.CommandOutput(cmd, InstanceCollection(instances))
 }

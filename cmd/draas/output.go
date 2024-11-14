@@ -9,205 +9,215 @@ import (
 	"github.com/ans-group/sdk-go/pkg/service/draas"
 )
 
-func OutputDRaaSSolutionsProvider(solutions []draas.Solution) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(solutions),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, solution := range solutions {
-				fields := output.NewOrderedFields()
-				fields.Set("id", output.NewFieldValue(solution.ID, true))
-				fields.Set("name", output.NewFieldValue(solution.Name, true))
-				fields.Set("iops_tier_id", output.NewFieldValue(solution.IOPSTierID, false))
-				fields.Set("billing_type_id", output.NewFieldValue(solution.BillingTypeID, false))
+type SolutionCollection []draas.Solution
 
-				data = append(data, fields)
-			}
-
-			return data, nil
-		}),
-	)
+func (s SolutionCollection) DefaultColumns() []string {
+	return []string{"id", "name"}
 }
 
-func OutputDRaaSBackupResourcesProvider(resources []draas.BackupResource) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(resources),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, resource := range resources {
-				fields := output.NewOrderedFields()
-				fields.Set("id", output.NewFieldValue(resource.ID, true))
-				fields.Set("name", output.NewFieldValue(resource.Name, true))
-				fields.Set("quota", output.NewFieldValue(strconv.Itoa(resource.Quota), true))
-				fields.Set("used_quota", output.NewFieldValue(fmt.Sprintf("%f", resource.UsedQuota), true))
+func (s SolutionCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, solution := range s {
+		fields := output.NewOrderedFields()
+		fields.Set("id", solution.ID)
+		fields.Set("name", solution.Name)
+		fields.Set("iops_tier_id", solution.IOPSTierID)
+		fields.Set("billing_type_id", solution.BillingTypeID)
 
-				data = append(data, fields)
-			}
+		data = append(data, fields)
+	}
 
-			return data, nil
-		}),
-	)
+	return data
 }
 
-func OutputDRaaSIOPSTiersProvider(tiers []draas.IOPSTier) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(tiers),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, tier := range tiers {
-				fields := output.NewOrderedFields()
-				fields.Set("id", output.NewFieldValue(tier.ID, true))
-				fields.Set("iops_limit", output.NewFieldValue(strconv.Itoa(tier.IOPSLimit), true))
+type BackupResourceCollection []draas.BackupResource
 
-				data = append(data, fields)
-			}
-
-			return data, nil
-		}),
-	)
+func (b BackupResourceCollection) DefaultColumns() []string {
+	return []string{"id", "name", "quota", "used_quota"}
 }
 
-func OutputDRaaSBackupServicesProvider(services []draas.BackupService) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(services),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, service := range services {
-				fields := output.NewOrderedFields()
-				fields.Set("service", output.NewFieldValue(service.Service, true))
-				fields.Set("account_name", output.NewFieldValue(service.AccountName, true))
-				fields.Set("gateway", output.NewFieldValue(service.Gateway, true))
-				fields.Set("port", output.NewFieldValue(strconv.Itoa(service.Port), true))
+func (b BackupResourceCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, resource := range b {
+		fields := output.NewOrderedFields()
+		fields.Set("id", resource.ID)
+		fields.Set("name", resource.Name)
+		fields.Set("quota", strconv.Itoa(resource.Quota))
+		fields.Set("used_quota", fmt.Sprintf("%f", resource.UsedQuota))
 
-				data = append(data, fields)
-			}
+		data = append(data, fields)
+	}
 
-			return data, nil
-		}),
-	)
+	return data
 }
 
-func OutputDRaaSFailoverPlansProvider(plans []draas.FailoverPlan) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(plans),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, plan := range plans {
-				vms := []string{}
-				if len(plan.VMs) > 0 {
-					for _, vm := range plan.VMs {
-						vms = append(vms, vm.Name)
-					}
-				}
+type IOPSTierCollection []draas.IOPSTier
 
-				fields := output.NewOrderedFields()
-				fields.Set("id", output.NewFieldValue(plan.ID, true))
-				fields.Set("name", output.NewFieldValue(plan.Name, true))
-				fields.Set("description", output.NewFieldValue(plan.Description, false))
-				fields.Set("status", output.NewFieldValue(plan.Status, true))
-				fields.Set("vms", output.NewFieldValue(strings.Join(vms, ", "), false))
-
-				data = append(data, fields)
-			}
-
-			return data, nil
-		}),
-	)
+func (t IOPSTierCollection) DefaultColumns() []string {
+	return []string{"id", "iops_limit"}
 }
 
-func OutputDRaaSComputeResourcesProvider(resources []draas.ComputeResource) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(resources),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, resource := range resources {
-				fields := output.NewOrderedFields()
-				fields.Set("id", output.NewFieldValue(resource.ID, true))
-				fields.Set("hardware_plan_id", output.NewFieldValue(resource.HardwarePlanID, true))
-				fields.Set("memory_used", output.NewFieldValue(fmt.Sprintf("%f", resource.Memory.Used), true))
-				fields.Set("memory_limit", output.NewFieldValue(fmt.Sprintf("%f", resource.Memory.Limit), true))
-				fields.Set("cpu_used", output.NewFieldValue(strconv.Itoa(resource.CPU.Used), true))
-				for i, storage := range resource.Storage {
-					fields.Set(fmt.Sprintf("storage_#%d_name", i), output.NewFieldValue(storage.Name, true))
-					fields.Set(fmt.Sprintf("storage_#%d_used", i), output.NewFieldValue(strconv.Itoa(storage.Used), true))
-					fields.Set(fmt.Sprintf("storage_#%d_limit", i), output.NewFieldValue(strconv.Itoa(storage.Limit), true))
-				}
+func (t IOPSTierCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, tier := range t {
+		fields := output.NewOrderedFields()
+		fields.Set("id", tier.ID)
+		fields.Set("iops_limit", strconv.Itoa(tier.IOPSLimit))
 
-				data = append(data, fields)
-			}
+		data = append(data, fields)
+	}
 
-			return data, nil
-		}),
-	)
+	return data
 }
 
-func OutputDRaaSHardwarePlansProvider(plans []draas.HardwarePlan) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(plans),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, plan := range plans {
-				fields := output.NewOrderedFields()
-				fields.Set("id", output.NewFieldValue(plan.ID, true))
-				fields.Set("name", output.NewFieldValue(plan.Name, true))
-				fields.Set("description", output.NewFieldValue(plan.Description, true))
-				fields.Set("limits_processor", output.NewFieldValue(strconv.Itoa(plan.Limits.Processor), false))
-				fields.Set("limits_memory", output.NewFieldValue(strconv.Itoa(plan.Limits.Memory), false))
-				fields.Set("networks_public", output.NewFieldValue(strconv.Itoa(plan.Networks.Public), false))
-				fields.Set("networks_private", output.NewFieldValue(strconv.Itoa(plan.Networks.Private), false))
-				for i, storage := range plan.Storage {
-					fields.Set(fmt.Sprintf("storage_#%d_id", i), output.NewFieldValue(storage.ID, true))
-					fields.Set(fmt.Sprintf("storage_#%d_name", i), output.NewFieldValue(storage.Name, true))
-					fields.Set(fmt.Sprintf("storage_#%d_type", i), output.NewFieldValue(storage.Type, false))
-					fields.Set(fmt.Sprintf("storage_#%d_quota", i), output.NewFieldValue(strconv.Itoa(storage.Quota), false))
-				}
+type BackupServiceCollection []draas.BackupService
 
-				data = append(data, fields)
-			}
-
-			return data, nil
-		}),
-	)
+func (b BackupServiceCollection) DefaultColumns() []string {
+	return []string{"service", "account_name", "gateway", "port"}
 }
 
-func OutputDRaaSReplicasProvider(replicas []draas.Replica) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(replicas),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, replica := range replicas {
-				fields := output.NewOrderedFields()
-				fields.Set("id", output.NewFieldValue(replica.ID, true))
-				fields.Set("name", output.NewFieldValue(replica.Name, true))
-				fields.Set("platform", output.NewFieldValue(replica.Platform, true))
-				fields.Set("cpu", output.NewFieldValue(strconv.Itoa(replica.CPU), false))
-				fields.Set("ram", output.NewFieldValue(strconv.Itoa(replica.RAM), false))
-				fields.Set("disk", output.NewFieldValue(strconv.Itoa(replica.Disk), false))
-				fields.Set("iops", output.NewFieldValue(strconv.Itoa(replica.IOPS), false))
-				fields.Set("power", output.NewFieldValue(strconv.FormatBool(replica.Power), true))
+func (b BackupServiceCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, service := range b {
+		fields := output.NewOrderedFields()
+		fields.Set("service", service.Service)
+		fields.Set("account_name", service.AccountName)
+		fields.Set("gateway", service.Gateway)
+		fields.Set("port", strconv.Itoa(service.Port))
 
-				data = append(data, fields)
-			}
+		data = append(data, fields)
+	}
 
-			return data, nil
-		}),
-	)
+	return data
 }
 
-func OutputDRaaSBillingTypesProvider(types []draas.BillingType) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(types),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, t := range types {
-				fields := output.NewOrderedFields()
-				fields.Set("id", output.NewFieldValue(t.ID, true))
-				fields.Set("type", output.NewFieldValue(t.Type, true))
+type FailoverPlanCollection []draas.FailoverPlan
 
-				data = append(data, fields)
+func (f FailoverPlanCollection) DefaultColumns() []string {
+	return []string{"id", "name", "status"}
+}
+
+func (f FailoverPlanCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, plan := range f {
+		vms := []string{}
+		if len(plan.VMs) > 0 {
+			for _, vm := range plan.VMs {
+				vms = append(vms, vm.Name)
 			}
+		}
 
-			return data, nil
-		}),
-	)
+		fields := output.NewOrderedFields()
+		fields.Set("id", plan.ID)
+		fields.Set("name", plan.Name)
+		fields.Set("description", plan.Description)
+		fields.Set("status", plan.Status)
+		fields.Set("vms", strings.Join(vms, ", "))
+
+		data = append(data, fields)
+	}
+
+	return data
+}
+
+type ComputeResourceCollection []draas.ComputeResource
+
+func (c ComputeResourceCollection) DefaultColumns() []string {
+	return []string{"id", "hardware_plan_id", "memory_used", "memory_limit", "cpu_used"}
+}
+
+func (c ComputeResourceCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, resource := range c {
+		fields := output.NewOrderedFields()
+		fields.Set("id", resource.ID)
+		fields.Set("hardware_plan_id", resource.HardwarePlanID)
+		fields.Set("memory_used", fmt.Sprintf("%f", resource.Memory.Used))
+		fields.Set("memory_limit", fmt.Sprintf("%f", resource.Memory.Limit))
+		fields.Set("cpu_used", strconv.Itoa(resource.CPU.Used))
+
+		for i, storage := range resource.Storage {
+			fields.Set(fmt.Sprintf("storage_#%d_name", i), storage.Name)
+			fields.Set(fmt.Sprintf("storage_#%d_used", i), strconv.Itoa(storage.Used))
+			fields.Set(fmt.Sprintf("storage_#%d_limit", i), strconv.Itoa(storage.Limit))
+		}
+
+		data = append(data, fields)
+	}
+
+	return data
+}
+
+type HardwarePlanCollection []draas.HardwarePlan
+
+func (h HardwarePlanCollection) DefaultColumns() []string {
+	return []string{"id", "name", "description"}
+}
+
+func (h HardwarePlanCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, plan := range h {
+		fields := output.NewOrderedFields()
+		fields.Set("id", plan.ID)
+		fields.Set("name", plan.Name)
+		fields.Set("description", plan.Description)
+		fields.Set("limits_processor", strconv.Itoa(plan.Limits.Processor))
+		fields.Set("limits_memory", strconv.Itoa(plan.Limits.Memory))
+		fields.Set("networks_public", strconv.Itoa(plan.Networks.Public))
+		fields.Set("networks_private", strconv.Itoa(plan.Networks.Private))
+		for i, storage := range plan.Storage {
+			fields.Set(fmt.Sprintf("storage_#%d_id", i), storage.ID)
+			fields.Set(fmt.Sprintf("storage_#%d_name", i), storage.Name)
+			fields.Set(fmt.Sprintf("storage_#%d_type", i), storage.Type)
+			fields.Set(fmt.Sprintf("storage_#%d_quota", i), strconv.Itoa(storage.Quota))
+		}
+
+		data = append(data, fields)
+	}
+
+	return data
+}
+
+type ReplicaCollection []draas.Replica
+
+func (r ReplicaCollection) DefaultColumns() []string {
+	return []string{"id", "name", "platform", "power"}
+}
+
+func (r ReplicaCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, replica := range r {
+		fields := output.NewOrderedFields()
+		fields.Set("id", replica.ID)
+		fields.Set("name", replica.Name)
+		fields.Set("platform", replica.Platform)
+		fields.Set("cpu", strconv.Itoa(replica.CPU))
+		fields.Set("ram", strconv.Itoa(replica.RAM))
+		fields.Set("disk", strconv.Itoa(replica.Disk))
+		fields.Set("iops", strconv.Itoa(replica.IOPS))
+		fields.Set("power", strconv.FormatBool(replica.Power))
+
+		data = append(data, fields)
+	}
+
+	return data
+}
+
+type BillingTypeCollection []draas.BillingType
+
+func (b BillingTypeCollection) DefaultColumns() []string {
+	return []string{"id", "type"}
+}
+
+func (b BillingTypeCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, t := range b {
+		fields := output.NewOrderedFields()
+		fields.Set("id", t.ID)
+		fields.Set("type", t.Type)
+
+		data = append(data, fields)
+	}
+
+	return data
 }

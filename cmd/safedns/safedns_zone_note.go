@@ -65,7 +65,7 @@ func safednsZoneNoteList(service safedns.SafeDNSService, cmd *cobra.Command, arg
 		return fmt.Errorf("Error retrieving notes for zone: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputSafeDNSNotesProvider(zoneNotes))
+	return output.CommandOutput(cmd, NoteCollection(zoneNotes))
 }
 
 func safednsZoneNoteShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -114,7 +114,7 @@ func safednsZoneNoteShow(service safedns.SafeDNSService, cmd *cobra.Command, arg
 		zoneNotes = append(zoneNotes, zoneNote)
 	}
 
-	return output.CommandOutput(cmd, OutputSafeDNSNotesProvider(zoneNotes))
+	return output.CommandOutput(cmd, NoteCollection(zoneNotes))
 }
 
 func safednsZoneNoteCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -162,5 +162,5 @@ func safednsZoneNoteCreate(service safedns.SafeDNSService, cmd *cobra.Command, a
 		return fmt.Errorf("Error retrieving new note: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputSafeDNSNotesProvider([]safedns.Note{zoneNote}))
+	return output.CommandOutput(cmd, NoteCollection([]safedns.Note{zoneNote}))
 }

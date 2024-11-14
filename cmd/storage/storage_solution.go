@@ -53,7 +53,7 @@ func storageSolutionList(service storage.StorageService, cmd *cobra.Command, arg
 		return fmt.Errorf("Error retrieving solutions: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputStorageSolutionsProvider(solutions))
+	return output.CommandOutput(cmd, SolutionCollection(solutions))
 }
 
 func storageSolutionShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -98,5 +98,5 @@ func storageSolutionShow(service storage.StorageService, cmd *cobra.Command, arg
 		solutions = append(solutions, solution)
 	}
 
-	return output.CommandOutput(cmd, OutputStorageSolutionsProvider(solutions))
+	return output.CommandOutput(cmd, SolutionCollection(solutions))
 }

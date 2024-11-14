@@ -59,7 +59,7 @@ func loadbalancerListenerAccessIPList(service loadbalancer.LoadBalancerService, 
 		return fmt.Errorf("Error retrieving access IPs: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerAccessIPsProvider(accessips))
+	return output.CommandOutput(cmd, AccessIPCollection(accessips))
 }
 
 func loadbalancerListenerAccessIPCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -105,5 +105,5 @@ func loadbalancerListenerAccessIPCreate(service loadbalancer.LoadBalancerService
 		return fmt.Errorf("Error retrieving new access IP: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerAccessIPsProvider([]loadbalancer.AccessIP{accessip}))
+	return output.CommandOutput(cmd, AccessIPCollection([]loadbalancer.AccessIP{accessip}))
 }

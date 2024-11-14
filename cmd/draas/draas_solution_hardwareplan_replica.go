@@ -61,5 +61,5 @@ func draasSolutionHardwarePlanReplicaList(service draas.DRaaSService, cmd *cobra
 		return fmt.Errorf("Error retrieving solution hardware plan replicas: %s", err.Error())
 	}
 
-	return output.CommandOutput(cmd, OutputDRaaSReplicasProvider(replicas))
+	return output.CommandOutput(cmd, ReplicaCollection(replicas))
 }

@@ -55,5 +55,5 @@ func ecloudNetworkRuleNetworkRulePortList(service ecloud.ECloudService, cmd *cob
 		return fmt.Errorf("Error retrieving network rule ports: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudNetworkRulePortsProvider(ports))
+	return output.CommandOutput(cmd, NetworkRulePortCollection(ports))
 }

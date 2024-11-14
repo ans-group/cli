@@ -55,5 +55,5 @@ func ecloudNetworkPolicyNetworkRuleList(service ecloud.ECloudService, cmd *cobra
 		return fmt.Errorf("Error retrieving network policy network rules: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudNetworkRulesProvider(rules))
+	return output.CommandOutput(cmd, NetworkRuleCollection(rules))
 }

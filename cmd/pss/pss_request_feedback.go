@@ -66,7 +66,7 @@ func pssRequestFeedbackShow(service pss.PSSService, cmd *cobra.Command, args []s
 		feedbacks = append(feedbacks, feedback)
 	}
 
-	return output.CommandOutput(cmd, OutputPSSFeedbackProvider(feedbacks))
+	return output.CommandOutput(cmd, FeedbackCollection(feedbacks))
 }
 
 func pssRequestFeedbackCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -129,5 +129,5 @@ func pssRequestFeedbackCreate(service pss.PSSService, cmd *cobra.Command, args [
 		return fmt.Errorf("Error retrieving new feedback for request: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputPSSFeedbackProvider([]pss.Feedback{feedback}))
+	return output.CommandOutput(cmd, FeedbackCollection([]pss.Feedback{feedback}))
 }

@@ -49,7 +49,7 @@ func ecloudRegionList(service ecloud.ECloudService, cmd *cobra.Command, args []s
 		return fmt.Errorf("Error retrieving regions: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudRegionsProvider(regions))
+	return output.CommandOutput(cmd, RegionCollection(regions))
 }
 
 func ecloudRegionShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -81,5 +81,5 @@ func ecloudRegionShow(service ecloud.ECloudService, cmd *cobra.Command, args []s
 		regions = append(regions, region)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudRegionsProvider(regions))
+	return output.CommandOutput(cmd, RegionCollection(regions))
 }

@@ -62,7 +62,7 @@ func pssRequestList(service pss.PSSService, cmd *cobra.Command, args []string) e
 		return err
 	}
 
-	return output.CommandOutput(cmd, OutputPSSRequestsProvider(requests))
+	return output.CommandOutput(cmd, RequestCollection(requests))
 }
 
 func pssRequestShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -107,7 +107,7 @@ func pssRequestShow(service pss.PSSService, cmd *cobra.Command, args []string) e
 		requests = append(requests, request)
 	}
 
-	return output.CommandOutput(cmd, OutputPSSRequestsProvider(requests))
+	return output.CommandOutput(cmd, RequestCollection(requests))
 }
 
 func pssRequestCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -187,7 +187,7 @@ func pssRequestCreate(service pss.PSSService, cmd *cobra.Command, args []string)
 		return fmt.Errorf("Error retrieving new request: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputPSSRequestsProvider([]pss.Request{request}))
+	return output.CommandOutput(cmd, RequestCollection([]pss.Request{request}))
 }
 
 func pssRequestUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -286,7 +286,7 @@ func pssRequestUpdate(service pss.PSSService, cmd *cobra.Command, args []string)
 		requests = append(requests, request)
 	}
 
-	return output.CommandOutput(cmd, OutputPSSRequestsProvider(requests))
+	return output.CommandOutput(cmd, RequestCollection(requests))
 }
 
 func pssRequestCloseCmd(f factory.ClientFactory) *cobra.Command {
@@ -342,5 +342,5 @@ func pssRequestClose(service pss.PSSService, cmd *cobra.Command, args []string) 
 		requests = append(requests, request)
 	}
 
-	return output.CommandOutput(cmd, OutputPSSRequestsProvider(requests))
+	return output.CommandOutput(cmd, RequestCollection(requests))
 }

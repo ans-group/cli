@@ -53,5 +53,5 @@ func ecloudAffinityRuleAffinityMemberList(service ecloud.ECloudService, cmd *cob
 		return fmt.Errorf("Error retrieving affinity rule members: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudAffinityRuleMemberProvider(rules))
+	return output.CommandOutput(cmd, AffinityRuleMemberCollection(rules))
 }

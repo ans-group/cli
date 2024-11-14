@@ -62,7 +62,7 @@ func draasSolutionFailoverPlanList(service draas.DRaaSService, cmd *cobra.Comman
 		return fmt.Errorf("Error retrieving solution failover plans: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputDRaaSFailoverPlansProvider(plans))
+	return output.CommandOutput(cmd, FailoverPlanCollection(plans))
 }
 
 func draasSolutionFailoverPlanShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -105,7 +105,7 @@ func draasSolutionFailoverPlanShow(service draas.DRaaSService, cmd *cobra.Comman
 		plans = append(plans, plan)
 	}
 
-	return output.CommandOutput(cmd, OutputDRaaSFailoverPlansProvider(plans))
+	return output.CommandOutput(cmd, FailoverPlanCollection(plans))
 }
 
 func draasSolutionFailoverPlanStartCmd(f factory.ClientFactory) *cobra.Command {

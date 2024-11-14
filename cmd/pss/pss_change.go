@@ -55,7 +55,7 @@ func pssChangeList(service pss.PSSService, cmd *cobra.Command, args []string) er
 		return err
 	}
 
-	return output.CommandOutputPaginated(cmd, OutputPSSChangeCasesProvider(paginatedChanges.Items()), paginatedChanges)
+	return output.CommandOutputPaginated(cmd, ChangeCaseCollection(paginatedChanges.Items()), paginatedChanges)
 }
 
 func pssChangeShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -87,7 +87,7 @@ func pssChangeShow(service pss.PSSService, cmd *cobra.Command, args []string) er
 		changes = append(changes, change)
 	}
 
-	return output.CommandOutput(cmd, OutputPSSChangeCasesProvider(changes))
+	return output.CommandOutput(cmd, ChangeCaseCollection(changes))
 }
 
 func pssChangeCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -155,7 +155,7 @@ func pssChangeCreate(service pss.PSSService, cmd *cobra.Command, args []string) 
 		return fmt.Errorf("Error retrieving new change: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputPSSChangeCasesProvider([]pss.ChangeCase{change}))
+	return output.CommandOutput(cmd, ChangeCaseCollection([]pss.ChangeCase{change}))
 }
 
 func pssChangeApproveCmd(f factory.ClientFactory) *cobra.Command {
@@ -202,5 +202,5 @@ func pssChangeApprove(service pss.PSSService, cmd *cobra.Command, args []string)
 		changes = append(changes, change)
 	}
 
-	return output.CommandOutput(cmd, OutputPSSChangeCasesProvider(changes))
+	return output.CommandOutput(cmd, ChangeCaseCollection(changes))
 }

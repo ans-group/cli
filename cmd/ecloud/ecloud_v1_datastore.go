@@ -53,7 +53,7 @@ func ecloudDatastoreList(service ecloud.ECloudService, cmd *cobra.Command, args 
 		return fmt.Errorf("Error retrieving datastores: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudDatastoresProvider(datastores))
+	return output.CommandOutput(cmd, DatastoreCollection(datastores))
 }
 
 func ecloudDatastoreShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -98,5 +98,5 @@ func ecloudDatastoreShow(service ecloud.ECloudService, cmd *cobra.Command, args 
 		datastores = append(datastores, datastore)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudDatastoresProvider(datastores))
+	return output.CommandOutput(cmd, DatastoreCollection(datastores))
 }

@@ -52,7 +52,7 @@ func ecloudNICList(service ecloud.ECloudService, cmd *cobra.Command, args []stri
 		return fmt.Errorf("Error retrieving NICs: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudNICsProvider(nics))
+	return output.CommandOutput(cmd, NICCollection(nics))
 }
 
 func ecloudNICShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -84,5 +84,5 @@ func ecloudNICShow(service ecloud.ECloudService, cmd *cobra.Command, args []stri
 		nics = append(nics, nic)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudNICsProvider(nics))
+	return output.CommandOutput(cmd, NICCollection(nics))
 }

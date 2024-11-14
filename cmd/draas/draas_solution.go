@@ -60,7 +60,7 @@ func draasSolutionList(service draas.DRaaSService, cmd *cobra.Command, args []st
 		return fmt.Errorf("Error retrieving solutions: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputDRaaSSolutionsProvider(solutions))
+	return output.CommandOutput(cmd, SolutionCollection(solutions))
 }
 
 func draasSolutionShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -99,7 +99,7 @@ func draasSolutionShow(service draas.DRaaSService, cmd *cobra.Command, args []st
 		solutions = append(solutions, solution)
 	}
 
-	return output.CommandOutput(cmd, OutputDRaaSSolutionsProvider(solutions))
+	return output.CommandOutput(cmd, SolutionCollection(solutions))
 }
 
 func draasSolutionUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -154,5 +154,5 @@ func draasSolutionUpdate(service draas.DRaaSService, cmd *cobra.Command, args []
 		return fmt.Errorf("Error retrieving updated solution: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputDRaaSSolutionsProvider([]draas.Solution{solution}))
+	return output.CommandOutput(cmd, SolutionCollection([]draas.Solution{solution}))
 }

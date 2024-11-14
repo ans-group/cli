@@ -55,5 +55,5 @@ func ecloudVolumeGroupVolumeList(service ecloud.ECloudService, cmd *cobra.Comman
 		return fmt.Errorf("Error retrieving volume-group volumes: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVolumesProvider(volumes))
+	return output.CommandOutput(cmd, VolumeCollection(volumes))
 }

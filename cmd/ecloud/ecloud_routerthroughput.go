@@ -53,7 +53,7 @@ func ecloudRouterThroughputList(service ecloud.ECloudService, cmd *cobra.Command
 		return fmt.Errorf("Error retrieving router throughputs: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudRouterThroughputsProvider(throughputs))
+	return output.CommandOutput(cmd, RouterThroughputCollection(throughputs))
 }
 
 func ecloudRouterThroughputShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -85,5 +85,5 @@ func ecloudRouterThroughputShow(service ecloud.ECloudService, cmd *cobra.Command
 		throughputs = append(throughputs, throughput)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudRouterThroughputsProvider(throughputs))
+	return output.CommandOutput(cmd, RouterThroughputCollection(throughputs))
 }

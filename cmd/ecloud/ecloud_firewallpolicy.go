@@ -60,7 +60,7 @@ func ecloudFirewallPolicyList(service ecloud.ECloudService, cmd *cobra.Command, 
 		return fmt.Errorf("Error retrieving firewall policies: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudFirewallPoliciesProvider(policies))
+	return output.CommandOutput(cmd, FirewallPolicyCollection(policies))
 }
 
 func ecloudFirewallPolicyShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -92,7 +92,7 @@ func ecloudFirewallPolicyShow(service ecloud.ECloudService, cmd *cobra.Command, 
 		policies = append(policies, policy)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudFirewallPoliciesProvider(policies))
+	return output.CommandOutput(cmd, FirewallPolicyCollection(policies))
 }
 
 func ecloudFirewallPolicyCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -143,7 +143,7 @@ func ecloudFirewallPolicyCreate(service ecloud.ECloudService, cmd *cobra.Command
 		return fmt.Errorf("Error retrieving new firewall policy: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudFirewallPoliciesProvider([]ecloud.FirewallPolicy{policy}))
+	return output.CommandOutput(cmd, FirewallPolicyCollection([]ecloud.FirewallPolicy{policy}))
 }
 
 func ecloudFirewallPolicyUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -201,7 +201,7 @@ func ecloudFirewallPolicyUpdate(service ecloud.ECloudService, cmd *cobra.Command
 		policies = append(policies, policy)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudFirewallPoliciesProvider(policies))
+	return output.CommandOutput(cmd, FirewallPolicyCollection(policies))
 }
 
 func ecloudFirewallPolicyDeleteCmd(f factory.ClientFactory) *cobra.Command {

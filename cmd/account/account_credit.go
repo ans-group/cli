@@ -50,5 +50,5 @@ func accountCreditList(service account.AccountService, cmd *cobra.Command, args 
 		return fmt.Errorf("Error retrieving credits: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputAccountCreditsProvider(credits))
+	return output.CommandOutput(cmd, CreditCollection(credits))
 }

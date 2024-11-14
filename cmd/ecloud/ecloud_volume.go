@@ -61,7 +61,7 @@ func ecloudVolumeList(service ecloud.ECloudService, cmd *cobra.Command, args []s
 		return fmt.Errorf("Error retrieving volumes: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVolumesProvider(volumes))
+	return output.CommandOutput(cmd, VolumeCollection(volumes))
 }
 
 func ecloudVolumeShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -93,7 +93,7 @@ func ecloudVolumeShow(service ecloud.ECloudService, cmd *cobra.Command, args []s
 		volumes = append(volumes, volume)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVolumesProvider(volumes))
+	return output.CommandOutput(cmd, VolumeCollection(volumes))
 }
 
 func ecloudVolumeCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -149,7 +149,7 @@ func ecloudVolumeCreate(service ecloud.ECloudService, cmd *cobra.Command, args [
 		return fmt.Errorf("Error retrieving new volume: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVolumesProvider([]ecloud.Volume{volume}))
+	return output.CommandOutput(cmd, VolumeCollection([]ecloud.Volume{volume}))
 }
 
 func ecloudVolumeUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -223,7 +223,7 @@ func ecloudVolumeUpdate(service ecloud.ECloudService, cmd *cobra.Command, args [
 		volumes = append(volumes, volume)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVolumesProvider(volumes))
+	return output.CommandOutput(cmd, VolumeCollection(volumes))
 }
 
 func ecloudVolumeDeleteCmd(f factory.ClientFactory) *cobra.Command {

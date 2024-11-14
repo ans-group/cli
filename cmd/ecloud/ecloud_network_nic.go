@@ -55,5 +55,5 @@ func ecloudNetworkNICList(service ecloud.ECloudService, cmd *cobra.Command, args
 		return fmt.Errorf("Error retrieving network NICs: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudNICsProvider(nics))
+	return output.CommandOutput(cmd, NICCollection(nics))
 }

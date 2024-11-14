@@ -64,5 +64,5 @@ func ecloudSolutionDatastoreList(service ecloud.ECloudService, cmd *cobra.Comman
 		return fmt.Errorf("Error retrieving solution datastores: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudDatastoresProvider(datastores))
+	return output.CommandOutput(cmd, DatastoreCollection(datastores))
 }

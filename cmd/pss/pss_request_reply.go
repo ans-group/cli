@@ -68,7 +68,7 @@ func pssRequestReplyList(service pss.PSSService, cmd *cobra.Command, args []stri
 		return fmt.Errorf("Error retrieving request replies: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputPSSRepliesProvider(replies))
+	return output.CommandOutput(cmd, ReplyCollection(replies))
 }
 
 func pssRequestReplyCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -130,5 +130,5 @@ func pssRequestReplyCreate(service pss.PSSService, cmd *cobra.Command, args []st
 		return fmt.Errorf("Error retrieving new reply: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputPSSRepliesProvider([]pss.Reply{reply}))
+	return output.CommandOutput(cmd, ReplyCollection([]pss.Reply{reply}))
 }

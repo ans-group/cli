@@ -70,7 +70,7 @@ func ecloudVirtualMachineList(service ecloud.ECloudService, cmd *cobra.Command, 
 		return fmt.Errorf("Error retrieving virtual machines: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVirtualMachinesProvider(vms))
+	return output.CommandOutput(cmd, VirtualMachineCollection(vms))
 }
 
 func ecloudVirtualMachineShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -115,7 +115,7 @@ func ecloudVirtualMachineShow(service ecloud.ECloudService, cmd *cobra.Command, 
 		vms = append(vms, vm)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVirtualMachinesProvider(vms))
+	return output.CommandOutput(cmd, VirtualMachineCollection(vms))
 }
 
 func ecloudVirtualMachineCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -240,7 +240,7 @@ func ecloudVirtualMachineCreate(service ecloud.ECloudService, cmd *cobra.Command
 		return fmt.Errorf("Error retrieving new virtual machine: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVirtualMachinesProvider([]ecloud.VirtualMachine{vm}))
+	return output.CommandOutput(cmd, VirtualMachineCollection([]ecloud.VirtualMachine{vm}))
 }
 
 func ecloudVirtualMachineUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -321,7 +321,7 @@ func ecloudVirtualMachineUpdate(service ecloud.ECloudService, cmd *cobra.Command
 		vms = append(vms, vm)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVirtualMachinesProvider(vms))
+	return output.CommandOutput(cmd, VirtualMachineCollection(vms))
 }
 
 func ecloudVirtualMachineStartCmd(f factory.ClientFactory) *cobra.Command {

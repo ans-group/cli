@@ -1,19 +1,13 @@
 package output
 
 import (
-	"bufio"
-	"encoding/csv"
-	"encoding/json"
 	"fmt"
 	"html/template"
 	"os"
 	"reflect"
 	"strings"
 
-	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
-	"gopkg.in/yaml.v3"
-	"k8s.io/client-go/util/jsonpath"
 
 	"github.com/ans-group/sdk-go/pkg/connection"
 )
@@ -103,152 +97,152 @@ func ExitWithErrorLevel() {
 	outputExit(errorLevel)
 }
 
-// Value will format specified rows using given includeProperties by extracting field values,
-// and output them to stdout
-func Value(rows []*OrderedFields) error {
-	if len(rows) < 1 {
-		return nil
-	}
+// // Value will format specified rows using given includeProperties by extracting field values,
+// // and output them to stdout
+// func Value(rows []*OrderedFields) error {
+// 	if len(rows) < 1 {
+// 		return nil
+// 	}
 
-	for _, row := range rows {
-		var rowData []string
-		for _, fieldKey := range row.Keys() {
-			rowData = append(rowData, row.Get(fieldKey).Value)
-		}
-		fmt.Println(strings.Join(rowData, " "))
-	}
+// 	for _, row := range rows {
+// 		var rowData []string
+// 		for _, fieldKey := range row.Keys() {
+// 			rowData = append(rowData, row.Get(fieldKey).Value)
+// 		}
+// 		fmt.Println(strings.Join(rowData, " "))
+// 	}
 
-	return nil
-}
+// 	return nil
+// }
 
-// JSON marshals and outputs value v to stdout
-func JSON(v interface{}) error {
-	out, err := json.Marshal(v)
-	if err != nil {
-		return fmt.Errorf("failed to marshal json: %s", err)
-	}
+// // JSON marshals and outputs value v to stdout
+// func JSON(v interface{}) error {
+// 	out, err := json.Marshal(v)
+// 	if err != nil {
+// 		return fmt.Errorf("failed to marshal json: %s", err)
+// 	}
 
-	_, err = fmt.Print(string(out[:]))
+// 	_, err = fmt.Print(string(out[:]))
 
-	return err
-}
+// 	return err
+// }
 
-// YAML marshals and outputs value v to stdout
-func YAML(v interface{}) error {
-	out, err := yaml.Marshal(v)
-	if err != nil {
-		return fmt.Errorf("failed to marshal yaml: %s", err)
-	}
+// // YAML marshals and outputs value v to stdout
+// func YAML(v interface{}) error {
+// 	out, err := yaml.Marshal(v)
+// 	if err != nil {
+// 		return fmt.Errorf("failed to marshal yaml: %s", err)
+// 	}
 
-	_, err = fmt.Print(string(out[:]))
+// 	_, err = fmt.Print(string(out[:]))
 
-	return err
-}
+// 	return err
+// }
 
-// JSONPath marshals and outputs value v to stdout
-func JSONPath(query string, v interface{}) error {
-	j := jsonpath.New("clioutput")
-	err := j.Parse(query)
-	if err != nil {
-		return fmt.Errorf("Failed to parse jsonpath template: %w", err)
-	}
+// // JSONPath marshals and outputs value v to stdout
+// func JSONPath(query string, v interface{}) error {
+// 	j := jsonpath.New("clioutput")
+// 	err := j.Parse(query)
+// 	if err != nil {
+// 		return fmt.Errorf("Failed to parse jsonpath template: %w", err)
+// 	}
 
-	err = j.Execute(os.Stdout, v)
-	if err != nil {
-		return fmt.Errorf("Failed to execute jsonpath: %w", err)
-	}
+// 	err = j.Execute(os.Stdout, v)
+// 	if err != nil {
+// 		return fmt.Errorf("Failed to execute jsonpath: %w", err)
+// 	}
 
-	return nil
-}
+// 	return nil
+// }
 
-// Table takes an array of mapped fields (key being lowercased name), and outputs a table
-func Table(rows []*OrderedFields) error {
-	if len(rows) < 1 {
-		return nil
-	}
+// // Table takes an array of mapped fields (key being lowercased name), and outputs a table
+// func Table(rows []*OrderedFields) error {
+// 	if len(rows) < 1 {
+// 		return nil
+// 	}
 
-	table := tablewriter.NewWriter(os.Stdout)
+// 	table := tablewriter.NewWriter(os.Stdout)
 
-	// properties will hold our header values, and will be used to determine required fields
-	// when iterating over rows to add data to table
-	headers := rows[0].Keys()
+// 	// properties will hold our header values, and will be used to determine required fields
+// 	// when iterating over rows to add data to table
+// 	headers := rows[0].Keys()
 
-	table.SetHeader(headers)
+// 	table.SetHeader(headers)
 
-	// Loop through each row, adding required fields specified in headers to table
-	for _, row := range rows {
-		var rowData []string
-		for _, header := range headers {
-			rowData = append(rowData, row.Get(header).Value)
-		}
-		table.Append(rowData)
-	}
+// 	// Loop through each row, adding required fields specified in headers to table
+// 	for _, row := range rows {
+// 		var rowData []string
+// 		for _, header := range headers {
+// 			rowData = append(rowData, row.Get(header).Value)
+// 		}
+// 		table.Append(rowData)
+// 	}
 
-	table.Render()
+// 	table.Render()
 
-	return nil
-}
+// 	return nil
+// }
 
-// CSV outputs provided rows as CSV to stdout
-func CSV(rows []*OrderedFields) error {
-	if len(rows) < 1 {
-		return nil
-	}
+// // CSV outputs provided rows as CSV to stdout
+// func CSV(rows []*OrderedFields) error {
+// 	if len(rows) < 1 {
+// 		return nil
+// 	}
 
-	w := csv.NewWriter(os.Stdout)
+// 	w := csv.NewWriter(os.Stdout)
 
-	// First retrieve properties and write to CSV buffer
-	headers := rows[0].Keys()
-	err := w.Write(headers)
-	if err != nil {
-		return err
-	}
+// 	// First retrieve properties and write to CSV buffer
+// 	headers := rows[0].Keys()
+// 	err := w.Write(headers)
+// 	if err != nil {
+// 		return err
+// 	}
 
-	for _, row := range rows {
-		// For each row, obtain property data and and write to CSV buffer
-		var rowData []string
-		for _, header := range headers {
-			rowData = append(rowData, row.Get(header).Value)
-		}
-		err := w.Write(rowData)
-		if err != nil {
-			return err
-		}
+// 	for _, row := range rows {
+// 		// For each row, obtain property data and and write to CSV buffer
+// 		var rowData []string
+// 		for _, header := range headers {
+// 			rowData = append(rowData, row.Get(header).Value)
+// 		}
+// 		err := w.Write(rowData)
+// 		if err != nil {
+// 			return err
+// 		}
 
-		// Finally flush CSV buffer to stdout
-		w.Flush()
-		err = w.Error()
-		if err != nil {
-			return err
-		}
-	}
+// 		// Finally flush CSV buffer to stdout
+// 		w.Flush()
+// 		err = w.Error()
+// 		if err != nil {
+// 			return err
+// 		}
+// 	}
 
-	return nil
-}
+// 	return nil
+// }
 
-// List will format specified rows using given includeProperties by extracting fields,
-// and output them to stdout
-func List(rows []*OrderedFields) error {
-	if len(rows) < 1 {
-		return nil
-	}
+// // List will format specified rows using given includeProperties by extracting fields,
+// // and output them to stdout
+// func List(rows []*OrderedFields) error {
+// 	if len(rows) < 1 {
+// 		return nil
+// 	}
 
-	f := bufio.NewWriter(os.Stdout)
-	defer f.Flush()
+// 	f := bufio.NewWriter(os.Stdout)
+// 	defer f.Flush()
 
-	maxPropertyLength := getMaxPropertyLength(rows[0].Keys())
-	for i, row := range rows {
-		if i > 0 {
-			f.WriteString("\n")
-		}
+// 	maxPropertyLength := getMaxPropertyLength(rows[0].Keys())
+// 	for i, row := range rows {
+// 		if i > 0 {
+// 			f.WriteString("\n")
+// 		}
 
-		for _, fieldKey := range row.Keys() {
-			f.WriteString(fmt.Sprintf("%s : %s\n", padProperty(fieldKey, maxPropertyLength), row.Get(fieldKey).Value))
-		}
-	}
+// 		for _, fieldKey := range row.Keys() {
+// 			f.WriteString(fmt.Sprintf("%s : %s\n", padProperty(fieldKey, maxPropertyLength), row.Get(fieldKey).Value))
+// 		}
+// 	}
 
-	return nil
-}
+// 	return nil
+// }
 
 func padProperty(property string, maxLength int) string {
 	diff := maxLength - len(property)
@@ -300,8 +294,8 @@ func Template(t string, i interface{}) error {
 	return nil
 }
 
-func CommandOutputPaginated[T any](cmd *cobra.Command, out OutputHandlerDataProvider, paginated *connection.Paginated[T]) error {
-	err := CommandOutput(cmd, out)
+func CommandOutputPaginated[T any](cmd *cobra.Command, d interface{}, paginated *connection.Paginated[T]) error {
+	err := CommandOutput(cmd, d)
 	if err != nil {
 		return err
 	}
@@ -310,24 +304,6 @@ func CommandOutputPaginated[T any](cmd *cobra.Command, out OutputHandlerDataProv
 	return nil
 }
 
-func CommandOutput(cmd *cobra.Command, out OutputHandlerDataProvider) error {
-	// Format flag deprecated, however we'll check to see whether populated first and use it
-	var flag string
-	if cmd.Flags().Changed("format") {
-		flag, _ = cmd.Flags().GetString("format")
-	} else {
-		flag, _ = cmd.Flags().GetString("output")
-	}
-
-	name, arg := ParseOutputFlag(flag)
-
-	// outputtemplate flag deprecated, however we'll check to see whether populated first and use it
-	if name == "template" && cmd.Flags().Changed("outputtemplate") {
-		arg, _ = cmd.Flags().GetString("outputtemplate")
-	}
-
-	handler := NewOutputHandler(out, name, arg)
-	handler.Properties, _ = cmd.Flags().GetStringSlice("property")
-
-	return handler.Handle()
+func CommandOutput(cmd *cobra.Command, d interface{}) error {
+	return NewOutputHandler().Output(cmd, d)
 }

@@ -52,7 +52,7 @@ func loadbalancerClusterList(service loadbalancer.LoadBalancerService, cmd *cobr
 		return fmt.Errorf("Error retrieving clusters: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerClustersProvider(clusters))
+	return output.CommandOutput(cmd, ClusterCollection(clusters))
 }
 
 func loadbalancerClusterShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -90,7 +90,7 @@ func loadbalancerClusterShow(service loadbalancer.LoadBalancerService, cmd *cobr
 		clusters = append(clusters, cluster)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerClustersProvider(clusters))
+	return output.CommandOutput(cmd, ClusterCollection(clusters))
 }
 
 func loadbalancerClusterUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -144,7 +144,7 @@ func loadbalancerClusterUpdate(service loadbalancer.LoadBalancerService, cmd *co
 		clusters = append(clusters, cluster)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerClustersProvider(clusters))
+	return output.CommandOutput(cmd, ClusterCollection(clusters))
 }
 
 func loadbalancerClusterDeployCmd(f factory.ClientFactory) *cobra.Command {

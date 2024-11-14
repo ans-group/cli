@@ -62,7 +62,7 @@ func ecloudRouterList(service ecloud.ECloudService, cmd *cobra.Command, args []s
 		return fmt.Errorf("Error retrieving routers: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudRoutersProvider(routers))
+	return output.CommandOutput(cmd, RouterCollection(routers))
 }
 
 func ecloudRouterShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -94,7 +94,7 @@ func ecloudRouterShow(service ecloud.ECloudService, cmd *cobra.Command, args []s
 		routers = append(routers, router)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudRoutersProvider(routers))
+	return output.CommandOutput(cmd, RouterCollection(routers))
 }
 
 func ecloudRouterCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -149,7 +149,7 @@ func ecloudRouterCreate(service ecloud.ECloudService, cmd *cobra.Command, args [
 		return fmt.Errorf("Error retrieving new router: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudRoutersProvider([]ecloud.Router{router}))
+	return output.CommandOutput(cmd, RouterCollection([]ecloud.Router{router}))
 }
 
 func ecloudRouterUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -212,7 +212,7 @@ func ecloudRouterUpdate(service ecloud.ECloudService, cmd *cobra.Command, args [
 		routers = append(routers, router)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudRoutersProvider(routers))
+	return output.CommandOutput(cmd, RouterCollection(routers))
 }
 
 func ecloudRouterDeleteCmd(f factory.ClientFactory) *cobra.Command {

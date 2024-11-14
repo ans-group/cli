@@ -8,65 +8,68 @@ import (
 	"github.com/ans-group/sdk-go/pkg/service/registrar"
 )
 
-func OutputRegistrarDomainsProvider(domains []registrar.Domain) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(domains),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, domain := range domains {
-				fields := output.NewOrderedFields()
-				fields.Set("name", output.NewFieldValue(domain.Name, true))
-				fields.Set("status", output.NewFieldValue(domain.Status, true))
-				fields.Set("registrar", output.NewFieldValue(domain.Registrar, true))
-				fields.Set("registered_at", output.NewFieldValue(domain.RegisteredAt.String(), true))
-				fields.Set("updated_at", output.NewFieldValue(domain.UpdatedAt.String(), true))
-				fields.Set("renewal_at", output.NewFieldValue(domain.RenewalAt.String(), true))
-				fields.Set("auto_renew", output.NewFieldValue(strconv.FormatBool(domain.AutoRenew), true))
-				fields.Set("whois_privacy", output.NewFieldValue(strconv.FormatBool(domain.WHOISPrivacy), false))
+type DomainCollection []registrar.Domain
 
-				data = append(data, fields)
-			}
-
-			return data, nil
-		}),
-	)
+func (d DomainCollection) DefaultColumns() []string {
+	return []string{"name", "status", "registrar", "registered_at", "updated_at", "renewal_at", "auto_renew"}
 }
 
-func OutputRegistrarNameserversProvider(nameservers []registrar.Nameserver) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(nameservers),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, nameserver := range nameservers {
-				fields := output.NewOrderedFields()
-				fields.Set("host", output.NewFieldValue(nameserver.Host, true))
-				fields.Set("ip", output.NewFieldValue(nameserver.IP.String(), true))
+func (d DomainCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, domain := range d {
+		fields := output.NewOrderedFields()
+		fields.Set("name", domain.Name)
+		fields.Set("status", domain.Status)
+		fields.Set("registrar", domain.Registrar)
+		fields.Set("registered_at", domain.RegisteredAt.String())
+		fields.Set("updated_at", domain.UpdatedAt.String())
+		fields.Set("renewal_at", domain.RenewalAt.String())
+		fields.Set("auto_renew", strconv.FormatBool(domain.AutoRenew))
+		fields.Set("whois_privacy", strconv.FormatBool(domain.WHOISPrivacy))
 
-				data = append(data, fields)
-			}
+		data = append(data, fields)
+	}
 
-			return data, nil
-		}),
-	)
+	return data
 }
 
-func OutputRegistrarWhoisProvider(whoisArr []registrar.Whois) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(whoisArr),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, whois := range whoisArr {
-				fields := output.NewOrderedFields()
-				fields.Set("name", output.NewFieldValue(whois.Name, true))
-				fields.Set("status", output.NewFieldValue(strings.Join(whois.Status, ", "), true))
-				fields.Set("created_at", output.NewFieldValue(whois.CreatedAt.String(), true))
-				fields.Set("updated_at", output.NewFieldValue(whois.UpdatedAt.String(), true))
-				fields.Set("expires_at", output.NewFieldValue(whois.ExpiresAt.String(), true))
+type NameserverCollection []registrar.Nameserver
 
-				data = append(data, fields)
-			}
+func (n NameserverCollection) DefaultColumns() []string {
+	return []string{"host", "ip"}
+}
 
-			return data, nil
-		}),
-	)
+func (n NameserverCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, nameserver := range n {
+		fields := output.NewOrderedFields()
+		fields.Set("host", nameserver.Host)
+		fields.Set("ip", nameserver.IP.String())
+
+		data = append(data, fields)
+	}
+
+	return data
+}
+
+type WhoisCollection []registrar.Whois
+
+func (w WhoisCollection) DefaultColumns() []string {
+	return []string{"name", "status", "created_at", "updated_at", "expires_at"}
+}
+
+func (w WhoisCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, whois := range w {
+		fields := output.NewOrderedFields()
+		fields.Set("name", whois.Name)
+		fields.Set("status", strings.Join(whois.Status, ", "))
+		fields.Set("created_at", whois.CreatedAt.String())
+		fields.Set("updated_at", whois.UpdatedAt.String())
+		fields.Set("expires_at", whois.ExpiresAt.String())
+
+		data = append(data, fields)
+	}
+
+	return data
 }

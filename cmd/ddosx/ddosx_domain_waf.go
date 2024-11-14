@@ -66,7 +66,7 @@ func ddosxDomainWAFShow(service ddosx.DDoSXService, cmd *cobra.Command, args []s
 		wafs = append(wafs, waf)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXWAFsProvider(wafs))
+	return output.CommandOutput(cmd, WAFCollection(wafs))
 }
 
 func ddosxDomainWAFCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -127,7 +127,7 @@ func ddosxDomainWAFCreate(service ddosx.DDoSXService, cmd *cobra.Command, args [
 		return fmt.Errorf("Error retrieving domain waf: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXWAFsProvider([]ddosx.WAF{waf}))
+	return output.CommandOutput(cmd, WAFCollection([]ddosx.WAF{waf}))
 }
 
 func ddosxDomainWAFUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -199,7 +199,7 @@ func ddosxDomainWAFUpdate(service ddosx.DDoSXService, cmd *cobra.Command, args [
 		wafs = append(wafs, waf)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXWAFsProvider(wafs))
+	return output.CommandOutput(cmd, WAFCollection(wafs))
 }
 
 func ddosxDomainWAFDeleteCmd(f factory.ClientFactory) *cobra.Command {

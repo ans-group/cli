@@ -60,7 +60,7 @@ func ddosxSSLList(service ddosx.DDoSXService, cmd *cobra.Command, args []string)
 		return fmt.Errorf("Error retrieving ssls: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXSSLsProvider(ssls))
+	return output.CommandOutput(cmd, SSLCollection(ssls))
 }
 
 func ddosxSSLShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -99,7 +99,7 @@ func ddosxSSLShow(service ddosx.DDoSXService, cmd *cobra.Command, args []string)
 		ssls = append(ssls, ssl)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXSSLsProvider(ssls))
+	return output.CommandOutput(cmd, SSLCollection(ssls))
 }
 
 func ddosxSSLCreateCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
@@ -163,7 +163,7 @@ func ddosxSSLCreate(service ddosx.DDoSXService, cmd *cobra.Command, fs afero.Fs,
 		return fmt.Errorf("Error retrieving new ssl [%s]: %s", id, err.Error())
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXSSLsProvider([]ddosx.SSL{ssl}))
+	return output.CommandOutput(cmd, SSLCollection([]ddosx.SSL{ssl}))
 }
 
 func ddosxSSLUpdateCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
@@ -235,7 +235,7 @@ func ddosxSSLUpdate(service ddosx.DDoSXService, cmd *cobra.Command, fs afero.Fs,
 		return fmt.Errorf("Error retrieving updated ssl: %s", err.Error())
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXSSLsProvider([]ddosx.SSL{ssl}))
+	return output.CommandOutput(cmd, SSLCollection([]ddosx.SSL{ssl}))
 }
 
 func ddosxSSLDeleteCmd(f factory.ClientFactory) *cobra.Command {

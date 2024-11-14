@@ -8,12 +8,10 @@ import (
 	ddosxcmd "github.com/ans-group/cli/cmd/ddosx"
 	draascmd "github.com/ans-group/cli/cmd/draas"
 	ecloudcmd "github.com/ans-group/cli/cmd/ecloud"
-	ecloudflexcmd "github.com/ans-group/cli/cmd/ecloudflex"
 	loadbalancercmd "github.com/ans-group/cli/cmd/loadbalancer"
 	psscmd "github.com/ans-group/cli/cmd/pss"
 	registrarcmd "github.com/ans-group/cli/cmd/registrar"
 	safednscmd "github.com/ans-group/cli/cmd/safedns"
-	sharedexchangecmd "github.com/ans-group/cli/cmd/sharedexchange"
 	sslcmd "github.com/ans-group/cli/cmd/ssl"
 	storagecmd "github.com/ans-group/cli/cmd/storage"
 	"github.com/ans-group/cli/internal/pkg/build"
@@ -76,13 +74,11 @@ func Execute(build build.BuildInfo) {
 	rootCmd.AddCommand(ddosxcmd.DDoSXRootCmd(clientFactory, fs))
 	rootCmd.AddCommand(draascmd.DRaaSRootCmd(clientFactory))
 	rootCmd.AddCommand(ecloudcmd.ECloudRootCmd(clientFactory, fs))
-	rootCmd.AddCommand(ecloudflexcmd.ECloudFlexRootCmd(clientFactory))
 	rootCmd.AddCommand(loadbalancercmd.LoadBalancerRootCmd(clientFactory, fs))
 	rootCmd.AddCommand(cloudflarecmd.CloudflareRootCmd(clientFactory))
 	rootCmd.AddCommand(psscmd.PSSRootCmd(clientFactory, fs))
 	rootCmd.AddCommand(registrarcmd.RegistrarRootCmd(clientFactory))
 	rootCmd.AddCommand(safednscmd.SafeDNSRootCmd(clientFactory))
-	rootCmd.AddCommand(sharedexchangecmd.SharedExchangeRootCmd(clientFactory))
 	rootCmd.AddCommand(sslcmd.SSLRootCmd(clientFactory, fs))
 	rootCmd.AddCommand(storagecmd.StorageRootCmd(clientFactory))
 

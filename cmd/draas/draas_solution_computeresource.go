@@ -59,7 +59,7 @@ func draasSolutionComputeResourceList(service draas.DRaaSService, cmd *cobra.Com
 		return fmt.Errorf("Error retrieving solution compute resources: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputDRaaSComputeResourcesProvider(plans))
+	return output.CommandOutput(cmd, ComputeResourceCollection(plans))
 }
 
 func draasSolutionComputeResourceShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -102,5 +102,5 @@ func draasSolutionComputeResourceShow(service draas.DRaaSService, cmd *cobra.Com
 		plans = append(plans, plan)
 	}
 
-	return output.CommandOutput(cmd, OutputDRaaSComputeResourcesProvider(plans))
+	return output.CommandOutput(cmd, ComputeResourceCollection(plans))
 }

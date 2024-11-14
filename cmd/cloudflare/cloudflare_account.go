@@ -50,7 +50,7 @@ func cloudflareAccountList(service cloudflare.CloudflareService, cmd *cobra.Comm
 		return fmt.Errorf("Error retrieving accounts: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputCloudflareAccountsProvider(accounts))
+	return output.CommandOutput(cmd, AccountCollection(accounts))
 }
 
 func cloudflareAccountShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -82,7 +82,7 @@ func cloudflareAccountShow(service cloudflare.CloudflareService, cmd *cobra.Comm
 		accounts = append(accounts, account)
 	}
 
-	return output.CommandOutput(cmd, OutputCloudflareAccountsProvider(accounts))
+	return output.CommandOutput(cmd, AccountCollection(accounts))
 }
 
 func cloudflareAccountCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -113,7 +113,7 @@ func cloudflareAccountCreate(service cloudflare.CloudflareService, cmd *cobra.Co
 		return fmt.Errorf("Error retrieving new account: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputCloudflareAccountsProvider([]cloudflare.Account{account}))
+	return output.CommandOutput(cmd, AccountCollection([]cloudflare.Account{account}))
 }
 
 func cloudflareAccountUpdateCmd(f factory.ClientFactory) *cobra.Command {

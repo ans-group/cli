@@ -65,7 +65,7 @@ func ecloudVirtualMachineDiskList(service ecloud.ECloudService, cmd *cobra.Comma
 		return fmt.Errorf("Error retrieving virtual machine [%s]: %s", args[0], err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVirtualMachineDisksProvider(vm.Disks))
+	return output.CommandOutput(cmd, VirtualMachineDiskCollection(vm.Disks))
 }
 
 func ecloudVirtualMachineDiskUpdateCmd(f factory.ClientFactory) *cobra.Command {

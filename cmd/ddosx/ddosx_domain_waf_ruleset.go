@@ -61,7 +61,7 @@ func ddosxDomainWAFRuleSetList(service ddosx.DDoSXService, cmd *cobra.Command, a
 		return fmt.Errorf("Error retrieving domain waf rule sets: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXWAFRuleSetsProvider(domains))
+	return output.CommandOutput(cmd, WAFRuleSetCollection(domains))
 }
 
 func ddosxDomainWAFRuleSetShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -103,7 +103,7 @@ func ddosxDomainWAFRuleSetShow(service ddosx.DDoSXService, cmd *cobra.Command, a
 		rulesets = append(rulesets, ruleset)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXWAFRuleSetsProvider(rulesets))
+	return output.CommandOutput(cmd, WAFRuleSetCollection(rulesets))
 }
 
 func ddosxDomainWAFRuleSetUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -162,5 +162,5 @@ func ddosxDomainWAFRuleSetUpdate(service ddosx.DDoSXService, cmd *cobra.Command,
 		rulesets = append(rulesets, ruleset)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXWAFRuleSetsProvider(rulesets))
+	return output.CommandOutput(cmd, WAFRuleSetCollection(rulesets))
 }

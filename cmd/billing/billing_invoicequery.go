@@ -54,7 +54,7 @@ func billingInvoiceQueryList(service billing.BillingService, cmd *cobra.Command,
 		return fmt.Errorf("Error retrieving invoice queries: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputBillingInvoiceQueriesProvider(queries))
+	return output.CommandOutput(cmd, InvoiceQueryCollection(queries))
 }
 
 func billingInvoiceQueryShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -99,7 +99,7 @@ func billingInvoiceQueryShow(service billing.BillingService, cmd *cobra.Command,
 		queries = append(queries, query)
 	}
 
-	return output.CommandOutput(cmd, OutputBillingInvoiceQueriesProvider(queries))
+	return output.CommandOutput(cmd, InvoiceQueryCollection(queries))
 }
 
 func billingInvoiceQueryCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -163,5 +163,5 @@ func billingInvoiceQueryCreate(service billing.BillingService, cmd *cobra.Comman
 		return fmt.Errorf("Error retrieving new invoice query [%d]: %s", id, err)
 	}
 
-	return output.CommandOutput(cmd, OutputBillingInvoiceQueriesProvider([]billing.InvoiceQuery{query}))
+	return output.CommandOutput(cmd, InvoiceQueryCollection([]billing.InvoiceQuery{query}))
 }

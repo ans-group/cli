@@ -60,7 +60,7 @@ func loadbalancerAccessIPShow(service loadbalancer.LoadBalancerService, cmd *cob
 		accessips = append(accessips, accessip)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerAccessIPsProvider(accessips))
+	return output.CommandOutput(cmd, AccessIPCollection(accessips))
 }
 
 func loadbalancerAccessIPUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -114,7 +114,7 @@ func loadbalancerAccessIPUpdate(service loadbalancer.LoadBalancerService, cmd *c
 		accessips = append(accessips, accessip)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerAccessIPsProvider(accessips))
+	return output.CommandOutput(cmd, AccessIPCollection(accessips))
 }
 
 func loadbalancerAccessIPDeleteCmd(f factory.ClientFactory) *cobra.Command {

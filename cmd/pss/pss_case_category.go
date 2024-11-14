@@ -41,5 +41,5 @@ func pssCaseCategoryList(service pss.PSSService, cmd *cobra.Command, args []stri
 		return err
 	}
 
-	return output.CommandOutput(cmd, OutputPSSCaseCategoriesProvider(categories))
+	return output.CommandOutput(cmd, CaseCategoryCollection(categories))
 }

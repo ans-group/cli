@@ -53,7 +53,7 @@ func storageVolumeList(service storage.StorageService, cmd *cobra.Command, args 
 		return fmt.Errorf("Error retrieving volumes: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputStorageVolumesProvider(volumes))
+	return output.CommandOutput(cmd, VolumeCollection(volumes))
 }
 
 func storageVolumeShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -98,5 +98,5 @@ func storageVolumeShow(service storage.StorageService, cmd *cobra.Command, args 
 		volumes = append(volumes, volume)
 	}
 
-	return output.CommandOutput(cmd, OutputStorageVolumesProvider(volumes))
+	return output.CommandOutput(cmd, VolumeCollection(volumes))
 }

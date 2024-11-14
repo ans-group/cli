@@ -53,7 +53,7 @@ func ecloudV1HostList(service ecloud.ECloudService, cmd *cobra.Command, args []s
 		return fmt.Errorf("Error retrieving hosts: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudV1HostsProvider(hosts))
+	return output.CommandOutput(cmd, V1HostCollection(hosts))
 }
 
 func ecloudV1HostShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -98,5 +98,5 @@ func ecloudV1HostShow(service ecloud.ECloudService, cmd *cobra.Command, args []s
 		hosts = append(hosts, host)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudV1HostsProvider(hosts))
+	return output.CommandOutput(cmd, V1HostCollection(hosts))
 }
