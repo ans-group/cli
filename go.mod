@@ -1,8 +1,8 @@
 module github.com/ans-group/cli
 
-go 1.22.0
+go 1.23.0
 
-toolchain go1.23.2
+toolchain go1.23.3
 
 require (
 	github.com/ans-group/sdk-go v1.22.1
@@ -15,10 +15,10 @@ require (
 	github.com/ryanuber/go-glob v1.0.0
 	github.com/spf13/afero v1.11.0
 	github.com/spf13/cobra v1.8.1
-	github.com/stretchr/testify v1.9.0
+	github.com/stretchr/testify v1.10.0
 	gopkg.in/go-playground/assert.v1 v1.2.1
 	gopkg.in/yaml.v3 v3.0.1
-	k8s.io/client-go v0.31.2
+	k8s.io/client-go v0.32.0
 )
 
 require (
@@ -52,7 +52,7 @@ require (
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/crypto v0.31.0 // indirect
 	golang.org/x/exp v0.0.0-20241009180824-f66d83c29e7c // indirect
-	golang.org/x/oauth2 v0.21.0 // indirect
+	golang.org/x/oauth2 v0.23.0 // indirect
 	golang.org/x/sys v0.28.0 // indirect
 	golang.org/x/text v0.21.0 // indirect
 	gopkg.in/go-playground/validator.v9 v9.31.0 // indirect
