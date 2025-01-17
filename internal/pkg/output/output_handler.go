@@ -2,25 +2,25 @@ package output
 
 import (
 	"bufio"
+	"encoding/csv"
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"os"
 	"reflect"
-	"sort"
 	"strconv"
+	"strings"
 
 	"github.com/iancoleman/strcase"
 	"github.com/olekukonko/tablewriter"
+	"github.com/ryanuber/go-glob"
 	"github.com/spf13/cobra"
+	"gopkg.in/yaml.v3"
+	"k8s.io/client-go/util/jsonpath"
 )
 
 type DefaultColumnable interface {
 	DefaultColumns() []string
-}
-
-type Sortable interface {
-	SortableColumns() []string
-	DefaultSortColumn() string
 }
 
 type FieldValueHandlerFunc func(reflectedValue reflect.Value) string
@@ -45,45 +45,34 @@ func NewOutputHandler() *OutputHandler {
 	return &OutputHandler{}
 }
 
-// func Output(cmd *cobra.Command, d interface{}) error {
-// 	return NewOutputHandler().Output(cmd, d)
-// }
-
-// // Handle calls the relevant OutputProvider data retrieval methods for given value
-// // in struct property 'Format'
-// func (o *OutputHandler) Handle() error {
-// 	if !o.supportedFormat() {
-// 		return fmt.Errorf("Unsupported output format [%s], supported formats: %s", o.Format, strings.Join(o.SupportedFormats, ", "))
-// 	}
-
-// 	switch o.Format {
-// 	case "json":
-// 		return JSON(o.DataProvider.GetData())
-// 	case "yaml":
-// 		return YAML(o.DataProvider.GetData())
-// 	case "jsonpath":
-// 		return JSONPath(o.FormatArg, o.DataProvider.GetData())
-// 	case "template":
-// 		return Template(o.FormatArg, o.DataProvider.GetData())
-// 	case "value":
-// 		d, err := o.getProcessedFieldData()
-// 		if err != nil {
-// 			return err
-// 		}
-// 		return Value(d)
-// 	case "csv":
-// 		d, err := o.getProcessedFieldData()
-// 		if err != nil {
-// 			return err
-// 		}
-// 		return CSV(d)
-// }
-
 func (o *OutputHandler) Output(cmd *cobra.Command, d interface{}) error {
-	format, _ := cmd.Flags().GetString("output")
+	var flag string
+	if cmd.Flags().Changed("format") {
+		flag, _ = cmd.Flags().GetString("format")
+	} else {
+		flag, _ = cmd.Flags().GetString("output")
+	}
+
+	format, arg := ParseOutputFlag(flag)
+	if format == "template" && cmd.Flags().Changed("outputtemplate") {
+		arg, _ = cmd.Flags().GetString("outputtemplate")
+	}
+
 	switch format {
 	case "json":
 		return o.JSON(d)
+	case "list":
+		return o.List(cmd, d)
+	case "value":
+		return o.Value(cmd, d)
+	case "csv":
+		return o.CSV(cmd, d)
+	case "yaml":
+		return o.YAML(d)
+	case "jsonpath":
+		return o.JSONPath(arg, d)
+	case "template":
+		return o.Template(arg, d)
 	default:
 		Errorf("Invalid output format [%s], defaulting to 'table'", format)
 		fallthrough
@@ -123,7 +112,6 @@ func (o *OutputHandler) Table(cmd *cobra.Command, d interface{}) error {
 // and output them to stdout
 func (o *OutputHandler) List(cmd *cobra.Command, d interface{}) error {
 	columns, rows := o.getData(cmd, d)
-
 	if len(rows) < 1 {
 		return nil
 	}
@@ -145,6 +133,119 @@ func (o *OutputHandler) List(cmd *cobra.Command, d interface{}) error {
 	return nil
 }
 
+// Value will format specified rows using given includeProperties by extracting field values,
+// and output them to stdout
+func (o *OutputHandler) Value(cmd *cobra.Command, d interface{}) error {
+	columns, rows := o.getData(cmd, d)
+	if len(rows) < 1 {
+		return nil
+	}
+
+	for _, row := range rows {
+		var rowData []string
+		for columnIndex := range columns {
+			rowData = append(rowData, row[columnIndex])
+		}
+		fmt.Println(strings.Join(rowData, " "))
+	}
+
+	return nil
+}
+
+// YAML marshals and outputs value v to stdout
+func (o *OutputHandler) YAML(d interface{}) error {
+	out, err := yaml.Marshal(d)
+	if err != nil {
+		return fmt.Errorf("failed to marshal yaml: %s", err)
+	}
+
+	_, err = fmt.Print(string(out[:]))
+
+	return err
+}
+
+// JSONPath marshals and outputs value v to stdout
+func (o *OutputHandler) JSONPath(query string, d interface{}) error {
+	j := jsonpath.New("clioutput")
+	err := j.Parse(query)
+	if err != nil {
+		return fmt.Errorf("failed to parse jsonpath template: %w", err)
+	}
+
+	err = j.Execute(os.Stdout, d)
+	if err != nil {
+		return fmt.Errorf("failed to execute jsonpath: %w", err)
+	}
+
+	return nil
+}
+
+// CSV outputs provided rows as CSV to stdout
+func (o *OutputHandler) CSV(cmd *cobra.Command, d interface{}) error {
+	columns, rows := o.getData(cmd, d)
+	if len(rows) < 1 {
+		return nil
+	}
+
+	w := csv.NewWriter(os.Stdout)
+
+	// First retrieve properties and write to CSV buffer
+	err := w.Write(columns)
+	if err != nil {
+		return err
+	}
+
+	for _, row := range rows {
+		// For each row, obtain property data and and write to CSV buffer
+		var rowData []string
+		for columnIndex := range columns {
+			rowData = append(rowData, row[columnIndex])
+		}
+		err := w.Write(rowData)
+		if err != nil {
+			return err
+		}
+
+		// Finally flush CSV buffer to stdout
+		w.Flush()
+		err = w.Error()
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+// Template will format i with given Golang template t, and output resulting string
+// to stdout
+func (o *OutputHandler) Template(t string, d interface{}) error {
+	tmpl, err := template.New("output").Parse(t)
+	if err != nil {
+		return fmt.Errorf("failed to create template: %s", err.Error())
+	}
+
+	switch reflect.TypeOf(d).Kind() {
+	case reflect.Slice:
+		s := reflect.ValueOf(d)
+		for i := 0; i < s.Len(); i++ {
+			err = tmpl.Execute(os.Stdout, s.Index(i))
+			if err != nil {
+				return fmt.Errorf("failed to execute template on slice: %s", err.Error())
+			}
+			fmt.Print("\n")
+		}
+	default:
+		err = tmpl.Execute(os.Stdout, d)
+		if err != nil {
+			return fmt.Errorf("failed to execute template: %s", err.Error())
+		}
+		fmt.Print("\n")
+	}
+
+	return nil
+}
+
 func (o *OutputHandler) getData(cmd *cobra.Command, d interface{}) (filteredColumns []string, filteredRows [][]string) {
 	rows := o.convert(d, reflect.ValueOf(d))
 	if len(rows) == 0 {
@@ -158,16 +259,16 @@ func (o *OutputHandler) getData(cmd *cobra.Command, d interface{}) (filteredColu
 		filteredColumnNames = d.DefaultColumns()
 	}
 
-	for _, column := range rows[0].Keys() {
-		if len(filteredColumnNames) > 0 {
+	if len(filteredColumnNames) > 0 {
+		for _, column := range rows[0].Keys() {
 			for _, filteredColumnName := range filteredColumnNames {
-				if column == filteredColumnName {
-					filteredColumns = append(filteredColumns, filteredColumnName)
+				if glob.Glob(strings.ToLower(filteredColumnName), column) {
+					filteredColumns = append(filteredColumns, column)
 				}
 			}
-		} else {
-			filteredColumns = append(filteredColumns, column)
 		}
+	} else {
+		filteredColumns = rows[0].Keys()
 	}
 
 	for _, row := range rows {
@@ -176,21 +277,6 @@ func (o *OutputHandler) getData(cmd *cobra.Command, d interface{}) (filteredColu
 			filteredRow[filteredColumnIndex] = row.Get(filteredColumn)
 		}
 		filteredRows = append(filteredRows, filteredRow)
-	}
-
-	if d, ok := d.(Sortable); ok && len(d.SortableColumns()) > 0 {
-		var sortColumn string
-		if cmd.Flags().Changed("sort") {
-			sortColumn, _ = cmd.Flags().GetString("sort")
-		} else {
-			sortColumn = d.DefaultSortColumn()
-		}
-		sortIndex := indexOf(filteredColumns, sortColumn)
-		if sortIndex != -1 {
-			sort.Slice(filteredRows, func(i, j int) bool {
-				return filteredRows[i][sortIndex] < filteredRows[j][sortIndex]
-			})
-		}
 	}
 
 	return filteredColumns, filteredRows
@@ -281,11 +367,21 @@ func (o *OutputHandler) convertField(d interface{}, v *OrderedFields, fieldName 
 	return v
 }
 
-func indexOf(slice []string, s string) int {
-	for i, v := range slice {
-		if v == s {
-			return i
+func padProperty(property string, maxLength int) string {
+	diff := maxLength - len(property)
+	if diff > 0 {
+		return property + strings.Repeat(" ", diff)
+	}
+	return property
+}
+
+func getMaxPropertyLength(properties []string) int {
+	maxLength := 0
+	for _, property := range properties {
+		length := len(property)
+		if length > maxLength {
+			maxLength = length
 		}
 	}
-	return -1
+	return maxLength
 }

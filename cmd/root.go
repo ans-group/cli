@@ -44,7 +44,7 @@ func Execute(build build.BuildInfo) {
 	// Global flags
 	rootCmd.PersistentFlags().String("config", "", "config file (default is $HOME/.ans.yml)")
 	rootCmd.PersistentFlags().String("context", "", "specific context to use")
-	rootCmd.PersistentFlags().StringP("output", "o", "", "output type {table, json, yaml, jsonpath, template, value, csv, list}, with optional argument provided as 'outputname=outputargument'")
+	rootCmd.PersistentFlags().StringP("output", "o", "table", "output type {table, json, yaml, jsonpath, template, value, csv, list}, with optional argument provided as 'outputname=outputargument'")
 	rootCmd.PersistentFlags().StringP("format", "f", "", "")
 	rootCmd.PersistentFlags().MarkDeprecated("format", "please use --output/-o instead")
 	rootCmd.PersistentFlags().String("outputtemplate", "", "output Go template (used with 'template' format), e.g. 'Name: {{ .Name }}'")
