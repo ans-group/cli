@@ -100,7 +100,7 @@ func raw(c connection.Connection, cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	fmt.Print(respBody)
+	fmt.Println(respBody)
 	return nil
 }
 
