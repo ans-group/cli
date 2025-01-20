@@ -64,5 +64,5 @@ func ecloudSolutionNetworkList(service ecloud.ECloudService, cmd *cobra.Command,
 		return fmt.Errorf("Error retrieving solution networks: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudV1NetworksProvider(networks))
+	return output.CommandOutput(cmd, V1NetworkCollection(networks))
 }

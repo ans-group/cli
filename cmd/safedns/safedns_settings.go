@@ -44,5 +44,5 @@ func safednsSettingsShow(service safedns.SafeDNSService, cmd *cobra.Command, arg
 		return fmt.Errorf("Error retrieving settings: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputSafeDNSSettingsProvider([]safedns.Settings{settings}))
+	return output.CommandOutput(cmd, SettingsCollection([]safedns.Settings{settings}))
 }

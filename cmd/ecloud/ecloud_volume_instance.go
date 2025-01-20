@@ -55,5 +55,5 @@ func ecloudVolumeInstanceList(service ecloud.ECloudService, cmd *cobra.Command, 
 		return fmt.Errorf("Error retrieving volume instances: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudInstancesProvider(instances))
+	return output.CommandOutput(cmd, InstanceCollection(instances))
 }

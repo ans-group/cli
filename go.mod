@@ -18,7 +18,7 @@ require (
 	github.com/stretchr/testify v1.10.0
 	gopkg.in/go-playground/assert.v1 v1.2.1
 	gopkg.in/yaml.v3 v3.0.1
-	k8s.io/client-go v0.32.0
+	k8s.io/client-go v0.32.1
 )
 
 require (

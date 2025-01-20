@@ -63,7 +63,7 @@ func safednsTemplateList(service safedns.SafeDNSService, cmd *cobra.Command, arg
 		return fmt.Errorf("Error retrieving templates: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputSafeDNSTemplatesProvider(templates))
+	return output.CommandOutput(cmd, TemplateCollection(templates))
 
 }
 
@@ -103,7 +103,7 @@ func safednsTemplateShow(service safedns.SafeDNSService, cmd *cobra.Command, arg
 		templates = append(templates, template)
 	}
 
-	return output.CommandOutput(cmd, OutputSafeDNSTemplatesProvider(templates))
+	return output.CommandOutput(cmd, TemplateCollection(templates))
 }
 
 func safednsTemplateCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -147,7 +147,7 @@ func safednsTemplateCreate(service safedns.SafeDNSService, cmd *cobra.Command, a
 		return fmt.Errorf("Error retrieving new template: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputSafeDNSTemplatesProvider([]safedns.Template{template}))
+	return output.CommandOutput(cmd, TemplateCollection([]safedns.Template{template}))
 }
 
 func safednsTemplateUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -215,7 +215,7 @@ func safednsTemplateUpdate(service safedns.SafeDNSService, cmd *cobra.Command, a
 		templates = append(templates, template)
 	}
 
-	return output.CommandOutput(cmd, OutputSafeDNSTemplatesProvider(templates))
+	return output.CommandOutput(cmd, TemplateCollection(templates))
 }
 
 func safednsTemplateDeleteCmd(f factory.ClientFactory) *cobra.Command {

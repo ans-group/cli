@@ -53,7 +53,7 @@ func ecloudResourceTierList(service ecloud.ECloudService, cmd *cobra.Command, ar
 		return fmt.Errorf("Error retrieving resource tiers: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudResourceTiersProvider(tiers))
+	return output.CommandOutput(cmd, ResourceTierCollection(tiers))
 }
 
 func ecloudResourceTierShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -85,5 +85,5 @@ func ecloudResourceTierShow(service ecloud.ECloudService, cmd *cobra.Command, ar
 		tiers = append(tiers, tier)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudResourceTiersProvider(tiers))
+	return output.CommandOutput(cmd, ResourceTierCollection(tiers))
 }

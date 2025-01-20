@@ -65,7 +65,7 @@ func ddosxDomainPropertyList(service ddosx.DDoSXService, cmd *cobra.Command, arg
 		return fmt.Errorf("Error retrieving domain properties: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXDomainPropertiesProvider(properties))
+	return output.CommandOutput(cmd, DomainPropertyCollection(properties))
 }
 
 func ddosxDomainPropertyShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -109,7 +109,7 @@ func ddosxDomainPropertyShow(service ddosx.DDoSXService, cmd *cobra.Command, arg
 		properties = append(properties, property)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXDomainPropertiesProvider(properties))
+	return output.CommandOutput(cmd, DomainPropertyCollection(properties))
 }
 
 func ddosxDomainPropertyUpdateCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
@@ -176,5 +176,5 @@ func ddosxDomainPropertyUpdate(service ddosx.DDoSXService, cmd *cobra.Command, f
 		properties = append(properties, property)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXDomainPropertiesProvider(properties))
+	return output.CommandOutput(cmd, DomainPropertyCollection(properties))
 }

@@ -44,5 +44,5 @@ func billingDirectDebitShow(service billing.BillingService, cmd *cobra.Command, 
 		return fmt.Errorf("Error retrieving direct debit details: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputBillingDirectDebitsProvider([]billing.DirectDebit{details}))
+	return output.CommandOutput(cmd, DirectDebitCollection([]billing.DirectDebit{details}))
 }

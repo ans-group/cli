@@ -51,5 +51,5 @@ func ecloudCreditList(service ecloud.ECloudService, cmd *cobra.Command, args []s
 		return fmt.Errorf("Error retrieving credits: %s", err)
 	}
 
-	return output.CommandOutput(cmd, accountcmd.OutputAccountCreditsProvider(credits))
+	return output.CommandOutput(cmd, accountcmd.CreditCollection(credits))
 }

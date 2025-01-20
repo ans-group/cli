@@ -62,7 +62,7 @@ func draasSolutionHardwarePlanList(service draas.DRaaSService, cmd *cobra.Comman
 		return fmt.Errorf("Error retrieving solution hardware plans: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputDRaaSHardwarePlansProvider(plans))
+	return output.CommandOutput(cmd, HardwarePlanCollection(plans))
 }
 
 func draasSolutionHardwarePlanShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -105,5 +105,5 @@ func draasSolutionHardwarePlanShow(service draas.DRaaSService, cmd *cobra.Comman
 		plans = append(plans, plan)
 	}
 
-	return output.CommandOutput(cmd, OutputDRaaSHardwarePlansProvider(plans))
+	return output.CommandOutput(cmd, HardwarePlanCollection(plans))
 }

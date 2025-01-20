@@ -59,7 +59,7 @@ func ecloudVolumeGroupList(service ecloud.ECloudService, cmd *cobra.Command, arg
 		return fmt.Errorf("Error retrieving volume groups: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVolumeGroupsProvider(volumegroups))
+	return output.CommandOutput(cmd, VolumeGroupCollection(volumegroups))
 }
 
 func ecloudVolumeGroupShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -91,7 +91,7 @@ func ecloudVolumeGroupShow(service ecloud.ECloudService, cmd *cobra.Command, arg
 		volumegroups = append(volumegroups, volumegroup)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVolumeGroupsProvider(volumegroups))
+	return output.CommandOutput(cmd, VolumeGroupCollection(volumegroups))
 }
 
 func ecloudVolumeGroupCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -140,7 +140,7 @@ func ecloudVolumeGroupCreate(service ecloud.ECloudService, cmd *cobra.Command, a
 		return fmt.Errorf("Error retrieving new volume group: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVolumeGroupsProvider([]ecloud.VolumeGroup{volumegroup}))
+	return output.CommandOutput(cmd, VolumeGroupCollection([]ecloud.VolumeGroup{volumegroup}))
 }
 
 func ecloudVolumeGroupUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -198,7 +198,7 @@ func ecloudVolumeGroupUpdate(service ecloud.ECloudService, cmd *cobra.Command, a
 		volumegroups = append(volumegroups, volumegroup)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVolumeGroupsProvider(volumegroups))
+	return output.CommandOutput(cmd, VolumeGroupCollection(volumegroups))
 }
 
 func ecloudVolumeGroupDeleteCmd(f factory.ClientFactory) *cobra.Command {

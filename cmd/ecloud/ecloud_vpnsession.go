@@ -58,7 +58,7 @@ func ecloudVPNSessionList(service ecloud.ECloudService, cmd *cobra.Command, args
 		return fmt.Errorf("Error retrieving VPN sessions: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVPNSessionsProvider(sessions))
+	return output.CommandOutput(cmd, VPNSessionCollection(sessions))
 }
 
 func ecloudVPNSessionShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -90,7 +90,7 @@ func ecloudVPNSessionShow(service ecloud.ECloudService, cmd *cobra.Command, args
 		vpnSessions = append(vpnSessions, vpnSession)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVPNSessionsProvider(vpnSessions))
+	return output.CommandOutput(cmd, VPNSessionCollection(vpnSessions))
 }
 
 func ecloudVPNSessionCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -150,7 +150,7 @@ func ecloudVPNSessionCreate(service ecloud.ECloudService, cmd *cobra.Command, ar
 		return fmt.Errorf("Error retrieving new VPN session: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVPNSessionsProvider([]ecloud.VPNSession{vpnSession}))
+	return output.CommandOutput(cmd, VPNSessionCollection([]ecloud.VPNSession{vpnSession}))
 }
 
 func ecloudVPNSessionUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -218,7 +218,7 @@ func ecloudVPNSessionUpdate(service ecloud.ECloudService, cmd *cobra.Command, ar
 		vpnSessions = append(vpnSessions, vpnSession)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVPNSessionsProvider(vpnSessions))
+	return output.CommandOutput(cmd, VPNSessionCollection(vpnSessions))
 }
 
 func ecloudVPNSessionDeleteCmd(f factory.ClientFactory) *cobra.Command {

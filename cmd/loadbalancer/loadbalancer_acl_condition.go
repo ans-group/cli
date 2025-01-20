@@ -54,7 +54,7 @@ func loadbalancerACLConditionList(service loadbalancer.LoadBalancerService, cmd 
 		return fmt.Errorf("Error retrieving ACL [%d]: %s", aclID, err)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerACLConditionsProvider(mapACLConditions(acl.Conditions)))
+	return output.CommandOutput(cmd, ACLConditionCollection(mapACLConditions(acl.Conditions)))
 }
 
 func loadbalancerACLConditionShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -104,7 +104,7 @@ func loadbalancerACLConditionShow(service loadbalancer.LoadBalancerService, cmd 
 		conditions = append(conditions, mapACLCondition(acl.Conditions[conditionIndex], conditionIndex))
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerACLConditionsProvider(conditions))
+	return output.CommandOutput(cmd, ACLConditionCollection(conditions))
 }
 
 func loadbalancerACLConditionCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -170,7 +170,7 @@ func loadbalancerACLConditionCreate(service loadbalancer.LoadBalancerService, cm
 		return fmt.Errorf("Error retrieving updated ACL [%d]: %s", aclID, err)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerACLConditionsProvider(mapACLConditions(acl.Conditions)))
+	return output.CommandOutput(cmd, ACLConditionCollection(mapACLConditions(acl.Conditions)))
 }
 
 func loadbalancerACLConditionUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -257,7 +257,7 @@ func loadbalancerACLConditionUpdate(service loadbalancer.LoadBalancerService, cm
 		return fmt.Errorf("Error retrieving updated ACL [%d]: %s", aclID, err)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerACLConditionsProvider(mapACLConditions(acl.Conditions)))
+	return output.CommandOutput(cmd, ACLConditionCollection(mapACLConditions(acl.Conditions)))
 }
 
 func loadbalancerACLConditionDeleteCmd(f factory.ClientFactory) *cobra.Command {
@@ -318,7 +318,7 @@ func loadbalancerACLConditionDelete(service loadbalancer.LoadBalancerService, cm
 		return fmt.Errorf("Error retrieving updated ACL [%d]: %s", aclID, err)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerACLConditionsProvider(mapACLConditions(acl.Conditions)))
+	return output.CommandOutput(cmd, ACLConditionCollection(mapACLConditions(acl.Conditions)))
 }
 
 func mapACLCondition(condition loadbalancer.ACLCondition, index int) ACLCondition {

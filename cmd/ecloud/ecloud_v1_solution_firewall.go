@@ -64,5 +64,5 @@ func ecloudSolutionFirewallList(service ecloud.ECloudService, cmd *cobra.Command
 		return fmt.Errorf("Error retrieving solution firewalls: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudFirewallsProvider(firewalls))
+	return output.CommandOutput(cmd, FirewallCollection(firewalls))
 }

@@ -73,7 +73,7 @@ func registrarWhoisShow(service registrar.RegistrarService, cmd *cobra.Command, 
 		whoisArr = append(whoisArr, whois)
 	}
 
-	return output.CommandOutput(cmd, OutputRegistrarWhoisProvider(whoisArr))
+	return output.CommandOutput(cmd, WhoisCollection(whoisArr))
 }
 
 func registrarWhoisShowRaw(service registrar.RegistrarService, cmd *cobra.Command, args []string) {

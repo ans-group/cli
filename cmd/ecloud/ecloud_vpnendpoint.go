@@ -54,7 +54,7 @@ func ecloudVPNEndpointList(service ecloud.ECloudService, cmd *cobra.Command, arg
 		return fmt.Errorf("Error retrieving VPN endpoints: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVPNEndpointsProvider(endpoints))
+	return output.CommandOutput(cmd, VPNEndpointCollection(endpoints))
 }
 
 func ecloudVPNEndpointShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -86,7 +86,7 @@ func ecloudVPNEndpointShow(service ecloud.ECloudService, cmd *cobra.Command, arg
 		vpnEndpoints = append(vpnEndpoints, vpnEndpoint)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVPNEndpointsProvider(vpnEndpoints))
+	return output.CommandOutput(cmd, VPNEndpointCollection(vpnEndpoints))
 }
 
 func ecloudVPNEndpointCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -132,7 +132,7 @@ func ecloudVPNEndpointCreate(service ecloud.ECloudService, cmd *cobra.Command, a
 		return fmt.Errorf("Error retrieving new VPN endpoint: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVPNEndpointsProvider([]ecloud.VPNEndpoint{vpnEndpoint}))
+	return output.CommandOutput(cmd, VPNEndpointCollection([]ecloud.VPNEndpoint{vpnEndpoint}))
 }
 
 func ecloudVPNEndpointUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -190,7 +190,7 @@ func ecloudVPNEndpointUpdate(service ecloud.ECloudService, cmd *cobra.Command, a
 		vpnEndpoints = append(vpnEndpoints, vpnEndpoint)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVPNEndpointsProvider(vpnEndpoints))
+	return output.CommandOutput(cmd, VPNEndpointCollection(vpnEndpoints))
 }
 
 func ecloudVPNEndpointDeleteCmd(f factory.ClientFactory) *cobra.Command {

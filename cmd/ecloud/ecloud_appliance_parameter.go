@@ -58,5 +58,5 @@ func ecloudApplianceParameterList(service ecloud.ECloudService, cmd *cobra.Comma
 		return fmt.Errorf("Error retrieving appliance parameters: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudApplianceParametersProvider(parameters))
+	return output.CommandOutput(cmd, ApplianceParameterCollection(parameters))
 }

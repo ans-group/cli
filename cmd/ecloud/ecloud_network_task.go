@@ -59,5 +59,5 @@ func ecloudNetworkTaskList(service ecloud.ECloudService, cmd *cobra.Command, arg
 		return fmt.Errorf("Error retrieving network tasks: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudTasksProvider(tasks))
+	return output.CommandOutput(cmd, TaskCollection(tasks))
 }

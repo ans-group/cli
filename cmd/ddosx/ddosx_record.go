@@ -50,5 +50,5 @@ func ddosxRecordList(service ddosx.DDoSXService, cmd *cobra.Command, args []stri
 		return fmt.Errorf("Error retrieving records: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXRecordsProvider(records))
+	return output.CommandOutput(cmd, RecordCollection(records))
 }

@@ -55,5 +55,5 @@ func ecloudFirewallPolicyFirewallRuleList(service ecloud.ECloudService, cmd *cob
 		return fmt.Errorf("Error retrieving firewall policy firewall rules: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudFirewallRulesProvider(rules))
+	return output.CommandOutput(cmd, FirewallRuleCollection(rules))
 }

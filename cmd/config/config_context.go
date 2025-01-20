@@ -121,7 +121,7 @@ func configContextList(cmd *cobra.Command) error {
 		})
 	}
 
-	return output.CommandOutput(cmd, OutputConfigContextsProvider(contexts))
+	return output.CommandOutput(cmd, ContextCollection(contexts))
 }
 
 func configContextShowCmd() *cobra.Command {
@@ -148,7 +148,7 @@ func configContextShow(cmd *cobra.Command) error {
 		Active: true,
 	}
 
-	return output.CommandOutput(cmd, OutputConfigContextsProvider([]Context{context}))
+	return output.CommandOutput(cmd, ContextCollection([]Context{context}))
 }
 
 func configContextSwitchCmd(fs afero.Fs) *cobra.Command {

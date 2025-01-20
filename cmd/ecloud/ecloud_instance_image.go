@@ -67,5 +67,5 @@ func ecloudInstanceImageCreate(service ecloud.ECloudService, cmd *cobra.Command,
 		return fmt.Errorf("Error retrieving new instance image: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudImagesProvider([]ecloud.Image{image}))
+	return output.CommandOutput(cmd, ImageCollection([]ecloud.Image{image}))
 }

@@ -43,5 +43,5 @@ func loadbalancerCertificateList(service loadbalancer.LoadBalancerService, cmd *
 		return fmt.Errorf("Error retrieving certificates: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerCertificatesProvider(certificates))
+	return output.CommandOutput(cmd, CertificateCollection(certificates))
 }

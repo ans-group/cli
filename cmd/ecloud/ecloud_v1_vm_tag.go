@@ -69,7 +69,7 @@ func ecloudVirtualMachineTagList(service ecloud.ECloudService, cmd *cobra.Comman
 		return fmt.Errorf("Error retrieving virtual machine tags: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudTagsProvider(tags))
+	return output.CommandOutput(cmd, TagCollection(tags))
 }
 
 func ecloudVirtualMachineTagShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -117,7 +117,7 @@ func ecloudVirtualMachineTagShow(service ecloud.ECloudService, cmd *cobra.Comman
 		tags = append(tags, tag)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudTagsProvider(tags))
+	return output.CommandOutput(cmd, TagCollection(tags))
 }
 
 func ecloudVirtualMachineTagCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -175,7 +175,7 @@ func ecloudVirtualMachineTagCreate(service ecloud.ECloudService, cmd *cobra.Comm
 		return fmt.Errorf("Error retrieving new virtual machine tag: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudTagsProvider([]ecloud.Tag{tag}))
+	return output.CommandOutput(cmd, TagCollection([]ecloud.Tag{tag}))
 }
 
 func ecloudVirtualMachineTagUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -240,7 +240,7 @@ func ecloudVirtualMachineTagUpdate(service ecloud.ECloudService, cmd *cobra.Comm
 		tags = append(tags, tag)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudTagsProvider(tags))
+	return output.CommandOutput(cmd, TagCollection(tags))
 }
 
 func ecloudVirtualMachineTagDeleteCmd(f factory.ClientFactory) *cobra.Command {

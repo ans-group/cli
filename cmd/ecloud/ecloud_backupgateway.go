@@ -54,7 +54,7 @@ func ecloudBackupGatewayList(service ecloud.ECloudService, cmd *cobra.Command, a
 		return fmt.Errorf("Error retrieving backup gateways: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudBackupGatewaysProvider(gateways))
+	return output.CommandOutput(cmd, BackupGatewayCollection(gateways))
 }
 
 func ecloudBackupGatewayShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -85,7 +85,7 @@ func ecloudBackupGatewayShow(service ecloud.ECloudService, cmd *cobra.Command, a
 		backupGateways = append(backupGateways, backupGateway)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudBackupGatewaysProvider(backupGateways))
+	return output.CommandOutput(cmd, BackupGatewayCollection(backupGateways))
 }
 
 func ecloudBackupGatewayCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -134,7 +134,7 @@ func ecloudBackupGatewayCreate(service ecloud.ECloudService, cmd *cobra.Command,
 		return fmt.Errorf("Error retrieving new backup gateway: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudBackupGatewaysProvider([]ecloud.BackupGateway{backupGateway}))
+	return output.CommandOutput(cmd, BackupGatewayCollection([]ecloud.BackupGateway{backupGateway}))
 }
 
 func ecloudBackupGatewayUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -192,7 +192,7 @@ func ecloudBackupGatewayUpdate(service ecloud.ECloudService, cmd *cobra.Command,
 		backupGateways = append(backupGateways, backupGateway)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudBackupGatewaysProvider(backupGateways))
+	return output.CommandOutput(cmd, BackupGatewayCollection(backupGateways))
 }
 
 func ecloudBackupGatewayDeleteCmd(f factory.ClientFactory) *cobra.Command {

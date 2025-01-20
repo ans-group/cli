@@ -55,5 +55,5 @@ func ecloudVPCVolumeList(service ecloud.ECloudService, cmd *cobra.Command, args 
 		return fmt.Errorf("Error retrieving VPC volumes: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVolumesProvider(volumes))
+	return output.CommandOutput(cmd, VolumeCollection(volumes))
 }

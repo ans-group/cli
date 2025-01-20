@@ -44,5 +44,5 @@ func accountDetailsShow(service account.AccountService, cmd *cobra.Command, args
 		return fmt.Errorf("Error retrieving details: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputAccountDetailsProvider([]account.Details{details}))
+	return output.CommandOutput(cmd, DetailsCollection([]account.Details{details}))
 }

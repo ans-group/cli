@@ -53,7 +53,7 @@ func pssCaseUpdateList(service pss.PSSService, cmd *cobra.Command, args []string
 		return fmt.Errorf("Error retrieving case updates: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputPSSCaseUpdatesProvider(updates))
+	return output.CommandOutput(cmd, CaseUpdateCollection(updates))
 }
 
 func pssCaseUpdateShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -88,7 +88,7 @@ func pssCaseUpdateShow(service pss.PSSService, cmd *cobra.Command, args []string
 		cases = append(cases, c)
 	}
 
-	return output.CommandOutput(cmd, OutputPSSCaseUpdatesProvider(cases))
+	return output.CommandOutput(cmd, CaseUpdateCollection(cases))
 }
 
 func pssCaseUpdateCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -130,5 +130,5 @@ func pssCaseUpdateCreate(service pss.PSSService, cmd *cobra.Command, args []stri
 		return fmt.Errorf("Error retrieving new change: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputPSSCaseUpdatesProvider([]pss.CaseUpdate{update}))
+	return output.CommandOutput(cmd, CaseUpdateCollection([]pss.CaseUpdate{update}))
 }

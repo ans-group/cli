@@ -62,7 +62,7 @@ func safednsZoneList(service safedns.SafeDNSService, cmd *cobra.Command, args []
 		return fmt.Errorf("Error retrieving zones: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputSafeDNSZonesProvider(zones))
+	return output.CommandOutput(cmd, ZoneCollection(zones))
 }
 
 func safednsZoneShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -101,7 +101,7 @@ func safednsZoneShow(service safedns.SafeDNSService, cmd *cobra.Command, args []
 		zones = append(zones, zone)
 	}
 
-	return output.CommandOutput(cmd, OutputSafeDNSZonesProvider(zones))
+	return output.CommandOutput(cmd, ZoneCollection(zones))
 }
 
 func safednsZoneCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -147,7 +147,7 @@ func safednsZoneCreate(service safedns.SafeDNSService, cmd *cobra.Command, args 
 		return fmt.Errorf("Error retrieving new zone: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputSafeDNSZonesProvider([]safedns.Zone{zone}))
+	return output.CommandOutput(cmd, ZoneCollection([]safedns.Zone{zone}))
 }
 
 func safednsZoneUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -199,7 +199,7 @@ func safednsZoneUpdate(service safedns.SafeDNSService, cmd *cobra.Command, args 
 		zones = append(zones, zone)
 	}
 
-	return output.CommandOutput(cmd, OutputSafeDNSZonesProvider(zones))
+	return output.CommandOutput(cmd, ZoneCollection(zones))
 }
 
 func safednsZoneDeleteCmd(f factory.ClientFactory) *cobra.Command {

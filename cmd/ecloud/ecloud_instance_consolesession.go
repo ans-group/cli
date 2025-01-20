@@ -64,5 +64,5 @@ func ecloudInstanceConsoleSessionCreate(service ecloud.ECloudService, cmd *cobra
 		sessions = append(sessions, session)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudConsoleSessionsProvider(sessions))
+	return output.CommandOutput(cmd, ConsoleSessionCollection(sessions))
 }

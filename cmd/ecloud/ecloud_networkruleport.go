@@ -55,7 +55,7 @@ func ecloudNetworkRulePortList(service ecloud.ECloudService, cmd *cobra.Command,
 		return fmt.Errorf("Error retrieving network rule ports: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudNetworkRulePortsProvider(rules))
+	return output.CommandOutput(cmd, NetworkRulePortCollection(rules))
 }
 
 func ecloudNetworkRulePortShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -87,7 +87,7 @@ func ecloudNetworkRulePortShow(service ecloud.ECloudService, cmd *cobra.Command,
 		rules = append(rules, rule)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudNetworkRulePortsProvider(rules))
+	return output.CommandOutput(cmd, NetworkRulePortCollection(rules))
 }
 
 func ecloudNetworkRulePortCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -147,7 +147,7 @@ func ecloudNetworkRulePortCreate(service ecloud.ECloudService, cmd *cobra.Comman
 		return fmt.Errorf("Error retrieving new network rule port: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudNetworkRulePortsProvider([]ecloud.NetworkRulePort{rule}))
+	return output.CommandOutput(cmd, NetworkRulePortCollection([]ecloud.NetworkRulePort{rule}))
 }
 
 func ecloudNetworkRulePortUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -226,7 +226,7 @@ func ecloudNetworkRulePortUpdate(service ecloud.ECloudService, cmd *cobra.Comman
 		rules = append(rules, rule)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudNetworkRulePortsProvider(rules))
+	return output.CommandOutput(cmd, NetworkRulePortCollection(rules))
 }
 
 func ecloudNetworkRulePortDeleteCmd(f factory.ClientFactory) *cobra.Command {

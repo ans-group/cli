@@ -69,7 +69,7 @@ func ddosxDomainVerificationFileUploadShow(service ddosx.DDoSXService, cmd *cobr
 		})
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXDomainVerificationFilesProvider(files))
+	return output.CommandOutput(cmd, OutputDDoSXDomainVerificationFilesFileCollection(files))
 }
 
 func ddosxDomainVerificationFileUploadDownloadCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {

@@ -62,7 +62,7 @@ func ddosxDomainRecordList(service ddosx.DDoSXService, cmd *cobra.Command, args 
 		return fmt.Errorf("Error retrieving domain records: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXRecordsProvider(records))
+	return output.CommandOutput(cmd, RecordCollection(records))
 }
 
 func ddosxDomainRecordShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -106,7 +106,7 @@ func ddosxDomainRecordShow(service ddosx.DDoSXService, cmd *cobra.Command, args 
 		records = append(records, record)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXRecordsProvider(records))
+	return output.CommandOutput(cmd, RecordCollection(records))
 }
 
 func ddosxDomainRecordCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -168,7 +168,7 @@ func ddosxDomainRecordCreate(service ddosx.DDoSXService, cmd *cobra.Command, arg
 		return fmt.Errorf("Error retrieving new domain record [%s]: %s", id, err)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXRecordsProvider([]ddosx.Record{record}))
+	return output.CommandOutput(cmd, RecordCollection([]ddosx.Record{record}))
 }
 
 func ddosxDomainRecordUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -244,7 +244,7 @@ func ddosxDomainRecordUpdate(service ddosx.DDoSXService, cmd *cobra.Command, arg
 		records = append(records, record)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXRecordsProvider(records))
+	return output.CommandOutput(cmd, RecordCollection(records))
 }
 
 func ddosxDomainRecordDeleteCmd(f factory.ClientFactory) *cobra.Command {

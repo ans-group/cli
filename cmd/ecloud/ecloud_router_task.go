@@ -59,5 +59,5 @@ func ecloudRouterTaskList(service ecloud.ECloudService, cmd *cobra.Command, args
 		return fmt.Errorf("Error retrieving router tasks: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudTasksProvider(tasks))
+	return output.CommandOutput(cmd, TaskCollection(tasks))
 }

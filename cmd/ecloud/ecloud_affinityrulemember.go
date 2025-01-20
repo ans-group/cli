@@ -25,7 +25,6 @@ func ecloudAffinityRuleMemberRootCmd(f factory.ClientFactory) *cobra.Command {
 	return cmd
 }
 
-
 func ecloudAffinityRuleMemberShowCmd(f factory.ClientFactory) *cobra.Command {
 	return &cobra.Command{
 		Use:     "show <rulemember: id>...",
@@ -55,7 +54,7 @@ func ecloudAffinityRuleMemberShow(service ecloud.ECloudService, cmd *cobra.Comma
 		members = append(members, rule)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudAffinityRuleMemberProvider(members))
+	return output.CommandOutput(cmd, AffinityRuleMemberCollection(members))
 }
 
 func ecloudAffinityRuleMemberCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -100,9 +99,8 @@ func ecloudAffinityRuleMemberCreate(service ecloud.ECloudService, cmd *cobra.Com
 		return fmt.Errorf("Error retrieving new affinity rule member: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudAffinityRuleMemberProvider([]ecloud.AffinityRuleMember{rule}))
+	return output.CommandOutput(cmd, AffinityRuleMemberCollection([]ecloud.AffinityRuleMember{rule}))
 }
-
 
 func ecloudAffinityRuleMemberDeleteCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{

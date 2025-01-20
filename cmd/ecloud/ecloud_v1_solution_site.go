@@ -64,5 +64,5 @@ func ecloudSolutionSiteList(service ecloud.ECloudService, cmd *cobra.Command, ar
 		return fmt.Errorf("Error retrieving solution sites: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudSitesProvider(sites))
+	return output.CommandOutput(cmd, SiteCollection(sites))
 }

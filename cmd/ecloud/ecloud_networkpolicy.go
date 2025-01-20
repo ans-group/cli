@@ -60,7 +60,7 @@ func ecloudNetworkPolicyList(service ecloud.ECloudService, cmd *cobra.Command, a
 		return fmt.Errorf("Error retrieving network policies: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudNetworkPoliciesProvider(policies))
+	return output.CommandOutput(cmd, NetworkPolicyCollection(policies))
 }
 
 func ecloudNetworkPolicyShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -92,7 +92,7 @@ func ecloudNetworkPolicyShow(service ecloud.ECloudService, cmd *cobra.Command, a
 		policies = append(policies, policy)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudNetworkPoliciesProvider(policies))
+	return output.CommandOutput(cmd, NetworkPolicyCollection(policies))
 }
 
 func ecloudNetworkPolicyCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -147,7 +147,7 @@ func ecloudNetworkPolicyCreate(service ecloud.ECloudService, cmd *cobra.Command,
 		return fmt.Errorf("Error retrieving new network policy: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudNetworkPoliciesProvider([]ecloud.NetworkPolicy{policy}))
+	return output.CommandOutput(cmd, NetworkPolicyCollection([]ecloud.NetworkPolicy{policy}))
 }
 
 func ecloudNetworkPolicyUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -214,7 +214,7 @@ func ecloudNetworkPolicyUpdate(service ecloud.ECloudService, cmd *cobra.Command,
 		policies = append(policies, policy)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudNetworkPoliciesProvider(policies))
+	return output.CommandOutput(cmd, NetworkPolicyCollection(policies))
 }
 
 func ecloudNetworkPolicyDeleteCmd(f factory.ClientFactory) *cobra.Command {

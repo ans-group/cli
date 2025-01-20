@@ -64,7 +64,7 @@ func ddosxDomainWAFRuleList(service ddosx.DDoSXService, cmd *cobra.Command, args
 		return fmt.Errorf("Error retrieving domain WAF rules: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXWAFRulesProvider(domains))
+	return output.CommandOutput(cmd, WAFRuleCollection(domains))
 }
 
 func ddosxDomainWAFRuleShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -108,7 +108,7 @@ func ddosxDomainWAFRuleShow(service ddosx.DDoSXService, cmd *cobra.Command, args
 		rules = append(rules, rule)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXWAFRulesProvider(rules))
+	return output.CommandOutput(cmd, WAFRuleCollection(rules))
 }
 
 func ddosxDomainWAFRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -159,7 +159,7 @@ func ddosxDomainWAFRuleCreate(service ddosx.DDoSXService, cmd *cobra.Command, ar
 		return fmt.Errorf("Error retrieving new domain WAF rule [%s]: %s", id, err)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXWAFRulesProvider([]ddosx.WAFRule{rule}))
+	return output.CommandOutput(cmd, WAFRuleCollection([]ddosx.WAFRule{rule}))
 }
 
 func ddosxDomainWAFRuleUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -223,7 +223,7 @@ func ddosxDomainWAFRuleUpdate(service ddosx.DDoSXService, cmd *cobra.Command, ar
 		rules = append(rules, rule)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXWAFRulesProvider(rules))
+	return output.CommandOutput(cmd, WAFRuleCollection(rules))
 }
 
 func ddosxDomainWAFRuleDeleteCmd(f factory.ClientFactory) *cobra.Command {

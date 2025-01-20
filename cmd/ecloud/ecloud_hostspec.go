@@ -51,7 +51,7 @@ func ecloudHostSpecList(service ecloud.ECloudService, cmd *cobra.Command, args [
 		return fmt.Errorf("Error retrieving host specs: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudHostSpecsProvider(specs))
+	return output.CommandOutput(cmd, HostSpecCollection(specs))
 }
 
 func ecloudHostSpecShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -83,5 +83,5 @@ func ecloudHostSpecShow(service ecloud.ECloudService, cmd *cobra.Command, args [
 		specs = append(specs, spec)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudHostSpecsProvider(specs))
+	return output.CommandOutput(cmd, HostSpecCollection(specs))
 }

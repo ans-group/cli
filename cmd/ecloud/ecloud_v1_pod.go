@@ -57,7 +57,7 @@ func ecloudPodList(service ecloud.ECloudService, cmd *cobra.Command, args []stri
 		return fmt.Errorf("Error retrieving pods: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudPodsProvider(pods))
+	return output.CommandOutput(cmd, PodCollection(pods))
 }
 
 func ecloudPodShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -102,5 +102,5 @@ func ecloudPodShow(service ecloud.ECloudService, cmd *cobra.Command, args []stri
 		pods = append(pods, pod)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudPodsProvider(pods))
+	return output.CommandOutput(cmd, PodCollection(pods))
 }

@@ -7,499 +7,605 @@ import (
 	"github.com/ans-group/sdk-go/pkg/service/ecloud"
 )
 
-func OutputECloudVirtualMachinesProvider(vms []ecloud.VirtualMachine) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(vms),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, vm := range vms {
-				fields := output.NewOrderedFields()
-				fields.Set("id", output.NewFieldValue(strconv.Itoa(vm.ID), true))
-				fields.Set("name", output.NewFieldValue(vm.Name, true))
-				fields.Set("hostname", output.NewFieldValue(vm.Hostname, false))
-				fields.Set("computername", output.NewFieldValue(vm.ComputerName, false))
-				fields.Set("cpu", output.NewFieldValue(strconv.Itoa(vm.CPU), true))
-				fields.Set("ram_gb", output.NewFieldValue(strconv.Itoa(vm.RAM), true))
-				fields.Set("hdd_gb", output.NewFieldValue(strconv.Itoa(vm.HDD), true))
-				fields.Set("ip_internal", output.NewFieldValue(vm.IPInternal.String(), true))
-				fields.Set("ip_external", output.NewFieldValue(vm.IPExternal.String(), true))
-				fields.Set("platform", output.NewFieldValue(vm.Platform, false))
-				fields.Set("template", output.NewFieldValue(vm.Template, false))
-				fields.Set("backup", output.NewFieldValue(strconv.FormatBool(vm.Backup), false))
-				fields.Set("support", output.NewFieldValue(strconv.FormatBool(vm.Support), false))
-				fields.Set("environment", output.NewFieldValue(vm.Environment, false))
-				fields.Set("solution_id", output.NewFieldValue(strconv.Itoa(vm.SolutionID), false))
-				fields.Set("status", output.NewFieldValue(string(vm.Status), true))
-				fields.Set("power_status", output.NewFieldValue(vm.PowerStatus, true))
-				fields.Set("tools_status", output.NewFieldValue(vm.ToolsStatus, false))
-				fields.Set("encrypted", output.NewFieldValue(strconv.FormatBool(vm.Encrypted), false))
-				fields.Set("role", output.NewFieldValue(vm.Role, false))
-				fields.Set("gpu_profile", output.NewFieldValue(vm.GPUProfile, false))
+type VirtualMachineCollection []ecloud.VirtualMachine
 
-				data = append(data, fields)
-			}
-
-			return data, nil
-		}),
-	)
+func (m VirtualMachineCollection) DefaultColumns() []string {
+	return []string{"id", "name", "cpu", "ram_gb", "hdd_gb", "ip_internal", "ip_external", "status", "power_status"}
 }
 
-func OutputECloudVirtualMachineDisksProvider(disks []ecloud.VirtualMachineDisk) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(disks),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, disk := range disks {
-				fields := output.NewOrderedFields()
-				fields.Set("name", output.NewFieldValue(disk.Name, true))
-				fields.Set("capacity", output.NewFieldValue(strconv.Itoa(disk.Capacity), true))
-				fields.Set("uuid", output.NewFieldValue(disk.UUID, true))
-				fields.Set("type", output.NewFieldValue(string(disk.Type), true))
-				fields.Set("key", output.NewFieldValue(strconv.Itoa(disk.Key), false))
+func (m VirtualMachineCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, vm := range m {
+		fields := output.NewOrderedFields()
+		fields.Set("id", strconv.Itoa(vm.ID))
+		fields.Set("name", vm.Name)
+		fields.Set("hostname", vm.Hostname)
+		fields.Set("computername", vm.ComputerName)
+		fields.Set("cpu", strconv.Itoa(vm.CPU))
+		fields.Set("ram_gb", strconv.Itoa(vm.RAM))
+		fields.Set("hdd_gb", strconv.Itoa(vm.HDD))
+		fields.Set("ip_internal", vm.IPInternal.String())
+		fields.Set("ip_external", vm.IPExternal.String())
+		fields.Set("platform", vm.Platform)
+		fields.Set("template", vm.Template)
+		fields.Set("backup", strconv.FormatBool(vm.Backup))
+		fields.Set("support", strconv.FormatBool(vm.Support))
+		fields.Set("environment", vm.Environment)
+		fields.Set("solution_id", strconv.Itoa(vm.SolutionID))
+		fields.Set("status", string(vm.Status))
+		fields.Set("power_status", vm.PowerStatus)
+		fields.Set("tools_status", vm.ToolsStatus)
+		fields.Set("encrypted", strconv.FormatBool(vm.Encrypted))
+		fields.Set("role", vm.Role)
+		fields.Set("gpu_profile", vm.GPUProfile)
 
-				data = append(data, fields)
-			}
+		data = append(data, fields)
+	}
 
-			return data, nil
-		}),
-	)
+	return data
 }
 
-func OutputECloudTagsProvider(tags []ecloud.Tag) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(tags),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, tag := range tags {
-				fields := output.NewOrderedFields()
-				fields.Set("key", output.NewFieldValue(tag.Key, true))
-				fields.Set("value", output.NewFieldValue(tag.Value, true))
-				fields.Set("created_at", output.NewFieldValue(tag.CreatedAt.String(), true))
+type VirtualMachineDiskCollection []ecloud.VirtualMachineDisk
 
-				data = append(data, fields)
-			}
-
-			return data, nil
-		}),
-	)
+func (m VirtualMachineDiskCollection) DefaultColumns() []string {
+	return []string{"name", "capacity", "uuid", "type"}
 }
 
-func OutputECloudSolutionsProvider(solutions []ecloud.Solution) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(solutions),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, solution := range solutions {
-				fields := output.NewOrderedFields()
-				fields.Set("id", output.NewFieldValue(strconv.Itoa(solution.ID), true))
-				fields.Set("name", output.NewFieldValue(solution.Name, true))
-				fields.Set("environment", output.NewFieldValue(string(solution.Environment), true))
-				fields.Set("pod_id", output.NewFieldValue(strconv.Itoa(solution.PodID), true))
-				fields.Set("encryption_enabled", output.NewFieldValue(strconv.FormatBool(solution.EncryptionEnabled), false))
-				fields.Set("encryption_default", output.NewFieldValue(strconv.FormatBool(solution.EncryptionDefault), false))
+func (m VirtualMachineDiskCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, disk := range m {
+		fields := output.NewOrderedFields()
+		fields.Set("name", disk.Name)
+		fields.Set("capacity", strconv.Itoa(disk.Capacity))
+		fields.Set("uuid", disk.UUID)
+		fields.Set("type", string(disk.Type))
+		fields.Set("key", strconv.Itoa(disk.Key))
 
-				data = append(data, fields)
-			}
+		data = append(data, fields)
+	}
 
-			return data, nil
-		}),
-	)
+	return data
 }
 
-func OutputECloudSitesProvider(sites []ecloud.Site) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(sites),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, site := range sites {
-				fields := output.NewOrderedFields()
-				fields.Set("id", output.NewFieldValue(strconv.Itoa(site.ID), true))
-				fields.Set("state", output.NewFieldValue(site.State, true))
-				fields.Set("solution_id", output.NewFieldValue(strconv.Itoa(site.SolutionID), true))
-				fields.Set("pod_id", output.NewFieldValue(strconv.Itoa(site.PodID), true))
+type TagCollection []ecloud.Tag
 
-				data = append(data, fields)
-			}
-
-			return data, nil
-		}),
-	)
+func (m TagCollection) DefaultColumns() []string {
+	return []string{"key", "value", "created_at"}
 }
 
-func OutputECloudV1HostsProvider(hosts []ecloud.V1Host) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(hosts),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, host := range hosts {
-				fields := output.NewOrderedFields()
-				fields.Set("id", output.NewFieldValue(strconv.Itoa(host.ID), true))
-				fields.Set("solution_id", output.NewFieldValue(strconv.Itoa(host.SolutionID), true))
-				fields.Set("pod_id", output.NewFieldValue(strconv.Itoa(host.PodID), true))
-				fields.Set("name", output.NewFieldValue(host.Name, true))
-				fields.Set("cpu_quantity", output.NewFieldValue(strconv.Itoa(host.CPU.Quantity), true))
-				fields.Set("cpu_cores", output.NewFieldValue(strconv.Itoa(host.CPU.Cores), true))
-				fields.Set("cpu_speed", output.NewFieldValue(host.CPU.Speed, false))
-				fields.Set("ram_capacity", output.NewFieldValue(strconv.Itoa(host.RAM.Capacity), true))
-				fields.Set("ram_reserved", output.NewFieldValue(strconv.Itoa(host.RAM.Reserved), false))
-				fields.Set("ram_allocated", output.NewFieldValue(strconv.Itoa(host.RAM.Allocated), false))
-				fields.Set("ram_available", output.NewFieldValue(strconv.Itoa(host.RAM.Available), false))
+func (m TagCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, tag := range m {
+		fields := output.NewOrderedFields()
+		fields.Set("key", tag.Key)
+		fields.Set("value", tag.Value)
+		fields.Set("created_at", tag.CreatedAt.String())
 
-				data = append(data, fields)
-			}
+		data = append(data, fields)
+	}
 
-			return data, nil
-		}),
-	)
+	return data
 }
 
-func OutputECloudDatastoresProvider(datastores []ecloud.Datastore) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(datastores),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, datastore := range datastores {
-				fields := output.NewOrderedFields()
-				fields.Set("id", output.NewFieldValue(strconv.Itoa(datastore.ID), true))
-				fields.Set("solution_id", output.NewFieldValue(strconv.Itoa(datastore.SolutionID), true))
-				fields.Set("site_id", output.NewFieldValue(strconv.Itoa(datastore.SiteID), true))
-				fields.Set("name", output.NewFieldValue(datastore.Name, true))
-				fields.Set("status", output.NewFieldValue(string(datastore.Status), true))
-				fields.Set("capacity", output.NewFieldValue(strconv.Itoa(datastore.Capacity), true))
-				fields.Set("allocated", output.NewFieldValue(strconv.Itoa(datastore.Allocated), false))
-				fields.Set("available", output.NewFieldValue(strconv.Itoa(datastore.Available), false))
+type SolutionCollection []ecloud.Solution
 
-				data = append(data, fields)
-			}
-
-			return data, nil
-		}),
-	)
+func (m SolutionCollection) DefaultColumns() []string {
+	return []string{"id", "name", "environment", "pod_id"}
 }
 
-func OutputECloudTemplatesProvider(templates []ecloud.Template) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(templates),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, template := range templates {
-				fields := output.NewOrderedFields()
-				fields.Set("name", output.NewFieldValue(template.Name, true))
-				fields.Set("cpu", output.NewFieldValue(strconv.Itoa(template.CPU), true))
-				fields.Set("ram_gb", output.NewFieldValue(strconv.Itoa(template.RAM), true))
-				fields.Set("hdd_gb", output.NewFieldValue(strconv.Itoa(template.HDD), true))
-				fields.Set("platform", output.NewFieldValue(template.Platform, true))
-				fields.Set("operating_system", output.NewFieldValue(template.OperatingSystem, true))
-				fields.Set("solution_id", output.NewFieldValue(strconv.Itoa(template.SolutionID), true))
+func (m SolutionCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, solution := range m {
+		fields := output.NewOrderedFields()
+		fields.Set("id", strconv.Itoa(solution.ID))
+		fields.Set("name", solution.Name)
+		fields.Set("environment", string(solution.Environment))
+		fields.Set("pod_id", strconv.Itoa(solution.PodID))
+		fields.Set("encryption_enabled", strconv.FormatBool(solution.EncryptionEnabled))
+		fields.Set("encryption_default", strconv.FormatBool(solution.EncryptionDefault))
 
-				data = append(data, fields)
-			}
+		data = append(data, fields)
+	}
 
-			return data, nil
-		}),
-	)
+	return data
 }
 
-func OutputECloudV1NetworksProvider(networks []ecloud.V1Network) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(networks),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, network := range networks {
-				fields := output.NewOrderedFields()
-				fields.Set("id", output.NewFieldValue(strconv.Itoa(network.ID), true))
-				fields.Set("name", output.NewFieldValue(network.Name, true))
+type SiteCollection []ecloud.Site
 
-				data = append(data, fields)
-			}
-
-			return data, nil
-		}),
-	)
+func (m SiteCollection) DefaultColumns() []string {
+	return []string{"id", "state", "solution_id", "pod_id"}
 }
 
-func OutputECloudFirewallsProvider(firewalls []ecloud.Firewall) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(firewalls),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, firewall := range firewalls {
-				fields := output.NewOrderedFields()
-				fields.Set("id", output.NewFieldValue(strconv.Itoa(firewall.ID), true))
-				fields.Set("name", output.NewFieldValue(firewall.Name, true))
-				fields.Set("hostname", output.NewFieldValue(firewall.Hostname, true))
-				fields.Set("ip", output.NewFieldValue(firewall.IP.String(), true))
-				fields.Set("role", output.NewFieldValue(string(firewall.Role), true))
+func (m SiteCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, site := range m {
+		fields := output.NewOrderedFields()
+		fields.Set("id", strconv.Itoa(site.ID))
+		fields.Set("state", site.State)
+		fields.Set("solution_id", strconv.Itoa(site.SolutionID))
+		fields.Set("pod_id", strconv.Itoa(site.PodID))
 
-				data = append(data, fields)
-			}
+		data = append(data, fields)
+	}
 
-			return data, nil
-		}),
-	)
+	return data
 }
 
-func OutputECloudPodsProvider(pods []ecloud.Pod) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(pods),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, pod := range pods {
-				fields := output.NewOrderedFields()
-				fields.Set("id", output.NewFieldValue(strconv.Itoa(pod.ID), true))
-				fields.Set("name", output.NewFieldValue(pod.Name, true))
+type V1HostCollection []ecloud.V1Host
 
-				data = append(data, fields)
-			}
-
-			return data, nil
-		}),
-	)
+func (m V1HostCollection) DefaultColumns() []string {
+	return []string{"id", "solution_id", "pod_id", "name", "cpu_quantity", "cpu_cores", "ram_capacity"}
 }
 
-func OutputECloudAppliancesProvider(appliances []ecloud.Appliance) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(appliances),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, appliance := range appliances {
-				fields := output.NewOrderedFields()
-				fields.Set("id", output.NewFieldValue(appliance.ID, true))
-				fields.Set("name", output.NewFieldValue(appliance.Name, true))
-				fields.Set("logo_uri", output.NewFieldValue(appliance.LogoURI, false))
-				fields.Set("description", output.NewFieldValue(appliance.Description, false))
-				fields.Set("documentation_uri", output.NewFieldValue(appliance.DocumentationURI, false))
-				fields.Set("publisher", output.NewFieldValue(appliance.Publisher, true))
-				fields.Set("created_at", output.NewFieldValue(appliance.CreatedAt.String(), true))
+func (m V1HostCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, host := range m {
+		fields := output.NewOrderedFields()
+		fields.Set("id", strconv.Itoa(host.ID))
+		fields.Set("solution_id", strconv.Itoa(host.SolutionID))
+		fields.Set("pod_id", strconv.Itoa(host.PodID))
+		fields.Set("name", host.Name)
+		fields.Set("cpu_quantity", strconv.Itoa(host.CPU.Quantity))
+		fields.Set("cpu_cores", strconv.Itoa(host.CPU.Cores))
+		fields.Set("cpu_speed", host.CPU.Speed)
+		fields.Set("ram_capacity", strconv.Itoa(host.RAM.Capacity))
+		fields.Set("ram_reserved", strconv.Itoa(host.RAM.Reserved))
+		fields.Set("ram_allocated", strconv.Itoa(host.RAM.Allocated))
+		fields.Set("ram_available", strconv.Itoa(host.RAM.Available))
 
-				data = append(data, fields)
-			}
+		data = append(data, fields)
+	}
 
-			return data, nil
-		}),
-	)
+	return data
 }
 
-func OutputECloudApplianceParametersProvider(parameters []ecloud.ApplianceParameter) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(parameters),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, parameter := range parameters {
-				fields := output.NewOrderedFields()
-				fields.Set("id", output.NewFieldValue(parameter.ID, true))
-				fields.Set("name", output.NewFieldValue(parameter.Name, true))
-				fields.Set("key", output.NewFieldValue(parameter.Key, true))
-				fields.Set("type", output.NewFieldValue(parameter.Type, true))
-				fields.Set("description", output.NewFieldValue(parameter.Description, true))
-				fields.Set("required", output.NewFieldValue(strconv.FormatBool(parameter.Required), true))
-				fields.Set("validation_rule", output.NewFieldValue(parameter.ValidationRule, false))
+type DatastoreCollection []ecloud.Datastore
 
-				data = append(data, fields)
-			}
-
-			return data, nil
-		}),
-	)
+func (m DatastoreCollection) DefaultColumns() []string {
+	return []string{"id", "solution_id", "site_id", "name", "status", "capacity"}
 }
 
-func OutputECloudConsoleSessionsProvider(sessions []ecloud.ConsoleSession) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(sessions),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, session := range sessions {
-				fields := output.NewOrderedFields()
-				fields.Set("url", output.NewFieldValue(session.URL, true))
+func (m DatastoreCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, datastore := range m {
+		fields := output.NewOrderedFields()
+		fields.Set("id", strconv.Itoa(datastore.ID))
+		fields.Set("solution_id", strconv.Itoa(datastore.SolutionID))
+		fields.Set("site_id", strconv.Itoa(datastore.SiteID))
+		fields.Set("name", datastore.Name)
+		fields.Set("status", string(datastore.Status))
+		fields.Set("capacity", strconv.Itoa(datastore.Capacity))
+		fields.Set("allocated", strconv.Itoa(datastore.Allocated))
+		fields.Set("available", strconv.Itoa(datastore.Available))
 
-				data = append(data, fields)
-			}
+		data = append(data, fields)
+	}
 
-			return data, nil
-		}),
-	)
+	return data
 }
 
-func OutputECloudVPCsProvider(vpcs []ecloud.VPC) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(vpcs).WithDefaultFields([]string{"id", "name", "region_id", "sync_status"})
+type TemplateCollection []ecloud.Template
+
+func (m TemplateCollection) DefaultColumns() []string {
+	return []string{"name", "cpu", "ram_gb", "hdd_gb", "platform", "operating_system", "solution_id"}
 }
 
-func OutputECloudInstancesProvider(instances []ecloud.Instance) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(instances).WithDefaultFields([]string{"id", "name", "vpc_id", "vcpu_sockets", "vcpu_cores_per_socket", "ram_capacity", "sync_status"})
+func (m TemplateCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, template := range m {
+		fields := output.NewOrderedFields()
+		fields.Set("name", template.Name)
+		fields.Set("cpu", strconv.Itoa(template.CPU))
+		fields.Set("ram_gb", strconv.Itoa(template.RAM))
+		fields.Set("hdd_gb", strconv.Itoa(template.HDD))
+		fields.Set("platform", template.Platform)
+		fields.Set("operating_system", template.OperatingSystem)
+		fields.Set("solution_id", strconv.Itoa(template.SolutionID))
+
+		data = append(data, fields)
+	}
+
+	return data
 }
 
-func OutputECloudFloatingIPsProvider(fips []ecloud.FloatingIP) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(fips).WithDefaultFields([]string{"id", "name", "ip_address", "sync_status"})
+type V1NetworkCollection []ecloud.V1Network
+
+func (m V1NetworkCollection) DefaultColumns() []string {
+	return []string{"id", "name"}
 }
 
-func OutputECloudFirewallPoliciesProvider(policies []ecloud.FirewallPolicy) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(policies).WithDefaultFields([]string{"id", "name", "router_id", "sync_status"})
+func (m V1NetworkCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, network := range m {
+		fields := output.NewOrderedFields()
+		fields.Set("id", strconv.Itoa(network.ID))
+		fields.Set("name", network.Name)
+
+		data = append(data, fields)
+	}
+
+	return data
 }
 
-func OutputECloudFirewallRulesProvider(rules []ecloud.FirewallRule) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(rules).WithDefaultFields([]string{"id", "name", "firewall_policy_id", "source", "destination", "action", "direction", "enabled"})
+type FirewallCollection []ecloud.Firewall
+
+func (m FirewallCollection) DefaultColumns() []string {
+	return []string{"id", "name", "hostname", "ip", "role"}
 }
 
-func OutputECloudFirewallRulePortsProvider(rules []ecloud.FirewallRulePort) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(rules).WithDefaultFields([]string{"id", "name", "firewall_rule_id", "protocol", "source", "destination"})
+func (m FirewallCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, firewall := range m {
+		fields := output.NewOrderedFields()
+		fields.Set("id", strconv.Itoa(firewall.ID))
+		fields.Set("name", firewall.Name)
+		fields.Set("hostname", firewall.Hostname)
+		fields.Set("ip", firewall.IP.String())
+		fields.Set("role", string(firewall.Role))
+
+		data = append(data, fields)
+	}
+
+	return data
 }
 
-func OutputECloudRegionsProvider(regions []ecloud.Region) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(regions).WithDefaultFields([]string{"id", "name"})
+type PodCollection []ecloud.Pod
+
+func (m PodCollection) DefaultColumns() []string {
+	return []string{"id", "name"}
 }
 
-func OutputECloudVolumesProvider(volumes []ecloud.Volume) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(volumes).WithDefaultFields([]string{"id", "name", "type", "capacity", "sync_status"})
+func (m PodCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, pod := range m {
+		fields := output.NewOrderedFields()
+		fields.Set("id", strconv.Itoa(pod.ID))
+		fields.Set("name", pod.Name)
+
+		data = append(data, fields)
+	}
+
+	return data
 }
 
-func OutputECloudCredentialsProvider(credentials []ecloud.Credential) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(credentials).WithDefaultFields([]string{"id", "name", "username", "password"})
+type ApplianceCollection []ecloud.Appliance
+
+func (m ApplianceCollection) DefaultColumns() []string {
+	return []string{"id", "name", "publisher", "created_at"}
 }
 
-func OutputECloudNICsProvider(nics []ecloud.NIC) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(nics).WithDefaultFields([]string{"id", "mac_address", "instance_id", "network_id", "ip_address"})
+func (m ApplianceCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, appliance := range m {
+		fields := output.NewOrderedFields()
+		fields.Set("id", appliance.ID)
+		fields.Set("name", appliance.Name)
+		fields.Set("logo_uri", appliance.LogoURI)
+		fields.Set("description", appliance.Description)
+		fields.Set("documentation_uri", appliance.DocumentationURI)
+		fields.Set("publisher", appliance.Publisher)
+		fields.Set("created_at", appliance.CreatedAt.String())
+
+		data = append(data, fields)
+	}
+
+	return data
 }
 
-func OutputECloudRoutersProvider(routers []ecloud.Router) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(routers).WithDefaultFields([]string{"id", "name", "vpc_id", "availability_zone_id", "sync_status"})
+type ApplianceParameterCollection []ecloud.ApplianceParameter
+
+func (m ApplianceParameterCollection) DefaultColumns() []string {
+	return []string{"id", "name", "key", "type", "description", "required"}
 }
 
-func OutputECloudNetworksProvider(networks []ecloud.Network) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(networks).WithDefaultFields([]string{"id", "name", "router_id", "subnet", "sync_status"})
+func (m ApplianceParameterCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, parameter := range m {
+		fields := output.NewOrderedFields()
+		fields.Set("id", parameter.ID)
+		fields.Set("name", parameter.Name)
+		fields.Set("key", parameter.Key)
+		fields.Set("type", parameter.Type)
+		fields.Set("description", parameter.Description)
+		fields.Set("required", strconv.FormatBool(parameter.Required))
+		fields.Set("validation_rule", parameter.ValidationRule)
+
+		data = append(data, fields)
+	}
+
+	return data
 }
 
-func OutputECloudDHCPsProvider(dhcps []ecloud.DHCP) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(dhcps).WithDefaultFields([]string{"id", "vpc_id", "availability_zone_id", "sync_status"})
+type ConsoleSessionCollection []ecloud.ConsoleSession
+
+func (m ConsoleSessionCollection) DefaultColumns() []string {
+	return []string{"url"}
 }
 
-func OutputECloudRouterThroughputsProvider(throughputs []ecloud.RouterThroughput) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(throughputs).WithDefaultFields([]string{"id", "availability_zone_id", "name"})
+func (m ConsoleSessionCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, session := range m {
+		fields := output.NewOrderedFields()
+		fields.Set("url", session.URL)
+
+		data = append(data, fields)
+	}
+
+	return data
 }
 
-func OutputECloudImagesProvider(images []ecloud.Image) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(images).WithDefaultFields([]string{"id", "name"})
+type VPCCollection []ecloud.VPC
+
+func (m VPCCollection) DefaultColumns() []string {
+	return []string{"id", "name", "region_id", "sync_status"}
 }
 
-func OutputECloudImageParametersProvider(parameters []ecloud.ImageParameter) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(parameters).WithDefaultFields([]string{"key", "type", "required"})
+type InstanceCollection []ecloud.Instance
+
+func (m InstanceCollection) DefaultColumns() []string {
+	return []string{"id", "name", "vpc_id", "vcpu_sockets", "vcpu_cores_per_socket", "ram_capacity", "sync_status"}
 }
 
-func OutputECloudImageMetadataProvider(metadata []ecloud.ImageMetadata) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(metadata).WithDefaultFields([]string{"key", "value"})
+type FloatingIPCollection []ecloud.FloatingIP
+
+func (m FloatingIPCollection) DefaultColumns() []string {
+	return []string{"id", "name", "ip_address", "sync_status"}
 }
 
-func OutputECloudSSHKeyPairsProvider(keypairs []ecloud.SSHKeyPair) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(keypairs).WithDefaultFields([]string{"id", "name"})
+type FirewallPolicyCollection []ecloud.FirewallPolicy
+
+func (m FirewallPolicyCollection) DefaultColumns() []string {
+	return []string{"id", "name", "router_id", "sync_status"}
 }
 
-func OutputECloudTasksProvider(tasks []ecloud.Task) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(tasks).WithDefaultFields([]string{"id", "resource_id", "name", "status", "created_at", "updated_at"})
+type FirewallRuleCollection []ecloud.FirewallRule
+
+func (m FirewallRuleCollection) DefaultColumns() []string {
+	return []string{"id", "name", "firewall_policy_id", "source", "destination", "action", "direction", "enabled"}
 }
 
-func OutputECloudNetworkPoliciesProvider(policies []ecloud.NetworkPolicy) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(policies).WithDefaultFields([]string{"id", "name", "router_id", "sync_status"})
+type FirewallRulePortCollection []ecloud.FirewallRulePort
+
+func (m FirewallRulePortCollection) DefaultColumns() []string {
+	return []string{"id", "name", "firewall_rule_id", "protocol", "source", "destination"}
 }
 
-func OutputECloudNetworkRulesProvider(rules []ecloud.NetworkRule) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(rules).WithDefaultFields([]string{"id", "name", "network_policy_id", "source", "destination", "action", "direction", "enabled"})
+type RegionCollection []ecloud.Region
+
+func (m RegionCollection) DefaultColumns() []string {
+	return []string{"id", "name"}
 }
 
-func OutputECloudNetworkRulePortsProvider(rules []ecloud.NetworkRulePort) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(rules).WithDefaultFields([]string{"id", "name", "network_rule_id", "protocol", "source", "destination"})
+type VolumeCollection []ecloud.Volume
+
+func (m VolumeCollection) DefaultColumns() []string {
+	return []string{"id", "name", "type", "capacity", "sync_status"}
 }
 
-func OutputECloudHostGroupsProvider(groups []ecloud.HostGroup) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(groups).WithDefaultFields([]string{"id", "name", "vpc_id", "sync_status"})
+type CredentialCollection []ecloud.Credential
+
+func (m CredentialCollection) DefaultColumns() []string {
+	return []string{"id", "name", "username", "password"}
 }
 
-func OutputECloudHostsProvider(hosts []ecloud.Host) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(hosts).WithDefaultFields([]string{"id", "name", "host_group_id", "sync_status"})
+type NICCollection []ecloud.NIC
+
+func (m NICCollection) DefaultColumns() []string {
+	return []string{"id", "mac_address", "instance_id", "network_id", "ip_address"}
 }
 
-func OutputECloudHostSpecsProvider(specs []ecloud.HostSpec) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(specs).WithDefaultFields([]string{"id", "name", "cpu_sockets", "cpu_cores", "cpu_type", "cpu_clock_speed", "ram_capacity"})
+type RouterCollection []ecloud.Router
+
+func (m RouterCollection) DefaultColumns() []string {
+	return []string{"id", "name", "vpc_id", "availability_zone_id", "sync_status"}
 }
 
-func OutputECloudAvailabilityZonesProvider(azs []ecloud.AvailabilityZone) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(azs).WithDefaultFields([]string{"id", "name", "region_id"})
+type NetworkCollection []ecloud.Network
+
+func (m NetworkCollection) DefaultColumns() []string {
+	return []string{"id", "name", "router_id", "subnet", "sync_status"}
 }
 
-func OutputECloudVPNServicesProvider(vpns []ecloud.VPNService) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(vpns).WithDefaultFields([]string{"id", "name", "router_id", "vpc_id", "sync_status"})
+type DHCPCollection []ecloud.DHCP
+
+func (m DHCPCollection) DefaultColumns() []string {
+	return []string{"id", "vpc_id", "availability_zone_id", "sync_status"}
 }
 
-func OutputECloudVPNEndpointsProvider(endpoints []ecloud.VPNEndpoint) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(endpoints).WithDefaultFields([]string{"id", "name", "vpn_service_id", "floating_ip_id", "sync_status"})
+type RouterThroughputCollection []ecloud.RouterThroughput
+
+func (m RouterThroughputCollection) DefaultColumns() []string {
+	return []string{"id", "availability_zone_id", "name"}
 }
 
-func OutputECloudVPNSessionsProvider(sessions []ecloud.VPNSession) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(sessions).WithDefaultFields([]string{"id", "name", "vpn_service_id", "vpn_endpoint_id", "remote_ip", "sync_status", "tunnel_details_session_state"})
+type ImageCollection []ecloud.Image
+
+func (m ImageCollection) DefaultColumns() []string {
+	return []string{"id", "name"}
 }
 
-func OutputECloudVPNProfileGroupsProvider(groups []ecloud.VPNProfileGroup) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(groups).WithDefaultFields([]string{"id", "name", "availability_zone_id"})
+type ImageParameterCollection []ecloud.ImageParameter
+
+func (m ImageParameterCollection) DefaultColumns() []string {
+	return []string{"key", "type", "required"}
 }
 
-func OutputECloudVPNSessionPreSharedKeysProvider(psks []ecloud.VPNSessionPreSharedKey) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(psks).WithDefaultFields([]string{"psk"})
+type ImageMetadataCollection []ecloud.ImageMetadata
+
+func (m ImageMetadataCollection) DefaultColumns() []string {
+	return []string{"key", "value"}
 }
 
-func OutputECloudVolumeGroupsProvider(groups []ecloud.VolumeGroup) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(groups).WithDefaultFields([]string{"id", "name", "vpc_id", "availability_zone_id", "sync_status"})
+type SSHKeyPairCollection []ecloud.SSHKeyPair
+
+func (m SSHKeyPairCollection) DefaultColumns() []string {
+	return []string{"id", "name"}
 }
 
-func OutputECloudLoadBalancersProvider(lbs []ecloud.LoadBalancer) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(lbs).WithDefaultFields([]string{"id", "name", "vpc_id", "availability_zone_id", "sync_status"})
+type TaskCollection []ecloud.Task
+
+func (m TaskCollection) DefaultColumns() []string {
+	return []string{"id", "resource_id", "name", "status", "created_at", "updated_at"}
 }
 
-func OutputECloudLoadBalancerSpecsProvider(specs []ecloud.LoadBalancerSpec) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(specs).WithDefaultFields([]string{"id", "name", "description"})
+type NetworkPolicyCollection []ecloud.NetworkPolicy
+
+func (m NetworkPolicyCollection) DefaultColumns() []string {
+	return []string{"id", "name", "router_id", "sync_status"}
 }
 
-func OutputECloudVIPsProvider(vips []ecloud.VIP) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(vips).WithDefaultFields([]string{"id", "name", "load_balancer_id", "ip_address_id", "config_id", "sync_status"})
+type NetworkRuleCollection []ecloud.NetworkRule
+
+func (m NetworkRuleCollection) DefaultColumns() []string {
+	return []string{"id", "name", "network_policy_id", "source", "destination", "action", "direction", "enabled"}
 }
 
-func OutputECloudIPAddressesProvider(ips []ecloud.IPAddress) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(ips).WithDefaultFields([]string{"id", "name", "ip_address", "sync_status"})
+type NetworkRulePortCollection []ecloud.NetworkRulePort
+
+func (m NetworkRulePortCollection) DefaultColumns() []string {
+	return []string{"id", "name", "network_rule_id", "protocol", "source", "destination"}
 }
 
-func OutputECloudAffinityRuleProvider(rules []ecloud.AffinityRule) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(rules).WithDefaultFields([]string{"id", "name", "vpc_id", "availability_zone_id", "type", "sync_status"})
+type HostGroupCollection []ecloud.HostGroup
+
+func (m HostGroupCollection) DefaultColumns() []string {
+	return []string{"id", "name", "vpc_id", "sync_status"}
 }
 
-func OutputECloudAffinityRuleMemberProvider(members []ecloud.AffinityRuleMember) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(members).WithDefaultFields([]string{"id", "instance_id", "affinity_rule_id", "sync_status"})
+type HostCollection []ecloud.Host
+
+func (m HostCollection) DefaultColumns() []string {
+	return []string{"id", "name", "host_group_id", "sync_status"}
 }
 
-func OutputECloudResourceTiersProvider(tiers []ecloud.ResourceTier) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(tiers).WithDefaultFields([]string{"id", "name", "availability_zone_id"})
+type HostSpecCollection []ecloud.HostSpec
+
+func (m HostSpecCollection) DefaultColumns() []string {
+	return []string{"id", "name", "cpu_sockets", "cpu_cores", "cpu_type", "cpu_clock_speed", "ram_capacity"}
 }
 
-func OutputECloudNATOverloadRulesProvider(rules []ecloud.NATOverloadRule) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(rules).WithDefaultFields([]string{"id", "name", "network_id", "subnet", "floating_ip_id", "action"})
+type AvailabilityZoneCollection []ecloud.AvailabilityZone
+
+func (m AvailabilityZoneCollection) DefaultColumns() []string {
+	return []string{"id", "name", "region_id"}
 }
 
-func OutputECloudIOPSTierProvider(tiers []ecloud.IOPSTier) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(tiers).WithDefaultFields([]string{"id", "name", "level"})
+type VPNServiceCollection []ecloud.VPNService
+
+func (m VPNServiceCollection) DefaultColumns() []string {
+	return []string{"id", "name", "router_id", "vpc_id", "sync_status"}
 }
 
-func OutputECloudVPNGatewaysProvider(gateways []ecloud.VPNGateway) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(gateways).WithDefaultFields([]string{"id", "name", "fqdn", "router_id", "specification_id", "sync_status"})
+type VPNEndpointCollection []ecloud.VPNEndpoint
+
+func (m VPNEndpointCollection) DefaultColumns() []string {
+	return []string{"id", "name", "vpn_service_id", "floating_ip_id", "sync_status"}
 }
 
-func OutputECloudVPNGatewaySpecificationsProvider(specs []ecloud.VPNGatewaySpecification) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(specs).WithDefaultFields([]string{"id", "name", "description"})
+type VPNSessionCollection []ecloud.VPNSession
+
+func (m VPNSessionCollection) DefaultColumns() []string {
+	return []string{"id", "name", "vpn_service_id", "vpn_endpoint_id", "remote_ip", "sync_status", "tunnel_details_session_state"}
 }
 
-func OutputECloudVPNGatewayUsersProvider(users []ecloud.VPNGatewayUser) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(users).WithDefaultFields([]string{"id", "name", "username", "vpn_gateway_id", "sync_status"})
+type VPNProfileGroupCollection []ecloud.VPNProfileGroup
+
+func (m VPNProfileGroupCollection) DefaultColumns() []string {
+	return []string{"id", "name", "availability_zone_id"}
 }
 
-func OutputECloudBackupGatewaySpecificationsProvider(specs []ecloud.BackupGatewaySpecification) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(specs).WithDefaultFields([]string{"id", "name", "description"})
+type VPNSessionPreSharedKeyCollection []ecloud.VPNSessionPreSharedKey
+
+func (m VPNSessionPreSharedKeyCollection) DefaultColumns() []string {
+	return []string{"psk"}
 }
 
-func OutputECloudBackupGatewaysProvider(gateways []ecloud.BackupGateway) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(gateways).WithDefaultFields([]string{"id", "name", "vpc_id", "availability_zone", "gateway_spec_id", "sync_status"})
+type VolumeGroupCollection []ecloud.VolumeGroup
+
+func (m VolumeGroupCollection) DefaultColumns() []string {
+	return []string{"id", "name", "vpc_id", "availability_zone_id", "sync_status"}
+}
+
+type LoadBalancerCollection []ecloud.LoadBalancer
+
+func (m LoadBalancerCollection) DefaultColumns() []string {
+	return []string{"id", "name", "vpc_id", "availability_zone_id", "sync_status"}
+}
+
+type LoadBalancerSpecCollection []ecloud.LoadBalancerSpec
+
+func (m LoadBalancerSpecCollection) DefaultColumns() []string {
+	return []string{"id", "name", "description"}
+}
+
+type VIPCollection []ecloud.VIP
+
+func (m VIPCollection) DefaultColumns() []string {
+	return []string{"id", "name", "load_balancer_id", "ip_address_id", "config_id", "sync_status"}
+}
+
+type IPAddressCollection []ecloud.IPAddress
+
+func (m IPAddressCollection) DefaultColumns() []string {
+	return []string{"id", "name", "ip_address", "sync_status"}
+}
+
+type AffinityRuleCollection []ecloud.AffinityRule
+
+func (m AffinityRuleCollection) DefaultColumns() []string {
+	return []string{"id", "name", "vpc_id", "availability_zone_id", "type", "sync_status"}
+}
+
+type AffinityRuleMemberCollection []ecloud.AffinityRuleMember
+
+func (m AffinityRuleMemberCollection) DefaultColumns() []string {
+	return []string{"id", "instance_id", "affinity_rule_id", "sync_status"}
+}
+
+type ResourceTierCollection []ecloud.ResourceTier
+
+func (m ResourceTierCollection) DefaultColumns() []string {
+	return []string{"id", "name", "availability_zone_id"}
+}
+
+type NATOverloadRuleCollection []ecloud.NATOverloadRule
+
+func (m NATOverloadRuleCollection) DefaultColumns() []string {
+	return []string{"id", "name", "network_id", "subnet", "floating_ip_id", "action"}
+}
+
+type IOPSTierCollection []ecloud.IOPSTier
+
+func (m IOPSTierCollection) DefaultColumns() []string {
+	return []string{"id", "name", "level"}
+}
+
+type VPNGatewayCollection []ecloud.VPNGateway
+
+func (m VPNGatewayCollection) DefaultColumns() []string {
+	return []string{"id", "name", "fqdn", "router_id", "specification_id", "sync_status"}
+}
+
+type VPNGatewaySpecificationCollection []ecloud.VPNGatewaySpecification
+
+func (m VPNGatewaySpecificationCollection) DefaultColumns() []string {
+	return []string{"id", "name", "description"}
+}
+
+type VPNGatewayUserCollection []ecloud.VPNGatewayUser
+
+func (m VPNGatewayUserCollection) DefaultColumns() []string {
+	return []string{"id", "name", "username", "vpn_gateway_id", "sync_status"}
+}
+
+type BackupGatewaySpecificationCollection []ecloud.BackupGatewaySpecification
+
+func (m BackupGatewaySpecificationCollection) DefaultColumns() []string {
+	return []string{"id", "name", "description"}
+}
+
+type BackupGatewayCollection []ecloud.BackupGateway
+
+func (m BackupGatewayCollection) DefaultColumns() []string {
+	return []string{"id", "name", "vpc_id", "availability_zone", "gateway_spec_id", "sync_status"}
 }

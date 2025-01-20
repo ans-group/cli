@@ -64,5 +64,5 @@ func ecloudPodApplianceList(service ecloud.ECloudService, cmd *cobra.Command, ar
 		return fmt.Errorf("Error retrieving pod appliances: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudAppliancesProvider(appliances))
+	return output.CommandOutput(cmd, ApplianceCollection(appliances))
 }

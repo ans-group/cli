@@ -1,133 +1,387 @@
 package output
 
 import (
+	"bufio"
+	"encoding/csv"
+	"encoding/json"
 	"fmt"
+	"html/template"
+	"os"
+	"reflect"
+	"strconv"
 	"strings"
 
+	"github.com/iancoleman/strcase"
+	"github.com/olekukonko/tablewriter"
 	"github.com/ryanuber/go-glob"
+	"github.com/spf13/cobra"
+	"gopkg.in/yaml.v3"
+	"k8s.io/client-go/util/jsonpath"
 )
+
+type DefaultColumnable interface {
+	DefaultColumns() []string
+}
+
+type FieldValueHandlerFunc func(reflectedValue reflect.Value) string
+
+type HandlesFields interface {
+	FieldValueHandlers() map[string]FieldValueHandlerFunc
+}
+
+var MonetaryFieldValueHandler = func(reflectedValue reflect.Value) string {
+	return fmt.Sprintf("%.2f", reflectedValue.Float())
+}
+
+type ProvidesFields interface {
+	Fields() []*OrderedFields
+}
 
 type OutputHandlerOpts map[string]interface{}
 
-type OutputHandler struct {
-	Format           string
-	FormatArg        string
-	Properties       []string
-	SupportedFormats []string
-	DataProvider     OutputHandlerDataProvider
+type OutputHandler struct{}
+
+func NewOutputHandler() *OutputHandler {
+	return &OutputHandler{}
 }
 
-func NewOutputHandler(dataProvider OutputHandlerDataProvider, format string, formatArg string) *OutputHandler {
-	if format == "" {
-		format = "table"
+func (o *OutputHandler) Output(cmd *cobra.Command, d interface{}) error {
+	var flag string
+	if cmd.Flags().Changed("format") {
+		flag, _ = cmd.Flags().GetString("format")
+	} else {
+		flag, _ = cmd.Flags().GetString("output")
 	}
 
-	return &OutputHandler{
-		DataProvider: dataProvider,
-		Format:       format,
-		FormatArg:    formatArg,
-	}
-}
-
-func (o *OutputHandler) WithSupportedFormats(formats []string) *OutputHandler {
-	o.SupportedFormats = formats
-	return o
-}
-
-// Handle calls the relevant OutputProvider data retrieval methods for given value
-// in struct property 'Format'
-func (o *OutputHandler) Handle() error {
-	if !o.supportedFormat() {
-		return fmt.Errorf("Unsupported output format [%s], supported formats: %s", o.Format, strings.Join(o.SupportedFormats, ", "))
+	format, arg := ParseOutputFlag(flag)
+	if format == "template" && cmd.Flags().Changed("outputtemplate") {
+		arg, _ = cmd.Flags().GetString("outputtemplate")
 	}
 
-	switch o.Format {
+	switch format {
 	case "json":
-		return JSON(o.DataProvider.GetData())
-	case "yaml":
-		return YAML(o.DataProvider.GetData())
-	case "jsonpath":
-		return JSONPath(o.FormatArg, o.DataProvider.GetData())
-	case "template":
-		return Template(o.FormatArg, o.DataProvider.GetData())
-	case "value":
-		d, err := o.getProcessedFieldData()
-		if err != nil {
-			return err
-		}
-		return Value(d)
-	case "csv":
-		d, err := o.getProcessedFieldData()
-		if err != nil {
-			return err
-		}
-		return CSV(d)
+		return o.JSON(d)
 	case "list":
-		d, err := o.getProcessedFieldData()
-		if err != nil {
-			return err
-		}
-		return List(d)
+		return o.List(cmd, d)
+	case "value":
+		return o.Value(cmd, d)
+	case "csv":
+		return o.CSV(cmd, d)
+	case "yaml":
+		return o.YAML(d)
+	case "jsonpath":
+		return o.JSONPath(arg, d)
+	case "template":
+		return o.Template(arg, d)
 	default:
-		Errorf("Invalid output format [%s], defaulting to 'table'", o.Format)
+		Errorf("Invalid output format [%s], defaulting to 'table'", format)
 		fallthrough
 	case "table":
-		d, err := o.getProcessedFieldData()
+		return o.Table(cmd, d)
+	}
+}
+
+func (o *OutputHandler) JSON(d interface{}) error {
+	out, err := json.Marshal(d)
+	if err != nil {
+		return fmt.Errorf("failed to marshal json: %s", err)
+	}
+
+	_, err = fmt.Print(string(out[:]))
+
+	return err
+}
+
+// Table takes an array of mapped fields (key being lowercased name), and outputs a table
+func (o *OutputHandler) Table(cmd *cobra.Command, d interface{}) error {
+	columns, rows := o.getData(cmd, d)
+	if len(rows) < 1 {
+		return nil
+	}
+
+	table := tablewriter.NewWriter(os.Stdout)
+
+	table.SetHeader(columns)
+	table.AppendBulk(rows)
+	table.Render()
+
+	return nil
+}
+
+// List will format specified rows using given includeProperties by extracting fields,
+// and output them to stdout
+func (o *OutputHandler) List(cmd *cobra.Command, d interface{}) error {
+	columns, rows := o.getData(cmd, d)
+	if len(rows) < 1 {
+		return nil
+	}
+
+	f := bufio.NewWriter(os.Stdout)
+	defer f.Flush()
+
+	maxPropertyLength := getMaxPropertyLength(columns)
+	for i, row := range rows {
+		if i > 0 {
+			f.WriteString("\n")
+		}
+
+		for columnIndex, column := range columns {
+			f.WriteString(fmt.Sprintf("%s : %s\n", padProperty(column, maxPropertyLength), row[columnIndex]))
+		}
+	}
+
+	return nil
+}
+
+// Value will format specified rows using given includeProperties by extracting field values,
+// and output them to stdout
+func (o *OutputHandler) Value(cmd *cobra.Command, d interface{}) error {
+	columns, rows := o.getData(cmd, d)
+	if len(rows) < 1 {
+		return nil
+	}
+
+	for _, row := range rows {
+		var rowData []string
+		for columnIndex := range columns {
+			rowData = append(rowData, row[columnIndex])
+		}
+		fmt.Println(strings.Join(rowData, " "))
+	}
+
+	return nil
+}
+
+// YAML marshals and outputs value v to stdout
+func (o *OutputHandler) YAML(d interface{}) error {
+	out, err := yaml.Marshal(d)
+	if err != nil {
+		return fmt.Errorf("failed to marshal yaml: %s", err)
+	}
+
+	_, err = fmt.Print(string(out[:]))
+
+	return err
+}
+
+// JSONPath marshals and outputs value v to stdout
+func (o *OutputHandler) JSONPath(query string, d interface{}) error {
+	j := jsonpath.New("clioutput")
+	err := j.Parse(query)
+	if err != nil {
+		return fmt.Errorf("failed to parse jsonpath template: %w", err)
+	}
+
+	err = j.Execute(os.Stdout, d)
+	if err != nil {
+		return fmt.Errorf("failed to execute jsonpath: %w", err)
+	}
+
+	return nil
+}
+
+// CSV outputs provided rows as CSV to stdout
+func (o *OutputHandler) CSV(cmd *cobra.Command, d interface{}) error {
+	columns, rows := o.getData(cmd, d)
+	if len(rows) < 1 {
+		return nil
+	}
+
+	w := csv.NewWriter(os.Stdout)
+
+	// First retrieve properties and write to CSV buffer
+	err := w.Write(columns)
+	if err != nil {
+		return err
+	}
+
+	for _, row := range rows {
+		// For each row, obtain property data and and write to CSV buffer
+		var rowData []string
+		for columnIndex := range columns {
+			rowData = append(rowData, row[columnIndex])
+		}
+		err := w.Write(rowData)
 		if err != nil {
 			return err
 		}
-		return Table(d)
+
+		// Finally flush CSV buffer to stdout
+		w.Flush()
+		err = w.Error()
+		if err != nil {
+			return err
+		}
 	}
+
+	return nil
 }
 
-func (o *OutputHandler) getProcessedFieldData() ([]*OrderedFields, error) {
-	var filteredFieldsCollectionArray []*OrderedFields
-
-	fieldsCollectionArray, err := o.DataProvider.GetFieldData()
+// Template will format i with given Golang template t, and output resulting string
+// to stdout
+func (o *OutputHandler) Template(t string, d interface{}) error {
+	tmpl, err := template.New("output").Parse(t)
 	if err != nil {
-		return nil, err
+		return fmt.Errorf("failed to create template: %s", err.Error())
 	}
 
-	for _, fieldCollection := range fieldsCollectionArray {
-		filteredFieldsCollection := NewOrderedFields()
-
-		if len(o.Properties) > 0 {
-			// For each property in o.Properties, add field to filteredFields array
-			// if that property exists in fields
-			for _, prop := range o.Properties {
-				for _, fieldKey := range fieldCollection.Keys() {
-					if glob.Glob(strings.ToLower(prop), fieldKey) {
-						filteredFieldsCollection.Set(fieldKey, fieldCollection.Get(fieldKey))
-					}
-				}
+	switch reflect.TypeOf(d).Kind() {
+	case reflect.Slice:
+		s := reflect.ValueOf(d)
+		for i := 0; i < s.Len(); i++ {
+			err = tmpl.Execute(os.Stdout, s.Index(i))
+			if err != nil {
+				return fmt.Errorf("failed to execute template on slice: %s", err.Error())
 			}
-
-		} else {
-			// Use default fields
-			for _, fieldKey := range fieldCollection.Keys() {
-				fieldValue := fieldCollection.Get(fieldKey)
-				if fieldValue.Default {
-					filteredFieldsCollection.Set(fieldKey, fieldValue)
-				}
-			}
+			fmt.Print("\n")
 		}
-
-		filteredFieldsCollectionArray = append(filteredFieldsCollectionArray, filteredFieldsCollection)
+	default:
+		err = tmpl.Execute(os.Stdout, d)
+		if err != nil {
+			return fmt.Errorf("failed to execute template: %s", err.Error())
+		}
+		fmt.Print("\n")
 	}
 
-	return filteredFieldsCollectionArray, nil
+	return nil
 }
 
-func (o *OutputHandler) supportedFormat() bool {
-	if o.SupportedFormats == nil {
-		return true
+func (o *OutputHandler) getData(cmd *cobra.Command, d interface{}) (filteredColumns []string, filteredRows [][]string) {
+	rows := o.convert(d, reflect.ValueOf(d))
+	if len(rows) == 0 {
+		return
 	}
 
-	for _, supportedFormat := range o.SupportedFormats {
-		if strings.ToLower(supportedFormat) == o.Format {
-			return true
+	var filteredColumnNames []string
+	if cmd.Flags().Changed("property") {
+		filteredColumnNames, _ = cmd.Flags().GetStringSlice("property")
+	} else if d, ok := d.(DefaultColumnable); ok && len(d.DefaultColumns()) > 0 {
+		filteredColumnNames = d.DefaultColumns()
+	}
+
+	if len(filteredColumnNames) > 0 {
+		for _, column := range rows[0].Keys() {
+			for _, filteredColumnName := range filteredColumnNames {
+				if glob.Glob(strings.ToLower(filteredColumnName), column) {
+					filteredColumns = append(filteredColumns, column)
+				}
+			}
+		}
+	} else {
+		filteredColumns = rows[0].Keys()
+	}
+
+	for _, row := range rows {
+		filteredRow := make([]string, len(filteredColumns))
+		for filteredColumnIndex, filteredColumn := range filteredColumns {
+			filteredRow[filteredColumnIndex] = row.Get(filteredColumn)
+		}
+		filteredRows = append(filteredRows, filteredRow)
+	}
+
+	return filteredColumns, filteredRows
+}
+
+func (o *OutputHandler) convert(d interface{}, reflectedValue reflect.Value) []*OrderedFields {
+	if dProvidesFields, ok := d.(ProvidesFields); ok {
+		return dProvidesFields.Fields()
+	}
+
+	fields := []*OrderedFields{}
+
+	switch reflectedValue.Kind() {
+	case reflect.Slice:
+		for i := 0; i < reflectedValue.Len(); i++ {
+			fields = append(fields, o.convert(d, reflectedValue.Index(i))...)
+		}
+	case reflect.Struct:
+		fields = append(fields, o.convertField(d, NewOrderedFields(), "", reflectedValue))
+	}
+
+	return fields
+}
+
+func (o *OutputHandler) convertField(d interface{}, v *OrderedFields, fieldName string, reflectedValue reflect.Value) *OrderedFields {
+	if dHandlesFields, ok := d.(HandlesFields); ok {
+		fieldHandlers := dHandlesFields.FieldValueHandlers()
+		if fieldHandlers != nil && fieldHandlers[fieldName] != nil {
+			v.Set(fieldName, fieldHandlers[fieldName](reflectedValue))
+			return v
 		}
 	}
 
-	return false
+	switch reflectedValue.Kind() {
+	case reflect.Struct:
+		reflectedValueType := reflectedValue.Type()
+
+		for i := 0; i < reflectedValueType.NumField(); i++ {
+			reflectedValueField := reflectedValue.Field(i)
+			reflectedValueTypeField := reflectedValueType.Field(i)
+
+			if !reflectedValueField.CanInterface() {
+				// Skip unexported field
+				continue
+			}
+			childFieldName := ""
+			if !reflectedValueTypeField.Anonymous {
+				jsonTag := reflectedValueTypeField.Tag.Get("json")
+				if jsonTag != "" {
+					childFieldName = jsonTag
+				} else {
+					childFieldName = strcase.ToSnake(reflectedValueTypeField.Name)
+				}
+			}
+
+			if len(fieldName) > 0 {
+				childFieldName = fieldName + "." + childFieldName
+			}
+
+			o.convertField(d, v, childFieldName, reflectedValueField)
+		}
+
+		return v
+	case reflect.String:
+		v.Set(fieldName, reflectedValue.String())
+		return v
+	case reflect.Bool:
+		v.Set(fieldName, strconv.FormatBool(reflectedValue.Bool()))
+		return v
+	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+		v.Set(fieldName, strconv.FormatInt(reflectedValue.Int(), 10))
+		return v
+	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
+		v.Set(fieldName, strconv.FormatUint(reflectedValue.Uint(), 10))
+		return v
+	case reflect.Float32, reflect.Float64:
+		v.Set(fieldName, fmt.Sprintf("%f", reflectedValue.Float()))
+		return v
+	case reflect.Ptr:
+		if !reflectedValue.IsNil() {
+			return o.convertField(d, v, fieldName, reflectedValue.Elem())
+		}
+	case reflect.Invalid:
+		return nil
+	}
+
+	v.Set(fieldName, fmt.Sprintf("%v", reflectedValue.Interface()))
+	return v
+}
+
+func padProperty(property string, maxLength int) string {
+	diff := maxLength - len(property)
+	if diff > 0 {
+		return property + strings.Repeat(" ", diff)
+	}
+	return property
+}
+
+func getMaxPropertyLength(properties []string) int {
+	maxLength := 0
+	for _, property := range properties {
+		length := len(property)
+		if length > maxLength {
+			maxLength = length
+		}
+	}
+	return maxLength
 }

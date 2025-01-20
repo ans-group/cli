@@ -48,7 +48,7 @@ func pssProblemList(service pss.PSSService, cmd *cobra.Command, args []string) e
 		return err
 	}
 
-	return output.CommandOutputPaginated(cmd, OutputPSSProblemCasesProvider(paginatedProblems.Items()), paginatedProblems)
+	return output.CommandOutputPaginated(cmd, ProblemCaseCollection(paginatedProblems.Items()), paginatedProblems)
 }
 
 func pssProblemShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -80,5 +80,5 @@ func pssProblemShow(service pss.PSSService, cmd *cobra.Command, args []string) e
 		problems = append(problems, problem)
 	}
 
-	return output.CommandOutput(cmd, OutputPSSProblemCasesProvider(problems))
+	return output.CommandOutput(cmd, ProblemCaseCollection(problems))
 }

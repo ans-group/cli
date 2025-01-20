@@ -53,7 +53,7 @@ func draasSolutionBackupServiceShow(service draas.DRaaSService, cmd *cobra.Comma
 		return fmt.Errorf("Error retrieving solution backup service: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputDRaaSBackupServicesProvider([]draas.BackupService{backupService}))
+	return output.CommandOutput(cmd, BackupServiceCollection([]draas.BackupService{backupService}))
 }
 
 func draasSolutionBackupServiceResetCredentialsCmd(f factory.ClientFactory) *cobra.Command {

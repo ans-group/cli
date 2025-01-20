@@ -50,7 +50,7 @@ func ecloudVPNGatewaySpecificationList(service ecloud.ECloudService, cmd *cobra.
 		return fmt.Errorf("Error retrieving VPN gateway specifications: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVPNGatewaySpecificationsProvider(specs))
+	return output.CommandOutput(cmd, VPNGatewaySpecificationCollection(specs))
 }
 
 func ecloudVPNGatewaySpecificationShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -81,5 +81,5 @@ func ecloudVPNGatewaySpecificationShow(service ecloud.ECloudService, cmd *cobra.
 		specs = append(specs, spec)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVPNGatewaySpecificationsProvider(specs))
+	return output.CommandOutput(cmd, VPNGatewaySpecificationCollection(specs))
 }

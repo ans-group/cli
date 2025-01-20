@@ -55,7 +55,7 @@ func ecloudFirewallRulePortList(service ecloud.ECloudService, cmd *cobra.Command
 		return fmt.Errorf("Error retrieving firewall rule ports: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudFirewallRulePortsProvider(rules))
+	return output.CommandOutput(cmd, FirewallRulePortCollection(rules))
 }
 
 func ecloudFirewallRulePortShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -87,7 +87,7 @@ func ecloudFirewallRulePortShow(service ecloud.ECloudService, cmd *cobra.Command
 		rules = append(rules, rule)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudFirewallRulePortsProvider(rules))
+	return output.CommandOutput(cmd, FirewallRulePortCollection(rules))
 }
 
 func ecloudFirewallRulePortCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -147,7 +147,7 @@ func ecloudFirewallRulePortCreate(service ecloud.ECloudService, cmd *cobra.Comma
 		return fmt.Errorf("Error retrieving new firewall rule port: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudFirewallRulePortsProvider([]ecloud.FirewallRulePort{rule}))
+	return output.CommandOutput(cmd, FirewallRulePortCollection([]ecloud.FirewallRulePort{rule}))
 }
 
 func ecloudFirewallRulePortUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -226,7 +226,7 @@ func ecloudFirewallRulePortUpdate(service ecloud.ECloudService, cmd *cobra.Comma
 		rules = append(rules, rule)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudFirewallRulePortsProvider(rules))
+	return output.CommandOutput(cmd, FirewallRulePortCollection(rules))
 }
 
 func ecloudFirewallRulePortDeleteCmd(f factory.ClientFactory) *cobra.Command {

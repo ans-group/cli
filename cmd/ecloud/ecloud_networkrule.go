@@ -59,7 +59,7 @@ func ecloudNetworkRuleList(service ecloud.ECloudService, cmd *cobra.Command, arg
 		return fmt.Errorf("Error retrieving network rules: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudNetworkRulesProvider(rules))
+	return output.CommandOutput(cmd, NetworkRuleCollection(rules))
 }
 
 func ecloudNetworkRuleShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -91,7 +91,7 @@ func ecloudNetworkRuleShow(service ecloud.ECloudService, cmd *cobra.Command, arg
 		rules = append(rules, rule)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudNetworkRulesProvider(rules))
+	return output.CommandOutput(cmd, NetworkRuleCollection(rules))
 }
 
 func ecloudNetworkRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -168,7 +168,7 @@ func ecloudNetworkRuleCreate(service ecloud.ECloudService, cmd *cobra.Command, a
 		return fmt.Errorf("Error retrieving new network rule: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudNetworkRulesProvider([]ecloud.NetworkRule{rule}))
+	return output.CommandOutput(cmd, NetworkRuleCollection([]ecloud.NetworkRule{rule}))
 }
 
 func ecloudNetworkRuleUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -269,7 +269,7 @@ func ecloudNetworkRuleUpdate(service ecloud.ECloudService, cmd *cobra.Command, a
 		rules = append(rules, rule)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudNetworkRulesProvider(rules))
+	return output.CommandOutput(cmd, NetworkRuleCollection(rules))
 }
 
 func ecloudNetworkRuleDeleteCmd(f factory.ClientFactory) *cobra.Command {

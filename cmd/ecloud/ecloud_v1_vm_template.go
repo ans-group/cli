@@ -97,7 +97,7 @@ func ecloudVirtualMachineTemplateCreate(service ecloud.ECloudService, cmd *cobra
 		return fmt.Errorf("Error retrieving new virtual machine template: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudTemplatesProvider([]ecloud.Template{template}))
+	return output.CommandOutput(cmd, TemplateCollection([]ecloud.Template{template}))
 }
 
 func getVMTemplate(service ecloud.ECloudService, vmID int, templateName string, templateType ecloud.TemplateType) (ecloud.Template, error) {

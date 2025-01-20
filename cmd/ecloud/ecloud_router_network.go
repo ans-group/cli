@@ -55,5 +55,5 @@ func ecloudRouterNetworkList(service ecloud.ECloudService, cmd *cobra.Command, a
 		return fmt.Errorf("Error retrieving router networks: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudNetworksProvider(networks))
+	return output.CommandOutput(cmd, NetworkCollection(networks))
 }

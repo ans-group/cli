@@ -41,5 +41,5 @@ func pssChangeRiskList(service pss.PSSService, cmd *cobra.Command, args []string
 		return err
 	}
 
-	return output.CommandOutput(cmd, OutputPSSCaseOptionsProvider(options))
+	return output.CommandOutput(cmd, CaseOptionCollection(options))
 }

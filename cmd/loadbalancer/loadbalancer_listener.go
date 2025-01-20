@@ -56,7 +56,7 @@ func loadbalancerListenerList(service loadbalancer.LoadBalancerService, cmd *cob
 		return fmt.Errorf("Error retrieving listeners: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerListenersProvider(listeners))
+	return output.CommandOutput(cmd, ListenerCollection(listeners))
 }
 
 func loadbalancerListenerShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -94,7 +94,7 @@ func loadbalancerListenerShow(service loadbalancer.LoadBalancerService, cmd *cob
 		listeners = append(listeners, listener)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerListenersProvider(listeners))
+	return output.CommandOutput(cmd, ListenerCollection(listeners))
 }
 
 func loadbalancerListenerCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -204,7 +204,7 @@ func loadbalancerListenerCreate(service loadbalancer.LoadBalancerService, cmd *c
 		return fmt.Errorf("Error retrieving new listener: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerListenersProvider([]loadbalancer.Listener{listener}))
+	return output.CommandOutput(cmd, ListenerCollection([]loadbalancer.Listener{listener}))
 }
 
 func loadbalancerListenerUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -330,7 +330,7 @@ func loadbalancerListenerUpdate(service loadbalancer.LoadBalancerService, cmd *c
 		listeners = append(listeners, listener)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerListenersProvider(listeners))
+	return output.CommandOutput(cmd, ListenerCollection(listeners))
 }
 
 func loadbalancerListenerDeleteCmd(f factory.ClientFactory) *cobra.Command {

@@ -64,5 +64,5 @@ func sslCertificatePrivateKeyShow(service ssl.SSLService, cmd *cobra.Command, ar
 		certificatePrivateKeys = append(certificatePrivateKeys, certificatePrivateKey)
 	}
 
-	return output.CommandOutput(cmd, OutputSSLCertificatesPrivateKeysProvider(certificatePrivateKeys))
+	return output.CommandOutput(cmd, CertificatePrivateKeyCollection(certificatePrivateKeys))
 }

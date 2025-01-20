@@ -55,7 +55,7 @@ func pssIncidentList(service pss.PSSService, cmd *cobra.Command, args []string) 
 		return err
 	}
 
-	return output.CommandOutputPaginated(cmd, OutputPSSIncidentCasesProvider(paginatedIncidents.Items()), paginatedIncidents)
+	return output.CommandOutputPaginated(cmd, IncidentCaseCollection(paginatedIncidents.Items()), paginatedIncidents)
 }
 
 func pssIncidentShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -87,7 +87,7 @@ func pssIncidentShow(service pss.PSSService, cmd *cobra.Command, args []string) 
 		incidents = append(incidents, incident)
 	}
 
-	return output.CommandOutput(cmd, OutputPSSIncidentCasesProvider(incidents))
+	return output.CommandOutput(cmd, IncidentCaseCollection(incidents))
 }
 
 func pssIncidentCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -154,7 +154,7 @@ func pssIncidentCreate(service pss.PSSService, cmd *cobra.Command, args []string
 		return fmt.Errorf("Error retrieving new incident: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputPSSIncidentCasesProvider([]pss.IncidentCase{incident}))
+	return output.CommandOutput(cmd, IncidentCaseCollection([]pss.IncidentCase{incident}))
 }
 
 func pssIncidentCloseCmd(f factory.ClientFactory) *cobra.Command {
@@ -202,5 +202,5 @@ func pssIncidentClose(service pss.PSSService, cmd *cobra.Command, args []string)
 		incidents = append(incidents, incident)
 	}
 
-	return output.CommandOutput(cmd, OutputPSSIncidentCasesProvider(incidents))
+	return output.CommandOutput(cmd, IncidentCaseCollection(incidents))
 }

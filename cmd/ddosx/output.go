@@ -1,73 +1,85 @@
 package ddosx
 
 import (
-	"github.com/ans-group/cli/internal/pkg/output"
 	"github.com/ans-group/sdk-go/pkg/service/ddosx"
 )
 
-func OutputDDoSXDomainsProvider(domains []ddosx.Domain) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(domains).
-		WithDefaultFields([]string{"name", "status", "safedns_zone_id", "dns_active", "cdn_active", "waf_active"})
+type DomainCollection []ddosx.Domain
+
+func (m DomainCollection) DefaultColumns() []string {
+	return []string{"name", "status", "safedns_zone_id", "dns_active", "cdn_active", "waf_active"}
 }
 
-func OutputDDoSXRecordsProvider(records []ddosx.Record) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(records).
-		WithDefaultFields([]string{"id", "safedns_record_id", "ssl_id", "domain_name", "name", "type", "content"})
+type RecordCollection []ddosx.Record
+
+func (m RecordCollection) DefaultColumns() []string {
+	return []string{"id", "safedns_record_id", "ssl_id", "domain_name", "name", "type", "content"}
 }
 
-func OutputDDoSXWAFsProvider(wafs []ddosx.WAF) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(wafs).
-		WithDefaultFields([]string{"mode", "paranoia_level"})
+type WAFCollection []ddosx.WAF
+
+func (m WAFCollection) DefaultColumns() []string {
+	return []string{"mode", "paranoia_level"}
 }
 
-func OutputDDoSXWAFRuleSetsProvider(rulesets []ddosx.WAFRuleSet) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(rulesets).
-		WithDefaultFields([]string{"id", "name", "active"})
+type WAFRuleSetCollection []ddosx.WAFRuleSet
+
+func (m WAFRuleSetCollection) DefaultColumns() []string {
+	return []string{"id", "name", "active"}
 }
 
-func OutputDDoSXWAFRulesProvider(rules []ddosx.WAFRule) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(rules).
-		WithDefaultFields([]string{"id", "uri", "ip"})
+type WAFRuleCollection []ddosx.WAFRule
+
+func (m WAFRuleCollection) DefaultColumns() []string {
+	return []string{"id", "uri", "ip"}
 }
 
-func OutputDDoSXWAFAdvancedRulesProvider(rules []ddosx.WAFAdvancedRule) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(rules).
-		WithDefaultFields([]string{"id", "section", "modifier", "phrase", "ip"})
+type WAFAdvancedRuleCollection []ddosx.WAFAdvancedRule
+
+func (m WAFAdvancedRuleCollection) DefaultColumns() []string {
+	return []string{"id", "section", "modifier", "phrase", "ip"}
 }
 
-func OutputDDoSXSSLsProvider(ssls []ddosx.SSL) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(ssls).
-		WithDefaultFields([]string{"id", "ans_ssl_id", "domains", "friendly_name"})
+type SSLCollection []ddosx.SSL
+
+func (m SSLCollection) DefaultColumns() []string {
+	return []string{"id", "ans_ssl_id", "domains", "friendly_name"}
 }
 
-func OutputDDoSXSSLContentsProvider(sslContents []ddosx.SSLContent) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(sslContents).
-		WithDefaultFields([]string{"certificate", "ca_bundle"})
+type SSLContentCollection []ddosx.SSLContent
+
+func (m SSLContentCollection) DefaultColumns() []string {
+	return []string{"certificate", "ca_bundle"}
 }
 
-func OutputDDoSXSSLPrivateKeysProvider(sslPrivateKeys []ddosx.SSLPrivateKey) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(sslPrivateKeys).
-		WithDefaultFields([]string{"key"})
+type SSLPrivateKeyCollection []ddosx.SSLPrivateKey
+
+func (m SSLPrivateKeyCollection) DefaultColumns() []string {
+	return []string{"key"}
 }
 
-func OutputDDoSXACLIPRulesProvider(rules []ddosx.ACLIPRule) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(rules).
-		WithDefaultFields([]string{"id", "mode", "ip", "uri"})
+type ACLIPRuleCollection []ddosx.ACLIPRule
+
+func (m ACLIPRuleCollection) DefaultColumns() []string {
+	return []string{"id", "mode", "ip", "uri"}
 }
 
-func OutputDDoSXACLGeoIPRulesProvider(rules []ddosx.ACLGeoIPRule) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(rules).
-		WithDefaultFields([]string{"id", "name", "code"})
+type ACLGeoIPRuleCollection []ddosx.ACLGeoIPRule
+
+func (m ACLGeoIPRuleCollection) DefaultColumns() []string {
+	return []string{"id", "name", "code"}
 }
 
-func OutputDDoSXACLGeoIPRulesModesProvider(modes []ddosx.ACLGeoIPRulesMode) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(modes).
-		WithDefaultFields([]string{"mode"})
+type ACLGeoIPRulesModeCollection []ddosx.ACLGeoIPRulesMode
+
+func (m ACLGeoIPRulesModeCollection) DefaultColumns() []string {
+	return []string{"mode"}
 }
 
-func OutputDDoSXDomainPropertiesProvider(properties []ddosx.DomainProperty) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(properties).
-		WithDefaultFields([]string{"id", "name", "value"})
+type DomainPropertyCollection []ddosx.DomainProperty
+
+func (m DomainPropertyCollection) DefaultColumns() []string {
+	return []string{"id", "name", "value"}
 }
 
 type OutputDDoSXDomainVerificationFilesFile struct {
@@ -75,32 +87,38 @@ type OutputDDoSXDomainVerificationFilesFile struct {
 	Content string
 }
 
-func OutputDDoSXDomainVerificationFilesProvider(files []OutputDDoSXDomainVerificationFilesFile) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(files).
-		WithDefaultFields([]string{"name", "content"})
+type OutputDDoSXDomainVerificationFilesFileCollection []OutputDDoSXDomainVerificationFilesFile
+
+func (m OutputDDoSXDomainVerificationFilesFile) DefaultColumns() []string {
+	return []string{"name", "content"}
 }
 
-func OutputDDoSXCDNRulesProvider(rules []ddosx.CDNRule) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(rules).
-		WithDefaultFields([]string{"id", "uri", "cache_control", "cache_control_duration", "mime_types", "type"})
+type CDNRuleCollection []ddosx.CDNRule
+
+func (m CDNRuleCollection) DefaultColumns() []string {
+	return []string{"id", "uri", "cache_control", "cache_control_duration", "mime_types", "type"}
 }
 
-func OutputDDoSXHSTSConfigurationsProvider(configurations []ddosx.HSTSConfiguration) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(configurations).
-		WithDefaultFields([]string{"enabled"})
+type HSTSConfigurationCollection []ddosx.HSTSConfiguration
+
+func (m HSTSConfigurationCollection) DefaultColumns() []string {
+	return []string{"enabled"}
 }
 
-func OutputDDoSXHSTSRulesProvider(rules []ddosx.HSTSRule) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(rules).
-		WithDefaultFields([]string{"id", "max_age", "preload", "include_subdomains", "type", "record_name"})
+type HSTSRuleCollection []ddosx.HSTSRule
+
+func (m HSTSRuleCollection) DefaultColumns() []string {
+	return []string{"id", "max_age", "preload", "include_subdomains", "type", "record_name"}
 }
 
-func OutputDDoSXWAFLogsProvider(logs []ddosx.WAFLog) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(logs).
-		WithDefaultFields([]string{"id", "created_at", "client_ip", "request"})
+type WAFLogCollection []ddosx.WAFLog
+
+func (m WAFLogCollection) DefaultColumns() []string {
+	return []string{"id", "created_at", "client_ip", "request"}
 }
 
-func OutputDDoSXWAFLogMatchesProvider(matches []ddosx.WAFLogMatch) output.OutputHandlerDataProvider {
-	return output.NewSerializedOutputHandlerDataProvider(matches).
-		WithDefaultFields([]string{"id", "created_at", "country_code", "method", "message"})
+type WAFLogMatchCollection []ddosx.WAFLogMatch
+
+func (m WAFLogMatchCollection) DefaultColumns() []string {
+	return []string{"id", "created_at", "country_code", "method", "message"}
 }

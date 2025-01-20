@@ -54,7 +54,7 @@ func loadbalancerACLActionList(service loadbalancer.LoadBalancerService, cmd *co
 		return fmt.Errorf("Error retrieving ACL [%d]: %s", aclID, err)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerACLActionsProvider(mapACLActions(acl.Actions)))
+	return output.CommandOutput(cmd, ACLActionCollection(mapACLActions(acl.Actions)))
 }
 
 func loadbalancerACLActionShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -104,7 +104,7 @@ func loadbalancerACLActionShow(service loadbalancer.LoadBalancerService, cmd *co
 		actions = append(actions, mapACLAction(acl.Actions[actionIndex], actionIndex))
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerACLActionsProvider(actions))
+	return output.CommandOutput(cmd, ACLActionCollection(actions))
 }
 
 func loadbalancerACLActionCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -168,7 +168,7 @@ func loadbalancerACLActionCreate(service loadbalancer.LoadBalancerService, cmd *
 		return fmt.Errorf("Error retrieving updated ACL [%d]: %s", aclID, err)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerACLActionsProvider(mapACLActions(acl.Actions)))
+	return output.CommandOutput(cmd, ACLActionCollection(mapACLActions(acl.Actions)))
 }
 
 func loadbalancerACLActionUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -249,7 +249,7 @@ func loadbalancerACLActionUpdate(service loadbalancer.LoadBalancerService, cmd *
 		return fmt.Errorf("Error retrieving updated ACL [%d]: %s", aclID, err)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerACLActionsProvider(mapACLActions(acl.Actions)))
+	return output.CommandOutput(cmd, ACLActionCollection(mapACLActions(acl.Actions)))
 }
 
 func loadbalancerACLActionDeleteCmd(f factory.ClientFactory) *cobra.Command {
@@ -310,7 +310,7 @@ func loadbalancerACLActionDelete(service loadbalancer.LoadBalancerService, cmd *
 		return fmt.Errorf("Error retrieving updated ACL [%d]: %s", aclID, err)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerACLActionsProvider(mapACLActions(acl.Actions)))
+	return output.CommandOutput(cmd, ACLActionCollection(mapACLActions(acl.Actions)))
 }
 
 func mapACLAction(action loadbalancer.ACLAction, index int) ACLAction {

@@ -51,5 +51,5 @@ func loadbalancerClusterACLTemplateShow(service loadbalancer.LoadBalancerService
 		return fmt.Errorf("Error retrieving ACL templates: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerACLTemplatesProvider([]loadbalancer.ACLTemplates{aclTemplates}))
+	return output.CommandOutput(cmd, ACLTemplatesCollection([]loadbalancer.ACLTemplates{aclTemplates}))
 }

@@ -50,7 +50,7 @@ func ecloudBackupGatewaySpecificationList(service ecloud.ECloudService, cmd *cob
 		return fmt.Errorf("Error retrieving backup gateway specifications: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudBackupGatewaySpecificationsProvider(specs))
+	return output.CommandOutput(cmd, BackupGatewaySpecificationCollection(specs))
 }
 
 func ecloudBackupGatewaySpecificationShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -81,5 +81,5 @@ func ecloudBackupGatewaySpecificationShow(service ecloud.ECloudService, cmd *cob
 		specs = append(specs, spec)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudBackupGatewaySpecificationsProvider(specs))
+	return output.CommandOutput(cmd, BackupGatewaySpecificationCollection(specs))
 }

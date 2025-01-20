@@ -52,5 +52,5 @@ func registrarDomainNameserverList(service registrar.RegistrarService, cmd *cobr
 		return fmt.Errorf("Error retrieving domain nameservers: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputRegistrarNameserversProvider(nameservers))
+	return output.CommandOutput(cmd, NameserverCollection(nameservers))
 }

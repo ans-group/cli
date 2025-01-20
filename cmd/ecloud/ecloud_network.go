@@ -59,7 +59,7 @@ func ecloudNetworkList(service ecloud.ECloudService, cmd *cobra.Command, args []
 		return fmt.Errorf("Error retrieving networks: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudNetworksProvider(networks))
+	return output.CommandOutput(cmd, NetworkCollection(networks))
 }
 
 func ecloudNetworkShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -91,7 +91,7 @@ func ecloudNetworkShow(service ecloud.ECloudService, cmd *cobra.Command, args []
 		networks = append(networks, network)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudNetworksProvider(networks))
+	return output.CommandOutput(cmd, NetworkCollection(networks))
 }
 
 func ecloudNetworkCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -140,7 +140,7 @@ func ecloudNetworkCreate(service ecloud.ECloudService, cmd *cobra.Command, args 
 		return fmt.Errorf("Error retrieving new network: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudNetworksProvider([]ecloud.Network{network}))
+	return output.CommandOutput(cmd, NetworkCollection([]ecloud.Network{network}))
 }
 
 func ecloudNetworkUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -198,7 +198,7 @@ func ecloudNetworkUpdate(service ecloud.ECloudService, cmd *cobra.Command, args 
 		networks = append(networks, network)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudNetworksProvider(networks))
+	return output.CommandOutput(cmd, NetworkCollection(networks))
 }
 
 func ecloudNetworkDeleteCmd(f factory.ClientFactory) *cobra.Command {

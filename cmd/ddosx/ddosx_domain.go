@@ -66,7 +66,7 @@ func ddosxDomainList(service ddosx.DDoSXService, cmd *cobra.Command, args []stri
 		return fmt.Errorf("Error retrieving domains: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXDomainsProvider(domains))
+	return output.CommandOutput(cmd, DomainCollection(domains))
 }
 
 func ddosxDomainShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -105,7 +105,7 @@ func ddosxDomainShow(service ddosx.DDoSXService, cmd *cobra.Command, args []stri
 		domains = append(domains, domain)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXDomainsProvider(domains))
+	return output.CommandOutput(cmd, DomainCollection(domains))
 }
 
 func ddosxDomainCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -148,7 +148,7 @@ func ddosxDomainCreate(service ddosx.DDoSXService, cmd *cobra.Command, args []st
 		return fmt.Errorf("Error retrieving new domain: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXDomainsProvider([]ddosx.Domain{domain}))
+	return output.CommandOutput(cmd, DomainCollection([]ddosx.Domain{domain}))
 }
 
 func ddosxDomainDeleteCmd(f factory.ClientFactory) *cobra.Command {
@@ -252,7 +252,7 @@ func ddosxDomainDeploy(service ddosx.DDoSXService, cmd *cobra.Command, args []st
 		domains = append(domains, domain)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXDomainsProvider(domains))
+	return output.CommandOutput(cmd, DomainCollection(domains))
 }
 
 func DomainStatusWaitFunc(service ddosx.DDoSXService, domainName string, status ddosx.DomainStatus) helper.WaitFunc {

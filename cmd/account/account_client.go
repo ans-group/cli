@@ -56,7 +56,7 @@ func accountClientList(service account.AccountService, cmd *cobra.Command, args 
 		return fmt.Errorf("Error retrieving clients: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputAccountClientsProvider(clients))
+	return output.CommandOutput(cmd, ClientCollection(clients))
 }
 
 func accountClientShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -101,7 +101,7 @@ func accountClientShow(service account.AccountService, cmd *cobra.Command, args 
 		clients = append(clients, client)
 	}
 
-	return output.CommandOutput(cmd, OutputAccountClientsProvider(clients))
+	return output.CommandOutput(cmd, ClientCollection(clients))
 }
 
 func accountClientCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -176,7 +176,7 @@ func accountClientCreate(service account.AccountService, cmd *cobra.Command, arg
 		return fmt.Errorf("Error retrieving new client: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputAccountClientsProvider([]account.Client{client}))
+	return output.CommandOutput(cmd, ClientCollection([]account.Client{client}))
 }
 
 func accountClientUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -273,7 +273,7 @@ func accountClientUpdate(service account.AccountService, cmd *cobra.Command, arg
 		clients = append(clients, client)
 	}
 
-	return output.CommandOutput(cmd, OutputAccountClientsProvider(clients))
+	return output.CommandOutput(cmd, ClientCollection(clients))
 }
 
 func accountClientDeleteCmd(f factory.ClientFactory) *cobra.Command {

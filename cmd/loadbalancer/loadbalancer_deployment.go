@@ -46,7 +46,7 @@ func loadbalancerDeploymentList(service loadbalancer.LoadBalancerService, cmd *c
 		return fmt.Errorf("Error retrieving deployments: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerDeploymentsProvider(deployments))
+	return output.CommandOutput(cmd, DeploymentCollection(deployments))
 }
 
 func loadbalancerDeploymentShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -84,5 +84,5 @@ func loadbalancerDeploymentShow(service loadbalancer.LoadBalancerService, cmd *c
 		deployments = append(deployments, deployment)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerDeploymentsProvider(deployments))
+	return output.CommandOutput(cmd, DeploymentCollection(deployments))
 }

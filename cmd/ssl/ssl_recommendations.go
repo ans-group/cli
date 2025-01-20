@@ -57,5 +57,5 @@ func sslRecommendationsShow(service ssl.SSLService, cmd *cobra.Command, args []s
 		recommendationsSlice = append(recommendationsSlice, recommendations)
 	}
 
-	return output.CommandOutput(cmd, OutputSSLRecommendationsProvider(recommendationsSlice))
+	return output.CommandOutput(cmd, RecommendationsCollection(recommendationsSlice))
 }

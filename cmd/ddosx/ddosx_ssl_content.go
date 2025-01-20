@@ -57,5 +57,5 @@ func ddosxSSLContentShow(service ddosx.DDoSXService, cmd *cobra.Command, args []
 		sslContents = append(sslContents, sslContent)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXSSLContentsProvider(sslContents))
+	return output.CommandOutput(cmd, SSLContentCollection(sslContents))
 }

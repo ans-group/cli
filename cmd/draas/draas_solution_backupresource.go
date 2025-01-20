@@ -60,5 +60,5 @@ func draasSolutionBackupResourceList(service draas.DRaaSService, cmd *cobra.Comm
 		return fmt.Errorf("Error retrieving solution backup resources: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputDRaaSBackupResourcesProvider(resources))
+	return output.CommandOutput(cmd, BackupResourceCollection(resources))
 }

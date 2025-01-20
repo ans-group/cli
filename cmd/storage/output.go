@@ -7,72 +7,75 @@ import (
 	"github.com/ans-group/sdk-go/pkg/service/storage"
 )
 
-func OutputStorageSolutionsProvider(solutions []storage.Solution) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(solutions),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, solution := range solutions {
-				fields := output.NewOrderedFields()
-				fields.Set("id", output.NewFieldValue(strconv.Itoa(solution.ID), true))
-				fields.Set("name", output.NewFieldValue(solution.Name, true))
-				fields.Set("san_id", output.NewFieldValue(strconv.Itoa(solution.SanID), true))
-				fields.Set("created_at", output.NewFieldValue(solution.CreatedAt.String(), true))
-				fields.Set("updated_at", output.NewFieldValue(solution.UpdatedAt.String(), true))
+type SolutionCollection []storage.Solution
 
-				data = append(data, fields)
-			}
-
-			return data, nil
-		}),
-	)
+func (s SolutionCollection) DefaultColumns() []string {
+	return []string{"id", "name", "san_id", "created_at", "updated_at"}
 }
 
-func OutputStorageVolumesProvider(volumes []storage.Volume) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(volumes),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, volume := range volumes {
-				fields := output.NewOrderedFields()
-				fields.Set("id", output.NewFieldValue(strconv.Itoa(volume.ID), true))
-				fields.Set("name", output.NewFieldValue(volume.Name, true))
-				fields.Set("wwn", output.NewFieldValue(volume.WWN, false))
-				fields.Set("size_gb", output.NewFieldValue(strconv.Itoa(volume.SizeGB), true))
-				fields.Set("status", output.NewFieldValue(volume.Status, true))
-				fields.Set("solution_id", output.NewFieldValue(strconv.Itoa(volume.SolutionID), true))
-				fields.Set("created_at", output.NewFieldValue(volume.CreatedAt.String(), true))
-				fields.Set("updated_at", output.NewFieldValue(volume.UpdatedAt.String(), true))
+func (s SolutionCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, solution := range s {
+		fields := output.NewOrderedFields()
+		fields.Set("id", strconv.Itoa(solution.ID))
+		fields.Set("name", solution.Name)
+		fields.Set("san_id", strconv.Itoa(solution.SanID))
+		fields.Set("created_at", solution.CreatedAt.String())
+		fields.Set("updated_at", solution.UpdatedAt.String())
 
-				data = append(data, fields)
-			}
+		data = append(data, fields)
+	}
 
-			return data, nil
-		}),
-	)
+	return data
 }
 
-func OutputStorageHostsProvider(hosts []storage.Host) output.OutputHandlerDataProvider {
-	return output.NewGenericOutputHandlerDataProvider(
-		output.WithData(hosts),
-		output.WithFieldDataFunc(func() ([]*output.OrderedFields, error) {
-			var data []*output.OrderedFields
-			for _, host := range hosts {
-				fields := output.NewOrderedFields()
-				fields.Set("id", output.NewFieldValue(strconv.Itoa(host.ID), true))
-				fields.Set("name", output.NewFieldValue(host.Name, true))
-				fields.Set("os_type", output.NewFieldValue(host.OSType, false))
-				fields.Set("iqn", output.NewFieldValue(host.IQN, false))
-				fields.Set("server_id", output.NewFieldValue(strconv.Itoa(host.ServerID), true))
-				fields.Set("status", output.NewFieldValue(host.Status, true))
-				fields.Set("solution_id", output.NewFieldValue(strconv.Itoa(host.SolutionID), true))
-				fields.Set("created_at", output.NewFieldValue(host.CreatedAt.String(), true))
-				fields.Set("updated_at", output.NewFieldValue(host.UpdatedAt.String(), true))
+type VolumeCollection []storage.Volume
 
-				data = append(data, fields)
-			}
+func (v VolumeCollection) DefaultColumns() []string {
+	return []string{"id", "name", "size_gb", "status", "solution_id", "created_at", "updated_at"}
+}
 
-			return data, nil
-		}),
-	)
+func (v VolumeCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, volume := range v {
+		fields := output.NewOrderedFields()
+		fields.Set("id", strconv.Itoa(volume.ID))
+		fields.Set("name", volume.Name)
+		fields.Set("wwn", volume.WWN)
+		fields.Set("size_gb", strconv.Itoa(volume.SizeGB))
+		fields.Set("status", volume.Status)
+		fields.Set("solution_id", strconv.Itoa(volume.SolutionID))
+		fields.Set("created_at", volume.CreatedAt.String())
+		fields.Set("updated_at", volume.UpdatedAt.String())
+
+		data = append(data, fields)
+	}
+
+	return data
+}
+
+type HostCollection []storage.Host
+
+func (h HostCollection) DefaultColumns() []string {
+	return []string{"id", "name", "server_id", "status", "solution_id", "created_at", "updated_at"}
+}
+
+func (h HostCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, host := range h {
+		fields := output.NewOrderedFields()
+		fields.Set("id", strconv.Itoa(host.ID))
+		fields.Set("name", host.Name)
+		fields.Set("os_type", host.OSType)
+		fields.Set("iqn", host.IQN)
+		fields.Set("server_id", strconv.Itoa(host.ServerID))
+		fields.Set("status", host.Status)
+		fields.Set("solution_id", strconv.Itoa(host.SolutionID))
+		fields.Set("created_at", host.CreatedAt.String())
+		fields.Set("updated_at", host.UpdatedAt.String())
+
+		data = append(data, fields)
+	}
+
+	return data
 }

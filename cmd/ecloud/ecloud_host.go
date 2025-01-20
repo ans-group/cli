@@ -54,7 +54,7 @@ func ecloudHostList(service ecloud.ECloudService, cmd *cobra.Command, args []str
 		return fmt.Errorf("Error retrieving hosts: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudHostsProvider(groups))
+	return output.CommandOutput(cmd, HostCollection(groups))
 }
 
 func ecloudHostShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -86,7 +86,7 @@ func ecloudHostShow(service ecloud.ECloudService, cmd *cobra.Command, args []str
 		groups = append(groups, group)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudHostsProvider(groups))
+	return output.CommandOutput(cmd, HostCollection(groups))
 }
 
 func ecloudHostCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -130,7 +130,7 @@ func ecloudHostCreate(service ecloud.ECloudService, cmd *cobra.Command, args []s
 		return fmt.Errorf("Error retrieving new host: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudHostsProvider([]ecloud.Host{group}))
+	return output.CommandOutput(cmd, HostCollection([]ecloud.Host{group}))
 }
 
 func ecloudHostUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -188,7 +188,7 @@ func ecloudHostUpdate(service ecloud.ECloudService, cmd *cobra.Command, args []s
 		groups = append(groups, group)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudHostsProvider(groups))
+	return output.CommandOutput(cmd, HostCollection(groups))
 }
 
 func ecloudHostDeleteCmd(f factory.ClientFactory) *cobra.Command {

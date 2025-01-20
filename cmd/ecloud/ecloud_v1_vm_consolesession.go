@@ -69,5 +69,5 @@ func ecloudVirtualMachineConsoleSessionCreate(service ecloud.ECloudService, cmd 
 		return browser.OpenURL(console.URL)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudConsoleSessionsProvider([]ecloud.ConsoleSession{console}))
+	return output.CommandOutput(cmd, ConsoleSessionCollection([]ecloud.ConsoleSession{console}))
 }

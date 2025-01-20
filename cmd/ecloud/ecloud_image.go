@@ -51,7 +51,7 @@ func ecloudImageList(service ecloud.ECloudService, cmd *cobra.Command, args []st
 		return fmt.Errorf("Error retrieving images: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudImagesProvider(images))
+	return output.CommandOutput(cmd, ImageCollection(images))
 }
 
 func ecloudImageShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -83,7 +83,7 @@ func ecloudImageShow(service ecloud.ECloudService, cmd *cobra.Command, args []st
 		images = append(images, image)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudImagesProvider(images))
+	return output.CommandOutput(cmd, ImageCollection(images))
 }
 
 func ecloudImageUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -141,7 +141,7 @@ func ecloudImageUpdate(service ecloud.ECloudService, cmd *cobra.Command, args []
 		images = append(images, image)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudImagesProvider(images))
+	return output.CommandOutput(cmd, ImageCollection(images))
 }
 
 func ecloudImageDeleteCmd(f factory.ClientFactory) *cobra.Command {

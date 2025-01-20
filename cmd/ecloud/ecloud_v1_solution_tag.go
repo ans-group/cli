@@ -69,7 +69,7 @@ func ecloudSolutionTagList(service ecloud.ECloudService, cmd *cobra.Command, arg
 		return fmt.Errorf("Error retrieving solution tags: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudTagsProvider(tags))
+	return output.CommandOutput(cmd, TagCollection(tags))
 }
 
 func ecloudSolutionTagShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -117,7 +117,7 @@ func ecloudSolutionTagShow(service ecloud.ECloudService, cmd *cobra.Command, arg
 		tags = append(tags, tag)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudTagsProvider(tags))
+	return output.CommandOutput(cmd, TagCollection(tags))
 }
 
 func ecloudSolutionTagCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -175,7 +175,7 @@ func ecloudSolutionTagCreate(service ecloud.ECloudService, cmd *cobra.Command, a
 		return fmt.Errorf("Error retrieving new solution tag: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudTagsProvider([]ecloud.Tag{tag}))
+	return output.CommandOutput(cmd, TagCollection([]ecloud.Tag{tag}))
 }
 
 func ecloudSolutionTagUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -240,7 +240,7 @@ func ecloudSolutionTagUpdate(service ecloud.ECloudService, cmd *cobra.Command, a
 		tags = append(tags, tag)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudTagsProvider(tags))
+	return output.CommandOutput(cmd, TagCollection(tags))
 }
 
 func ecloudSolutionTagDeleteCmd(f factory.ClientFactory) *cobra.Command {

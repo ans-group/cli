@@ -69,7 +69,7 @@ func ecloudSolutionList(service ecloud.ECloudService, cmd *cobra.Command, args [
 		return fmt.Errorf("Error retrieving solutions: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudSolutionsProvider(solutions))
+	return output.CommandOutput(cmd, SolutionCollection(solutions))
 }
 
 func ecloudSolutionShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -114,7 +114,7 @@ func ecloudSolutionShow(service ecloud.ECloudService, cmd *cobra.Command, args [
 		solutions = append(solutions, solution)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudSolutionsProvider(solutions))
+	return output.CommandOutput(cmd, SolutionCollection(solutions))
 }
 
 func ecloudSolutionUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -173,5 +173,5 @@ func ecloudSolutionUpdate(service ecloud.ECloudService, cmd *cobra.Command, args
 		return fmt.Errorf("Error retrieving updated solution: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudSolutionsProvider([]ecloud.Solution{solution}))
+	return output.CommandOutput(cmd, SolutionCollection([]ecloud.Solution{solution}))
 }

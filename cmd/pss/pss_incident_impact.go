@@ -41,5 +41,5 @@ func pssIncidentImpactList(service pss.PSSService, cmd *cobra.Command, args []st
 		return err
 	}
 
-	return output.CommandOutput(cmd, OutputPSSCaseOptionsProvider(options))
+	return output.CommandOutput(cmd, CaseOptionCollection(options))
 }

@@ -64,7 +64,7 @@ func ddosxDomainWAFAdvancedRuleList(service ddosx.DDoSXService, cmd *cobra.Comma
 		return fmt.Errorf("Error retrieving domain WAF advanced rules: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXWAFAdvancedRulesProvider(domains))
+	return output.CommandOutput(cmd, WAFAdvancedRuleCollection(domains))
 }
 
 func ddosxDomainWAFAdvancedRuleShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -108,7 +108,7 @@ func ddosxDomainWAFAdvancedRuleShow(service ddosx.DDoSXService, cmd *cobra.Comma
 		rules = append(rules, rule)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXWAFAdvancedRulesProvider(rules))
+	return output.CommandOutput(cmd, WAFAdvancedRuleCollection(rules))
 }
 
 func ddosxDomainWAFAdvancedRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -171,7 +171,7 @@ func ddosxDomainWAFAdvancedRuleCreate(service ddosx.DDoSXService, cmd *cobra.Com
 		return fmt.Errorf("Error retrieving new domain WAF advanced rule [%s]: %s", id, err)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXWAFAdvancedRulesProvider([]ddosx.WAFAdvancedRule{rule}))
+	return output.CommandOutput(cmd, WAFAdvancedRuleCollection([]ddosx.WAFAdvancedRule{rule}))
 }
 
 func ddosxDomainWAFAdvancedRuleUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -248,7 +248,7 @@ func ddosxDomainWAFAdvancedRuleUpdate(service ddosx.DDoSXService, cmd *cobra.Com
 		rules = append(rules, rule)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXWAFAdvancedRulesProvider(rules))
+	return output.CommandOutput(cmd, WAFAdvancedRuleCollection(rules))
 }
 
 func ddosxDomainWAFAdvancedRuleDeleteCmd(f factory.ClientFactory) *cobra.Command {

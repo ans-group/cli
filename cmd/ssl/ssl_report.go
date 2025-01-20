@@ -57,5 +57,5 @@ func sslReportShow(service ssl.SSLService, cmd *cobra.Command, args []string) er
 		reports = append(reports, report)
 	}
 
-	return output.CommandOutput(cmd, OutputSSLReportsProvider(reports))
+	return output.CommandOutput(cmd, ReportCollection(reports))
 }

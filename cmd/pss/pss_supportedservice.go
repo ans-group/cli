@@ -41,5 +41,5 @@ func pssSupportedServiceList(service pss.PSSService, cmd *cobra.Command, args []
 		return err
 	}
 
-	return output.CommandOutput(cmd, OutputPSSSupportedServicesProvider(problems))
+	return output.CommandOutput(cmd, SupportedServiceCollection(problems))
 }

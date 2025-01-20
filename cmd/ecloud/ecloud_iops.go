@@ -51,7 +51,7 @@ func ecloudIOPSTierList(service ecloud.ECloudService, cmd *cobra.Command, args [
 		return fmt.Errorf("Error retrieving IOPS tiers: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudIOPSTierProvider(tiers))
+	return output.CommandOutput(cmd, IOPSTierCollection(tiers))
 }
 
 func ecloudIOPSTierShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -83,5 +83,5 @@ func ecloudIOPSTierShow(service ecloud.ECloudService, cmd *cobra.Command, args [
 		tiersList = append(tiersList, tiers)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudIOPSTierProvider(tiersList))
+	return output.CommandOutput(cmd, IOPSTierCollection(tiersList))
 }

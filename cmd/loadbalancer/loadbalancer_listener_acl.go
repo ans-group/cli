@@ -57,5 +57,5 @@ func loadbalancerListenerACLList(service loadbalancer.LoadBalancerService, cmd *
 		return fmt.Errorf("Error retrieving ACLs: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerACLsProvider(acls))
+	return output.CommandOutput(cmd, ACLCollection(acls))
 }

@@ -57,7 +57,7 @@ func ecloudAffinityRuleList(service ecloud.ECloudService, cmd *cobra.Command, ar
 		return fmt.Errorf("Error retrieving affinity rules: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudAffinityRuleProvider(rules))
+	return output.CommandOutput(cmd, AffinityRuleCollection(rules))
 }
 
 func ecloudAffinityRuleShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -89,7 +89,7 @@ func ecloudAffinityRuleShow(service ecloud.ECloudService, cmd *cobra.Command, ar
 		rules = append(rules, rule)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudAffinityRuleProvider(rules))
+	return output.CommandOutput(cmd, AffinityRuleCollection(rules))
 }
 
 func ecloudAffinityRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -148,7 +148,7 @@ func ecloudAffinityRuleCreate(service ecloud.ECloudService, cmd *cobra.Command, 
 		return fmt.Errorf("Error retrieving new affinity rule: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudAffinityRuleProvider([]ecloud.AffinityRule{rule}))
+	return output.CommandOutput(cmd, AffinityRuleCollection([]ecloud.AffinityRule{rule}))
 }
 
 func ecloudAffinityRuleUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -206,7 +206,7 @@ func ecloudAffinityRuleUpdate(service ecloud.ECloudService, cmd *cobra.Command, 
 		rules = append(rules, rule)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudAffinityRuleProvider(rules))
+	return output.CommandOutput(cmd, AffinityRuleCollection(rules))
 }
 
 func ecloudAffinityRuleDeleteCmd(f factory.ClientFactory) *cobra.Command {

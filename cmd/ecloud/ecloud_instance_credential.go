@@ -55,5 +55,5 @@ func ecloudInstanceCredentialList(service ecloud.ECloudService, cmd *cobra.Comma
 		return fmt.Errorf("Error retrieving instance credentials: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudCredentialsProvider(credentials))
+	return output.CommandOutput(cmd, CredentialCollection(credentials))
 }

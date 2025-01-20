@@ -54,7 +54,7 @@ func ecloudNATOverloadRuleList(service ecloud.ECloudService, cmd *cobra.Command,
 		return fmt.Errorf("Error retrieving NAT overload rules: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudNATOverloadRulesProvider(rules))
+	return output.CommandOutput(cmd, NATOverloadRuleCollection(rules))
 }
 
 func ecloudNATOverloadRuleShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -86,7 +86,7 @@ func ecloudNATOverloadRuleShow(service ecloud.ECloudService, cmd *cobra.Command,
 		rules = append(rules, rule)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudNATOverloadRulesProvider(rules))
+	return output.CommandOutput(cmd, NATOverloadRuleCollection(rules))
 }
 
 func ecloudNATOverloadRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -145,7 +145,7 @@ func ecloudNATOverloadRuleCreate(service ecloud.ECloudService, cmd *cobra.Comman
 		return fmt.Errorf("Error retrieving new NAT overload rule: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudNATOverloadRulesProvider([]ecloud.NATOverloadRule{rule}))
+	return output.CommandOutput(cmd, NATOverloadRuleCollection([]ecloud.NATOverloadRule{rule}))
 }
 
 func ecloudNATOverloadRuleUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -203,7 +203,7 @@ func ecloudNATOverloadRuleUpdate(service ecloud.ECloudService, cmd *cobra.Comman
 		rules = append(rules, rule)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudNATOverloadRulesProvider(rules))
+	return output.CommandOutput(cmd, NATOverloadRuleCollection(rules))
 }
 
 func ecloudNATOverloadRuleDeleteCmd(f factory.ClientFactory) *cobra.Command {

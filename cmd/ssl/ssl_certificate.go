@@ -57,7 +57,7 @@ func sslCertificateList(service ssl.SSLService, cmd *cobra.Command, args []strin
 		return fmt.Errorf("Error retrieving certificates: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputSSLCertificatesProvider(certificates))
+	return output.CommandOutput(cmd, CertificateCollection(certificates))
 }
 
 func sslCertificateShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -102,5 +102,5 @@ func sslCertificateShow(service ssl.SSLService, cmd *cobra.Command, args []strin
 		certificates = append(certificates, certificate)
 	}
 
-	return output.CommandOutput(cmd, OutputSSLCertificatesProvider(certificates))
+	return output.CommandOutput(cmd, CertificateCollection(certificates))
 }

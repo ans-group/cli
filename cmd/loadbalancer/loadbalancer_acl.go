@@ -66,7 +66,7 @@ func loadbalancerACLShow(service loadbalancer.LoadBalancerService, cmd *cobra.Co
 		acls = append(acls, acl)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerACLsProvider(acls))
+	return output.CommandOutput(cmd, ACLCollection(acls))
 }
 
 func loadbalancerACLCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -149,7 +149,7 @@ func loadbalancerACLCreate(service loadbalancer.LoadBalancerService, cmd *cobra.
 		return fmt.Errorf("Error retrieving new ACL: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerACLsProvider([]loadbalancer.ACL{acl}))
+	return output.CommandOutput(cmd, ACLCollection([]loadbalancer.ACL{acl}))
 }
 
 func loadbalancerACLUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -202,7 +202,7 @@ func loadbalancerACLUpdate(service loadbalancer.LoadBalancerService, cmd *cobra.
 		acls = append(acls, acl)
 	}
 
-	return output.CommandOutput(cmd, OutputLoadBalancerACLsProvider(acls))
+	return output.CommandOutput(cmd, ACLCollection(acls))
 }
 
 func loadbalancerACLDeleteCmd(f factory.ClientFactory) *cobra.Command {

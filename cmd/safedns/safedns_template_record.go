@@ -78,7 +78,7 @@ func safednsTemplateRecordList(service safedns.SafeDNSService, cmd *cobra.Comman
 		return fmt.Errorf("Error retrieving records for template: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputSafeDNSRecordsProvider(templateRecords))
+	return output.CommandOutput(cmd, RecordCollection(templateRecords))
 }
 
 func safednsTemplateRecordShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -132,7 +132,7 @@ func safednsTemplateRecordShow(service safedns.SafeDNSService, cmd *cobra.Comman
 		templateRecords = append(templateRecords, templateRecord)
 	}
 
-	return output.CommandOutput(cmd, OutputSafeDNSRecordsProvider(templateRecords))
+	return output.CommandOutput(cmd, RecordCollection(templateRecords))
 }
 
 func safednsTemplateRecordCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -208,7 +208,7 @@ func safednsTemplateRecordCreate(service safedns.SafeDNSService, cmd *cobra.Comm
 		return fmt.Errorf("Error retrieving new record: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputSafeDNSRecordsProvider([]safedns.Record{templateRecord}))
+	return output.CommandOutput(cmd, RecordCollection([]safedns.Record{templateRecord}))
 }
 
 func safednsTemplateRecordUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -300,7 +300,7 @@ func safednsTemplateRecordUpdate(service safedns.SafeDNSService, cmd *cobra.Comm
 		templateRecords = append(templateRecords, templateRecord)
 	}
 
-	return output.CommandOutput(cmd, OutputSafeDNSRecordsProvider(templateRecords))
+	return output.CommandOutput(cmd, RecordCollection(templateRecords))
 }
 
 func safednsTemplateRecordDeleteCmd(f factory.ClientFactory) *cobra.Command {

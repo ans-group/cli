@@ -53,7 +53,7 @@ func accountContactList(service account.AccountService, cmd *cobra.Command, args
 		return fmt.Errorf("Error retrieving contacts: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputAccountContactsProvider(contacts))
+	return output.CommandOutput(cmd, ContactCollection(contacts))
 }
 
 func accountContactShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -98,5 +98,5 @@ func accountContactShow(service account.AccountService, cmd *cobra.Command, args
 		contacts = append(contacts, contact)
 	}
 
-	return output.CommandOutput(cmd, OutputAccountContactsProvider(contacts))
+	return output.CommandOutput(cmd, ContactCollection(contacts))
 }

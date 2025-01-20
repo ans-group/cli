@@ -70,7 +70,7 @@ func ddosxDomainCDNEnable(service ddosx.DDoSXService, cmd *cobra.Command, args [
 		domains = append(domains, domain)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXDomainsProvider(domains))
+	return output.CommandOutput(cmd, DomainCollection(domains))
 }
 
 func ddosxDomainCDNDisableCmd(f factory.ClientFactory) *cobra.Command {
@@ -116,7 +116,7 @@ func ddosxDomainCDNDisable(service ddosx.DDoSXService, cmd *cobra.Command, args 
 		domains = append(domains, domain)
 	}
 
-	return output.CommandOutput(cmd, OutputDDoSXDomainsProvider(domains))
+	return output.CommandOutput(cmd, DomainCollection(domains))
 }
 
 func ddosxDomainCDNPurgeCmd(f factory.ClientFactory) *cobra.Command {

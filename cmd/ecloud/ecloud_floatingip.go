@@ -50,7 +50,7 @@ func ecloudFloatingIPList(service ecloud.ECloudService, cmd *cobra.Command, args
 		return fmt.Errorf("Error retrieving floating IPs: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudFloatingIPsProvider(fips))
+	return output.CommandOutput(cmd, FloatingIPCollection(fips))
 }
 
 func ecloudFloatingIPShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -82,7 +82,7 @@ func ecloudFloatingIPShow(service ecloud.ECloudService, cmd *cobra.Command, args
 		fips = append(fips, fip)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudFloatingIPsProvider(fips))
+	return output.CommandOutput(cmd, FloatingIPCollection(fips))
 }
 
 func ecloudFloatingIPCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -131,7 +131,7 @@ func ecloudFloatingIPCreate(service ecloud.ECloudService, cmd *cobra.Command, ar
 		return fmt.Errorf("Error retrieving new floating IP: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudFloatingIPsProvider([]ecloud.FloatingIP{fip}))
+	return output.CommandOutput(cmd, FloatingIPCollection([]ecloud.FloatingIP{fip}))
 }
 
 func ecloudFloatingIPUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -189,7 +189,7 @@ func ecloudFloatingIPUpdate(service ecloud.ECloudService, cmd *cobra.Command, ar
 		fips = append(fips, fip)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudFloatingIPsProvider(fips))
+	return output.CommandOutput(cmd, FloatingIPCollection(fips))
 }
 
 func ecloudFloatingIPDeleteCmd(f factory.ClientFactory) *cobra.Command {
@@ -281,7 +281,7 @@ func ecloudFloatingIPAssign(service ecloud.ECloudService, cmd *cobra.Command, ar
 		return fmt.Errorf("Error retrieving new floating IP: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudFloatingIPsProvider([]ecloud.FloatingIP{fip}))
+	return output.CommandOutput(cmd, FloatingIPCollection([]ecloud.FloatingIP{fip}))
 }
 
 func ecloudFloatingIPUnassignCmd(f factory.ClientFactory) *cobra.Command {

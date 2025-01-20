@@ -53,7 +53,7 @@ func ecloudVPNSessionPreSharedKeyShow(service ecloud.ECloudService, cmd *cobra.C
 		psks = append(psks, psk)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudVPNSessionPreSharedKeysProvider(psks))
+	return output.CommandOutput(cmd, VPNSessionPreSharedKeyCollection(psks))
 }
 
 func ecloudVPNSessionPreSharedKeyUpdateCmd(f factory.ClientFactory) *cobra.Command {

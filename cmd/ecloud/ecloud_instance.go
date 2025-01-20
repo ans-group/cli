@@ -76,7 +76,7 @@ func ecloudInstanceList(service ecloud.ECloudService, cmd *cobra.Command, args [
 		return fmt.Errorf("Error retrieving instances: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudInstancesProvider(instances))
+	return output.CommandOutput(cmd, InstanceCollection(instances))
 }
 
 func ecloudInstanceShowCmd(f factory.ClientFactory) *cobra.Command {
@@ -108,7 +108,7 @@ func ecloudInstanceShow(service ecloud.ECloudService, cmd *cobra.Command, args [
 		instances = append(instances, instance)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudInstancesProvider(instances))
+	return output.CommandOutput(cmd, InstanceCollection(instances))
 }
 
 func ecloudInstanceCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -228,7 +228,7 @@ func ecloudInstanceCreate(service ecloud.ECloudService, cmd *cobra.Command, args
 		return fmt.Errorf("Error retrieving new instance: %s", err)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudInstancesProvider([]ecloud.Instance{instance}))
+	return output.CommandOutput(cmd, InstanceCollection([]ecloud.Instance{instance}))
 }
 
 func ecloudInstanceUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -316,7 +316,7 @@ func ecloudInstanceUpdate(service ecloud.ECloudService, cmd *cobra.Command, args
 		instances = append(instances, instance)
 	}
 
-	return output.CommandOutput(cmd, OutputECloudInstancesProvider(instances))
+	return output.CommandOutput(cmd, InstanceCollection(instances))
 }
 
 func ecloudInstanceDeleteCmd(f factory.ClientFactory) *cobra.Command {
