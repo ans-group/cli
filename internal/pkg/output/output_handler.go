@@ -53,6 +53,10 @@ func (o *OutputHandler) Output(cmd *cobra.Command, d interface{}) error {
 		flag, _ = cmd.Flags().GetString("output")
 	}
 
+	if len(flag) == 0 {
+		flag = "table"
+	}
+
 	format, arg := ParseOutputFlag(flag)
 	if format == "template" && cmd.Flags().Changed("outputtemplate") {
 		arg, _ = cmd.Flags().GetString("outputtemplate")

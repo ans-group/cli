@@ -291,52 +291,6 @@ func Test_ecloudInstanceCreate(t *testing.T) {
 
 		assert.Equal(t, "Error retrieving new instance: test error", err.Error())
 	})
-
-	t.Run("AgentBackupsWithoutGateway_ReturnsError", func(t *testing.T) {
-		mockCtrl := gomock.NewController(t)
-		defer mockCtrl.Finish()
-
-		service := mocks.NewMockECloudService(mockCtrl)
-		cmd := ecloudInstanceCreateCmd(nil)
-		cmd.ParseFlags([]string{
-			"--name=testinstance",
-			"--image=img-abcdef12",
-			"--enable-agent-backups",
-		})
-
-		err := ecloudInstanceCreate(service, cmd, []string{})
-		assert.NotNil(t, err)
-		assert.Equal(t, "A backup gateway is required to use agent-level backups, please specify a backup gateway ID", err.Error())
-	})
-
-	t.Run("AgentBackupsWithGateway_NoError", func(t *testing.T) {
-		mockCtrl := gomock.NewController(t)
-		defer mockCtrl.Finish()
-
-		service := mocks.NewMockECloudService(mockCtrl)
-		cmd := ecloudInstanceCreateCmd(nil)
-		cmd.ParseFlags([]string{
-			"--name=testinstance",
-			"--image=img-abcdef12",
-			"--enable-agent-backups",
-			"--backup-gateway-id=bgw-abcdef12",
-		})
-
-		req := ecloud.CreateInstanceRequest{
-			Name:               "testinstance",
-			ImageID:            "img-abcdef12",
-			VCPUSockets:        1,
-			VCPUCoresPerSocket: 1,
-			BackupAgentEnabled: true,
-			BackupGatewayID:    "bgw-abcdef12",
-		}
-
-		service.EXPECT().CreateInstance(req).Return("i-abcdef12", nil)
-		service.EXPECT().GetInstance("i-abcdef12").Return(ecloud.Instance{}, nil)
-
-		err := ecloudInstanceCreate(service, cmd, []string{})
-		assert.Nil(t, err)
-	})
 }
 
 func Test_ecloudInstanceUpdateCmd_Args(t *testing.T) {

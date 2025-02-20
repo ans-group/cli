@@ -7,6 +7,7 @@ import (
 	"github.com/ans-group/cli/internal/pkg/clierrors"
 	"github.com/ans-group/cli/test/mocks"
 	"github.com/ans-group/cli/test/test_output"
+	"github.com/ans-group/sdk-go/pkg/connection"
 	"github.com/ans-group/sdk-go/pkg/service/pss"
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
@@ -19,8 +20,7 @@ func Test_pssChangeList(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockPSSService(mockCtrl)
-
-		service.EXPECT().GetChangeCases(gomock.Any()).Return([]pss.ChangeCase{}, nil).Times(1)
+		service.EXPECT().GetChangeCasesPaginated(gomock.Any()).Return(connection.NewPaginated(&connection.APIResponseBodyData[[]pss.ChangeCase]{Data: []pss.ChangeCase{}}, *connection.NewAPIRequestParameters(), nil), nil).Times(1)
 
 		pssChangeList(service, &cobra.Command{}, []string{})
 	})
@@ -44,7 +44,7 @@ func Test_pssChangeList(t *testing.T) {
 
 		service := mocks.NewMockPSSService(mockCtrl)
 
-		service.EXPECT().GetChangeCases(gomock.Any()).Return([]pss.ChangeCase{}, errors.New("test error")).Times(1)
+		service.EXPECT().GetChangeCasesPaginated(gomock.Any()).Return(connection.NewPaginated(&connection.APIResponseBodyData[[]pss.ChangeCase]{Data: []pss.ChangeCase{}}, *connection.NewAPIRequestParameters(), nil), errors.New("test error")).Times(1)
 
 		err := pssChangeList(service, &cobra.Command{}, []string{})
 		assert.Equal(t, "test error", err.Error())
