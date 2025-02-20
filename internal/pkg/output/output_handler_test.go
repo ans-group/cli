@@ -8,19 +8,16 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-type testCollection struct {
-	fields []*OrderedFields
+type testModel struct {
+	TestProperty1 string `json:"testproperty1"`
+	TestProperty2 string `json:"testproperty2"`
+	TestProperty3 string `json:"testproperty3"`
 }
 
-func (t *testCollection) Fields() []*OrderedFields {
-	return t.fields
-}
+type testModelCollection []testModel
 
-func newTestCollection(fields []*OrderedFields) *testCollection {
-	return &testCollection{
-		fields: fields,
-	}
-}
+var collectionSingleRow = testModelCollection([]testModel{{"Row1TestValue1", "Row1TestValue2", "Row1TestValue3"}})
+var collectionMultipleRows = testModelCollection([]testModel{{"Row1TestValue1", "Row1TestValue2", "Row1TestValue3"}, {"Row2TestValue1", "Row2TestValue2", "Row2TestValue3"}})
 
 func TestOutputHandler_JSON(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
@@ -46,43 +43,20 @@ func TestOutputHandler_JSON(t *testing.T) {
 
 func TestOutputHandler_Value(t *testing.T) {
 	t.Run("SingleRowDefaultFields_ExpectedStdout", func(t *testing.T) {
-		var rows []*OrderedFields
-		fields := NewOrderedFields()
-		fields.Set("testproperty1", "TestValue1")
-		fields.Set("testproperty2", "TestValue2")
-		fields.Set("testproperty3", "TestValue3")
-		rows = append(rows, fields)
-
-		collection := newTestCollection(rows)
 		o := NewOutputHandler()
 
 		output := test.CatchStdOut(t, func() {
-			err := o.Value(&cobra.Command{}, collection)
+			err := o.Value(&cobra.Command{}, collectionSingleRow)
 			assert.NoError(t, err)
 		})
 
-		assert.Equal(t, "TestValue1 TestValue2 TestValue3\n", output)
+		assert.Equal(t, "Row1TestValue1 Row1TestValue2 Row1TestValue3\n", output)
 	})
 
 	t.Run("MultipleRowsDefaultFields_ExpectedStdout", func(t *testing.T) {
-		var rows []*OrderedFields
-
-		row1fields := NewOrderedFields()
-		row1fields.Set("testproperty1", "Row1TestValue1")
-		row1fields.Set("testproperty2", "Row1TestValue2")
-		row1fields.Set("testproperty3", "Row1TestValue3")
-		rows = append(rows, row1fields)
-
-		row2fields := NewOrderedFields()
-		row2fields.Set("testproperty1", "Row2TestValue1")
-		row2fields.Set("testproperty2", "Row2TestValue2")
-		row2fields.Set("testproperty3", "Row2TestValue3")
-		rows = append(rows, row2fields)
-
-		collection := newTestCollection(rows)
 		o := NewOutputHandler()
 		output := test.CatchStdOut(t, func() {
-			err := o.Value(&cobra.Command{}, collection)
+			err := o.Value(&cobra.Command{}, collectionMultipleRows)
 			assert.NoError(t, err)
 		})
 
@@ -90,45 +64,33 @@ func TestOutputHandler_Value(t *testing.T) {
 	})
 }
 
+func TestOutputHandler_JSONPath(t *testing.T) {
+	o := NewOutputHandler()
+
+	output := test.CatchStdOut(t, func() {
+		err := o.JSONPath("{[].TestProperty1}", collectionSingleRow)
+		assert.NoError(t, err)
+	})
+
+	assert.Equal(t, "Row1TestValue1", output)
+}
+
 func TestOutputHandler_CSV(t *testing.T) {
 	t.Run("SingleRowDefaultFields_ExpectedStdout", func(t *testing.T) {
-		var rows []*OrderedFields
-		fields := NewOrderedFields()
-		fields.Set("testproperty1", "TestValue1")
-		fields.Set("testproperty2", "TestValue2")
-		fields.Set("testproperty3", "TestValue3")
-		rows = append(rows, fields)
-
-		collection := newTestCollection(rows)
 		o := NewOutputHandler()
 
 		output := test.CatchStdOut(t, func() {
-			o.CSV(&cobra.Command{}, collection)
+			o.CSV(&cobra.Command{}, collectionSingleRow)
 		})
 
-		assert.Equal(t, "testproperty1,testproperty2,testproperty3\nTestValue1,TestValue2,TestValue3\n", output)
+		assert.Equal(t, "testproperty1,testproperty2,testproperty3\nRow1TestValue1,Row1TestValue2,Row1TestValue3\n", output)
 	})
 
 	t.Run("MultipleRowsDefaultFields_ExpectedStdout", func(t *testing.T) {
-		var rows []*OrderedFields
-
-		row1fields := NewOrderedFields()
-		row1fields.Set("testproperty1", "Row1TestValue1")
-		row1fields.Set("testproperty2", "Row1TestValue2")
-		row1fields.Set("testproperty3", "Row1TestValue3")
-		rows = append(rows, row1fields)
-
-		row2fields := NewOrderedFields()
-		row2fields.Set("testproperty1", "Row2TestValue1")
-		row2fields.Set("testproperty2", "Row2TestValue2")
-		row2fields.Set("testproperty3", "Row2TestValue3")
-		rows = append(rows, row2fields)
-
-		collection := newTestCollection(rows)
 		o := NewOutputHandler()
 
 		output := test.CatchStdOut(t, func() {
-			o.CSV(&cobra.Command{}, collection)
+			o.CSV(&cobra.Command{}, collectionMultipleRows)
 		})
 
 		assert.Equal(t, "testproperty1,testproperty2,testproperty3\nRow1TestValue1,Row1TestValue2,Row1TestValue3\nRow2TestValue1,Row2TestValue2,Row2TestValue3\n", output)
@@ -147,39 +109,34 @@ func TestOutputHandler_YAML(t *testing.T) {
 }
 
 func TestOutputHandler_Table(t *testing.T) {
-	var rows []*OrderedFields
-	fields := NewOrderedFields()
-	fields.Set("testproperty1", "TestValue1")
-	fields.Set("testproperty2", "TestValue2")
-	fields.Set("testproperty3", "TestValue3")
-	rows = append(rows, fields)
-
-	collection := newTestCollection(rows)
 	o := NewOutputHandler()
 
 	output := test.CatchStdOut(t, func() {
-		err := o.Table(&cobra.Command{}, collection)
+		err := o.Table(&cobra.Command{}, collectionSingleRow)
 		assert.NoError(t, err)
 	})
 
-	assert.Equal(t, "+---------------+---------------+---------------+\n| TESTPROPERTY1 | TESTPROPERTY2 | TESTPROPERTY3 |\n+---------------+---------------+---------------+\n| TestValue1    | TestValue2    | TestValue3    |\n+---------------+---------------+---------------+\n", output)
+	assert.Equal(t, "+----------------+----------------+----------------+\n| TESTPROPERTY1  | TESTPROPERTY2  | TESTPROPERTY3  |\n+----------------+----------------+----------------+\n| Row1TestValue1 | Row1TestValue2 | Row1TestValue3 |\n+----------------+----------------+----------------+\n", output)
 }
 
 func TestOutputHandler_List(t *testing.T) {
-	var rows []*OrderedFields
-	fields := NewOrderedFields()
-	fields.Set("testproperty1", "TestValue1")
-	fields.Set("testproperty2", "TestValue2")
-	fields.Set("testproperty3", "TestValue3")
-	rows = append(rows, fields)
-
-	collection := newTestCollection(rows)
 	o := NewOutputHandler()
 
 	output := test.CatchStdOut(t, func() {
-		err := o.List(&cobra.Command{}, collection)
+		err := o.List(&cobra.Command{}, collectionSingleRow)
 		assert.NoError(t, err)
 	})
 
-	assert.Equal(t, "testproperty1 : TestValue1\ntestproperty2 : TestValue2\ntestproperty3 : TestValue3\n", output)
+	assert.Equal(t, "testproperty1 : Row1TestValue1\ntestproperty2 : Row1TestValue2\ntestproperty3 : Row1TestValue3\n", output)
+}
+
+func TestOutputHandler_Template(t *testing.T) {
+	o := NewOutputHandler()
+
+	output := test.CatchStdOut(t, func() {
+		err := o.Template("{{.TestProperty1}}", collectionSingleRow)
+		assert.NoError(t, err)
+	})
+
+	assert.Equal(t, "Row1TestValue1\n", output)
 }
