@@ -10,28 +10,26 @@ import (
 func TestOrderedFields_Set(t *testing.T) {
 	t.Run("SetValue", func(t *testing.T) {
 		f := output.NewOrderedFields()
-		f.Set("testkey", output.NewFieldValue("testvalue", true))
+		f.Set("testkey", "testvalue")
 
 		v := f.Get("testkey")
 
-		assert.Equal(t, "testvalue", v.Value)
-		assert.Equal(t, true, v.Default)
+		assert.Equal(t, "testvalue", v)
 	})
 
 	t.Run("SetExistingValueOverwrite", func(t *testing.T) {
 		f := output.NewOrderedFields()
-		f.Set("testkey", output.NewFieldValue("testvalue1", false))
-		f.Set("testkey", output.NewFieldValue("testvalue2", true))
+		f.Set("testkey", "testvalue1")
+		f.Set("testkey", "testvalue2")
 
 		v := f.Get("testkey")
 
-		assert.Equal(t, "testvalue2", v.Value)
-		assert.Equal(t, true, v.Default)
+		assert.Equal(t, "testvalue2", v)
 	})
 
 	t.Run("KeysPopulated", func(t *testing.T) {
 		f := output.NewOrderedFields()
-		f.Set("testkey", output.NewFieldValue("testvalue", true))
+		f.Set("testkey", "testvalue")
 
 		keys := f.Keys()
 
@@ -40,7 +38,7 @@ func TestOrderedFields_Set(t *testing.T) {
 
 	t.Run("ExistsTrue", func(t *testing.T) {
 		f := output.NewOrderedFields()
-		f.Set("testkey", output.NewFieldValue("testvalue", true))
+		f.Set("testkey", "testvalue")
 
 		exists := f.Exists("testkey")
 
@@ -49,7 +47,7 @@ func TestOrderedFields_Set(t *testing.T) {
 
 	t.Run("ExistsFalse", func(t *testing.T) {
 		f := output.NewOrderedFields()
-		f.Set("testkey", output.NewFieldValue("testvalue", true))
+		f.Set("testkey", "testvalue")
 
 		exists := f.Exists("testkey2")
 
@@ -58,10 +56,10 @@ func TestOrderedFields_Set(t *testing.T) {
 
 	t.Run("NonExistentReturnsEmptyValue", func(t *testing.T) {
 		f := output.NewOrderedFields()
-		f.Set("testkey", output.NewFieldValue("testvalue", true))
+		f.Set("testkey", "testvalue")
 
 		v := f.Get("testkey2")
 
-		assert.Equal(t, "", v.Value)
+		assert.Equal(t, "", v)
 	})
 }

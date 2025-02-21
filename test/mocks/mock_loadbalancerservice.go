@@ -5,10 +5,10 @@
 package mocks
 
 import (
-	gomock "github.com/golang/mock/gomock"
-	reflect "reflect"
 	connection "github.com/ans-group/sdk-go/pkg/connection"
 	loadbalancer "github.com/ans-group/sdk-go/pkg/service/loadbalancer"
+	gomock "github.com/golang/mock/gomock"
+	reflect "reflect"
 )
 
 // MockLoadBalancerService is a mock of LoadBalancerService interface.

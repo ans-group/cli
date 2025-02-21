@@ -5,10 +5,10 @@
 package mocks
 
 import (
-	reflect "reflect"
-	connection "github.com/ans-group/sdk-go/pkg/connection"
 	ecloudflex "github.com/ans-group/sdk-go/pkg/service/ecloudflex"
 	gomock "github.com/golang/mock/gomock"
+	reflect "reflect"
+	connection "github.com/ans-group/sdk-go/pkg/connection"
 )
 
 // MockECloudFlexService is a mock of ECloudFlexService interface.

@@ -7,6 +7,7 @@ import (
 	"github.com/ans-group/cli/internal/pkg/clierrors"
 	"github.com/ans-group/cli/test/mocks"
 	"github.com/ans-group/cli/test/test_output"
+	"github.com/ans-group/sdk-go/pkg/connection"
 	"github.com/ans-group/sdk-go/pkg/service/pss"
 	gomock "github.com/golang/mock/gomock"
 	"github.com/spf13/cobra"
@@ -20,7 +21,7 @@ func Test_pssCaseList(t *testing.T) {
 
 		service := mocks.NewMockPSSService(mockCtrl)
 
-		service.EXPECT().GetCases(gomock.Any()).Return([]pss.Case{}, nil).Times(1)
+		service.EXPECT().GetCasesPaginated(gomock.Any()).Return(connection.NewPaginated(&connection.APIResponseBodyData[[]pss.Case]{Data: []pss.Case{}}, *connection.NewAPIRequestParameters(), nil), nil).Times(1)
 
 		pssCaseList(service, &cobra.Command{}, []string{})
 	})
@@ -44,7 +45,7 @@ func Test_pssCaseList(t *testing.T) {
 
 		service := mocks.NewMockPSSService(mockCtrl)
 
-		service.EXPECT().GetCases(gomock.Any()).Return([]pss.Case{}, errors.New("test error")).Times(1)
+		service.EXPECT().GetCasesPaginated(gomock.Any()).Return(connection.NewPaginated(&connection.APIResponseBodyData[[]pss.Case]{Data: []pss.Case{}}, *connection.NewAPIRequestParameters(), nil), errors.New("test error")).Times(1)
 
 		err := pssCaseList(service, &cobra.Command{}, []string{})
 		assert.Equal(t, "test error", err.Error())

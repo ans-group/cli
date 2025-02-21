@@ -5,10 +5,10 @@
 package mocks
 
 import (
-	connection "github.com/ans-group/sdk-go/pkg/connection"
-	account "github.com/ans-group/sdk-go/pkg/service/account"
 	gomock "github.com/golang/mock/gomock"
 	reflect "reflect"
+	connection "github.com/ans-group/sdk-go/pkg/connection"
+	account "github.com/ans-group/sdk-go/pkg/service/account"
 )
 
 // MockAccountService is a mock of AccountService interface.
@@ -32,6 +32,21 @@ func NewMockAccountService(ctrl *gomock.Controller) *MockAccountService {
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockAccountService) EXPECT() *MockAccountServiceMockRecorder {
 	return m.recorder
+}
+
+// CreateApplication mocks base method.
+func (m *MockAccountService) CreateApplication(arg0 account.CreateApplicationRequest) (account.CreateApplicationResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateApplication", arg0)
+	ret0, _ := ret[0].(account.CreateApplicationResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateApplication indicates an expected call of CreateApplication.
+func (mr *MockAccountServiceMockRecorder) CreateApplication(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateApplication", reflect.TypeOf((*MockAccountService)(nil).CreateApplication), arg0)
 }
 
 // CreateClient mocks base method.
@@ -64,6 +79,48 @@ func (mr *MockAccountServiceMockRecorder) CreateInvoiceQuery(arg0 interface{}) *
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateInvoiceQuery", reflect.TypeOf((*MockAccountService)(nil).CreateInvoiceQuery), arg0)
 }
 
+// DeleteApplication mocks base method.
+func (m *MockAccountService) DeleteApplication(arg0 string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteApplication", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteApplication indicates an expected call of DeleteApplication.
+func (mr *MockAccountServiceMockRecorder) DeleteApplication(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteApplication", reflect.TypeOf((*MockAccountService)(nil).DeleteApplication), arg0)
+}
+
+// DeleteApplicationRestrictions mocks base method.
+func (m *MockAccountService) DeleteApplicationRestrictions(arg0 string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteApplicationRestrictions", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteApplicationRestrictions indicates an expected call of DeleteApplicationRestrictions.
+func (mr *MockAccountServiceMockRecorder) DeleteApplicationRestrictions(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteApplicationRestrictions", reflect.TypeOf((*MockAccountService)(nil).DeleteApplicationRestrictions), arg0)
+}
+
+// DeleteApplicationServices mocks base method.
+func (m *MockAccountService) DeleteApplicationServices(arg0 string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteApplicationServices", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteApplicationServices indicates an expected call of DeleteApplicationServices.
+func (mr *MockAccountServiceMockRecorder) DeleteApplicationServices(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteApplicationServices", reflect.TypeOf((*MockAccountService)(nil).DeleteApplicationServices), arg0)
+}
+
 // DeleteClient mocks base method.
 func (m *MockAccountService) DeleteClient(arg0 int) error {
 	m.ctrl.T.Helper()
@@ -76,6 +133,81 @@ func (m *MockAccountService) DeleteClient(arg0 int) error {
 func (mr *MockAccountServiceMockRecorder) DeleteClient(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteClient", reflect.TypeOf((*MockAccountService)(nil).DeleteClient), arg0)
+}
+
+// GetApplication mocks base method.
+func (m *MockAccountService) GetApplication(arg0 string) (account.Application, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetApplication", arg0)
+	ret0, _ := ret[0].(account.Application)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetApplication indicates an expected call of GetApplication.
+func (mr *MockAccountServiceMockRecorder) GetApplication(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetApplication", reflect.TypeOf((*MockAccountService)(nil).GetApplication), arg0)
+}
+
+// GetApplicationRestrictions mocks base method.
+func (m *MockAccountService) GetApplicationRestrictions(arg0 string) (account.ApplicationRestriction, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetApplicationRestrictions", arg0)
+	ret0, _ := ret[0].(account.ApplicationRestriction)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetApplicationRestrictions indicates an expected call of GetApplicationRestrictions.
+func (mr *MockAccountServiceMockRecorder) GetApplicationRestrictions(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetApplicationRestrictions", reflect.TypeOf((*MockAccountService)(nil).GetApplicationRestrictions), arg0)
+}
+
+// GetApplicationServices mocks base method.
+func (m *MockAccountService) GetApplicationServices(arg0 string) (account.ApplicationServiceMapping, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetApplicationServices", arg0)
+	ret0, _ := ret[0].(account.ApplicationServiceMapping)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetApplicationServices indicates an expected call of GetApplicationServices.
+func (mr *MockAccountServiceMockRecorder) GetApplicationServices(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetApplicationServices", reflect.TypeOf((*MockAccountService)(nil).GetApplicationServices), arg0)
+}
+
+// GetApplications mocks base method.
+func (m *MockAccountService) GetApplications(arg0 connection.APIRequestParameters) ([]account.Application, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetApplications", arg0)
+	ret0, _ := ret[0].([]account.Application)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetApplications indicates an expected call of GetApplications.
+func (mr *MockAccountServiceMockRecorder) GetApplications(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetApplications", reflect.TypeOf((*MockAccountService)(nil).GetApplications), arg0)
+}
+
+// GetApplicationsPaginated mocks base method.
+func (m *MockAccountService) GetApplicationsPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[account.Application], error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetApplicationsPaginated", arg0)
+	ret0, _ := ret[0].(*connection.Paginated[account.Application])
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetApplicationsPaginated indicates an expected call of GetApplicationsPaginated.
+func (mr *MockAccountServiceMockRecorder) GetApplicationsPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetApplicationsPaginated", reflect.TypeOf((*MockAccountService)(nil).GetApplicationsPaginated), arg0)
 }
 
 // GetClient mocks base method.
@@ -288,6 +420,36 @@ func (mr *MockAccountServiceMockRecorder) GetInvoicesPaginated(arg0 interface{})
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetInvoicesPaginated", reflect.TypeOf((*MockAccountService)(nil).GetInvoicesPaginated), arg0)
 }
 
+// GetServices mocks base method.
+func (m *MockAccountService) GetServices(arg0 connection.APIRequestParameters) ([]account.ApplicationService, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetServices", arg0)
+	ret0, _ := ret[0].([]account.ApplicationService)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetServices indicates an expected call of GetServices.
+func (mr *MockAccountServiceMockRecorder) GetServices(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetServices", reflect.TypeOf((*MockAccountService)(nil).GetServices), arg0)
+}
+
+// GetServicesPaginated mocks base method.
+func (m *MockAccountService) GetServicesPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[account.ApplicationService], error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetServicesPaginated", arg0)
+	ret0, _ := ret[0].(*connection.Paginated[account.ApplicationService])
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetServicesPaginated indicates an expected call of GetServicesPaginated.
+func (mr *MockAccountServiceMockRecorder) GetServicesPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetServicesPaginated", reflect.TypeOf((*MockAccountService)(nil).GetServicesPaginated), arg0)
+}
+
 // PatchClient mocks base method.
 func (m *MockAccountService) PatchClient(arg0 int, arg1 account.PatchClientRequest) error {
 	m.ctrl.T.Helper()
@@ -300,4 +462,46 @@ func (m *MockAccountService) PatchClient(arg0 int, arg1 account.PatchClientReque
 func (mr *MockAccountServiceMockRecorder) PatchClient(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchClient", reflect.TypeOf((*MockAccountService)(nil).PatchClient), arg0, arg1)
+}
+
+// SetApplicationRestrictions mocks base method.
+func (m *MockAccountService) SetApplicationRestrictions(arg0 string, arg1 account.SetRestrictionRequest) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SetApplicationRestrictions", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// SetApplicationRestrictions indicates an expected call of SetApplicationRestrictions.
+func (mr *MockAccountServiceMockRecorder) SetApplicationRestrictions(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetApplicationRestrictions", reflect.TypeOf((*MockAccountService)(nil).SetApplicationRestrictions), arg0, arg1)
+}
+
+// SetApplicationServices mocks base method.
+func (m *MockAccountService) SetApplicationServices(arg0 string, arg1 account.SetServiceRequest) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SetApplicationServices", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// SetApplicationServices indicates an expected call of SetApplicationServices.
+func (mr *MockAccountServiceMockRecorder) SetApplicationServices(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetApplicationServices", reflect.TypeOf((*MockAccountService)(nil).SetApplicationServices), arg0, arg1)
+}
+
+// UpdateApplication mocks base method.
+func (m *MockAccountService) UpdateApplication(arg0 string, arg1 account.UpdateApplicationRequest) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateApplication", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateApplication indicates an expected call of UpdateApplication.
+func (mr *MockAccountServiceMockRecorder) UpdateApplication(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateApplication", reflect.TypeOf((*MockAccountService)(nil).UpdateApplication), arg0, arg1)
 }

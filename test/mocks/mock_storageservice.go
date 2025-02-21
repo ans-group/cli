@@ -5,10 +5,10 @@
 package mocks
 
 import (
-	connection "github.com/ans-group/sdk-go/pkg/connection"
 	storage "github.com/ans-group/sdk-go/pkg/service/storage"
 	gomock "github.com/golang/mock/gomock"
 	reflect "reflect"
+	connection "github.com/ans-group/sdk-go/pkg/connection"
 )
 
 // MockStorageService is a mock of StorageService interface.
