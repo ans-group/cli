@@ -5,10 +5,10 @@
 package mocks
 
 import (
-	gomock "github.com/golang/mock/gomock"
-	reflect "reflect"
 	connection "github.com/ans-group/sdk-go/pkg/connection"
 	ssl "github.com/ans-group/sdk-go/pkg/service/ssl"
+	gomock "github.com/golang/mock/gomock"
+	reflect "reflect"
 )
 
 // MockSSLService is a mock of SSLService interface.
