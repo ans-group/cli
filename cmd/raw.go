@@ -3,7 +3,8 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
+	"net/http"
 	"strings"
 
 	"github.com/ans-group/cli/internal/pkg/helper"
@@ -35,6 +36,7 @@ func rawCmd(f connection.ConnectionFactory) *cobra.Command {
 	cmd.Flags().String("method", "GET", "Method for request")
 	cmd.Flags().StringP("request", "X", "GET", "Method for request (curl alias for 'method')")
 	cmd.Flags().StringP("data", "d", "", "Data for request")
+	cmd.Flags().StringArrayP("header", "H", []string{}, "Additional header for request")
 	return cmd
 }
 
@@ -42,7 +44,7 @@ type rawCommandOutput string
 
 func (r *rawCommandOutput) Deserialize(resp *connection.APIResponse) error {
 	defer resp.Response.Body.Close()
-	bodyBytes, err := ioutil.ReadAll(resp.Response.Body)
+	bodyBytes, err := io.ReadAll(resp.Response.Body)
 	if err != nil {
 		return err
 	}
@@ -86,6 +88,19 @@ func raw(c connection.Connection, cmd *cobra.Command, args []string) error {
 		data, _ := cmd.Flags().GetString("data")
 		commandData := rawCommandData(data)
 		req.Body = &commandData
+	}
+
+	if cmd.Flags().Changed("header") {
+		req.Headers = http.Header{}
+		headers, _ := cmd.Flags().GetStringArray("header")
+		for _, header := range headers {
+			headerParts := strings.SplitN(header, ":", 2)
+			if len(headerParts) != 2 {
+				return fmt.Errorf("invalid header format: %s", header)
+			}
+
+			req.Headers.Add(strings.TrimSpace(headerParts[0]), strings.TrimSpace(headerParts[1]))
+		}
 	}
 
 	resp, err := c.Invoke(req)
