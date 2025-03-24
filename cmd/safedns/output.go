@@ -30,7 +30,7 @@ func (z ZoneCollection) Fields() []*output.OrderedFields {
 type RecordCollection []safedns.Record
 
 func (r RecordCollection) DefaultColumns() []string {
-	return []string{"name", "name", "type", "content", "updated_at", "priority", "ttl"}
+	return []string{"id", "name", "type", "content", "updated_at", "priority", "ttl"}
 }
 
 func (r RecordCollection) Fields() []*output.OrderedFields {
