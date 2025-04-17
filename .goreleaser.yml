@@ -1,3 +1,4 @@
+version: 2
 project_name: ans
 builds:
 - env:
@@ -17,7 +18,7 @@ builds:
 archives:
 - format_overrides: 
   - goos: windows 
-    format: zip
+    formats: zip
 checksum:
   name_template: 'checksums.txt'
 signs:
@@ -31,7 +32,7 @@ signs:
       - "--detach-sign"
       - "${artifact}"
 snapshot:
-  name_template: "{{ .Tag }}-next"
+  version_template: "{{ .Tag }}-next"
 release:
   github:
     owner: ans-group
