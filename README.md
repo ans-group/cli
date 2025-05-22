@@ -7,7 +7,17 @@ supported ANS services.
 
 The client utilises ANS APIs to provide access to most service features. You should refer to the 
 [Getting Started](https://developers.ukfast.io/getting-started) section of the API documentation before 
-proceeding below
+proceeding below.
+
+## Demo
+
+### SafeDNS
+
+![](docs/demo/safedns-example.gif)
+
+### eCloud VPC
+
+![](docs/demo/ecloud-example.gif)
 
 ## Installation
 
