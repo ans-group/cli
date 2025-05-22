@@ -6,12 +6,10 @@ Output safedns-example.gif
 Require ans
 
 Set FontFamily "VictorMono Nerd Font"
-Set FontSize 13
+Set FontSize 16
 Set TypingSpeed 0.1
 Set Theme "catppuccin-macchiato"
 Set WindowBar Colorful
-Set Margin 25
-Set MarginFill "#202e52"
 Set Padding 5
 Set Width 1200
 Set Height 500
