@@ -5,11 +5,12 @@
 package mocks
 
 import (
-	ecloud "github.com/ans-group/sdk-go/pkg/service/ecloud"
-	gomock "github.com/golang/mock/gomock"
 	reflect "reflect"
+
 	connection "github.com/ans-group/sdk-go/pkg/connection"
 	account "github.com/ans-group/sdk-go/pkg/service/account"
+	ecloud "github.com/ans-group/sdk-go/pkg/service/ecloud"
+	gomock "github.com/golang/mock/gomock"
 )
 
 // MockECloudService is a mock of ECloudService interface.
@@ -1563,6 +1564,51 @@ func (m *MockECloudService) GetBackupGateways(arg0 connection.APIRequestParamete
 func (mr *MockECloudServiceMockRecorder) GetBackupGateways(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBackupGateways", reflect.TypeOf((*MockECloudService)(nil).GetBackupGateways), arg0)
+}
+
+// GetBackupGateway mocks base method.
+func (m *MockECloudService) GetMonitoringGateway(arg0 string) (ecloud.MonitoringGateway, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetMonitoringGateway", arg0)
+	ret0, _ := ret[0].(ecloud.MonitoringGateway)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetBackupGateway indicates an expected call of GetBackupGateway.
+func (mr *MockECloudServiceMockRecorder) GetMonitoringGateway(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMonitoringGateway", reflect.TypeOf((*MockECloudService)(nil).GetMonitoringGateway), arg0)
+}
+
+// GetMonitoringGateways mocks base method.
+func (m *MockECloudService) GetMonitoringGateways(arg0 connection.APIRequestParameters) ([]ecloud.MonitoringGateway, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetMonitoringGateways", arg0)
+	ret0, _ := ret[0].([]ecloud.MonitoringGateway)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetMonitoringGateways indicates an expected call of GetMonitoringGateways.
+func (mr *MockECloudServiceMockRecorder) GetMonitoringGateways(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMonitoringGateways", reflect.TypeOf((*MockECloudService)(nil).GetMonitoringGateways), arg0)
+}
+
+// GetMonitoringGatewaysPaginated mocks base method.
+func (m *MockECloudService) GetMonitoringGatewaysPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[ecloud.MonitoringGateway], error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetMonitoringGatewaysPaginated", arg0)
+	ret0, _ := ret[0].(*connection.Paginated[ecloud.MonitoringGateway])
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetBackupGatewaysPaginated indicates an expected call of GetBackupGatewaysPaginated.
+func (mr *MockECloudServiceMockRecorder) GetMonitoringGatewaysPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMonitoringGatewaysPaginated", reflect.TypeOf((*MockECloudService)(nil).GetMonitoringGatewaysPaginated), arg0)
 }
 
 // GetBackupGatewaysPaginated mocks base method.

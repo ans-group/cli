@@ -142,6 +142,8 @@ func ecloudInstanceCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().String("ip-address", "", "IP address to allocate for DHCP")
 	cmd.Flags().Bool("enable-vm-backups", false, "Enable VM-level backups")
 	cmd.Flags().String("backup-gateway-id", "", "Backup gateway ID, enables agent-level backups")
+	cmd.Flags().Bool("enable-monitoring", false, "Enable monitoring")
+	cmd.Flags().String("monitoring-gateway-id", "", "Monitoring gateway ID")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the instance has been completely created")
 
 	return cmd
@@ -157,6 +159,8 @@ func ecloudInstanceCreate(service ecloud.ECloudService, cmd *cobra.Command, args
 	createRequest.ResourceTierID, _ = cmd.Flags().GetString("resource-tier")
 	createRequest.BackupEnabled, _ = cmd.Flags().GetBool("enable-vm-backups")
 	createRequest.BackupGatewayID, _ = cmd.Flags().GetString("backup-gateway-id")
+	createRequest.MonitoringEnabled, _ = cmd.Flags().GetBool("enable-monitoring")
+	createRequest.MonitoringGatewayID, _ = cmd.Flags().GetString("monitoring-gateway-id")
 	createRequest.Name, _ = cmd.Flags().GetString("name")
 
 	if cmd.Flags().Changed("vcpu") {
