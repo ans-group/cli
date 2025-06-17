@@ -604,6 +604,12 @@ func (m BackupGatewaySpecificationCollection) DefaultColumns() []string {
 	return []string{"id", "name", "description"}
 }
 
+type MonitoringGatewayCollection []ecloud.MonitoringGateway
+
+func (m MonitoringGatewayCollection) DefaultColumns() []string {
+	return []string{"id", "name", "vpc_id", "router_id", "specification_id", "sync_status"}
+}
+
 type BackupGatewayCollection []ecloud.BackupGateway
 
 func (m BackupGatewayCollection) DefaultColumns() []string {
