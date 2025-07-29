@@ -5,12 +5,11 @@
 package mocks
 
 import (
-	reflect "reflect"
-
 	connection "github.com/ans-group/sdk-go/pkg/connection"
 	account "github.com/ans-group/sdk-go/pkg/service/account"
 	ecloud "github.com/ans-group/sdk-go/pkg/service/ecloud"
 	gomock "github.com/golang/mock/gomock"
+	reflect "reflect"
 )
 
 // MockECloudService is a mock of ECloudService interface.
@@ -306,6 +305,21 @@ func (mr *MockECloudServiceMockRecorder) CreateLoadBalancer(arg0 interface{}) *g
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateLoadBalancer", reflect.TypeOf((*MockECloudService)(nil).CreateLoadBalancer), arg0)
 }
 
+// CreateMonitoringGateway mocks base method.
+func (m *MockECloudService) CreateMonitoringGateway(arg0 ecloud.CreateMonitoringGatewayRequest) (ecloud.TaskReference, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateMonitoringGateway", arg0)
+	ret0, _ := ret[0].(ecloud.TaskReference)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateMonitoringGateway indicates an expected call of CreateMonitoringGateway.
+func (mr *MockECloudServiceMockRecorder) CreateMonitoringGateway(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateMonitoringGateway", reflect.TypeOf((*MockECloudService)(nil).CreateMonitoringGateway), arg0)
+}
+
 // CreateNATOverloadRule mocks base method.
 func (m *MockECloudService) CreateNATOverloadRule(arg0 ecloud.CreateNATOverloadRuleRequest) (ecloud.TaskReference, error) {
 	m.ctrl.T.Helper()
@@ -319,6 +333,21 @@ func (m *MockECloudService) CreateNATOverloadRule(arg0 ecloud.CreateNATOverloadR
 func (mr *MockECloudServiceMockRecorder) CreateNATOverloadRule(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateNATOverloadRule", reflect.TypeOf((*MockECloudService)(nil).CreateNATOverloadRule), arg0)
+}
+
+// CreateNIC mocks base method.
+func (m *MockECloudService) CreateNIC(arg0 ecloud.CreateNICRequest) (ecloud.TaskReference, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateNIC", arg0)
+	ret0, _ := ret[0].(ecloud.TaskReference)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateNIC indicates an expected call of CreateNIC.
+func (mr *MockECloudServiceMockRecorder) CreateNIC(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateNIC", reflect.TypeOf((*MockECloudService)(nil).CreateNIC), arg0)
 }
 
 // CreateNetwork mocks base method.
@@ -827,6 +856,21 @@ func (mr *MockECloudServiceMockRecorder) DeleteLoadBalancer(arg0 interface{}) *g
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteLoadBalancer", reflect.TypeOf((*MockECloudService)(nil).DeleteLoadBalancer), arg0)
 }
 
+// DeleteMonitoringGateway mocks base method.
+func (m *MockECloudService) DeleteMonitoringGateway(arg0 string) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteMonitoringGateway", arg0)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DeleteMonitoringGateway indicates an expected call of DeleteMonitoringGateway.
+func (mr *MockECloudServiceMockRecorder) DeleteMonitoringGateway(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMonitoringGateway", reflect.TypeOf((*MockECloudService)(nil).DeleteMonitoringGateway), arg0)
+}
+
 // DeleteNATOverloadRule mocks base method.
 func (m *MockECloudService) DeleteNATOverloadRule(arg0 string) (string, error) {
 	m.ctrl.T.Helper()
@@ -840,6 +884,21 @@ func (m *MockECloudService) DeleteNATOverloadRule(arg0 string) (string, error) {
 func (mr *MockECloudServiceMockRecorder) DeleteNATOverloadRule(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteNATOverloadRule", reflect.TypeOf((*MockECloudService)(nil).DeleteNATOverloadRule), arg0)
+}
+
+// DeleteNIC mocks base method.
+func (m *MockECloudService) DeleteNIC(arg0 string) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteNIC", arg0)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DeleteNIC indicates an expected call of DeleteNIC.
+func (mr *MockECloudServiceMockRecorder) DeleteNIC(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteNIC", reflect.TypeOf((*MockECloudService)(nil).DeleteNIC), arg0)
 }
 
 // DeleteNetwork mocks base method.
@@ -1564,51 +1623,6 @@ func (m *MockECloudService) GetBackupGateways(arg0 connection.APIRequestParamete
 func (mr *MockECloudServiceMockRecorder) GetBackupGateways(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBackupGateways", reflect.TypeOf((*MockECloudService)(nil).GetBackupGateways), arg0)
-}
-
-// GetBackupGateway mocks base method.
-func (m *MockECloudService) GetMonitoringGateway(arg0 string) (ecloud.MonitoringGateway, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetMonitoringGateway", arg0)
-	ret0, _ := ret[0].(ecloud.MonitoringGateway)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetBackupGateway indicates an expected call of GetBackupGateway.
-func (mr *MockECloudServiceMockRecorder) GetMonitoringGateway(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMonitoringGateway", reflect.TypeOf((*MockECloudService)(nil).GetMonitoringGateway), arg0)
-}
-
-// GetMonitoringGateways mocks base method.
-func (m *MockECloudService) GetMonitoringGateways(arg0 connection.APIRequestParameters) ([]ecloud.MonitoringGateway, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetMonitoringGateways", arg0)
-	ret0, _ := ret[0].([]ecloud.MonitoringGateway)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetMonitoringGateways indicates an expected call of GetMonitoringGateways.
-func (mr *MockECloudServiceMockRecorder) GetMonitoringGateways(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMonitoringGateways", reflect.TypeOf((*MockECloudService)(nil).GetMonitoringGateways), arg0)
-}
-
-// GetMonitoringGatewaysPaginated mocks base method.
-func (m *MockECloudService) GetMonitoringGatewaysPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[ecloud.MonitoringGateway], error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetMonitoringGatewaysPaginated", arg0)
-	ret0, _ := ret[0].(*connection.Paginated[ecloud.MonitoringGateway])
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetBackupGatewaysPaginated indicates an expected call of GetBackupGatewaysPaginated.
-func (mr *MockECloudServiceMockRecorder) GetMonitoringGatewaysPaginated(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMonitoringGatewaysPaginated", reflect.TypeOf((*MockECloudService)(nil).GetMonitoringGatewaysPaginated), arg0)
 }
 
 // GetBackupGatewaysPaginated mocks base method.
@@ -2839,6 +2853,51 @@ func (m *MockECloudService) GetLoadBalancersPaginated(arg0 connection.APIRequest
 func (mr *MockECloudServiceMockRecorder) GetLoadBalancersPaginated(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLoadBalancersPaginated", reflect.TypeOf((*MockECloudService)(nil).GetLoadBalancersPaginated), arg0)
+}
+
+// GetMonitoringGateway mocks base method.
+func (m *MockECloudService) GetMonitoringGateway(arg0 string) (ecloud.MonitoringGateway, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetMonitoringGateway", arg0)
+	ret0, _ := ret[0].(ecloud.MonitoringGateway)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetMonitoringGateway indicates an expected call of GetMonitoringGateway.
+func (mr *MockECloudServiceMockRecorder) GetMonitoringGateway(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMonitoringGateway", reflect.TypeOf((*MockECloudService)(nil).GetMonitoringGateway), arg0)
+}
+
+// GetMonitoringGateways mocks base method.
+func (m *MockECloudService) GetMonitoringGateways(arg0 connection.APIRequestParameters) ([]ecloud.MonitoringGateway, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetMonitoringGateways", arg0)
+	ret0, _ := ret[0].([]ecloud.MonitoringGateway)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetMonitoringGateways indicates an expected call of GetMonitoringGateways.
+func (mr *MockECloudServiceMockRecorder) GetMonitoringGateways(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMonitoringGateways", reflect.TypeOf((*MockECloudService)(nil).GetMonitoringGateways), arg0)
+}
+
+// GetMonitoringGatewaysPaginated mocks base method.
+func (m *MockECloudService) GetMonitoringGatewaysPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[ecloud.MonitoringGateway], error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetMonitoringGatewaysPaginated", arg0)
+	ret0, _ := ret[0].(*connection.Paginated[ecloud.MonitoringGateway])
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetMonitoringGatewaysPaginated indicates an expected call of GetMonitoringGatewaysPaginated.
+func (mr *MockECloudServiceMockRecorder) GetMonitoringGatewaysPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMonitoringGatewaysPaginated", reflect.TypeOf((*MockECloudService)(nil).GetMonitoringGatewaysPaginated), arg0)
 }
 
 // GetNATOverloadRule mocks base method.
@@ -5269,6 +5328,21 @@ func (mr *MockECloudServiceMockRecorder) PatchLoadBalancer(arg0, arg1 interface{
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchLoadBalancer", reflect.TypeOf((*MockECloudService)(nil).PatchLoadBalancer), arg0, arg1)
 }
 
+// PatchMonitoringGateway mocks base method.
+func (m *MockECloudService) PatchMonitoringGateway(arg0 string, arg1 ecloud.PatchMonitoringGatewayRequest) (ecloud.TaskReference, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PatchMonitoringGateway", arg0, arg1)
+	ret0, _ := ret[0].(ecloud.TaskReference)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// PatchMonitoringGateway indicates an expected call of PatchMonitoringGateway.
+func (mr *MockECloudServiceMockRecorder) PatchMonitoringGateway(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchMonitoringGateway", reflect.TypeOf((*MockECloudService)(nil).PatchMonitoringGateway), arg0, arg1)
+}
+
 // PatchNATOverloadRule mocks base method.
 func (m *MockECloudService) PatchNATOverloadRule(arg0 string, arg1 ecloud.PatchNATOverloadRuleRequest) (ecloud.TaskReference, error) {
 	m.ctrl.T.Helper()
@@ -5282,6 +5356,21 @@ func (m *MockECloudService) PatchNATOverloadRule(arg0 string, arg1 ecloud.PatchN
 func (mr *MockECloudServiceMockRecorder) PatchNATOverloadRule(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchNATOverloadRule", reflect.TypeOf((*MockECloudService)(nil).PatchNATOverloadRule), arg0, arg1)
+}
+
+// PatchNIC mocks base method.
+func (m *MockECloudService) PatchNIC(arg0 string, arg1 ecloud.PatchNICRequest) (ecloud.TaskReference, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PatchNIC", arg0, arg1)
+	ret0, _ := ret[0].(ecloud.TaskReference)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// PatchNIC indicates an expected call of PatchNIC.
+func (mr *MockECloudServiceMockRecorder) PatchNIC(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchNIC", reflect.TypeOf((*MockECloudService)(nil).PatchNIC), arg0, arg1)
 }
 
 // PatchNetwork mocks base method.

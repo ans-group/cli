@@ -5,10 +5,10 @@
 package mocks
 
 import (
-	reflect "reflect"
 	connection "github.com/ans-group/sdk-go/pkg/connection"
 	registrar "github.com/ans-group/sdk-go/pkg/service/registrar"
 	gomock "github.com/golang/mock/gomock"
+	reflect "reflect"
 )
 
 // MockRegistrarService is a mock of RegistrarService interface.

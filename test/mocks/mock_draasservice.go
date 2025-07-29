@@ -5,10 +5,10 @@
 package mocks
 
 import (
-	connection "github.com/ans-group/sdk-go/pkg/connection"
 	draas "github.com/ans-group/sdk-go/pkg/service/draas"
 	gomock "github.com/golang/mock/gomock"
 	reflect "reflect"
+	connection "github.com/ans-group/sdk-go/pkg/connection"
 )
 
 // MockDRaaSService is a mock of DRaaSService interface.
