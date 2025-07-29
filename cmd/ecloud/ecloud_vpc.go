@@ -229,24 +229,49 @@ func ecloudVPCDeleteCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the VPC has been completely removed")
+	cmd.Flags().Bool("recursive", false, "Recursively delete all resources within the VPC before deleting the VPC itself")
+	cmd.Flags().Bool("dangerously-recursively-delete", false, "Skip interactive confirmation when using recursive deletion (for automation)")
 
 	return cmd
 }
 
 func ecloudVPCDelete(service ecloud.ECloudService, cmd *cobra.Command, args []string) {
-	for _, arg := range args {
-		err := service.DeleteVPC(arg)
-		if err != nil {
-			output.OutputWithErrorLevelf("Error removing VPC [%s]: %s", arg, err)
-			continue
-		}
+	recursive, _ := cmd.Flags().GetBool("recursive")
+	dangerousFlag, _ := cmd.Flags().GetBool("dangerously-recursively-delete")
+	waitFlag, _ := cmd.Flags().GetBool("wait")
 
-		waitFlag, _ := cmd.Flags().GetBool("wait")
-		if waitFlag {
-			err := helper.WaitForCommand(VPCNotFoundWaitFunc(service, arg))
+	for _, vpcID := range args {
+		if recursive {
+			if !dangerousFlag {
+				confirmed, err := confirmVPCRecursiveDeletion(vpcID)
+				if err != nil {
+					output.OutputWithErrorLevelf("Error getting confirmation for VPC [%s]: %s", vpcID, err)
+					continue
+				}
+				if !confirmed {
+					fmt.Printf("VPC [%s] deletion cancelled\n", vpcID)
+					continue
+				}
+			}
+
+			err := deleteVPCResourcesRecursively(service, vpcID)
 			if err != nil {
-				output.OutputWithErrorLevelf("Error waiting for removal of VPC [%s]: %s", arg, err)
+				output.OutputWithErrorLevelf("ecloud: Error deleting resources for VPC [%s]: %s", vpcID, err)
 				continue
+			}
+		} else {
+			err := service.DeleteVPC(vpcID)
+			if err != nil {
+				output.OutputWithErrorLevelf("ecloud: Error removing VPC [%s]: %s", vpcID, err)
+				continue
+			}
+
+			if waitFlag {
+				err := helper.WaitForCommand(VPCNotFoundWaitFunc(service, vpcID))
+				if err != nil {
+					output.OutputWithErrorLevelf("ecloud: Error waiting for removal of VPC [%s]: %s", vpcID, err)
+					continue
+				}
 			}
 		}
 	}
