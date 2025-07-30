@@ -230,19 +230,19 @@ func ecloudVPCDeleteCmd(f factory.ClientFactory) *cobra.Command {
 
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the VPC has been completely removed")
 	cmd.Flags().Bool("recursive", false, "Recursively delete all resources within the VPC before deleting the VPC itself")
-	cmd.Flags().Bool("dangerously-recursively-delete", false, "Skip interactive confirmation when using recursive deletion (for automation)")
+	cmd.Flags().Bool("force", false, "Skip interactive confirmation when using recursive deletion")
 
 	return cmd
 }
 
 func ecloudVPCDelete(service ecloud.ECloudService, cmd *cobra.Command, args []string) {
 	recursive, _ := cmd.Flags().GetBool("recursive")
-	dangerousFlag, _ := cmd.Flags().GetBool("dangerously-recursively-delete")
+	forceFlag, _ := cmd.Flags().GetBool("force")
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 
 	for _, vpcID := range args {
 		if recursive {
-			if !dangerousFlag {
+			if !forceFlag {
 				confirmed, err := confirmVPCRecursiveDeletion(vpcID)
 				if err != nil {
 					output.OutputWithErrorLevelf("Error getting confirmation for VPC [%s]: %s", vpcID, err)
