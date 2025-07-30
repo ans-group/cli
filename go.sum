@@ -2,6 +2,8 @@ github.com/ans-group/go-durationstring v1.2.0 h1:UJIuQATkp0t1rBvZsHRwki33YHV9E+U
 github.com/ans-group/go-durationstring v1.2.0/go.mod h1:QGF9Mdpq9058QXaut8r55QWu6lcHX6i/GvF1PZVkV6o=
 github.com/ans-group/sdk-go v1.23.0 h1:9neQYIfnkbeV5SQp9SI7xGxZIfrmxsggOO0p/VEMU8M=
 github.com/ans-group/sdk-go v1.23.0/go.mod h1:Dx34ZUbyHNniHAKsDy/vp8q8hQC5L51ub2sv9We7d8E=
+github.com/ans-group/sdk-go v1.23.2 h1:Krsm0VNZslG75PG3/Oul7XwaXyhvRGarhzdHqc6mAC4=
+github.com/ans-group/sdk-go v1.23.2/go.mod h1:Dx34ZUbyHNniHAKsDy/vp8q8hQC5L51ub2sv9We7d8E=
 github.com/blang/semver v3.5.1+incompatible h1:cQNTCjp13qL8KC3Nbxr/y2Bqb63oX6wdnnjpJbkM4JQ=
 github.com/blang/semver v3.5.1+incompatible/go.mod h1:kRBLl5iJ+tD4TcOOxsy/0fnwebNt5EWlYSAyrTnjyyk=
 github.com/cpuguy83/go-md2man/v2 v2.0.6/go.mod h1:oOW0eioCTA6cOiMLiUPZOpcVxMig6NIQQ7OS05n1F4g=
