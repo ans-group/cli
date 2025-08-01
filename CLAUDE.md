@@ -43,3 +43,4 @@
 * Use generics for type-safe operations
 * Implement context cancellation handling for long operations
 * Add proper docstring comments for exported functions and types
+* Avoid using deprecated functionality, e.g. do not use the `ioutil` package, instead prefer the implementations from `io` or `os`
