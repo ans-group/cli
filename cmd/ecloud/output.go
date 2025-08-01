@@ -67,7 +67,7 @@ func (m VirtualMachineDiskCollection) Fields() []*output.OrderedFields {
 	return data
 }
 
-type TagCollection []ecloud.Tag
+type TagCollection []ecloud.TagV1
 
 func (m TagCollection) DefaultColumns() []string {
 	return []string{"key", "value", "created_at"}

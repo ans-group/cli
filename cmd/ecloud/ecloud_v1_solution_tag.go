@@ -105,7 +105,7 @@ func ecloudSolutionTagShow(service ecloud.ECloudService, cmd *cobra.Command, arg
 		return fmt.Errorf("Invalid solution ID [%s]", args[0])
 	}
 
-	var tags []ecloud.Tag
+	var tags []ecloud.TagV1
 
 	for _, arg := range args[1:] {
 		tag, err := service.GetSolutionTag(solutionID, arg)
@@ -160,7 +160,7 @@ func ecloudSolutionTagCreate(service ecloud.ECloudService, cmd *cobra.Command, a
 	key, _ := cmd.Flags().GetString("key")
 	value, _ := cmd.Flags().GetString("value")
 
-	createRequest := ecloud.CreateTagRequest{
+	createRequest := ecloud.CreateTagV1Request{
 		Key:   key,
 		Value: value,
 	}
@@ -175,7 +175,7 @@ func ecloudSolutionTagCreate(service ecloud.ECloudService, cmd *cobra.Command, a
 		return fmt.Errorf("Error retrieving new solution tag: %s", err)
 	}
 
-	return output.CommandOutput(cmd, TagCollection([]ecloud.Tag{tag}))
+	return output.CommandOutput(cmd, TagCollection([]ecloud.TagV1{tag}))
 }
 
 func ecloudSolutionTagUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -215,14 +215,14 @@ func ecloudSolutionTagUpdate(service ecloud.ECloudService, cmd *cobra.Command, a
 		return fmt.Errorf("Invalid solution ID [%s]", args[0])
 	}
 
-	patchRequest := ecloud.PatchTagRequest{}
+	patchRequest := ecloud.PatchTagV1Request{}
 
 	if cmd.Flags().Changed("value") {
 		value, _ := cmd.Flags().GetString("value")
 		patchRequest.Value = value
 	}
 
-	var tags []ecloud.Tag
+	var tags []ecloud.TagV1
 
 	for _, arg := range args[1:] {
 		err = service.PatchSolutionTag(solutionID, arg, patchRequest)

@@ -35,7 +35,7 @@ func Test_ecloudSolutionTagList(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().GetSolutionTags(123, gomock.Any()).Return([]ecloud.Tag{}, nil).Times(1)
+		service.EXPECT().GetSolutionTags(123, gomock.Any()).Return([]ecloud.TagV1{}, nil).Times(1)
 
 		ecloudSolutionTagList(service, &cobra.Command{}, []string{"123"})
 	})
@@ -72,7 +72,7 @@ func Test_ecloudSolutionTagList(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().GetSolutionTags(123, gomock.Any()).Return([]ecloud.Tag{}, errors.New("test error 1")).Times(1)
+		service.EXPECT().GetSolutionTags(123, gomock.Any()).Return([]ecloud.TagV1{}, errors.New("test error 1")).Times(1)
 
 		err := ecloudSolutionTagList(service, &cobra.Command{}, []string{"123"})
 
@@ -109,7 +109,7 @@ func Test_ecloudSolutionTagShow(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().GetSolutionTag(123, "testkey1").Return(ecloud.Tag{}, nil).Times(1)
+		service.EXPECT().GetSolutionTag(123, "testkey1").Return(ecloud.TagV1{}, nil).Times(1)
 
 		ecloudSolutionTagShow(service, &cobra.Command{}, []string{"123", "testkey1"})
 	})
@@ -121,8 +121,8 @@ func Test_ecloudSolutionTagShow(t *testing.T) {
 		service := mocks.NewMockECloudService(mockCtrl)
 
 		gomock.InOrder(
-			service.EXPECT().GetSolutionTag(123, "testkey1").Return(ecloud.Tag{}, nil),
-			service.EXPECT().GetSolutionTag(123, "testkey2").Return(ecloud.Tag{}, nil),
+			service.EXPECT().GetSolutionTag(123, "testkey1").Return(ecloud.TagV1{}, nil),
+			service.EXPECT().GetSolutionTag(123, "testkey2").Return(ecloud.TagV1{}, nil),
 		)
 
 		ecloudSolutionTagShow(service, &cobra.Command{}, []string{"123", "testkey1", "testkey2"})
@@ -146,7 +146,7 @@ func Test_ecloudSolutionTagShow(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().GetSolutionTag(123, "testkey1").Return(ecloud.Tag{}, errors.New("test error 1")).Times(1)
+		service.EXPECT().GetSolutionTag(123, "testkey1").Return(ecloud.TagV1{}, errors.New("test error 1")).Times(1)
 
 		test_output.AssertErrorOutput(t, "Error retrieving solution tag [testkey1]: test error 1\n", func() {
 			ecloudSolutionTagShow(service, &cobra.Command{}, []string{"123", "testkey1"})
@@ -179,14 +179,14 @@ func Test_ecloudSolutionTagCreate(t *testing.T) {
 		cmd.Flags().Set("key", "testkey1")
 		cmd.Flags().Set("value", "testvalue1")
 
-		expectedRequest := ecloud.CreateTagRequest{
+		expectedRequest := ecloud.CreateTagV1Request{
 			Key:   "testkey1",
 			Value: "testvalue1",
 		}
 
 		gomock.InOrder(
 			service.EXPECT().CreateSolutionTag(123, gomock.Eq(expectedRequest)).Return(nil),
-			service.EXPECT().GetSolutionTag(123, "testkey1").Return(ecloud.Tag{}, nil),
+			service.EXPECT().GetSolutionTag(123, "testkey1").Return(ecloud.TagV1{}, nil),
 		)
 
 		ecloudSolutionTagCreate(service, cmd, []string{"123"})
@@ -230,7 +230,7 @@ func Test_ecloudSolutionTagCreate(t *testing.T) {
 
 		gomock.InOrder(
 			service.EXPECT().CreateSolutionTag(123, gomock.Any()).Return(nil),
-			service.EXPECT().GetSolutionTag(123, "testkey1").Return(ecloud.Tag{}, errors.New("test error 1")),
+			service.EXPECT().GetSolutionTag(123, "testkey1").Return(ecloud.TagV1{}, errors.New("test error 1")),
 		)
 
 		err := ecloudSolutionTagCreate(service, cmd, []string{"123"})
@@ -270,13 +270,13 @@ func Test_ecloudSolutionTagUpdate(t *testing.T) {
 		cmd := ecloudSolutionTagUpdateCmd(nil)
 		cmd.Flags().Set("value", "testvalue1")
 
-		expectedPatch := ecloud.PatchTagRequest{
+		expectedPatch := ecloud.PatchTagV1Request{
 			Value: "testvalue1",
 		}
 
 		gomock.InOrder(
 			service.EXPECT().PatchSolutionTag(123, "testkey1", gomock.Eq(expectedPatch)).Return(nil),
-			service.EXPECT().GetSolutionTag(123, "testkey1").Return(ecloud.Tag{}, nil),
+			service.EXPECT().GetSolutionTag(123, "testkey1").Return(ecloud.TagV1{}, nil),
 		)
 
 		ecloudSolutionTagUpdate(service, cmd, []string{"123", "testkey1"})
@@ -290,15 +290,15 @@ func Test_ecloudSolutionTagUpdate(t *testing.T) {
 		cmd := ecloudSolutionTagUpdateCmd(nil)
 		cmd.Flags().Set("value", "testvalue1")
 
-		expectedPatch := ecloud.PatchTagRequest{
+		expectedPatch := ecloud.PatchTagV1Request{
 			Value: "testvalue1",
 		}
 
 		gomock.InOrder(
 			service.EXPECT().PatchSolutionTag(123, "testkey1", gomock.Eq(expectedPatch)).Return(nil),
-			service.EXPECT().GetSolutionTag(123, "testkey1").Return(ecloud.Tag{}, nil),
+			service.EXPECT().GetSolutionTag(123, "testkey1").Return(ecloud.TagV1{}, nil),
 			service.EXPECT().PatchSolutionTag(123, "testkey2", gomock.Eq(expectedPatch)).Return(nil),
-			service.EXPECT().GetSolutionTag(123, "testkey2").Return(ecloud.Tag{}, nil),
+			service.EXPECT().GetSolutionTag(123, "testkey2").Return(ecloud.TagV1{}, nil),
 		)
 
 		ecloudSolutionTagUpdate(service, cmd, []string{"123", "testkey1", "testkey2"})
@@ -341,7 +341,7 @@ func Test_ecloudSolutionTagUpdate(t *testing.T) {
 
 		gomock.InOrder(
 			service.EXPECT().PatchSolutionTag(123, "testkey1", gomock.Any()).Return(nil),
-			service.EXPECT().GetSolutionTag(123, "testkey1").Return(ecloud.Tag{}, errors.New("test error 1")),
+			service.EXPECT().GetSolutionTag(123, "testkey1").Return(ecloud.TagV1{}, errors.New("test error 1")),
 		)
 
 		test_output.AssertErrorOutput(t, "Error retrieving updated solution tag [testkey1]: test error 1\n", func() {

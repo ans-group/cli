@@ -81,16 +81,16 @@ func ECloudRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 	return cmd
 }
 
-// GetCreateTagRequestFromStringArrayFlag returns an array of CreateTagRequest structs from given tag string array flag
-func GetCreateTagRequestFromStringArrayFlag(tagsFlag []string) ([]ecloud.CreateTagRequest, error) {
-	var tags []ecloud.CreateTagRequest
+// GetCreateTagRequestFromStringArrayFlag returns an array of CreateTagV1Request structs from given tag string array flag
+func GetCreateTagRequestFromStringArrayFlag(tagsFlag []string) ([]ecloud.CreateTagV1Request, error) {
+	var tags []ecloud.CreateTagV1Request
 	for _, tagFlag := range tagsFlag {
 		key, value, err := GetKeyValueFromStringFlag(tagFlag)
 		if err != nil {
 			return tags, err
 		}
 
-		tags = append(tags, ecloud.CreateTagRequest{Key: key, Value: value})
+		tags = append(tags, ecloud.CreateTagV1Request{Key: key, Value: value})
 	}
 
 	return tags, nil

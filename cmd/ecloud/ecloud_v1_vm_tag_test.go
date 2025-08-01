@@ -35,7 +35,7 @@ func Test_ecloudVirtualMachineTagList(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().GetVirtualMachineTags(123, gomock.Any()).Return([]ecloud.Tag{}, nil).Times(1)
+		service.EXPECT().GetVirtualMachineTags(123, gomock.Any()).Return([]ecloud.TagV1{}, nil).Times(1)
 
 		ecloudVirtualMachineTagList(service, &cobra.Command{}, []string{"123"})
 	})
@@ -72,7 +72,7 @@ func Test_ecloudVirtualMachineTagList(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().GetVirtualMachineTags(123, gomock.Any()).Return([]ecloud.Tag{}, errors.New("test error 1")).Times(1)
+		service.EXPECT().GetVirtualMachineTags(123, gomock.Any()).Return([]ecloud.TagV1{}, errors.New("test error 1")).Times(1)
 
 		err := ecloudVirtualMachineTagList(service, &cobra.Command{}, []string{"123"})
 
@@ -109,7 +109,7 @@ func Test_ecloudVirtualMachineTagShow(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().GetVirtualMachineTag(123, "testkey1").Return(ecloud.Tag{}, nil).Times(1)
+		service.EXPECT().GetVirtualMachineTag(123, "testkey1").Return(ecloud.TagV1{}, nil).Times(1)
 
 		ecloudVirtualMachineTagShow(service, &cobra.Command{}, []string{"123", "testkey1"})
 	})
@@ -121,8 +121,8 @@ func Test_ecloudVirtualMachineTagShow(t *testing.T) {
 		service := mocks.NewMockECloudService(mockCtrl)
 
 		gomock.InOrder(
-			service.EXPECT().GetVirtualMachineTag(123, "testkey1").Return(ecloud.Tag{}, nil),
-			service.EXPECT().GetVirtualMachineTag(123, "testkey2").Return(ecloud.Tag{}, nil),
+			service.EXPECT().GetVirtualMachineTag(123, "testkey1").Return(ecloud.TagV1{}, nil),
+			service.EXPECT().GetVirtualMachineTag(123, "testkey2").Return(ecloud.TagV1{}, nil),
 		)
 
 		ecloudVirtualMachineTagShow(service, &cobra.Command{}, []string{"123", "testkey1", "testkey2"})
@@ -145,7 +145,7 @@ func Test_ecloudVirtualMachineTagShow(t *testing.T) {
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
-		service.EXPECT().GetVirtualMachineTag(123, "testkey1").Return(ecloud.Tag{}, errors.New("test error 1")).Times(1)
+		service.EXPECT().GetVirtualMachineTag(123, "testkey1").Return(ecloud.TagV1{}, errors.New("test error 1")).Times(1)
 
 		test_output.AssertErrorOutput(t, "Error retrieving virtual machine tag [testkey1]: test error 1\n", func() {
 			ecloudVirtualMachineTagShow(service, &cobra.Command{}, []string{"123", "testkey1"})
@@ -178,14 +178,14 @@ func Test_ecloudVirtualMachineTagCreate(t *testing.T) {
 		cmd.Flags().Set("key", "testkey1")
 		cmd.Flags().Set("value", "testvalue1")
 
-		expectedRequest := ecloud.CreateTagRequest{
+		expectedRequest := ecloud.CreateTagV1Request{
 			Key:   "testkey1",
 			Value: "testvalue1",
 		}
 
 		gomock.InOrder(
 			service.EXPECT().CreateVirtualMachineTag(123, gomock.Eq(expectedRequest)).Return(nil),
-			service.EXPECT().GetVirtualMachineTag(123, "testkey1").Return(ecloud.Tag{}, nil),
+			service.EXPECT().GetVirtualMachineTag(123, "testkey1").Return(ecloud.TagV1{}, nil),
 		)
 
 		ecloudVirtualMachineTagCreate(service, cmd, []string{"123"})
@@ -229,7 +229,7 @@ func Test_ecloudVirtualMachineTagCreate(t *testing.T) {
 
 		gomock.InOrder(
 			service.EXPECT().CreateVirtualMachineTag(123, gomock.Any()).Return(nil),
-			service.EXPECT().GetVirtualMachineTag(123, "testkey1").Return(ecloud.Tag{}, errors.New("test error 1")),
+			service.EXPECT().GetVirtualMachineTag(123, "testkey1").Return(ecloud.TagV1{}, errors.New("test error 1")),
 		)
 
 		err := ecloudVirtualMachineTagCreate(service, cmd, []string{"123"})
@@ -269,13 +269,13 @@ func Test_ecloudVirtualMachineTagUpdate(t *testing.T) {
 		cmd := ecloudVirtualMachineTagUpdateCmd(nil)
 		cmd.Flags().Set("value", "testvalue1")
 
-		expectedPatch := ecloud.PatchTagRequest{
+		expectedPatch := ecloud.PatchTagV1Request{
 			Value: "testvalue1",
 		}
 
 		gomock.InOrder(
 			service.EXPECT().PatchVirtualMachineTag(123, "testkey1", gomock.Eq(expectedPatch)).Return(nil),
-			service.EXPECT().GetVirtualMachineTag(123, "testkey1").Return(ecloud.Tag{}, nil),
+			service.EXPECT().GetVirtualMachineTag(123, "testkey1").Return(ecloud.TagV1{}, nil),
 		)
 
 		ecloudVirtualMachineTagUpdate(service, cmd, []string{"123", "testkey1"})
@@ -289,15 +289,15 @@ func Test_ecloudVirtualMachineTagUpdate(t *testing.T) {
 		cmd := ecloudVirtualMachineTagUpdateCmd(nil)
 		cmd.Flags().Set("value", "testvalue1")
 
-		expectedPatch := ecloud.PatchTagRequest{
+		expectedPatch := ecloud.PatchTagV1Request{
 			Value: "testvalue1",
 		}
 
 		gomock.InOrder(
 			service.EXPECT().PatchVirtualMachineTag(123, "testkey1", gomock.Eq(expectedPatch)).Return(nil),
-			service.EXPECT().GetVirtualMachineTag(123, "testkey1").Return(ecloud.Tag{}, nil),
+			service.EXPECT().GetVirtualMachineTag(123, "testkey1").Return(ecloud.TagV1{}, nil),
 			service.EXPECT().PatchVirtualMachineTag(123, "testkey2", gomock.Eq(expectedPatch)).Return(nil),
-			service.EXPECT().GetVirtualMachineTag(123, "testkey2").Return(ecloud.Tag{}, nil),
+			service.EXPECT().GetVirtualMachineTag(123, "testkey2").Return(ecloud.TagV1{}, nil),
 		)
 
 		ecloudVirtualMachineTagUpdate(service, cmd, []string{"123", "testkey1", "testkey2"})
@@ -340,7 +340,7 @@ func Test_ecloudVirtualMachineTagUpdate(t *testing.T) {
 
 		gomock.InOrder(
 			service.EXPECT().PatchVirtualMachineTag(123, "testkey1", gomock.Any()).Return(nil),
-			service.EXPECT().GetVirtualMachineTag(123, "testkey1").Return(ecloud.Tag{}, errors.New("test error 1")),
+			service.EXPECT().GetVirtualMachineTag(123, "testkey1").Return(ecloud.TagV1{}, errors.New("test error 1")),
 		)
 
 		test_output.AssertErrorOutput(t, "Error retrieving updated virtual machine tag [testkey1]: test error 1\n", func() {
