@@ -33,6 +33,7 @@
 
 * Write table-driven tests with clear input/output extensions. Add comments where necessary to clarify complex test logic.
   * However, where there are existing tests for a package, follow the existing conventions.
+* Mocks are created with `mockgen`, however you MUST use the script in `test/mocks/generate.sh` to regenerate the mocks rather than using the `mockgen` command directly.
 
 ## Modernisation Notes
 
