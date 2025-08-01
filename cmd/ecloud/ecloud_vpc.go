@@ -231,6 +231,7 @@ func ecloudVPCDeleteCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the VPC has been completely removed")
 	cmd.Flags().Bool("recursive", false, "Recursively delete all resources within the VPC before deleting the VPC itself")
 	cmd.Flags().Bool("force", false, "Skip interactive confirmation when using recursive deletion")
+	cmd.Flags().Bool("dry-run", false, "Show what resources would be deleted without actually deleting them (only works with --recursive)")
 
 	return cmd
 }
@@ -239,10 +240,17 @@ func ecloudVPCDelete(service ecloud.ECloudService, cmd *cobra.Command, args []st
 	recursive, _ := cmd.Flags().GetBool("recursive")
 	forceFlag, _ := cmd.Flags().GetBool("force")
 	waitFlag, _ := cmd.Flags().GetBool("wait")
+	dryRun, _ := cmd.Flags().GetBool("dry-run")
+
+	// Validate that dry-run is only used with recursive
+	if dryRun && !recursive {
+		output.OutputWithErrorLevelf("ecloud: --dry-run flag can only be used with --recursive")
+		return
+	}
 
 	for _, vpcID := range args {
 		if recursive {
-			if !forceFlag {
+			if !forceFlag && !dryRun {
 				confirmed, err := confirmVPCRecursiveDeletion(vpcID)
 				if err != nil {
 					output.OutputWithErrorLevelf("Error getting confirmation for VPC [%s]: %s", vpcID, err)
@@ -254,7 +262,7 @@ func ecloudVPCDelete(service ecloud.ECloudService, cmd *cobra.Command, args []st
 				}
 			}
 
-			err := deleteVPCResourcesRecursively(service, vpcID)
+			err := deleteVPCResourcesRecursively(service, vpcID, dryRun)
 			if err != nil {
 				output.OutputWithErrorLevelf("ecloud: Error deleting resources for VPC [%s]: %s", vpcID, err)
 				continue
