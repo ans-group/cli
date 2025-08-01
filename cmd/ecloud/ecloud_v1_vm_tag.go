@@ -105,7 +105,7 @@ func ecloudVirtualMachineTagShow(service ecloud.ECloudService, cmd *cobra.Comman
 		return fmt.Errorf("Invalid virtual machine ID [%s]", args[0])
 	}
 
-	var tags []ecloud.Tag
+	var tags []ecloud.TagV1
 
 	for _, arg := range args[1:] {
 		tag, err := service.GetVirtualMachineTag(vmID, arg)
@@ -160,7 +160,7 @@ func ecloudVirtualMachineTagCreate(service ecloud.ECloudService, cmd *cobra.Comm
 	key, _ := cmd.Flags().GetString("key")
 	value, _ := cmd.Flags().GetString("value")
 
-	createRequest := ecloud.CreateTagRequest{
+	createRequest := ecloud.CreateTagV1Request{
 		Key:   key,
 		Value: value,
 	}
@@ -175,7 +175,7 @@ func ecloudVirtualMachineTagCreate(service ecloud.ECloudService, cmd *cobra.Comm
 		return fmt.Errorf("Error retrieving new virtual machine tag: %s", err)
 	}
 
-	return output.CommandOutput(cmd, TagCollection([]ecloud.Tag{tag}))
+	return output.CommandOutput(cmd, TagCollection([]ecloud.TagV1{tag}))
 }
 
 func ecloudVirtualMachineTagUpdateCmd(f factory.ClientFactory) *cobra.Command {
@@ -215,14 +215,14 @@ func ecloudVirtualMachineTagUpdate(service ecloud.ECloudService, cmd *cobra.Comm
 		return fmt.Errorf("Invalid virtual machine ID [%s]", args[0])
 	}
 
-	patchRequest := ecloud.PatchTagRequest{}
+	patchRequest := ecloud.PatchTagV1Request{}
 
 	if cmd.Flags().Changed("value") {
 		recordName, _ := cmd.Flags().GetString("value")
 		patchRequest.Value = recordName
 	}
 
-	var tags []ecloud.Tag
+	var tags []ecloud.TagV1
 
 	for _, arg := range args[1:] {
 		err = service.PatchVirtualMachineTag(vmID, arg, patchRequest)

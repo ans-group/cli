@@ -5,11 +5,11 @@
 package mocks
 
 import (
+	io "io"
+	reflect "reflect"
 	connection "github.com/ans-group/sdk-go/pkg/connection"
 	pss "github.com/ans-group/sdk-go/pkg/service/pss"
 	gomock "github.com/golang/mock/gomock"
-	io "io"
-	reflect "reflect"
 )
 
 // MockPSSService is a mock of PSSService interface.

@@ -441,7 +441,7 @@ func (mr *MockECloudServiceMockRecorder) CreateSSHKeyPair(arg0 interface{}) *gom
 }
 
 // CreateSolutionTag mocks base method.
-func (m *MockECloudService) CreateSolutionTag(arg0 int, arg1 ecloud.CreateTagRequest) error {
+func (m *MockECloudService) CreateSolutionTag(arg0 int, arg1 ecloud.CreateTagV1Request) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateSolutionTag", arg0, arg1)
 	ret0, _ := ret[0].(error)
@@ -452,6 +452,21 @@ func (m *MockECloudService) CreateSolutionTag(arg0 int, arg1 ecloud.CreateTagReq
 func (mr *MockECloudServiceMockRecorder) CreateSolutionTag(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateSolutionTag", reflect.TypeOf((*MockECloudService)(nil).CreateSolutionTag), arg0, arg1)
+}
+
+// CreateTag mocks base method.
+func (m *MockECloudService) CreateTag(arg0 ecloud.CreateTagRequest) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateTag", arg0)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateTag indicates an expected call of CreateTag.
+func (mr *MockECloudServiceMockRecorder) CreateTag(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateTag", reflect.TypeOf((*MockECloudService)(nil).CreateTag), arg0)
 }
 
 // CreateVIP mocks base method.
@@ -590,7 +605,7 @@ func (mr *MockECloudServiceMockRecorder) CreateVirtualMachineConsoleSession(arg0
 }
 
 // CreateVirtualMachineTag mocks base method.
-func (m *MockECloudService) CreateVirtualMachineTag(arg0 int, arg1 ecloud.CreateTagRequest) error {
+func (m *MockECloudService) CreateVirtualMachineTag(arg0 int, arg1 ecloud.CreateTagV1Request) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateVirtualMachineTag", arg0, arg1)
 	ret0, _ := ret[0].(error)
@@ -1028,6 +1043,20 @@ func (m *MockECloudService) DeleteSolutionTemplate(arg0 int, arg1 string) error 
 func (mr *MockECloudServiceMockRecorder) DeleteSolutionTemplate(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteSolutionTemplate", reflect.TypeOf((*MockECloudService)(nil).DeleteSolutionTemplate), arg0, arg1)
+}
+
+// DeleteTag mocks base method.
+func (m *MockECloudService) DeleteTag(arg0 string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteTag", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteTag indicates an expected call of DeleteTag.
+func (mr *MockECloudServiceMockRecorder) DeleteTag(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteTag", reflect.TypeOf((*MockECloudService)(nil).DeleteTag), arg0)
 }
 
 // DeleteVIP mocks base method.
@@ -4056,10 +4085,10 @@ func (mr *MockECloudServiceMockRecorder) GetSolutionSitesPaginated(arg0, arg1 in
 }
 
 // GetSolutionTag mocks base method.
-func (m *MockECloudService) GetSolutionTag(arg0 int, arg1 string) (ecloud.Tag, error) {
+func (m *MockECloudService) GetSolutionTag(arg0 int, arg1 string) (ecloud.TagV1, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetSolutionTag", arg0, arg1)
-	ret0, _ := ret[0].(ecloud.Tag)
+	ret0, _ := ret[0].(ecloud.TagV1)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -4071,10 +4100,10 @@ func (mr *MockECloudServiceMockRecorder) GetSolutionTag(arg0, arg1 interface{}) 
 }
 
 // GetSolutionTags mocks base method.
-func (m *MockECloudService) GetSolutionTags(arg0 int, arg1 connection.APIRequestParameters) ([]ecloud.Tag, error) {
+func (m *MockECloudService) GetSolutionTags(arg0 int, arg1 connection.APIRequestParameters) ([]ecloud.TagV1, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetSolutionTags", arg0, arg1)
-	ret0, _ := ret[0].([]ecloud.Tag)
+	ret0, _ := ret[0].([]ecloud.TagV1)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -4086,10 +4115,10 @@ func (mr *MockECloudServiceMockRecorder) GetSolutionTags(arg0, arg1 interface{})
 }
 
 // GetSolutionTagsPaginated mocks base method.
-func (m *MockECloudService) GetSolutionTagsPaginated(arg0 int, arg1 connection.APIRequestParameters) (*connection.Paginated[ecloud.Tag], error) {
+func (m *MockECloudService) GetSolutionTagsPaginated(arg0 int, arg1 connection.APIRequestParameters) (*connection.Paginated[ecloud.TagV1], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetSolutionTagsPaginated", arg0, arg1)
-	ret0, _ := ret[0].(*connection.Paginated[ecloud.Tag])
+	ret0, _ := ret[0].(*connection.Paginated[ecloud.TagV1])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -4203,6 +4232,51 @@ func (m *MockECloudService) GetSolutionsPaginated(arg0 connection.APIRequestPara
 func (mr *MockECloudServiceMockRecorder) GetSolutionsPaginated(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSolutionsPaginated", reflect.TypeOf((*MockECloudService)(nil).GetSolutionsPaginated), arg0)
+}
+
+// GetTag mocks base method.
+func (m *MockECloudService) GetTag(arg0 string) (ecloud.Tag, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetTag", arg0)
+	ret0, _ := ret[0].(ecloud.Tag)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetTag indicates an expected call of GetTag.
+func (mr *MockECloudServiceMockRecorder) GetTag(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTag", reflect.TypeOf((*MockECloudService)(nil).GetTag), arg0)
+}
+
+// GetTags mocks base method.
+func (m *MockECloudService) GetTags(arg0 connection.APIRequestParameters) ([]ecloud.Tag, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetTags", arg0)
+	ret0, _ := ret[0].([]ecloud.Tag)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetTags indicates an expected call of GetTags.
+func (mr *MockECloudServiceMockRecorder) GetTags(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTags", reflect.TypeOf((*MockECloudService)(nil).GetTags), arg0)
+}
+
+// GetTagsPaginated mocks base method.
+func (m *MockECloudService) GetTagsPaginated(arg0 connection.APIRequestParameters) (*connection.Paginated[ecloud.Tag], error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetTagsPaginated", arg0)
+	ret0, _ := ret[0].(*connection.Paginated[ecloud.Tag])
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetTagsPaginated indicates an expected call of GetTagsPaginated.
+func (mr *MockECloudServiceMockRecorder) GetTagsPaginated(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTagsPaginated", reflect.TypeOf((*MockECloudService)(nil).GetTagsPaginated), arg0)
 }
 
 // GetTask mocks base method.
@@ -4881,10 +4955,10 @@ func (mr *MockECloudServiceMockRecorder) GetVirtualMachine(arg0 interface{}) *go
 }
 
 // GetVirtualMachineTag mocks base method.
-func (m *MockECloudService) GetVirtualMachineTag(arg0 int, arg1 string) (ecloud.Tag, error) {
+func (m *MockECloudService) GetVirtualMachineTag(arg0 int, arg1 string) (ecloud.TagV1, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetVirtualMachineTag", arg0, arg1)
-	ret0, _ := ret[0].(ecloud.Tag)
+	ret0, _ := ret[0].(ecloud.TagV1)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -4896,10 +4970,10 @@ func (mr *MockECloudServiceMockRecorder) GetVirtualMachineTag(arg0, arg1 interfa
 }
 
 // GetVirtualMachineTags mocks base method.
-func (m *MockECloudService) GetVirtualMachineTags(arg0 int, arg1 connection.APIRequestParameters) ([]ecloud.Tag, error) {
+func (m *MockECloudService) GetVirtualMachineTags(arg0 int, arg1 connection.APIRequestParameters) ([]ecloud.TagV1, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetVirtualMachineTags", arg0, arg1)
-	ret0, _ := ret[0].([]ecloud.Tag)
+	ret0, _ := ret[0].([]ecloud.TagV1)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -4911,10 +4985,10 @@ func (mr *MockECloudServiceMockRecorder) GetVirtualMachineTags(arg0, arg1 interf
 }
 
 // GetVirtualMachineTagsPaginated mocks base method.
-func (m *MockECloudService) GetVirtualMachineTagsPaginated(arg0 int, arg1 connection.APIRequestParameters) (*connection.Paginated[ecloud.Tag], error) {
+func (m *MockECloudService) GetVirtualMachineTagsPaginated(arg0 int, arg1 connection.APIRequestParameters) (*connection.Paginated[ecloud.TagV1], error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetVirtualMachineTagsPaginated", arg0, arg1)
-	ret0, _ := ret[0].(*connection.Paginated[ecloud.Tag])
+	ret0, _ := ret[0].(*connection.Paginated[ecloud.TagV1])
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -5476,7 +5550,7 @@ func (mr *MockECloudServiceMockRecorder) PatchSolution(arg0, arg1 interface{}) *
 }
 
 // PatchSolutionTag mocks base method.
-func (m *MockECloudService) PatchSolutionTag(arg0 int, arg1 string, arg2 ecloud.PatchTagRequest) error {
+func (m *MockECloudService) PatchSolutionTag(arg0 int, arg1 string, arg2 ecloud.PatchTagV1Request) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PatchSolutionTag", arg0, arg1, arg2)
 	ret0, _ := ret[0].(error)
@@ -5487,6 +5561,20 @@ func (m *MockECloudService) PatchSolutionTag(arg0 int, arg1 string, arg2 ecloud.
 func (mr *MockECloudServiceMockRecorder) PatchSolutionTag(arg0, arg1, arg2 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchSolutionTag", reflect.TypeOf((*MockECloudService)(nil).PatchSolutionTag), arg0, arg1, arg2)
+}
+
+// PatchTag mocks base method.
+func (m *MockECloudService) PatchTag(arg0 string, arg1 ecloud.PatchTagRequest) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PatchTag", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// PatchTag indicates an expected call of PatchTag.
+func (mr *MockECloudServiceMockRecorder) PatchTag(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PatchTag", reflect.TypeOf((*MockECloudService)(nil).PatchTag), arg0, arg1)
 }
 
 // PatchVIP mocks base method.
@@ -5608,7 +5696,7 @@ func (mr *MockECloudServiceMockRecorder) PatchVirtualMachine(arg0, arg1 interfac
 }
 
 // PatchVirtualMachineTag mocks base method.
-func (m *MockECloudService) PatchVirtualMachineTag(arg0 int, arg1 string, arg2 ecloud.PatchTagRequest) error {
+func (m *MockECloudService) PatchVirtualMachineTag(arg0 int, arg1 string, arg2 ecloud.PatchTagV1Request) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PatchVirtualMachineTag", arg0, arg1, arg2)
 	ret0, _ := ret[0].(error)

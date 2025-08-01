@@ -5,10 +5,10 @@
 package mocks
 
 import (
+	connection "github.com/ans-group/sdk-go/pkg/connection"
 	account "github.com/ans-group/sdk-go/pkg/service/account"
 	gomock "github.com/golang/mock/gomock"
 	reflect "reflect"
-	connection "github.com/ans-group/sdk-go/pkg/connection"
 )
 
 // MockAccountService is a mock of AccountService interface.
