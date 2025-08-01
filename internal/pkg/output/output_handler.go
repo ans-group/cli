@@ -13,6 +13,7 @@ import (
 
 	"github.com/iancoleman/strcase"
 	"github.com/olekukonko/tablewriter"
+	"github.com/olekukonko/tablewriter/tw"
 	"github.com/ryanuber/go-glob"
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v3"
@@ -103,10 +104,12 @@ func (o *OutputHandler) Table(cmd *cobra.Command, d interface{}) error {
 		return nil
 	}
 
-	table := tablewriter.NewWriter(os.Stdout)
+	table := tablewriter.NewTable(os.Stdout,
+		tablewriter.WithHeaderAlignment(tw.AlignCenter),
+		tablewriter.WithRowAlignment(tw.AlignLeft))
 
-	table.SetHeader(columns)
-	table.AppendBulk(rows)
+	table.Header(columns)
+	table.Bulk(rows)
 	table.Render()
 
 	return nil
