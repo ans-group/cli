@@ -121,6 +121,7 @@ func deleteInstances(service ecloud.ECloudService, vpcID string, dryRun bool) er
 
 	for _, instance := range instances {
 		err := withDryRun(fmt.Sprintf("delete instance [%s]", instance.ID), func() error {
+			fmt.Printf("Deleting instance [%s]\n", instance.ID)
 			err := service.DeleteInstance(instance.ID)
 			if err != nil {
 				output.OutputWithErrorLevelf("Error deleting instance [%s]: %s", instance.ID, err)
@@ -165,6 +166,7 @@ func deleteLoadBalancers(service ecloud.ECloudService, vpcID string, dryRun bool
 
 	for _, lb := range loadBalancers {
 		err := withDryRun(fmt.Sprintf("delete load balancer [%s]", lb.ID), func() error {
+			fmt.Printf("Deleting load balancer [%s]\n", lb.ID)
 			taskID, err := service.DeleteLoadBalancer(lb.ID)
 			if err != nil {
 				output.OutputWithErrorLevelf("Error deleting load balancer [%s]: %s", lb.ID, err)
@@ -225,6 +227,7 @@ func deleteVPNResources(service ecloud.ECloudService, vpcID string, dryRun bool)
 		} else {
 			for _, session := range vpnSessions {
 				err := withDryRun(fmt.Sprintf("delete VPN session [%s]", session.ID), func() error {
+					fmt.Printf("Deleting VPN session [%s]\n", session.ID)
 					taskID, err := service.DeleteVPNSession(session.ID)
 					if err != nil {
 						output.OutputWithErrorLevelf("Error deleting VPN session [%s]: %s", session.ID, err)
@@ -260,6 +263,7 @@ func deleteVPNResources(service ecloud.ECloudService, vpcID string, dryRun bool)
 		} else {
 			for _, endpoint := range vpnEndpoints {
 				err := withDryRun(fmt.Sprintf("delete VPN endpoint [%s]", endpoint.ID), func() error {
+					fmt.Printf("Deleting VPN endpoint [%s]\n", endpoint.ID)
 					taskID, err := service.DeleteVPNEndpoint(endpoint.ID)
 					if err != nil {
 						output.OutputWithErrorLevelf("Error deleting VPN endpoint [%s]: %s", endpoint.ID, err)
@@ -280,6 +284,7 @@ func deleteVPNResources(service ecloud.ECloudService, vpcID string, dryRun bool)
 
 		// Finally delete the VPN service
 		err = withDryRun(fmt.Sprintf("delete VPN service [%s]", vpnService.ID), func() error {
+			fmt.Printf("Deleting VPN service [%s]\n", vpnService.ID)
 			taskID, err := service.DeleteVPNService(vpnService.ID)
 			if err != nil {
 				output.OutputWithErrorLevelf("Error deleting VPN service [%s]: %s", vpnService.ID, err)
@@ -509,6 +514,7 @@ func deleteRemainingFloatingIPs(service ecloud.ECloudService, vpcID string, dryR
 
 	for _, fip := range floatingIPs {
 		err := withDryRun(fmt.Sprintf("delete floating IP [%s]", fip.ID), func() error {
+			fmt.Printf("Deleting floating IP [%s]\n", fip.ID)
 			taskID, err := service.DeleteFloatingIP(fip.ID)
 			if err != nil {
 				output.OutputWithErrorLevelf("Error deleting floating IP [%s]: %s", fip.ID, err)
@@ -545,6 +551,7 @@ func deleteVolumeResources(service ecloud.ECloudService, vpcID string, dryRun bo
 	for _, volume := range volumes {
 		if volume.VolumeGroupID != "" {
 			err := withDryRun(fmt.Sprintf("remove volume [%s] from volume group", volume.ID), func() error {
+				fmt.Printf("Removing volume [%s] from volume group\n", volume.ID)
 				// Update volume to remove it from volume group
 				patchRequest := ecloud.PatchVolumeRequest{
 					VolumeGroupID: ptr.String(""), // Empty string to remove from group
@@ -570,6 +577,7 @@ func deleteVolumeResources(service ecloud.ECloudService, vpcID string, dryRun bo
 	// Delete volumes
 	for _, volume := range volumes {
 		err := withDryRun(fmt.Sprintf("delete volume [%s]", volume.ID), func() error {
+			fmt.Printf("Deleting volume [%s]\n", volume.ID)
 			taskID, err := service.DeleteVolume(volume.ID)
 			if err != nil {
 				output.OutputWithErrorLevelf("Error deleting volume [%s]: %s", volume.ID, err)
@@ -605,6 +613,7 @@ func deleteVolumeResources(service ecloud.ECloudService, vpcID string, dryRun bo
 
 	for _, vg := range volumeGroups {
 		err := withDryRun(fmt.Sprintf("delete volume group [%s]", vg.ID), func() error {
+			fmt.Printf("Deleting volume group [%s]\n", vg.ID)
 			taskID, err := service.DeleteVolumeGroup(vg.ID)
 			if err != nil {
 				output.OutputWithErrorLevelf("Error deleting volume group [%s]: %s", vg.ID, err)
@@ -727,6 +736,7 @@ func deletePrivateImages(service ecloud.ECloudService, vpcID string, dryRun bool
 
 	for _, image := range images {
 		err := withDryRun(fmt.Sprintf("delete private image [%s]", image.ID), func() error {
+			fmt.Printf("Deleting private image [%s]\n", image.ID)
 			taskID, err := service.DeleteImage(image.ID)
 			if err != nil {
 				output.OutputWithErrorLevelf("Error deleting image [%s]: %s", image.ID, err)
@@ -801,6 +811,7 @@ func deleteAffinityRules(service ecloud.ECloudService, vpcID string, dryRun bool
 
 	for _, rule := range affinityRules {
 		err := withDryRun(fmt.Sprintf("delete affinity rule [%s]", rule.ID), func() error {
+			fmt.Printf("Deleting affinity rule [%s]\n", rule.ID)
 			taskID, err := service.DeleteAffinityRule(rule.ID)
 			if err != nil {
 				output.OutputWithErrorLevelf("Error deleting affinity rule [%s]: %s", rule.ID, err)
