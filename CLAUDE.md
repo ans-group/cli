@@ -1,5 +1,9 @@
 # Development Guidelines
 
+## Building
+
+* Run `go build -o ans` from the root of the repository to build the binary.
+
 ## Libraries
 
 * You should use the official ANS Go SDK for all communication with ANS endpoints. The SDK source code can be found at the following repository: https://github.com/ans-group/sdk-go
