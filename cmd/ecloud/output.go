@@ -67,13 +67,13 @@ func (m VirtualMachineDiskCollection) Fields() []*output.OrderedFields {
 	return data
 }
 
-type TagCollection []ecloud.TagV1
+type TagV1Collection []ecloud.TagV1
 
-func (m TagCollection) DefaultColumns() []string {
+func (m TagV1Collection) DefaultColumns() []string {
 	return []string{"key", "value", "created_at"}
 }
 
-func (m TagCollection) Fields() []*output.OrderedFields {
+func (m TagV1Collection) Fields() []*output.OrderedFields {
 	var data []*output.OrderedFields
 	for _, tag := range m {
 		fields := output.NewOrderedFields()
@@ -614,4 +614,25 @@ type BackupGatewayCollection []ecloud.BackupGateway
 
 func (m BackupGatewayCollection) DefaultColumns() []string {
 	return []string{"id", "name", "vpc_id", "availability_zone", "gateway_spec_id", "sync_status"}
+}
+
+type TagCollection []ecloud.Tag
+
+func (m TagCollection) DefaultColumns() []string {
+	return []string{"id", "name", "scope", "created_at"}
+}
+
+func (m TagCollection) Fields() []*output.OrderedFields {
+	var data []*output.OrderedFields
+	for _, tag := range m {
+		fields := output.NewOrderedFields()
+		fields.Set("id", tag.ID)
+		fields.Set("scope", tag.Scope)
+		fields.Set("name", tag.Name)
+		fields.Set("created_at", tag.CreatedAt.String())
+
+		data = append(data, fields)
+	}
+
+	return data
 }

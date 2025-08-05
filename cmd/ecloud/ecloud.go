@@ -61,6 +61,7 @@ func ECloudRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 		cmd.AddCommand(ecloudRouterRootCmd(f))
 		cmd.AddCommand(ecloudRouterThroughputRootCmd(f))
 		cmd.AddCommand(ecloudSSHKeyPairRootCmd(f, fs))
+		cmd.AddCommand(ecloudTagRootCmd(f))
 		cmd.AddCommand(ecloudTaskRootCmd(f))
 		cmd.AddCommand(ecloudVIPRootCmd(f))
 		cmd.AddCommand(ecloudVolumeRootCmd(f))
