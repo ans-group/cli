@@ -29,7 +29,7 @@ func Test_ddosxDomainPropertyListCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 }
 
@@ -92,7 +92,7 @@ func Test_ddosxDomainPropertyList(t *testing.T) {
 
 		err := ddosxDomainPropertyList(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 
-		assert.Equal(t, "Error retrieving domain properties: test error", err.Error())
+		assert.Equal(t, "error retrieving domain properties: test error", err.Error())
 	})
 }
 
@@ -107,14 +107,14 @@ func Test_ddosxDomainPropertyShowCmd_Args(t *testing.T) {
 		err := ddosxDomainPropertyShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 
 	t.Run("MissingDomainProperty_Error", func(t *testing.T) {
 		err := ddosxDomainPropertyShowCmd(nil).Args(nil, []string{"testdomain1.co.uk"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain property", err.Error())
+		assert.Equal(t, "missing domain property", err.Error())
 	})
 }
 
@@ -169,14 +169,14 @@ func Test_ddosxDomainPropertyUpdateCmd_Args(t *testing.T) {
 		err := ddosxDomainPropertyUpdateCmd(nil, nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 
 	t.Run("MissingDomainProperty_Error", func(t *testing.T) {
 		err := ddosxDomainPropertyUpdateCmd(nil, nil).Args(nil, []string{"testdomain1.co.uk"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain property", err.Error())
+		assert.Equal(t, "missing domain property", err.Error())
 	})
 }
 

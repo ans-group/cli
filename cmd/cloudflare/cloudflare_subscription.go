@@ -40,7 +40,7 @@ func cloudflareSubscriptionList(service cloudflare.CloudflareService, cmd *cobra
 
 	subscriptions, err := service.GetSubscriptions(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving subscriptions: %s", err)
+		return fmt.Errorf("error retrieving subscriptions: %s", err)
 	}
 
 	return output.CommandOutput(cmd, SubscriptionCollection(subscriptions))

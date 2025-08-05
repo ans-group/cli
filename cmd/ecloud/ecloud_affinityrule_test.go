@@ -49,7 +49,7 @@ func Test_ecloudAffinityRuleList(t *testing.T) {
 
 		err := ecloudAffinityRuleList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving affinity rules: test error", err.Error())
+		assert.Equal(t, "error retrieving affinity rules: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudAffinityRuleShowCmd_Args(t *testing.T) {
 		err := ecloudAffinityRuleShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing affinity rule", err.Error())
+		assert.Equal(t, "missing affinity rule", err.Error())
 	})
 }
 
@@ -118,10 +118,10 @@ func Test_ecloudAffinityRuleCreate(t *testing.T) {
 		cmd.ParseFlags([]string{"--name=testrule", "--vpc=vpc-abcdef12", "--availability-zone=az-abcdef12", "--type=anti-affinity"})
 
 		req := ecloud.CreateAffinityRuleRequest{
-			Name: "testrule",
-			VPCID: "vpc-abcdef12",
+			Name:               "testrule",
+			VPCID:              "vpc-abcdef12",
 			AvailabilityZoneID: "az-abcdef12",
-			Type: "anti-affinity",
+			Type:               "anti-affinity",
 		}
 
 		resp := ecloud.TaskReference{
@@ -146,10 +146,10 @@ func Test_ecloudAffinityRuleCreate(t *testing.T) {
 		cmd.ParseFlags([]string{"--name=testrule", "--vpc=vpc-abcdef12", "--availability-zone=az-abcdef12", "--type=anti-affinity", "--wait"})
 
 		req := ecloud.CreateAffinityRuleRequest{
-			Name: "testrule",
-			VPCID: "vpc-abcdef12",
+			Name:               "testrule",
+			VPCID:              "vpc-abcdef12",
 			AvailabilityZoneID: "az-abcdef12",
-			Type: "anti-affinity",
+			Type:               "anti-affinity",
 		}
 
 		resp := ecloud.TaskReference{
@@ -175,10 +175,10 @@ func Test_ecloudAffinityRuleCreate(t *testing.T) {
 		cmd.ParseFlags([]string{"--name=testrule", "--vpc=vpc-abcdef12", "--availability-zone=az-abcdef12", "--type=anti-affinity", "--wait"})
 
 		req := ecloud.CreateAffinityRuleRequest{
-			Name: "testrule",
-			VPCID: "vpc-abcdef12",
+			Name:               "testrule",
+			VPCID:              "vpc-abcdef12",
 			AvailabilityZoneID: "az-abcdef12",
-			Type: "anti-affinity",
+			Type:               "anti-affinity",
 		}
 
 		resp := ecloud.TaskReference{
@@ -192,7 +192,7 @@ func Test_ecloudAffinityRuleCreate(t *testing.T) {
 		)
 
 		err := ecloudAffinityRuleCreate(service, cmd, []string{})
-		assert.Equal(t, "Error waiting for affinity rule task to complete: Error waiting for command: Failed to retrieve task status: test error", err.Error())
+		assert.Equal(t, "error waiting for affinity rule task to complete: error waiting for command: failed to retrieve task status: test error", err.Error())
 	})
 
 	t.Run("CreateAffinityRuleError_ReturnsError", func(t *testing.T) {
@@ -207,7 +207,7 @@ func Test_ecloudAffinityRuleCreate(t *testing.T) {
 
 		err := ecloudAffinityRuleCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error creating affinity rule: test error", err.Error())
+		assert.Equal(t, "error creating affinity rule: test error", err.Error())
 	})
 
 	t.Run("GetAffinityRuleError_ReturnsError", func(t *testing.T) {
@@ -225,7 +225,7 @@ func Test_ecloudAffinityRuleCreate(t *testing.T) {
 
 		err := ecloudAffinityRuleCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error retrieving new affinity rule: test error", err.Error())
+		assert.Equal(t, "error retrieving new affinity rule: test error", err.Error())
 	})
 }
 
@@ -240,7 +240,7 @@ func Test_ecloudAffinityRuleUpdateCmd_Args(t *testing.T) {
 		err := ecloudAffinityRuleUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing affinity rule", err.Error())
+		assert.Equal(t, "missing affinity rule", err.Error())
 	})
 }
 
@@ -321,7 +321,7 @@ func Test_ecloudAffinityRuleUpdate(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for affinity rule [ar-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for affinity rule [ar-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudAffinityRuleUpdate(service, cmd, []string{"ar-abcdef12"})
 		})
 	})
@@ -372,7 +372,7 @@ func Test_ecloudAffinityRuleDeleteCmd_Args(t *testing.T) {
 		err := ecloudAffinityRuleDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing affinity rule", err.Error())
+		assert.Equal(t, "missing affinity rule", err.Error())
 	})
 }
 
@@ -419,7 +419,7 @@ func Test_ecloudAffinityRuleDelete(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for affinity rule [ar-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for affinity rule [ar-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudAffinityRuleDelete(service, cmd, []string{"ar-abcdef12"})
 		})
 	})

@@ -31,7 +31,7 @@ func ecloudNetworkPolicyNetworkRuleListCmd(f factory.ClientFactory) *cobra.Comma
 		Example: "ans ecloud networkpolicy networkrule list np-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing network policy")
+				return errors.New("missing network policy")
 			}
 
 			return nil
@@ -52,7 +52,7 @@ func ecloudNetworkPolicyNetworkRuleList(service ecloud.ECloudService, cmd *cobra
 
 	rules, err := service.GetNetworkPolicyNetworkRules(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving network policy network rules: %s", err)
+		return fmt.Errorf("error retrieving network policy network rules: %s", err)
 	}
 
 	return output.CommandOutput(cmd, NetworkRuleCollection(rules))

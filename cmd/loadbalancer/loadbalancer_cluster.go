@@ -49,7 +49,7 @@ func loadbalancerClusterList(service loadbalancer.LoadBalancerService, cmd *cobr
 
 	clusters, err := service.GetClusters(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving clusters: %s", err)
+		return fmt.Errorf("error retrieving clusters: %s", err)
 	}
 
 	return output.CommandOutput(cmd, ClusterCollection(clusters))
@@ -63,7 +63,7 @@ func loadbalancerClusterShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans loadbalancer cluster show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing cluster")
+				return errors.New("missing cluster")
 			}
 
 			return nil
@@ -101,7 +101,7 @@ func loadbalancerClusterUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans loadbalancer cluster update 123 --name mycluster",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing cluster")
+				return errors.New("missing cluster")
 			}
 
 			return nil
@@ -155,7 +155,7 @@ func loadbalancerClusterDeployCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans loadbalancer cluster deploy 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing cluster")
+				return errors.New("missing cluster")
 			}
 
 			return nil
@@ -190,7 +190,7 @@ func loadbalancerClusterValidateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans loadbalancer cluster validate 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing cluster")
+				return errors.New("missing cluster")
 			}
 
 			return nil

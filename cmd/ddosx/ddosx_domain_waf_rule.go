@@ -37,7 +37,7 @@ func ddosxDomainWAFRuleListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain waf rule list",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 
 			return nil
@@ -61,7 +61,7 @@ func ddosxDomainWAFRuleList(service ddosx.DDoSXService, cmd *cobra.Command, args
 
 	domains, err := service.GetDomainWAFRules(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving domain WAF rules: %s", err)
+		return fmt.Errorf("error retrieving domain WAF rules: %s", err)
 	}
 
 	return output.CommandOutput(cmd, WAFRuleCollection(domains))
@@ -75,10 +75,10 @@ func ddosxDomainWAFRuleShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain waf rule show example.com 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing rule")
+				return errors.New("missing rule")
 			}
 
 			return nil
@@ -119,7 +119,7 @@ func ddosxDomainWAFRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain waf rule create example.com --uri example.html --ip 1.2.3.4",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 
 			return nil
@@ -135,9 +135,9 @@ func ddosxDomainWAFRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("uri", "", "URI for rule")
-	cmd.MarkFlagRequired("uri")
+	_ = cmd.MarkFlagRequired("uri")
 	cmd.Flags().String("ip", "", "IP for rule")
-	cmd.MarkFlagRequired("ip")
+	_ = cmd.MarkFlagRequired("ip")
 
 	return cmd
 }
@@ -151,12 +151,12 @@ func ddosxDomainWAFRuleCreate(service ddosx.DDoSXService, cmd *cobra.Command, ar
 
 	id, err := service.CreateDomainWAFRule(args[0], createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating domain WAF rule: %s", err)
+		return fmt.Errorf("error creating domain WAF rule: %s", err)
 	}
 
 	rule, err := service.GetDomainWAFRule(args[0], id)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new domain WAF rule [%s]: %s", id, err)
+		return fmt.Errorf("error retrieving new domain WAF rule [%s]: %s", id, err)
 	}
 
 	return output.CommandOutput(cmd, WAFRuleCollection([]ddosx.WAFRule{rule}))
@@ -170,10 +170,10 @@ func ddosxDomainWAFRuleUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain waf ruleset update example.com 00000000-0000-0000-0000-000000000000 --active=true",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing rule")
+				return errors.New("missing rule")
 			}
 
 			return nil
@@ -234,10 +234,10 @@ func ddosxDomainWAFRuleDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain waf rule delete example.com 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing rule")
+				return errors.New("missing rule")
 			}
 
 			return nil

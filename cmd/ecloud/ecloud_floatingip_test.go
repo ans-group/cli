@@ -49,7 +49,7 @@ func Test_ecloudFloatingIPList(t *testing.T) {
 
 		err := ecloudFloatingIPList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving floating IPs: test error", err.Error())
+		assert.Equal(t, "error retrieving floating IPs: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudFloatingIPShowCmd_Args(t *testing.T) {
 		err := ecloudFloatingIPShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing floating IP", err.Error())
+		assert.Equal(t, "missing floating IP", err.Error())
 	})
 }
 
@@ -189,7 +189,7 @@ func Test_ecloudFloatingIPCreate(t *testing.T) {
 		)
 
 		err := ecloudFloatingIPCreate(service, cmd, []string{})
-		assert.Equal(t, "Error waiting for floating IP task to complete: Error waiting for command: Failed to retrieve task status: test error", err.Error())
+		assert.Equal(t, "error waiting for floating IP task to complete: error waiting for command: failed to retrieve task status: test error", err.Error())
 	})
 
 	t.Run("CreateFloatingIPError_ReturnsError", func(t *testing.T) {
@@ -204,7 +204,7 @@ func Test_ecloudFloatingIPCreate(t *testing.T) {
 
 		err := ecloudFloatingIPCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error creating floating IP: test error", err.Error())
+		assert.Equal(t, "error creating floating IP: test error", err.Error())
 	})
 
 	t.Run("GetFloatingIPError_ReturnsError", func(t *testing.T) {
@@ -222,7 +222,7 @@ func Test_ecloudFloatingIPCreate(t *testing.T) {
 
 		err := ecloudFloatingIPCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error retrieving new floating IP: test error", err.Error())
+		assert.Equal(t, "error retrieving new floating IP: test error", err.Error())
 	})
 }
 
@@ -237,7 +237,7 @@ func Test_ecloudFloatingIPUpdateCmd_Args(t *testing.T) {
 		err := ecloudFloatingIPUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing floating IP", err.Error())
+		assert.Equal(t, "missing floating IP", err.Error())
 	})
 }
 
@@ -339,7 +339,7 @@ func Test_ecloudFloatingIPUpdate(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for floating ip [fip-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for floating ip [fip-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudFloatingIPUpdate(service, cmd, []string{"fip-abcdef12"})
 		})
 	})
@@ -385,7 +385,7 @@ func Test_ecloudFloatingIPDeleteCmd_Args(t *testing.T) {
 		err := ecloudFloatingIPDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing floating IP", err.Error())
+		assert.Equal(t, "missing floating IP", err.Error())
 	})
 }
 
@@ -446,7 +446,7 @@ func Test_ecloudFloatingIPDelete(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for removal of floating IP [fip-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for removal of floating IP [fip-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudFloatingIPDelete(service, cmd, []string{"fip-abcdef12"})
 		})
 	})
@@ -476,7 +476,7 @@ func Test_ecloudFloatingIPAssignCmd_Args(t *testing.T) {
 		err := ecloudFloatingIPAssignCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing floating IP", err.Error())
+		assert.Equal(t, "missing floating IP", err.Error())
 	})
 }
 
@@ -538,7 +538,7 @@ func Test_ecloudFloatingIPAssign(t *testing.T) {
 		)
 
 		err := ecloudFloatingIPAssign(service, cmd, []string{"fip-abcdef12"})
-		assert.Equal(t, "Error waiting for floating IP [fip-abcdef12] to be assigned: Error waiting for command: Failed to retrieve task status: test error", err.Error())
+		assert.Equal(t, "error waiting for floating IP [fip-abcdef12] to be assigned: error waiting for command: failed to retrieve task status: test error", err.Error())
 	})
 
 	t.Run("AssignFloatingIPError_ReturnsError", func(t *testing.T) {
@@ -566,7 +566,7 @@ func Test_ecloudFloatingIPUnassignCmd_Args(t *testing.T) {
 		err := ecloudFloatingIPUnassignCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing floating IP", err.Error())
+		assert.Equal(t, "missing floating IP", err.Error())
 	})
 }
 
@@ -627,7 +627,7 @@ func Test_ecloudFloatingIPUnassign(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for floating IP [fip-abcdef12] to be unassigned: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for floating IP [fip-abcdef12] to be unassigned: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudFloatingIPUnassign(service, cmd, []string{"fip-abcdef12"})
 		})
 	})

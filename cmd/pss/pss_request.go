@@ -73,7 +73,7 @@ func pssRequestShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans pss request show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing request")
+				return errors.New("missing request")
 			}
 
 			return nil
@@ -128,10 +128,10 @@ func pssRequestCreateCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Setup flags
 	cmd.Flags().String("subject", "", "Specifies subject for request")
-	cmd.MarkFlagRequired("subject")
+	_ = cmd.MarkFlagRequired("subject")
 	cmd.Flags().String("details", "", "Specifies details for request")
 	cmd.Flags().Int("author", 0, "Specifies author ID for request")
-	cmd.MarkFlagRequired("author")
+	_ = cmd.MarkFlagRequired("author")
 	cmd.Flags().String("priority", "Normal", "Specifies priority for request")
 	cmd.Flags().Bool("secure", false, "Specifies whether request is secure")
 	cmd.Flags().StringSlice("cc", []string{}, "Specifies CC email addresses for request")
@@ -179,12 +179,12 @@ func pssRequestCreate(service pss.PSSService, cmd *cobra.Command, args []string)
 
 	requestID, err := service.CreateRequest(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating request: %s", err)
+		return fmt.Errorf("error creating request: %s", err)
 	}
 
 	request, err := service.GetRequest(requestID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new request: %s", err)
+		return fmt.Errorf("error retrieving new request: %s", err)
 	}
 
 	return output.CommandOutput(cmd, RequestCollection([]pss.Request{request}))
@@ -198,7 +198,7 @@ func pssRequestUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans pss request update 123 --priority high",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing request")
+				return errors.New("missing request")
 			}
 
 			return nil
@@ -297,7 +297,7 @@ func pssRequestCloseCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans pss request close 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing request")
+				return errors.New("missing request")
 			}
 
 			return nil

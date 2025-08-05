@@ -23,7 +23,7 @@ func Test_ecloudVPCVolumeListCmd_Args(t *testing.T) {
 		err := ecloudVPCVolumeListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing VPC", err.Error())
+		assert.Equal(t, "missing VPC", err.Error())
 	})
 }
 
@@ -63,6 +63,6 @@ func Test_ecloudVPCVolumeList(t *testing.T) {
 
 		err := ecloudVPCVolumeList(service, &cobra.Command{}, []string{"vpc-abcdef12"})
 
-		assert.Equal(t, "Error retrieving VPC volumes: test error", err.Error())
+		assert.Equal(t, "error retrieving VPC volumes: test error", err.Error())
 	})
 }

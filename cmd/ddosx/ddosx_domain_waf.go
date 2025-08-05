@@ -38,7 +38,7 @@ func ddosxDomainWAFShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain waf show example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 
 			return nil
@@ -77,7 +77,7 @@ func ddosxDomainWAFCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain waf create example.com --mode on --paranoia-level high",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 
 			return nil
@@ -93,9 +93,9 @@ func ddosxDomainWAFCreateCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("mode", "", "Mode for WAF")
-	cmd.MarkFlagRequired("mode")
+	_ = cmd.MarkFlagRequired("mode")
 	cmd.Flags().String("paranoia-level", "", "Paranoia level for WAF")
-	cmd.MarkFlagRequired("paranoia-level")
+	_ = cmd.MarkFlagRequired("paranoia-level")
 
 	return cmd
 }
@@ -119,12 +119,12 @@ func ddosxDomainWAFCreate(service ddosx.DDoSXService, cmd *cobra.Command, args [
 
 	err = service.CreateDomainWAF(args[0], createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating domain waf: %s", err)
+		return fmt.Errorf("error creating domain waf: %s", err)
 	}
 
 	waf, err := service.GetDomainWAF(args[0])
 	if err != nil {
-		return fmt.Errorf("Error retrieving domain waf: %s", err)
+		return fmt.Errorf("error retrieving domain waf: %s", err)
 	}
 
 	return output.CommandOutput(cmd, WAFCollection([]ddosx.WAF{waf}))
@@ -138,7 +138,7 @@ func ddosxDomainWAFUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain waf update example.com --mode on",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 
 			return nil
@@ -210,7 +210,7 @@ func ddosxDomainWAFDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain waf delete example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 
 			return nil

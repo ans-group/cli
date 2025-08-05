@@ -27,7 +27,7 @@ func Test_ddosxDomainHSTSRuleListCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 }
 
@@ -67,7 +67,7 @@ func Test_ddosxDomainHSTSRuleList(t *testing.T) {
 
 		err := ddosxDomainHSTSRuleList(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 
-		assert.Equal(t, "Error retrieving HSTS rules: test error", err.Error())
+		assert.Equal(t, "error retrieving HSTS rules: test error", err.Error())
 	})
 }
 
@@ -82,14 +82,14 @@ func Test_ddosxDomainHSTSRuleShowCmd_Args(t *testing.T) {
 		err := ddosxDomainHSTSRuleShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 
 	t.Run("MissingHSTSRule_Error", func(t *testing.T) {
 		err := ddosxDomainHSTSRuleShowCmd(nil).Args(nil, []string{"testdomain1.co.uk"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing rule", err.Error())
+		assert.Equal(t, "missing rule", err.Error())
 	})
 }
 
@@ -146,7 +146,7 @@ func Test_ddosxDomainHSTSRuleCreateCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 }
 
@@ -201,7 +201,7 @@ func Test_ddosxDomainHSTSRuleCreate(t *testing.T) {
 
 		err := ddosxDomainHSTSRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error creating HSTS rule: test error", err.Error())
+		assert.Equal(t, "error creating HSTS rule: test error", err.Error())
 	})
 
 	t.Run("GetDomainHSTSRuleError_ReturnsError", func(t *testing.T) {
@@ -220,7 +220,7 @@ func Test_ddosxDomainHSTSRuleCreate(t *testing.T) {
 
 		err := ddosxDomainHSTSRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error retrieving new HSTS rule [00000000-0000-0000-0000-000000000000]: test error", err.Error())
+		assert.Equal(t, "error retrieving new HSTS rule [00000000-0000-0000-0000-000000000000]: test error", err.Error())
 	})
 }
 
@@ -237,7 +237,7 @@ func Test_ddosxDomainHSTSRuleUpdateCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 
 	t.Run("MissingRule_Error", func(t *testing.T) {
@@ -245,7 +245,7 @@ func Test_ddosxDomainHSTSRuleUpdateCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{"testdomain1.co.uk"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing rule", err.Error())
+		assert.Equal(t, "missing rule", err.Error())
 	})
 }
 
@@ -317,7 +317,7 @@ func Test_ddosxDomainHSTSRuleDeleteCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 
 	t.Run("MissingRule_Error", func(t *testing.T) {
@@ -325,7 +325,7 @@ func Test_ddosxDomainHSTSRuleDeleteCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{"testdomain1.co.uk"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing rule", err.Error())
+		assert.Equal(t, "missing rule", err.Error())
 	})
 }
 

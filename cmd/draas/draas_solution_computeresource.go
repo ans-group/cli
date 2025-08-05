@@ -32,7 +32,7 @@ func draasSolutionComputeResourceListCmd(f factory.ClientFactory) *cobra.Command
 		Example: "ans draas solution computeresource list 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing solution")
+				return errors.New("missing solution")
 			}
 
 			return nil
@@ -56,7 +56,7 @@ func draasSolutionComputeResourceList(service draas.DRaaSService, cmd *cobra.Com
 
 	plans, err := service.GetSolutionComputeResources(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving solution compute resources: %s", err)
+		return fmt.Errorf("error retrieving solution compute resources: %s", err)
 	}
 
 	return output.CommandOutput(cmd, ComputeResourceCollection(plans))
@@ -70,10 +70,10 @@ func draasSolutionComputeResourceShowCmd(f factory.ClientFactory) *cobra.Command
 		Example: "ans draas solution computeresource show 00000000-0000-0000-0000-000000000000 00000000-0000-0000-0000-000000000001",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing solution")
+				return errors.New("missing solution")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing compute resource")
+				return errors.New("missing compute resource")
 			}
 
 			return nil

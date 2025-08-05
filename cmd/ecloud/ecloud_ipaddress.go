@@ -52,7 +52,7 @@ func ecloudIPAddressList(service ecloud.ECloudService, cmd *cobra.Command, args 
 
 	ips, err := service.GetIPAddresses(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving IP addresses: %s", err)
+		return fmt.Errorf("error retrieving IP addresses: %s", err)
 	}
 
 	return output.CommandOutput(cmd, IPAddressCollection(ips))
@@ -66,7 +66,7 @@ func ecloudIPAddressShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud ipaddress show ip-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing IP address")
+				return errors.New("missing IP address")
 			}
 
 			return nil
@@ -103,7 +103,7 @@ func ecloudIPAddressCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().String("name", "", "Name of ip")
 	cmd.Flags().String("ip-address", "", "IP address to allocate")
 	cmd.Flags().String("network", "", "ID of network")
-	cmd.MarkFlagRequired("network")
+	_ = cmd.MarkFlagRequired("network")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the IP address has been completely created")
 
 	return cmd
@@ -118,20 +118,20 @@ func ecloudIPAddressCreate(service ecloud.ECloudService, cmd *cobra.Command, arg
 
 	taskRef, err := service.CreateIPAddress(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating IP address: %s", err)
+		return fmt.Errorf("error creating IP address: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskRef.TaskID, ecloud.TaskStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for IP address task to complete: %s", err)
+			return fmt.Errorf("error waiting for IP address task to complete: %s", err)
 		}
 	}
 
 	ip, err := service.GetIPAddress(taskRef.ResourceID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new IP address: %s", err)
+		return fmt.Errorf("error retrieving new IP address: %s", err)
 	}
 
 	return output.CommandOutput(cmd, IPAddressCollection([]ecloud.IPAddress{ip}))
@@ -145,7 +145,7 @@ func ecloudIPAddressUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud ipaddress update ip-abcdef12 --name \"my ip\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing IP address")
+				return errors.New("missing IP address")
 			}
 
 			return nil
@@ -200,7 +200,7 @@ func ecloudIPAddressDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud ipaddress delete ip-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing IP address")
+				return errors.New("missing IP address")
 			}
 
 			return nil

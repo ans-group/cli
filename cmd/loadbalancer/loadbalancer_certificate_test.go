@@ -49,6 +49,6 @@ func Test_loadbalancerCertificateList(t *testing.T) {
 		err := loadbalancerCertificateList(service, &cobra.Command{}, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error retrieving certificates: test error", err.Error())
+		assert.Equal(t, "error retrieving certificates: test error", err.Error())
 	})
 }

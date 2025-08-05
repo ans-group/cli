@@ -49,7 +49,7 @@ func draasBillingTypeList(service draas.DRaaSService, cmd *cobra.Command, args [
 
 	billingtypes, err := service.GetBillingTypes(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving billing types: %s", err)
+		return fmt.Errorf("error retrieving billing types: %s", err)
 	}
 
 	return output.CommandOutput(cmd, BillingTypeCollection(billingtypes))
@@ -63,7 +63,7 @@ func draasBillingTypeShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans draas billingtype show 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing billing type")
+				return errors.New("missing billing type")
 			}
 
 			return nil

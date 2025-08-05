@@ -23,7 +23,7 @@ func Test_ecloudVirtualMachineDiskListCmd_Args(t *testing.T) {
 		err := ecloudVirtualMachineDiskListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing virtual machine", err.Error())
+		assert.Equal(t, "missing virtual machine", err.Error())
 	})
 }
 
@@ -48,7 +48,7 @@ func Test_ecloudVirtualMachineDiskList(t *testing.T) {
 
 		err := ecloudVirtualMachineDiskList(service, &cobra.Command{}, []string{"abc"})
 
-		assert.Equal(t, "Invalid virtual machine ID [abc]", err.Error())
+		assert.Equal(t, "invalid virtual machine ID [abc]", err.Error())
 	})
 
 	t.Run("GetVirtualMachineError_ReturnsError", func(t *testing.T) {
@@ -62,7 +62,7 @@ func Test_ecloudVirtualMachineDiskList(t *testing.T) {
 
 		err := ecloudVirtualMachineDiskList(service, &cobra.Command{}, []string{"123"})
 
-		assert.Equal(t, "Error retrieving virtual machine [123]: test error 1", err.Error())
+		assert.Equal(t, "error retrieving virtual machine [123]: test error 1", err.Error())
 	})
 }
 
@@ -77,14 +77,14 @@ func Test_ecloudVirtualMachineDiskUpdateCmd_Args(t *testing.T) {
 		err := ecloudVirtualMachineDiskUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing virtual machine", err.Error())
+		assert.Equal(t, "missing virtual machine", err.Error())
 	})
 
 	t.Run("MissingDisk_Error", func(t *testing.T) {
 		err := ecloudVirtualMachineDiskUpdateCmd(nil).Args(nil, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing disk", err.Error())
+		assert.Equal(t, "missing disk", err.Error())
 	})
 }
 
@@ -104,7 +104,7 @@ func Test_ecloudVirtualMachineDiskUpdate(t *testing.T) {
 
 		gomock.InOrder(
 			service.EXPECT().PatchVirtualMachine(123, gomock.Any()).Do(func(vmID int, patch ecloud.PatchVirtualMachineRequest) {
-				if patch.Disks == nil || len(patch.Disks) < 1 || patch.Disks[0].Capacity != 25 {
+				if len(patch.Disks) < 1 || patch.Disks[0].Capacity != 25 {
 					t.Fatal("Unexpected disk patch request")
 				}
 			}).Return(nil),
@@ -122,7 +122,7 @@ func Test_ecloudVirtualMachineDiskUpdate(t *testing.T) {
 
 		err := ecloudVirtualMachineDiskUpdate(service, &cobra.Command{}, []string{"abc", "00000000-0000-0000-0000-000000000000"})
 
-		assert.Equal(t, "Invalid virtual machine ID [abc]", err.Error())
+		assert.Equal(t, "invalid virtual machine ID [abc]", err.Error())
 	})
 
 	t.Run("PatchVirtualMachineError_ReturnsError", func(t *testing.T) {
@@ -135,7 +135,7 @@ func Test_ecloudVirtualMachineDiskUpdate(t *testing.T) {
 
 		err := ecloudVirtualMachineDiskUpdate(service, &cobra.Command{}, []string{"123", "00000000-0000-0000-0000-000000000000"})
 
-		assert.Equal(t, "Error updating virtual machine [123]: test error", err.Error())
+		assert.Equal(t, "error updating virtual machine [123]: test error", err.Error())
 	})
 
 	t.Run("WaitGetVirtualMachineError_ReturnsError", func(t *testing.T) {
@@ -156,6 +156,6 @@ func Test_ecloudVirtualMachineDiskUpdate(t *testing.T) {
 
 		err := ecloudVirtualMachineDiskUpdate(service, &cobra.Command{}, []string{"123", "00000000-0000-0000-0000-000000000000"})
 
-		assert.Equal(t, "Error updating virtual machine [123]: Error waiting for command: Failed to retrieve virtual machine [123]: test error", err.Error())
+		assert.Equal(t, "error updating virtual machine [123]: error waiting for command: failed to retrieve virtual machine [123]: test error", err.Error())
 	})
 }

@@ -23,7 +23,7 @@ func Test_ecloudNetworkRuleNetworkRulePortListCmd_Args(t *testing.T) {
 		err := ecloudNetworkRuleNetworkRulePortListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing network rule", err.Error())
+		assert.Equal(t, "missing network rule", err.Error())
 	})
 }
 
@@ -63,6 +63,6 @@ func Test_ecloudNetworkRuleNetworkRulePortList(t *testing.T) {
 
 		err := ecloudNetworkRuleNetworkRulePortList(service, &cobra.Command{}, []string{"np-abcdef12"})
 
-		assert.Equal(t, "Error retrieving network rule ports: test error", err.Error())
+		assert.Equal(t, "error retrieving network rule ports: test error", err.Error())
 	})
 }

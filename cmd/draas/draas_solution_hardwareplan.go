@@ -35,7 +35,7 @@ func draasSolutionHardwarePlanListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans draas solution hardwareplan list 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing solution")
+				return errors.New("missing solution")
 			}
 
 			return nil
@@ -59,7 +59,7 @@ func draasSolutionHardwarePlanList(service draas.DRaaSService, cmd *cobra.Comman
 
 	plans, err := service.GetSolutionHardwarePlans(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving solution hardware plans: %s", err)
+		return fmt.Errorf("error retrieving solution hardware plans: %s", err)
 	}
 
 	return output.CommandOutput(cmd, HardwarePlanCollection(plans))
@@ -73,10 +73,10 @@ func draasSolutionHardwarePlanShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans draas solution hardwareplan show 00000000-0000-0000-0000-000000000000 00000000-0000-0000-0000-000000000001",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing solution")
+				return errors.New("missing solution")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing hardware plan")
+				return errors.New("missing hardware plan")
 			}
 
 			return nil

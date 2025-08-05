@@ -66,7 +66,7 @@ func ecloudSolutionList(service ecloud.ECloudService, cmd *cobra.Command, args [
 
 	solutions, err := service.GetSolutions(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving solutions: %s", err)
+		return fmt.Errorf("error retrieving solutions: %s", err)
 	}
 
 	return output.CommandOutput(cmd, SolutionCollection(solutions))
@@ -80,7 +80,7 @@ func ecloudSolutionShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud solution show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing solution")
+				return errors.New("missing solution")
 			}
 
 			return nil
@@ -125,7 +125,7 @@ func ecloudSolutionUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud solution update 123 --name \"new name\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing solution")
+				return errors.New("missing solution")
 			}
 
 			return nil
@@ -149,7 +149,7 @@ func ecloudSolutionUpdateCmd(f factory.ClientFactory) *cobra.Command {
 func ecloudSolutionUpdate(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	solutionID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid solution ID [%s]", args[0])
+		return fmt.Errorf("invalid solution ID [%s]", args[0])
 	}
 
 	patchRequest := ecloud.PatchSolutionRequest{}
@@ -165,12 +165,12 @@ func ecloudSolutionUpdate(service ecloud.ECloudService, cmd *cobra.Command, args
 
 	id, err := service.PatchSolution(solutionID, patchRequest)
 	if err != nil {
-		return fmt.Errorf("Error updating solution: %s", err)
+		return fmt.Errorf("error updating solution: %s", err)
 	}
 
 	solution, err := service.GetSolution(id)
 	if err != nil {
-		return fmt.Errorf("Error retrieving updated solution: %s", err)
+		return fmt.Errorf("error retrieving updated solution: %s", err)
 	}
 
 	return output.CommandOutput(cmd, SolutionCollection([]ecloud.Solution{solution}))

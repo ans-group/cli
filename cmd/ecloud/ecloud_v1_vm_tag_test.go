@@ -24,7 +24,7 @@ func Test_ecloudVirtualMachineTagListCmd_Args(t *testing.T) {
 		err := ecloudVirtualMachineTagListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing virtual machine", err.Error())
+		assert.Equal(t, "missing virtual machine", err.Error())
 	})
 }
 
@@ -49,7 +49,7 @@ func Test_ecloudVirtualMachineTagList(t *testing.T) {
 
 		err := ecloudVirtualMachineTagList(service, &cobra.Command{}, []string{"abc"})
 
-		assert.Equal(t, "Invalid virtual machine ID [abc]", err.Error())
+		assert.Equal(t, "invalid virtual machine ID [abc]", err.Error())
 	})
 
 	t.Run("MalformedFlag_ReturnsError", func(t *testing.T) {
@@ -76,7 +76,7 @@ func Test_ecloudVirtualMachineTagList(t *testing.T) {
 
 		err := ecloudVirtualMachineTagList(service, &cobra.Command{}, []string{"123"})
 
-		assert.Equal(t, "Error retrieving virtual machine tags: test error 1", err.Error())
+		assert.Equal(t, "error retrieving virtual machine tags: test error 1", err.Error())
 	})
 }
 
@@ -91,14 +91,14 @@ func Test_ecloudVirtualMachineTagShowCmd_Args(t *testing.T) {
 		err := ecloudVirtualMachineTagShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing virtual machine", err.Error())
+		assert.Equal(t, "missing virtual machine", err.Error())
 	})
 
 	t.Run("MissingTag_Error", func(t *testing.T) {
 		err := ecloudVirtualMachineTagShowCmd(nil).Args(nil, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing tag", err.Error())
+		assert.Equal(t, "missing tag", err.Error())
 	})
 }
 
@@ -136,7 +136,7 @@ func Test_ecloudVirtualMachineTagShow(t *testing.T) {
 
 		err := ecloudVirtualMachineTagShow(service, &cobra.Command{}, []string{"abc", "testkey1"})
 
-		assert.Equal(t, "Invalid virtual machine ID [abc]", err.Error())
+		assert.Equal(t, "invalid virtual machine ID [abc]", err.Error())
 	})
 
 	t.Run("GetVirtualMachineTagError_OutputsError", func(t *testing.T) {
@@ -164,7 +164,7 @@ func Test_ecloudVirtualMachineTagCreateCmd_Args(t *testing.T) {
 		err := ecloudVirtualMachineTagCreateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing virtual machine", err.Error())
+		assert.Equal(t, "missing virtual machine", err.Error())
 	})
 }
 
@@ -200,7 +200,7 @@ func Test_ecloudVirtualMachineTagCreate(t *testing.T) {
 
 		err := ecloudVirtualMachineTagCreate(service, &cobra.Command{}, []string{"abc"})
 
-		assert.Equal(t, "Invalid virtual machine ID [abc]", err.Error())
+		assert.Equal(t, "invalid virtual machine ID [abc]", err.Error())
 	})
 
 	t.Run("CreateVirtualMachineTagError_ReturnsError", func(t *testing.T) {
@@ -214,7 +214,7 @@ func Test_ecloudVirtualMachineTagCreate(t *testing.T) {
 
 		err := ecloudVirtualMachineTagCreate(service, &cobra.Command{}, []string{"123"})
 
-		assert.Equal(t, "Error creating virtual machine tag: test error 1", err.Error())
+		assert.Equal(t, "error creating virtual machine tag: test error 1", err.Error())
 	})
 
 	t.Run("GetVirtualMachineTagError_ReturnsError", func(t *testing.T) {
@@ -234,7 +234,7 @@ func Test_ecloudVirtualMachineTagCreate(t *testing.T) {
 
 		err := ecloudVirtualMachineTagCreate(service, cmd, []string{"123"})
 
-		assert.Equal(t, "Error retrieving new virtual machine tag: test error 1", err.Error())
+		assert.Equal(t, "error retrieving new virtual machine tag: test error 1", err.Error())
 	})
 }
 
@@ -249,14 +249,14 @@ func Test_ecloudVirtualMachineTagUpdateCmd_Args(t *testing.T) {
 		err := ecloudVirtualMachineTagUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing virtual machine", err.Error())
+		assert.Equal(t, "missing virtual machine", err.Error())
 	})
 
 	t.Run("MissingTag_Error", func(t *testing.T) {
 		err := ecloudVirtualMachineTagUpdateCmd(nil).Args(nil, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing tag", err.Error())
+		assert.Equal(t, "missing tag", err.Error())
 	})
 }
 
@@ -312,7 +312,7 @@ func Test_ecloudVirtualMachineTagUpdate(t *testing.T) {
 
 		err := ecloudVirtualMachineTagUpdate(service, &cobra.Command{}, []string{"abc"})
 
-		assert.Equal(t, "Invalid virtual machine ID [abc]", err.Error())
+		assert.Equal(t, "invalid virtual machine ID [abc]", err.Error())
 	})
 
 	t.Run("PatchVirtualMachineTag_OutputsError", func(t *testing.T) {
@@ -360,14 +360,14 @@ func Test_ecloudVirtualMachineTagDeleteCmd_Args(t *testing.T) {
 		err := ecloudVirtualMachineTagDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing virtual machine", err.Error())
+		assert.Equal(t, "missing virtual machine", err.Error())
 	})
 
 	t.Run("MissingTag_Error", func(t *testing.T) {
 		err := ecloudVirtualMachineTagDeleteCmd(nil).Args(nil, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing tag", err.Error())
+		assert.Equal(t, "missing tag", err.Error())
 	})
 }
 
@@ -406,7 +406,7 @@ func Test_ecloudVirtualMachineTagDelete(t *testing.T) {
 
 		err := ecloudVirtualMachineTagDelete(service, &cobra.Command{}, []string{"abc", "testkey1"})
 
-		assert.Equal(t, "Invalid virtual machine ID [abc]", err.Error())
+		assert.Equal(t, "invalid virtual machine ID [abc]", err.Error())
 	})
 
 	t.Run("DeleteVirtualMachineTagError_OutputsError", func(t *testing.T) {

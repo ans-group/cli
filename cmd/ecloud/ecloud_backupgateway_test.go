@@ -48,7 +48,7 @@ func Test_ecloudBackupGatewayList(t *testing.T) {
 
 		err := ecloudBackupGatewayList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving backup gateways: test error", err.Error())
+		assert.Equal(t, "error retrieving backup gateways: test error", err.Error())
 	})
 }
 
@@ -63,7 +63,7 @@ func Test_ecloudBackupGatewayShowCmd_Args(t *testing.T) {
 		err := ecloudBackupGatewayShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing backup gateway ID", err.Error())
+		assert.Equal(t, "missing backup gateway ID", err.Error())
 	})
 }
 
@@ -185,7 +185,7 @@ func Test_ecloudBackupGatewayCreate(t *testing.T) {
 
 		err := ecloudBackupGatewayCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error waiting for backup gateway task to complete: Error waiting for command: Failed to retrieve task status: test error", err.Error())
+		assert.Equal(t, "error waiting for backup gateway task to complete: error waiting for command: failed to retrieve task status: test error", err.Error())
 	})
 
 	t.Run("CreateError_ReturnsError", func(t *testing.T) {
@@ -200,7 +200,7 @@ func Test_ecloudBackupGatewayCreate(t *testing.T) {
 
 		err := ecloudBackupGatewayCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error creating backup gateway: test error", err.Error())
+		assert.Equal(t, "error creating backup gateway: test error", err.Error())
 	})
 
 	t.Run("GetBackupGatewayError_ReturnsError", func(t *testing.T) {
@@ -223,7 +223,7 @@ func Test_ecloudBackupGatewayCreate(t *testing.T) {
 
 		err := ecloudBackupGatewayCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error retrieving new backup gateway: test error", err.Error())
+		assert.Equal(t, "error retrieving new backup gateway: test error", err.Error())
 	})
 }
 
@@ -236,7 +236,7 @@ func Test_ecloudBackupGatewayUpdateCmd_Args(t *testing.T) {
 	t.Run("InvalidArgs_Error", func(t *testing.T) {
 		err := ecloudBackupGatewayUpdateCmd(nil).Args(nil, []string{})
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing backup gateway", err.Error())
+		assert.Equal(t, "missing backup gateway", err.Error())
 	})
 }
 
@@ -296,7 +296,7 @@ func Test_ecloudBackupGatewayDelete(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for backup gateway [bgw-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for backup gateway [bgw-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudBackupGatewayDelete(service, cmd, []string{"bgw-abcdef12"})
 		})
 	})

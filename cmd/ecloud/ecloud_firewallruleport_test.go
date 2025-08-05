@@ -49,7 +49,7 @@ func Test_ecloudFirewallRulePortList(t *testing.T) {
 
 		err := ecloudFirewallRulePortList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving firewall rule ports: test error", err.Error())
+		assert.Equal(t, "error retrieving firewall rule ports: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudFirewallRulePortShowCmd_Args(t *testing.T) {
 		err := ecloudFirewallRulePortShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing firewall rule port", err.Error())
+		assert.Equal(t, "missing firewall rule port", err.Error())
 	})
 }
 
@@ -186,7 +186,7 @@ func Test_ecloudFirewallRulePortCreate(t *testing.T) {
 		)
 
 		err := ecloudFirewallRulePortCreate(service, cmd, []string{})
-		assert.Equal(t, "Error waiting for firewall rule port task to complete: Error waiting for command: Failed to retrieve task status: test error", err.Error())
+		assert.Equal(t, "error waiting for firewall rule port task to complete: error waiting for command: failed to retrieve task status: test error", err.Error())
 	})
 
 	t.Run("CreateFirewallRulePortError_ReturnsError", func(t *testing.T) {
@@ -201,7 +201,7 @@ func Test_ecloudFirewallRulePortCreate(t *testing.T) {
 
 		err := ecloudFirewallRulePortCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error creating firewall rule port: test error", err.Error())
+		assert.Equal(t, "error creating firewall rule port: test error", err.Error())
 	})
 
 	t.Run("GetFirewallRulePortError_ReturnsError", func(t *testing.T) {
@@ -219,7 +219,7 @@ func Test_ecloudFirewallRulePortCreate(t *testing.T) {
 
 		err := ecloudFirewallRulePortCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error retrieving new firewall rule port: test error", err.Error())
+		assert.Equal(t, "error retrieving new firewall rule port: test error", err.Error())
 	})
 }
 
@@ -234,7 +234,7 @@ func Test_ecloudFirewallRulePortUpdateCmd_Args(t *testing.T) {
 		err := ecloudFirewallRulePortUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing firewall rule port", err.Error())
+		assert.Equal(t, "missing firewall rule port", err.Error())
 	})
 }
 
@@ -315,7 +315,7 @@ func Test_ecloudFirewallRulePortUpdate(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for firewall rule port [fwrp-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for firewall rule port [fwrp-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudFirewallRulePortUpdate(service, cmd, []string{"fwrp-abcdef12"})
 		})
 	})
@@ -392,7 +392,7 @@ func Test_ecloudFirewallRulePortDeleteCmd_Args(t *testing.T) {
 		err := ecloudFirewallRulePortDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing firewall rule port", err.Error())
+		assert.Equal(t, "missing firewall rule port", err.Error())
 	})
 }
 
@@ -453,7 +453,7 @@ func Test_ecloudFirewallRulePortDelete(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for firewall rule port [fwrp-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for firewall rule port [fwrp-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudFirewallRulePortDelete(service, cmd, []string{"fwrp-abcdef12"})
 		})
 	})

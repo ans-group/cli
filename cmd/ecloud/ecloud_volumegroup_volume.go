@@ -31,7 +31,7 @@ func ecloudVolumeGroupVolumeListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud volumegroup volume list volgroup-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing volume-group")
+				return errors.New("missing volume-group")
 			}
 
 			return nil
@@ -52,7 +52,7 @@ func ecloudVolumeGroupVolumeList(service ecloud.ECloudService, cmd *cobra.Comman
 
 	volumes, err := service.GetVolumeGroupVolumes(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving volume-group volumes: %s", err)
+		return fmt.Errorf("error retrieving volume-group volumes: %s", err)
 	}
 
 	return output.CommandOutput(cmd, VolumeCollection(volumes))

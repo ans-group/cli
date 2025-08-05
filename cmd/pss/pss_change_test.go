@@ -62,7 +62,7 @@ func Test_pssChangeShowCmd_Args(t *testing.T) {
 		err := pssChangeShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing change", err.Error())
+		assert.Equal(t, "missing change", err.Error())
 	})
 }
 
@@ -176,7 +176,7 @@ func Test_pssChangeCreate(t *testing.T) {
 		service.EXPECT().CreateChangeCase(gomock.Any()).Return("", errors.New("test error"))
 
 		err := pssChangeCreate(service, cmd, []string{})
-		assert.Equal(t, "Error creating change: test error", err.Error())
+		assert.Equal(t, "error creating change: test error", err.Error())
 	})
 
 	t.Run("GetChangeError_ReturnsError", func(t *testing.T) {
@@ -193,7 +193,7 @@ func Test_pssChangeCreate(t *testing.T) {
 		)
 
 		err := pssChangeCreate(service, cmd, []string{})
-		assert.Equal(t, "Error retrieving new change: test error", err.Error())
+		assert.Equal(t, "error retrieving new change: test error", err.Error())
 	})
 }
 

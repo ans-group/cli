@@ -23,7 +23,7 @@ func Test_ecloudNetworkTaskListCmd_Args(t *testing.T) {
 		err := ecloudNetworkTaskListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing network", err.Error())
+		assert.Equal(t, "missing network", err.Error())
 	})
 }
 
@@ -63,6 +63,6 @@ func Test_ecloudNetworkTaskList(t *testing.T) {
 
 		err := ecloudNetworkTaskList(service, &cobra.Command{}, []string{"net-abcdef12"})
 
-		assert.Equal(t, "Error retrieving network tasks: test error", err.Error())
+		assert.Equal(t, "error retrieving network tasks: test error", err.Error())
 	})
 }

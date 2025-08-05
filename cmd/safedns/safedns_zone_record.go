@@ -38,7 +38,7 @@ func safednsZoneRecordListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans safedns zone record list ans.co.uk\nans safedns zone record list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing zone")
+				return errors.New("missing zone")
 			}
 
 			return nil
@@ -72,7 +72,7 @@ func safednsZoneRecordList(service safedns.SafeDNSService, cmd *cobra.Command, a
 
 	zoneRecords, err := service.GetZoneRecords(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving records for zone: %s", err)
+		return fmt.Errorf("error retrieving records for zone: %s", err)
 	}
 
 	return output.CommandOutput(cmd, RecordCollection(zoneRecords))
@@ -86,10 +86,10 @@ func safednsZoneRecordShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans safedns zone record show ans.co.uk 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing zone")
+				return errors.New("missing zone")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing record")
+				return errors.New("missing record")
 			}
 
 			return nil
@@ -135,7 +135,7 @@ func safednsZoneRecordCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans safedns zone record create ans.co.uk --name subdomain.ans.co.uk --type A --content 1.2.3.4",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing zone")
+				return errors.New("missing zone")
 			}
 
 			return nil
@@ -152,11 +152,11 @@ func safednsZoneRecordCreateCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Setup flags
 	cmd.Flags().String("name", "", "Name of record")
-	cmd.MarkFlagRequired("name")
+	_ = cmd.MarkFlagRequired("name")
 	cmd.Flags().String("type", "", "Type of record")
-	cmd.MarkFlagRequired("type")
+	_ = cmd.MarkFlagRequired("type")
 	cmd.Flags().String("content", "", "Record content")
-	cmd.MarkFlagRequired("content")
+	_ = cmd.MarkFlagRequired("content")
 	cmd.Flags().Int("priority", 0, "Record priority. Only applicable with MX and SRV type records")
 
 	return cmd
@@ -184,12 +184,12 @@ func safednsZoneRecordCreate(service safedns.SafeDNSService, cmd *cobra.Command,
 
 	id, err := service.CreateZoneRecord(args[0], createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating record: %s", err)
+		return fmt.Errorf("error creating record: %s", err)
 	}
 
 	zoneRecord, err := service.GetZoneRecord(args[0], id)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new record: %s", err)
+		return fmt.Errorf("error retrieving new record: %s", err)
 	}
 
 	return output.CommandOutput(cmd, RecordCollection([]safedns.Record{zoneRecord}))
@@ -203,10 +203,10 @@ func safednsZoneRecordUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans safedns zone record update ans.co.uk 123 --content 1.2.3.4",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing zone")
+				return errors.New("missing zone")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing record")
+				return errors.New("missing record")
 			}
 
 			return nil
@@ -283,10 +283,10 @@ func safednsZoneRecordDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans safedns zone record delete ans.co.uk 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing zone")
+				return errors.New("missing zone")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing record")
+				return errors.New("missing record")
 			}
 
 			return nil

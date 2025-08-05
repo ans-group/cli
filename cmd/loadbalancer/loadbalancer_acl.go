@@ -39,7 +39,7 @@ func loadbalancerACLShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans loadbalancer acl show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing ACL")
+				return errors.New("missing ACL")
 			}
 
 			return nil
@@ -79,7 +79,7 @@ func loadbalancerACLCreateCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("name", "", "Name of ACL")
-	cmd.MarkFlagRequired("name")
+	_ = cmd.MarkFlagRequired("name")
 	cmd.Flags().Int("priority", 0, "Priority of ACL")
 	cmd.Flags().Int("listener", 0, "ID of listener")
 	cmd.Flags().Int("target-group", 0, "ID of target group")
@@ -87,7 +87,7 @@ func loadbalancerACLCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().StringArray("condition-argument", []string{}, "ACL condition argument. Can be repeated")
 	cmd.Flags().Bool("condition-inverted", false, "Specifies ACL condition should be inverted")
 	cmd.Flags().String("action-name", "", "Name of ACL action")
-	cmd.MarkFlagRequired("action-name")
+	_ = cmd.MarkFlagRequired("action-name")
 	cmd.Flags().StringArray("action-argument", []string{}, "ACL action argument. Can be repeated")
 
 	return cmd
@@ -110,7 +110,7 @@ func loadbalancerACLCreate(service loadbalancer.LoadBalancerService, cmd *cobra.
 			conditionArguments, _ := cmd.Flags().GetStringArray("condition-argument")
 			conditionArgumentsParsed, err := parseACLArguments(conditionArguments)
 			if err != nil {
-				return fmt.Errorf("Failed to parse arguments: %s", err)
+				return fmt.Errorf("failed to parse arguments: %s", err)
 			}
 
 			condition.Arguments = conditionArgumentsParsed
@@ -141,12 +141,12 @@ func loadbalancerACLCreate(service loadbalancer.LoadBalancerService, cmd *cobra.
 
 	aclID, err := service.CreateACL(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating ACL: %s", err)
+		return fmt.Errorf("error creating ACL: %s", err)
 	}
 
 	acl, err := service.GetACL(aclID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new ACL: %s", err)
+		return fmt.Errorf("error retrieving new ACL: %s", err)
 	}
 
 	return output.CommandOutput(cmd, ACLCollection([]loadbalancer.ACL{acl}))
@@ -160,7 +160,7 @@ func loadbalancerACLUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans loadbalancer acl update 123 --name myacl",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing ACL")
+				return errors.New("missing ACL")
 			}
 
 			return nil
@@ -213,7 +213,7 @@ func loadbalancerACLDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans loadbalancer acl delete 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing ACL")
+				return errors.New("missing ACL")
 			}
 
 			return nil
@@ -251,7 +251,7 @@ func parseACLArguments(args []string) (map[string]loadbalancer.ACLArgument, erro
 	for _, arg := range args {
 		parts := strings.Split(arg, "=")
 		if len(parts) != 2 {
-			return nil, errors.New("Invalid arguments format. Expected format name=value")
+			return nil, errors.New("invalid arguments format. Expected format name=value")
 		}
 
 		argName := parts[0]

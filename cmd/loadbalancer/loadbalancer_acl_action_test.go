@@ -22,7 +22,7 @@ func Test_loadbalancerACLActionListCmd_Args(t *testing.T) {
 		err := loadbalancerACLActionListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing ACL", err.Error())
+		assert.Equal(t, "missing ACL", err.Error())
 	})
 }
 
@@ -49,7 +49,7 @@ func Test_loadbalancerACLActionList(t *testing.T) {
 		err := loadbalancerACLActionList(service, &cobra.Command{}, []string{"abc"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Invalid ACL ID [abc]", err.Error())
+		assert.Equal(t, "invalid ACL ID [abc]", err.Error())
 	})
 
 	t.Run("GetACLError_ReturnsError", func(t *testing.T) {
@@ -63,7 +63,7 @@ func Test_loadbalancerACLActionList(t *testing.T) {
 		err := loadbalancerACLActionList(service, &cobra.Command{}, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error retrieving ACL [123]: test error", err.Error())
+		assert.Equal(t, "error retrieving ACL [123]: test error", err.Error())
 	})
 }
 
@@ -78,14 +78,14 @@ func Test_loadbalancerACLActionShowCmd_Args(t *testing.T) {
 		err := loadbalancerACLActionShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing ACL", err.Error())
+		assert.Equal(t, "missing ACL", err.Error())
 	})
 
 	t.Run("MissingIndex_Error", func(t *testing.T) {
 		err := loadbalancerACLActionShowCmd(nil).Args(nil, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing ACL action index", err.Error())
+		assert.Equal(t, "missing ACL action index", err.Error())
 	})
 }
 
@@ -112,7 +112,7 @@ func Test_loadbalancerACLActionShow(t *testing.T) {
 		err := loadbalancerACLActionShow(service, &cobra.Command{}, []string{"abc", "0"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Invalid ACL ID [abc]", err.Error())
+		assert.Equal(t, "invalid ACL ID [abc]", err.Error())
 	})
 
 	t.Run("GetACLError_OutputsError", func(t *testing.T) {
@@ -126,7 +126,7 @@ func Test_loadbalancerACLActionShow(t *testing.T) {
 		err := loadbalancerACLActionShow(service, &cobra.Command{}, []string{"123", "0"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error retrieving ACL [123]: test error", err.Error())
+		assert.Equal(t, "error retrieving ACL [123]: test error", err.Error())
 	})
 }
 
@@ -141,7 +141,7 @@ func Test_loadbalancerACLActionCreateCmd_Args(t *testing.T) {
 		err := loadbalancerACLActionCreateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing ACL", err.Error())
+		assert.Equal(t, "missing ACL", err.Error())
 	})
 }
 
@@ -196,7 +196,7 @@ func Test_loadbalancerACLActionCreate(t *testing.T) {
 
 		err := loadbalancerACLActionCreate(service, cmd, []string{"123"})
 
-		assert.Equal(t, "Error retrieving ACL: test error", err.Error())
+		assert.Equal(t, "error retrieving ACL: test error", err.Error())
 	})
 
 	t.Run("PatchACLError_ReturnsError", func(t *testing.T) {
@@ -213,7 +213,7 @@ func Test_loadbalancerACLActionCreate(t *testing.T) {
 
 		err := loadbalancerACLActionCreate(service, cmd, []string{"123"})
 
-		assert.Equal(t, "Error updating ACL: test error", err.Error())
+		assert.Equal(t, "error updating ACL: test error", err.Error())
 	})
 
 	t.Run("UpdatedGetACLError_ReturnsError", func(t *testing.T) {
@@ -231,7 +231,7 @@ func Test_loadbalancerACLActionCreate(t *testing.T) {
 
 		err := loadbalancerACLActionCreate(service, cmd, []string{"123"})
 
-		assert.Equal(t, "Error retrieving updated ACL [123]: test error", err.Error())
+		assert.Equal(t, "error retrieving updated ACL [123]: test error", err.Error())
 	})
 }
 
@@ -246,14 +246,14 @@ func Test_loadbalancerACLActionUpdateCmd_Args(t *testing.T) {
 		err := loadbalancerACLActionUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing ACL", err.Error())
+		assert.Equal(t, "missing ACL", err.Error())
 	})
 
 	t.Run("MissingACLActionIndex_Error", func(t *testing.T) {
 		err := loadbalancerACLActionUpdateCmd(nil).Args(nil, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing ACL action index", err.Error())
+		assert.Equal(t, "missing ACL action index", err.Error())
 	})
 }
 
@@ -300,7 +300,7 @@ func Test_loadbalancerACLActionUpdate(t *testing.T) {
 		err := loadbalancerACLActionUpdate(service, cmd, []string{"abc"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Invalid ACL ID [abc]", err.Error())
+		assert.Equal(t, "invalid ACL ID [abc]", err.Error())
 	})
 
 	t.Run("GetACLError_ReturnsError", func(t *testing.T) {
@@ -315,7 +315,7 @@ func Test_loadbalancerACLActionUpdate(t *testing.T) {
 		err := loadbalancerACLActionUpdate(service, cmd, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error retrieving ACL: test error", err.Error())
+		assert.Equal(t, "error retrieving ACL: test error", err.Error())
 	})
 
 	t.Run("InvalidActionIndex_ReturnsError", func(t *testing.T) {
@@ -330,7 +330,7 @@ func Test_loadbalancerACLActionUpdate(t *testing.T) {
 		err := loadbalancerACLActionUpdate(service, cmd, []string{"123", "abc"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Invalid ACL action index [abc]", err.Error())
+		assert.Equal(t, "invalid ACL action index [abc]", err.Error())
 	})
 
 	t.Run("ActionIndexOutOfBounds_ReturnsError", func(t *testing.T) {
@@ -351,7 +351,7 @@ func Test_loadbalancerACLActionUpdate(t *testing.T) {
 		err := loadbalancerACLActionUpdate(service, cmd, []string{"123", "1"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "ACL action index [1] out of bounds", err.Error())
+		assert.Equal(t, "aCL action index [1] out of bounds", err.Error())
 	})
 
 	t.Run("PatchACLError_ReturnsError", func(t *testing.T) {
@@ -376,7 +376,7 @@ func Test_loadbalancerACLActionUpdate(t *testing.T) {
 		err := loadbalancerACLActionUpdate(service, cmd, []string{"123", "0"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error updating ACL: test error", err.Error())
+		assert.Equal(t, "error updating ACL: test error", err.Error())
 	})
 
 	t.Run("UpdatedGetACLError_ReturnsError", func(t *testing.T) {
@@ -402,7 +402,7 @@ func Test_loadbalancerACLActionUpdate(t *testing.T) {
 		err := loadbalancerACLActionUpdate(service, cmd, []string{"123", "0"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error retrieving updated ACL [123]: test error", err.Error())
+		assert.Equal(t, "error retrieving updated ACL [123]: test error", err.Error())
 	})
 }
 
@@ -417,14 +417,14 @@ func Test_loadbalancerACLActionDeleteCmd_Args(t *testing.T) {
 		err := loadbalancerACLActionDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing ACL", err.Error())
+		assert.Equal(t, "missing ACL", err.Error())
 	})
 
 	t.Run("MissingACLActionIndex_Error", func(t *testing.T) {
 		err := loadbalancerACLActionDeleteCmd(nil).Args(nil, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing ACL action index", err.Error())
+		assert.Equal(t, "missing ACL action index", err.Error())
 	})
 }
 
@@ -467,7 +467,7 @@ func Test_loadbalancerACLActionDelete(t *testing.T) {
 		err := loadbalancerACLActionDelete(service, cmd, []string{"abc"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Invalid ACL ID [abc]", err.Error())
+		assert.Equal(t, "invalid ACL ID [abc]", err.Error())
 	})
 
 	t.Run("GetACLError_ReturnsError", func(t *testing.T) {
@@ -482,7 +482,7 @@ func Test_loadbalancerACLActionDelete(t *testing.T) {
 		err := loadbalancerACLActionDelete(service, cmd, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error retrieving ACL: test error", err.Error())
+		assert.Equal(t, "error retrieving ACL: test error", err.Error())
 	})
 
 	t.Run("InvalidActionIndex_ReturnsError", func(t *testing.T) {
@@ -497,7 +497,7 @@ func Test_loadbalancerACLActionDelete(t *testing.T) {
 		err := loadbalancerACLActionDelete(service, cmd, []string{"123", "abc"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Invalid ACL action index [abc]", err.Error())
+		assert.Equal(t, "invalid ACL action index [abc]", err.Error())
 	})
 
 	t.Run("ActionIndexOutOfBounds_ReturnsError", func(t *testing.T) {
@@ -518,7 +518,7 @@ func Test_loadbalancerACLActionDelete(t *testing.T) {
 		err := loadbalancerACLActionDelete(service, cmd, []string{"123", "1"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "ACL action index [1] out of bounds", err.Error())
+		assert.Equal(t, "aCL action index [1] out of bounds", err.Error())
 	})
 
 	t.Run("PatchACLError_ReturnsError", func(t *testing.T) {
@@ -542,7 +542,7 @@ func Test_loadbalancerACLActionDelete(t *testing.T) {
 		err := loadbalancerACLActionDelete(service, cmd, []string{"123", "0"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error updating ACL: test error", err.Error())
+		assert.Equal(t, "error updating ACL: test error", err.Error())
 	})
 
 	t.Run("UpdatedGetACLError_ReturnsError", func(t *testing.T) {
@@ -567,6 +567,6 @@ func Test_loadbalancerACLActionDelete(t *testing.T) {
 		err := loadbalancerACLActionDelete(service, cmd, []string{"123", "0"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error retrieving updated ACL [123]: test error", err.Error())
+		assert.Equal(t, "error retrieving updated ACL [123]: test error", err.Error())
 	})
 }

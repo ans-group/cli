@@ -49,7 +49,7 @@ func Test_ecloudDHCPList(t *testing.T) {
 
 		err := ecloudDHCPList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving DHCPs: test error", err.Error())
+		assert.Equal(t, "error retrieving DHCPs: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudDHCPShowCmd_Args(t *testing.T) {
 		err := ecloudDHCPShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing dhcp", err.Error())
+		assert.Equal(t, "missing dhcp", err.Error())
 	})
 }
 

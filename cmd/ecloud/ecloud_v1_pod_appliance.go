@@ -32,7 +32,7 @@ func ecloudPodApplianceListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud pod appliance list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing pod")
+				return errors.New("missing pod")
 			}
 
 			return nil
@@ -51,7 +51,7 @@ func ecloudPodApplianceListCmd(f factory.ClientFactory) *cobra.Command {
 func ecloudPodApplianceList(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	podID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid pod ID [%s]", args[0])
+		return fmt.Errorf("invalid pod ID [%s]", args[0])
 	}
 
 	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
@@ -61,7 +61,7 @@ func ecloudPodApplianceList(service ecloud.ECloudService, cmd *cobra.Command, ar
 
 	appliances, err := service.GetPodAppliances(podID, params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving pod appliances: %s", err)
+		return fmt.Errorf("error retrieving pod appliances: %s", err)
 	}
 
 	return output.CommandOutput(cmd, ApplianceCollection(appliances))

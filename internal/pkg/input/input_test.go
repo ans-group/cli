@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"errors"
 	"io"
-	"io/ioutil"
 	"testing"
 
 	"github.com/ans-group/cli/test/test_input"
@@ -26,7 +25,7 @@ func TestReadInput(t *testing.T) {
 		_, err := ReadInput("test")
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error reading test from stdin input: test error", err.Error())
+		assert.Equal(t, "error reading test from stdin input: test error", err.Error())
 	})
 
 	t.Run("BreakOnDot", func(t *testing.T) {
@@ -47,7 +46,7 @@ func TestReadInput(t *testing.T) {
 		defer func() { InputReader = oldReader }()
 
 		InputReader = func() io.Reader {
-			return ioutil.NopCloser(bytes.NewReader([]byte("test text")))
+			return io.NopCloser(bytes.NewReader([]byte("test text")))
 		}
 
 		text, _ := ReadInput("test")

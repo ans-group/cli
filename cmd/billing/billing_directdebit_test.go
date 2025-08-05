@@ -29,6 +29,6 @@ func Test_billingDirectDebitShow(t *testing.T) {
 
 		err := billingDirectDebitShow(service, &cobra.Command{}, []string{"123"})
 
-		assert.Equal(t, "Error retrieving direct debit details: test error", err.Error())
+		assert.Equal(t, "error retrieving direct debit details: test error", err.Error())
 	})
 }

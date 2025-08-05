@@ -34,7 +34,7 @@ func ddosxDomainPropertyListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain property list example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 
 			return nil
@@ -62,7 +62,7 @@ func ddosxDomainPropertyList(service ddosx.DDoSXService, cmd *cobra.Command, arg
 
 	properties, err := service.GetDomainProperties(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving domain properties: %s", err)
+		return fmt.Errorf("error retrieving domain properties: %s", err)
 	}
 
 	return output.CommandOutput(cmd, DomainPropertyCollection(properties))
@@ -76,10 +76,10 @@ func ddosxDomainPropertyShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain property show example.com 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing domain property")
+				return errors.New("missing domain property")
 			}
 
 			return nil
@@ -120,10 +120,10 @@ func ddosxDomainPropertyUpdateCmd(f factory.ClientFactory, fs afero.Fs) *cobra.C
 		Example: "ans ddosx domain property update example.com 00000000-0000-0000-0000-000000000000 --value false",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing domain property")
+				return errors.New("missing domain property")
 			}
 
 			return nil

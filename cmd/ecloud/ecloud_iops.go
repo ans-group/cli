@@ -48,7 +48,7 @@ func ecloudIOPSTierList(service ecloud.ECloudService, cmd *cobra.Command, args [
 
 	tiers, err := service.GetIOPSTiers(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving IOPS tiers: %s", err)
+		return fmt.Errorf("error retrieving IOPS tiers: %s", err)
 	}
 
 	return output.CommandOutput(cmd, IOPSTierCollection(tiers))
@@ -62,7 +62,7 @@ func ecloudIOPSTierShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud IOPS show iops-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing IOPS tier")
+				return errors.New("missing IOPS tier")
 			}
 
 			return nil

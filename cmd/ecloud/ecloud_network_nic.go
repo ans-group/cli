@@ -31,7 +31,7 @@ func ecloudNetworkNICListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud network nic list net-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing network")
+				return errors.New("missing network")
 			}
 
 			return nil
@@ -52,7 +52,7 @@ func ecloudNetworkNICList(service ecloud.ECloudService, cmd *cobra.Command, args
 
 	nics, err := service.GetNetworkNICs(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving network NICs: %s", err)
+		return fmt.Errorf("error retrieving network NICs: %s", err)
 	}
 
 	return output.CommandOutput(cmd, NICCollection(nics))

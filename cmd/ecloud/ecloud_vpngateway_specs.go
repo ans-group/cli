@@ -47,7 +47,7 @@ func ecloudVPNGatewaySpecificationList(service ecloud.ECloudService, cmd *cobra.
 
 	specs, err := service.GetVPNGatewaySpecifications(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving VPN gateway specifications: %s", err)
+		return fmt.Errorf("error retrieving VPN gateway specifications: %s", err)
 	}
 
 	return output.CommandOutput(cmd, VPNGatewaySpecificationCollection(specs))
@@ -60,7 +60,7 @@ func ecloudVPNGatewaySpecificationShowCmd(f factory.ClientFactory) *cobra.Comman
 		Example: "ans ecloud vpngateway spec show vpngs-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing VPN gateway specification")
+				return errors.New("missing VPN gateway specification")
 			}
 
 			return nil

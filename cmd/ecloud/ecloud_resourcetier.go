@@ -50,7 +50,7 @@ func ecloudResourceTierList(service ecloud.ECloudService, cmd *cobra.Command, ar
 
 	tiers, err := service.GetResourceTiers(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving resource tiers: %s", err)
+		return fmt.Errorf("error retrieving resource tiers: %s", err)
 	}
 
 	return output.CommandOutput(cmd, ResourceTierCollection(tiers))
@@ -64,7 +64,7 @@ func ecloudResourceTierShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud resourcetier show rt-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing resource tier")
+				return errors.New("missing resource tier")
 			}
 
 			return nil

@@ -23,7 +23,7 @@ func Test_sslCertificatePrivateKeyShowCmd_Args(t *testing.T) {
 		err := sslCertificatePrivateKeyShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing certificate", err.Error())
+		assert.Equal(t, "missing certificate", err.Error())
 	})
 }
 

@@ -23,7 +23,7 @@ func Test_ecloudVolumeGroupVolumeListCmd_Args(t *testing.T) {
 		err := ecloudVolumeGroupVolumeListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing volume-group", err.Error())
+		assert.Equal(t, "missing volume-group", err.Error())
 	})
 }
 
@@ -63,6 +63,6 @@ func Test_ecloudVolumeGroupVolumeList(t *testing.T) {
 
 		err := ecloudVolumeGroupVolumeList(service, &cobra.Command{}, []string{"volgroup-abcdef12"})
 
-		assert.Equal(t, "Error retrieving volume-group volumes: test error", err.Error())
+		assert.Equal(t, "error retrieving volume-group volumes: test error", err.Error())
 	})
 }

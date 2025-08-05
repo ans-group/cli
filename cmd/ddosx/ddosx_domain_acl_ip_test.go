@@ -28,7 +28,7 @@ func Test_ddosxDomainACLIPRuleListCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 }
 
@@ -68,7 +68,7 @@ func Test_ddosxDomainACLIPRuleList(t *testing.T) {
 
 		err := ddosxDomainACLIPRuleList(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 
-		assert.Equal(t, "Error retrieving domain ACL IP rules: test error", err.Error())
+		assert.Equal(t, "error retrieving domain ACL IP rules: test error", err.Error())
 	})
 }
 
@@ -85,7 +85,7 @@ func Test_ddosxDomainACLIPRuleShowCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 
 	t.Run("MissingRule_Error", func(t *testing.T) {
@@ -93,7 +93,7 @@ func Test_ddosxDomainACLIPRuleShowCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{"testdomain1.co.uk"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing rule", err.Error())
+		assert.Equal(t, "missing rule", err.Error())
 	})
 }
 
@@ -136,7 +136,7 @@ func Test_ddosxDomainACLIPRuleCreateCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 }
 
@@ -194,7 +194,7 @@ func Test_ddosxDomainACLIPRuleCreate(t *testing.T) {
 		service.EXPECT().CreateDomainACLIPRule("testdomain1.co.uk", gomock.Any()).Return("00000000-0000-0000-0000-000000000000", errors.New("test error")).Times(1)
 
 		err := ddosxDomainACLIPRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
-		assert.Equal(t, "Error creating domain ACL IP rule: test error", err.Error())
+		assert.Equal(t, "error creating domain ACL IP rule: test error", err.Error())
 	})
 
 	t.Run("CreateDomainACLIPRuleError_ReturnsError", func(t *testing.T) {
@@ -214,7 +214,7 @@ func Test_ddosxDomainACLIPRuleCreate(t *testing.T) {
 		)
 
 		err := ddosxDomainACLIPRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
-		assert.Equal(t, "Error retrieving new domain ACL IP rule [00000000-0000-0000-0000-000000000000]: test error", err.Error())
+		assert.Equal(t, "error retrieving new domain ACL IP rule [00000000-0000-0000-0000-000000000000]: test error", err.Error())
 	})
 }
 
@@ -231,7 +231,7 @@ func Test_ddosxDomainACLIPRuleUpdateCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 
 	t.Run("MissingRule_Error", func(t *testing.T) {
@@ -239,7 +239,7 @@ func Test_ddosxDomainACLIPRuleUpdateCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{"testdomain1.co.uk"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing rule", err.Error())
+		assert.Equal(t, "missing rule", err.Error())
 	})
 }
 
@@ -325,7 +325,7 @@ func Test_ddosxDomainACLIPRuleDeleteCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 
 	t.Run("MissingRule_Error", func(t *testing.T) {
@@ -333,7 +333,7 @@ func Test_ddosxDomainACLIPRuleDeleteCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{"testdomain1.co.uk"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing rule", err.Error())
+		assert.Equal(t, "missing rule", err.Error())
 	})
 }
 

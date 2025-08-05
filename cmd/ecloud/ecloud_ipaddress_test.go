@@ -49,7 +49,7 @@ func Test_ecloudIPAddressList(t *testing.T) {
 
 		err := ecloudIPAddressList(session, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving IP addresses: test error", err.Error())
+		assert.Equal(t, "error retrieving IP addresses: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudIPAddressShowCmd_Args(t *testing.T) {
 		err := ecloudIPAddressShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing IP address", err.Error())
+		assert.Equal(t, "missing IP address", err.Error())
 	})
 }
 
@@ -183,7 +183,7 @@ func Test_ecloudIPAddressCreate(t *testing.T) {
 		)
 
 		err := ecloudIPAddressCreate(session, cmd, []string{})
-		assert.Equal(t, "Error waiting for IP address task to complete: Error waiting for command: Failed to retrieve task status: test error", err.Error())
+		assert.Equal(t, "error waiting for IP address task to complete: error waiting for command: failed to retrieve task status: test error", err.Error())
 	})
 
 	t.Run("CreateIPAddressError_ReturnsError", func(t *testing.T) {
@@ -198,7 +198,7 @@ func Test_ecloudIPAddressCreate(t *testing.T) {
 
 		err := ecloudIPAddressCreate(session, cmd, []string{})
 
-		assert.Equal(t, "Error creating IP address: test error", err.Error())
+		assert.Equal(t, "error creating IP address: test error", err.Error())
 	})
 
 	t.Run("GetIPAddressError_ReturnsError", func(t *testing.T) {
@@ -216,7 +216,7 @@ func Test_ecloudIPAddressCreate(t *testing.T) {
 
 		err := ecloudIPAddressCreate(session, cmd, []string{})
 
-		assert.Equal(t, "Error retrieving new IP address: test error", err.Error())
+		assert.Equal(t, "error retrieving new IP address: test error", err.Error())
 	})
 }
 
@@ -231,7 +231,7 @@ func Test_ecloudIPAddressUpdateCmd_Args(t *testing.T) {
 		err := ecloudIPAddressUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing IP address", err.Error())
+		assert.Equal(t, "missing IP address", err.Error())
 	})
 }
 
@@ -312,7 +312,7 @@ func Test_ecloudIPAddressUpdate(t *testing.T) {
 			session.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for IP address [ip-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for IP address [ip-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudIPAddressUpdate(session, cmd, []string{"ip-abcdef12"})
 		})
 	})
@@ -363,7 +363,7 @@ func Test_ecloudIPAddressDeleteCmd_Args(t *testing.T) {
 		err := ecloudIPAddressDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing IP address", err.Error())
+		assert.Equal(t, "missing IP address", err.Error())
 	})
 }
 
@@ -410,7 +410,7 @@ func Test_ecloudIPAddressDelete(t *testing.T) {
 			session.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for IP address [ip-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for IP address [ip-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudIPAddressDelete(session, cmd, []string{"ip-abcdef12"})
 		})
 	})

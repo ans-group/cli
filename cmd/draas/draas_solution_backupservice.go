@@ -31,7 +31,7 @@ func draasSolutionBackupServiceShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans draas solution backupservice show 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing solution")
+				return errors.New("missing solution")
 			}
 
 			return nil
@@ -50,7 +50,7 @@ func draasSolutionBackupServiceShowCmd(f factory.ClientFactory) *cobra.Command {
 func draasSolutionBackupServiceShow(service draas.DRaaSService, cmd *cobra.Command, args []string) error {
 	backupService, err := service.GetSolutionBackupService(args[0])
 	if err != nil {
-		return fmt.Errorf("Error retrieving solution backup service: %s", err)
+		return fmt.Errorf("error retrieving solution backup service: %s", err)
 	}
 
 	return output.CommandOutput(cmd, BackupServiceCollection([]draas.BackupService{backupService}))
@@ -64,7 +64,7 @@ func draasSolutionBackupServiceResetCredentialsCmd(f factory.ClientFactory) *cob
 		Example: "ans draas solution backupservice resetcredentials 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing solution")
+				return errors.New("missing solution")
 			}
 
 			return nil
@@ -80,7 +80,7 @@ func draasSolutionBackupServiceResetCredentialsCmd(f factory.ClientFactory) *cob
 	}
 
 	cmd.Flags().String("password", "", "New password to set")
-	cmd.MarkFlagRequired("password")
+	_ = cmd.MarkFlagRequired("password")
 
 	return cmd
 }
@@ -94,7 +94,7 @@ func draasSolutionBackupServiceResetCredentials(service draas.DRaaSService, cmd 
 
 	err := service.ResetSolutionBackupServiceCredentials(args[0], req)
 	if err != nil {
-		return fmt.Errorf("Error resetting credentials for solution backup service: %s", err)
+		return fmt.Errorf("error resetting credentials for solution backup service: %s", err)
 	}
 
 	return nil

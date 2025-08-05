@@ -26,7 +26,7 @@ func Test_draasSolutionFailoverPlanListCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing solution", err.Error())
+		assert.Equal(t, "missing solution", err.Error())
 	})
 }
 
@@ -66,7 +66,7 @@ func Test_draasSolutionFailoverPlanList(t *testing.T) {
 
 		err := draasSolutionFailoverPlanList(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000"})
 
-		assert.Equal(t, "Error retrieving solution failover plans: test error", err.Error())
+		assert.Equal(t, "error retrieving solution failover plans: test error", err.Error())
 	})
 }
 
@@ -83,7 +83,7 @@ func Test_draasSolutionFailoverPlanShowCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing solution", err.Error())
+		assert.Equal(t, "missing solution", err.Error())
 	})
 
 	t.Run("MissingFailoverPlan_Error", func(t *testing.T) {
@@ -91,7 +91,7 @@ func Test_draasSolutionFailoverPlanShowCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{"00000000-0000-0000-0000-000000000000"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing failover plan", err.Error())
+		assert.Equal(t, "missing failover plan", err.Error())
 	})
 }
 
@@ -134,7 +134,7 @@ func Test_draasSolutionFailoverPlanStartCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing solution", err.Error())
+		assert.Equal(t, "missing solution", err.Error())
 	})
 
 	t.Run("MissingFailoverPlan_Error", func(t *testing.T) {
@@ -142,7 +142,7 @@ func Test_draasSolutionFailoverPlanStartCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{"00000000-0000-0000-0000-000000000000"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing failover plan", err.Error())
+		assert.Equal(t, "missing failover plan", err.Error())
 	})
 }
 
@@ -187,7 +187,7 @@ func Test_draasSolutionFailoverPlanStopCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing solution", err.Error())
+		assert.Equal(t, "missing solution", err.Error())
 	})
 
 	t.Run("MissingFailoverPlan_Error", func(t *testing.T) {
@@ -195,7 +195,7 @@ func Test_draasSolutionFailoverPlanStopCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{"00000000-0000-0000-0000-000000000000"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing failover plan", err.Error())
+		assert.Equal(t, "missing failover plan", err.Error())
 	})
 }
 

@@ -23,7 +23,7 @@ func Test_ecloudRouterNetworkListCmd_Args(t *testing.T) {
 		err := ecloudRouterNetworkListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing router", err.Error())
+		assert.Equal(t, "missing router", err.Error())
 	})
 }
 
@@ -63,6 +63,6 @@ func Test_ecloudRouterNetworkList(t *testing.T) {
 
 		err := ecloudRouterNetworkList(service, &cobra.Command{}, []string{"rtr-abcdef12"})
 
-		assert.Equal(t, "Error retrieving router networks: test error", err.Error())
+		assert.Equal(t, "error retrieving router networks: test error", err.Error())
 	})
 }

@@ -29,7 +29,7 @@ func ddosxSSLContentShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx ssl content show 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing ssl")
+				return errors.New("missing ssl")
 			}
 
 			return nil

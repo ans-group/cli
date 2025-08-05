@@ -23,7 +23,7 @@ func Test_ecloudPodApplianceListCmd_Args(t *testing.T) {
 		err := ecloudPodApplianceListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing pod", err.Error())
+		assert.Equal(t, "missing pod", err.Error())
 	})
 }
 
@@ -47,7 +47,7 @@ func Test_ecloudPodApplianceList(t *testing.T) {
 
 		err := ecloudPodApplianceList(service, &cobra.Command{}, []string{"abc"})
 
-		assert.Equal(t, "Invalid pod ID [abc]", err.Error())
+		assert.Equal(t, "invalid pod ID [abc]", err.Error())
 	})
 
 	t.Run("MalformedFlag_ReturnsError", func(t *testing.T) {
@@ -73,6 +73,6 @@ func Test_ecloudPodApplianceList(t *testing.T) {
 
 		err := ecloudPodApplianceList(service, &cobra.Command{}, []string{"123"})
 
-		assert.Equal(t, "Error retrieving pod appliances: test error 1", err.Error())
+		assert.Equal(t, "error retrieving pod appliances: test error 1", err.Error())
 	})
 }

@@ -30,7 +30,7 @@ func ddosxDomainDNSActivateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain dns activate example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 
 			return nil
@@ -75,7 +75,7 @@ func ddosxDomainDNSDeactivateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain dns deactivate example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 
 			return nil

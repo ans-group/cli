@@ -66,7 +66,7 @@ func pssIncidentShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans pss incident show INC123456",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing incident")
+				return errors.New("missing incident")
 			}
 
 			return nil
@@ -101,17 +101,17 @@ func pssIncidentCreateCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Setup flags
 	cmd.Flags().String("title", "", "Specifies the title for incident case")
-	cmd.MarkFlagRequired("title")
+	_ = cmd.MarkFlagRequired("title")
 	cmd.Flags().String("description", "", "Specifies the description for incident case")
-	cmd.MarkFlagRequired("description")
+	_ = cmd.MarkFlagRequired("description")
 	cmd.Flags().String("type", "", "Specifies the type of incident case")
-	cmd.MarkFlagRequired("type")
+	_ = cmd.MarkFlagRequired("type")
 	cmd.Flags().String("category", "", "Category ID for incident case")
-	cmd.MarkFlagRequired("category")
+	_ = cmd.MarkFlagRequired("category")
 	cmd.Flags().String("supported-service", "", "Supported service ID for incident case")
-	cmd.MarkFlagRequired("supported-service")
+	_ = cmd.MarkFlagRequired("supported-service")
 	cmd.Flags().String("impact", "", "Impact for incident case")
-	cmd.MarkFlagRequired("impact")
+	_ = cmd.MarkFlagRequired("impact")
 	cmd.Flags().Bool("security", false, "Specifies whether incident case is a security incident")
 	cmd.Flags().String("customer-reference", "", "Specifies the customer reference for incident case")
 	cmd.Flags().Int("contact", 0, "Contact ID for incident case")
@@ -146,12 +146,12 @@ func pssIncidentCreate(service pss.PSSService, cmd *cobra.Command, args []string
 
 	incidentID, err := service.CreateIncidentCase(createIncidentCase)
 	if err != nil {
-		return fmt.Errorf("Error creating incident: %s", err)
+		return fmt.Errorf("error creating incident: %s", err)
 	}
 
 	incident, err := service.GetIncidentCase(incidentID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new incident: %s", err)
+		return fmt.Errorf("error retrieving new incident: %s", err)
 	}
 
 	return output.CommandOutput(cmd, IncidentCaseCollection([]pss.IncidentCase{incident}))
@@ -165,7 +165,7 @@ func pssIncidentCloseCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans pss incident close CHG123456",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing incident")
+				return errors.New("missing incident")
 			}
 
 			return nil
@@ -174,7 +174,7 @@ func pssIncidentCloseCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("reason", "", "Reason for incident case approval")
-	cmd.MarkFlagRequired("reason")
+	_ = cmd.MarkFlagRequired("reason")
 	cmd.Flags().Int("contact", 0, "Contact ID for incident case approval")
 
 	return cmd

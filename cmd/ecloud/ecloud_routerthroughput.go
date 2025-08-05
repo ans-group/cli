@@ -50,7 +50,7 @@ func ecloudRouterThroughputList(service ecloud.ECloudService, cmd *cobra.Command
 
 	throughputs, err := service.GetRouterThroughputs(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving router throughputs: %s", err)
+		return fmt.Errorf("error retrieving router throughputs: %s", err)
 	}
 
 	return output.CommandOutput(cmd, RouterThroughputCollection(throughputs))
@@ -64,7 +64,7 @@ func ecloudRouterThroughputShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud routerthroughput show rtp-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing router throughput")
+				return errors.New("missing router throughput")
 			}
 
 			return nil

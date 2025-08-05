@@ -29,7 +29,7 @@ func Test_ddosxDomainVerificationFileUploadShowCmd_Args(t *testing.T) {
 		err := ddosxDomainVerificationFileUploadShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 }
 
@@ -84,7 +84,7 @@ func Test_ddosxDomainVerificationFileUploadDownloadCmd_Args(t *testing.T) {
 		err := ddosxDomainVerificationFileUploadDownloadCmd(nil, nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 }
 
@@ -132,7 +132,7 @@ func Test_ddosxDomainVerificationFileUploadDownload(t *testing.T) {
 
 		err := ddosxDomainVerificationFileUploadDownload(service, fs, cmd, []string{"testdomain1.co.uk"})
 
-		assert.Equal(t, fmt.Sprintf("Destination file [%s] exists", filename), err.Error())
+		assert.Equal(t, fmt.Sprintf("destination file [%s] exists", filename), err.Error())
 	})
 
 	t.Run("WriteFileError_ReturnsError", func(t *testing.T) {
@@ -151,7 +151,7 @@ func Test_ddosxDomainVerificationFileUploadDownload(t *testing.T) {
 		filename := filepath.Join("/tmp", "testfilename.txt")
 
 		err := ddosxDomainVerificationFileUploadDownload(service, fs, cmd, []string{"testdomain1.co.uk"})
-		assert.Equal(t, fmt.Sprintf("Error writing domain verification file to [%s]: open %s: file does not exist", filename, filename), err.Error())
+		assert.Equal(t, fmt.Sprintf("error writing domain verification file to [%s]: open %s: file does not exist", filename, filename), err.Error())
 	})
 
 	t.Run("DownloadDomainVerificationFileError_ReturnsError", func(t *testing.T) {
@@ -165,7 +165,7 @@ func Test_ddosxDomainVerificationFileUploadDownload(t *testing.T) {
 
 		err := ddosxDomainVerificationFileUploadDownload(service, nil, &cobra.Command{}, []string{"testdomain1.co.uk"})
 
-		assert.Equal(t, "Error retrieving domain verification file: test error", err.Error())
+		assert.Equal(t, "error retrieving domain verification file: test error", err.Error())
 	})
 }
 
@@ -180,7 +180,7 @@ func Test_ddosxDomainVerificationFileUploadVerifyCmd_Args(t *testing.T) {
 		err := ddosxDomainVerificationFileUploadVerifyCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 }
 

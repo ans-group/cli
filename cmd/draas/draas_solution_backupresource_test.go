@@ -23,7 +23,7 @@ func Test_draasSolutionBackupResourceListCmd_Args(t *testing.T) {
 		err := draasSolutionBackupResourceListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing solution", err.Error())
+		assert.Equal(t, "missing solution", err.Error())
 	})
 }
 
@@ -61,6 +61,6 @@ func Test_draasSolutionBackupResourceList(t *testing.T) {
 		service.EXPECT().GetSolutionBackupResources("00000000-0000-0000-0000-000000000000", gomock.Any()).Return([]draas.BackupResource{}, errors.New("test error")).Times(1)
 
 		err := draasSolutionBackupResourceList(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000"})
-		assert.Equal(t, "Error retrieving solution backup resources: test error", err.Error())
+		assert.Equal(t, "error retrieving solution backup resources: test error", err.Error())
 	})
 }

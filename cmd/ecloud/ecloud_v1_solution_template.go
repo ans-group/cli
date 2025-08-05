@@ -35,7 +35,7 @@ func ecloudSolutionTemplateListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud solution template list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing solution")
+				return errors.New("missing solution")
 			}
 
 			return nil
@@ -54,7 +54,7 @@ func ecloudSolutionTemplateListCmd(f factory.ClientFactory) *cobra.Command {
 func ecloudSolutionTemplateList(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	solutionID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid solution ID [%s]", args[0])
+		return fmt.Errorf("invalid solution ID [%s]", args[0])
 	}
 
 	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
@@ -64,7 +64,7 @@ func ecloudSolutionTemplateList(service ecloud.ECloudService, cmd *cobra.Command
 
 	templates, err := service.GetSolutionTemplates(solutionID, params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving solution templates: %s", err)
+		return fmt.Errorf("error retrieving solution templates: %s", err)
 	}
 
 	return output.CommandOutput(cmd, TemplateCollection(templates))
@@ -78,10 +78,10 @@ func ecloudSolutionTemplateShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud solution template show 123 foo",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing solution")
+				return errors.New("missing solution")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing template")
+				return errors.New("missing template")
 			}
 
 			return nil
@@ -100,7 +100,7 @@ func ecloudSolutionTemplateShowCmd(f factory.ClientFactory) *cobra.Command {
 func ecloudSolutionTemplateShow(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	solutionID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid solution ID [%s]", args[0])
+		return fmt.Errorf("invalid solution ID [%s]", args[0])
 	}
 
 	var templates []ecloud.Template
@@ -126,10 +126,10 @@ func ecloudSolutionTemplateUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud solution template update 123 foo --name \"bar\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing solution")
+				return errors.New("missing solution")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing template")
+				return errors.New("missing template")
 			}
 
 			return nil
@@ -152,7 +152,7 @@ func ecloudSolutionTemplateUpdateCmd(f factory.ClientFactory) *cobra.Command {
 func ecloudSolutionTemplateUpdate(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	solutionID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid solution ID [%s]", args[0])
+		return fmt.Errorf("invalid solution ID [%s]", args[0])
 	}
 
 	templateName := args[1]
@@ -165,12 +165,12 @@ func ecloudSolutionTemplateUpdate(service ecloud.ECloudService, cmd *cobra.Comma
 
 		err = service.RenameSolutionTemplate(solutionID, templateName, patchRequest)
 		if err != nil {
-			return fmt.Errorf("Error updating solution template: %s", err)
+			return fmt.Errorf("error updating solution template: %s", err)
 		}
 
 		err := helper.WaitForCommand(SolutionTemplateExistsWaitFunc(service, solutionID, name, true))
 		if err != nil {
-			return fmt.Errorf("Error waiting for solution template update: %s", err)
+			return fmt.Errorf("error waiting for solution template update: %s", err)
 		}
 
 		templateName = name
@@ -178,7 +178,7 @@ func ecloudSolutionTemplateUpdate(service ecloud.ECloudService, cmd *cobra.Comma
 
 	template, err := service.GetSolutionTemplate(solutionID, templateName)
 	if err != nil {
-		return fmt.Errorf("Error retrieving updated solution template: %s", err)
+		return fmt.Errorf("error retrieving updated solution template: %s", err)
 	}
 
 	return output.CommandOutput(cmd, TemplateCollection([]ecloud.Template{template}))
@@ -192,10 +192,10 @@ func ecloudSolutionTemplateDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud solution template delete 123 foo",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing solution")
+				return errors.New("missing solution")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing template")
+				return errors.New("missing template")
 			}
 
 			return nil
@@ -218,7 +218,7 @@ func ecloudSolutionTemplateDeleteCmd(f factory.ClientFactory) *cobra.Command {
 func ecloudSolutionTemplateDelete(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	solutionID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid solution ID [%s]", args[0])
+		return fmt.Errorf("invalid solution ID [%s]", args[0])
 	}
 
 	for _, arg := range args[1:] {

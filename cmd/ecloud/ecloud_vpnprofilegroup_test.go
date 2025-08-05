@@ -49,7 +49,7 @@ func Test_ecloudVPNProfileGroupList(t *testing.T) {
 
 		err := ecloudVPNProfileGroupList(session, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving VPN sessions: test error", err.Error())
+		assert.Equal(t, "error retrieving VPN sessions: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudVPNProfileGroupShowCmd_Args(t *testing.T) {
 		err := ecloudVPNProfileGroupShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing VPN session", err.Error())
+		assert.Equal(t, "missing VPN session", err.Error())
 	})
 }
 

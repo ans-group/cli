@@ -51,7 +51,7 @@ func billingInvoiceQueryList(service billing.BillingService, cmd *cobra.Command,
 
 	queries, err := service.GetInvoiceQueries(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving invoice queries: %s", err)
+		return fmt.Errorf("error retrieving invoice queries: %s", err)
 	}
 
 	return output.CommandOutput(cmd, InvoiceQueryCollection(queries))
@@ -65,7 +65,7 @@ func billingInvoiceQueryShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans billing invoicequery show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing invoice query")
+				return errors.New("missing invoice query")
 			}
 
 			return nil
@@ -110,7 +110,7 @@ func billingInvoiceQueryCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans billing invoice query create",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing invoice")
+				return errors.New("missing invoice")
 			}
 
 			return nil
@@ -127,18 +127,18 @@ func billingInvoiceQueryCreateCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Setup flags
 	cmd.Flags().Int("contact-id", 0, "The identifier of the contact that raised this query")
-	cmd.MarkFlagRequired("contact-id")
+	_ = cmd.MarkFlagRequired("contact-id")
 	cmd.Flags().String("contact-method", "", "What is the preferred method to provide feedback on this query")
-	cmd.MarkFlagRequired("contact-method")
+	_ = cmd.MarkFlagRequired("contact-method")
 	cmd.Flags().Float32("amount", 0, "The amount that is being queried")
 	cmd.Flags().String("what-was-expected", "", "Text explaining what was expected")
-	cmd.MarkFlagRequired("what-was-expected")
+	_ = cmd.MarkFlagRequired("what-was-expected")
 	cmd.Flags().String("what-was-received", "", "Text explaining what was actually received")
-	cmd.MarkFlagRequired("what-was-received")
+	_ = cmd.MarkFlagRequired("what-was-received")
 	cmd.Flags().String("proposed-solution", "", "What is the proposed solution")
-	cmd.MarkFlagRequired("proposed-solution")
+	_ = cmd.MarkFlagRequired("proposed-solution")
 	cmd.Flags().IntSlice("invoice-id", []int{}, "Invoice ID for query")
-	cmd.MarkFlagRequired("invoice-id")
+	_ = cmd.MarkFlagRequired("invoice-id")
 
 	return cmd
 }
@@ -155,12 +155,12 @@ func billingInvoiceQueryCreate(service billing.BillingService, cmd *cobra.Comman
 
 	id, err := service.CreateInvoiceQuery(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating invoice query: %s", err)
+		return fmt.Errorf("error creating invoice query: %s", err)
 	}
 
 	query, err := service.GetInvoiceQuery(id)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new invoice query [%d]: %s", id, err)
+		return fmt.Errorf("error retrieving new invoice query [%d]: %s", id, err)
 	}
 
 	return output.CommandOutput(cmd, InvoiceQueryCollection([]billing.InvoiceQuery{query}))

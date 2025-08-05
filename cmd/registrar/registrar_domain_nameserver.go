@@ -30,7 +30,7 @@ func registrarDomainNameserverListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans registrar domain nameserver list example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 
 			return nil
@@ -49,7 +49,7 @@ func registrarDomainNameserverListCmd(f factory.ClientFactory) *cobra.Command {
 func registrarDomainNameserverList(service registrar.RegistrarService, cmd *cobra.Command, args []string) error {
 	nameservers, err := service.GetDomainNameservers(args[0])
 	if err != nil {
-		return fmt.Errorf("Error retrieving domain nameservers: %s", err)
+		return fmt.Errorf("error retrieving domain nameservers: %s", err)
 	}
 
 	return output.CommandOutput(cmd, NameserverCollection(nameservers))

@@ -52,7 +52,7 @@ func Test_ddosxWAFLogMatchList(t *testing.T) {
 
 		err := ddosxWAFLogMatchList(service, cmd, []string{})
 
-		assert.Equal(t, "Error retrieving WAF log matches: test error", err.Error())
+		assert.Equal(t, "error retrieving WAF log matches: test error", err.Error())
 	})
 
 	t.Run("GetWAFLogMatchesPaginatedError_ReturnsError", func(t *testing.T) {
@@ -65,7 +65,7 @@ func Test_ddosxWAFLogMatchList(t *testing.T) {
 
 		err := ddosxWAFLogMatchList(service, ddosxWAFLogMatchListCmd(nil), []string{})
 
-		assert.Equal(t, "Error retrieving WAF log matches: test error", err.Error())
+		assert.Equal(t, "error retrieving WAF log matches: test error", err.Error())
 	})
 }
 
@@ -80,14 +80,14 @@ func Test_ddosxWAFLogMatchShowCmd_Args(t *testing.T) {
 		err := ddosxWAFLogMatchShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing log", err.Error())
+		assert.Equal(t, "missing log", err.Error())
 	})
 
 	t.Run("MissingMatch_Error", func(t *testing.T) {
 		err := ddosxWAFLogMatchShowCmd(nil).Args(nil, []string{"2d8556677081cecf112b555c359a78c6"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing match", err.Error())
+		assert.Equal(t, "missing match", err.Error())
 	})
 }
 

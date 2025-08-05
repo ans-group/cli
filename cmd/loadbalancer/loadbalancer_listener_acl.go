@@ -32,7 +32,7 @@ func loadbalancerListenerACLListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans loadbalancer listener acl list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing listener")
+				return errors.New("missing listener")
 			}
 
 			return nil
@@ -49,12 +49,12 @@ func loadbalancerListenerACLList(service loadbalancer.LoadBalancerService, cmd *
 
 	listenerID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid listener ID")
+		return fmt.Errorf("invalid listener ID")
 	}
 
 	acls, err := service.GetListenerACLs(listenerID, params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving ACLs: %s", err)
+		return fmt.Errorf("error retrieving ACLs: %s", err)
 	}
 
 	return output.CommandOutput(cmd, ACLCollection(acls))

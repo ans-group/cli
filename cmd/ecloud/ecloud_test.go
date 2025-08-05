@@ -101,7 +101,7 @@ func TestGetCreateTagRequestFromStringArrayFlag(t *testing.T) {
 		_, err := GetCreateTagRequestFromStringArrayFlag(tagFlags)
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Invalid format, expecting: key=value", err.Error())
+		assert.Equal(t, "invalid format, expecting: key=value", err.Error())
 	})
 }
 
@@ -148,6 +148,6 @@ func TestGetCreateVirtualMachineRequestParameterFromStringArrayFlag(t *testing.T
 		_, err := GetCreateVirtualMachineRequestParameterFromStringArrayFlag(parameterFlags)
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Invalid format, expecting: key=value", err.Error())
+		assert.Equal(t, "invalid format, expecting: key=value", err.Error())
 	})
 }

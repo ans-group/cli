@@ -44,7 +44,7 @@ func (l *DebugLogger) Trace(msg string) {
 
 // Error writes specified string to stderr
 func Error(str string) {
-	os.Stderr.WriteString(str + "\n")
+	_, _ = os.Stderr.WriteString(str + "\n")
 }
 
 // Errorf writes specified string with formatting to stderr
@@ -100,7 +100,7 @@ func CommandOutputPaginated[T any](cmd *cobra.Command, d interface{}, paginated 
 		return err
 	}
 
-	Errorf("Page %d/%d", paginated.CurrentPage(), paginated.TotalPages())
+	Errorf("page %d/%d", paginated.CurrentPage(), paginated.TotalPages())
 	return nil
 }
 

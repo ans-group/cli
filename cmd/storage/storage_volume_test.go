@@ -49,7 +49,7 @@ func Test_storageVolumeList(t *testing.T) {
 
 		err := storageVolumeList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving volumes: test error", err.Error())
+		assert.Equal(t, "error retrieving volumes: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_storageVolumeShowCmd_Args(t *testing.T) {
 		err := storageVolumeShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing volume", err.Error())
+		assert.Equal(t, "missing volume", err.Error())
 	})
 }
 

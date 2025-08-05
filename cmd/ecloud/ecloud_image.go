@@ -48,7 +48,7 @@ func ecloudImageList(service ecloud.ECloudService, cmd *cobra.Command, args []st
 
 	images, err := service.GetImages(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving images: %s", err)
+		return fmt.Errorf("error retrieving images: %s", err)
 	}
 
 	return output.CommandOutput(cmd, ImageCollection(images))
@@ -62,7 +62,7 @@ func ecloudImageShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vm image img-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing image")
+				return errors.New("missing image")
 			}
 
 			return nil
@@ -94,7 +94,7 @@ func ecloudImageUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud image update img-abcdef12 --name \"my image\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing image")
+				return errors.New("missing image")
 			}
 
 			return nil
@@ -152,7 +152,7 @@ func ecloudImageDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud image delete img-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing image")
+				return errors.New("missing image")
 			}
 
 			return nil

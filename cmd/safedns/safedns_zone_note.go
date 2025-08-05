@@ -34,7 +34,7 @@ func safednsZoneNoteListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans safedns zone note list ans.co.uk\nans safedns zone note list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing zone")
+				return errors.New("missing zone")
 			}
 
 			return nil
@@ -62,7 +62,7 @@ func safednsZoneNoteList(service safedns.SafeDNSService, cmd *cobra.Command, arg
 
 	zoneNotes, err := service.GetZoneNotes(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving notes for zone: %s", err)
+		return fmt.Errorf("error retrieving notes for zone: %s", err)
 	}
 
 	return output.CommandOutput(cmd, NoteCollection(zoneNotes))
@@ -76,10 +76,10 @@ func safednsZoneNoteShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans safedns zone note show ans.co.uk 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing zone")
+				return errors.New("missing zone")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing note")
+				return errors.New("missing note")
 			}
 
 			return nil
@@ -125,7 +125,7 @@ func safednsZoneNoteCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans safedns zone note create ans.co.uk --notes \"test note\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing zone")
+				return errors.New("missing zone")
 			}
 
 			return nil
@@ -142,7 +142,7 @@ func safednsZoneNoteCreateCmd(f factory.ClientFactory) *cobra.Command {
 
 	cmd.Flags().Int("contact-id", 0, "Contact ID for note")
 	cmd.Flags().String("notes", "", "Note content")
-	cmd.MarkFlagRequired("notes")
+	_ = cmd.MarkFlagRequired("notes")
 
 	return cmd
 }
@@ -154,12 +154,12 @@ func safednsZoneNoteCreate(service safedns.SafeDNSService, cmd *cobra.Command, a
 
 	id, err := service.CreateZoneNote(args[0], createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating note: %s", err)
+		return fmt.Errorf("error creating note: %s", err)
 	}
 
 	zoneNote, err := service.GetZoneNote(args[0], id)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new note: %s", err)
+		return fmt.Errorf("error retrieving new note: %s", err)
 	}
 
 	return output.CommandOutput(cmd, NoteCollection([]safedns.Note{zoneNote}))

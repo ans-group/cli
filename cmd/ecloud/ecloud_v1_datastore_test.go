@@ -49,7 +49,7 @@ func Test_ecloudDatastoreList(t *testing.T) {
 
 		err := ecloudDatastoreList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving datastores: test error", err.Error())
+		assert.Equal(t, "error retrieving datastores: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudDatastoreShowCmd_Args(t *testing.T) {
 		err := ecloudDatastoreShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing datastore", err.Error())
+		assert.Equal(t, "missing datastore", err.Error())
 	})
 }
 

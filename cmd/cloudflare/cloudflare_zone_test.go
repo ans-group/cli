@@ -48,7 +48,7 @@ func Test_cloudflareZoneList(t *testing.T) {
 
 		err := cloudflareZoneList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving zones: test error", err.Error())
+		assert.Equal(t, "error retrieving zones: test error", err.Error())
 	})
 }
 
@@ -63,7 +63,7 @@ func Test_cloudflareZoneShowCmd_Args(t *testing.T) {
 		err := cloudflareZoneShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing zone", err.Error())
+		assert.Equal(t, "missing zone", err.Error())
 	})
 }
 
@@ -126,7 +126,7 @@ func Test_cloudflareZoneCreate(t *testing.T) {
 
 		err := cloudflareZoneCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error creating zone: test error", err.Error())
+		assert.Equal(t, "error creating zone: test error", err.Error())
 	})
 
 	t.Run("GetZoneError_ReturnsError", func(t *testing.T) {
@@ -144,7 +144,7 @@ func Test_cloudflareZoneCreate(t *testing.T) {
 
 		err := cloudflareZoneCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error retrieving new zone: test error", err.Error())
+		assert.Equal(t, "error retrieving new zone: test error", err.Error())
 	})
 }
 
@@ -159,7 +159,7 @@ func Test_cloudflareZoneUpdateCmd_Args(t *testing.T) {
 		err := cloudflareZoneUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing zone", err.Error())
+		assert.Equal(t, "missing zone", err.Error())
 	})
 }
 
@@ -207,7 +207,7 @@ func Test_cloudflareZoneDeleteCmd_Args(t *testing.T) {
 		err := cloudflareZoneDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing zone", err.Error())
+		assert.Equal(t, "missing zone", err.Error())
 	})
 }
 

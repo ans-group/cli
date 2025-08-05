@@ -54,7 +54,7 @@ func ecloudSiteList(service ecloud.ECloudService, cmd *cobra.Command, args []str
 
 	sites, err := service.GetSites(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving sites: %s", err)
+		return fmt.Errorf("error retrieving sites: %s", err)
 	}
 
 	return output.CommandOutput(cmd, SiteCollection(sites))
@@ -68,7 +68,7 @@ func ecloudSiteShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vm site 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing site")
+				return errors.New("missing site")
 			}
 
 			return nil

@@ -18,7 +18,7 @@ func rawCmd(f connection.ConnectionFactory) *cobra.Command {
 		Short: "Executes raw commands against API",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing resource/uri")
+				return errors.New("missing resource/uri")
 			}
 
 			return nil
@@ -43,8 +43,8 @@ func rawCmd(f connection.ConnectionFactory) *cobra.Command {
 type rawCommandOutput string
 
 func (r *rawCommandOutput) Deserialize(resp *connection.APIResponse) error {
-	defer resp.Response.Body.Close()
-	bodyBytes, err := io.ReadAll(resp.Response.Body)
+	defer func() { _ = resp.Body.Close() }()
+	bodyBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return err
 	}

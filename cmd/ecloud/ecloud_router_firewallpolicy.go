@@ -31,7 +31,7 @@ func ecloudRouterFirewallPolicyListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud router firewallpolicy list rtr-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing router")
+				return errors.New("missing router")
 			}
 
 			return nil
@@ -52,7 +52,7 @@ func ecloudRouterFirewallPolicyList(service ecloud.ECloudService, cmd *cobra.Com
 
 	policies, err := service.GetRouterFirewallPolicies(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving router firewall policies: %s", err)
+		return fmt.Errorf("error retrieving router firewall policies: %s", err)
 	}
 
 	return output.CommandOutput(cmd, FirewallPolicyCollection(policies))

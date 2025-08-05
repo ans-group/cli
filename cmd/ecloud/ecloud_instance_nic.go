@@ -31,7 +31,7 @@ func ecloudInstanceNICListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud instance nic list i-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing instance")
+				return errors.New("missing instance")
 			}
 
 			return nil
@@ -52,7 +52,7 @@ func ecloudInstanceNICList(service ecloud.ECloudService, cmd *cobra.Command, arg
 
 	nics, err := service.GetInstanceNICs(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving instance NICs: %s", err)
+		return fmt.Errorf("error retrieving instance NICs: %s", err)
 	}
 
 	return output.CommandOutput(cmd, NICCollection(nics))

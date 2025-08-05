@@ -31,7 +31,7 @@ func ecloudInstanceCredentialListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud instance credential list i-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing instance")
+				return errors.New("missing instance")
 			}
 
 			return nil
@@ -52,7 +52,7 @@ func ecloudInstanceCredentialList(service ecloud.ECloudService, cmd *cobra.Comma
 
 	credentials, err := service.GetInstanceCredentials(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving instance credentials: %s", err)
+		return fmt.Errorf("error retrieving instance credentials: %s", err)
 	}
 
 	return output.CommandOutput(cmd, CredentialCollection(credentials))

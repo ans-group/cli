@@ -49,7 +49,7 @@ func Test_ecloudPodList(t *testing.T) {
 
 		err := ecloudPodList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving pods: test error", err.Error())
+		assert.Equal(t, "error retrieving pods: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudPodShowCmd_Args(t *testing.T) {
 		err := ecloudPodShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing pod", err.Error())
+		assert.Equal(t, "missing pod", err.Error())
 	})
 }
 

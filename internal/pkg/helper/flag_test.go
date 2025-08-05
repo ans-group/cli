@@ -136,35 +136,35 @@ func TestGetFilteringFromStringFlagValue_Expected(t *testing.T) {
 		_, err := helper.GetFilteringFromStringFlagValue(":eq=value")
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing property for filtering", err.Error())
+		assert.Equal(t, "missing property for filtering", err.Error())
 	})
 
 	t.Run("MissingOperator_ReturnsError", func(t *testing.T) {
 		_, err := helper.GetFilteringFromStringFlagValue("testproperty:=value")
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing operator for filtering", err.Error())
+		assert.Equal(t, "missing operator for filtering", err.Error())
 	})
 
 	t.Run("EmptyValue_ReturnsError", func(t *testing.T) {
 		_, err := helper.GetFilteringFromStringFlagValue("testproperty:invalid=")
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing value for filtering", err.Error())
+		assert.Equal(t, "missing value for filtering", err.Error())
 	})
 
 	t.Run("InvalidOperator_ReturnsError", func(t *testing.T) {
 		_, err := helper.GetFilteringFromStringFlagValue("testproperty:invalid=value")
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Invalid filtering operator", err.Error())
+		assert.Equal(t, "invalid filtering operator", err.Error())
 	})
 
 	t.Run("MissingValue_ReturnsError", func(t *testing.T) {
 		_, err := helper.GetFilteringFromStringFlagValue("testproperty:eq")
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing value for filtering", err.Error())
+		assert.Equal(t, "missing value for filtering", err.Error())
 	})
 }
 
@@ -284,8 +284,6 @@ func TestGetAPIRequestParametersFromFlags(t *testing.T) {
 		cmd := &cobra.Command{}
 		cmd.Flags().String("name", "", "")
 		cmd.ParseFlags([]string{"--name=test"})
-		params := connection.APIRequestParameters{}
-
 		params, err := helper.GetAPIRequestParametersFromFlags(cmd, helper.NewStringFilterFlagOption("name", "name"))
 
 		assert.Nil(t, err)

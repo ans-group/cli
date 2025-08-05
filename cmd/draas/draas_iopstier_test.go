@@ -49,7 +49,7 @@ func Test_draasIOPSTierList(t *testing.T) {
 
 		err := draasIOPSTierList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving IOPS tiers: test error", err.Error())
+		assert.Equal(t, "error retrieving IOPS tiers: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_draasIOPSTierShowCmd_Args(t *testing.T) {
 		err := draasIOPSTierShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing IOPS tier", err.Error())
+		assert.Equal(t, "missing IOPS tier", err.Error())
 	})
 }
 

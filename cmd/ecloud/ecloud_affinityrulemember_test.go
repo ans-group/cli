@@ -23,7 +23,7 @@ func Test_ecloudAffinityRuleMemberShowCmd_Args(t *testing.T) {
 		err := ecloudAffinityRuleMemberShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing affinity rule member", err.Error())
+		assert.Equal(t, "missing affinity rule member", err.Error())
 	})
 }
 
@@ -77,7 +77,7 @@ func Test_ecloudAffinityRuleMemberCreate(t *testing.T) {
 		cmd.ParseFlags([]string{"--affinity-rule=ar-abcdef12", "--instance=i-abcdef12"})
 
 		req := ecloud.CreateAffinityRuleMemberRequest{
-			InstanceID: "i-abcdef12",
+			InstanceID:     "i-abcdef12",
 			AffinityRuleID: "ar-abcdef12",
 		}
 
@@ -103,7 +103,7 @@ func Test_ecloudAffinityRuleMemberCreate(t *testing.T) {
 		cmd.ParseFlags([]string{"--affinity-rule=ar-abcdef12", "--instance=i-abcdef12", "--wait"})
 
 		req := ecloud.CreateAffinityRuleMemberRequest{
-			InstanceID: "i-abcdef12",
+			InstanceID:     "i-abcdef12",
 			AffinityRuleID: "ar-abcdef12",
 		}
 
@@ -130,7 +130,7 @@ func Test_ecloudAffinityRuleMemberCreate(t *testing.T) {
 		cmd.ParseFlags([]string{"--affinity-rule=ar-abcdef12", "--instance=i-abcdef12", "--wait"})
 
 		req := ecloud.CreateAffinityRuleMemberRequest{
-			InstanceID: "i-abcdef12",
+			InstanceID:     "i-abcdef12",
 			AffinityRuleID: "ar-abcdef12",
 		}
 
@@ -145,7 +145,7 @@ func Test_ecloudAffinityRuleMemberCreate(t *testing.T) {
 		)
 
 		err := ecloudAffinityRuleMemberCreate(service, cmd, []string{})
-		assert.Equal(t, "Error waiting for affinity rule member task to complete: Error waiting for command: Failed to retrieve task status: test error", err.Error())
+		assert.Equal(t, "error waiting for affinity rule member task to complete: error waiting for command: failed to retrieve task status: test error", err.Error())
 	})
 
 	t.Run("CreateAffinityRuleMemberError_ReturnsError", func(t *testing.T) {
@@ -160,7 +160,7 @@ func Test_ecloudAffinityRuleMemberCreate(t *testing.T) {
 
 		err := ecloudAffinityRuleMemberCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error creating affinity rule member: test error", err.Error())
+		assert.Equal(t, "error creating affinity rule member: test error", err.Error())
 	})
 
 	t.Run("GetAffinityRuleMemberError_ReturnsError", func(t *testing.T) {
@@ -178,7 +178,7 @@ func Test_ecloudAffinityRuleMemberCreate(t *testing.T) {
 
 		err := ecloudAffinityRuleMemberCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error retrieving new affinity rule member: test error", err.Error())
+		assert.Equal(t, "error retrieving new affinity rule member: test error", err.Error())
 	})
 }
 
@@ -193,7 +193,7 @@ func Test_ecloudAffinityRuleMemberDeleteCmd_Args(t *testing.T) {
 		err := ecloudAffinityRuleMemberDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing affinity rule member", err.Error())
+		assert.Equal(t, "missing affinity rule member", err.Error())
 	})
 }
 
@@ -240,7 +240,7 @@ func Test_ecloudAffinityRuleMemberDelete(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for affinity rule member [arm-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for affinity rule member [arm-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudAffinityRuleMemberDelete(service, cmd, []string{"arm-abcdef12"})
 		})
 	})

@@ -51,7 +51,7 @@ func ecloudVPNServiceList(service ecloud.ECloudService, cmd *cobra.Command, args
 
 	services, err := service.GetVPNServices(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving VPN services: %s", err)
+		return fmt.Errorf("error retrieving VPN services: %s", err)
 	}
 
 	return output.CommandOutput(cmd, VPNServiceCollection(services))
@@ -65,7 +65,7 @@ func ecloudVPNServiceShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vpnservice show vpn-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing VPN service")
+				return errors.New("missing VPN service")
 			}
 
 			return nil
@@ -100,7 +100,7 @@ func ecloudVPNServiceCreateCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Setup flags
 	cmd.Flags().String("router", "", "ID of router")
-	cmd.MarkFlagRequired("router")
+	_ = cmd.MarkFlagRequired("router")
 	cmd.Flags().String("name", "", "Name of service")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the VPN service has been completely created")
 
@@ -114,20 +114,20 @@ func ecloudVPNServiceCreate(service ecloud.ECloudService, cmd *cobra.Command, ar
 
 	taskRef, err := service.CreateVPNService(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating VPN service: %s", err)
+		return fmt.Errorf("error creating VPN service: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskRef.TaskID, ecloud.TaskStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for VPN service task to complete: %s", err)
+			return fmt.Errorf("error waiting for VPN service task to complete: %s", err)
 		}
 	}
 
 	vpnService, err := service.GetVPNService(taskRef.ResourceID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new VPN service: %s", err)
+		return fmt.Errorf("error retrieving new VPN service: %s", err)
 	}
 
 	return output.CommandOutput(cmd, VPNServiceCollection([]ecloud.VPNService{vpnService}))
@@ -141,7 +141,7 @@ func ecloudVPNServiceUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vpnservice update vpn-abcdef12 --name \"my service\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing VPN service")
+				return errors.New("missing VPN service")
 			}
 
 			return nil
@@ -199,7 +199,7 @@ func ecloudVPNServiceDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vpnservice delete vpn-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing VPN service")
+				return errors.New("missing VPN service")
 			}
 
 			return nil

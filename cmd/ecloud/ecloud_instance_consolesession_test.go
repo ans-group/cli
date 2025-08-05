@@ -23,7 +23,7 @@ func Test_ecloudInstanceConsoleSessionCreateCmd_Args(t *testing.T) {
 		err := ecloudInstanceConsoleSessionCreateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing instance", err.Error())
+		assert.Equal(t, "missing instance", err.Error())
 	})
 }
 

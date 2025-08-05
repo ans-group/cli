@@ -31,7 +31,7 @@ func ecloudInstanceConsoleSessionCreateCmd(f factory.ClientFactory) *cobra.Comma
 		Example: "ans ecloud instance consolesession create i-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing instance")
+				return errors.New("missing instance")
 			}
 
 			return nil

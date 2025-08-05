@@ -73,7 +73,7 @@ func Test_safednsTemplateList(t *testing.T) {
 
 		err := safednsTemplateList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving templates: test error", err.Error())
+		assert.Equal(t, "error retrieving templates: test error", err.Error())
 	})
 }
 
@@ -88,7 +88,7 @@ func Test_safednsTemplateShowCmd_Args(t *testing.T) {
 		err := safednsTemplateShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing template", err.Error())
+		assert.Equal(t, "missing template", err.Error())
 	})
 }
 
@@ -183,7 +183,7 @@ func Test_safednsTemplateShow(t *testing.T) {
 
 		service.EXPECT().GetTemplate(123).Return(safedns.Template{}, errors.New("test error"))
 
-		test_output.AssertErrorOutput(t, "Error retrieving template [123]: Error retrieving template by ID [123]: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error retrieving template [123]: error retrieving template by ID [123]: test error\n", func() {
 			safednsTemplateShow(service, &cobra.Command{}, []string{"123"})
 		})
 	})
@@ -230,7 +230,7 @@ func Test_safednsTemplateCreate(t *testing.T) {
 
 		err := safednsTemplateCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error creating template: test error", err.Error())
+		assert.Equal(t, "error creating template: test error", err.Error())
 	})
 
 	t.Run("GetTemplateError_ReturnsError", func(t *testing.T) {
@@ -254,7 +254,7 @@ func Test_safednsTemplateCreate(t *testing.T) {
 
 		err := safednsTemplateCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error retrieving new template: test error", err.Error())
+		assert.Equal(t, "error retrieving new template: test error", err.Error())
 	})
 }
 
@@ -269,7 +269,7 @@ func Test_safednsTemplateUpdateCmd_Args(t *testing.T) {
 		err := safednsTemplateUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing template", err.Error())
+		assert.Equal(t, "missing template", err.Error())
 	})
 }
 
@@ -468,7 +468,7 @@ func Test_safednsTemplateUpdate(t *testing.T) {
 			).Return([]safedns.Template{safedns.Template{}}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error locating template [test template 1]: Error retrieving items: test error\n", func() {
+		test_output.AssertErrorOutput(t, "error locating template [test template 1]: error retrieving items: test error\n", func() {
 			safednsTemplateUpdate(service, &cobra.Command{}, []string{"test template 1"})
 		})
 	})
@@ -503,7 +503,7 @@ func Test_safednsTemplateDeleteCmd_Args(t *testing.T) {
 		err := safednsTemplateDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing template", err.Error())
+		assert.Equal(t, "missing template", err.Error())
 	})
 }
 
@@ -613,7 +613,7 @@ func Test_safednsTemplateDelete(t *testing.T) {
 			).Return([]safedns.Template{safedns.Template{}}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error locating template [test template 1]: Error retrieving items: test error\n", func() {
+		test_output.AssertErrorOutput(t, "error locating template [test template 1]: error retrieving items: test error\n", func() {
 			safednsTemplateDelete(service, &cobra.Command{}, []string{"test template 1"})
 		})
 	})

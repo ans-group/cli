@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func cloudflareOrchestratorRootCmd(f factory.ClientFactory) *cobra.Command {
+func cloudflareOrchestratorRootCmd(f factory.ClientFactory) *cobra.Command { //nolint:unused
 	cmd := &cobra.Command{
 		Use:   "orchestrator",
 		Short: "sub-commands relating to orchestrator",
@@ -30,9 +30,9 @@ func cloudflareOrchestratorCreateCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("zone-name", "", "Name of zone")
-	cmd.MarkFlagRequired("zone-name")
+	_ = cmd.MarkFlagRequired("zone-name")
 	cmd.Flags().String("zone-subscription", "", "ID of zone plan subscription")
-	cmd.MarkFlagRequired("zone-subscription")
+	_ = cmd.MarkFlagRequired("zone-subscription")
 	cmd.Flags().String("account", "", "ID of account")
 	cmd.Flags().String("account-name", "", "Name of account")
 	cmd.Flags().String("administrator-email-address", "", "Email address of administrator")
@@ -50,7 +50,7 @@ func cloudflareOrchestratorCreate(service cloudflare.CloudflareService, cmd *cob
 
 	err := service.CreateOrchestration(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating orchestration: %s", err)
+		return fmt.Errorf("error creating orchestration: %s", err)
 	}
 
 	return nil

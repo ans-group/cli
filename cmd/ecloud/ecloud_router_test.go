@@ -49,7 +49,7 @@ func Test_ecloudRouterList(t *testing.T) {
 
 		err := ecloudRouterList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving routers: test error", err.Error())
+		assert.Equal(t, "error retrieving routers: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudRouterShowCmd_Args(t *testing.T) {
 		err := ecloudRouterShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing router", err.Error())
+		assert.Equal(t, "missing router", err.Error())
 	})
 }
 
@@ -143,7 +143,7 @@ func Test_ecloudRouterCreate(t *testing.T) {
 
 		err := ecloudRouterCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error creating router: test error", err.Error())
+		assert.Equal(t, "error creating router: test error", err.Error())
 	})
 
 	t.Run("GetRouterError_ReturnsError", func(t *testing.T) {
@@ -161,7 +161,7 @@ func Test_ecloudRouterCreate(t *testing.T) {
 
 		err := ecloudRouterCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error retrieving new router: test error", err.Error())
+		assert.Equal(t, "error retrieving new router: test error", err.Error())
 	})
 }
 
@@ -176,7 +176,7 @@ func Test_ecloudRouterUpdateCmd_Args(t *testing.T) {
 		err := ecloudRouterUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing router", err.Error())
+		assert.Equal(t, "missing router", err.Error())
 	})
 }
 
@@ -259,7 +259,7 @@ func Test_ecloudRouterDeleteCmd_Args(t *testing.T) {
 		err := ecloudRouterDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing router", err.Error())
+		assert.Equal(t, "missing router", err.Error())
 	})
 }
 
@@ -314,7 +314,7 @@ func Test_ecloudRouterDeployDefaultFirewallPoliciesCmd_Args(t *testing.T) {
 		err := ecloudRouterDeployDefaultFirewallPoliciesCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing router", err.Error())
+		assert.Equal(t, "missing router", err.Error())
 	})
 }
 

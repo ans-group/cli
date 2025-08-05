@@ -63,7 +63,7 @@ func ddosxWAFLogMatchList(service ddosx.DDoSXService, cmd *cobra.Command, args [
 		paginatedMatches, err = service.GetWAFLogMatchesPaginated(params)
 	}
 	if err != nil {
-		return fmt.Errorf("Error retrieving WAF log matches: %s", err)
+		return fmt.Errorf("error retrieving WAF log matches: %s", err)
 	}
 
 	return output.CommandOutputPaginated(cmd, WAFLogMatchCollection(paginatedMatches.Items()), paginatedMatches)
@@ -77,11 +77,11 @@ func ddosxWAFLogMatchShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx waf log match show 2d8556677081cecf112b555c359a78c6 123456",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing log")
+				return errors.New("missing log")
 			}
 
 			if len(args) < 2 {
-				return errors.New("Missing match")
+				return errors.New("missing match")
 			}
 
 			return nil

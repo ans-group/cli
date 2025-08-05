@@ -56,7 +56,7 @@ func Test_ddosxWAFLogList(t *testing.T) {
 
 		err := ddosxWAFLogList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving WAF logs: test error", err.Error())
+		assert.Equal(t, "error retrieving WAF logs: test error", err.Error())
 	})
 }
 
@@ -71,7 +71,7 @@ func Test_ddosxWAFLogShowCmd_Args(t *testing.T) {
 		err := ddosxWAFLogShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing log", err.Error())
+		assert.Equal(t, "missing log", err.Error())
 	})
 }
 

@@ -31,7 +31,7 @@ func ecloudAffinityRuleAffinityMemberListCmd(f factory.ClientFactory) *cobra.Com
 		Example: "ans ecloud affinityrule member list ar-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing affinity rule")
+				return errors.New("missing affinity rule")
 			}
 
 			return nil
@@ -50,7 +50,7 @@ func ecloudAffinityRuleAffinityMemberList(service ecloud.ECloudService, cmd *cob
 
 	rules, err := service.GetAffinityRuleMembers(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving affinity rule members: %s", err)
+		return fmt.Errorf("error retrieving affinity rule members: %s", err)
 	}
 
 	return output.CommandOutput(cmd, AffinityRuleMemberCollection(rules))

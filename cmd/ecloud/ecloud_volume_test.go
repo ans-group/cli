@@ -50,7 +50,7 @@ func Test_ecloudVolumeList(t *testing.T) {
 
 		err := ecloudVolumeList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving volumes: test error", err.Error())
+		assert.Equal(t, "error retrieving volumes: test error", err.Error())
 	})
 }
 
@@ -65,7 +65,7 @@ func Test_ecloudVolumeShowCmd_Args(t *testing.T) {
 		err := ecloudVolumeShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing volume", err.Error())
+		assert.Equal(t, "missing volume", err.Error())
 	})
 }
 
@@ -239,7 +239,7 @@ func Test_ecloudVolumeCreate(t *testing.T) {
 
 		err := ecloudVolumeCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error creating volume: test error", err.Error())
+		assert.Equal(t, "error creating volume: test error", err.Error())
 	})
 
 	t.Run("GetVolumeError_ReturnsError", func(t *testing.T) {
@@ -263,7 +263,7 @@ func Test_ecloudVolumeCreate(t *testing.T) {
 		err := ecloudVolumeCreate(service, cmd, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error retrieving new volume: test error", err.Error())
+		assert.Equal(t, "error retrieving new volume: test error", err.Error())
 	})
 }
 
@@ -278,7 +278,7 @@ func Test_ecloudVolumeUpdateCmd_Args(t *testing.T) {
 		err := ecloudVolumeUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing volume", err.Error())
+		assert.Equal(t, "missing volume", err.Error())
 	})
 }
 
@@ -411,7 +411,7 @@ func Test_ecloudVolumeUpdate(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for volume [vol-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for volume [vol-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudVolumeUpdate(service, cmd, []string{"vol-abcdef12"})
 		})
 	})
@@ -462,7 +462,7 @@ func Test_ecloudVolumeDeleteCmd_Args(t *testing.T) {
 		err := ecloudVolumeDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing volume", err.Error())
+		assert.Equal(t, "missing volume", err.Error())
 	})
 }
 
@@ -503,7 +503,7 @@ func Test_ecloudVolumeDelete(t *testing.T) {
 		service.EXPECT().DeleteVolume("vol-abcdef12").Return("task-abcdef12", nil)
 		service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{}, errors.New("test error"))
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for volume [vol-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for volume [vol-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudVolumeDelete(service, cmd, []string{"vol-abcdef12"})
 		})
 	})

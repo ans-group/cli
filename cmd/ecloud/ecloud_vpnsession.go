@@ -55,7 +55,7 @@ func ecloudVPNSessionList(service ecloud.ECloudService, cmd *cobra.Command, args
 
 	sessions, err := service.GetVPNSessions(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving VPN sessions: %s", err)
+		return fmt.Errorf("error retrieving VPN sessions: %s", err)
 	}
 
 	return output.CommandOutput(cmd, VPNSessionCollection(sessions))
@@ -69,7 +69,7 @@ func ecloudVPNSessionShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vpnsession show vpns-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing VPN session")
+				return errors.New("missing VPN session")
 			}
 
 			return nil
@@ -105,17 +105,17 @@ func ecloudVPNSessionCreateCmd(f factory.ClientFactory) *cobra.Command {
 	// Setup flags
 	cmd.Flags().String("name", "", "Name of session")
 	cmd.Flags().String("vpn-profile-group", "", "ID of VPN profile group")
-	cmd.MarkFlagRequired("vpn-profile-group")
+	_ = cmd.MarkFlagRequired("vpn-profile-group")
 	cmd.Flags().String("vpn-service", "", "ID of VPN service")
-	cmd.MarkFlagRequired("vpn-service")
+	_ = cmd.MarkFlagRequired("vpn-service")
 	cmd.Flags().String("vpn-endpoint", "", "ID of VPN endpoint")
-	cmd.MarkFlagRequired("vpn-endpoint")
+	_ = cmd.MarkFlagRequired("vpn-endpoint")
 	cmd.Flags().String("remote-ip", "", "IP address of remote")
-	cmd.MarkFlagRequired("remote-ip")
+	_ = cmd.MarkFlagRequired("remote-ip")
 	cmd.Flags().String("remote-networks", "", "Comma seperated list of remote networks")
-	cmd.MarkFlagRequired("remote-networks")
+	_ = cmd.MarkFlagRequired("remote-networks")
 	cmd.Flags().String("local-networks", "", "Comma seperated list of local networks")
-	cmd.MarkFlagRequired("local-networks")
+	_ = cmd.MarkFlagRequired("local-networks")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the VPN session has been completely created")
 
 	return cmd
@@ -134,20 +134,20 @@ func ecloudVPNSessionCreate(service ecloud.ECloudService, cmd *cobra.Command, ar
 
 	taskRef, err := service.CreateVPNSession(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating VPN session: %s", err)
+		return fmt.Errorf("error creating VPN session: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskRef.TaskID, ecloud.TaskStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for VPN session task to complete: %s", err)
+			return fmt.Errorf("error waiting for VPN session task to complete: %s", err)
 		}
 	}
 
 	vpnSession, err := service.GetVPNSession(taskRef.ResourceID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new VPN session: %s", err)
+		return fmt.Errorf("error retrieving new VPN session: %s", err)
 	}
 
 	return output.CommandOutput(cmd, VPNSessionCollection([]ecloud.VPNSession{vpnSession}))
@@ -161,7 +161,7 @@ func ecloudVPNSessionUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vpnsession update vpns-abcdef12 --name \"my session\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing VPN session")
+				return errors.New("missing VPN session")
 			}
 
 			return nil
@@ -229,7 +229,7 @@ func ecloudVPNSessionDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vpnsession delete vpns-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing VPN session")
+				return errors.New("missing VPN session")
 			}
 
 			return nil

@@ -23,7 +23,7 @@ func Test_ecloudInstanceTaskListCmd_Args(t *testing.T) {
 		err := ecloudInstanceTaskListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing instance", err.Error())
+		assert.Equal(t, "missing instance", err.Error())
 	})
 }
 
@@ -63,6 +63,6 @@ func Test_ecloudInstanceTaskList(t *testing.T) {
 
 		err := ecloudInstanceTaskList(service, &cobra.Command{}, []string{"i-abcdef12"})
 
-		assert.Equal(t, "Error retrieving instance tasks: test error", err.Error())
+		assert.Equal(t, "error retrieving instance tasks: test error", err.Error())
 	})
 }

@@ -50,7 +50,7 @@ func ecloudDatastoreList(service ecloud.ECloudService, cmd *cobra.Command, args 
 
 	datastores, err := service.GetDatastores(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving datastores: %s", err)
+		return fmt.Errorf("error retrieving datastores: %s", err)
 	}
 
 	return output.CommandOutput(cmd, DatastoreCollection(datastores))
@@ -64,7 +64,7 @@ func ecloudDatastoreShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vm datastore 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing datastore")
+				return errors.New("missing datastore")
 			}
 
 			return nil

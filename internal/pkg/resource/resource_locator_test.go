@@ -59,7 +59,7 @@ func TestResourceLocator_Invoke(t *testing.T) {
 		_, err := r.Invoke("testvalue1")
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error retrieving items: test error 1", err.Error())
+		assert.Equal(t, "error retrieving items: test error 1", err.Error())
 	})
 
 	t.Run("MultipleItems_ReturnsError", func(t *testing.T) {
@@ -76,7 +76,7 @@ func TestResourceLocator_Invoke(t *testing.T) {
 		_, err := r.Invoke("testvalue1")
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "More than one item found matching [testvalue1] (testproperty1)", err.Error())
+		assert.Equal(t, "more than one item found matching [testvalue1] (testproperty1)", err.Error())
 	})
 
 	t.Run("NoItems_ReturnsError", func(t *testing.T) {
@@ -93,7 +93,7 @@ func TestResourceLocator_Invoke(t *testing.T) {
 		_, err := r.Invoke("testvalue1")
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "No items found matching [testvalue1]", err.Error())
+		assert.Equal(t, "no items found matching [testvalue1]", err.Error())
 	})
 
 	t.Run("LocateReturnsNoneSlice_ReturnsError", func(t *testing.T) {
@@ -110,6 +110,6 @@ func TestResourceLocator_Invoke(t *testing.T) {
 		_, err := r.Invoke("testvalue1")
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Unsupported non-slice type [string]", err.Error())
+		assert.Equal(t, "unsupported non-slice type [string]", err.Error())
 	})
 }

@@ -39,7 +39,7 @@ func ddosxDomainACLIPRuleListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain acl ip list",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 
 			return nil
@@ -63,7 +63,7 @@ func ddosxDomainACLIPRuleList(service ddosx.DDoSXService, cmd *cobra.Command, ar
 
 	domains, err := service.GetDomainACLIPRules(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving domain ACL IP rules: %s", err)
+		return fmt.Errorf("error retrieving domain ACL IP rules: %s", err)
 	}
 
 	return output.CommandOutput(cmd, ACLIPRuleCollection(domains))
@@ -77,10 +77,10 @@ func ddosxDomainACLIPRuleShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain acl ip show example.com 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing rule")
+				return errors.New("missing rule")
 			}
 
 			return nil
@@ -121,7 +121,7 @@ func ddosxDomainACLIPRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain acl ip create example.com --ip 1.2.3.4 --mode Deny --uri blog",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 
 			return nil
@@ -137,10 +137,10 @@ func ddosxDomainACLIPRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("ip", "", "IP address for IP ACL rule")
-	cmd.MarkFlagRequired("ip")
+	_ = cmd.MarkFlagRequired("ip")
 	cmd.Flags().String("uri", "", "Path for IP ACL rule, e.g. path/to/file.jpg")
 	cmd.Flags().String("mode", "", "Mode for IP ACL rule. Valid values: "+ddosx.ACLIPModeEnum.String())
-	cmd.MarkFlagRequired("mode")
+	_ = cmd.MarkFlagRequired("mode")
 
 	return cmd
 }
@@ -160,12 +160,12 @@ func ddosxDomainACLIPRuleCreate(service ddosx.DDoSXService, cmd *cobra.Command, 
 
 	id, err := service.CreateDomainACLIPRule(args[0], createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating domain ACL IP rule: %s", err)
+		return fmt.Errorf("error creating domain ACL IP rule: %s", err)
 	}
 
 	rule, err := service.GetDomainACLIPRule(args[0], id)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new domain ACL IP rule [%s]: %s", id, err)
+		return fmt.Errorf("error retrieving new domain ACL IP rule [%s]: %s", id, err)
 	}
 
 	return output.CommandOutput(cmd, ACLIPRuleCollection([]ddosx.ACLIPRule{rule}))
@@ -179,10 +179,10 @@ func ddosxDomainACLIPRuleUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain acl ip update example.com 00000000-0000-0000-0000-000000000000 --ip 1.2.3.4",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing rule")
+				return errors.New("missing rule")
 			}
 
 			return nil
@@ -254,10 +254,10 @@ func ddosxDomainACLIPRuleDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain acl ip delete example.com 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing rule")
+				return errors.New("missing rule")
 			}
 
 			return nil

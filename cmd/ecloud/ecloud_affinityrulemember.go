@@ -33,7 +33,7 @@ func ecloudAffinityRuleMemberShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud affinityrulemember show arm-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing affinity rule member")
+				return errors.New("missing affinity rule member")
 			}
 
 			return nil
@@ -68,9 +68,9 @@ func ecloudAffinityRuleMemberCreateCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Setup flags
 	cmd.Flags().String("affinity-rule", "", "ID of affinity rule")
-	cmd.MarkFlagRequired("affinity-rule")
+	_ = cmd.MarkFlagRequired("affinity-rule")
 	cmd.Flags().String("instance", "", "ID of instance")
-	cmd.MarkFlagRequired("instance")
+	_ = cmd.MarkFlagRequired("instance")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the affinity rule member has been completely created")
 
 	return cmd
@@ -83,20 +83,20 @@ func ecloudAffinityRuleMemberCreate(service ecloud.ECloudService, cmd *cobra.Com
 
 	taskRef, err := service.CreateAffinityRuleMember(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating affinity rule member: %s", err)
+		return fmt.Errorf("error creating affinity rule member: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskRef.TaskID, ecloud.TaskStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for affinity rule member task to complete: %s", err)
+			return fmt.Errorf("error waiting for affinity rule member task to complete: %s", err)
 		}
 	}
 
 	rule, err := service.GetAffinityRuleMember(taskRef.ResourceID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new affinity rule member: %s", err)
+		return fmt.Errorf("error retrieving new affinity rule member: %s", err)
 	}
 
 	return output.CommandOutput(cmd, AffinityRuleMemberCollection([]ecloud.AffinityRuleMember{rule}))
@@ -110,7 +110,7 @@ func ecloudAffinityRuleMemberDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud affinityrulemember delete arm-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing affinity rule member")
+				return errors.New("missing affinity rule member")
 			}
 
 			return nil

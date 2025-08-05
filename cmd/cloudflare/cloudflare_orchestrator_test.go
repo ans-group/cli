@@ -40,6 +40,6 @@ func Test_cloudflareOrchestratorCreate(t *testing.T) {
 
 		err := cloudflareOrchestratorCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error creating orchestration: test error", err.Error())
+		assert.Equal(t, "error creating orchestration: test error", err.Error())
 	})
 }

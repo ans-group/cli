@@ -56,7 +56,7 @@ func ecloudFirewallRuleList(service ecloud.ECloudService, cmd *cobra.Command, ar
 
 	rules, err := service.GetFirewallRules(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving firewall rules: %s", err)
+		return fmt.Errorf("error retrieving firewall rules: %s", err)
 	}
 
 	return output.CommandOutput(cmd, FirewallRuleCollection(rules))
@@ -70,7 +70,7 @@ func ecloudFirewallRuleShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud firewallrule show fwr-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing firewall rule")
+				return errors.New("missing firewall rule")
 			}
 
 			return nil
@@ -105,15 +105,15 @@ func ecloudFirewallRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Setup flags
 	cmd.Flags().String("policy", "", "ID of firewall policy")
-	cmd.MarkFlagRequired("policy")
+	_ = cmd.MarkFlagRequired("policy")
 	cmd.Flags().String("source", "", "Source of rule. IP range/subnet or ANY")
-	cmd.MarkFlagRequired("source")
+	_ = cmd.MarkFlagRequired("source")
 	cmd.Flags().String("destination", "", "Destination of rule. IP range/subnet or ANY")
-	cmd.MarkFlagRequired("destination")
+	_ = cmd.MarkFlagRequired("destination")
 	cmd.Flags().String("direction", "", "Direction of rule. One of: IN/OUT/IN_OUT")
-	cmd.MarkFlagRequired("direction")
+	_ = cmd.MarkFlagRequired("direction")
 	cmd.Flags().String("action", "", "Action of rule. One of: ALLOW/DROP/REJECT")
-	cmd.MarkFlagRequired("action")
+	_ = cmd.MarkFlagRequired("action")
 	cmd.Flags().String("name", "", "Name of rule")
 	cmd.Flags().Int("sequence", 0, "Sequence for rule")
 	cmd.Flags().Bool("enabled", false, "Specifies whether rule is enabled")
@@ -152,20 +152,20 @@ func ecloudFirewallRuleCreate(service ecloud.ECloudService, cmd *cobra.Command, 
 
 	taskRef, err := service.CreateFirewallRule(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating firewall rule: %s", err)
+		return fmt.Errorf("error creating firewall rule: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskRef.TaskID, ecloud.TaskStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for firewall rule task to complete: %s", err)
+			return fmt.Errorf("error waiting for firewall rule task to complete: %s", err)
 		}
 	}
 
 	rule, err := service.GetFirewallRule(taskRef.ResourceID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new firewall rule: %s", err)
+		return fmt.Errorf("error retrieving new firewall rule: %s", err)
 	}
 
 	return output.CommandOutput(cmd, FirewallRuleCollection([]ecloud.FirewallRule{rule}))
@@ -179,7 +179,7 @@ func ecloudFirewallRuleUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud firewallrule update fwp-abcdef12 --name \"my rule\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing firewall rule")
+				return errors.New("missing firewall rule")
 			}
 
 			return nil
@@ -280,7 +280,7 @@ func ecloudFirewallRuleDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud firewallrule delete fwr-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing firewall rule")
+				return errors.New("missing firewall rule")
 			}
 
 			return nil

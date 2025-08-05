@@ -57,7 +57,7 @@ func draasSolutionList(service draas.DRaaSService, cmd *cobra.Command, args []st
 
 	solutions, err := service.GetSolutions(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving solutions: %s", err)
+		return fmt.Errorf("error retrieving solutions: %s", err)
 	}
 
 	return output.CommandOutput(cmd, SolutionCollection(solutions))
@@ -71,7 +71,7 @@ func draasSolutionShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans draas solution show 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing solution")
+				return errors.New("missing solution")
 			}
 
 			return nil
@@ -110,7 +110,7 @@ func draasSolutionUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans draas solution update 00000000-0000-0000-0000-000000000000 --name test",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing solution")
+				return errors.New("missing solution")
 			}
 
 			return nil
@@ -146,12 +146,12 @@ func draasSolutionUpdate(service draas.DRaaSService, cmd *cobra.Command, args []
 
 	err := service.PatchSolution(args[0], patchRequest)
 	if err != nil {
-		return fmt.Errorf("Error updating solution: %s", err.Error())
+		return fmt.Errorf("error updating solution: %s", err.Error())
 	}
 
 	solution, err := service.GetSolution(args[0])
 	if err != nil {
-		return fmt.Errorf("Error retrieving updated solution: %s", err)
+		return fmt.Errorf("error retrieving updated solution: %s", err)
 	}
 
 	return output.CommandOutput(cmd, SolutionCollection([]draas.Solution{solution}))

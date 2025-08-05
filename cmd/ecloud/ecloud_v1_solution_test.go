@@ -49,7 +49,7 @@ func Test_ecloudSolutionList(t *testing.T) {
 
 		err := ecloudSolutionList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving solutions: test error", err.Error())
+		assert.Equal(t, "error retrieving solutions: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudSolutionShowCmd_Args(t *testing.T) {
 		err := ecloudSolutionShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing solution", err.Error())
+		assert.Equal(t, "missing solution", err.Error())
 	})
 }
 
@@ -130,7 +130,7 @@ func Test_ecloudSolutionUpdateCmd_Args(t *testing.T) {
 		err := ecloudSolutionUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing solution", err.Error())
+		assert.Equal(t, "missing solution", err.Error())
 	})
 }
 
@@ -164,7 +164,7 @@ func Test_ecloudSolutionUpdate(t *testing.T) {
 
 		err := ecloudSolutionUpdate(service, &cobra.Command{}, []string{"abc"})
 
-		assert.Equal(t, "Invalid solution ID [abc]", err.Error())
+		assert.Equal(t, "invalid solution ID [abc]", err.Error())
 	})
 
 	t.Run("PatchSolutionError_ReturnsError", func(t *testing.T) {
@@ -178,7 +178,7 @@ func Test_ecloudSolutionUpdate(t *testing.T) {
 
 		err := ecloudSolutionUpdate(service, &cobra.Command{}, []string{"123"})
 
-		assert.Equal(t, "Error updating solution: test error", err.Error())
+		assert.Equal(t, "error updating solution: test error", err.Error())
 	})
 
 	t.Run("GetSolutionError_ReturnsError", func(t *testing.T) {
@@ -195,6 +195,6 @@ func Test_ecloudSolutionUpdate(t *testing.T) {
 
 		err := ecloudSolutionUpdate(service, &cobra.Command{}, []string{"123"})
 
-		assert.Equal(t, "Error retrieving updated solution: test error", err.Error())
+		assert.Equal(t, "error retrieving updated solution: test error", err.Error())
 	})
 }

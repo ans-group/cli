@@ -37,7 +37,7 @@ Alternatively, completions in /etc/bash_completion.d/ will be auto-loaded:
 echo 'source <(ans completion bash)' >> /etc/bash_completion.d/ans
 `,
 		Run: func(cmd *cobra.Command, args []string) {
-			rootCmd.GenBashCompletion(os.Stdout)
+			_ = rootCmd.GenBashCompletion(os.Stdout)
 		},
 	}
 }
@@ -57,7 +57,7 @@ $CompletionPath = [System.IO.Path]::GetFullPath("$ProfileDIR/ans.completion.ps1"
 Out-File -Append -FilePath $CompletionPath -Encoding ASCII -InputObject "Invoke-Expression -Command (ans completion powershell | Out-String)"
 Out-File -Append -FilePath $PROFILE -Encoding ASCII -InputObject ` + "\"`n. $CompletionPath\"",
 		Run: func(cmd *cobra.Command, args []string) {
-			rootCmd.GenPowerShellCompletion(os.Stdout)
+			_ = rootCmd.GenPowerShellCompletion(os.Stdout)
 		},
 	}
 }
@@ -75,7 +75,7 @@ To configure your zsh shell to load completions for all sessions, completions in
 echo 'source <(ans completion zsh)' >> /etc/bash_completion.d/ans
 `,
 		Run: func(cmd *cobra.Command, args []string) {
-			rootCmd.GenZshCompletion(os.Stdout)
+			_ = rootCmd.GenZshCompletion(os.Stdout)
 		},
 	}
 }

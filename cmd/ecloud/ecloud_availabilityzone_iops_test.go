@@ -23,7 +23,7 @@ func Test_ecloudAvailabilityZoneIOPSTiersListCmd_Args(t *testing.T) {
 		err := ecloudAvailabilityZoneIOPSTierListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing availability zone", err.Error())
+		assert.Equal(t, "missing availability zone", err.Error())
 	})
 }
 
@@ -63,6 +63,6 @@ func Test_ecloudAvailabilityZoneIOPSTiersList(t *testing.T) {
 
 		err := ecloudAvailabilityZoneIOPSTierList(service, &cobra.Command{}, []string{"iops-abcdef12"})
 
-		assert.Equal(t, "Error retrieving availability zone IOPS tiers: test error", err.Error())
+		assert.Equal(t, "error retrieving availability zone IOPS tiers: test error", err.Error())
 	})
 }

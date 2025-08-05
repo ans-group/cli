@@ -50,7 +50,7 @@ func storageSolutionList(service storage.StorageService, cmd *cobra.Command, arg
 
 	solutions, err := service.GetSolutions(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving solutions: %s", err)
+		return fmt.Errorf("error retrieving solutions: %s", err)
 	}
 
 	return output.CommandOutput(cmd, SolutionCollection(solutions))
@@ -64,7 +64,7 @@ func storageSolutionShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans storage solution show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing solution")
+				return errors.New("missing solution")
 			}
 
 			return nil

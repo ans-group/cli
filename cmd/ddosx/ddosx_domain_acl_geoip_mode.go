@@ -31,7 +31,7 @@ func ddosxDomainACLGeoIPRulesModeShowCmd(f factory.ClientFactory) *cobra.Command
 		Example: "ans ddosx domain show example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 
 			return nil
@@ -70,7 +70,7 @@ func ddosxDomainACLGeoIPRulesModeUpdateCmd(f factory.ClientFactory) *cobra.Comma
 		Example: "ans ddosx domain acl geoip mode update example.com --mode whitelist",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 
 			return nil
@@ -104,12 +104,12 @@ func ddosxDomainACLGeoIPRulesModeUpdate(service ddosx.DDoSXService, cmd *cobra.C
 
 	err := service.PatchDomainACLGeoIPRulesMode(args[0], patchRequest)
 	if err != nil {
-		return fmt.Errorf("Error updating domain ACL GeoIP rule filtering mode: %s", err.Error())
+		return fmt.Errorf("error updating domain ACL GeoIP rule filtering mode: %s", err.Error())
 	}
 
 	mode, err := service.GetDomainACLGeoIPRulesMode(args[0])
 	if err != nil {
-		return fmt.Errorf("Error retrieving updated domain ACL GeoIP rule filtering mode: %s", err)
+		return fmt.Errorf("error retrieving updated domain ACL GeoIP rule filtering mode: %s", err)
 	}
 
 	return output.CommandOutput(cmd, ACLGeoIPRulesModeCollection([]ddosx.ACLGeoIPRulesMode{mode}))

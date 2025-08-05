@@ -49,7 +49,7 @@ func Test_ddosxSSLList(t *testing.T) {
 
 		err := ddosxSSLList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving ssls: test error", err.Error())
+		assert.Equal(t, "error retrieving ssls: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ddosxSSLShowCmd_Args(t *testing.T) {
 		err := ddosxSSLShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing ssl", err.Error())
+		assert.Equal(t, "missing ssl", err.Error())
 	})
 }
 
@@ -171,7 +171,7 @@ func Test_ddosxSSLCreate(t *testing.T) {
 		)
 
 		err := ddosxSSLCreate(service, cmd, nil, []string{})
-		assert.Equal(t, "Error creating ssl: test error", err.Error())
+		assert.Equal(t, "error creating ssl: test error", err.Error())
 	})
 
 	t.Run("GetSSLError_ReturnsError", func(t *testing.T) {
@@ -189,7 +189,7 @@ func Test_ddosxSSLCreate(t *testing.T) {
 		)
 
 		err := ddosxSSLCreate(service, cmd, nil, []string{})
-		assert.Equal(t, "Error retrieving new ssl [00000000-0000-0000-0000-000000000000]: test error", err.Error())
+		assert.Equal(t, "error retrieving new ssl [00000000-0000-0000-0000-000000000000]: test error", err.Error())
 	})
 }
 
@@ -204,7 +204,7 @@ func Test_ddosxSSLUpdateCmd_Args(t *testing.T) {
 		err := ddosxSSLUpdateCmd(nil, nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing ssl", err.Error())
+		assert.Equal(t, "missing ssl", err.Error())
 	})
 }
 
@@ -270,7 +270,7 @@ func Test_ddosxSSLUpdate(t *testing.T) {
 		)
 
 		err := ddosxSSLUpdate(service, cmd, nil, []string{"00000000-0000-0000-0000-000000000000"})
-		assert.Equal(t, "Error updating ssl: test error", err.Error())
+		assert.Equal(t, "error updating ssl: test error", err.Error())
 	})
 
 	t.Run("GetSSLError_ReturnsError", func(t *testing.T) {
@@ -287,7 +287,7 @@ func Test_ddosxSSLUpdate(t *testing.T) {
 		)
 
 		err := ddosxSSLUpdate(service, cmd, nil, []string{"00000000-0000-0000-0000-000000000000"})
-		assert.Equal(t, "Error retrieving updated ssl: test error", err.Error())
+		assert.Equal(t, "error retrieving updated ssl: test error", err.Error())
 	})
 }
 
@@ -302,7 +302,7 @@ func Test_ddosxSSLDeleteCmd_Args(t *testing.T) {
 		err := ddosxSSLDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing ssl", err.Error())
+		assert.Equal(t, "missing ssl", err.Error())
 	})
 }
 

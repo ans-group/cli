@@ -49,7 +49,7 @@ func draasIOPSTierList(service draas.DRaaSService, cmd *cobra.Command, args []st
 
 	iopstiers, err := service.GetIOPSTiers(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving IOPS tiers: %s", err)
+		return fmt.Errorf("error retrieving IOPS tiers: %s", err)
 	}
 
 	return output.CommandOutput(cmd, IOPSTierCollection(iopstiers))
@@ -63,7 +63,7 @@ func draasIOPSTierShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans draas iopstier show 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing IOPS tier")
+				return errors.New("missing IOPS tier")
 			}
 
 			return nil

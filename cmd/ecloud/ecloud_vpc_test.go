@@ -49,7 +49,7 @@ func Test_ecloudVPCList(t *testing.T) {
 
 		err := ecloudVPCList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving VPCs: test error", err.Error())
+		assert.Equal(t, "error retrieving VPCs: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudVPCShowCmd_Args(t *testing.T) {
 		err := ecloudVPCShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing vpc", err.Error())
+		assert.Equal(t, "missing vpc", err.Error())
 	})
 }
 
@@ -141,7 +141,7 @@ func Test_ecloudVPCCreate(t *testing.T) {
 
 		err := ecloudVPCCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error creating VPC: test error", err.Error())
+		assert.Equal(t, "error creating VPC: test error", err.Error())
 	})
 
 	t.Run("GetVPCError_ReturnsError", func(t *testing.T) {
@@ -159,7 +159,7 @@ func Test_ecloudVPCCreate(t *testing.T) {
 
 		err := ecloudVPCCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error retrieving new VPC: test error", err.Error())
+		assert.Equal(t, "error retrieving new VPC: test error", err.Error())
 	})
 }
 
@@ -174,7 +174,7 @@ func Test_ecloudVPCUpdateCmd_Args(t *testing.T) {
 		err := ecloudVPCUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing vpc", err.Error())
+		assert.Equal(t, "missing vpc", err.Error())
 	})
 }
 
@@ -257,7 +257,7 @@ func Test_ecloudVPCDeleteCmd_Args(t *testing.T) {
 		err := ecloudVPCDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing vpc", err.Error())
+		assert.Equal(t, "missing vpc", err.Error())
 	})
 }
 
@@ -295,7 +295,7 @@ func Test_ecloudVPCDelete(t *testing.T) {
 
 		service.EXPECT().DeleteVPC("vpc-abcdef12").Return(errors.New("test error")).Times(1)
 
-		test_output.AssertErrorOutput(t, "Error removing VPC [vpc-abcdef12]: test error\n", func() {
+		test_output.AssertErrorOutput(t, "ecloud: Error removing VPC [vpc-abcdef12]: test error\n", func() {
 			ecloudVPCDelete(service, &cobra.Command{}, []string{"vpc-abcdef12"})
 		})
 	})
@@ -312,7 +312,7 @@ func Test_ecloudVPCDeployDefaultsCmd_Args(t *testing.T) {
 		err := ecloudVPCDeployDefaultsCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing vpc", err.Error())
+		assert.Equal(t, "missing vpc", err.Error())
 	})
 }
 

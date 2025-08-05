@@ -23,7 +23,7 @@ func Test_ecloudImageMetadataListCmd_Args(t *testing.T) {
 		err := ecloudImageMetadataListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing image", err.Error())
+		assert.Equal(t, "missing image", err.Error())
 	})
 }
 
@@ -63,6 +63,6 @@ func Test_ecloudImageMetadataList(t *testing.T) {
 
 		err := ecloudImageMetadataList(service, &cobra.Command{}, []string{"img-abcdef12"})
 
-		assert.Equal(t, "Error retrieving image metadata: test error 1", err.Error())
+		assert.Equal(t, "error retrieving image metadata: test error 1", err.Error())
 	})
 }

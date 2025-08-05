@@ -34,7 +34,7 @@ func ecloudVirtualMachineDiskListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vm disk list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing virtual machine")
+				return errors.New("missing virtual machine")
 			}
 
 			return nil
@@ -57,12 +57,12 @@ func ecloudVirtualMachineDiskListCmd(f factory.ClientFactory) *cobra.Command {
 func ecloudVirtualMachineDiskList(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	vmID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid virtual machine ID [%s]", args[0])
+		return fmt.Errorf("invalid virtual machine ID [%s]", args[0])
 	}
 
 	vm, err := service.GetVirtualMachine(vmID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving virtual machine [%s]: %s", args[0], err)
+		return fmt.Errorf("error retrieving virtual machine [%s]: %s", args[0], err)
 	}
 
 	return output.CommandOutput(cmd, VirtualMachineDiskCollection(vm.Disks))
@@ -76,10 +76,10 @@ func ecloudVirtualMachineDiskUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vm disk update 123 00000000-0000-0000-0000-000000000000 --capacity 25",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing virtual machine")
+				return errors.New("missing virtual machine")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing disk")
+				return errors.New("missing disk")
 			}
 
 			return nil
@@ -104,7 +104,7 @@ func ecloudVirtualMachineDiskUpdate(service ecloud.ECloudService, cmd *cobra.Com
 
 	vmID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid virtual machine ID [%s]", args[0])
+		return fmt.Errorf("invalid virtual machine ID [%s]", args[0])
 	}
 
 	diskPatch := ecloud.PatchVirtualMachineRequestDisk{
@@ -124,12 +124,12 @@ func ecloudVirtualMachineDiskUpdate(service ecloud.ECloudService, cmd *cobra.Com
 
 	err = service.PatchVirtualMachine(vmID, patchRequest)
 	if err != nil {
-		return fmt.Errorf("Error updating virtual machine [%d]: %s", vmID, err.Error())
+		return fmt.Errorf("error updating virtual machine [%d]: %s", vmID, err.Error())
 	}
 
 	err = helper.WaitForCommand(VirtualMachineStatusWaitFunc(service, vmID, ecloud.VirtualMachineStatusComplete))
 	if err != nil {
-		return fmt.Errorf("Error updating virtual machine [%d]: %s", vmID, err.Error())
+		return fmt.Errorf("error updating virtual machine [%d]: %s", vmID, err.Error())
 	}
 
 	return nil

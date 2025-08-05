@@ -5,10 +5,11 @@
 package mocks
 
 import (
+	reflect "reflect"
+
 	connection "github.com/ans-group/sdk-go/pkg/connection"
 	cloudflare "github.com/ans-group/sdk-go/pkg/service/cloudflare"
 	gomock "github.com/golang/mock/gomock"
-	reflect "reflect"
 )
 
 // MockCloudflareService is a mock of CloudflareService interface.

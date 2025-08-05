@@ -49,7 +49,7 @@ func Test_sslCertificateList(t *testing.T) {
 
 		err := sslCertificateList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving certificates: test error", err.Error())
+		assert.Equal(t, "error retrieving certificates: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_sslCertificateShowCmd_Args(t *testing.T) {
 		err := sslCertificateShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing certificate", err.Error())
+		assert.Equal(t, "missing certificate", err.Error())
 	})
 }
 

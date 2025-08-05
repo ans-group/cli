@@ -60,7 +60,7 @@ func safednsTemplateList(service safedns.SafeDNSService, cmd *cobra.Command, arg
 
 	templates, err := service.GetTemplates(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving templates: %s", err)
+		return fmt.Errorf("error retrieving templates: %s", err)
 	}
 
 	return output.CommandOutput(cmd, TemplateCollection(templates))
@@ -75,7 +75,7 @@ func safednsTemplateShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans safedns template show \"main template\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing template")
+				return errors.New("missing template")
 			}
 
 			return nil
@@ -122,7 +122,7 @@ func safednsTemplateCreateCmd(f factory.ClientFactory) *cobra.Command {
 		},
 	}
 	cmd.Flags().String("name", "", "Name of template")
-	cmd.MarkFlagRequired("name")
+	_ = cmd.MarkFlagRequired("name")
 	cmd.Flags().Bool("default", false, "Specifies template is default")
 
 	return cmd
@@ -139,12 +139,12 @@ func safednsTemplateCreate(service safedns.SafeDNSService, cmd *cobra.Command, a
 
 	id, err := service.CreateTemplate(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating template: %s", err)
+		return fmt.Errorf("error creating template: %s", err)
 	}
 
 	template, err := service.GetTemplate(id)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new template: %s", err)
+		return fmt.Errorf("error retrieving new template: %s", err)
 	}
 
 	return output.CommandOutput(cmd, TemplateCollection([]safedns.Template{template}))
@@ -158,7 +158,7 @@ func safednsTemplateUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans safedns template update \"main template\" --name \"old template\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing template")
+				return errors.New("missing template")
 			}
 
 			return nil
@@ -226,7 +226,7 @@ func safednsTemplateDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans safedns template delete \"main template\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing template")
+				return errors.New("missing template")
 			}
 
 			return nil

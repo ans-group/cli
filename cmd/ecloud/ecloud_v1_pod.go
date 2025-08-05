@@ -54,7 +54,7 @@ func ecloudPodList(service ecloud.ECloudService, cmd *cobra.Command, args []stri
 
 	pods, err := service.GetPods(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving pods: %s", err)
+		return fmt.Errorf("error retrieving pods: %s", err)
 	}
 
 	return output.CommandOutput(cmd, PodCollection(pods))
@@ -68,7 +68,7 @@ func ecloudPodShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vm pod 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing pod")
+				return errors.New("missing pod")
 			}
 
 			return nil

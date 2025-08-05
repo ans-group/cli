@@ -58,7 +58,7 @@ func ecloudVolumeList(service ecloud.ECloudService, cmd *cobra.Command, args []s
 
 	volumes, err := service.GetVolumes(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving volumes: %s", err)
+		return fmt.Errorf("error retrieving volumes: %s", err)
 	}
 
 	return output.CommandOutput(cmd, VolumeCollection(volumes))
@@ -72,7 +72,7 @@ func ecloudVolumeShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud volume show vol-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing volume")
+				return errors.New("missing volume")
 			}
 
 			return nil
@@ -108,11 +108,11 @@ func ecloudVolumeCreateCmd(f factory.ClientFactory) *cobra.Command {
 	// Setup flags
 	cmd.Flags().String("name", "", "Name of volume")
 	cmd.Flags().String("vpc", "", "ID of VPC")
-	cmd.MarkFlagRequired("vpc")
+	_ = cmd.MarkFlagRequired("vpc")
 	cmd.Flags().String("availability-zone", "", "ID of Availability Zone")
-	cmd.MarkFlagRequired("availability-zone")
+	_ = cmd.MarkFlagRequired("availability-zone")
 	cmd.Flags().Int("capacity", 0, "Capacity of volume in GiB")
-	cmd.MarkFlagRequired("capacity")
+	_ = cmd.MarkFlagRequired("capacity")
 	cmd.Flags().Int("iops", 0, "IOPS for volume")
 	cmd.Flags().String("volume-group", "", "ID of volume-group for volume")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the volume has been completely created")
@@ -133,20 +133,20 @@ func ecloudVolumeCreate(service ecloud.ECloudService, cmd *cobra.Command, args [
 
 	taskRef, err := service.CreateVolume(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating volume: %s", err)
+		return fmt.Errorf("error creating volume: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskRef.TaskID, ecloud.TaskStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for volume task to complete: %s", err)
+			return fmt.Errorf("error waiting for volume task to complete: %s", err)
 		}
 	}
 
 	volume, err := service.GetVolume(taskRef.ResourceID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new volume: %s", err)
+		return fmt.Errorf("error retrieving new volume: %s", err)
 	}
 
 	return output.CommandOutput(cmd, VolumeCollection([]ecloud.Volume{volume}))
@@ -160,7 +160,7 @@ func ecloudVolumeUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud volume update vol-abcdef12 --name \"my volume\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing volume")
+				return errors.New("missing volume")
 			}
 
 			return nil
@@ -234,7 +234,7 @@ func ecloudVolumeDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud volume delete vol-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing volume")
+				return errors.New("missing volume")
 			}
 
 			return nil

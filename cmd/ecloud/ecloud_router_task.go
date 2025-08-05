@@ -31,7 +31,7 @@ func ecloudRouterTaskListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud router task list rtr-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing router")
+				return errors.New("missing router")
 			}
 
 			return nil
@@ -56,7 +56,7 @@ func ecloudRouterTaskList(service ecloud.ECloudService, cmd *cobra.Command, args
 
 	tasks, err := service.GetRouterTasks(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving router tasks: %s", err)
+		return fmt.Errorf("error retrieving router tasks: %s", err)
 	}
 
 	return output.CommandOutput(cmd, TaskCollection(tasks))

@@ -48,7 +48,7 @@ func Test_cloudflareAccountList(t *testing.T) {
 
 		err := cloudflareAccountList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving accounts: test error", err.Error())
+		assert.Equal(t, "error retrieving accounts: test error", err.Error())
 	})
 }
 
@@ -63,7 +63,7 @@ func Test_cloudflareAccountShowCmd_Args(t *testing.T) {
 		err := cloudflareAccountShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing account", err.Error())
+		assert.Equal(t, "missing account", err.Error())
 	})
 }
 
@@ -126,7 +126,7 @@ func Test_cloudflareAccountCreate(t *testing.T) {
 
 		err := cloudflareAccountCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error creating account: test error", err.Error())
+		assert.Equal(t, "error creating account: test error", err.Error())
 	})
 
 	t.Run("GetAccountError_ReturnsError", func(t *testing.T) {
@@ -144,7 +144,7 @@ func Test_cloudflareAccountCreate(t *testing.T) {
 
 		err := cloudflareAccountCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error retrieving new account: test error", err.Error())
+		assert.Equal(t, "error retrieving new account: test error", err.Error())
 	})
 }
 
@@ -159,7 +159,7 @@ func Test_cloudflareAccountUpdateCmd_Args(t *testing.T) {
 		err := cloudflareAccountUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing account", err.Error())
+		assert.Equal(t, "missing account", err.Error())
 	})
 }
 

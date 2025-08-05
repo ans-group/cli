@@ -48,7 +48,7 @@ func Test_billingInvoiceList(t *testing.T) {
 
 		err := billingInvoiceList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving invoices: test error", err.Error())
+		assert.Equal(t, "error retrieving invoices: test error", err.Error())
 	})
 }
 
@@ -63,7 +63,7 @@ func Test_billingInvoiceShowCmd_Args(t *testing.T) {
 		err := billingInvoiceShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing invoice", err.Error())
+		assert.Equal(t, "missing invoice", err.Error())
 	})
 }
 

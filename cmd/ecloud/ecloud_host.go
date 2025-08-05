@@ -51,7 +51,7 @@ func ecloudHostList(service ecloud.ECloudService, cmd *cobra.Command, args []str
 
 	groups, err := service.GetHosts(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving hosts: %s", err)
+		return fmt.Errorf("error retrieving hosts: %s", err)
 	}
 
 	return output.CommandOutput(cmd, HostCollection(groups))
@@ -65,7 +65,7 @@ func ecloudHostShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud host show h-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing host")
+				return errors.New("missing host")
 			}
 
 			return nil
@@ -101,7 +101,7 @@ func ecloudHostCreateCmd(f factory.ClientFactory) *cobra.Command {
 	// Setup flags
 	cmd.Flags().String("name", "", "Name of host")
 	cmd.Flags().String("host-group", "", "ID of host group")
-	cmd.MarkFlagRequired("host-group")
+	_ = cmd.MarkFlagRequired("host-group")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the host has been completely created")
 
 	return cmd
@@ -114,20 +114,20 @@ func ecloudHostCreate(service ecloud.ECloudService, cmd *cobra.Command, args []s
 
 	taskRef, err := service.CreateHost(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating host: %s", err)
+		return fmt.Errorf("error creating host: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskRef.TaskID, ecloud.TaskStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for host task to complete: %s", err)
+			return fmt.Errorf("error waiting for host task to complete: %s", err)
 		}
 	}
 
 	group, err := service.GetHost(taskRef.ResourceID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new host: %s", err)
+		return fmt.Errorf("error retrieving new host: %s", err)
 	}
 
 	return output.CommandOutput(cmd, HostCollection([]ecloud.Host{group}))
@@ -141,7 +141,7 @@ func ecloudHostUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud host update np-abcdef12 --name \"my group\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing host")
+				return errors.New("missing host")
 			}
 
 			return nil
@@ -199,7 +199,7 @@ func ecloudHostDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud host delete h-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing host")
+				return errors.New("missing host")
 			}
 
 			return nil

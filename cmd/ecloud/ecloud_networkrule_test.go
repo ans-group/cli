@@ -49,7 +49,7 @@ func Test_ecloudNetworkRuleList(t *testing.T) {
 
 		err := ecloudNetworkRuleList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving network rules: test error", err.Error())
+		assert.Equal(t, "error retrieving network rules: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudNetworkRuleShowCmd_Args(t *testing.T) {
 		err := ecloudNetworkRuleShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing network rule", err.Error())
+		assert.Equal(t, "missing network rule", err.Error())
 	})
 }
 
@@ -189,7 +189,7 @@ func Test_ecloudNetworkRuleCreate(t *testing.T) {
 		)
 
 		err := ecloudNetworkRuleCreate(service, cmd, []string{})
-		assert.Equal(t, "Error waiting for network rule task to complete: Error waiting for command: Failed to retrieve task status: test error", err.Error())
+		assert.Equal(t, "error waiting for network rule task to complete: error waiting for command: failed to retrieve task status: test error", err.Error())
 	})
 
 	t.Run("CreateNetworkRuleError_ReturnsError", func(t *testing.T) {
@@ -204,7 +204,7 @@ func Test_ecloudNetworkRuleCreate(t *testing.T) {
 
 		err := ecloudNetworkRuleCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error creating network rule: test error", err.Error())
+		assert.Equal(t, "error creating network rule: test error", err.Error())
 	})
 
 	t.Run("GetNetworkRuleError_ReturnsError", func(t *testing.T) {
@@ -222,7 +222,7 @@ func Test_ecloudNetworkRuleCreate(t *testing.T) {
 
 		err := ecloudNetworkRuleCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error retrieving new network rule: test error", err.Error())
+		assert.Equal(t, "error retrieving new network rule: test error", err.Error())
 	})
 }
 
@@ -237,7 +237,7 @@ func Test_ecloudNetworkRuleUpdateCmd_Args(t *testing.T) {
 		err := ecloudNetworkRuleUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing network rule", err.Error())
+		assert.Equal(t, "missing network rule", err.Error())
 	})
 }
 
@@ -344,7 +344,7 @@ func Test_ecloudNetworkRuleUpdate(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for network rule [nr-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for network rule [nr-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudNetworkRuleUpdate(service, cmd, []string{"nr-abcdef12"})
 		})
 	})
@@ -395,7 +395,7 @@ func Test_ecloudNetworkRuleDeleteCmd_Args(t *testing.T) {
 		err := ecloudNetworkRuleDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing network rule", err.Error())
+		assert.Equal(t, "missing network rule", err.Error())
 	})
 }
 
@@ -456,7 +456,7 @@ func Test_ecloudNetworkRuleDelete(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for network rule [nr-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for network rule [nr-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudNetworkRuleDelete(service, cmd, []string{"nr-abcdef12"})
 		})
 	})

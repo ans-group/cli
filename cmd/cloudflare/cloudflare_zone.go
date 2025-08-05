@@ -45,7 +45,7 @@ func cloudflareZoneList(service cloudflare.CloudflareService, cmd *cobra.Command
 
 	zones, err := service.GetZones(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving zones: %s", err)
+		return fmt.Errorf("error retrieving zones: %s", err)
 	}
 
 	return output.CommandOutput(cmd, ZoneCollection(zones))
@@ -59,7 +59,7 @@ func cloudflareZoneShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans cloudflare zone show 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing zone")
+				return errors.New("missing zone")
 			}
 
 			return nil
@@ -93,11 +93,11 @@ func cloudflareZoneCreateCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("account", "", "ID of account")
-	cmd.MarkFlagRequired("account")
+	_ = cmd.MarkFlagRequired("account")
 	cmd.Flags().String("name", "", "Name of zone")
-	cmd.MarkFlagRequired("name")
+	_ = cmd.MarkFlagRequired("name")
 	cmd.Flags().String("subscription", "", "ID of plan subscription")
-	cmd.MarkFlagRequired("subscription")
+	_ = cmd.MarkFlagRequired("subscription")
 
 	return cmd
 }
@@ -110,12 +110,12 @@ func cloudflareZoneCreate(service cloudflare.CloudflareService, cmd *cobra.Comma
 
 	zoneID, err := service.CreateZone(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating zone: %s", err)
+		return fmt.Errorf("error creating zone: %s", err)
 	}
 
 	zone, err := service.GetZone(zoneID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new zone: %s", err)
+		return fmt.Errorf("error retrieving new zone: %s", err)
 	}
 
 	return output.CommandOutput(cmd, ZoneCollection([]cloudflare.Zone{zone}))
@@ -129,7 +129,7 @@ func cloudflareZoneUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans cloudflare zone update 83d70af6-80ba-4463-abda-2880613efbc1",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing zone")
+				return errors.New("missing zone")
 			}
 
 			return nil
@@ -165,7 +165,7 @@ func cloudflareZoneDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans cloudflare zone delete 1c3081b2-d65e-41d1-8077-c86f21759366",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing zone")
+				return errors.New("missing zone")
 			}
 
 			return nil

@@ -49,7 +49,7 @@ func Test_ecloudLoadBalancerSpecList(t *testing.T) {
 
 		err := ecloudLoadBalancerSpecList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving load balancer specs: test error", err.Error())
+		assert.Equal(t, "error retrieving load balancer specs: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudLoadBalancerSpecShowCmd_Args(t *testing.T) {
 		err := ecloudLoadBalancerSpecShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing load balancer spec", err.Error())
+		assert.Equal(t, "missing load balancer spec", err.Error())
 	})
 }
 

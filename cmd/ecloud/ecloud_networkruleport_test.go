@@ -49,7 +49,7 @@ func Test_ecloudNetworkRulePortList(t *testing.T) {
 
 		err := ecloudNetworkRulePortList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving network rule ports: test error", err.Error())
+		assert.Equal(t, "error retrieving network rule ports: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudNetworkRulePortShowCmd_Args(t *testing.T) {
 		err := ecloudNetworkRulePortShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing network rule port", err.Error())
+		assert.Equal(t, "missing network rule port", err.Error())
 	})
 }
 
@@ -186,7 +186,7 @@ func Test_ecloudNetworkRulePortCreate(t *testing.T) {
 		)
 
 		err := ecloudNetworkRulePortCreate(service, cmd, []string{})
-		assert.Equal(t, "Error waiting for network rule port task to complete: Error waiting for command: Failed to retrieve task status: test error", err.Error())
+		assert.Equal(t, "error waiting for network rule port task to complete: error waiting for command: failed to retrieve task status: test error", err.Error())
 	})
 
 	t.Run("CreateNetworkRulePortError_ReturnsError", func(t *testing.T) {
@@ -201,7 +201,7 @@ func Test_ecloudNetworkRulePortCreate(t *testing.T) {
 
 		err := ecloudNetworkRulePortCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error creating network rule port: test error", err.Error())
+		assert.Equal(t, "error creating network rule port: test error", err.Error())
 	})
 
 	t.Run("GetNetworkRulePortError_ReturnsError", func(t *testing.T) {
@@ -219,7 +219,7 @@ func Test_ecloudNetworkRulePortCreate(t *testing.T) {
 
 		err := ecloudNetworkRulePortCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error retrieving new network rule port: test error", err.Error())
+		assert.Equal(t, "error retrieving new network rule port: test error", err.Error())
 	})
 }
 
@@ -234,7 +234,7 @@ func Test_ecloudNetworkRulePortUpdateCmd_Args(t *testing.T) {
 		err := ecloudNetworkRulePortUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing network rule port", err.Error())
+		assert.Equal(t, "missing network rule port", err.Error())
 	})
 }
 
@@ -315,7 +315,7 @@ func Test_ecloudNetworkRulePortUpdate(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for network rule port [nrp-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for network rule port [nrp-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudNetworkRulePortUpdate(service, cmd, []string{"nrp-abcdef12"})
 		})
 	})
@@ -392,7 +392,7 @@ func Test_ecloudNetworkRulePortDeleteCmd_Args(t *testing.T) {
 		err := ecloudNetworkRulePortDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing network rule port", err.Error())
+		assert.Equal(t, "missing network rule port", err.Error())
 	})
 }
 
@@ -453,7 +453,7 @@ func Test_ecloudNetworkRulePortDelete(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for network rule port [nrp-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for network rule port [nrp-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudNetworkRulePortDelete(service, cmd, []string{"nrp-abcdef12"})
 		})
 	})

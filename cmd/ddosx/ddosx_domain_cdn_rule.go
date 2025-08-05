@@ -36,7 +36,7 @@ func ddosxDomainCDNRuleListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain cdn rule list",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 
 			return nil
@@ -60,7 +60,7 @@ func ddosxDomainCDNRuleList(service ddosx.DDoSXService, cmd *cobra.Command, args
 
 	domains, err := service.GetDomainCDNRules(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving CDN rules: %s", err)
+		return fmt.Errorf("error retrieving CDN rules: %s", err)
 	}
 
 	return output.CommandOutput(cmd, CDNRuleCollection(domains))
@@ -74,10 +74,10 @@ func ddosxDomainCDNRuleShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain cdn rule show example.com 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing rule")
+				return errors.New("missing rule")
 			}
 
 			return nil
@@ -116,7 +116,7 @@ func ddosxDomainCDNRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain cdn rule create example.com --uri example.html --cache-control custom --mime-type image/* --type global",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 
 			return nil
@@ -132,14 +132,14 @@ func ddosxDomainCDNRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("uri", "", "URI for rule")
-	cmd.MarkFlagRequired("uri")
+	_ = cmd.MarkFlagRequired("uri")
 	cmd.Flags().String("cache-control", "", "Cache control configuration for rule")
-	cmd.MarkFlagRequired("cache-control")
+	_ = cmd.MarkFlagRequired("cache-control")
 	cmd.Flags().String("cache-control-duration", "", "Cache control duration for rule (applicable with 'Custom' cache control), e.g. 1d4h")
 	cmd.Flags().StringSlice("mime-type", []string{}, "Mime type for rule, can be repeated")
-	cmd.MarkFlagRequired("mime-type")
+	_ = cmd.MarkFlagRequired("mime-type")
 	cmd.Flags().String("type", "", "Type of rule")
-	cmd.MarkFlagRequired("type")
+	_ = cmd.MarkFlagRequired("type")
 
 	return cmd
 }
@@ -175,12 +175,12 @@ func ddosxDomainCDNRuleCreate(service ddosx.DDoSXService, cmd *cobra.Command, ar
 
 	id, err := service.CreateDomainCDNRule(args[0], createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating CDN rule: %s", err)
+		return fmt.Errorf("error creating CDN rule: %s", err)
 	}
 
 	rule, err := service.GetDomainCDNRule(args[0], id)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new CDN rule [%s]: %s", id, err.Error())
+		return fmt.Errorf("error retrieving new CDN rule [%s]: %s", id, err.Error())
 	}
 
 	return output.CommandOutput(cmd, CDNRuleCollection([]ddosx.CDNRule{rule}))
@@ -194,10 +194,10 @@ func ddosxDomainCDNRuleUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain cdn rule update example.com 00000000-0000-0000-0000-000000000000 --mime-type image/*",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing rule")
+				return errors.New("missing rule")
 			}
 
 			return nil
@@ -291,10 +291,10 @@ func ddosxDomainCDNRuleDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain cdn rule delete example.com 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing rule")
+				return errors.New("missing rule")
 			}
 
 			return nil

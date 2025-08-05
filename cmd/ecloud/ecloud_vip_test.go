@@ -49,7 +49,7 @@ func Test_ecloudVIPList(t *testing.T) {
 
 		err := ecloudVIPList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving VIPs: test error", err.Error())
+		assert.Equal(t, "error retrieving VIPs: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudVIPShowCmd_Args(t *testing.T) {
 		err := ecloudVIPShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing VIP", err.Error())
+		assert.Equal(t, "missing VIP", err.Error())
 	})
 }
 
@@ -183,7 +183,7 @@ func Test_ecloudVIPCreate(t *testing.T) {
 		)
 
 		err := ecloudVIPCreate(service, cmd, []string{})
-		assert.Equal(t, "Error waiting for VIP task to complete: Error waiting for command: Failed to retrieve task status: test error", err.Error())
+		assert.Equal(t, "error waiting for VIP task to complete: error waiting for command: failed to retrieve task status: test error", err.Error())
 	})
 
 	t.Run("CreateVIPError_ReturnsError", func(t *testing.T) {
@@ -198,7 +198,7 @@ func Test_ecloudVIPCreate(t *testing.T) {
 
 		err := ecloudVIPCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error creating VIP: test error", err.Error())
+		assert.Equal(t, "error creating VIP: test error", err.Error())
 	})
 
 	t.Run("GetVIPError_ReturnsError", func(t *testing.T) {
@@ -216,7 +216,7 @@ func Test_ecloudVIPCreate(t *testing.T) {
 
 		err := ecloudVIPCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error retrieving new VIP: test error", err.Error())
+		assert.Equal(t, "error retrieving new VIP: test error", err.Error())
 	})
 }
 
@@ -231,7 +231,7 @@ func Test_ecloudVIPUpdateCmd_Args(t *testing.T) {
 		err := ecloudVIPUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing VIP", err.Error())
+		assert.Equal(t, "missing VIP", err.Error())
 	})
 }
 
@@ -338,7 +338,7 @@ func Test_ecloudVIPUpdate(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for VIP [vip-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for VIP [vip-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudVIPUpdate(service, cmd, []string{"vip-abcdef12"})
 		})
 	})
@@ -389,7 +389,7 @@ func Test_ecloudVIPDeleteCmd_Args(t *testing.T) {
 		err := ecloudVIPDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing VIP", err.Error())
+		assert.Equal(t, "missing VIP", err.Error())
 	})
 }
 
@@ -450,7 +450,7 @@ func Test_ecloudVIPDelete(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for VIP [vip-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for VIP [vip-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudVIPDelete(service, cmd, []string{"vip-abcdef12"})
 		})
 	})

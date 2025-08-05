@@ -25,7 +25,7 @@ func Test_loadbalancerTargetGroupTargetListCmd_Args(t *testing.T) {
 		err := loadbalancerTargetGroupTargetListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing target group", err.Error())
+		assert.Equal(t, "missing target group", err.Error())
 	})
 }
 
@@ -66,7 +66,7 @@ func Test_loadbalancerTargetGroupTargetList(t *testing.T) {
 		err := loadbalancerTargetGroupTargetList(service, &cobra.Command{}, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error retrieving targets: test error", err.Error())
+		assert.Equal(t, "error retrieving targets: test error", err.Error())
 	})
 }
 
@@ -81,14 +81,14 @@ func Test_loadbalancerTargetGroupTargetShowCmd_Args(t *testing.T) {
 		err := loadbalancerTargetGroupTargetShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing target group", err.Error())
+		assert.Equal(t, "missing target group", err.Error())
 	})
 
 	t.Run("InvalidArgs_Error", func(t *testing.T) {
 		err := loadbalancerTargetGroupTargetShowCmd(nil).Args(nil, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing target", err.Error())
+		assert.Equal(t, "missing target", err.Error())
 	})
 }
 
@@ -126,7 +126,7 @@ func Test_loadbalancerTargetGroupTargetShow(t *testing.T) {
 
 		err := loadbalancerTargetGroupTargetShow(service, &cobra.Command{}, []string{"abc", "456"})
 
-		assert.Equal(t, "Invalid target group ID", err.Error())
+		assert.Equal(t, "invalid target group ID", err.Error())
 	})
 
 	t.Run("GetTargetID_OutputsError", func(t *testing.T) {
@@ -165,7 +165,7 @@ func Test_loadbalancerTargetGroupTargetCreateCmd_Args(t *testing.T) {
 		err := loadbalancerTargetGroupTargetCreateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing target group", err.Error())
+		assert.Equal(t, "missing target group", err.Error())
 	})
 }
 
@@ -204,7 +204,7 @@ func Test_loadbalancerTargetGroupTargetCreate(t *testing.T) {
 
 		err := loadbalancerTargetGroupTargetCreate(service, cmd, []string{"123"})
 
-		assert.Equal(t, "Error creating target: test error", err.Error())
+		assert.Equal(t, "error creating target: test error", err.Error())
 	})
 
 	t.Run("GetTargetGroupError_ReturnsError", func(t *testing.T) {
@@ -222,7 +222,7 @@ func Test_loadbalancerTargetGroupTargetCreate(t *testing.T) {
 
 		err := loadbalancerTargetGroupTargetCreate(service, cmd, []string{"123"})
 
-		assert.Equal(t, "Error retrieving new target: test error", err.Error())
+		assert.Equal(t, "error retrieving new target: test error", err.Error())
 	})
 }
 
@@ -237,14 +237,14 @@ func Test_loadbalancerTargetGroupTargetUpdateCmd_Args(t *testing.T) {
 		err := loadbalancerTargetGroupTargetUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing target group", err.Error())
+		assert.Equal(t, "missing target group", err.Error())
 	})
 
 	t.Run("InvalidArgs_Error", func(t *testing.T) {
 		err := loadbalancerTargetGroupTargetUpdateCmd(nil).Args(nil, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing target", err.Error())
+		assert.Equal(t, "missing target", err.Error())
 	})
 }
 
@@ -311,14 +311,14 @@ func Test_loadbalancerTargetGroupTargetDeleteCmd_Args(t *testing.T) {
 		err := loadbalancerTargetGroupTargetUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing target group", err.Error())
+		assert.Equal(t, "missing target group", err.Error())
 	})
 
 	t.Run("InvalidArgs_Error", func(t *testing.T) {
 		err := loadbalancerTargetGroupTargetUpdateCmd(nil).Args(nil, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing target", err.Error())
+		assert.Equal(t, "missing target", err.Error())
 	})
 }
 

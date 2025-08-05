@@ -52,7 +52,7 @@ func ecloudVPNGatewayList(service ecloud.ECloudService, cmd *cobra.Command, args
 
 	gateways, err := service.GetVPNGateways(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving VPN gateways: %s", err)
+		return fmt.Errorf("error retrieving VPN gateways: %s", err)
 	}
 
 	return output.CommandOutput(cmd, VPNGatewayCollection(gateways))
@@ -65,7 +65,7 @@ func ecloudVPNGatewayShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vpngateway show vpng-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing VPN gateway")
+				return errors.New("missing VPN gateway")
 			}
 
 			return nil
@@ -100,9 +100,9 @@ func ecloudVPNGatewayCreateCmd(f factory.ClientFactory) *cobra.Command {
 	// Setup flags
 	cmd.Flags().String("name", "", "Name of gateway")
 	cmd.Flags().String("router", "", "ID of router")
-	cmd.MarkFlagRequired("router")
+	_ = cmd.MarkFlagRequired("router")
 	cmd.Flags().String("specification", "", "ID of VPN gateway specification")
-	cmd.MarkFlagRequired("specification")
+	_ = cmd.MarkFlagRequired("specification")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the VPN gateway has been completely created")
 
 	return cmd
@@ -116,20 +116,20 @@ func ecloudVPNGatewayCreate(service ecloud.ECloudService, cmd *cobra.Command, ar
 
 	taskRef, err := service.CreateVPNGateway(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating VPN gateway: %s", err)
+		return fmt.Errorf("error creating VPN gateway: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskRef.TaskID, ecloud.TaskStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for VPN gateway task to complete: %s", err)
+			return fmt.Errorf("error waiting for VPN gateway task to complete: %s", err)
 		}
 	}
 
 	vpnGateway, err := service.GetVPNGateway(taskRef.ResourceID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new VPN gateway: %s", err)
+		return fmt.Errorf("error retrieving new VPN gateway: %s", err)
 	}
 
 	return output.CommandOutput(cmd, VPNGatewayCollection([]ecloud.VPNGateway{vpnGateway}))
@@ -143,7 +143,7 @@ func ecloudVPNGatewayUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vpngateway update vpng-abcdef12 --name \"my gateway\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing VPN gateway")
+				return errors.New("missing VPN gateway")
 			}
 
 			return nil
@@ -200,7 +200,7 @@ func ecloudVPNGatewayDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vpngateway delete vpng-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing VPN gateway")
+				return errors.New("missing VPN gateway")
 			}
 
 			return nil

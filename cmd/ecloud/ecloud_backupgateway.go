@@ -51,7 +51,7 @@ func ecloudBackupGatewayList(service ecloud.ECloudService, cmd *cobra.Command, a
 
 	gateways, err := service.GetBackupGateways(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving backup gateways: %s", err)
+		return fmt.Errorf("error retrieving backup gateways: %s", err)
 	}
 
 	return output.CommandOutput(cmd, BackupGatewayCollection(gateways))
@@ -64,7 +64,7 @@ func ecloudBackupGatewayShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud backupgateway show bgw-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing backup gateway ID")
+				return errors.New("missing backup gateway ID")
 			}
 
 			return nil
@@ -99,11 +99,11 @@ func ecloudBackupGatewayCreateCmd(f factory.ClientFactory) *cobra.Command {
 	// Setup flags
 	cmd.Flags().String("name", "", "Name of gateway")
 	cmd.Flags().String("vpc", "", "ID of VPC")
-	cmd.MarkFlagRequired("vpc")
+	_ = cmd.MarkFlagRequired("vpc")
 	cmd.Flags().String("router", "", "ID of router")
-	cmd.MarkFlagRequired("router")
+	_ = cmd.MarkFlagRequired("router")
 	cmd.Flags().String("specification", "", "ID of backup gateway specification")
-	cmd.MarkFlagRequired("specification")
+	_ = cmd.MarkFlagRequired("specification")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the backup gateway has been completely created")
 
 	return cmd
@@ -118,20 +118,20 @@ func ecloudBackupGatewayCreate(service ecloud.ECloudService, cmd *cobra.Command,
 
 	taskRef, err := service.CreateBackupGateway(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating backup gateway: %s", err)
+		return fmt.Errorf("error creating backup gateway: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskRef.TaskID, ecloud.TaskStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for backup gateway task to complete: %s", err)
+			return fmt.Errorf("error waiting for backup gateway task to complete: %s", err)
 		}
 	}
 
 	backupGateway, err := service.GetBackupGateway(taskRef.ResourceID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new backup gateway: %s", err)
+		return fmt.Errorf("error retrieving new backup gateway: %s", err)
 	}
 
 	return output.CommandOutput(cmd, BackupGatewayCollection([]ecloud.BackupGateway{backupGateway}))
@@ -145,7 +145,7 @@ func ecloudBackupGatewayUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud backupgateway update bgw-abcdef12 --name \"my gateway\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing backup gateway")
+				return errors.New("missing backup gateway")
 			}
 
 			return nil
@@ -202,7 +202,7 @@ func ecloudBackupGatewayDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud backupgateway delete bgw-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing backup gateway")
+				return errors.New("missing backup gateway")
 			}
 
 			return nil

@@ -67,7 +67,7 @@ func ecloudTagShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud tag show tag-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing tag")
+				return errors.New("missing tag")
 			}
 
 			return nil
@@ -102,9 +102,9 @@ func ecloudTagCreateCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Setup flags
 	cmd.Flags().String("name", "", "Name of tag")
-	cmd.MarkFlagRequired("name")
+	_ = cmd.MarkFlagRequired("name")
 	cmd.Flags().String("scope", "", "Scope of tag")
-	cmd.MarkFlagRequired("scope")
+	_ = cmd.MarkFlagRequired("scope")
 
 	return cmd
 }
@@ -135,7 +135,7 @@ func ecloudTagUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud tag update tag-abcdef12 --name \"staging\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing tag")
+				return errors.New("missing tag")
 			}
 
 			return nil
@@ -188,7 +188,7 @@ func ecloudTagDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud tag delete tag-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing tag")
+				return errors.New("missing tag")
 			}
 
 			return nil

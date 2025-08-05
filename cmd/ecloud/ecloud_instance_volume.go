@@ -33,7 +33,7 @@ func ecloudInstanceVolumeListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud instance volume list i-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing instance")
+				return errors.New("missing instance")
 			}
 
 			return nil
@@ -54,7 +54,7 @@ func ecloudInstanceVolumeList(service ecloud.ECloudService, cmd *cobra.Command, 
 
 	volumes, err := service.GetInstanceVolumes(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving instance volumes: %s", err)
+		return fmt.Errorf("error retrieving instance volumes: %s", err)
 	}
 
 	return output.CommandOutput(cmd, VolumeCollection(volumes))
@@ -68,7 +68,7 @@ func ecloudInstanceVolumeAttachCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud instance volume attach i-abcdef12 --volume vol-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing instance")
+				return errors.New("missing instance")
 			}
 
 			return nil
@@ -77,7 +77,7 @@ func ecloudInstanceVolumeAttachCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("volume", "", "ID of volume to attach")
-	cmd.MarkFlagRequired("volume")
+	_ = cmd.MarkFlagRequired("volume")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until volume has been attached")
 
 	return cmd
@@ -89,14 +89,14 @@ func ecloudInstanceVolumeAttach(service ecloud.ECloudService, cmd *cobra.Command
 
 	taskID, err := service.AttachInstanceVolume(args[0], req)
 	if err != nil {
-		return fmt.Errorf("Error attaching instance volume: %s", err)
+		return fmt.Errorf("error attaching instance volume: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskID, ecloud.TaskStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for task: %s", err)
+			return fmt.Errorf("error waiting for task: %s", err)
 		}
 	}
 
@@ -111,7 +111,7 @@ func ecloudInstanceVolumeDetachCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud instance volume detach i-abcdef12 --volume vol-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing instance")
+				return errors.New("missing instance")
 			}
 
 			return nil
@@ -120,7 +120,7 @@ func ecloudInstanceVolumeDetachCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("volume", "", "ID of volume to detach")
-	cmd.MarkFlagRequired("volume")
+	_ = cmd.MarkFlagRequired("volume")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until volume has been detached")
 
 	return cmd
@@ -132,14 +132,14 @@ func ecloudInstanceVolumeDetach(service ecloud.ECloudService, cmd *cobra.Command
 
 	taskID, err := service.DetachInstanceVolume(args[0], req)
 	if err != nil {
-		return fmt.Errorf("Error detaching instance volume: %s", err)
+		return fmt.Errorf("error detaching instance volume: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskID, ecloud.TaskStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for task: %s", err)
+			return fmt.Errorf("error waiting for task: %s", err)
 		}
 	}
 

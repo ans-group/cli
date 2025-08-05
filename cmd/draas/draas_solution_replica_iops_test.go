@@ -21,14 +21,14 @@ func Test_draasSolutionReplicaIOPSUpdateCmd_Args(t *testing.T) {
 		err := draasSolutionReplicaIOPSUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing solution", err.Error())
+		assert.Equal(t, "missing solution", err.Error())
 	})
 
 	t.Run("InvalidArgs_Error", func(t *testing.T) {
 		err := draasSolutionReplicaIOPSUpdateCmd(nil).Args(nil, []string{"00000000-0000-0000-0000-000000000000"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing replica", err.Error())
+		assert.Equal(t, "missing replica", err.Error())
 	})
 }
 
@@ -61,6 +61,6 @@ func Test_draasSolutionReplicaIOPSUpdate(t *testing.T) {
 
 		err := draasSolutionReplicaIOPSUpdate(service, cmd, []string{"00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000001"})
 
-		assert.Equal(t, "Error updating replica [00000000-0000-0000-0000-000000000001]: test error", err.Error())
+		assert.Equal(t, "error updating replica [00000000-0000-0000-0000-000000000001]: test error", err.Error())
 	})
 }

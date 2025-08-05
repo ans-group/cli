@@ -29,7 +29,7 @@ func cloudflareAccountMemberCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans cloudflare account member create e84d6820-870a-4d69-89a4-30e9f1016518",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing account")
+				return errors.New("missing account")
 			}
 
 			return nil
@@ -38,7 +38,7 @@ func cloudflareAccountMemberCreateCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("email-address", "", "Email address for account member")
-	cmd.MarkFlagRequired("email-address")
+	_ = cmd.MarkFlagRequired("email-address")
 
 	return cmd
 }
@@ -48,7 +48,7 @@ func cloudflareAccountMemberCreate(service cloudflare.CloudflareService, cmd *co
 	createRequest.EmailAddress, _ = cmd.Flags().GetString("email-address")
 	err := service.CreateAccountMember(args[0], createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating account member: %s", err)
+		return fmt.Errorf("error creating account member: %s", err)
 	}
 
 	return nil

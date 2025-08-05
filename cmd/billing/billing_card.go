@@ -54,7 +54,7 @@ func billingCardList(service billing.BillingService, cmd *cobra.Command, args []
 
 	cards, err := service.GetCards(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving cards: %s", err)
+		return fmt.Errorf("error retrieving cards: %s", err)
 	}
 
 	return output.CommandOutput(cmd, CardCollection(cards))
@@ -68,7 +68,7 @@ func billingCardShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans billing card show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing card")
+				return errors.New("missing card")
 			}
 
 			return nil
@@ -124,19 +124,19 @@ func billingCardCreateCmd(f factory.ClientFactory) *cobra.Command {
 	// Setup flags
 	cmd.Flags().String("friendly-name", "", "Display name of card")
 	cmd.Flags().String("name", "", "Name on card")
-	cmd.MarkFlagRequired("name")
+	_ = cmd.MarkFlagRequired("name")
 	cmd.Flags().String("address", "", "Address of cardholder")
-	cmd.MarkFlagRequired("address")
+	_ = cmd.MarkFlagRequired("address")
 	cmd.Flags().String("postcode", "", "Postcode of cardholder")
-	cmd.MarkFlagRequired("postcode")
+	_ = cmd.MarkFlagRequired("postcode")
 	cmd.Flags().String("card-number", "", "16 digit card number")
-	cmd.MarkFlagRequired("card-number")
+	_ = cmd.MarkFlagRequired("card-number")
 	cmd.Flags().String("card-type", "", "Type of card")
-	cmd.MarkFlagRequired("card-type")
+	_ = cmd.MarkFlagRequired("card-type")
 	cmd.Flags().String("valid-from", "", "Date card is valid from")
-	cmd.MarkFlagRequired("valid-from")
+	_ = cmd.MarkFlagRequired("valid-from")
 	cmd.Flags().String("expiry", "", "Expiry date of card")
-	cmd.MarkFlagRequired("expiry")
+	_ = cmd.MarkFlagRequired("expiry")
 	cmd.Flags().Int("issue-number", 0, "Issue number of card")
 	cmd.Flags().Bool("primary-card", false, "Specifies whether this card should be the primary card")
 
@@ -158,12 +158,12 @@ func billingCardCreate(service billing.BillingService, cmd *cobra.Command, args 
 
 	id, err := service.CreateCard(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating card: %s", err)
+		return fmt.Errorf("error creating card: %s", err)
 	}
 
 	card, err := service.GetCard(id)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new card: %s", err)
+		return fmt.Errorf("error retrieving new card: %s", err)
 	}
 
 	return output.CommandOutput(cmd, CardCollection([]billing.Card{card}))
@@ -177,7 +177,7 @@ func billingCardUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans billing card update 123 --name \"test card 1\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing card")
+				return errors.New("missing card")
 			}
 
 			return nil
@@ -260,7 +260,7 @@ func billingCardDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans billing card delete 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing card")
+				return errors.New("missing card")
 			}
 
 			return nil

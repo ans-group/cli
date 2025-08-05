@@ -63,7 +63,7 @@ func ddosxDomainList(service ddosx.DDoSXService, cmd *cobra.Command, args []stri
 
 	domains, err := service.GetDomains(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving domains: %s", err)
+		return fmt.Errorf("error retrieving domains: %s", err)
 	}
 
 	return output.CommandOutput(cmd, DomainCollection(domains))
@@ -77,7 +77,7 @@ func ddosxDomainShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain show example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 
 			return nil
@@ -126,7 +126,7 @@ func ddosxDomainCreateCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Setup flags
 	cmd.Flags().String("name", "", "Name of domain")
-	cmd.MarkFlagRequired("name")
+	_ = cmd.MarkFlagRequired("name")
 
 	return cmd
 }
@@ -140,12 +140,12 @@ func ddosxDomainCreate(service ddosx.DDoSXService, cmd *cobra.Command, args []st
 
 	err := service.CreateDomain(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating domain: %s", err)
+		return fmt.Errorf("error creating domain: %s", err)
 	}
 
 	domain, err := service.GetDomain(domainName)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new domain: %s", err)
+		return fmt.Errorf("error retrieving new domain: %s", err)
 	}
 
 	return output.CommandOutput(cmd, DomainCollection([]ddosx.Domain{domain}))
@@ -159,7 +159,7 @@ func ddosxDomainDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain delete example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 
 			return nil
@@ -176,9 +176,9 @@ func ddosxDomainDeleteCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("summary", "", "Specifies summary for domain removal")
-	cmd.MarkFlagRequired("summary")
+	_ = cmd.MarkFlagRequired("summary")
 	cmd.Flags().String("description", "", "Specifies description for domain removal")
-	cmd.MarkFlagRequired("description")
+	_ = cmd.MarkFlagRequired("description")
 
 	return cmd
 }
@@ -205,7 +205,7 @@ func ddosxDomainDeployCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain deploy example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 
 			return nil
@@ -259,10 +259,10 @@ func DomainStatusWaitFunc(service ddosx.DDoSXService, domainName string, status 
 	return func() (finished bool, err error) {
 		domain, err := service.GetDomain(domainName)
 		if err != nil {
-			return false, fmt.Errorf("Failed to retrieve domain [%s]: %s", domainName, err)
+			return false, fmt.Errorf("failed to retrieve domain [%s]: %s", domainName, err)
 		}
 		if domain.Status == ddosx.DomainStatusFailed {
-			return false, fmt.Errorf("Domain [%s] in [%s] state", domainName, domain.Status)
+			return false, fmt.Errorf("domain [%s] in [%s] state", domainName, domain.Status)
 		}
 		if domain.Status == status {
 			return true, nil

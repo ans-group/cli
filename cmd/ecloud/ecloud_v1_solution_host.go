@@ -32,7 +32,7 @@ func ecloudSolutionHostListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud solution host list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing solution")
+				return errors.New("missing solution")
 			}
 
 			return nil
@@ -51,7 +51,7 @@ func ecloudSolutionHostListCmd(f factory.ClientFactory) *cobra.Command {
 func ecloudSolutionHostList(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	solutionID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid solution ID [%s]", args[0])
+		return fmt.Errorf("invalid solution ID [%s]", args[0])
 	}
 
 	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
@@ -61,7 +61,7 @@ func ecloudSolutionHostList(service ecloud.ECloudService, cmd *cobra.Command, ar
 
 	hosts, err := service.GetSolutionHosts(solutionID, params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving solution hosts: %s", err)
+		return fmt.Errorf("error retrieving solution hosts: %s", err)
 	}
 
 	return output.CommandOutput(cmd, V1HostCollection(hosts))

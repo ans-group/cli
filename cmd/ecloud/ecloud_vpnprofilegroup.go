@@ -48,7 +48,7 @@ func ecloudVPNProfileGroupList(service ecloud.ECloudService, cmd *cobra.Command,
 
 	sessions, err := service.GetVPNProfileGroups(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving VPN sessions: %s", err)
+		return fmt.Errorf("error retrieving VPN sessions: %s", err)
 	}
 
 	return output.CommandOutput(cmd, VPNProfileGroupCollection(sessions))
@@ -62,7 +62,7 @@ func ecloudVPNProfileGroupShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vpnprofilegroup show vpns-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing VPN session")
+				return errors.New("missing VPN session")
 			}
 
 			return nil

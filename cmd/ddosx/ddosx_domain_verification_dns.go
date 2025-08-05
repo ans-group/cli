@@ -29,7 +29,7 @@ func ddosxDomainVerificationDNSVerifyCmd(f factory.ClientFactory) *cobra.Command
 		Example: "ans ddosx domain verification dns verify example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 
 			return nil

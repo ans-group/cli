@@ -5,10 +5,11 @@
 package mocks
 
 import (
+	reflect "reflect"
+
+	connection "github.com/ans-group/sdk-go/pkg/connection"
 	sharedexchange "github.com/ans-group/sdk-go/pkg/service/sharedexchange"
 	gomock "github.com/golang/mock/gomock"
-	reflect "reflect"
-	connection "github.com/ans-group/sdk-go/pkg/connection"
 )
 
 // MockSharedExchangeService is a mock of SharedExchangeService interface.

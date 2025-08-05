@@ -50,7 +50,7 @@ func ecloudMonitoringGatewayList(service ecloud.ECloudService, cmd *cobra.Comman
 
 	gateways, err := service.GetMonitoringGateways(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving monitoring gateways: %s", err)
+		return fmt.Errorf("error retrieving monitoring gateways: %s", err)
 	}
 
 	return output.CommandOutput(cmd, MonitoringGatewayCollection(gateways))
@@ -63,7 +63,7 @@ func ecloudMonitoringGatewayShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud monitoringgateway show mgw-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing monitoring gateway ID")
+				return errors.New("missing monitoring gateway ID")
 			}
 
 			return nil
@@ -98,9 +98,9 @@ func ecloudMonitoringGatewayCreateCmd(f factory.ClientFactory) *cobra.Command {
 	// Setup flags
 	cmd.Flags().String("name", "", "Name of gateway")
 	cmd.Flags().String("router", "", "ID of router")
-	cmd.MarkFlagRequired("router")
+	_ = cmd.MarkFlagRequired("router")
 	cmd.Flags().String("specification", "", "ID of monitoring gateway specification")
-	cmd.MarkFlagRequired("specification")
+	_ = cmd.MarkFlagRequired("specification")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the monitoring gateway has been completely created")
 
 	return cmd
@@ -114,20 +114,20 @@ func ecloudMonitoringGatewayCreate(service ecloud.ECloudService, cmd *cobra.Comm
 
 	taskRef, err := service.CreateMonitoringGateway(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating monitoring gateway: %s", err)
+		return fmt.Errorf("error creating monitoring gateway: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskRef.TaskID, ecloud.TaskStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for monitoring gateway task to complete: %s", err)
+			return fmt.Errorf("error waiting for monitoring gateway task to complete: %s", err)
 		}
 	}
 
 	monitoringGateway, err := service.GetMonitoringGateway(taskRef.ResourceID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new monitoring gateway: %s", err)
+		return fmt.Errorf("error retrieving new monitoring gateway: %s", err)
 	}
 
 	return output.CommandOutput(cmd, MonitoringGatewayCollection([]ecloud.MonitoringGateway{monitoringGateway}))
@@ -141,7 +141,7 @@ func ecloudMonitoringGatewayUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud monitoringgateway update mgw-abcdef12 --name \"my gateway\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing monitoring gateway")
+				return errors.New("missing monitoring gateway")
 			}
 
 			return nil
@@ -198,7 +198,7 @@ func ecloudMonitoringGatewayDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud monitoringgateway delete mgw-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing monitoring gateway")
+				return errors.New("missing monitoring gateway")
 			}
 
 			return nil

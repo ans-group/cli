@@ -32,7 +32,7 @@ func pssRequestFeedbackShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans pss request feedback show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing request")
+				return errors.New("missing request")
 			}
 
 			return nil
@@ -77,7 +77,7 @@ func pssRequestFeedbackCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans pss request feedback create 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing request")
+				return errors.New("missing request")
 			}
 
 			return nil
@@ -93,7 +93,7 @@ func pssRequestFeedbackCreateCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().Int("contact", 0, "Specifies contact ID")
-	cmd.MarkFlagRequired("contact")
+	_ = cmd.MarkFlagRequired("contact")
 	cmd.Flags().Int("score", 0, "Specifies feedback score")
 	cmd.Flags().String("comment", "", "Specifies feedback comment")
 	cmd.Flags().Int("speed-resolved", 0, "Specifies feedback speed resolved score")
@@ -107,7 +107,7 @@ func pssRequestFeedbackCreateCmd(f factory.ClientFactory) *cobra.Command {
 func pssRequestFeedbackCreate(service pss.PSSService, cmd *cobra.Command, args []string) error {
 	requestID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid request ID [%s]", args[0])
+		return fmt.Errorf("invalid request ID [%s]", args[0])
 	}
 
 	createRequest := pss.CreateFeedbackRequest{}
@@ -121,12 +121,12 @@ func pssRequestFeedbackCreate(service pss.PSSService, cmd *cobra.Command, args [
 
 	_, err = service.CreateRequestFeedback(requestID, createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating feedback for request: %s", err)
+		return fmt.Errorf("error creating feedback for request: %s", err)
 	}
 
 	feedback, err := service.GetRequestFeedback(requestID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new feedback for request: %s", err)
+		return fmt.Errorf("error retrieving new feedback for request: %s", err)
 	}
 
 	return output.CommandOutput(cmd, FeedbackCollection([]pss.Feedback{feedback}))

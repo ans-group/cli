@@ -54,7 +54,7 @@ func ecloudAffinityRuleList(service ecloud.ECloudService, cmd *cobra.Command, ar
 
 	rules, err := service.GetAffinityRules(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving affinity rules: %s", err)
+		return fmt.Errorf("error retrieving affinity rules: %s", err)
 	}
 
 	return output.CommandOutput(cmd, AffinityRuleCollection(rules))
@@ -68,7 +68,7 @@ func ecloudAffinityRuleShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud affinityrule show ar-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing affinity rule")
+				return errors.New("missing affinity rule")
 			}
 
 			return nil
@@ -103,11 +103,11 @@ func ecloudAffinityRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Setup flags
 	cmd.Flags().String("vpc", "", "ID of VPC")
-	cmd.MarkFlagRequired("vpc")
+	_ = cmd.MarkFlagRequired("vpc")
 	cmd.Flags().String("availability-zone", "", "ID of AZ")
-	cmd.MarkFlagRequired("availability-zone")
+	_ = cmd.MarkFlagRequired("availability-zone")
 	cmd.Flags().String("type", "", "Type of rule. One of: affinity/anti-affinity")
-	cmd.MarkFlagRequired("type")
+	_ = cmd.MarkFlagRequired("type")
 	cmd.Flags().String("name", "", "Name of affinity rule")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the affinity rule has been completely created")
 
@@ -132,20 +132,20 @@ func ecloudAffinityRuleCreate(service ecloud.ECloudService, cmd *cobra.Command, 
 
 	taskRef, err := service.CreateAffinityRule(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating affinity rule: %s", err)
+		return fmt.Errorf("error creating affinity rule: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskRef.TaskID, ecloud.TaskStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for affinity rule task to complete: %s", err)
+			return fmt.Errorf("error waiting for affinity rule task to complete: %s", err)
 		}
 	}
 
 	rule, err := service.GetAffinityRule(taskRef.ResourceID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new affinity rule: %s", err)
+		return fmt.Errorf("error retrieving new affinity rule: %s", err)
 	}
 
 	return output.CommandOutput(cmd, AffinityRuleCollection([]ecloud.AffinityRule{rule}))
@@ -159,7 +159,7 @@ func ecloudAffinityRuleUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud affinityrule update ar-abcdef12 --name \"my rule\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing affinity rule")
+				return errors.New("missing affinity rule")
 			}
 
 			return nil
@@ -217,7 +217,7 @@ func ecloudAffinityRuleDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud affinityrule delete ar-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing affinity rule")
+				return errors.New("missing affinity rule")
 			}
 
 			return nil

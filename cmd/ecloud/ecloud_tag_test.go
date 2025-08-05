@@ -62,7 +62,7 @@ func Test_ecloudTagShowCmd_Args(t *testing.T) {
 		err := ecloudTagShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing tag", err.Error())
+		assert.Equal(t, "missing tag", err.Error())
 	})
 }
 
@@ -174,7 +174,7 @@ func Test_ecloudTagUpdateCmd_Args(t *testing.T) {
 		err := ecloudTagUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing tag", err.Error())
+		assert.Equal(t, "missing tag", err.Error())
 	})
 }
 
@@ -266,7 +266,7 @@ func Test_ecloudTagDeleteCmd_Args(t *testing.T) {
 		err := ecloudTagDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing tag", err.Error())
+		assert.Equal(t, "missing tag", err.Error())
 	})
 }
 

@@ -43,7 +43,7 @@ func loadbalancerDeploymentList(service loadbalancer.LoadBalancerService, cmd *c
 
 	deployments, err := service.GetDeployments(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving deployments: %s", err)
+		return fmt.Errorf("error retrieving deployments: %s", err)
 	}
 
 	return output.CommandOutput(cmd, DeploymentCollection(deployments))
@@ -57,7 +57,7 @@ func loadbalancerDeploymentShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans loadbalancer deployment show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing deployment")
+				return errors.New("missing deployment")
 			}
 
 			return nil

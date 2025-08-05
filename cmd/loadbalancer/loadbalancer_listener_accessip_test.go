@@ -23,7 +23,7 @@ func Test_loadbalancerListenerAccessIPListCmd_Args(t *testing.T) {
 		err := loadbalancerListenerAccessIPListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing listener", err.Error())
+		assert.Equal(t, "missing listener", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_loadbalancerListenerAccessIPList(t *testing.T) {
 		err := loadbalancerListenerAccessIPList(service, &cobra.Command{}, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error retrieving access IPs: test error", err.Error())
+		assert.Equal(t, "error retrieving access IPs: test error", err.Error())
 	})
 }
 
@@ -79,7 +79,7 @@ func Test_loadbalancerListenerAccessIPCreateCmd_Args(t *testing.T) {
 		err := loadbalancerListenerAccessIPCreateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing listener", err.Error())
+		assert.Equal(t, "missing listener", err.Error())
 	})
 }
 
@@ -116,7 +116,7 @@ func Test_loadbalancerListenerAccessIPCreate(t *testing.T) {
 
 		err := loadbalancerListenerAccessIPCreate(service, cmd, []string{"123"})
 
-		assert.Equal(t, "Error creating access IP: test error", err.Error())
+		assert.Equal(t, "error creating access IP: test error", err.Error())
 	})
 
 	t.Run("GetListenerError_ReturnsError", func(t *testing.T) {
@@ -134,6 +134,6 @@ func Test_loadbalancerListenerAccessIPCreate(t *testing.T) {
 
 		err := loadbalancerListenerAccessIPCreate(service, cmd, []string{"123"})
 
-		assert.Equal(t, "Error retrieving new access IP: test error", err.Error())
+		assert.Equal(t, "error retrieving new access IP: test error", err.Error())
 	})
 }

@@ -25,7 +25,7 @@ func Test_ecloudSolutionTemplateListCmd_Args(t *testing.T) {
 		err := ecloudSolutionTemplateListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing solution", err.Error())
+		assert.Equal(t, "missing solution", err.Error())
 	})
 }
 
@@ -49,7 +49,7 @@ func Test_ecloudSolutionTemplateList(t *testing.T) {
 
 		err := ecloudSolutionTemplateList(service, &cobra.Command{}, []string{"abc"})
 
-		assert.Equal(t, "Invalid solution ID [abc]", err.Error())
+		assert.Equal(t, "invalid solution ID [abc]", err.Error())
 	})
 
 	t.Run("MalformedFlag_ReturnsError", func(t *testing.T) {
@@ -75,7 +75,7 @@ func Test_ecloudSolutionTemplateList(t *testing.T) {
 
 		err := ecloudSolutionTemplateList(service, &cobra.Command{}, []string{"123"})
 
-		assert.Equal(t, "Error retrieving solution templates: test error 1", err.Error())
+		assert.Equal(t, "error retrieving solution templates: test error 1", err.Error())
 	})
 }
 
@@ -90,14 +90,14 @@ func Test_ecloudSolutionTemplateShowCmd_Args(t *testing.T) {
 		err := ecloudSolutionTemplateShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing solution", err.Error())
+		assert.Equal(t, "missing solution", err.Error())
 	})
 
 	t.Run("MissingTemplate_Error", func(t *testing.T) {
 		err := ecloudSolutionTemplateShowCmd(nil).Args(nil, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing template", err.Error())
+		assert.Equal(t, "missing template", err.Error())
 	})
 }
 
@@ -135,7 +135,7 @@ func Test_ecloudSolutionTemplateShow(t *testing.T) {
 
 		err := ecloudSolutionTemplateShow(service, &cobra.Command{}, []string{"abc", "testtemplate1"})
 
-		assert.Equal(t, "Invalid solution ID [abc]", err.Error())
+		assert.Equal(t, "invalid solution ID [abc]", err.Error())
 	})
 
 	t.Run("GetSolutionTemplateError_OutputsError", func(t *testing.T) {
@@ -163,14 +163,14 @@ func Test_ecloudSolutionTemplateUpdateCmd_Args(t *testing.T) {
 		err := ecloudSolutionTemplateUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing solution", err.Error())
+		assert.Equal(t, "missing solution", err.Error())
 	})
 
 	t.Run("MissingTemplate_Error", func(t *testing.T) {
 		err := ecloudSolutionTemplateUpdateCmd(nil).Args(nil, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing template", err.Error())
+		assert.Equal(t, "missing template", err.Error())
 	})
 }
 
@@ -209,7 +209,7 @@ func Test_ecloudSolutionTemplateUpdate(t *testing.T) {
 
 		err := ecloudSolutionTemplateUpdate(service, &cobra.Command{}, []string{"abc"})
 
-		assert.Equal(t, "Invalid solution ID [abc]", err.Error())
+		assert.Equal(t, "invalid solution ID [abc]", err.Error())
 	})
 
 	t.Run("RenameSolutionTemplateError_ReturnsError", func(t *testing.T) {
@@ -226,7 +226,7 @@ func Test_ecloudSolutionTemplateUpdate(t *testing.T) {
 
 		err := ecloudSolutionTemplateUpdate(service, cmd, []string{"123", "testname1"})
 
-		assert.Equal(t, "Error updating solution template: test error 1", err.Error())
+		assert.Equal(t, "error updating solution template: test error 1", err.Error())
 	})
 
 	t.Run("WaitForCommandError_ReturnsError", func(t *testing.T) {
@@ -249,7 +249,7 @@ func Test_ecloudSolutionTemplateUpdate(t *testing.T) {
 
 		err := ecloudSolutionTemplateUpdate(service, cmd, []string{"123", "testname1"})
 
-		assert.Equal(t, "Error waiting for solution template update: Error waiting for command: Failed to retrieve solution template [newname]: test error 1", err.Error())
+		assert.Equal(t, "error waiting for solution template update: error waiting for command: failed to retrieve solution template [newname]: test error 1", err.Error())
 	})
 
 	t.Run("GetSolutionTemplateError_ReturnsError", func(t *testing.T) {
@@ -264,7 +264,7 @@ func Test_ecloudSolutionTemplateUpdate(t *testing.T) {
 
 		err := ecloudSolutionTemplateUpdate(service, &cobra.Command{}, []string{"123", "testname1"})
 
-		assert.Equal(t, "Error retrieving updated solution template: test error 1", err.Error())
+		assert.Equal(t, "error retrieving updated solution template: test error 1", err.Error())
 	})
 }
 
@@ -279,14 +279,14 @@ func Test_ecloudSolutionTemplateDeleteCmd_Args(t *testing.T) {
 		err := ecloudSolutionTemplateDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing solution", err.Error())
+		assert.Equal(t, "missing solution", err.Error())
 	})
 
 	t.Run("MissingTemplate_Error", func(t *testing.T) {
 		err := ecloudSolutionTemplateDeleteCmd(nil).Args(nil, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing template", err.Error())
+		assert.Equal(t, "missing template", err.Error())
 	})
 }
 
@@ -345,7 +345,7 @@ func Test_ecloudSolutionTemplateDelete(t *testing.T) {
 
 		err := ecloudSolutionTemplateDelete(service, &cobra.Command{}, []string{"abc", "testname1"})
 
-		assert.Equal(t, "Invalid solution ID [abc]", err.Error())
+		assert.Equal(t, "invalid solution ID [abc]", err.Error())
 	})
 
 	t.Run("DeleteSolutionTemplateError_OutputsError", func(t *testing.T) {
@@ -379,7 +379,7 @@ func Test_ecloudSolutionTemplateDelete(t *testing.T) {
 			service.EXPECT().GetSolutionTemplate(123, "testname1").Return(ecloud.Template{}, errors.New("test error 1")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error removing solution template [testname1]: Error waiting for command: Failed to retrieve solution template [testname1]: test error 1\n", func() {
+		test_output.AssertErrorOutput(t, "Error removing solution template [testname1]: error waiting for command: failed to retrieve solution template [testname1]: test error 1\n", func() {
 			ecloudSolutionTemplateDelete(service, cmd, []string{"123", "testname1"})
 		})
 	})

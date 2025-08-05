@@ -37,7 +37,7 @@ func loadbalancerListenerCertificateListCmd(f factory.ClientFactory) *cobra.Comm
 		Example: "ans loadbalancer listener certificate list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing listener")
+				return errors.New("missing listener")
 			}
 
 			return nil
@@ -54,12 +54,12 @@ func loadbalancerListenerCertificateList(service loadbalancer.LoadBalancerServic
 
 	listenerID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid listener ID")
+		return fmt.Errorf("invalid listener ID")
 	}
 
 	certificates, err := service.GetListenerCertificates(listenerID, params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving certificates: %s", err)
+		return fmt.Errorf("error retrieving certificates: %s", err)
 	}
 
 	return output.CommandOutput(cmd, CertificateCollection(certificates))
@@ -73,10 +73,10 @@ func loadbalancerListenerCertificateShowCmd(f factory.ClientFactory) *cobra.Comm
 		Example: "ans loadbalancer listener certificate show 123 345",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing listener")
+				return errors.New("missing listener")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing certificate")
+				return errors.New("missing certificate")
 			}
 
 			return nil
@@ -88,7 +88,7 @@ func loadbalancerListenerCertificateShowCmd(f factory.ClientFactory) *cobra.Comm
 func loadbalancerListenerCertificateShow(service loadbalancer.LoadBalancerService, cmd *cobra.Command, args []string) error {
 	listenerID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid listener ID")
+		return fmt.Errorf("invalid listener ID")
 	}
 
 	var certificates []loadbalancer.Certificate
@@ -120,7 +120,7 @@ func loadbalancerListenerCertificateCreateCmd(f factory.ClientFactory, fs afero.
 		Example: "ans loadbalancer listener certificate create 123 --key-file /tmp/cert.key --certificate-file /tmp/cert.crt --ca-bundle-file /tmp/ca.crt",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing listener")
+				return errors.New("missing listener")
 			}
 
 			return nil
@@ -149,7 +149,7 @@ func loadbalancerListenerCertificateCreateCmd(f factory.ClientFactory, fs afero.
 func loadbalancerListenerCertificateCreate(service loadbalancer.LoadBalancerService, cmd *cobra.Command, fs afero.Fs, args []string) error {
 	listenerID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid listener ID")
+		return fmt.Errorf("invalid listener ID")
 	}
 
 	createRequest := loadbalancer.CreateCertificateRequest{}
@@ -169,12 +169,12 @@ func loadbalancerListenerCertificateCreate(service loadbalancer.LoadBalancerServ
 
 	certificateID, err := service.CreateListenerCertificate(listenerID, createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating certificate: %s", err)
+		return fmt.Errorf("error creating certificate: %s", err)
 	}
 
 	certificate, err := service.GetListenerCertificate(listenerID, certificateID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new certificate: %s", err)
+		return fmt.Errorf("error retrieving new certificate: %s", err)
 	}
 
 	return output.CommandOutput(cmd, CertificateCollection([]loadbalancer.Certificate{certificate}))
@@ -188,10 +188,10 @@ func loadbalancerListenerCertificateUpdateCmd(f factory.ClientFactory, fs afero.
 		Example: "ans loadbalancer listener certificate update 123 456 --name mycertificate",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing listener")
+				return errors.New("missing listener")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing certificate")
+				return errors.New("missing certificate")
 			}
 
 			return nil
@@ -220,7 +220,7 @@ func loadbalancerListenerCertificateUpdateCmd(f factory.ClientFactory, fs afero.
 func loadbalancerListenerCertificateUpdate(service loadbalancer.LoadBalancerService, cmd *cobra.Command, fs afero.Fs, args []string) error {
 	listenerID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid listener ID")
+		return fmt.Errorf("invalid listener ID")
 	}
 
 	patchRequest := loadbalancer.PatchCertificateRequest{}
@@ -272,10 +272,10 @@ func loadbalancerListenerCertificateDeleteCmd(f factory.ClientFactory) *cobra.Co
 		Example: "ans loadbalancer listener certificate delete 123 456",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing listener")
+				return errors.New("missing listener")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing certificate")
+				return errors.New("missing certificate")
 			}
 
 			return nil
@@ -287,7 +287,7 @@ func loadbalancerListenerCertificateDeleteCmd(f factory.ClientFactory) *cobra.Co
 func loadbalancerListenerCertificateDelete(service loadbalancer.LoadBalancerService, cmd *cobra.Command, args []string) error {
 	listenerID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid listener ID")
+		return fmt.Errorf("invalid listener ID")
 	}
 
 	for _, arg := range args[1:] {

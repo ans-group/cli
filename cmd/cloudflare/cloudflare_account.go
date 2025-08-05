@@ -47,7 +47,7 @@ func cloudflareAccountList(service cloudflare.CloudflareService, cmd *cobra.Comm
 
 	accounts, err := service.GetAccounts(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving accounts: %s", err)
+		return fmt.Errorf("error retrieving accounts: %s", err)
 	}
 
 	return output.CommandOutput(cmd, AccountCollection(accounts))
@@ -61,7 +61,7 @@ func cloudflareAccountShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans cloudflare account show e3f8baa0-b7c3-4a7a-958d-68e1aca3ea25",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing account")
+				return errors.New("missing account")
 			}
 
 			return nil
@@ -95,7 +95,7 @@ func cloudflareAccountCreateCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("name", "", "Name of account")
-	cmd.MarkFlagRequired("name")
+	_ = cmd.MarkFlagRequired("name")
 
 	return cmd
 }
@@ -105,12 +105,12 @@ func cloudflareAccountCreate(service cloudflare.CloudflareService, cmd *cobra.Co
 	createRequest.Name, _ = cmd.Flags().GetString("name")
 	accountID, err := service.CreateAccount(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating account: %s", err)
+		return fmt.Errorf("error creating account: %s", err)
 	}
 
 	account, err := service.GetAccount(accountID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new account: %s", err)
+		return fmt.Errorf("error retrieving new account: %s", err)
 	}
 
 	return output.CommandOutput(cmd, AccountCollection([]cloudflare.Account{account}))
@@ -124,7 +124,7 @@ func cloudflareAccountUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans cloudflare account update e3f8baa0-b7c3-4a7a-958d-68e1aca3ea25",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing account")
+				return errors.New("missing account")
 			}
 
 			return nil

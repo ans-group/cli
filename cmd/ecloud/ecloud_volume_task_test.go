@@ -23,7 +23,7 @@ func Test_ecloudVolumeTaskListCmd_Args(t *testing.T) {
 		err := ecloudVolumeTaskListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing volume", err.Error())
+		assert.Equal(t, "missing volume", err.Error())
 	})
 }
 
@@ -63,6 +63,6 @@ func Test_ecloudVolumeTaskList(t *testing.T) {
 
 		err := ecloudVolumeTaskList(service, &cobra.Command{}, []string{"vol-abcdef12"})
 
-		assert.Equal(t, "Error retrieving volume tasks: test error", err.Error())
+		assert.Equal(t, "error retrieving volume tasks: test error", err.Error())
 	})
 }

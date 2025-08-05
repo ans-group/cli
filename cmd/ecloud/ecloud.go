@@ -115,18 +115,18 @@ func GetCreateVirtualMachineRequestParameterFromStringArrayFlag(parametersFlag [
 // GetKeyValueFromStringFlag returns a string map from given string flag. Expects format 'key=value'
 func GetKeyValueFromStringFlag(flag string) (key, value string, err error) {
 	if flag == "" {
-		return key, value, errors.New("Missing key/value")
+		return key, value, errors.New("missing key/value")
 	}
 
 	parts := strings.Split(flag, "=")
 	if len(parts) < 2 || len(parts) > 2 {
-		return key, value, errors.New("Invalid format, expecting: key=value")
+		return key, value, errors.New("invalid format, expecting: key=value")
 	}
 	if parts[0] == "" {
-		return key, value, errors.New("Missing key")
+		return key, value, errors.New("missing key")
 	}
 	if parts[1] == "" {
-		return key, value, errors.New("Missing value")
+		return key, value, errors.New("missing value")
 	}
 
 	return parts[0], parts[1], nil
@@ -138,13 +138,13 @@ func SolutionTemplateExistsWaitFunc(service ecloud.ECloudService, solutionID int
 		_, err = service.GetSolutionTemplate(solutionID, templateName)
 		if err != nil {
 			if _, ok := err.(*ecloud.TemplateNotFoundError); ok {
-				return (exists == false), nil
+				return !exists, nil
 			}
 
-			return false, fmt.Errorf("Failed to retrieve solution template [%s]: %s", templateName, err.Error())
+			return false, fmt.Errorf("failed to retrieve solution template [%s]: %s", templateName, err.Error())
 		}
 
-		return (exists == true), nil
+		return exists, nil
 	}
 }
 
@@ -154,13 +154,13 @@ func PodTemplateExistsWaitFunc(service ecloud.ECloudService, podID int, template
 		_, err = service.GetPodTemplate(podID, templateName)
 		if err != nil {
 			if _, ok := err.(*ecloud.TemplateNotFoundError); ok {
-				return (exists == false), nil
+				return !exists, nil
 			}
 
-			return false, fmt.Errorf("Failed to retrieve pod template [%s]: %s", templateName, err.Error())
+			return false, fmt.Errorf("failed to retrieve pod template [%s]: %s", templateName, err.Error())
 		}
 
-		return (exists == true), nil
+		return exists, nil
 	}
 }
 
@@ -170,10 +170,10 @@ func ResourceSyncStatusWaitFunc(fn GetResourceSyncStatusFunc, expectedStatus ecl
 	return func() (finished bool, err error) {
 		status, err := fn()
 		if err != nil {
-			return false, fmt.Errorf("Failed to retrieve status for resource: %s", err)
+			return false, fmt.Errorf("failed to retrieve status for resource: %s", err)
 		}
 		if status == ecloud.SyncStatusFailed {
-			return false, fmt.Errorf("Resource in [%s] state", ecloud.SyncStatusFailed.String())
+			return false, fmt.Errorf("resource in [%s] state", ecloud.SyncStatusFailed.String())
 		}
 		if status == expectedStatus {
 			return true, nil
@@ -187,10 +187,10 @@ func TaskStatusWaitFunc(service ecloud.ECloudService, taskID string, expectedSta
 	return func() (finished bool, err error) {
 		task, err := service.GetTask(taskID)
 		if err != nil {
-			return false, fmt.Errorf("Failed to retrieve task status: %s", err)
+			return false, fmt.Errorf("failed to retrieve task status: %s", err)
 		}
 		if task.Status == ecloud.TaskStatusFailed {
-			return false, fmt.Errorf("Task in [%s] state", ecloud.TaskStatusFailed)
+			return false, fmt.Errorf("task in [%s] state", ecloud.TaskStatusFailed)
 		}
 		if task.Status == expectedStatus {
 			return true, nil

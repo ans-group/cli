@@ -47,6 +47,6 @@ func Test_cloudflareSpendPlanList(t *testing.T) {
 
 		err := cloudflareSpendPlanList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving spend plans: test error", err.Error())
+		assert.Equal(t, "error retrieving spend plans: test error", err.Error())
 	})
 }

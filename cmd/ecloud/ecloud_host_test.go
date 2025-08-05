@@ -49,7 +49,7 @@ func Test_ecloudHostList(t *testing.T) {
 
 		err := ecloudHostList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving hosts: test error", err.Error())
+		assert.Equal(t, "error retrieving hosts: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudHostShowCmd_Args(t *testing.T) {
 		err := ecloudHostShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing host", err.Error())
+		assert.Equal(t, "missing host", err.Error())
 	})
 }
 
@@ -186,7 +186,7 @@ func Test_ecloudHostCreate(t *testing.T) {
 		)
 
 		err := ecloudHostCreate(service, cmd, []string{})
-		assert.Equal(t, "Error waiting for host task to complete: Error waiting for command: Failed to retrieve task status: test error", err.Error())
+		assert.Equal(t, "error waiting for host task to complete: error waiting for command: failed to retrieve task status: test error", err.Error())
 	})
 
 	t.Run("CreateHostError_ReturnsError", func(t *testing.T) {
@@ -201,7 +201,7 @@ func Test_ecloudHostCreate(t *testing.T) {
 
 		err := ecloudHostCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error creating host: test error", err.Error())
+		assert.Equal(t, "error creating host: test error", err.Error())
 	})
 
 	t.Run("GetHostError_ReturnsError", func(t *testing.T) {
@@ -219,7 +219,7 @@ func Test_ecloudHostCreate(t *testing.T) {
 
 		err := ecloudHostCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error retrieving new host: test error", err.Error())
+		assert.Equal(t, "error retrieving new host: test error", err.Error())
 	})
 }
 
@@ -234,7 +234,7 @@ func Test_ecloudHostUpdateCmd_Args(t *testing.T) {
 		err := ecloudHostUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing host", err.Error())
+		assert.Equal(t, "missing host", err.Error())
 	})
 }
 
@@ -341,7 +341,7 @@ func Test_ecloudHostUpdate(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for host [h-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for host [h-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudHostUpdate(service, cmd, []string{"h-abcdef12"})
 		})
 	})
@@ -392,7 +392,7 @@ func Test_ecloudHostDeleteCmd_Args(t *testing.T) {
 		err := ecloudHostDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing host", err.Error())
+		assert.Equal(t, "missing host", err.Error())
 	})
 }
 
@@ -453,7 +453,7 @@ func Test_ecloudHostDelete(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for host [h-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for host [h-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudHostDelete(service, cmd, []string{"h-abcdef12"})
 		})
 	})

@@ -36,7 +36,7 @@ func pssRequestReplyListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans pss request reply list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing request")
+				return errors.New("missing request")
 			}
 
 			return nil
@@ -55,7 +55,7 @@ func pssRequestReplyListCmd(f factory.ClientFactory) *cobra.Command {
 func pssRequestReplyList(service pss.PSSService, cmd *cobra.Command, args []string) error {
 	requestID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid request ID [%s]", args[0])
+		return fmt.Errorf("invalid request ID [%s]", args[0])
 	}
 
 	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
@@ -65,7 +65,7 @@ func pssRequestReplyList(service pss.PSSService, cmd *cobra.Command, args []stri
 
 	replies, err := service.GetRequestConversation(requestID, params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving request replies: %s", err)
+		return fmt.Errorf("error retrieving request replies: %s", err)
 	}
 
 	return output.CommandOutput(cmd, ReplyCollection(replies))
@@ -79,7 +79,7 @@ func pssRequestReplyCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans pss request reply create --description 'example' --author 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing request")
+				return errors.New("missing request")
 			}
 
 			return nil
@@ -97,7 +97,7 @@ func pssRequestReplyCreateCmd(f factory.ClientFactory) *cobra.Command {
 	// Setup flags
 	cmd.Flags().String("description", "", "Specifies description for reply")
 	cmd.Flags().Int("author", 0, "Specifies author ID for reply")
-	cmd.MarkFlagRequired("author")
+	_ = cmd.MarkFlagRequired("author")
 
 	return cmd
 }
@@ -105,7 +105,7 @@ func pssRequestReplyCreateCmd(f factory.ClientFactory) *cobra.Command {
 func pssRequestReplyCreate(service pss.PSSService, cmd *cobra.Command, args []string) error {
 	requestID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid request ID [%s]", args[0])
+		return fmt.Errorf("invalid request ID [%s]", args[0])
 	}
 
 	createRequest := pss.CreateReplyRequest{}
@@ -122,12 +122,12 @@ func pssRequestReplyCreate(service pss.PSSService, cmd *cobra.Command, args []st
 
 	replyID, err := service.CreateRequestReply(requestID, createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating reply: %s", err)
+		return fmt.Errorf("error creating reply: %s", err)
 	}
 
 	reply, err := service.GetReply(replyID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new reply: %s", err)
+		return fmt.Errorf("error retrieving new reply: %s", err)
 	}
 
 	return output.CommandOutput(cmd, ReplyCollection([]pss.Reply{reply}))

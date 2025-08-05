@@ -47,6 +47,6 @@ func Test_cloudflareSubscriptionList(t *testing.T) {
 
 		err := cloudflareSubscriptionList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving subscriptions: test error", err.Error())
+		assert.Equal(t, "error retrieving subscriptions: test error", err.Error())
 	})
 }

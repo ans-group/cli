@@ -37,7 +37,7 @@ func ecloudVirtualMachineTagListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vm tag list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing virtual machine")
+				return errors.New("missing virtual machine")
 			}
 
 			return nil
@@ -56,7 +56,7 @@ func ecloudVirtualMachineTagListCmd(f factory.ClientFactory) *cobra.Command {
 func ecloudVirtualMachineTagList(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	vmID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid virtual machine ID [%s]", args[0])
+		return fmt.Errorf("invalid virtual machine ID [%s]", args[0])
 	}
 
 	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
@@ -66,7 +66,7 @@ func ecloudVirtualMachineTagList(service ecloud.ECloudService, cmd *cobra.Comman
 
 	tags, err := service.GetVirtualMachineTags(vmID, params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving virtual machine tags: %s", err)
+		return fmt.Errorf("error retrieving virtual machine tags: %s", err)
 	}
 
 	return output.CommandOutput(cmd, TagV1Collection(tags))
@@ -80,10 +80,10 @@ func ecloudVirtualMachineTagShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vm tag show 123 foo",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing virtual machine")
+				return errors.New("missing virtual machine")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing tag")
+				return errors.New("missing tag")
 			}
 
 			return nil
@@ -102,7 +102,7 @@ func ecloudVirtualMachineTagShowCmd(f factory.ClientFactory) *cobra.Command {
 func ecloudVirtualMachineTagShow(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	vmID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid virtual machine ID [%s]", args[0])
+		return fmt.Errorf("invalid virtual machine ID [%s]", args[0])
 	}
 
 	var tags []ecloud.TagV1
@@ -128,7 +128,7 @@ func ecloudVirtualMachineTagCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vm tag create 123 --key foo --value bar",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing virtual machine")
+				return errors.New("missing virtual machine")
 			}
 
 			return nil
@@ -144,9 +144,9 @@ func ecloudVirtualMachineTagCreateCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("key", "", "Key for tag")
-	cmd.MarkFlagRequired("key")
+	_ = cmd.MarkFlagRequired("key")
 	cmd.Flags().String("value", "", "Value for tag")
-	cmd.MarkFlagRequired("value")
+	_ = cmd.MarkFlagRequired("value")
 
 	return cmd
 }
@@ -154,7 +154,7 @@ func ecloudVirtualMachineTagCreateCmd(f factory.ClientFactory) *cobra.Command {
 func ecloudVirtualMachineTagCreate(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	vmID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid virtual machine ID [%s]", args[0])
+		return fmt.Errorf("invalid virtual machine ID [%s]", args[0])
 	}
 
 	key, _ := cmd.Flags().GetString("key")
@@ -167,12 +167,12 @@ func ecloudVirtualMachineTagCreate(service ecloud.ECloudService, cmd *cobra.Comm
 
 	err = service.CreateVirtualMachineTag(vmID, createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating virtual machine tag: %s", err)
+		return fmt.Errorf("error creating virtual machine tag: %s", err)
 	}
 
 	tag, err := service.GetVirtualMachineTag(vmID, key)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new virtual machine tag: %s", err)
+		return fmt.Errorf("error retrieving new virtual machine tag: %s", err)
 	}
 
 	return output.CommandOutput(cmd, TagV1Collection([]ecloud.TagV1{tag}))
@@ -186,10 +186,10 @@ func ecloudVirtualMachineTagUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vm tag update 123 foo --value \"new value\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing virtual machine")
+				return errors.New("missing virtual machine")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing tag")
+				return errors.New("missing tag")
 			}
 
 			return nil
@@ -212,7 +212,7 @@ func ecloudVirtualMachineTagUpdateCmd(f factory.ClientFactory) *cobra.Command {
 func ecloudVirtualMachineTagUpdate(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	vmID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid virtual machine ID [%s]", args[0])
+		return fmt.Errorf("invalid virtual machine ID [%s]", args[0])
 	}
 
 	patchRequest := ecloud.PatchTagV1Request{}
@@ -251,10 +251,10 @@ func ecloudVirtualMachineTagDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vm tag delete 123 foo",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing virtual machine")
+				return errors.New("missing virtual machine")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing tag")
+				return errors.New("missing tag")
 			}
 
 			return nil
@@ -273,7 +273,7 @@ func ecloudVirtualMachineTagDeleteCmd(f factory.ClientFactory) *cobra.Command {
 func ecloudVirtualMachineTagDelete(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	vmID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid virtual machine ID [%s]", args[0])
+		return fmt.Errorf("invalid virtual machine ID [%s]", args[0])
 	}
 
 	for _, arg := range args[1:] {

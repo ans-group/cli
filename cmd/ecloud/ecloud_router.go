@@ -59,7 +59,7 @@ func ecloudRouterList(service ecloud.ECloudService, cmd *cobra.Command, args []s
 
 	routers, err := service.GetRouters(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving routers: %s", err)
+		return fmt.Errorf("error retrieving routers: %s", err)
 	}
 
 	return output.CommandOutput(cmd, RouterCollection(routers))
@@ -73,7 +73,7 @@ func ecloudRouterShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud router show rtr-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing router")
+				return errors.New("missing router")
 			}
 
 			return nil
@@ -109,9 +109,9 @@ func ecloudRouterCreateCmd(f factory.ClientFactory) *cobra.Command {
 	// Setup flags
 	cmd.Flags().String("name", "", "Name of router")
 	cmd.Flags().String("vpc", "", "ID of VPC")
-	cmd.MarkFlagRequired("vpc")
+	_ = cmd.MarkFlagRequired("vpc")
 	cmd.Flags().String("availability-zone", "", "ID of Availability Zone")
-	cmd.MarkFlagRequired("availability-zone")
+	_ = cmd.MarkFlagRequired("availability-zone")
 	cmd.Flags().String("throughput", "", "ID of router throughput to assign")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the router has been completely created")
 
@@ -133,20 +133,20 @@ func ecloudRouterCreate(service ecloud.ECloudService, cmd *cobra.Command, args [
 
 	routerID, err := service.CreateRouter(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating router: %s", err)
+		return fmt.Errorf("error creating router: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := helper.WaitForCommand(RouterResourceSyncStatusWaitFunc(service, routerID, ecloud.SyncStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for router sync: %s", err)
+			return fmt.Errorf("error waiting for router sync: %s", err)
 		}
 	}
 
 	router, err := service.GetRouter(routerID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new router: %s", err)
+		return fmt.Errorf("error retrieving new router: %s", err)
 	}
 
 	return output.CommandOutput(cmd, RouterCollection([]ecloud.Router{router}))
@@ -160,7 +160,7 @@ func ecloudRouterUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud router update rtr-abcdef12 --name \"my router\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing router")
+				return errors.New("missing router")
 			}
 
 			return nil
@@ -223,7 +223,7 @@ func ecloudRouterDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud router delete rtr-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing router")
+				return errors.New("missing router")
 			}
 
 			return nil
@@ -264,7 +264,7 @@ func ecloudRouterDeployDefaultFirewallPoliciesCmd(f factory.ClientFactory) *cobr
 		Example: "ans ecloud router deploydefaultfirewallpolicies rtr-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing router")
+				return errors.New("missing router")
 			}
 
 			return nil
@@ -303,7 +303,7 @@ func RouterNotFoundWaitFunc(service ecloud.ECloudService, routerID string) helpe
 			case *ecloud.RouterNotFoundError:
 				return true, nil
 			default:
-				return false, fmt.Errorf("Failed to retrieve router [%s]: %s", routerID, err)
+				return false, fmt.Errorf("failed to retrieve router [%s]: %s", routerID, err)
 			}
 		}
 

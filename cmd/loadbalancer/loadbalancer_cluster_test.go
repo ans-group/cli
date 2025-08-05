@@ -50,7 +50,7 @@ func Test_loadbalancerClusterList(t *testing.T) {
 		err := loadbalancerClusterList(service, &cobra.Command{}, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error retrieving clusters: test error", err.Error())
+		assert.Equal(t, "error retrieving clusters: test error", err.Error())
 	})
 }
 
@@ -65,7 +65,7 @@ func Test_loadbalancerClusterShowCmd_Args(t *testing.T) {
 		err := loadbalancerClusterShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing cluster", err.Error())
+		assert.Equal(t, "missing cluster", err.Error())
 	})
 }
 
@@ -131,7 +131,7 @@ func Test_loadbalancerClusterUpdateCmd_Args(t *testing.T) {
 		err := loadbalancerClusterUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing cluster", err.Error())
+		assert.Equal(t, "missing cluster", err.Error())
 	})
 }
 
@@ -205,7 +205,7 @@ func Test_loadbalancerClusterDeployCmd_Args(t *testing.T) {
 		err := loadbalancerClusterDeployCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing cluster", err.Error())
+		assert.Equal(t, "missing cluster", err.Error())
 	})
 }
 
@@ -257,7 +257,7 @@ func Test_loadbalancerClusterValidateCmd_Args(t *testing.T) {
 		err := loadbalancerClusterValidateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing cluster", err.Error())
+		assert.Equal(t, "missing cluster", err.Error())
 	})
 }
 

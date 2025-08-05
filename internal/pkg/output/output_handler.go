@@ -79,7 +79,7 @@ func (o *OutputHandler) Output(cmd *cobra.Command, d interface{}) error {
 	case "template":
 		return o.Template(arg, d)
 	default:
-		Errorf("Invalid output format [%s], defaulting to 'table'", format)
+		Errorf("invalid output format [%s], defaulting to 'table'", format)
 		fallthrough
 	case "table":
 		return o.Table(cmd, d)
@@ -109,8 +109,8 @@ func (o *OutputHandler) Table(cmd *cobra.Command, d interface{}) error {
 		tablewriter.WithRowAlignment(tw.AlignLeft))
 
 	table.Header(columns)
-	table.Bulk(rows)
-	table.Render()
+	_ = table.Bulk(rows)
+	_ = table.Render()
 
 	return nil
 }
@@ -124,16 +124,16 @@ func (o *OutputHandler) List(cmd *cobra.Command, d interface{}) error {
 	}
 
 	f := bufio.NewWriter(os.Stdout)
-	defer f.Flush()
+	defer func() { _ = f.Flush() }()
 
 	maxPropertyLength := getMaxPropertyLength(columns)
 	for i, row := range rows {
 		if i > 0 {
-			f.WriteString("\n")
+			_, _ = f.WriteString("\n")
 		}
 
 		for columnIndex, column := range columns {
-			f.WriteString(fmt.Sprintf("%s : %s\n", padProperty(column, maxPropertyLength), row[columnIndex]))
+			_, _ = fmt.Fprintf(f, "%s : %s\n", padProperty(column, maxPropertyLength), row[columnIndex])
 		}
 	}
 

@@ -51,7 +51,7 @@ func ecloudNATOverloadRuleList(service ecloud.ECloudService, cmd *cobra.Command,
 
 	rules, err := service.GetNATOverloadRules(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving NAT overload rules: %s", err)
+		return fmt.Errorf("error retrieving NAT overload rules: %s", err)
 	}
 
 	return output.CommandOutput(cmd, NATOverloadRuleCollection(rules))
@@ -65,7 +65,7 @@ func ecloudNATOverloadRuleShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud natoverloadrule show nor-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing NAT overload rule")
+				return errors.New("missing NAT overload rule")
 			}
 
 			return nil
@@ -100,13 +100,13 @@ func ecloudNATOverloadRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Setup flags
 	cmd.Flags().String("network", "", "ID of network")
-	cmd.MarkFlagRequired("network")
+	_ = cmd.MarkFlagRequired("network")
 	cmd.Flags().String("subnet", "", "Subnet for rule")
-	cmd.MarkFlagRequired("subnet")
+	_ = cmd.MarkFlagRequired("subnet")
 	cmd.Flags().String("floating-ip", "", "ID of floating IP for rule")
-	cmd.MarkFlagRequired("floating-ip")
+	_ = cmd.MarkFlagRequired("floating-ip")
 	cmd.Flags().String("action", "", "Action for rule - allow/deny")
-	cmd.MarkFlagRequired("action")
+	_ = cmd.MarkFlagRequired("action")
 	cmd.Flags().String("name", "", "Name of rule")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the NAT overload rule has been completely created")
 
@@ -129,20 +129,20 @@ func ecloudNATOverloadRuleCreate(service ecloud.ECloudService, cmd *cobra.Comman
 
 	taskRef, err := service.CreateNATOverloadRule(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating NAT overload rule: %s", err)
+		return fmt.Errorf("error creating NAT overload rule: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskRef.TaskID, ecloud.TaskStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for NAT overload rule task to complete: %s", err)
+			return fmt.Errorf("error waiting for NAT overload rule task to complete: %s", err)
 		}
 	}
 
 	rule, err := service.GetNATOverloadRule(taskRef.ResourceID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new NAT overload rule: %s", err)
+		return fmt.Errorf("error retrieving new NAT overload rule: %s", err)
 	}
 
 	return output.CommandOutput(cmd, NATOverloadRuleCollection([]ecloud.NATOverloadRule{rule}))
@@ -156,7 +156,7 @@ func ecloudNATOverloadRuleUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud natoverloadrule update nor-abcdef12 --name \"my\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing NAT overload rule")
+				return errors.New("missing NAT overload rule")
 			}
 
 			return nil
@@ -214,7 +214,7 @@ func ecloudNATOverloadRuleDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud natoverloadrule delete nor-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing NAT overload rule")
+				return errors.New("missing NAT overload rule")
 			}
 
 			return nil

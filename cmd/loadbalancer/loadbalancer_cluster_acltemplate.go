@@ -31,7 +31,7 @@ func loadbalancerClusterACLTemplateShowCmd(f factory.ClientFactory) *cobra.Comma
 		Example: "ans loadbalancer cluster acltemplate show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing cluster")
+				return errors.New("missing cluster")
 			}
 
 			return nil
@@ -43,12 +43,12 @@ func loadbalancerClusterACLTemplateShowCmd(f factory.ClientFactory) *cobra.Comma
 func loadbalancerClusterACLTemplateShow(service loadbalancer.LoadBalancerService, cmd *cobra.Command, args []string) error {
 	clusterID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid cluster ID")
+		return fmt.Errorf("invalid cluster ID")
 	}
 
 	aclTemplates, err := service.GetClusterACLTemplates(clusterID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving ACL templates: %s", err)
+		return fmt.Errorf("error retrieving ACL templates: %s", err)
 	}
 
 	return output.CommandOutput(cmd, ACLTemplatesCollection([]loadbalancer.ACLTemplates{aclTemplates}))

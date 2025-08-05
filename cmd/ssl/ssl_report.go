@@ -29,7 +29,7 @@ func sslReportShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ssl report show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 
 			return nil

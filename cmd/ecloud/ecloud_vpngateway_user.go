@@ -53,7 +53,7 @@ func ecloudVPNGatewayUserList(service ecloud.ECloudService, cmd *cobra.Command, 
 
 	users, err := service.GetVPNGatewayUsers(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving VPN gateway users: %s", err)
+		return fmt.Errorf("error retrieving VPN gateway users: %s", err)
 	}
 
 	return output.CommandOutput(cmd, VPNGatewayUserCollection(users))
@@ -66,7 +66,7 @@ func ecloudVPNGatewayUserShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vpngateway user show vpngu-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing VPN gateway user")
+				return errors.New("missing VPN gateway user")
 			}
 
 			return nil
@@ -101,11 +101,11 @@ func ecloudVPNGatewayUserCreateCmd(f factory.ClientFactory) *cobra.Command {
 	// Setup flags
 	cmd.Flags().String("name", "", "Name of user")
 	cmd.Flags().String("vpngateway", "", "ID of VPN gateway")
-	cmd.MarkFlagRequired("vpngateway")
+	_ = cmd.MarkFlagRequired("vpngateway")
 	cmd.Flags().String("username", "", "Username for the VPN user")
-	cmd.MarkFlagRequired("username")
+	_ = cmd.MarkFlagRequired("username")
 	cmd.Flags().String("password", "", "Password for the VPN user")
-	cmd.MarkFlagRequired("password")
+	_ = cmd.MarkFlagRequired("password")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the user has been created")
 
 	return cmd
@@ -120,20 +120,20 @@ func ecloudVPNGatewayUserCreate(service ecloud.ECloudService, cmd *cobra.Command
 
 	taskRef, err := service.CreateVPNGatewayUser(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating VPN gateway user: %s", err)
+		return fmt.Errorf("error creating VPN gateway user: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskRef.TaskID, ecloud.TaskStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for VPN gateway user task to complete: %s", err)
+			return fmt.Errorf("error waiting for VPN gateway user task to complete: %s", err)
 		}
 	}
 
 	user, err := service.GetVPNGatewayUser(taskRef.ResourceID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new VPN gateway user: %s", err)
+		return fmt.Errorf("error retrieving new VPN gateway user: %s", err)
 	}
 
 	return output.CommandOutput(cmd, VPNGatewayUserCollection([]ecloud.VPNGatewayUser{user}))
@@ -147,7 +147,7 @@ func ecloudVPNGatewayUserUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vpngateway user update vpngu-abcdef12 --name \"my user\" --password newpass123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing VPN gateway user")
+				return errors.New("missing VPN gateway user")
 			}
 
 			return nil
@@ -208,7 +208,7 @@ func ecloudVPNGatewayUserDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vpngateway user delete vpngu-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing VPN gateway user")
+				return errors.New("missing VPN gateway user")
 			}
 
 			return nil

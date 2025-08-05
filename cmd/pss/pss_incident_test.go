@@ -62,7 +62,7 @@ func Test_pssIncidentShowCmd_Args(t *testing.T) {
 		err := pssIncidentShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing incident", err.Error())
+		assert.Equal(t, "missing incident", err.Error())
 	})
 }
 
@@ -176,7 +176,7 @@ func Test_pssIncidentCreate(t *testing.T) {
 		service.EXPECT().CreateIncidentCase(gomock.Any()).Return("", errors.New("test error"))
 
 		err := pssIncidentCreate(service, cmd, []string{})
-		assert.Equal(t, "Error creating incident: test error", err.Error())
+		assert.Equal(t, "error creating incident: test error", err.Error())
 	})
 
 	t.Run("GetIncidentError_ReturnsError", func(t *testing.T) {
@@ -193,7 +193,7 @@ func Test_pssIncidentCreate(t *testing.T) {
 		)
 
 		err := pssIncidentCreate(service, cmd, []string{})
-		assert.Equal(t, "Error retrieving new incident: test error", err.Error())
+		assert.Equal(t, "error retrieving new incident: test error", err.Error())
 	})
 }
 
@@ -208,7 +208,7 @@ func Test_pssIncidentCloseCmd_Args(t *testing.T) {
 		err := pssIncidentCloseCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing incident", err.Error())
+		assert.Equal(t, "missing incident", err.Error())
 	})
 }
 

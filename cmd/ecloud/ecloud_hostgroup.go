@@ -51,7 +51,7 @@ func ecloudHostGroupList(service ecloud.ECloudService, cmd *cobra.Command, args 
 
 	groups, err := service.GetHostGroups(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving host groups: %s", err)
+		return fmt.Errorf("error retrieving host groups: %s", err)
 	}
 
 	return output.CommandOutput(cmd, HostGroupCollection(groups))
@@ -65,7 +65,7 @@ func ecloudHostGroupShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud hostgroup show hg-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing host group")
+				return errors.New("missing host group")
 			}
 
 			return nil
@@ -101,10 +101,10 @@ func ecloudHostGroupCreateCmd(f factory.ClientFactory) *cobra.Command {
 	// Setup flags
 	cmd.Flags().String("name", "", "Name of host group")
 	cmd.Flags().String("vpc", "", "ID of VPC")
-	cmd.MarkFlagRequired("vpc")
+	_ = cmd.MarkFlagRequired("vpc")
 	cmd.Flags().String("availability-zone", "", "ID of availability zone")
 	cmd.Flags().String("host-spec", "", "ID of host specification")
-	cmd.MarkFlagRequired("host-spec")
+	_ = cmd.MarkFlagRequired("host-spec")
 	cmd.Flags().Bool("windows-enabled", false, "Specifies Windows OS should be enabled for instances")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the host group has been completely created")
 
@@ -121,20 +121,20 @@ func ecloudHostGroupCreate(service ecloud.ECloudService, cmd *cobra.Command, arg
 
 	taskRef, err := service.CreateHostGroup(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating host group: %s", err)
+		return fmt.Errorf("error creating host group: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskRef.TaskID, ecloud.TaskStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for host group task to complete: %s", err)
+			return fmt.Errorf("error waiting for host group task to complete: %s", err)
 		}
 	}
 
 	group, err := service.GetHostGroup(taskRef.ResourceID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new host group: %s", err)
+		return fmt.Errorf("error retrieving new host group: %s", err)
 	}
 
 	return output.CommandOutput(cmd, HostGroupCollection([]ecloud.HostGroup{group}))
@@ -148,7 +148,7 @@ func ecloudHostGroupUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud hostgroup update hg-abcdef12 --name \"my group\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing host group")
+				return errors.New("missing host group")
 			}
 
 			return nil
@@ -206,7 +206,7 @@ func ecloudHostGroupDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud hostgroup delete hg-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing host group")
+				return errors.New("missing host group")
 			}
 
 			return nil

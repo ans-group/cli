@@ -49,7 +49,7 @@ func Test_ecloudSiteList(t *testing.T) {
 
 		err := ecloudSiteList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving sites: test error", err.Error())
+		assert.Equal(t, "error retrieving sites: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudSiteShowCmd_Args(t *testing.T) {
 		err := ecloudSiteShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing site", err.Error())
+		assert.Equal(t, "missing site", err.Error())
 	})
 }
 

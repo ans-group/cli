@@ -31,7 +31,7 @@ func ecloudImageParameterListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud image parameter list img-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing image")
+				return errors.New("missing image")
 			}
 
 			return nil
@@ -48,7 +48,7 @@ func ecloudImageParameterList(service ecloud.ECloudService, cmd *cobra.Command, 
 
 	parameters, err := service.GetImageParameters(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving image parameters: %s", err)
+		return fmt.Errorf("error retrieving image parameters: %s", err)
 	}
 
 	return output.CommandOutput(cmd, ImageParameterCollection(parameters))

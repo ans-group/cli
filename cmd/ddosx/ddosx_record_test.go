@@ -48,6 +48,6 @@ func Test_ddosxRecordList(t *testing.T) {
 
 		err := ddosxRecordList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving records: test error", err.Error())
+		assert.Equal(t, "error retrieving records: test error", err.Error())
 	})
 }

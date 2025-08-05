@@ -59,7 +59,7 @@ func pssProblemShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans pss problem show PRB123456",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing problem")
+				return errors.New("missing problem")
 			}
 
 			return nil

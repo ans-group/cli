@@ -23,7 +23,7 @@ func Test_ecloudNetworkPolicyTaskListCmd_Args(t *testing.T) {
 		err := ecloudNetworkPolicyTaskListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing network policy", err.Error())
+		assert.Equal(t, "missing network policy", err.Error())
 	})
 }
 
@@ -63,6 +63,6 @@ func Test_ecloudNetworkPolicyTaskList(t *testing.T) {
 
 		err := ecloudNetworkPolicyTaskList(service, &cobra.Command{}, []string{"i-abcdef12"})
 
-		assert.Equal(t, "Error retrieving network policy tasks: test error", err.Error())
+		assert.Equal(t, "error retrieving network policy tasks: test error", err.Error())
 	})
 }

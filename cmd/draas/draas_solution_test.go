@@ -49,7 +49,7 @@ func Test_draasSolutionList(t *testing.T) {
 
 		err := draasSolutionList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving solutions: test error", err.Error())
+		assert.Equal(t, "error retrieving solutions: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_draasSolutionShowCmd_Args(t *testing.T) {
 		err := draasSolutionShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing solution", err.Error())
+		assert.Equal(t, "missing solution", err.Error())
 	})
 }
 
@@ -105,7 +105,7 @@ func Test_draasSolutionUpdateCmd_Args(t *testing.T) {
 		err := draasSolutionUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing solution", err.Error())
+		assert.Equal(t, "missing solution", err.Error())
 	})
 }
 
@@ -141,7 +141,7 @@ func Test_draasSolutionUpdate(t *testing.T) {
 
 		err := draasSolutionUpdate(service, cmd, []string{"00000000-0000-0000-0000-000000000000"})
 
-		assert.Equal(t, "Error updating solution: test error", err.Error())
+		assert.Equal(t, "error updating solution: test error", err.Error())
 	})
 
 	t.Run("GetSolutionError_OutputsError", func(t *testing.T) {
@@ -158,6 +158,6 @@ func Test_draasSolutionUpdate(t *testing.T) {
 
 		err := draasSolutionUpdate(service, cmd, []string{"00000000-0000-0000-0000-000000000000"})
 
-		assert.Equal(t, "Error retrieving updated solution: test error", err.Error())
+		assert.Equal(t, "error retrieving updated solution: test error", err.Error())
 	})
 }

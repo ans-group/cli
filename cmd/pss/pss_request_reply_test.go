@@ -23,7 +23,7 @@ func Test_pssRequestReplyListCmd_Args(t *testing.T) {
 		err := pssRequestReplyListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing request", err.Error())
+		assert.Equal(t, "missing request", err.Error())
 	})
 }
 
@@ -46,7 +46,7 @@ func Test_pssRequestReplyList(t *testing.T) {
 		service := mocks.NewMockPSSService(mockCtrl)
 
 		err := pssRequestReplyList(service, &cobra.Command{}, []string{"abc"})
-		assert.Equal(t, "Invalid request ID [abc]", err.Error())
+		assert.Equal(t, "invalid request ID [abc]", err.Error())
 	})
 
 	t.Run("MalformedFlag_ReturnsError", func(t *testing.T) {
@@ -71,7 +71,7 @@ func Test_pssRequestReplyList(t *testing.T) {
 		service.EXPECT().GetRequestConversation(123, gomock.Any()).Return([]pss.Reply{}, errors.New("test error")).Times(1)
 
 		err := pssRequestReplyList(service, &cobra.Command{}, []string{"123"})
-		assert.Equal(t, "Error retrieving request replies: test error", err.Error())
+		assert.Equal(t, "error retrieving request replies: test error", err.Error())
 	})
 }
 
@@ -86,7 +86,7 @@ func Test_pssRequestReplyCreateCmd_Args(t *testing.T) {
 		err := pssRequestReplyCreateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing request", err.Error())
+		assert.Equal(t, "missing request", err.Error())
 	})
 }
 
@@ -123,7 +123,7 @@ func Test_pssRequestReplyCreate(t *testing.T) {
 		cmd := pssRequestReplyCreateCmd(nil)
 
 		err := pssRequestReplyCreate(service, cmd, []string{"invalid"})
-		assert.Contains(t, err.Error(), "Invalid request ID [invalid]")
+		assert.Contains(t, err.Error(), "invalid request ID [invalid]")
 	})
 
 	t.Run("CreateRequestReplyError_ReturnsError", func(t *testing.T) {
@@ -136,7 +136,7 @@ func Test_pssRequestReplyCreate(t *testing.T) {
 		service.EXPECT().CreateRequestReply(123, gomock.Any()).Return("", errors.New("test error")).Times(1)
 
 		err := pssRequestReplyCreate(service, cmd, []string{"123"})
-		assert.Equal(t, "Error creating reply: test error", err.Error())
+		assert.Equal(t, "error creating reply: test error", err.Error())
 	})
 
 	t.Run("GetRequestError_ReturnsError", func(t *testing.T) {
@@ -152,6 +152,6 @@ func Test_pssRequestReplyCreate(t *testing.T) {
 		)
 
 		err := pssRequestReplyCreate(service, cmd, []string{"123"})
-		assert.Equal(t, "Error retrieving new reply: test error", err.Error())
+		assert.Equal(t, "error retrieving new reply: test error", err.Error())
 	})
 }

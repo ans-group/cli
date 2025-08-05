@@ -51,7 +51,7 @@ func ecloudVPNEndpointList(service ecloud.ECloudService, cmd *cobra.Command, arg
 
 	endpoints, err := service.GetVPNEndpoints(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving VPN endpoints: %s", err)
+		return fmt.Errorf("error retrieving VPN endpoints: %s", err)
 	}
 
 	return output.CommandOutput(cmd, VPNEndpointCollection(endpoints))
@@ -65,7 +65,7 @@ func ecloudVPNEndpointShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vpnendpoint show vpne-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing VPN endpoint")
+				return errors.New("missing VPN endpoint")
 			}
 
 			return nil
@@ -100,7 +100,7 @@ func ecloudVPNEndpointCreateCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Setup flags
 	cmd.Flags().String("vpn-service", "", "ID of VPN service")
-	cmd.MarkFlagRequired("vpn-service")
+	_ = cmd.MarkFlagRequired("vpn-service")
 	cmd.Flags().String("name", "", "Name of endpoint")
 	cmd.Flags().String("floating-ip", "", "Floating IP ID")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the VPN endpoint has been completely created")
@@ -116,20 +116,20 @@ func ecloudVPNEndpointCreate(service ecloud.ECloudService, cmd *cobra.Command, a
 
 	taskRef, err := service.CreateVPNEndpoint(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating VPN endpoint: %s", err)
+		return fmt.Errorf("error creating VPN endpoint: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskRef.TaskID, ecloud.TaskStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for VPN endpoint task to complete: %s", err)
+			return fmt.Errorf("error waiting for VPN endpoint task to complete: %s", err)
 		}
 	}
 
 	vpnEndpoint, err := service.GetVPNEndpoint(taskRef.ResourceID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new VPN endpoint: %s", err)
+		return fmt.Errorf("error retrieving new VPN endpoint: %s", err)
 	}
 
 	return output.CommandOutput(cmd, VPNEndpointCollection([]ecloud.VPNEndpoint{vpnEndpoint}))
@@ -143,7 +143,7 @@ func ecloudVPNEndpointUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vpnendpoint update vpne-abcdef12 --name \"my endpoint\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing VPN endpoint")
+				return errors.New("missing VPN endpoint")
 			}
 
 			return nil
@@ -201,7 +201,7 @@ func ecloudVPNEndpointDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vpnendpoint delete vpne-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing VPN endpoint")
+				return errors.New("missing VPN endpoint")
 			}
 
 			return nil

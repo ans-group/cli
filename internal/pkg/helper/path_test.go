@@ -11,7 +11,7 @@ import (
 
 func TestGetDestinationFilePath_MissingSource_ReturnsError(t *testing.T) {
 	fs := afero.NewMemMapFs()
-	fs.Mkdir("/dest/dir", 655)
+	fs.Mkdir("/dest/dir", 0655)
 	_, err := helper.GetDestinationFilePath(fs, "", "")
 
 	assert.NotNil(t, err)
@@ -27,7 +27,7 @@ func TestGetDestinationFilePath_DestinationNotDirectory_ReturnsDestination(t *te
 
 func TestGetDestinationFilePath_DestinationDirectory_ReturnsDestinationWithFilename(t *testing.T) {
 	fs := afero.NewMemMapFs()
-	fs.Mkdir("/dest/dir", 655)
+	fs.Mkdir("/dest/dir", 0655)
 	path, err := helper.GetDestinationFilePath(fs, "/path/to/file.txt", "/dest/dir")
 
 	assert.Nil(t, err)
@@ -36,7 +36,7 @@ func TestGetDestinationFilePath_DestinationDirectory_ReturnsDestinationWithFilen
 
 func TestGetDestinationFilePath_DestinationOmitted_ReturnsFilename(t *testing.T) {
 	fs := afero.NewMemMapFs()
-	fs.Mkdir("/dest/dir", 655)
+	fs.Mkdir("/dest/dir", 0655)
 	path, err := helper.GetDestinationFilePath(fs, "/path/to/file.txt", "")
 
 	assert.Nil(t, err)

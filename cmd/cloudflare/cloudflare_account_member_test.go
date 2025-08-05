@@ -21,7 +21,7 @@ func Test_cloudflareAccountMemberCreateCmd_Args(t *testing.T) {
 		err := cloudflareAccountMemberCreateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing account", err.Error())
+		assert.Equal(t, "missing account", err.Error())
 	})
 }
 
@@ -55,6 +55,6 @@ func Test_cloudflareAccountMemberCreate(t *testing.T) {
 
 		err := cloudflareAccountMemberCreate(service, cmd, []string{"00000000-0000-0000-0000-000000000000"})
 
-		assert.Equal(t, "Error creating account member: test error", err.Error())
+		assert.Equal(t, "error creating account member: test error", err.Error())
 	})
 }

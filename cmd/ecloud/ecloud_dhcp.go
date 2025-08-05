@@ -50,7 +50,7 @@ func ecloudDHCPList(service ecloud.ECloudService, cmd *cobra.Command, args []str
 
 	dhcps, err := service.GetDHCPs(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving DHCPs: %s", err)
+		return fmt.Errorf("error retrieving DHCPs: %s", err)
 	}
 
 	return output.CommandOutput(cmd, DHCPCollection(dhcps))
@@ -64,7 +64,7 @@ func ecloudDHCPShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud dhcp show dhcp-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing dhcp")
+				return errors.New("missing dhcp")
 			}
 
 			return nil

@@ -53,7 +53,7 @@ func loadbalancerListenerList(service loadbalancer.LoadBalancerService, cmd *cob
 
 	listeners, err := service.GetListeners(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving listeners: %s", err)
+		return fmt.Errorf("error retrieving listeners: %s", err)
 	}
 
 	return output.CommandOutput(cmd, ListenerCollection(listeners))
@@ -67,7 +67,7 @@ func loadbalancerListenerShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans loadbalancer listener show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing listener")
+				return errors.New("missing listener")
 			}
 
 			return nil
@@ -107,13 +107,13 @@ func loadbalancerListenerCreateCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("name", "", "Name of listener")
-	cmd.MarkFlagRequired("name")
+	_ = cmd.MarkFlagRequired("name")
 	cmd.Flags().Int("cluster", 0, "ID of cluster")
-	cmd.MarkFlagRequired("cluster")
+	_ = cmd.MarkFlagRequired("cluster")
 	cmd.Flags().String("mode", "", "Specifies mode for listener")
-	cmd.MarkFlagRequired("mode")
+	_ = cmd.MarkFlagRequired("mode")
 	cmd.Flags().Int("default-target-group", 0, "ID of default target group")
-	cmd.MarkFlagRequired("default-target-group")
+	_ = cmd.MarkFlagRequired("default-target-group")
 	cmd.Flags().Bool("hsts-enabled", false, "Specifies HSTS should be enabled for listener")
 	cmd.Flags().Int("hsts-max-age", 0, "Specifies HSTS maximum age for listener")
 	cmd.Flags().Bool("close", false, "Specifies close should be enabled for listener")
@@ -196,12 +196,12 @@ func loadbalancerListenerCreate(service loadbalancer.LoadBalancerService, cmd *c
 
 	listenerID, err := service.CreateListener(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating listener: %s", err)
+		return fmt.Errorf("error creating listener: %s", err)
 	}
 
 	listener, err := service.GetListener(listenerID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new listener: %s", err)
+		return fmt.Errorf("error retrieving new listener: %s", err)
 	}
 
 	return output.CommandOutput(cmd, ListenerCollection([]loadbalancer.Listener{listener}))
@@ -215,7 +215,7 @@ func loadbalancerListenerUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans loadbalancer listener update 123 --name mylistener",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing listener")
+				return errors.New("missing listener")
 			}
 
 			return nil
@@ -341,7 +341,7 @@ func loadbalancerListenerDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans loadbalancer listener delete 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing listener")
+				return errors.New("missing listener")
 			}
 
 			return nil

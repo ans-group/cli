@@ -22,7 +22,7 @@ func Test_ecloudVirtualMachineConsoleSessionCreateCmd_Args(t *testing.T) {
 		err := ecloudVirtualMachineConsoleSessionCreateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing virtual machine", err.Error())
+		assert.Equal(t, "missing virtual machine", err.Error())
 	})
 }
 
@@ -48,7 +48,7 @@ func Test_ecloudVirtualMachineConsoleSessionCreate(t *testing.T) {
 
 		err := ecloudVirtualMachineConsoleSessionCreate(service, &cobra.Command{}, []string{"abc"})
 
-		assert.Equal(t, "Invalid virtual machine ID [abc]", err.Error())
+		assert.Equal(t, "invalid virtual machine ID [abc]", err.Error())
 	})
 
 	t.Run("GetVirtualMachineConsoleSessionError_OutputsError", func(t *testing.T) {
@@ -61,6 +61,6 @@ func Test_ecloudVirtualMachineConsoleSessionCreate(t *testing.T) {
 
 		err := ecloudVirtualMachineConsoleSessionCreate(service, &cobra.Command{}, []string{"123"})
 
-		assert.Equal(t, "Error creating virtual machine console session: test error 1", err.Error())
+		assert.Equal(t, "error creating virtual machine console session: test error 1", err.Error())
 	})
 }

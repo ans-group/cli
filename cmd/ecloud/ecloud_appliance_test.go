@@ -49,7 +49,7 @@ func Test_ecloudApplianceList(t *testing.T) {
 
 		err := ecloudApplianceList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving appliances: test error", err.Error())
+		assert.Equal(t, "error retrieving appliances: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudApplianceShowCmd_Args(t *testing.T) {
 		err := ecloudApplianceShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing appliance", err.Error())
+		assert.Equal(t, "missing appliance", err.Error())
 	})
 }
 

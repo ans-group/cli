@@ -54,7 +54,7 @@ func sslCertificateList(service ssl.SSLService, cmd *cobra.Command, args []strin
 
 	certificates, err := service.GetCertificates(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving certificates: %s", err)
+		return fmt.Errorf("error retrieving certificates: %s", err)
 	}
 
 	return output.CommandOutput(cmd, CertificateCollection(certificates))
@@ -68,7 +68,7 @@ func sslCertificateShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ssl certificate show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing certificate")
+				return errors.New("missing certificate")
 			}
 
 			return nil

@@ -9,7 +9,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func draasSolutionReplicaIOPSRootCmd(f factory.ClientFactory) *cobra.Command {
+func draasSolutionReplicaIOPSRootCmd(f factory.ClientFactory) *cobra.Command { //nolint:unused
 	cmd := &cobra.Command{
 		Use:   "iops",
 		Short: "sub-commands relating to solution replica IOPS tiers",
@@ -28,10 +28,10 @@ func draasSolutionReplicaIOPSUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans draas solution update 00000000-0000-0000-0000-000000000000 --name test",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing solution")
+				return errors.New("missing solution")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing replica")
+				return errors.New("missing replica")
 			}
 
 			return nil
@@ -47,7 +47,7 @@ func draasSolutionReplicaIOPSUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("iops-tier", "", "IOPS tier ID")
-	cmd.MarkFlagRequired("iops-tier")
+	_ = cmd.MarkFlagRequired("iops-tier")
 
 	return cmd
 }
@@ -61,7 +61,7 @@ func draasSolutionReplicaIOPSUpdate(service draas.DRaaSService, cmd *cobra.Comma
 	for _, arg := range args[1:] {
 		err := service.UpdateSolutionReplicaIOPS(args[0], arg, req)
 		if err != nil {
-			return fmt.Errorf("Error updating replica [%s]: %s", arg, err.Error())
+			return fmt.Errorf("error updating replica [%s]: %s", arg, err.Error())
 		}
 	}
 

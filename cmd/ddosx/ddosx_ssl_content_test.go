@@ -23,7 +23,7 @@ func Test_ddosxSSLContentCmd_Args(t *testing.T) {
 		err := ddosxSSLContentShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing ssl", err.Error())
+		assert.Equal(t, "missing ssl", err.Error())
 	})
 }
 

@@ -48,7 +48,7 @@ func Test_billingRecurringCostList(t *testing.T) {
 
 		err := billingRecurringCostList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving recurring costs: test error", err.Error())
+		assert.Equal(t, "error retrieving recurring costs: test error", err.Error())
 	})
 }
 
@@ -63,7 +63,7 @@ func Test_billingRecurringCostShowCmd_Args(t *testing.T) {
 		err := billingRecurringCostShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing recurring cost", err.Error())
+		assert.Equal(t, "missing recurring cost", err.Error())
 	})
 }
 

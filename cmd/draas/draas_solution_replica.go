@@ -5,7 +5,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func draasSolutionReplicaRootCmd(f factory.ClientFactory) *cobra.Command {
+func draasSolutionReplicaRootCmd(f factory.ClientFactory) *cobra.Command { //nolint:unused
 	cmd := &cobra.Command{
 		Use:   "replica",
 		Short: "sub-commands relating to solution replicas",

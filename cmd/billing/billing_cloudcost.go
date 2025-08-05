@@ -47,7 +47,7 @@ func billingCloudCostList(service billing.BillingService, cmd *cobra.Command, ar
 
 	costs, err := service.GetCloudCosts(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving cloud costs: %s", err)
+		return fmt.Errorf("error retrieving cloud costs: %s", err)
 	}
 
 	return output.CommandOutput(cmd, CloudCostCollection(costs))

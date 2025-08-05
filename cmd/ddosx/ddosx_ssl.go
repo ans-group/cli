@@ -57,7 +57,7 @@ func ddosxSSLList(service ddosx.DDoSXService, cmd *cobra.Command, args []string)
 
 	ssls, err := service.GetSSLs(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving ssls: %s", err)
+		return fmt.Errorf("error retrieving ssls: %s", err)
 	}
 
 	return output.CommandOutput(cmd, SSLCollection(ssls))
@@ -71,7 +71,7 @@ func ddosxSSLShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx ssl show 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing ssl")
+				return errors.New("missing ssl")
 			}
 
 			return nil
@@ -119,7 +119,7 @@ func ddosxSSLCreateCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 	}
 
 	cmd.Flags().String("friendly-name", "", "Friendly name for SSL")
-	cmd.MarkFlagRequired("friendly-name")
+	_ = cmd.MarkFlagRequired("friendly-name")
 	cmd.Flags().Int("ans-ssl-id", 0, "Optional ID of ANS SSL to retrieve certificate, key and bundle")
 	cmd.Flags().String("key", "", "Key contents for SSL")
 	cmd.Flags().String("key-file", "", "Path to file containing key contents for SSL")
@@ -155,12 +155,12 @@ func ddosxSSLCreate(service ddosx.DDoSXService, cmd *cobra.Command, fs afero.Fs,
 
 	id, err := service.CreateSSL(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating ssl: %s", err.Error())
+		return fmt.Errorf("error creating ssl: %s", err.Error())
 	}
 
 	ssl, err := service.GetSSL(id)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new ssl [%s]: %s", id, err.Error())
+		return fmt.Errorf("error retrieving new ssl [%s]: %s", id, err.Error())
 	}
 
 	return output.CommandOutput(cmd, SSLCollection([]ddosx.SSL{ssl}))
@@ -174,7 +174,7 @@ func ddosxSSLUpdateCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 		Example: "ans ddosx ssl update 00000000-0000-0000-0000-000000000000 --friendly-name myssl",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing ssl")
+				return errors.New("missing ssl")
 			}
 
 			return nil
@@ -227,12 +227,12 @@ func ddosxSSLUpdate(service ddosx.DDoSXService, cmd *cobra.Command, fs afero.Fs,
 
 	_, err := service.PatchSSL(args[0], patchRequest)
 	if err != nil {
-		return fmt.Errorf("Error updating ssl: %s", err.Error())
+		return fmt.Errorf("error updating ssl: %s", err.Error())
 	}
 
 	ssl, err := service.GetSSL(args[0])
 	if err != nil {
-		return fmt.Errorf("Error retrieving updated ssl: %s", err.Error())
+		return fmt.Errorf("error retrieving updated ssl: %s", err.Error())
 	}
 
 	return output.CommandOutput(cmd, SSLCollection([]ddosx.SSL{ssl}))
@@ -246,7 +246,7 @@ func ddosxSSLDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx ssl delete 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing ssl")
+				return errors.New("missing ssl")
 			}
 
 			return nil

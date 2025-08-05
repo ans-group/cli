@@ -114,7 +114,7 @@ func Test_configContextSwitchCmd_Args(t *testing.T) {
 		err := configContextSwitchCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing context", err.Error())
+		assert.Equal(t, "missing context", err.Error())
 	})
 }
 

@@ -23,7 +23,7 @@ func Test_ecloudInstanceCredentialListCmd_Args(t *testing.T) {
 		err := ecloudInstanceCredentialListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing instance", err.Error())
+		assert.Equal(t, "missing instance", err.Error())
 	})
 }
 
@@ -63,6 +63,6 @@ func Test_ecloudInstanceCredentialList(t *testing.T) {
 
 		err := ecloudInstanceCredentialList(service, &cobra.Command{}, []string{"i-abcdef12"})
 
-		assert.Equal(t, "Error retrieving instance credentials: test error", err.Error())
+		assert.Equal(t, "error retrieving instance credentials: test error", err.Error())
 	})
 }

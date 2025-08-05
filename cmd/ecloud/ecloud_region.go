@@ -46,7 +46,7 @@ func ecloudRegionList(service ecloud.ECloudService, cmd *cobra.Command, args []s
 
 	regions, err := service.GetRegions(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving regions: %s", err)
+		return fmt.Errorf("error retrieving regions: %s", err)
 	}
 
 	return output.CommandOutput(cmd, RegionCollection(regions))
@@ -60,7 +60,7 @@ func ecloudRegionShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud region show reg-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing region")
+				return errors.New("missing region")
 			}
 
 			return nil

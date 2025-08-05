@@ -63,7 +63,7 @@ func Test_pssCaseShowCmd_Args(t *testing.T) {
 		err := pssCaseShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing case", err.Error())
+		assert.Equal(t, "missing case", err.Error())
 	})
 }
 

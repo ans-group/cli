@@ -50,7 +50,7 @@ func billingPaymentList(service billing.BillingService, cmd *cobra.Command, args
 
 	payments, err := service.GetPayments(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving payments: %s", err)
+		return fmt.Errorf("error retrieving payments: %s", err)
 	}
 
 	return output.CommandOutput(cmd, PaymentCollection(payments))
@@ -64,7 +64,7 @@ func billingPaymentShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans billing payment show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing payment")
+				return errors.New("missing payment")
 			}
 
 			return nil

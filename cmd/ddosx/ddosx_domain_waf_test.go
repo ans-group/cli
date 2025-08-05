@@ -24,7 +24,7 @@ func Test_ddosxDomainWAFShowCmd_Args(t *testing.T) {
 		err := ddosxDomainWAFShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 }
 
@@ -79,7 +79,7 @@ func Test_ddosxDomainWAFCreateCmd_Args(t *testing.T) {
 		err := ddosxDomainWAFCreateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 }
 
@@ -150,7 +150,7 @@ func Test_ddosxDomainWAFCreate(t *testing.T) {
 
 		err := ddosxDomainWAFCreate(service, cmd, []string{"testdomain1.co.uk"})
 
-		assert.Equal(t, "Error creating domain waf: test error", err.Error())
+		assert.Equal(t, "error creating domain waf: test error", err.Error())
 	})
 
 	t.Run("GetDomainWAFError_ReturnsError", func(t *testing.T) {
@@ -170,7 +170,7 @@ func Test_ddosxDomainWAFCreate(t *testing.T) {
 
 		err := ddosxDomainWAFCreate(service, cmd, []string{"testdomain1.co.uk"})
 
-		assert.Equal(t, "Error retrieving domain waf: test error", err.Error())
+		assert.Equal(t, "error retrieving domain waf: test error", err.Error())
 	})
 }
 
@@ -185,7 +185,7 @@ func Test_ddosxDomainWAFUpdateCmd_Args(t *testing.T) {
 		err := ddosxDomainWAFUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 }
 
@@ -289,7 +289,7 @@ func Test_ddosxDomainWAFDeleteCmd_Args(t *testing.T) {
 		err := ddosxDomainWAFDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 }
 

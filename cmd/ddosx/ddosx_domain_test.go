@@ -50,7 +50,7 @@ func Test_ddosxDomainList(t *testing.T) {
 
 		err := ddosxDomainList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving domains: test error", err.Error())
+		assert.Equal(t, "error retrieving domains: test error", err.Error())
 	})
 }
 
@@ -65,7 +65,7 @@ func Test_ddosxDomainShowCmd_Args(t *testing.T) {
 		err := ddosxDomainShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 }
 
@@ -141,7 +141,7 @@ func Test_ddosxDomainCreate(t *testing.T) {
 
 		err := ddosxDomainCreate(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 
-		assert.Equal(t, "Error creating domain: test error", err.Error())
+		assert.Equal(t, "error creating domain: test error", err.Error())
 	})
 
 	t.Run("CreateDomain_ReturnsError", func(t *testing.T) {
@@ -160,7 +160,7 @@ func Test_ddosxDomainCreate(t *testing.T) {
 
 		err := ddosxDomainCreate(service, cmd, []string{"testdomain1.co.uk"})
 
-		assert.Equal(t, "Error retrieving new domain: test error", err.Error())
+		assert.Equal(t, "error retrieving new domain: test error", err.Error())
 	})
 }
 
@@ -231,7 +231,7 @@ func Test_ddosxDomainDeployCmd_Args(t *testing.T) {
 		err := ddosxDomainDeployCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 }
 
@@ -306,7 +306,7 @@ func Test_ddosxDomainDeploy(t *testing.T) {
 			service.EXPECT().GetDomain("testdomain1.co.uk").Return(ddosx.Domain{Status: ddosx.DomainStatusFailed}, nil),
 		)
 
-		test_output.AssertErrorOutput(t, "Error deploying domain [testdomain1.co.uk]: Error waiting for command: Domain [testdomain1.co.uk] in [Failed] state\n", func() {
+		test_output.AssertErrorOutput(t, "Error deploying domain [testdomain1.co.uk]: error waiting for command: domain [testdomain1.co.uk] in [Failed] state\n", func() {
 			ddosxDomainDeploy(service, cmd, []string{"testdomain1.co.uk"})
 		})
 	})
@@ -358,7 +358,7 @@ func TestDomainStatusWaitFunc(t *testing.T) {
 		finished, err := DomainStatusWaitFunc(service, "testdomain1.co.uk", ddosx.DomainStatusConfigured)()
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Failed to retrieve domain [testdomain1.co.uk]: test error 1", err.Error())
+		assert.Equal(t, "failed to retrieve domain [testdomain1.co.uk]: test error 1", err.Error())
 		assert.False(t, finished)
 	})
 
@@ -378,7 +378,7 @@ func TestDomainStatusWaitFunc(t *testing.T) {
 		finished, err := DomainStatusWaitFunc(service, "testdomain1.co.uk", ddosx.DomainStatusConfigured)()
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Domain [testdomain1.co.uk] in [Failed] state", err.Error())
+		assert.Equal(t, "domain [testdomain1.co.uk] in [Failed] state", err.Error())
 		assert.False(t, finished)
 	})
 

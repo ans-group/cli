@@ -37,7 +37,7 @@ func safednsTemplateRecordListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans safedns template record list \"main template\"\nans safedns template record list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing template")
+				return errors.New("missing template")
 			}
 
 			return nil
@@ -75,7 +75,7 @@ func safednsTemplateRecordList(service safedns.SafeDNSService, cmd *cobra.Comman
 
 	templateRecords, err := service.GetTemplateRecords(templateID, params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving records for template: %s", err)
+		return fmt.Errorf("error retrieving records for template: %s", err)
 	}
 
 	return output.CommandOutput(cmd, RecordCollection(templateRecords))
@@ -89,10 +89,10 @@ func safednsTemplateRecordShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans safedns template record show \"main template\" 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing template")
+				return errors.New("missing template")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing record")
+				return errors.New("missing record")
 			}
 
 			return nil
@@ -143,7 +143,7 @@ func safednsTemplateRecordCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans safedns template record create \"main template\" --name subdomain.ans.co.uk --type A --content 1.2.3.4",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing template")
+				return errors.New("missing template")
 			}
 
 			return nil
@@ -159,13 +159,13 @@ func safednsTemplateRecordCreateCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("name", "", "Name of record")
-	cmd.MarkFlagRequired("name")
+	_ = cmd.MarkFlagRequired("name")
 	cmd.Flags().String("type", "", "Type of record")
-	cmd.MarkFlagRequired("type")
+	_ = cmd.MarkFlagRequired("type")
 	cmd.Flags().String("content", "", "Record content")
-	cmd.MarkFlagRequired("content")
+	_ = cmd.MarkFlagRequired("content")
 	cmd.Flags().Int("ttl", 0, "Record TTL")
-	cmd.MarkFlagRequired("ttl")
+	_ = cmd.MarkFlagRequired("ttl")
 	cmd.Flags().Int("priority", 0, "Record priority")
 
 	return cmd
@@ -200,12 +200,12 @@ func safednsTemplateRecordCreate(service safedns.SafeDNSService, cmd *cobra.Comm
 
 	id, err := service.CreateTemplateRecord(templateID, createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating record: %s", err)
+		return fmt.Errorf("error creating record: %s", err)
 	}
 
 	templateRecord, err := service.GetTemplateRecord(templateID, id)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new record: %s", err)
+		return fmt.Errorf("error retrieving new record: %s", err)
 	}
 
 	return output.CommandOutput(cmd, RecordCollection([]safedns.Record{templateRecord}))
@@ -219,10 +219,10 @@ func safednsTemplateRecordUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans safedns template record update \"main template\" 123 --content 1.2.3.4",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing template")
+				return errors.New("missing template")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing record")
+				return errors.New("missing record")
 			}
 
 			return nil
@@ -311,10 +311,10 @@ func safednsTemplateRecordDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans safedns template record delete \"main template\" 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing template")
+				return errors.New("missing template")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing record")
+				return errors.New("missing record")
 			}
 
 			return nil

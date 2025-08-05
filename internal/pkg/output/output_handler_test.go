@@ -116,7 +116,7 @@ func TestOutputHandler_Table(t *testing.T) {
 		assert.NoError(t, err)
 	})
 
-	assert.Equal(t, "+----------------+----------------+----------------+\n| TESTPROPERTY1  | TESTPROPERTY2  | TESTPROPERTY3  |\n+----------------+----------------+----------------+\n| Row1TestValue1 | Row1TestValue2 | Row1TestValue3 |\n+----------------+----------------+----------------+\n", output)
+	assert.Equal(t, "┌────────────────┬────────────────┬────────────────┐\n│ TESTPROPERTY 1 │ TESTPROPERTY 2 │ TESTPROPERTY 3 │\n├────────────────┼────────────────┼────────────────┤\n│ Row1TestValue1 │ Row1TestValue2 │ Row1TestValue3 │\n└────────────────┴────────────────┴────────────────┘\n", output)
 }
 
 func TestOutputHandler_List(t *testing.T) {

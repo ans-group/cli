@@ -24,7 +24,7 @@ func Test_ddosxDomainACLGeoIPRulesModeShowCmd_Args(t *testing.T) {
 		err := ddosxDomainACLGeoIPRulesModeShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 }
 
@@ -81,7 +81,7 @@ func Test_ddosxDomainACLGeoIPRulesModeUpdateCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 }
 
@@ -128,7 +128,7 @@ func Test_ddosxDomainACLGeoIPRulesModeUpdate(t *testing.T) {
 
 		err := ddosxDomainACLGeoIPRulesModeUpdate(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 
-		assert.Equal(t, "Error updating domain ACL GeoIP rule filtering mode: test error", err.Error())
+		assert.Equal(t, "error updating domain ACL GeoIP rule filtering mode: test error", err.Error())
 	})
 
 	t.Run("GetDomainACLGeoIPRulesMode_ReturnsError", func(t *testing.T) {
@@ -144,6 +144,6 @@ func Test_ddosxDomainACLGeoIPRulesModeUpdate(t *testing.T) {
 
 		err := ddosxDomainACLGeoIPRulesModeUpdate(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 
-		assert.Equal(t, "Error retrieving updated domain ACL GeoIP rule filtering mode: test error", err.Error())
+		assert.Equal(t, "error retrieving updated domain ACL GeoIP rule filtering mode: test error", err.Error())
 	})
 }

@@ -23,7 +23,7 @@ func Test_loadbalancerACLShowCmd_Args(t *testing.T) {
 		err := loadbalancerACLShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing ACL", err.Error())
+		assert.Equal(t, "missing ACL", err.Error())
 	})
 }
 
@@ -113,7 +113,7 @@ func Test_loadbalancerACLCreate(t *testing.T) {
 
 		err := loadbalancerACLCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error creating ACL: test error", err.Error())
+		assert.Equal(t, "error creating ACL: test error", err.Error())
 	})
 
 	t.Run("GetACLError_ReturnsError", func(t *testing.T) {
@@ -132,7 +132,7 @@ func Test_loadbalancerACLCreate(t *testing.T) {
 
 		err := loadbalancerACLCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error retrieving new ACL: test error", err.Error())
+		assert.Equal(t, "error retrieving new ACL: test error", err.Error())
 	})
 }
 
@@ -147,7 +147,7 @@ func Test_loadbalancerACLUpdateCmd_Args(t *testing.T) {
 		err := loadbalancerACLUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing ACL", err.Error())
+		assert.Equal(t, "missing ACL", err.Error())
 	})
 }
 
@@ -230,7 +230,7 @@ func Test_loadbalancerACLDeleteCmd_Args(t *testing.T) {
 		err := loadbalancerACLDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing ACL", err.Error())
+		assert.Equal(t, "missing ACL", err.Error())
 	})
 }
 
