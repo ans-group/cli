@@ -1079,3 +1079,397 @@ func Test_ecloudInstanceDecrypt(t *testing.T) {
 		})
 	})
 }
+
+func Test_tagLookup(t *testing.T) {
+	t.Run("EmptyTag_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		_, err := tagLookup(service, "")
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Cannot lookup tag with empty value", err.Error())
+	})
+
+	t.Run("TagIDWithPrefix_ReturnsID", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		tagID, err := tagLookup(service, "tag-abcdef12")
+
+		assert.Nil(t, err)
+		assert.Equal(t, "tag-abcdef12", tagID)
+	})
+
+	t.Run("ScopedTagName_ReturnsID", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		expectedParams := connection.APIRequestParameters{
+			Filtering: []connection.APIRequestFiltering{
+				{
+					Property: "scope",
+					Operator: connection.EQOperator,
+					Value:    []string{"test-scope"},
+				},
+				{
+					Property: "name",
+					Operator: connection.EQOperator,
+					Value:    []string{"test-tag"},
+				},
+			},
+		}
+
+		service.EXPECT().GetTags(expectedParams).Return([]ecloud.Tag{{ID: "tag-abcdef12", Scope: "test-scope", Name: "test-tag"}}, nil)
+
+		tagID, err := tagLookup(service, "test-scope:test-tag")
+
+		assert.Nil(t, err)
+		assert.Equal(t, "tag-abcdef12", tagID)
+	})
+
+	t.Run("TagNameOnly_ReturnsID", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		expectedParams := connection.APIRequestParameters{
+			Filtering: []connection.APIRequestFiltering{
+				{
+					Property: "name",
+					Operator: connection.EQOperator,
+					Value:    []string{"test-tag"},
+				},
+			},
+		}
+
+		service.EXPECT().GetTags(expectedParams).Return([]ecloud.Tag{{ID: "tag-abcdef12", Name: "test-tag"}}, nil)
+
+		tagID, err := tagLookup(service, "test-tag")
+
+		assert.Nil(t, err)
+		assert.Equal(t, "tag-abcdef12", tagID)
+	})
+
+	t.Run("InvalidScopedFormat_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		_, err := tagLookup(service, "invalid:scope:format")
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Invalid tag format 'invalid:scope:format', expected '<scope>:<name>'", err.Error())
+	})
+
+	t.Run("GetTagsError_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		service.EXPECT().GetTags(gomock.Any()).Return([]ecloud.Tag{}, errors.New("test error"))
+
+		_, err := tagLookup(service, "test-tag")
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Error retrieving tags: test error", err.Error())
+	})
+
+	t.Run("TagNotFound_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		service.EXPECT().GetTags(gomock.Any()).Return([]ecloud.Tag{}, nil)
+
+		_, err := tagLookup(service, "nonexistent-tag")
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Tag 'nonexistent-tag' not found, create the tag first", err.Error())
+	})
+
+	t.Run("MultipleTags_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		service.EXPECT().GetTags(gomock.Any()).Return([]ecloud.Tag{
+			{ID: "tag-abcdef12", Scope: "scope1", Name: "test-tag"},
+			{ID: "tag-12abcdef", Scope: "scope2", Name: "test-tag"},
+		}, nil)
+
+		_, err := tagLookup(service, "test-tag")
+
+		assert.NotNil(t, err)
+		assert.Contains(t, err.Error(), "Expected 1 tag, got 2 tags")
+	})
+}
+
+func Test_addRemoveTags(t *testing.T) {
+	t.Run("AddTags_WithExistingTagsInRequest_Success", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		existingTags := []string{"tag-existing1", "tag-existing2"}
+		request := &ecloud.PatchInstanceRequest{
+			TagIDs: &existingTags,
+		}
+
+		service.EXPECT().GetTags(gomock.Any()).Return([]ecloud.Tag{{ID: "tag-new1", Name: "new-tag"}}, nil)
+
+		err := addRemoveTags(service, request, "i-abcdef12", []string{"new-tag"}, true)
+
+		assert.Nil(t, err)
+		assert.Len(t, *request.TagIDs, 3)
+		assert.Contains(t, *request.TagIDs, "tag-existing1")
+		assert.Contains(t, *request.TagIDs, "tag-existing2")
+		assert.Contains(t, *request.TagIDs, "tag-new1")
+	})
+
+	t.Run("AddTags_WithoutExistingTagsInRequest_Success", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		request := &ecloud.PatchInstanceRequest{}
+
+		instance := ecloud.Instance{
+			Tags: []ecloud.ResourceTag{
+				{ID: "tag-existing1", Name: "existing-tag1"},
+				{ID: "tag-existing2", Name: "existing-tag2"},
+			},
+		}
+
+		service.EXPECT().GetInstance("i-abcdef12").Return(instance, nil)
+		service.EXPECT().GetTags(gomock.Any()).Return([]ecloud.Tag{{ID: "tag-new1", Name: "new-tag"}}, nil)
+
+		err := addRemoveTags(service, request, "i-abcdef12", []string{"new-tag"}, true)
+
+		assert.Nil(t, err)
+		assert.Len(t, *request.TagIDs, 3)
+		assert.Contains(t, *request.TagIDs, "tag-existing1")
+		assert.Contains(t, *request.TagIDs, "tag-existing2")
+		assert.Contains(t, *request.TagIDs, "tag-new1")
+	})
+
+	t.Run("RemoveTags_WithExistingTagsInRequest_Success", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		existingTags := []string{"tag-keep1", "tag-remove1", "tag-keep2"}
+		request := &ecloud.PatchInstanceRequest{
+			TagIDs: &existingTags,
+		}
+
+		service.EXPECT().GetTags(gomock.Any()).Return([]ecloud.Tag{{ID: "tag-remove1", Name: "remove-tag"}}, nil)
+
+		err := addRemoveTags(service, request, "i-abcdef12", []string{"remove-tag"}, false)
+
+		assert.Nil(t, err)
+		assert.Len(t, *request.TagIDs, 2)
+		assert.Contains(t, *request.TagIDs, "tag-keep1")
+		assert.Contains(t, *request.TagIDs, "tag-keep2")
+		assert.NotContains(t, *request.TagIDs, "tag-remove1")
+	})
+
+	t.Run("RemoveTags_WithoutExistingTagsInRequest_Success", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		request := &ecloud.PatchInstanceRequest{}
+
+		instance := ecloud.Instance{
+			Tags: []ecloud.ResourceTag{
+				{ID: "tag-keep1", Name: "keep-tag1"},
+				{ID: "tag-remove1", Name: "remove-tag"},
+				{ID: "tag-keep2", Name: "keep-tag2"},
+			},
+		}
+
+		service.EXPECT().GetInstance("i-abcdef12").Return(instance, nil)
+		service.EXPECT().GetTags(gomock.Any()).Return([]ecloud.Tag{{ID: "tag-remove1", Name: "remove-tag"}}, nil)
+
+		err := addRemoveTags(service, request, "i-abcdef12", []string{"remove-tag"}, false)
+
+		assert.Nil(t, err)
+		assert.Len(t, *request.TagIDs, 2)
+		assert.Contains(t, *request.TagIDs, "tag-keep1")
+		assert.Contains(t, *request.TagIDs, "tag-keep2")
+		assert.NotContains(t, *request.TagIDs, "tag-remove1")
+	})
+
+	t.Run("AddTags_EmptyAndWhitespaceTagsSkipped", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		request := &ecloud.PatchInstanceRequest{}
+
+		instance := ecloud.Instance{
+			Tags: []ecloud.ResourceTag{{ID: "tag-existing1", Name: "existing-tag1"}},
+		}
+
+		service.EXPECT().GetInstance("i-abcdef12").Return(instance, nil)
+		service.EXPECT().GetTags(gomock.Any()).Return([]ecloud.Tag{{ID: "tag-new1", Name: "new-tag"}}, nil)
+
+		err := addRemoveTags(service, request, "i-abcdef12", []string{"", "  ", "new-tag", "\t"}, true)
+
+		assert.Nil(t, err)
+		assert.Len(t, *request.TagIDs, 2)
+		assert.Contains(t, *request.TagIDs, "tag-existing1")
+		assert.Contains(t, *request.TagIDs, "tag-new1")
+	})
+
+	t.Run("AddTags_DuplicateTagsNotDuplicated", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		existingTags := []string{"tag-existing1"}
+		request := &ecloud.PatchInstanceRequest{
+			TagIDs: &existingTags,
+		}
+
+		service.EXPECT().GetTags(gomock.Any()).Return([]ecloud.Tag{{ID: "tag-existing1", Name: "existing-tag"}}, nil)
+
+		err := addRemoveTags(service, request, "i-abcdef12", []string{"existing-tag"}, true)
+
+		assert.Nil(t, err)
+		assert.Len(t, *request.TagIDs, 1)
+		assert.Contains(t, *request.TagIDs, "tag-existing1")
+	})
+
+	t.Run("GetInstanceError_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		request := &ecloud.PatchInstanceRequest{}
+
+		service.EXPECT().GetInstance("i-abcdef12").Return(ecloud.Instance{}, errors.New("test error"))
+
+		err := addRemoveTags(service, request, "i-abcdef12", []string{"new-tag"}, true)
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Error retrieving instance tags [i-abcdef12]: test error", err.Error())
+	})
+
+	t.Run("TagLookupError_ReturnsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		request := &ecloud.PatchInstanceRequest{}
+
+		instance := ecloud.Instance{Tags: []ecloud.ResourceTag{}}
+		service.EXPECT().GetInstance("i-abcdef12").Return(instance, nil)
+		service.EXPECT().GetTags(gomock.Any()).Return([]ecloud.Tag{}, errors.New("tag lookup error"))
+
+		err := addRemoveTags(service, request, "i-abcdef12", []string{"nonexistent-tag"}, true)
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Error retrieving tags: tag lookup error", err.Error())
+	})
+
+	t.Run("FinalTagsSortedAlphabetically", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		request := &ecloud.PatchInstanceRequest{}
+
+		instance := ecloud.Instance{
+			Tags: []ecloud.ResourceTag{
+				{ID: "tag-zebra", Name: "zebra"},
+				{ID: "tag-alpha", Name: "alpha"},
+			},
+		}
+
+		service.EXPECT().GetInstance("i-abcdef12").Return(instance, nil)
+		service.EXPECT().GetTags(gomock.Any()).Return([]ecloud.Tag{{ID: "tag-beta", Name: "beta"}}, nil)
+
+		err := addRemoveTags(service, request, "i-abcdef12", []string{"beta"}, true)
+
+		assert.Nil(t, err)
+		assert.Len(t, *request.TagIDs, 3)
+
+		// Verify tags are sorted alphabetically
+		expectedOrder := []string{"tag-alpha", "tag-beta", "tag-zebra"}
+		assert.Equal(t, expectedOrder, *request.TagIDs)
+	})
+
+	t.Run("AddMultipleTags_Success", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		request := &ecloud.PatchInstanceRequest{}
+
+		instance := ecloud.Instance{
+			Tags: []ecloud.ResourceTag{{ID: "tag-existing1", Name: "existing-tag1"}},
+		}
+
+		service.EXPECT().GetInstance("i-abcdef12").Return(instance, nil)
+
+		// Multiple calls to GetTags for each tag lookup
+		service.EXPECT().GetTags(gomock.Any()).Return([]ecloud.Tag{{ID: "tag-new1", Name: "new-tag1"}}, nil)
+		service.EXPECT().GetTags(gomock.Any()).Return([]ecloud.Tag{{ID: "tag-new2", Name: "new-tag2"}}, nil)
+
+		err := addRemoveTags(service, request, "i-abcdef12", []string{"new-tag1", "new-tag2"}, true)
+
+		assert.Nil(t, err)
+		assert.Len(t, *request.TagIDs, 3)
+		assert.Contains(t, *request.TagIDs, "tag-existing1")
+		assert.Contains(t, *request.TagIDs, "tag-new1")
+		assert.Contains(t, *request.TagIDs, "tag-new2")
+	})
+
+	t.Run("RemoveMultipleTags_Success", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		request := &ecloud.PatchInstanceRequest{}
+
+		instance := ecloud.Instance{
+			Tags: []ecloud.ResourceTag{
+				{ID: "tag-keep1", Name: "keep-tag1"},
+				{ID: "tag-remove1", Name: "remove-tag1"},
+				{ID: "tag-remove2", Name: "remove-tag2"},
+				{ID: "tag-keep2", Name: "keep-tag2"},
+			},
+		}
+
+		service.EXPECT().GetInstance("i-abcdef12").Return(instance, nil)
+
+		// Multiple calls to GetTags for each tag lookup
+		service.EXPECT().GetTags(gomock.Any()).Return([]ecloud.Tag{{ID: "tag-remove1", Name: "remove-tag1"}}, nil)
+		service.EXPECT().GetTags(gomock.Any()).Return([]ecloud.Tag{{ID: "tag-remove2", Name: "remove-tag2"}}, nil)
+
+		err := addRemoveTags(service, request, "i-abcdef12", []string{"remove-tag1", "remove-tag2"}, false)
+
+		assert.Nil(t, err)
+		assert.Len(t, *request.TagIDs, 2)
+		assert.Contains(t, *request.TagIDs, "tag-keep1")
+		assert.Contains(t, *request.TagIDs, "tag-keep2")
+		assert.NotContains(t, *request.TagIDs, "tag-remove1")
+		assert.NotContains(t, *request.TagIDs, "tag-remove2")
+	})
+}

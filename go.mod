@@ -5,7 +5,7 @@ go 1.24.0
 toolchain go1.24.5
 
 require (
-	github.com/ans-group/sdk-go v1.24.0
+	github.com/ans-group/sdk-go v1.25.0
 	github.com/blang/semver v3.5.1+incompatible
 	github.com/golang/mock v1.6.0
 	github.com/iancoleman/strcase v0.3.0
@@ -64,4 +64,4 @@ require (
 	gopkg.in/ini.v1 v1.67.0 // indirect
 )
 
-// replace github.com/ans-group/sdk-go => ../sdk-go
+//replace github.com/ans-group/sdk-go => ../sdk-go

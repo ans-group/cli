@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -144,6 +145,7 @@ func ecloudInstanceCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().String("backup-gateway-id", "", "Backup gateway ID, enables agent-level backups")
 	cmd.Flags().Bool("enable-monitoring", false, "Enable monitoring")
 	cmd.Flags().String("monitoring-gateway-id", "", "Monitoring gateway ID")
+	cmd.Flags().StringSlice("tag", []string{}, "Tag in form '<scope>:<name>', '<name>' or tag ID to apply to the instance, can be repeated")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the instance has been completely created")
 
 	return cmd
@@ -180,6 +182,19 @@ func ecloudInstanceCreate(service ecloud.ECloudService, cmd *cobra.Command, args
 	if cmd.Flags().Changed("ip-address") {
 		ipAddress, _ := cmd.Flags().GetString("ip-address")
 		createRequest.CustomIPAddress = connection.IPAddress(ipAddress)
+	}
+
+	if cmd.Flags().Changed("tag") {
+		var tagIDs []string
+		tagsArg, _ := cmd.Flags().GetStringSlice("tag")
+		for _, tag := range tagsArg {
+			tagID, err := tagLookup(service, tag)
+			if err != nil {
+				return err
+			}
+			tagIDs = append(tagIDs, tagID)
+		}
+		createRequest.TagIDs = tagIDs
 	}
 
 	imageFlag, _ := cmd.Flags().GetString("image")
@@ -258,6 +273,9 @@ func ecloudInstanceUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().Int("vcpu-cores-per-socket", 0, "Number of vCPU cores to allocate per socket")
 	cmd.Flags().Int("ram", 0, "Amount of RAM (in MB) to allocate")
 	cmd.Flags().String("volume-group", "", "ID of volume-group to use for instance")
+	cmd.Flags().StringSlice("set-tag", []string{}, "Tag in the form of '<scope>:<name>', '<name>' or a tag ID to apply to the instance, use an empty string to clear all existing tags - overwrites existing tags")
+	cmd.Flags().StringSlice("add-tag", []string{}, "Tag (like --set-tag) to add to the instance, keeping existing tags intact, can be repeated")
+	cmd.Flags().StringSlice("remove-tag", []string{}, "Tag (like --set-tag) to remove from the instance, without removing other tags, can be repeated")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the instance has been completely updated")
 
 	return cmd
@@ -292,6 +310,45 @@ func ecloudInstanceUpdate(service ecloud.ECloudService, cmd *cobra.Command, args
 	if cmd.Flags().Changed("volume-group") {
 		volGroup, _ := cmd.Flags().GetString("volume-group")
 		patchRequest.VolumeGroupID = ptr.String(volGroup)
+	}
+
+	if cmd.Flags().Changed("set-tag") {
+		tagsArg, _ := cmd.Flags().GetStringSlice("set-tag")
+		if len(tagsArg) == 0 || (len(tagsArg) == 1 && tagsArg[0] == "") {
+			// Clear all existing tags by setting to empty array
+			emptyTags := []string{}
+			patchRequest.TagIDs = &emptyTags
+		} else {
+			var tagIDs []string
+			for _, tag := range tagsArg {
+				tagID, err := tagLookup(service, tag)
+				if err != nil {
+					return err
+				}
+				tagIDs = append(tagIDs, tagID)
+			}
+			patchRequest.TagIDs = &tagIDs
+		}
+	}
+
+	if cmd.Flags().Changed("add-tag") {
+		addTagsArg, _ := cmd.Flags().GetStringSlice("add-tag")
+		for _, arg := range args {
+			err := addRemoveTags(service, &patchRequest, arg, addTagsArg, true)
+			if err != nil {
+				return err
+			}
+		}
+	}
+
+	if cmd.Flags().Changed("remove-tag") {
+		removeTagsArg, _ := cmd.Flags().GetStringSlice("remove-tag")
+		for _, arg := range args {
+			err := addRemoveTags(service, &patchRequest, arg, removeTagsArg, false)
+			if err != nil {
+				return err
+			}
+		}
 	}
 
 	var instances []ecloud.Instance
@@ -793,4 +850,107 @@ func InstanceNotFoundWaitFunc(service ecloud.ECloudService, instanceID string) h
 
 		return false, nil
 	}
+}
+
+func tagLookup(service ecloud.ECloudService, tag string) (string, error) {
+	if tag == "" {
+		return "", fmt.Errorf("Cannot lookup tag with empty value")
+	}
+
+	if strings.HasPrefix(tag, "tag-") {
+		return tag, nil
+	}
+
+	var filter []connection.APIRequestFiltering
+	if strings.Contains(tag, ":") {
+		parts := strings.Split(tag, ":")
+		if len(parts) != 2 {
+			return "", fmt.Errorf("Invalid tag format '%s', expected '<scope>:<name>'", tag)
+		}
+		filter = []connection.APIRequestFiltering{
+			{
+				Property: "scope",
+				Operator: connection.EQOperator,
+				Value:    []string{parts[0]},
+			},
+			{
+				Property: "name",
+				Operator: connection.EQOperator,
+				Value:    []string{parts[1]},
+			},
+		}
+	} else {
+		filter = []connection.APIRequestFiltering{
+			{
+				Property: "name",
+				Operator: connection.EQOperator,
+				Value:    []string{tag},
+			},
+		}
+	}
+
+	tags, err := service.GetTags(connection.APIRequestParameters{
+		Filtering: filter,
+	})
+	if err != nil {
+		return "", fmt.Errorf("Error retrieving tags: %s", err)
+	}
+
+	if len(tags) == 0 {
+		return "", fmt.Errorf("Tag '%s' not found, create the tag first", tag)
+	}
+
+	if len(tags) > 1 {
+		var foundTags []string
+		for _, t := range tags {
+			foundTags = append(foundTags, fmt.Sprintf("%s (%s:%s)", t.ID, t.Scope, t.Name))
+		}
+		return "", fmt.Errorf("Expected 1 tag, got %d tags with matching scope/name: %s", len(tags), strings.Join(foundTags, ", "))
+	}
+
+	return tags[0].ID, nil
+}
+
+func addRemoveTags(service ecloud.ECloudService, request *ecloud.PatchInstanceRequest, instanceID string, tags []string, add bool) error {
+	currentTags := make(map[string]bool)
+	if request.TagIDs != nil {
+		for _, id := range *request.TagIDs {
+			currentTags[id] = true
+		}
+	} else {
+		instance, err := service.GetInstance(instanceID)
+		if err != nil {
+			return fmt.Errorf("Error retrieving instance tags [%s]: %s", instanceID, err)
+		}
+		for _, tag := range instance.Tags {
+			currentTags[tag.ID] = true
+		}
+	}
+
+	for _, tag := range tags {
+		tag = strings.TrimSpace(tag)
+		if tag == "" {
+			continue
+		}
+
+		tagID, err := tagLookup(service, tag)
+		if err != nil {
+			return err
+		}
+
+		if add {
+			currentTags[tagID] = true
+		} else {
+			delete(currentTags, tagID)
+		}
+	}
+
+	finalTags := make([]string, 0, len(currentTags))
+	for id := range currentTags {
+		finalTags = append(finalTags, id)
+	}
+	sort.Strings(finalTags)
+
+	request.TagIDs = &finalTags
+	return nil
 }
