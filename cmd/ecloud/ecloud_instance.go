@@ -275,7 +275,7 @@ func ecloudInstanceUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().String("volume-group", "", "ID of volume-group to use for instance")
 	cmd.Flags().StringSlice("set-tag", []string{}, "Tag in the form of '<scope>:<name>', '<name>' or a tag ID to apply to the instance, use an empty string to clear all existing tags - overwrites existing tags")
 	cmd.Flags().StringSlice("add-tag", []string{}, "Tag (like --set-tag) to add to the instance, keeping existing tags intact, can be repeated")
-	cmd.Flags().StringSlice("remove-tag", []string{}, "Tag (like --set-tag) to remove to the instance, without removing other tags, can be repeated")
+	cmd.Flags().StringSlice("remove-tag", []string{}, "Tag (like --set-tag) to remove from the instance, without removing other tags, can be repeated")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the instance has been completely updated")
 
 	return cmd
