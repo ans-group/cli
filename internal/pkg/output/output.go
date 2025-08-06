@@ -12,6 +12,14 @@ import (
 var outputExit func(code int) = os.Exit
 var errorLevel int
 
+type OutputHandlerOption func(*OutputHandler)
+
+func WithAdditionalColumns(columns ...string) OutputHandlerOption {
+	return func(h *OutputHandler) {
+		h.additionalColumns = append(h.additionalColumns, columns...)
+	}
+}
+
 func SetOutputExit(e func(code int)) func(code int) {
 	oldOutputExit := outputExit
 	outputExit = e
@@ -104,6 +112,6 @@ func CommandOutputPaginated[T any](cmd *cobra.Command, d interface{}, paginated 
 	return nil
 }
 
-func CommandOutput(cmd *cobra.Command, d interface{}) error {
-	return NewOutputHandler().Output(cmd, d)
+func CommandOutput(cmd *cobra.Command, d interface{}, opts ...OutputHandlerOption) error {
+	return NewOutputHandler(opts...).Output(cmd, d)
 }

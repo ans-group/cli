@@ -1,7 +1,9 @@
 package ecloud
 
 import (
+	"reflect"
 	"strconv"
+	"strings"
 
 	"github.com/ans-group/cli/internal/pkg/output"
 	"github.com/ans-group/sdk-go/pkg/service/ecloud"
@@ -344,6 +346,22 @@ type InstanceCollection []ecloud.Instance
 
 func (m InstanceCollection) DefaultColumns() []string {
 	return []string{"id", "name", "vpc_id", "vcpu_sockets", "vcpu_cores_per_socket", "ram_capacity", "sync_status"}
+}
+
+func (m InstanceCollection) FieldValueHandlers() map[string]output.FieldValueHandlerFunc {
+	return map[string]output.FieldValueHandlerFunc{
+		"tags": func(reflectedValue reflect.Value) string {
+			tags, ok := reflectedValue.Interface().([]ecloud.ResourceTag)
+			if !ok {
+				return ""
+			}
+			var tagStrings []string
+			for _, tag := range tags {
+				tagStrings = append(tagStrings, tag.Scope+":"+tag.Name)
+			}
+			return strings.Join(tagStrings, "\n")
+		},
+	}
 }
 
 type FloatingIPCollection []ecloud.FloatingIP
