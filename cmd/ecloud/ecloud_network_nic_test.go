@@ -23,7 +23,7 @@ func Test_ecloudNetworkNICListCmd_Args(t *testing.T) {
 		err := ecloudNetworkNICListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing network", err.Error())
+		assert.Equal(t, "missing network", err.Error())
 	})
 }
 
@@ -63,6 +63,6 @@ func Test_ecloudNetworkNICList(t *testing.T) {
 
 		err := ecloudNetworkNICList(service, &cobra.Command{}, []string{"net-abcdef12"})
 
-		assert.Equal(t, "Error retrieving network NICs: test error", err.Error())
+		assert.Equal(t, "error retrieving network NICs: test error", err.Error())
 	})
 }

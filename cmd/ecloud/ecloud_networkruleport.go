@@ -52,7 +52,7 @@ func ecloudNetworkRulePortList(service ecloud.ECloudService, cmd *cobra.Command,
 
 	rules, err := service.GetNetworkRulePorts(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving network rule ports: %s", err)
+		return fmt.Errorf("error retrieving network rule ports: %s", err)
 	}
 
 	return output.CommandOutput(cmd, NetworkRulePortCollection(rules))
@@ -66,7 +66,7 @@ func ecloudNetworkRulePortShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud networkruleport show nrp-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing network rule port")
+				return errors.New("missing network rule port")
 			}
 
 			return nil
@@ -101,11 +101,11 @@ func ecloudNetworkRulePortCreateCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Setup flags
 	cmd.Flags().String("rule", "", "ID of network rule")
-	cmd.MarkFlagRequired("rule")
+	_ = cmd.MarkFlagRequired("rule")
 	cmd.Flags().String("source", "", "Source port. Single port, port range, or ANY")
 	cmd.Flags().String("destination", "", "Destination port. Single port, port range, or ANY")
 	cmd.Flags().String("protocol", "", "Protocol of port. One of: TCP/UDP/ICMPv4")
-	cmd.MarkFlagRequired("protocol")
+	_ = cmd.MarkFlagRequired("protocol")
 	cmd.Flags().String("name", "", "Name of port")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the network rule port has been completely created")
 
@@ -131,20 +131,20 @@ func ecloudNetworkRulePortCreate(service ecloud.ECloudService, cmd *cobra.Comman
 
 	taskRef, err := service.CreateNetworkRulePort(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating network rule port: %s", err)
+		return fmt.Errorf("error creating network rule port: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskRef.TaskID, ecloud.TaskStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for network rule port task to complete: %s", err)
+			return fmt.Errorf("error waiting for network rule port task to complete: %s", err)
 		}
 	}
 
 	rule, err := service.GetNetworkRulePort(taskRef.ResourceID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new network rule port: %s", err)
+		return fmt.Errorf("error retrieving new network rule port: %s", err)
 	}
 
 	return output.CommandOutput(cmd, NetworkRulePortCollection([]ecloud.NetworkRulePort{rule}))
@@ -158,7 +158,7 @@ func ecloudNetworkRulePortUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud networkruleport update nrp-abcdef12 --name \"my port\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing network rule port")
+				return errors.New("missing network rule port")
 			}
 
 			return nil
@@ -237,7 +237,7 @@ func ecloudNetworkRulePortDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud networkruleport delete nrp-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing network rule port")
+				return errors.New("missing network rule port")
 			}
 
 			return nil

@@ -53,7 +53,7 @@ func getSafeDNSTemplateByNameOrID(service safedns.SafeDNSService, nameOrID strin
 
 		template, err := locator.Invoke(nameOrID)
 		if err != nil {
-			return safedns.Template{}, fmt.Errorf("Error locating template [%s]: %s", nameOrID, err)
+			return safedns.Template{}, fmt.Errorf("error locating template [%s]: %s", nameOrID, err)
 		}
 
 		return template.(safedns.Template), nil
@@ -61,7 +61,7 @@ func getSafeDNSTemplateByNameOrID(service safedns.SafeDNSService, nameOrID strin
 
 	template, err := service.GetTemplate(templateID)
 	if err != nil {
-		return safedns.Template{}, fmt.Errorf("Error retrieving template by ID [%d]: %s", templateID, err)
+		return safedns.Template{}, fmt.Errorf("error retrieving template by ID [%d]: %s", templateID, err)
 	}
 
 	return template, nil
@@ -74,7 +74,7 @@ func getSafeDNSTemplateIDByNameOrID(service safedns.SafeDNSService, nameOrID str
 
 		template, err := locator.Invoke(nameOrID)
 		if err != nil {
-			return 0, fmt.Errorf("Error locating template [%s]: %s", nameOrID, err)
+			return 0, fmt.Errorf("error locating template [%s]: %s", nameOrID, err)
 		}
 
 		return template.(safedns.Template).ID, nil

@@ -24,7 +24,7 @@ func Test_ecloudVirtualMachineTemplateCreateCmd_Args(t *testing.T) {
 		err := ecloudVirtualMachineTemplateCreateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing virtual machine", err.Error())
+		assert.Equal(t, "missing virtual machine", err.Error())
 	})
 }
 
@@ -36,7 +36,7 @@ func Test_ecloudVirtualMachineTemplateCreate(t *testing.T) {
 		service := mocks.NewMockECloudService(mockCtrl)
 
 		err := ecloudVirtualMachineTemplateCreate(service, &cobra.Command{}, []string{"abc"})
-		assert.Equal(t, "Invalid virtual machine ID [abc]", err.Error())
+		assert.Equal(t, "invalid virtual machine ID [abc]", err.Error())
 	})
 
 	t.Run("InvalidType_ReturnsError", func(t *testing.T) {
@@ -62,7 +62,7 @@ func Test_ecloudVirtualMachineTemplateCreate(t *testing.T) {
 		service.EXPECT().CreateVirtualMachineTemplate(123, gomock.Any()).Return(errors.New("test error 1"))
 
 		err := ecloudVirtualMachineTemplateCreate(service, cmd, []string{"123"})
-		assert.Equal(t, "Error creating virtual machine template: test error 1", err.Error())
+		assert.Equal(t, "error creating virtual machine template: test error 1", err.Error())
 	})
 
 	t.Run("WaitForCommandError_ReturnsError", func(t *testing.T) {
@@ -84,6 +84,6 @@ func Test_ecloudVirtualMachineTemplateCreate(t *testing.T) {
 		)
 
 		err := ecloudVirtualMachineTemplateCreate(service, cmd, []string{"123"})
-		assert.Equal(t, "Error waiting for command: Failed to retrieve virtual machine [123]: test error 1", err.Error())
+		assert.Equal(t, "error waiting for command: failed to retrieve virtual machine [123]: test error 1", err.Error())
 	})
 }

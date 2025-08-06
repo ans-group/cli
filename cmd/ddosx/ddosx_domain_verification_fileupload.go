@@ -37,7 +37,7 @@ func ddosxDomainVerificationFileUploadShowCmd(f factory.ClientFactory) *cobra.Co
 		Example: "ans ddosx domain verification fileupload show example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 
 			return nil
@@ -80,7 +80,7 @@ func ddosxDomainVerificationFileUploadDownloadCmd(f factory.ClientFactory, fs af
 		Example: "ans ddosx domain verification fileupload download example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 
 			return nil
@@ -96,7 +96,7 @@ func ddosxDomainVerificationFileUploadDownloadCmd(f factory.ClientFactory, fs af
 	}
 
 	cmd.Flags().String("path", "", "Target directory path for file download. File name is automatically determined by command")
-	cmd.MarkFlagRequired("path")
+	_ = cmd.MarkFlagRequired("path")
 
 	return cmd
 }
@@ -104,7 +104,7 @@ func ddosxDomainVerificationFileUploadDownloadCmd(f factory.ClientFactory, fs af
 func ddosxDomainVerificationFileUploadDownload(service ddosx.DDoSXService, fs afero.Fs, cmd *cobra.Command, args []string) error {
 	content, filename, err := service.DownloadDomainVerificationFile(args[0])
 	if err != nil {
-		return fmt.Errorf("Error retrieving domain verification file: %s", err)
+		return fmt.Errorf("error retrieving domain verification file: %s", err)
 	}
 
 	directory, _ := cmd.Flags().GetString("path")
@@ -113,12 +113,12 @@ func ddosxDomainVerificationFileUploadDownload(service ddosx.DDoSXService, fs af
 
 	_, err = fs.Stat(targetFilePath)
 	if err == nil || !os.IsNotExist(err) {
-		return fmt.Errorf("Destination file [%s] exists", targetFilePath)
+		return fmt.Errorf("destination file [%s] exists", targetFilePath)
 	}
 
 	err = afero.WriteFile(fs, targetFilePath, []byte(content), 0644)
 	if err != nil {
-		return fmt.Errorf("Error writing domain verification file to [%s]: %s", targetFilePath, err.Error())
+		return fmt.Errorf("error writing domain verification file to [%s]: %s", targetFilePath, err.Error())
 	}
 
 	fmt.Println(targetFilePath)
@@ -133,7 +133,7 @@ func ddosxDomainVerificationFileUploadVerifyCmd(f factory.ClientFactory) *cobra.
 		Example: "ans ddosx domain verification fileupload verify example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 
 			return nil

@@ -52,7 +52,7 @@ func ecloudFirewallRulePortList(service ecloud.ECloudService, cmd *cobra.Command
 
 	rules, err := service.GetFirewallRulePorts(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving firewall rule ports: %s", err)
+		return fmt.Errorf("error retrieving firewall rule ports: %s", err)
 	}
 
 	return output.CommandOutput(cmd, FirewallRulePortCollection(rules))
@@ -66,7 +66,7 @@ func ecloudFirewallRulePortShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud firewallruleport show fwrp-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing firewall rule port")
+				return errors.New("missing firewall rule port")
 			}
 
 			return nil
@@ -101,11 +101,11 @@ func ecloudFirewallRulePortCreateCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Setup flags
 	cmd.Flags().String("rule", "", "ID of firewall rule")
-	cmd.MarkFlagRequired("rule")
+	_ = cmd.MarkFlagRequired("rule")
 	cmd.Flags().String("source", "", "Source port. Single port, port range, or ANY")
 	cmd.Flags().String("destination", "", "Destination port. Single port, port range, or ANY")
 	cmd.Flags().String("protocol", "", "Protocol of port. One of: TCP/UDP/ICMPv4")
-	cmd.MarkFlagRequired("protocol")
+	_ = cmd.MarkFlagRequired("protocol")
 	cmd.Flags().String("name", "", "Name of port")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the firewall rule port has been completely created")
 
@@ -131,20 +131,20 @@ func ecloudFirewallRulePortCreate(service ecloud.ECloudService, cmd *cobra.Comma
 
 	taskRef, err := service.CreateFirewallRulePort(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating firewall rule port: %s", err)
+		return fmt.Errorf("error creating firewall rule port: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskRef.TaskID, ecloud.TaskStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for firewall rule port task to complete: %s", err)
+			return fmt.Errorf("error waiting for firewall rule port task to complete: %s", err)
 		}
 	}
 
 	rule, err := service.GetFirewallRulePort(taskRef.ResourceID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new firewall rule port: %s", err)
+		return fmt.Errorf("error retrieving new firewall rule port: %s", err)
 	}
 
 	return output.CommandOutput(cmd, FirewallRulePortCollection([]ecloud.FirewallRulePort{rule}))
@@ -158,7 +158,7 @@ func ecloudFirewallRulePortUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud firewallruleport update fwrp-abcdef12 --name \"my port\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing firewall rule port")
+				return errors.New("missing firewall rule port")
 			}
 
 			return nil
@@ -237,7 +237,7 @@ func ecloudFirewallRulePortDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud firewallruleport delete fwrp-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing firewall rule port")
+				return errors.New("missing firewall rule port")
 			}
 
 			return nil

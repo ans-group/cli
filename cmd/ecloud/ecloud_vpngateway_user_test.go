@@ -48,7 +48,7 @@ func Test_ecloudVPNGatewayUserList(t *testing.T) {
 
 		err := ecloudVPNGatewayUserList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving VPN gateway users: test error", err.Error())
+		assert.Equal(t, "error retrieving VPN gateway users: test error", err.Error())
 	})
 }
 
@@ -63,7 +63,7 @@ func Test_ecloudVPNGatewayUserShowCmd_Args(t *testing.T) {
 		err := ecloudVPNGatewayUserShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing VPN gateway user", err.Error())
+		assert.Equal(t, "missing VPN gateway user", err.Error())
 	})
 }
 
@@ -191,7 +191,7 @@ func Test_ecloudVPNGatewayUserCreate(t *testing.T) {
 		)
 
 		err := ecloudVPNGatewayUserCreate(service, cmd, []string{})
-		assert.Equal(t, "Error waiting for VPN gateway user task to complete: Error waiting for command: Failed to retrieve task status: test error", err.Error())
+		assert.Equal(t, "error waiting for VPN gateway user task to complete: error waiting for command: failed to retrieve task status: test error", err.Error())
 	})
 
 	t.Run("CreateVPNGatewayUserError_ReturnsError", func(t *testing.T) {
@@ -206,7 +206,7 @@ func Test_ecloudVPNGatewayUserCreate(t *testing.T) {
 
 		err := ecloudVPNGatewayUserCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error creating VPN gateway user: test error", err.Error())
+		assert.Equal(t, "error creating VPN gateway user: test error", err.Error())
 	})
 
 	t.Run("GetVPNGatewayUserError_ReturnsError", func(t *testing.T) {
@@ -224,7 +224,7 @@ func Test_ecloudVPNGatewayUserCreate(t *testing.T) {
 
 		err := ecloudVPNGatewayUserCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error retrieving new VPN gateway user: test error", err.Error())
+		assert.Equal(t, "error retrieving new VPN gateway user: test error", err.Error())
 	})
 }
 
@@ -239,7 +239,7 @@ func Test_ecloudVPNGatewayUserUpdateCmd_Args(t *testing.T) {
 		err := ecloudVPNGatewayUserUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing VPN gateway user", err.Error())
+		assert.Equal(t, "missing VPN gateway user", err.Error())
 	})
 }
 
@@ -320,7 +320,7 @@ func Test_ecloudVPNGatewayUserUpdate(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for VPN gateway user [vpngu-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for VPN gateway user [vpngu-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudVPNGatewayUserUpdate(service, cmd, []string{"vpngu-abcdef12"})
 		})
 	})
@@ -371,7 +371,7 @@ func Test_ecloudVPNGatewayUserDeleteCmd_Args(t *testing.T) {
 		err := ecloudVPNGatewayUserDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing VPN gateway user", err.Error())
+		assert.Equal(t, "missing VPN gateway user", err.Error())
 	})
 }
 
@@ -418,7 +418,7 @@ func Test_ecloudVPNGatewayUserDelete(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for VPN gateway user [vpngu-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for VPN gateway user [vpngu-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudVPNGatewayUserDelete(service, cmd, []string{"vpngu-abcdef12"})
 		})
 	})

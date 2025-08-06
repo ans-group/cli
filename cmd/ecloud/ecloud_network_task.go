@@ -11,7 +11,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func ecloudNetworkTaskRootCmd(f factory.ClientFactory) *cobra.Command {
+func ecloudNetworkTaskRootCmd(f factory.ClientFactory) *cobra.Command { //nolint:unused
 	cmd := &cobra.Command{
 		Use:   "task",
 		Short: "sub-commands relating to network tasks",
@@ -31,7 +31,7 @@ func ecloudNetworkTaskListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud network task list net-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing network")
+				return errors.New("missing network")
 			}
 
 			return nil
@@ -56,7 +56,7 @@ func ecloudNetworkTaskList(service ecloud.ECloudService, cmd *cobra.Command, arg
 
 	tasks, err := service.GetNetworkTasks(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving network tasks: %s", err)
+		return fmt.Errorf("error retrieving network tasks: %s", err)
 	}
 
 	return output.CommandOutput(cmd, TaskCollection(tasks))

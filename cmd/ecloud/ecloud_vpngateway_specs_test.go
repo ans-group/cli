@@ -48,7 +48,7 @@ func Test_ecloudVPNGatewaySpecificationList(t *testing.T) {
 
 		err := ecloudVPNGatewaySpecificationList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving VPN gateway specifications: test error", err.Error())
+		assert.Equal(t, "error retrieving VPN gateway specifications: test error", err.Error())
 	})
 }
 
@@ -63,7 +63,7 @@ func Test_ecloudVPNGatewaySpecificationShowCmd_Args(t *testing.T) {
 		err := ecloudVPNGatewaySpecificationShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing VPN gateway specification", err.Error())
+		assert.Equal(t, "missing VPN gateway specification", err.Error())
 	})
 }
 

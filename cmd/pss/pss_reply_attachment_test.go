@@ -3,7 +3,7 @@ package pss
 import (
 	"bytes"
 	"errors"
-	"io/ioutil"
+	"io"
 	"testing"
 
 	"github.com/ans-group/cli/test/mocks"
@@ -26,14 +26,14 @@ func Test_pssReplyAttachmentDownloadCmd_Args(t *testing.T) {
 		err := pssReplyAttachmentDownloadCmd(nil, nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing reply", err.Error())
+		assert.Equal(t, "missing reply", err.Error())
 	})
 
 	t.Run("MissingAttachment_Error", func(t *testing.T) {
 		err := pssReplyAttachmentDownloadCmd(nil, nil).Args(nil, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing attachment", err.Error())
+		assert.Equal(t, "missing attachment", err.Error())
 	})
 }
 
@@ -43,7 +43,7 @@ func Test_pssReplyAttachmentDownload(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
-		attachmentStream := ioutil.NopCloser(bytes.NewReader([]byte("test content")))
+		attachmentStream := io.NopCloser(bytes.NewReader([]byte("test content")))
 
 		service := mocks.NewMockPSSService(mockCtrl)
 
@@ -65,7 +65,7 @@ func Test_pssReplyAttachmentDownload(t *testing.T) {
 		)
 
 		err := pssReplyAttachmentDownload(service, nil, &cobra.Command{}, []string{"C123", "test1.txt"})
-		assert.Equal(t, "Error downloading reply attachment: test error", err.Error())
+		assert.Equal(t, "error downloading reply attachment: test error", err.Error())
 	})
 
 	t.Run("FileExists_ReturnsFatal", func(t *testing.T) {
@@ -82,7 +82,7 @@ func Test_pssReplyAttachmentDownload(t *testing.T) {
 		)
 
 		err := pssReplyAttachmentDownload(service, fs, &cobra.Command{}, []string{"C123", "test1.txt"})
-		assert.Equal(t, "Destination file [test1.txt] exists", err.Error())
+		assert.Equal(t, "destination file [test1.txt] exists", err.Error())
 	})
 
 	t.Run("WriteReaderError_ReturnsFatal", func(t *testing.T) {
@@ -118,14 +118,14 @@ func Test_pssReplyAttachmentUploadCmd_Args(t *testing.T) {
 		err := pssReplyAttachmentUploadCmd(nil, nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing reply", err.Error())
+		assert.Equal(t, "missing reply", err.Error())
 	})
 }
 
 func Test_pssReplyAttachmentUpload(t *testing.T) {
 	t.Run("Valid_UploadsFile", func(t *testing.T) {
 		fs := afero.NewMemMapFs()
-		afero.WriteFile(fs, "/test/test1.txt", []byte("test content"), 644)
+		afero.WriteFile(fs, "/test/test1.txt", []byte("test content"), 0644)
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -151,12 +151,12 @@ func Test_pssReplyAttachmentUpload(t *testing.T) {
 		err := pssReplyAttachmentUpload(nil, fs, cmd, []string{"C123"})
 
 		assert.NotNil(t, err)
-		assert.Contains(t, err.Error(), "Failed to open file")
+		assert.Contains(t, err.Error(), "failed to open file")
 	})
 
 	t.Run("UploadReplyAttachmentStream_ReturnsError", func(t *testing.T) {
 		fs := afero.NewMemMapFs()
-		afero.WriteFile(fs, "/test/test1.txt", []byte("test content"), 644)
+		afero.WriteFile(fs, "/test/test1.txt", []byte("test content"), 0644)
 
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -172,7 +172,7 @@ func Test_pssReplyAttachmentUpload(t *testing.T) {
 
 		err := pssReplyAttachmentUpload(service, fs, cmd, []string{"C123"})
 		assert.NotNil(t, err)
-		assert.Contains(t, err.Error(), "Failed to upload attachment")
+		assert.Contains(t, err.Error(), "failed to upload attachment")
 	})
 }
 
@@ -187,14 +187,14 @@ func Test_pssReplyAttachmentDeleteCmd_Args(t *testing.T) {
 		err := pssReplyAttachmentDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing reply", err.Error())
+		assert.Equal(t, "missing reply", err.Error())
 	})
 
 	t.Run("MissingAttachment_Error", func(t *testing.T) {
 		err := pssReplyAttachmentDeleteCmd(nil).Args(nil, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing attachment", err.Error())
+		assert.Equal(t, "missing attachment", err.Error())
 	})
 }
 

@@ -22,7 +22,7 @@ func Test_loadbalancerClusterACLTemplateShowCmd_Args(t *testing.T) {
 		err := loadbalancerClusterACLTemplateShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing cluster", err.Error())
+		assert.Equal(t, "missing cluster", err.Error())
 	})
 }
 
@@ -49,6 +49,6 @@ func Test_loadbalancerClusterACLTemplateShow(t *testing.T) {
 		err := loadbalancerClusterACLTemplateShow(service, &cobra.Command{}, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error retrieving ACL templates: test error", err.Error())
+		assert.Equal(t, "error retrieving ACL templates: test error", err.Error())
 	})
 }

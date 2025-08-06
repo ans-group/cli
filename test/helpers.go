@@ -1,7 +1,7 @@
 package test
 
 import (
-	"io/ioutil"
+	"io"
 	"os"
 	"testing"
 )
@@ -22,7 +22,7 @@ func CatchStdErr(t *testing.T, f func()) string {
 	os.Stderr = fakeStderr
 	f()
 	dieOn(fakeStderr.Close(), t)
-	newErrBytes, err := ioutil.ReadAll(r)
+	newErrBytes, err := io.ReadAll(r)
 	dieOn(err, t)
 	dieOn(r.Close(), t)
 
@@ -40,7 +40,7 @@ func CatchStdOut(t *testing.T, f func()) string {
 	f()
 	// need to close here, otherwise ReadAll never gets "EOF".
 	dieOn(fakeStdout.Close(), t)
-	newOutBytes, err := ioutil.ReadAll(r)
+	newOutBytes, err := io.ReadAll(r)
 	dieOn(err, t)
 	dieOn(r.Close(), t)
 

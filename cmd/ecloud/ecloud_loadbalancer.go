@@ -53,7 +53,7 @@ func ecloudLoadBalancerList(service ecloud.ECloudService, cmd *cobra.Command, ar
 
 	lbs, err := service.GetLoadBalancers(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving load balancers: %s", err)
+		return fmt.Errorf("error retrieving load balancers: %s", err)
 	}
 
 	return output.CommandOutput(cmd, LoadBalancerCollection(lbs))
@@ -67,7 +67,7 @@ func ecloudLoadBalancerShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud loadbalancer show lb-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing load balancer")
+				return errors.New("missing load balancer")
 			}
 
 			return nil
@@ -103,13 +103,13 @@ func ecloudLoadBalancerCreateCmd(f factory.ClientFactory) *cobra.Command {
 	// Setup flags
 	cmd.Flags().String("name", "", "Name of load balancer")
 	cmd.Flags().String("vpc", "", "ID of VPC")
-	cmd.MarkFlagRequired("vpc")
+	_ = cmd.MarkFlagRequired("vpc")
 	cmd.Flags().String("availability-zone", "", "ID of availability zone")
-	cmd.MarkFlagRequired("availability-zone")
+	_ = cmd.MarkFlagRequired("availability-zone")
 	cmd.Flags().String("spec", "", "ID of load balancer specification")
-	cmd.MarkFlagRequired("spec")
+	_ = cmd.MarkFlagRequired("spec")
 	cmd.Flags().String("network", "", "Network ID for load balancer")
-	cmd.MarkFlagRequired("network")
+	_ = cmd.MarkFlagRequired("network")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the load balancer has been completely created")
 
 	return cmd
@@ -125,20 +125,20 @@ func ecloudLoadBalancerCreate(service ecloud.ECloudService, cmd *cobra.Command, 
 
 	taskRef, err := service.CreateLoadBalancer(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating load balancer: %s", err)
+		return fmt.Errorf("error creating load balancer: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskRef.TaskID, ecloud.TaskStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for load balancer task to complete: %s", err)
+			return fmt.Errorf("error waiting for load balancer task to complete: %s", err)
 		}
 	}
 
 	lb, err := service.GetLoadBalancer(taskRef.ResourceID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new load balancer: %s", err)
+		return fmt.Errorf("error retrieving new load balancer: %s", err)
 	}
 
 	return output.CommandOutput(cmd, LoadBalancerCollection([]ecloud.LoadBalancer{lb}))
@@ -152,7 +152,7 @@ func ecloudLoadBalancerUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud loadbalancer update lb-abcdef12 --name \"my lb\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing load balancer")
+				return errors.New("missing load balancer")
 			}
 
 			return nil
@@ -210,7 +210,7 @@ func ecloudLoadBalancerDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud loadbalancer delete lb-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing load balancer")
+				return errors.New("missing load balancer")
 			}
 
 			return nil

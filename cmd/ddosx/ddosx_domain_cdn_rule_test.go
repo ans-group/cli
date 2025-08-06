@@ -26,7 +26,7 @@ func Test_ddosxDomainCDNRuleListCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 }
 
@@ -66,7 +66,7 @@ func Test_ddosxDomainCDNRuleList(t *testing.T) {
 
 		err := ddosxDomainCDNRuleList(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 
-		assert.Equal(t, "Error retrieving CDN rules: test error", err.Error())
+		assert.Equal(t, "error retrieving CDN rules: test error", err.Error())
 	})
 }
 
@@ -81,14 +81,14 @@ func Test_ddosxDomainCDNRuleShowCmd_Args(t *testing.T) {
 		err := ddosxDomainCDNRuleShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 
 	t.Run("MissingCDNRule_Error", func(t *testing.T) {
 		err := ddosxDomainCDNRuleShowCmd(nil).Args(nil, []string{"testdomain1.co.uk"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing rule", err.Error())
+		assert.Equal(t, "missing rule", err.Error())
 	})
 }
 
@@ -145,7 +145,7 @@ func Test_ddosxDomainCDNRuleCreateCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 }
 
@@ -234,7 +234,7 @@ func Test_ddosxDomainCDNRuleCreate(t *testing.T) {
 
 		err := ddosxDomainCDNRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error creating CDN rule: test error", err.Error())
+		assert.Equal(t, "error creating CDN rule: test error", err.Error())
 	})
 
 	t.Run("GetDomainCDNRuleError_ReturnsError", func(t *testing.T) {
@@ -256,7 +256,7 @@ func Test_ddosxDomainCDNRuleCreate(t *testing.T) {
 
 		err := ddosxDomainCDNRuleCreate(service, cmd, []string{"testdomain1.co.uk"})
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error retrieving new CDN rule [00000000-0000-0000-0000-000000000000]: test error", err.Error())
+		assert.Equal(t, "error retrieving new CDN rule [00000000-0000-0000-0000-000000000000]: test error", err.Error())
 	})
 }
 
@@ -273,7 +273,7 @@ func Test_ddosxDomainCDNRuleUpdateCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 
 	t.Run("MissingRule_Error", func(t *testing.T) {
@@ -281,7 +281,7 @@ func Test_ddosxDomainCDNRuleUpdateCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{"testdomain1.co.uk"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing rule", err.Error())
+		assert.Equal(t, "missing rule", err.Error())
 	})
 }
 
@@ -394,7 +394,7 @@ func Test_ddosxDomainCDNRuleDeleteCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 
 	t.Run("MissingRule_Error", func(t *testing.T) {
@@ -402,7 +402,7 @@ func Test_ddosxDomainCDNRuleDeleteCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{"testdomain1.co.uk"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing rule", err.Error())
+		assert.Equal(t, "missing rule", err.Error())
 	})
 }
 

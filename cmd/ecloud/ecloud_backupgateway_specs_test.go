@@ -48,7 +48,7 @@ func Test_ecloudBackupGatewaySpecificationList(t *testing.T) {
 
 		err := ecloudBackupGatewaySpecificationList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving backup gateway specifications: test error", err.Error())
+		assert.Equal(t, "error retrieving backup gateway specifications: test error", err.Error())
 	})
 }
 
@@ -63,7 +63,7 @@ func Test_ecloudBackupGatewaySpecificationShowCmd_Args(t *testing.T) {
 		err := ecloudBackupGatewaySpecificationShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing backup gateway specification", err.Error())
+		assert.Equal(t, "missing backup gateway specification", err.Error())
 	})
 }
 

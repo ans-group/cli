@@ -53,7 +53,7 @@ func accountClientList(service account.AccountService, cmd *cobra.Command, args 
 
 	clients, err := service.GetClients(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving clients: %s", err)
+		return fmt.Errorf("error retrieving clients: %s", err)
 	}
 
 	return output.CommandOutput(cmd, ClientCollection(clients))
@@ -67,7 +67,7 @@ func accountClientShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans account client show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing client")
+				return errors.New("missing client")
 			}
 
 			return nil
@@ -168,12 +168,12 @@ func accountClientCreate(service account.AccountService, cmd *cobra.Command, arg
 
 	id, err := service.CreateClient(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating client: %s", err)
+		return fmt.Errorf("error creating client: %s", err)
 	}
 
 	client, err := service.GetClient(id)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new client: %s", err)
+		return fmt.Errorf("error retrieving new client: %s", err)
 	}
 
 	return output.CommandOutput(cmd, ClientCollection([]account.Client{client}))
@@ -187,7 +187,7 @@ func accountClientUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans account client update 123 --name \"test client 1\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing client")
+				return errors.New("missing client")
 			}
 
 			return nil
@@ -284,7 +284,7 @@ func accountClientDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans account client delete 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing client")
+				return errors.New("missing client")
 			}
 
 			return nil

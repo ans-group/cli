@@ -48,7 +48,7 @@ func Test_ecloudMonitoringGatewayList(t *testing.T) {
 
 		err := ecloudMonitoringGatewayList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving monitoring gateways: test error", err.Error())
+		assert.Equal(t, "error retrieving monitoring gateways: test error", err.Error())
 	})
 }
 
@@ -63,7 +63,7 @@ func Test_ecloudMonitoringGatewayShowCmd_Args(t *testing.T) {
 		err := ecloudMonitoringGatewayShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing monitoring gateway ID", err.Error())
+		assert.Equal(t, "missing monitoring gateway ID", err.Error())
 	})
 }
 

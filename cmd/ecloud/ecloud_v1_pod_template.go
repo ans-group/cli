@@ -35,7 +35,7 @@ func ecloudPodTemplateListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud pod template list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing pod")
+				return errors.New("missing pod")
 			}
 
 			return nil
@@ -54,7 +54,7 @@ func ecloudPodTemplateListCmd(f factory.ClientFactory) *cobra.Command {
 func ecloudPodTemplateList(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	podID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid pod ID [%s]", args[0])
+		return fmt.Errorf("invalid pod ID [%s]", args[0])
 	}
 
 	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
@@ -64,7 +64,7 @@ func ecloudPodTemplateList(service ecloud.ECloudService, cmd *cobra.Command, arg
 
 	templates, err := service.GetPodTemplates(podID, params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving pod templates: %s", err)
+		return fmt.Errorf("error retrieving pod templates: %s", err)
 	}
 
 	return output.CommandOutput(cmd, TemplateCollection(templates))
@@ -78,10 +78,10 @@ func ecloudPodTemplateShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud pod template show 123 foo",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing pod")
+				return errors.New("missing pod")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing template")
+				return errors.New("missing template")
 			}
 
 			return nil
@@ -100,7 +100,7 @@ func ecloudPodTemplateShowCmd(f factory.ClientFactory) *cobra.Command {
 func ecloudPodTemplateShow(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	podID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid pod ID [%s]", args[0])
+		return fmt.Errorf("invalid pod ID [%s]", args[0])
 	}
 
 	var templates []ecloud.Template
@@ -126,10 +126,10 @@ func ecloudPodTemplateUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud pod template update 123 foo --name \"bar\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing pod")
+				return errors.New("missing pod")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing template")
+				return errors.New("missing template")
 			}
 
 			return nil
@@ -152,7 +152,7 @@ func ecloudPodTemplateUpdateCmd(f factory.ClientFactory) *cobra.Command {
 func ecloudPodTemplateUpdate(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	podID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid pod ID [%s]", args[0])
+		return fmt.Errorf("invalid pod ID [%s]", args[0])
 	}
 
 	templateName := args[1]
@@ -165,12 +165,12 @@ func ecloudPodTemplateUpdate(service ecloud.ECloudService, cmd *cobra.Command, a
 
 		err = service.RenamePodTemplate(podID, templateName, patchRequest)
 		if err != nil {
-			return fmt.Errorf("Error updating pod template: %s", err)
+			return fmt.Errorf("error updating pod template: %s", err)
 		}
 
 		err := helper.WaitForCommand(PodTemplateExistsWaitFunc(service, podID, name, true))
 		if err != nil {
-			return fmt.Errorf("Error waiting for pod template update: %s", err)
+			return fmt.Errorf("error waiting for pod template update: %s", err)
 		}
 
 		templateName = name
@@ -178,7 +178,7 @@ func ecloudPodTemplateUpdate(service ecloud.ECloudService, cmd *cobra.Command, a
 
 	template, err := service.GetPodTemplate(podID, templateName)
 	if err != nil {
-		return fmt.Errorf("Error retrieving updated pod template: %s", err)
+		return fmt.Errorf("error retrieving updated pod template: %s", err)
 	}
 
 	return output.CommandOutput(cmd, TemplateCollection([]ecloud.Template{template}))
@@ -192,10 +192,10 @@ func ecloudPodTemplateDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud pod template delete 123 foo",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing pod")
+				return errors.New("missing pod")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing template")
+				return errors.New("missing template")
 			}
 
 			return nil
@@ -218,7 +218,7 @@ func ecloudPodTemplateDeleteCmd(f factory.ClientFactory) *cobra.Command {
 func ecloudPodTemplateDelete(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	podID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid pod ID [%s]", args[0])
+		return fmt.Errorf("invalid pod ID [%s]", args[0])
 	}
 
 	for _, arg := range args[1:] {

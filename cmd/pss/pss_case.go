@@ -64,7 +64,7 @@ func pssCaseShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans pss case show CHG123456",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing case")
+				return errors.New("missing case")
 			}
 
 			return nil

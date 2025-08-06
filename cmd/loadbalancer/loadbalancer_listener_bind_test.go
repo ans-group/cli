@@ -24,7 +24,7 @@ func Test_loadbalancerListenerBindListCmd_Args(t *testing.T) {
 		err := loadbalancerListenerBindListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing listener", err.Error())
+		assert.Equal(t, "missing listener", err.Error())
 	})
 }
 
@@ -65,7 +65,7 @@ func Test_loadbalancerListenerBindList(t *testing.T) {
 		err := loadbalancerListenerBindList(service, &cobra.Command{}, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error retrieving binds: test error", err.Error())
+		assert.Equal(t, "error retrieving binds: test error", err.Error())
 	})
 }
 
@@ -80,14 +80,14 @@ func Test_loadbalancerListenerBindShowCmd_Args(t *testing.T) {
 		err := loadbalancerListenerBindShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing listener", err.Error())
+		assert.Equal(t, "missing listener", err.Error())
 	})
 
 	t.Run("InvalidArgs_Error", func(t *testing.T) {
 		err := loadbalancerListenerBindShowCmd(nil).Args(nil, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing bind", err.Error())
+		assert.Equal(t, "missing bind", err.Error())
 	})
 }
 
@@ -125,7 +125,7 @@ func Test_loadbalancerListenerBindShow(t *testing.T) {
 
 		err := loadbalancerListenerBindShow(service, &cobra.Command{}, []string{"abc", "456"})
 
-		assert.Equal(t, "Invalid listener ID", err.Error())
+		assert.Equal(t, "invalid listener ID", err.Error())
 	})
 
 	t.Run("GetBindID_OutputsError", func(t *testing.T) {
@@ -164,7 +164,7 @@ func Test_loadbalancerListenerBindCreateCmd_Args(t *testing.T) {
 		err := loadbalancerListenerBindCreateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing listener", err.Error())
+		assert.Equal(t, "missing listener", err.Error())
 	})
 }
 
@@ -202,7 +202,7 @@ func Test_loadbalancerListenerBindCreate(t *testing.T) {
 
 		err := loadbalancerListenerBindCreate(service, cmd, []string{"123"})
 
-		assert.Equal(t, "Error creating bind: test error", err.Error())
+		assert.Equal(t, "error creating bind: test error", err.Error())
 	})
 
 	t.Run("GetListenerError_ReturnsError", func(t *testing.T) {
@@ -220,7 +220,7 @@ func Test_loadbalancerListenerBindCreate(t *testing.T) {
 
 		err := loadbalancerListenerBindCreate(service, cmd, []string{"123"})
 
-		assert.Equal(t, "Error retrieving new bind: test error", err.Error())
+		assert.Equal(t, "error retrieving new bind: test error", err.Error())
 	})
 }
 
@@ -235,14 +235,14 @@ func Test_loadbalancerListenerBindUpdateCmd_Args(t *testing.T) {
 		err := loadbalancerListenerBindUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing listener", err.Error())
+		assert.Equal(t, "missing listener", err.Error())
 	})
 
 	t.Run("InvalidArgs_Error", func(t *testing.T) {
 		err := loadbalancerListenerBindUpdateCmd(nil).Args(nil, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing bind", err.Error())
+		assert.Equal(t, "missing bind", err.Error())
 	})
 }
 
@@ -309,14 +309,14 @@ func Test_loadbalancerListenerBindDeleteCmd_Args(t *testing.T) {
 		err := loadbalancerListenerBindUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing listener", err.Error())
+		assert.Equal(t, "missing listener", err.Error())
 	})
 
 	t.Run("InvalidArgs_Error", func(t *testing.T) {
 		err := loadbalancerListenerBindUpdateCmd(nil).Args(nil, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing bind", err.Error())
+		assert.Equal(t, "missing bind", err.Error())
 	})
 }
 

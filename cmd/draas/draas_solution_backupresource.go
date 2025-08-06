@@ -33,7 +33,7 @@ func draasSolutionBackupResourceListCmd(f factory.ClientFactory) *cobra.Command 
 		Example: "ans draas solution backupresource list 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing solution")
+				return errors.New("missing solution")
 			}
 
 			return nil
@@ -57,7 +57,7 @@ func draasSolutionBackupResourceList(service draas.DRaaSService, cmd *cobra.Comm
 
 	resources, err := service.GetSolutionBackupResources(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving solution backup resources: %s", err)
+		return fmt.Errorf("error retrieving solution backup resources: %s", err)
 	}
 
 	return output.CommandOutput(cmd, BackupResourceCollection(resources))

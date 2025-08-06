@@ -49,7 +49,7 @@ func Test_ecloudResourceTierList(t *testing.T) {
 
 		err := ecloudResourceTierList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving resource tiers: test error", err.Error())
+		assert.Equal(t, "error retrieving resource tiers: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudResourceTierShowCmd_Args(t *testing.T) {
 		err := ecloudResourceTierShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing resource tier", err.Error())
+		assert.Equal(t, "missing resource tier", err.Error())
 	})
 }
 

@@ -31,7 +31,7 @@ func ecloudVPCTaskListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vpc task list vpc-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing VPC")
+				return errors.New("missing VPC")
 			}
 
 			return nil
@@ -56,7 +56,7 @@ func ecloudVPCTaskList(service ecloud.ECloudService, cmd *cobra.Command, args []
 
 	tasks, err := service.GetVPCTasks(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving VPC tasks: %s", err)
+		return fmt.Errorf("error retrieving VPC tasks: %s", err)
 	}
 
 	return output.CommandOutput(cmd, TaskCollection(tasks))

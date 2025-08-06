@@ -37,7 +37,7 @@ func loadbalancerTargetGroupTargetListCmd(f factory.ClientFactory) *cobra.Comman
 		Example: "ans loadbalancer targetgroup target list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing target group")
+				return errors.New("missing target group")
 			}
 
 			return nil
@@ -54,12 +54,12 @@ func loadbalancerTargetGroupTargetList(service loadbalancer.LoadBalancerService,
 
 	targetGroupID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid target group ID")
+		return fmt.Errorf("invalid target group ID")
 	}
 
 	targets, err := service.GetTargetGroupTargets(targetGroupID, params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving targets: %s", err)
+		return fmt.Errorf("error retrieving targets: %s", err)
 	}
 
 	return output.CommandOutput(cmd, TargetCollection(targets))
@@ -73,10 +73,10 @@ func loadbalancerTargetGroupTargetShowCmd(f factory.ClientFactory) *cobra.Comman
 		Example: "ans loadbalancer targetgroup target show 123 345",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing target group")
+				return errors.New("missing target group")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing target")
+				return errors.New("missing target")
 			}
 
 			return nil
@@ -88,7 +88,7 @@ func loadbalancerTargetGroupTargetShowCmd(f factory.ClientFactory) *cobra.Comman
 func loadbalancerTargetGroupTargetShow(service loadbalancer.LoadBalancerService, cmd *cobra.Command, args []string) error {
 	targetGroupID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid target group ID")
+		return fmt.Errorf("invalid target group ID")
 	}
 
 	var targets []loadbalancer.Target
@@ -120,7 +120,7 @@ func loadbalancerTargetGroupTargetCreateCmd(f factory.ClientFactory) *cobra.Comm
 		Example: "ans loadbalancer targetgroup target create 123 --ip 1.2.3.4 --port 443",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing target group")
+				return errors.New("missing target group")
 			}
 
 			return nil
@@ -130,9 +130,9 @@ func loadbalancerTargetGroupTargetCreateCmd(f factory.ClientFactory) *cobra.Comm
 
 	cmd.Flags().String("name", "", "Name for target")
 	cmd.Flags().String("ip", "", "IP address for target")
-	cmd.MarkFlagRequired("ip")
+	_ = cmd.MarkFlagRequired("ip")
 	cmd.Flags().Int("port", 0, "Port number for target")
-	cmd.MarkFlagRequired("port")
+	_ = cmd.MarkFlagRequired("port")
 	cmd.Flags().Int("weight", 0, "Weight for target")
 	cmd.Flags().Bool("backup", false, "Specifies whether target should be a backup")
 	cmd.Flags().Int("check-interval", 0, "Check interval for target")
@@ -149,7 +149,7 @@ func loadbalancerTargetGroupTargetCreateCmd(f factory.ClientFactory) *cobra.Comm
 func loadbalancerTargetGroupTargetCreate(service loadbalancer.LoadBalancerService, cmd *cobra.Command, args []string) error {
 	targetGroupID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid target group ID")
+		return fmt.Errorf("invalid target group ID")
 	}
 
 	createRequest := loadbalancer.CreateTargetRequest{}
@@ -170,12 +170,12 @@ func loadbalancerTargetGroupTargetCreate(service loadbalancer.LoadBalancerServic
 
 	targetID, err := service.CreateTargetGroupTarget(targetGroupID, createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating target: %s", err)
+		return fmt.Errorf("error creating target: %s", err)
 	}
 
 	target, err := service.GetTargetGroupTarget(targetGroupID, targetID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new target: %s", err)
+		return fmt.Errorf("error retrieving new target: %s", err)
 	}
 
 	return output.CommandOutput(cmd, TargetCollection([]loadbalancer.Target{target}))
@@ -189,10 +189,10 @@ func loadbalancerTargetGroupTargetUpdateCmd(f factory.ClientFactory) *cobra.Comm
 		Example: "ans loadbalancer targetgroup target update 123 456 --port 443",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing target group")
+				return errors.New("missing target group")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing target")
+				return errors.New("missing target")
 			}
 
 			return nil
@@ -219,7 +219,7 @@ func loadbalancerTargetGroupTargetUpdateCmd(f factory.ClientFactory) *cobra.Comm
 func loadbalancerTargetGroupTargetUpdate(service loadbalancer.LoadBalancerService, cmd *cobra.Command, args []string) error {
 	targetGroupID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid target group ID")
+		return fmt.Errorf("invalid target group ID")
 	}
 
 	patchRequest := loadbalancer.PatchTargetRequest{}
@@ -272,10 +272,10 @@ func loadbalancerTargetGroupTargetDeleteCmd(f factory.ClientFactory) *cobra.Comm
 		Example: "ans loadbalancer targetgroup target delete 123 456",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing target group")
+				return errors.New("missing target group")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing target")
+				return errors.New("missing target")
 			}
 
 			return nil
@@ -287,7 +287,7 @@ func loadbalancerTargetGroupTargetDeleteCmd(f factory.ClientFactory) *cobra.Comm
 func loadbalancerTargetGroupTargetDelete(service loadbalancer.LoadBalancerService, cmd *cobra.Command, args []string) error {
 	targetGroupID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid target group ID")
+		return fmt.Errorf("invalid target group ID")
 	}
 
 	for _, arg := range args[1:] {

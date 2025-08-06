@@ -47,7 +47,7 @@ func ecloudBackupGatewaySpecificationList(service ecloud.ECloudService, cmd *cob
 
 	specs, err := service.GetBackupGatewaySpecifications(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving backup gateway specifications: %s", err)
+		return fmt.Errorf("error retrieving backup gateway specifications: %s", err)
 	}
 
 	return output.CommandOutput(cmd, BackupGatewaySpecificationCollection(specs))
@@ -60,7 +60,7 @@ func ecloudBackupGatewaySpecificationShowCmd(f factory.ClientFactory) *cobra.Com
 		Example: "ans ecloud backupgateway spec show bgws-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing backup gateway specification")
+				return errors.New("missing backup gateway specification")
 			}
 
 			return nil

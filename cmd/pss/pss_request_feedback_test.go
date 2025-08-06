@@ -23,7 +23,7 @@ func Test_pssRequestFeedbackShowCmd_Args(t *testing.T) {
 		err := pssRequestFeedbackShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing request", err.Error())
+		assert.Equal(t, "missing request", err.Error())
 	})
 }
 
@@ -89,7 +89,7 @@ func Test_pssRequestFeedbackCreateCmd_Args(t *testing.T) {
 		err := pssRequestFeedbackCreateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing request", err.Error())
+		assert.Equal(t, "missing request", err.Error())
 	})
 }
 
@@ -122,7 +122,7 @@ func Test_pssRequestFeedbackCreate(t *testing.T) {
 		cmd := pssRequestFeedbackCreateCmd(nil)
 
 		err := pssRequestFeedbackCreate(service, cmd, []string{"invalid"})
-		assert.Contains(t, err.Error(), "Invalid request ID [invalid]")
+		assert.Contains(t, err.Error(), "invalid request ID [invalid]")
 	})
 
 	t.Run("CreateRequestFeedbackError_ReturnsError", func(t *testing.T) {
@@ -135,7 +135,7 @@ func Test_pssRequestFeedbackCreate(t *testing.T) {
 		service.EXPECT().CreateRequestFeedback(123, gomock.Any()).Return(0, errors.New("test error")).Times(1)
 
 		err := pssRequestFeedbackCreate(service, cmd, []string{"123"})
-		assert.Equal(t, "Error creating feedback for request: test error", err.Error())
+		assert.Equal(t, "error creating feedback for request: test error", err.Error())
 	})
 
 	t.Run("GetRequestError_ReturnsError", func(t *testing.T) {
@@ -151,6 +151,6 @@ func Test_pssRequestFeedbackCreate(t *testing.T) {
 		)
 
 		err := pssRequestFeedbackCreate(service, cmd, []string{"123"})
-		assert.Equal(t, "Error retrieving new feedback for request: test error", err.Error())
+		assert.Equal(t, "error retrieving new feedback for request: test error", err.Error())
 	})
 }

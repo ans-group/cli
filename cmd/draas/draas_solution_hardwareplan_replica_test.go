@@ -25,7 +25,7 @@ func Test_draasSolutionHardwarePlanReplicaListCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing solution", err.Error())
+		assert.Equal(t, "missing solution", err.Error())
 	})
 
 	t.Run("MissingHardwarePlan_Error", func(t *testing.T) {
@@ -33,7 +33,7 @@ func Test_draasSolutionHardwarePlanReplicaListCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{"00000000-0000-0000-0000-000000000000"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing hardware plan", err.Error())
+		assert.Equal(t, "missing hardware plan", err.Error())
 	})
 }
 
@@ -73,6 +73,6 @@ func Test_draasSolutionHardwarePlanReplicaList(t *testing.T) {
 
 		err := draasSolutionHardwarePlanReplicaList(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000001"})
 
-		assert.Equal(t, "Error retrieving solution hardware plan replicas: test error", err.Error())
+		assert.Equal(t, "error retrieving solution hardware plan replicas: test error", err.Error())
 	})
 }

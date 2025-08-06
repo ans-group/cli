@@ -37,7 +37,7 @@ func ecloudSolutionTagListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud solution tag list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing solution")
+				return errors.New("missing solution")
 			}
 
 			return nil
@@ -56,7 +56,7 @@ func ecloudSolutionTagListCmd(f factory.ClientFactory) *cobra.Command {
 func ecloudSolutionTagList(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	solutionID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid solution ID [%s]", args[0])
+		return fmt.Errorf("invalid solution ID [%s]", args[0])
 	}
 
 	params, err := helper.GetAPIRequestParametersFromFlags(cmd)
@@ -66,7 +66,7 @@ func ecloudSolutionTagList(service ecloud.ECloudService, cmd *cobra.Command, arg
 
 	tags, err := service.GetSolutionTags(solutionID, params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving solution tags: %s", err)
+		return fmt.Errorf("error retrieving solution tags: %s", err)
 	}
 
 	return output.CommandOutput(cmd, TagV1Collection(tags))
@@ -80,10 +80,10 @@ func ecloudSolutionTagShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud solution tag show 123 foo",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing solution")
+				return errors.New("missing solution")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing tag")
+				return errors.New("missing tag")
 			}
 
 			return nil
@@ -102,7 +102,7 @@ func ecloudSolutionTagShowCmd(f factory.ClientFactory) *cobra.Command {
 func ecloudSolutionTagShow(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	solutionID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid solution ID [%s]", args[0])
+		return fmt.Errorf("invalid solution ID [%s]", args[0])
 	}
 
 	var tags []ecloud.TagV1
@@ -128,7 +128,7 @@ func ecloudSolutionTagCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud solution tag create 123 --key foo --value bar",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing solution")
+				return errors.New("missing solution")
 			}
 
 			return nil
@@ -144,9 +144,9 @@ func ecloudSolutionTagCreateCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("key", "", "Key for tag")
-	cmd.MarkFlagRequired("key")
+	_ = cmd.MarkFlagRequired("key")
 	cmd.Flags().String("value", "", "Value for tag")
-	cmd.MarkFlagRequired("value")
+	_ = cmd.MarkFlagRequired("value")
 
 	return cmd
 }
@@ -154,7 +154,7 @@ func ecloudSolutionTagCreateCmd(f factory.ClientFactory) *cobra.Command {
 func ecloudSolutionTagCreate(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	solutionID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid solution ID [%s]", args[0])
+		return fmt.Errorf("invalid solution ID [%s]", args[0])
 	}
 
 	key, _ := cmd.Flags().GetString("key")
@@ -167,12 +167,12 @@ func ecloudSolutionTagCreate(service ecloud.ECloudService, cmd *cobra.Command, a
 
 	err = service.CreateSolutionTag(solutionID, createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating solution tag: %s", err)
+		return fmt.Errorf("error creating solution tag: %s", err)
 	}
 
 	tag, err := service.GetSolutionTag(solutionID, key)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new solution tag: %s", err)
+		return fmt.Errorf("error retrieving new solution tag: %s", err)
 	}
 
 	return output.CommandOutput(cmd, TagV1Collection([]ecloud.TagV1{tag}))
@@ -186,10 +186,10 @@ func ecloudSolutionTagUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud solution tag update 123 foo --value \"new value\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing solution")
+				return errors.New("missing solution")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing tag")
+				return errors.New("missing tag")
 			}
 
 			return nil
@@ -212,7 +212,7 @@ func ecloudSolutionTagUpdateCmd(f factory.ClientFactory) *cobra.Command {
 func ecloudSolutionTagUpdate(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	solutionID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid solution ID [%s]", args[0])
+		return fmt.Errorf("invalid solution ID [%s]", args[0])
 	}
 
 	patchRequest := ecloud.PatchTagV1Request{}
@@ -251,10 +251,10 @@ func ecloudSolutionTagDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud solution tag delete 123 foo",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing solution")
+				return errors.New("missing solution")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing tag")
+				return errors.New("missing tag")
 			}
 
 			return nil
@@ -273,7 +273,7 @@ func ecloudSolutionTagDeleteCmd(f factory.ClientFactory) *cobra.Command {
 func ecloudSolutionTagDelete(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	solutionID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid solution ID [%s]", args[0])
+		return fmt.Errorf("invalid solution ID [%s]", args[0])
 	}
 
 	for _, arg := range args[1:] {

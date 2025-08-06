@@ -31,7 +31,7 @@ func ecloudApplianceParameterListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud appliance parameter list 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing appliance")
+				return errors.New("missing appliance")
 			}
 
 			return nil
@@ -55,7 +55,7 @@ func ecloudApplianceParameterList(service ecloud.ECloudService, cmd *cobra.Comma
 
 	parameters, err := service.GetApplianceParameters(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving appliance parameters: %s", err)
+		return fmt.Errorf("error retrieving appliance parameters: %s", err)
 	}
 
 	return output.CommandOutput(cmd, ApplianceParameterCollection(parameters))

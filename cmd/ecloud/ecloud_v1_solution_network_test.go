@@ -23,7 +23,7 @@ func Test_ecloudSolutionNetworkListCmd_Args(t *testing.T) {
 		err := ecloudSolutionNetworkListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing solution", err.Error())
+		assert.Equal(t, "missing solution", err.Error())
 	})
 }
 
@@ -47,7 +47,7 @@ func Test_ecloudSolutionNetworkList(t *testing.T) {
 
 		err := ecloudSolutionNetworkList(service, &cobra.Command{}, []string{"abc"})
 
-		assert.Equal(t, "Invalid solution ID [abc]", err.Error())
+		assert.Equal(t, "invalid solution ID [abc]", err.Error())
 	})
 
 	t.Run("MalformedFlag_ReturnsError", func(t *testing.T) {
@@ -73,6 +73,6 @@ func Test_ecloudSolutionNetworkList(t *testing.T) {
 
 		err := ecloudSolutionNetworkList(service, &cobra.Command{}, []string{"123"})
 
-		assert.Equal(t, "Error retrieving solution networks: test error 1", err.Error())
+		assert.Equal(t, "error retrieving solution networks: test error 1", err.Error())
 	})
 }

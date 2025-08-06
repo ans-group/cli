@@ -49,6 +49,6 @@ func Test_loadbalancerBindList(t *testing.T) {
 		err := loadbalancerBindList(service, &cobra.Command{}, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error retrieving binds: test error", err.Error())
+		assert.Equal(t, "error retrieving binds: test error", err.Error())
 	})
 }

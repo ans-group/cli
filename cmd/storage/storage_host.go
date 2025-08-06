@@ -50,7 +50,7 @@ func storageHostList(service storage.StorageService, cmd *cobra.Command, args []
 
 	hosts, err := service.GetHosts(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving hosts: %s", err)
+		return fmt.Errorf("error retrieving hosts: %s", err)
 	}
 
 	return output.CommandOutput(cmd, HostCollection(hosts))
@@ -64,7 +64,7 @@ func storageHostShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans storage host show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing host")
+				return errors.New("missing host")
 			}
 
 			return nil

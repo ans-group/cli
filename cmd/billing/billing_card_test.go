@@ -48,7 +48,7 @@ func Test_billingCardList(t *testing.T) {
 
 		err := billingCardList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving cards: test error", err.Error())
+		assert.Equal(t, "error retrieving cards: test error", err.Error())
 	})
 }
 
@@ -63,7 +63,7 @@ func Test_billingCardShowCmd_Args(t *testing.T) {
 		err := billingCardShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing card", err.Error())
+		assert.Equal(t, "missing card", err.Error())
 	})
 }
 
@@ -149,7 +149,7 @@ func Test_billingCardCreate(t *testing.T) {
 
 		err := billingCardCreate(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error creating card: test error", err.Error())
+		assert.Equal(t, "error creating card: test error", err.Error())
 	})
 
 	t.Run("GetCardError_ReturnsError", func(t *testing.T) {
@@ -165,7 +165,7 @@ func Test_billingCardCreate(t *testing.T) {
 
 		err := billingCardCreate(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving new card: test error", err.Error())
+		assert.Equal(t, "error retrieving new card: test error", err.Error())
 	})
 }
 
@@ -180,7 +180,7 @@ func Test_billingCardUpdateCmd_Args(t *testing.T) {
 		err := billingCardUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing card", err.Error())
+		assert.Equal(t, "missing card", err.Error())
 	})
 }
 
@@ -279,7 +279,7 @@ func Test_billingCardDeleteCmd_Args(t *testing.T) {
 		err := billingCardDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing card", err.Error())
+		assert.Equal(t, "missing card", err.Error())
 	})
 }
 

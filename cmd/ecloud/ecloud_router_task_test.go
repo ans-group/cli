@@ -23,7 +23,7 @@ func Test_ecloudRouterTaskListCmd_Args(t *testing.T) {
 		err := ecloudRouterTaskListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing router", err.Error())
+		assert.Equal(t, "missing router", err.Error())
 	})
 }
 
@@ -63,6 +63,6 @@ func Test_ecloudRouterTaskList(t *testing.T) {
 
 		err := ecloudRouterTaskList(service, &cobra.Command{}, []string{"rtr-abcdef12"})
 
-		assert.Equal(t, "Error retrieving router tasks: test error", err.Error())
+		assert.Equal(t, "error retrieving router tasks: test error", err.Error())
 	})
 }

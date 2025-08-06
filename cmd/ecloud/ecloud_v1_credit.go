@@ -48,7 +48,7 @@ func ecloudCreditList(service ecloud.ECloudService, cmd *cobra.Command, args []s
 
 	credits, err := service.GetCredits(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving credits: %s", err)
+		return fmt.Errorf("error retrieving credits: %s", err)
 	}
 
 	return output.CommandOutput(cmd, accountcmd.CreditCollection(credits))

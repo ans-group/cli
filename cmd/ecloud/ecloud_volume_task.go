@@ -31,7 +31,7 @@ func ecloudVolumeTaskListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud volume task list vol-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing volume")
+				return errors.New("missing volume")
 			}
 
 			return nil
@@ -56,7 +56,7 @@ func ecloudVolumeTaskList(service ecloud.ECloudService, cmd *cobra.Command, args
 
 	tasks, err := service.GetVolumeTasks(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving volume tasks: %s", err)
+		return fmt.Errorf("error retrieving volume tasks: %s", err)
 	}
 
 	return output.CommandOutput(cmd, TaskCollection(tasks))

@@ -33,7 +33,7 @@ func ecloudVirtualMachineConsoleSessionCreateCmd(f factory.ClientFactory) *cobra
 		Example: "ans ecloud vm consolesession create 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing virtual machine")
+				return errors.New("missing virtual machine")
 			}
 
 			return nil
@@ -56,12 +56,12 @@ func ecloudVirtualMachineConsoleSessionCreateCmd(f factory.ClientFactory) *cobra
 func ecloudVirtualMachineConsoleSessionCreate(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	vmID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid virtual machine ID [%s]", args[0])
+		return fmt.Errorf("invalid virtual machine ID [%s]", args[0])
 	}
 
 	console, err := service.CreateVirtualMachineConsoleSession(vmID)
 	if err != nil {
-		return fmt.Errorf("Error creating virtual machine console session: %s", err)
+		return fmt.Errorf("error creating virtual machine console session: %s", err)
 	}
 
 	openBrowser, _ := cmd.Flags().GetBool("browser")

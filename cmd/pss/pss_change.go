@@ -66,7 +66,7 @@ func pssChangeShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans pss change show CHG123456",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing change")
+				return errors.New("missing change")
 			}
 
 			return nil
@@ -101,19 +101,19 @@ func pssChangeCreateCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Setup flags
 	cmd.Flags().String("title", "", "Specifies the title for change case")
-	cmd.MarkFlagRequired("title")
+	_ = cmd.MarkFlagRequired("title")
 	cmd.Flags().String("description", "", "Specifies the description for change case")
-	cmd.MarkFlagRequired("description")
+	_ = cmd.MarkFlagRequired("description")
 	cmd.Flags().String("risk", "", "Specifies the risk of change case")
-	cmd.MarkFlagRequired("risk")
+	_ = cmd.MarkFlagRequired("risk")
 	cmd.Flags().String("category", "", "Category ID for change case")
-	cmd.MarkFlagRequired("category")
+	_ = cmd.MarkFlagRequired("category")
 	cmd.Flags().String("supported-service", "", "Supported service ID for change case")
-	cmd.MarkFlagRequired("supported-service")
+	_ = cmd.MarkFlagRequired("supported-service")
 	cmd.Flags().String("impact", "", "Impact for change case")
-	cmd.MarkFlagRequired("impact")
+	_ = cmd.MarkFlagRequired("impact")
 	cmd.Flags().String("reason", "", "Reason for change case")
-	cmd.MarkFlagRequired("reason")
+	_ = cmd.MarkFlagRequired("reason")
 	cmd.Flags().Bool("security", false, "Specifies whether change case is a security change")
 	cmd.Flags().String("customer-reference", "", "Specifies the customer reference for change case")
 
@@ -147,12 +147,12 @@ func pssChangeCreate(service pss.PSSService, cmd *cobra.Command, args []string) 
 
 	changeID, err := service.CreateChangeCase(createChangeCase)
 	if err != nil {
-		return fmt.Errorf("Error creating change: %s", err)
+		return fmt.Errorf("error creating change: %s", err)
 	}
 
 	change, err := service.GetChangeCase(changeID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new change: %s", err)
+		return fmt.Errorf("error retrieving new change: %s", err)
 	}
 
 	return output.CommandOutput(cmd, ChangeCaseCollection([]pss.ChangeCase{change}))
@@ -166,7 +166,7 @@ func pssChangeApproveCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans pss change approve CHG123456",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing change")
+				return errors.New("missing change")
 			}
 
 			return nil

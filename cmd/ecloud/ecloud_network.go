@@ -56,7 +56,7 @@ func ecloudNetworkList(service ecloud.ECloudService, cmd *cobra.Command, args []
 
 	networks, err := service.GetNetworks(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving networks: %s", err)
+		return fmt.Errorf("error retrieving networks: %s", err)
 	}
 
 	return output.CommandOutput(cmd, NetworkCollection(networks))
@@ -70,7 +70,7 @@ func ecloudNetworkShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud network show net-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing network")
+				return errors.New("missing network")
 			}
 
 			return nil
@@ -106,9 +106,9 @@ func ecloudNetworkCreateCmd(f factory.ClientFactory) *cobra.Command {
 	// Setup flags
 	cmd.Flags().String("name", "", "Name of network")
 	cmd.Flags().String("router", "", "ID of router")
-	cmd.MarkFlagRequired("router")
+	_ = cmd.MarkFlagRequired("router")
 	cmd.Flags().String("subnet", "", "Subnet for network, e.g. 10.0.0.0/24")
-	cmd.MarkFlagRequired("subnet")
+	_ = cmd.MarkFlagRequired("subnet")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the network has been completely created")
 
 	return cmd
@@ -124,20 +124,20 @@ func ecloudNetworkCreate(service ecloud.ECloudService, cmd *cobra.Command, args 
 
 	networkID, err := service.CreateNetwork(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating network: %s", err)
+		return fmt.Errorf("error creating network: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := helper.WaitForCommand(NetworkResourceSyncStatusWaitFunc(service, networkID, ecloud.SyncStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for network sync: %s", err)
+			return fmt.Errorf("error waiting for network sync: %s", err)
 		}
 	}
 
 	network, err := service.GetNetwork(networkID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new network: %s", err)
+		return fmt.Errorf("error retrieving new network: %s", err)
 	}
 
 	return output.CommandOutput(cmd, NetworkCollection([]ecloud.Network{network}))
@@ -151,7 +151,7 @@ func ecloudNetworkUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud network update net-abcdef12 --name \"my network\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing network")
+				return errors.New("missing network")
 			}
 
 			return nil
@@ -209,7 +209,7 @@ func ecloudNetworkDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud network delete net-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing network")
+				return errors.New("missing network")
 			}
 
 			return nil
@@ -260,7 +260,7 @@ func NetworkNotFoundWaitFunc(service ecloud.ECloudService, networkID string) hel
 			case *ecloud.NetworkNotFoundError:
 				return true, nil
 			default:
-				return false, fmt.Errorf("Failed to retrieve network [%s]: %s", networkID, err)
+				return false, fmt.Errorf("failed to retrieve network [%s]: %s", networkID, err)
 			}
 		}
 

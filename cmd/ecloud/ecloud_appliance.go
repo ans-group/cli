@@ -52,7 +52,7 @@ func ecloudApplianceList(service ecloud.ECloudService, cmd *cobra.Command, args 
 
 	appliances, err := service.GetAppliances(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving appliances: %s", err)
+		return fmt.Errorf("error retrieving appliances: %s", err)
 	}
 
 	return output.CommandOutput(cmd, ApplianceCollection(appliances))
@@ -66,7 +66,7 @@ func ecloudApplianceShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vm appliance 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing appliance")
+				return errors.New("missing appliance")
 			}
 
 			return nil

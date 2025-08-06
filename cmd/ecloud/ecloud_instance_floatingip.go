@@ -31,7 +31,7 @@ func ecloudInstanceFloatingIPListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud instance floatingip list i-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing instance")
+				return errors.New("missing instance")
 			}
 
 			return nil
@@ -52,7 +52,7 @@ func ecloudInstanceFloatingIPList(service ecloud.ECloudService, cmd *cobra.Comma
 
 	fips, err := service.GetInstanceFloatingIPs(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving instance floating IPs: %s", err)
+		return fmt.Errorf("error retrieving instance floating IPs: %s", err)
 	}
 
 	return output.CommandOutput(cmd, FloatingIPCollection(fips))

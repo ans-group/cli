@@ -25,7 +25,7 @@ func Test_ecloudPodTemplateListCmd_Args(t *testing.T) {
 		err := ecloudPodTemplateListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing pod", err.Error())
+		assert.Equal(t, "missing pod", err.Error())
 	})
 }
 
@@ -49,7 +49,7 @@ func Test_ecloudPodTemplateList(t *testing.T) {
 
 		err := ecloudPodTemplateList(service, &cobra.Command{}, []string{"abc"})
 
-		assert.Equal(t, "Invalid pod ID [abc]", err.Error())
+		assert.Equal(t, "invalid pod ID [abc]", err.Error())
 	})
 
 	t.Run("MalformedFlag_ReturnsError", func(t *testing.T) {
@@ -75,7 +75,7 @@ func Test_ecloudPodTemplateList(t *testing.T) {
 
 		err := ecloudPodTemplateList(service, &cobra.Command{}, []string{"123"})
 
-		assert.Equal(t, "Error retrieving pod templates: test error 1", err.Error())
+		assert.Equal(t, "error retrieving pod templates: test error 1", err.Error())
 	})
 }
 
@@ -90,14 +90,14 @@ func Test_ecloudPodTemplateShowCmd_Args(t *testing.T) {
 		err := ecloudPodTemplateShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing pod", err.Error())
+		assert.Equal(t, "missing pod", err.Error())
 	})
 
 	t.Run("MissingTemplate_Error", func(t *testing.T) {
 		err := ecloudPodTemplateShowCmd(nil).Args(nil, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing template", err.Error())
+		assert.Equal(t, "missing template", err.Error())
 	})
 }
 
@@ -135,7 +135,7 @@ func Test_ecloudPodTemplateShow(t *testing.T) {
 
 		err := ecloudPodTemplateShow(service, &cobra.Command{}, []string{"abc", "testtemplate1"})
 
-		assert.Equal(t, "Invalid pod ID [abc]", err.Error())
+		assert.Equal(t, "invalid pod ID [abc]", err.Error())
 	})
 
 	t.Run("GetPodTemplateError_OutputsError", func(t *testing.T) {
@@ -163,14 +163,14 @@ func Test_ecloudPodTemplateUpdateCmd_Args(t *testing.T) {
 		err := ecloudPodTemplateUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing pod", err.Error())
+		assert.Equal(t, "missing pod", err.Error())
 	})
 
 	t.Run("MissingTemplate_Error", func(t *testing.T) {
 		err := ecloudPodTemplateUpdateCmd(nil).Args(nil, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing template", err.Error())
+		assert.Equal(t, "missing template", err.Error())
 	})
 }
 
@@ -209,7 +209,7 @@ func Test_ecloudPodTemplateUpdate(t *testing.T) {
 
 		err := ecloudPodTemplateUpdate(service, &cobra.Command{}, []string{"abc"})
 
-		assert.Equal(t, "Invalid pod ID [abc]", err.Error())
+		assert.Equal(t, "invalid pod ID [abc]", err.Error())
 	})
 
 	t.Run("RenamePodTemplateError_ReturnsError", func(t *testing.T) {
@@ -226,7 +226,7 @@ func Test_ecloudPodTemplateUpdate(t *testing.T) {
 
 		err := ecloudPodTemplateUpdate(service, cmd, []string{"123", "testname1"})
 
-		assert.Equal(t, "Error updating pod template: test error 1", err.Error())
+		assert.Equal(t, "error updating pod template: test error 1", err.Error())
 	})
 
 	t.Run("WaitForCommandError_ReturnsError", func(t *testing.T) {
@@ -249,7 +249,7 @@ func Test_ecloudPodTemplateUpdate(t *testing.T) {
 
 		err := ecloudPodTemplateUpdate(service, cmd, []string{"123", "testname1"})
 
-		assert.Equal(t, "Error waiting for pod template update: Error waiting for command: Failed to retrieve pod template [newname]: test error 1", err.Error())
+		assert.Equal(t, "error waiting for pod template update: error waiting for command: failed to retrieve pod template [newname]: test error 1", err.Error())
 	})
 
 	t.Run("GetPodTemplateError_ReturnsError", func(t *testing.T) {
@@ -264,7 +264,7 @@ func Test_ecloudPodTemplateUpdate(t *testing.T) {
 
 		err := ecloudPodTemplateUpdate(service, &cobra.Command{}, []string{"123", "testname1"})
 
-		assert.Equal(t, "Error retrieving updated pod template: test error 1", err.Error())
+		assert.Equal(t, "error retrieving updated pod template: test error 1", err.Error())
 	})
 }
 
@@ -279,14 +279,14 @@ func Test_ecloudPodTemplateDeleteCmd_Args(t *testing.T) {
 		err := ecloudPodTemplateDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing pod", err.Error())
+		assert.Equal(t, "missing pod", err.Error())
 	})
 
 	t.Run("MissingTemplate_Error", func(t *testing.T) {
 		err := ecloudPodTemplateDeleteCmd(nil).Args(nil, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing template", err.Error())
+		assert.Equal(t, "missing template", err.Error())
 	})
 }
 
@@ -345,7 +345,7 @@ func Test_ecloudPodTemplateDelete(t *testing.T) {
 
 		err := ecloudPodTemplateDelete(service, &cobra.Command{}, []string{"abc", "testname1"})
 
-		assert.Equal(t, "Invalid pod ID [abc]", err.Error())
+		assert.Equal(t, "invalid pod ID [abc]", err.Error())
 	})
 
 	t.Run("DeletePodTemplateError_OutputsError", func(t *testing.T) {
@@ -379,7 +379,7 @@ func Test_ecloudPodTemplateDelete(t *testing.T) {
 			service.EXPECT().GetPodTemplate(123, "testname1").Return(ecloud.Template{}, errors.New("test error 1")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error removing pod template [testname1]: Error waiting for command: Failed to retrieve pod template [testname1]: test error 1\n", func() {
+		test_output.AssertErrorOutput(t, "Error removing pod template [testname1]: error waiting for command: failed to retrieve pod template [testname1]: test error 1\n", func() {
 			ecloudPodTemplateDelete(service, cmd, []string{"123", "testname1"})
 		})
 	})

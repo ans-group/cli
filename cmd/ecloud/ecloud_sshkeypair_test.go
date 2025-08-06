@@ -49,7 +49,7 @@ func Test_ecloudSSHKeyPairList(t *testing.T) {
 
 		err := ecloudSSHKeyPairList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving SSH key pairs: test error", err.Error())
+		assert.Equal(t, "error retrieving SSH key pairs: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudSSHKeyPairShowCmd_Args(t *testing.T) {
 		err := ecloudSSHKeyPairShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing SSH key pair", err.Error())
+		assert.Equal(t, "missing SSH key pair", err.Error())
 	})
 }
 
@@ -141,7 +141,7 @@ func Test_ecloudSSHKeyPairCreate(t *testing.T) {
 
 		err := ecloudSSHKeyPairCreate(service, nil, cmd, []string{})
 
-		assert.Equal(t, "Error creating SSH key pair: test error", err.Error())
+		assert.Equal(t, "error creating SSH key pair: test error", err.Error())
 	})
 
 	t.Run("GetSSHKeyPairError_ReturnsError", func(t *testing.T) {
@@ -157,7 +157,7 @@ func Test_ecloudSSHKeyPairCreate(t *testing.T) {
 
 		err := ecloudSSHKeyPairCreate(service, nil, ecloudSSHKeyPairCreateCmd(nil, nil), []string{})
 
-		assert.Equal(t, "Error retrieving new SSH key pair: test error", err.Error())
+		assert.Equal(t, "error retrieving new SSH key pair: test error", err.Error())
 	})
 }
 
@@ -172,7 +172,7 @@ func Test_ecloudSSHKeyPairUpdateCmd_Args(t *testing.T) {
 		err := ecloudSSHKeyPairUpdateCmd(nil, nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing SSH key pair", err.Error())
+		assert.Equal(t, "missing SSH key pair", err.Error())
 	})
 }
 
@@ -255,7 +255,7 @@ func Test_ecloudSSHKeyPairDeleteCmd_Args(t *testing.T) {
 		err := ecloudSSHKeyPairDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing SSH key pair", err.Error())
+		assert.Equal(t, "missing SSH key pair", err.Error())
 	})
 }
 

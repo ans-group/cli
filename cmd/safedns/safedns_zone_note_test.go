@@ -27,7 +27,7 @@ func Test_safednsZoneNoteListCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing zone", err.Error())
+		assert.Equal(t, "missing zone", err.Error())
 	})
 }
 
@@ -90,7 +90,7 @@ func Test_safednsZoneNoteList(t *testing.T) {
 
 		err := safednsZoneNoteList(service, &cobra.Command{}, []string{"testdomain1.com"})
 
-		assert.Equal(t, "Error retrieving notes for zone: test error", err.Error())
+		assert.Equal(t, "error retrieving notes for zone: test error", err.Error())
 	})
 }
 
@@ -107,7 +107,7 @@ func Test_safednsZoneNoteShowCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing zone", err.Error())
+		assert.Equal(t, "missing zone", err.Error())
 	})
 
 	t.Run("MissingNote_Error", func(t *testing.T) {
@@ -115,7 +115,7 @@ func Test_safednsZoneNoteShowCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{"testdomain1.com"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing note", err.Error())
+		assert.Equal(t, "missing note", err.Error())
 	})
 }
 
@@ -183,7 +183,7 @@ func Test_safednsZoneNoteCreateCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing zone", err.Error())
+		assert.Equal(t, "missing zone", err.Error())
 	})
 }
 
@@ -220,7 +220,7 @@ func Test_safednsZoneNoteCreate(t *testing.T) {
 
 		err := safednsZoneNoteCreate(service, &cobra.Command{}, []string{"testdomain1.com"})
 
-		assert.Equal(t, "Error creating note: test error", err.Error())
+		assert.Equal(t, "error creating note: test error", err.Error())
 	})
 
 	t.Run("GetZoneNoteError_ReturnsError", func(t *testing.T) {
@@ -236,6 +236,6 @@ func Test_safednsZoneNoteCreate(t *testing.T) {
 
 		err := safednsZoneNoteCreate(service, &cobra.Command{}, []string{"testdomain1.com"})
 
-		assert.Equal(t, "Error retrieving new note: test error", err.Error())
+		assert.Equal(t, "error retrieving new note: test error", err.Error())
 	})
 }

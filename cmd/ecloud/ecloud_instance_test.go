@@ -51,7 +51,7 @@ func Test_ecloudInstanceList(t *testing.T) {
 
 		err := ecloudInstanceList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving instances: test error", err.Error())
+		assert.Equal(t, "error retrieving instances: test error", err.Error())
 	})
 }
 
@@ -66,7 +66,7 @@ func Test_ecloudInstanceShowCmd_Args(t *testing.T) {
 		err := ecloudInstanceShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing instance", err.Error())
+		assert.Equal(t, "missing instance", err.Error())
 	})
 }
 
@@ -183,7 +183,7 @@ func Test_ecloudInstanceCreate(t *testing.T) {
 
 		err := ecloudInstanceCreate(service, cmd, []string{})
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error retrieving images: test error", err.Error())
+		assert.Equal(t, "error retrieving images: test error", err.Error())
 	})
 
 	t.Run("MultipleImagesRetrieved_ReturnsError", func(t *testing.T) {
@@ -210,7 +210,7 @@ func Test_ecloudInstanceCreate(t *testing.T) {
 
 		err := ecloudInstanceCreate(service, cmd, []string{})
 		assert.NotNil(t, err)
-		assert.Equal(t, "Expected 1 image, got 2 images", err.Error())
+		assert.Equal(t, "expected 1 image, got 2 images", err.Error())
 	})
 
 	t.Run("ImageNotFound_ReturnsError", func(t *testing.T) {
@@ -233,7 +233,7 @@ func Test_ecloudInstanceCreate(t *testing.T) {
 
 		err := ecloudInstanceCreate(service, cmd, []string{})
 		assert.NotNil(t, err)
-		assert.Equal(t, "Image not found with name 'unknown'", err.Error())
+		assert.Equal(t, "image not found with name 'unknown'", err.Error())
 	})
 
 	t.Run("CreateWithNetworkID_NoError", func(t *testing.T) {
@@ -271,7 +271,7 @@ func Test_ecloudInstanceCreate(t *testing.T) {
 
 		err := ecloudInstanceCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error creating instance: test error", err.Error())
+		assert.Equal(t, "error creating instance: test error", err.Error())
 	})
 
 	t.Run("GetInstanceError_ReturnsError", func(t *testing.T) {
@@ -289,7 +289,7 @@ func Test_ecloudInstanceCreate(t *testing.T) {
 
 		err := ecloudInstanceCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error retrieving new instance: test error", err.Error())
+		assert.Equal(t, "error retrieving new instance: test error", err.Error())
 	})
 }
 
@@ -304,7 +304,7 @@ func Test_ecloudInstanceUpdateCmd_Args(t *testing.T) {
 		err := ecloudInstanceUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing instance", err.Error())
+		assert.Equal(t, "missing instance", err.Error())
 	})
 }
 
@@ -410,7 +410,7 @@ func Test_ecloudInstanceDeleteCmd_Args(t *testing.T) {
 		err := ecloudInstanceDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing instance", err.Error())
+		assert.Equal(t, "missing instance", err.Error())
 	})
 }
 
@@ -465,7 +465,7 @@ func Test_ecloudInstanceLockCmd_Args(t *testing.T) {
 		err := ecloudInstanceLockCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing instance", err.Error())
+		assert.Equal(t, "missing instance", err.Error())
 	})
 }
 
@@ -520,7 +520,7 @@ func Test_ecloudInstanceUnlockCmd_Args(t *testing.T) {
 		err := ecloudInstanceUnlockCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing instance", err.Error())
+		assert.Equal(t, "missing instance", err.Error())
 	})
 }
 
@@ -572,7 +572,7 @@ func Test_ecloudInstanceStartCmd_Args(t *testing.T) {
 		err := ecloudInstanceStartCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing instance", err.Error())
+		assert.Equal(t, "missing instance", err.Error())
 	})
 }
 
@@ -625,7 +625,7 @@ func Test_ecloudInstanceStart(t *testing.T) {
 		service.EXPECT().PowerOnInstance("i-abcdef12").Return("task-abcdef12", nil)
 		service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{}, errors.New("test error"))
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for instance [i-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for instance [i-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudInstanceStart(service, cmd, []string{"i-abcdef12"})
 		})
 	})
@@ -654,7 +654,7 @@ func Test_ecloudInstanceStopCmd_Args(t *testing.T) {
 		err := ecloudInstanceStopCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing instance", err.Error())
+		assert.Equal(t, "missing instance", err.Error())
 	})
 }
 
@@ -707,7 +707,7 @@ func Test_ecloudInstanceStop(t *testing.T) {
 		service.EXPECT().PowerShutdownInstance("i-abcdef12").Return("task-abcdef12", nil)
 		service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{}, errors.New("test error"))
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for instance [i-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for instance [i-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudInstanceStop(service, cmd, []string{"i-abcdef12"})
 		})
 	})
@@ -751,7 +751,7 @@ func Test_ecloudInstanceRestartCmd_Args(t *testing.T) {
 		err := ecloudInstanceRestartCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing instance", err.Error())
+		assert.Equal(t, "missing instance", err.Error())
 	})
 }
 
@@ -804,7 +804,7 @@ func Test_ecloudInstanceRestart(t *testing.T) {
 		service.EXPECT().PowerRestartInstance("i-abcdef12").Return("task-abcdef12", nil)
 		service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{}, errors.New("test error"))
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for instance [i-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for instance [i-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudInstanceRestart(service, cmd, []string{"i-abcdef12"})
 		})
 	})
@@ -848,7 +848,7 @@ func Test_ecloudInstanceMigrateCmd_Args(t *testing.T) {
 		err := ecloudInstanceMigrateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing instance", err.Error())
+		assert.Equal(t, "missing instance", err.Error())
 	})
 }
 
@@ -920,7 +920,7 @@ func Test_ecloudInstanceMigrate(t *testing.T) {
 		service.EXPECT().MigrateInstance("i-abcdef12", req).Return("task-abcdef12", nil)
 		service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{}, errors.New("test error"))
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for instance [i-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for instance [i-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudInstanceMigrate(service, cmd, []string{"i-abcdef12"})
 		})
 	})
@@ -949,7 +949,7 @@ func Test_ecloudInstanceEncryptCmd_Args(t *testing.T) {
 		err := ecloudInstanceEncryptCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing instance", err.Error())
+		assert.Equal(t, "missing instance", err.Error())
 	})
 }
 
@@ -991,7 +991,7 @@ func Test_ecloudInstanceEncrypt(t *testing.T) {
 		service.EXPECT().EncryptInstance("i-abcdef12").Return("task-abcdef12", nil)
 		service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{}, errors.New("test error"))
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for instance [i-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for instance [i-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudInstanceEncrypt(service, cmd, []string{"i-abcdef12"})
 		})
 	})
@@ -1020,7 +1020,7 @@ func Test_ecloudInstanceDecryptCmd_Args(t *testing.T) {
 		err := ecloudInstanceDecryptCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing instance", err.Error())
+		assert.Equal(t, "missing instance", err.Error())
 	})
 }
 
@@ -1062,7 +1062,7 @@ func Test_ecloudInstanceDecrypt(t *testing.T) {
 		service.EXPECT().DecryptInstance("i-abcdef12").Return("task-abcdef12", nil)
 		service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{}, errors.New("test error"))
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for instance [i-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for instance [i-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudInstanceDecrypt(service, cmd, []string{"i-abcdef12"})
 		})
 	})
@@ -1090,7 +1090,7 @@ func Test_tagLookup(t *testing.T) {
 		_, err := tagLookup(service, "")
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Cannot lookup tag with empty value", err.Error())
+		assert.Equal(t, "cannot lookup tag with empty value", err.Error())
 	})
 
 	t.Run("TagIDWithPrefix_ReturnsID", func(t *testing.T) {
@@ -1167,7 +1167,7 @@ func Test_tagLookup(t *testing.T) {
 		_, err := tagLookup(service, "invalid:scope:format")
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Invalid tag format 'invalid:scope:format', expected '<scope>:<name>'", err.Error())
+		assert.Equal(t, "invalid tag format 'invalid:scope:format', expected '<scope>:<name>'", err.Error())
 	})
 
 	t.Run("GetTagsError_ReturnsError", func(t *testing.T) {
@@ -1181,7 +1181,7 @@ func Test_tagLookup(t *testing.T) {
 		_, err := tagLookup(service, "test-tag")
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error retrieving tags: test error", err.Error())
+		assert.Equal(t, "error retrieving tags: test error", err.Error())
 	})
 
 	t.Run("TagNotFound_ReturnsError", func(t *testing.T) {
@@ -1195,7 +1195,7 @@ func Test_tagLookup(t *testing.T) {
 		_, err := tagLookup(service, "nonexistent-tag")
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Tag 'nonexistent-tag' not found, create the tag first", err.Error())
+		assert.Equal(t, "tag 'nonexistent-tag' not found, create the tag first", err.Error())
 	})
 
 	t.Run("MultipleTags_ReturnsError", func(t *testing.T) {
@@ -1212,7 +1212,7 @@ func Test_tagLookup(t *testing.T) {
 		_, err := tagLookup(service, "test-tag")
 
 		assert.NotNil(t, err)
-		assert.Contains(t, err.Error(), "Expected 1 tag, got 2 tags")
+		assert.Contains(t, err.Error(), "expected 1 tag, got 2 tags")
 	})
 }
 
@@ -1368,7 +1368,7 @@ func Test_addRemoveTags(t *testing.T) {
 		err := addRemoveTags(service, request, "i-abcdef12", []string{"new-tag"}, true)
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error retrieving instance tags [i-abcdef12]: test error", err.Error())
+		assert.Equal(t, "error retrieving instance tags [i-abcdef12]: test error", err.Error())
 	})
 
 	t.Run("TagLookupError_ReturnsError", func(t *testing.T) {
@@ -1385,7 +1385,7 @@ func Test_addRemoveTags(t *testing.T) {
 		err := addRemoveTags(service, request, "i-abcdef12", []string{"nonexistent-tag"}, true)
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error retrieving tags: tag lookup error", err.Error())
+		assert.Equal(t, "error retrieving tags: tag lookup error", err.Error())
 	})
 
 	t.Run("FinalTagsSortedAlphabetically", func(t *testing.T) {

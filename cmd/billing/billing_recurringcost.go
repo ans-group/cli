@@ -50,7 +50,7 @@ func billingRecurringCostList(service billing.BillingService, cmd *cobra.Command
 
 	costs, err := service.GetRecurringCosts(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving recurring costs: %s", err)
+		return fmt.Errorf("error retrieving recurring costs: %s", err)
 	}
 
 	return output.CommandOutput(cmd, RecurringCostCollection(costs))
@@ -64,7 +64,7 @@ func billingRecurringCostShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans billing recurringcost show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing recurring cost")
+				return errors.New("missing recurring cost")
 			}
 
 			return nil

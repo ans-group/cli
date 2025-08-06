@@ -50,7 +50,7 @@ func ecloudFirewallList(service ecloud.ECloudService, cmd *cobra.Command, args [
 
 	firewalls, err := service.GetFirewalls(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving firewalls: %s", err)
+		return fmt.Errorf("error retrieving firewalls: %s", err)
 	}
 
 	return output.CommandOutput(cmd, FirewallCollection(firewalls))
@@ -64,7 +64,7 @@ func ecloudFirewallShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vm firewall 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing firewall")
+				return errors.New("missing firewall")
 			}
 
 			return nil

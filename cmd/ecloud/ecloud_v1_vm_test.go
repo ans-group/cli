@@ -74,7 +74,7 @@ func Test_ecloudVirtualMachineList(t *testing.T) {
 
 		err := ecloudVirtualMachineList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving virtual machines: test error", err.Error())
+		assert.Equal(t, "error retrieving virtual machines: test error", err.Error())
 	})
 }
 
@@ -89,7 +89,7 @@ func Test_ecloudVirtualMachineShowCmd_Args(t *testing.T) {
 		err := ecloudVirtualMachineShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing virtual machine", err.Error())
+		assert.Equal(t, "missing virtual machine", err.Error())
 	})
 }
 
@@ -211,7 +211,7 @@ func Test_ecloudVirtualMachineCreate(t *testing.T) {
 
 		gomock.InOrder(
 			service.EXPECT().CreateVirtualMachine(gomock.Any()).Do(func(req ecloud.CreateVirtualMachineRequest) {
-				if req.SSHKeys == nil || len(req.SSHKeys) < 1 || req.SSHKeys[0] != "testkey1" {
+				if len(req.SSHKeys) < 1 || req.SSHKeys[0] != "testkey1" {
 					t.Fatal("Expected SSHKeys to contain key [testkey1]")
 				}
 			}).Return(123, nil),
@@ -282,7 +282,7 @@ func Test_ecloudVirtualMachineCreate(t *testing.T) {
 
 		err := ecloudVirtualMachineCreate(service, cmd, []string{"123"})
 
-		assert.Equal(t, "Error waiting for command: Virtual machine [123] in [Failed] state", err.Error())
+		assert.Equal(t, "error waiting for command: virtual machine [123] in [Failed] state", err.Error())
 	})
 
 	t.Run("CreateWithWaitRetrieveStatusFailure_ReturnsError", func(t *testing.T) {
@@ -305,7 +305,7 @@ func Test_ecloudVirtualMachineCreate(t *testing.T) {
 
 		err := ecloudVirtualMachineCreate(service, cmd, []string{"123"})
 
-		assert.Equal(t, "Error waiting for command: Failed to retrieve virtual machine [123]: test error 1", err.Error())
+		assert.Equal(t, "error waiting for command: failed to retrieve virtual machine [123]: test error 1", err.Error())
 	})
 
 	t.Run("CreateVirtualMachineError_ReturnsError", func(t *testing.T) {
@@ -318,7 +318,7 @@ func Test_ecloudVirtualMachineCreate(t *testing.T) {
 
 		err := ecloudVirtualMachineCreate(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error creating virtual machine: test error", err.Error())
+		assert.Equal(t, "error creating virtual machine: test error", err.Error())
 	})
 
 	t.Run("GetVirtualMachineError_ReturnsError", func(t *testing.T) {
@@ -334,7 +334,7 @@ func Test_ecloudVirtualMachineCreate(t *testing.T) {
 
 		err := ecloudVirtualMachineCreate(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving new virtual machine: test error", err.Error())
+		assert.Equal(t, "error retrieving new virtual machine: test error", err.Error())
 	})
 }
 
@@ -349,7 +349,7 @@ func Test_ecloudVirtualMachineUpdateCmd_Args(t *testing.T) {
 		err := ecloudVirtualMachineUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing virtual machine", err.Error())
+		assert.Equal(t, "missing virtual machine", err.Error())
 	})
 }
 
@@ -452,7 +452,7 @@ func Test_ecloudVirtualMachineUpdate(t *testing.T) {
 			service.EXPECT().GetVirtualMachine(123).Return(ecloud.VirtualMachine{}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error updating virtual machine [123]: Error waiting for command: Failed to retrieve virtual machine [123]: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error updating virtual machine [123]: error waiting for command: failed to retrieve virtual machine [123]: test error\n", func() {
 			ecloudVirtualMachineUpdate(service, &cobra.Command{}, []string{"123"})
 		})
 	})
@@ -486,7 +486,7 @@ func Test_ecloudVirtualMachineStartCmd_Args(t *testing.T) {
 		err := ecloudVirtualMachineStartCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing virtual machine", err.Error())
+		assert.Equal(t, "missing virtual machine", err.Error())
 	})
 }
 
@@ -552,7 +552,7 @@ func Test_ecloudVirtualMachineStopCmd_Args(t *testing.T) {
 		err := ecloudVirtualMachineStopCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing virtual machine", err.Error())
+		assert.Equal(t, "missing virtual machine", err.Error())
 	})
 }
 
@@ -662,7 +662,7 @@ func Test_ecloudVirtualMachineRestartCmd_Args(t *testing.T) {
 		err := ecloudVirtualMachineRestartCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing virtual machine", err.Error())
+		assert.Equal(t, "missing virtual machine", err.Error())
 	})
 }
 
@@ -772,7 +772,7 @@ func Test_ecloudVirtualMachineDeleteCmd_Args(t *testing.T) {
 		err := ecloudVirtualMachineDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing virtual machine", err.Error())
+		assert.Equal(t, "missing virtual machine", err.Error())
 	})
 }
 
@@ -841,7 +841,7 @@ func Test_ecloudVirtualMachineDelete(t *testing.T) {
 			service.EXPECT().GetVirtualMachine(123).Return(ecloud.VirtualMachine{Status: ecloud.VirtualMachineStatusFailed}, nil),
 		)
 
-		test_output.AssertErrorOutput(t, "Error removing virtual machine [123]: Error waiting for command: Virtual machine [123] in [Failed] state\n", func() {
+		test_output.AssertErrorOutput(t, "Error removing virtual machine [123]: error waiting for command: virtual machine [123] in [Failed] state\n", func() {
 			ecloudVirtualMachineDelete(service, cmd, []string{"123"})
 		})
 	})
@@ -864,7 +864,7 @@ func Test_ecloudVirtualMachineDelete(t *testing.T) {
 			service.EXPECT().GetVirtualMachine(123).Return(ecloud.VirtualMachine{}, errors.New("test error 1")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error removing virtual machine [123]: Error waiting for command: Failed to retrieve virtual machine [123]: test error 1\n", func() {
+		test_output.AssertErrorOutput(t, "Error removing virtual machine [123]: error waiting for command: failed to retrieve virtual machine [123]: test error 1\n", func() {
 			ecloudVirtualMachineDelete(service, cmd, []string{"123"})
 		})
 	})
@@ -930,7 +930,7 @@ func TestVirtualMachineNotFoundWaitFunc(t *testing.T) {
 		finished, err := VirtualMachineNotFoundWaitFunc(service, 123)()
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Failed to retrieve virtual machine [123]: test error 1", err.Error())
+		assert.Equal(t, "failed to retrieve virtual machine [123]: test error 1", err.Error())
 		assert.False(t, finished)
 	})
 
@@ -950,7 +950,7 @@ func TestVirtualMachineNotFoundWaitFunc(t *testing.T) {
 		finished, err := VirtualMachineNotFoundWaitFunc(service, 123)()
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Virtual machine [123] in [Failed] state", err.Error())
+		assert.Equal(t, "virtual machine [123] in [Failed] state", err.Error())
 		assert.False(t, finished)
 	})
 
@@ -991,7 +991,7 @@ func TestVirtualMachineStatusWaitFunc(t *testing.T) {
 		finished, err := VirtualMachineStatusWaitFunc(service, 123, ecloud.VirtualMachineStatusComplete)()
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Failed to retrieve virtual machine [123]: test error 1", err.Error())
+		assert.Equal(t, "failed to retrieve virtual machine [123]: test error 1", err.Error())
 		assert.False(t, finished)
 	})
 
@@ -1011,7 +1011,7 @@ func TestVirtualMachineStatusWaitFunc(t *testing.T) {
 		finished, err := VirtualMachineStatusWaitFunc(service, 123, ecloud.VirtualMachineStatusComplete)()
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Virtual machine [123] in [Failed] state", err.Error())
+		assert.Equal(t, "virtual machine [123] in [Failed] state", err.Error())
 		assert.False(t, finished)
 	})
 

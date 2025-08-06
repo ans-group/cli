@@ -59,7 +59,7 @@ func safednsZoneList(service safedns.SafeDNSService, cmd *cobra.Command, args []
 
 	zones, err := service.GetZones(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving zones: %s", err)
+		return fmt.Errorf("error retrieving zones: %s", err)
 	}
 
 	return output.CommandOutput(cmd, ZoneCollection(zones))
@@ -73,7 +73,7 @@ func safednsZoneShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans safedns zone show ans.co.uk\nans safedns zone show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing zone")
+				return errors.New("missing zone")
 			}
 
 			return nil
@@ -122,7 +122,7 @@ func safednsZoneCreateCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Setup flags
 	cmd.Flags().String("name", "", "Name of zone")
-	cmd.MarkFlagRequired("name")
+	_ = cmd.MarkFlagRequired("name")
 	cmd.Flags().String("description", "", "Description for zone")
 
 	return cmd
@@ -139,12 +139,12 @@ func safednsZoneCreate(service safedns.SafeDNSService, cmd *cobra.Command, args 
 
 	err := service.CreateZone(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating zone: %s", err)
+		return fmt.Errorf("error creating zone: %s", err)
 	}
 
 	zone, err := service.GetZone(name)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new zone: %s", err)
+		return fmt.Errorf("error retrieving new zone: %s", err)
 	}
 
 	return output.CommandOutput(cmd, ZoneCollection([]safedns.Zone{zone}))
@@ -158,7 +158,7 @@ func safednsZoneUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans safedns zone update ans.co.uk --description \"some description\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing zone")
+				return errors.New("missing zone")
 			}
 
 			return nil
@@ -210,7 +210,7 @@ func safednsZoneDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans safedns zone delete ans.co.uk\nans safedns zone delete 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing zone")
+				return errors.New("missing zone")
 			}
 
 			return nil

@@ -24,7 +24,7 @@ func Test_ecloudNICIPAddressListCmd_Args(t *testing.T) {
 		err := ecloudNICIPAddressListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing NIC", err.Error())
+		assert.Equal(t, "missing NIC", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudNICIPAddressList(t *testing.T) {
 
 		err := ecloudNICIPAddressList(service, &cobra.Command{}, []string{"ip-abcdef12"})
 
-		assert.Equal(t, "Error retrieving NIC IP addresses: test error", err.Error())
+		assert.Equal(t, "error retrieving NIC IP addresses: test error", err.Error())
 	})
 }
 
@@ -79,7 +79,7 @@ func Test_ecloudNICIPAddressAssignCmd_Args(t *testing.T) {
 		err := ecloudNICIPAddressAssignCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing NIC", err.Error())
+		assert.Equal(t, "missing NIC", err.Error())
 	})
 }
 
@@ -143,7 +143,7 @@ func Test_ecloudNICIPAddressAssign(t *testing.T) {
 			session.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for NIC [nic-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for NIC [nic-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudNICIPAddressAssign(session, cmd, []string{"nic-abcdef12"})
 		})
 	})
@@ -173,7 +173,7 @@ func Test_ecloudNICIPAddressUnassignCmd_Args(t *testing.T) {
 		err := ecloudNICIPAddressUnassignCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing NIC", err.Error())
+		assert.Equal(t, "missing NIC", err.Error())
 	})
 }
 
@@ -225,7 +225,7 @@ func Test_ecloudNICIPAddressUnassign(t *testing.T) {
 			session.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for NIC [nic-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for NIC [nic-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudNICIPAddressUnassign(session, cmd, []string{"nic-abcdef12"})
 		})
 	})

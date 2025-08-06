@@ -23,7 +23,7 @@ func Test_ecloudInstanceVolumeListCmd_Args(t *testing.T) {
 		err := ecloudInstanceVolumeListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing instance", err.Error())
+		assert.Equal(t, "missing instance", err.Error())
 	})
 }
 
@@ -63,7 +63,7 @@ func Test_ecloudInstanceVolumeList(t *testing.T) {
 
 		err := ecloudInstanceVolumeList(service, &cobra.Command{}, []string{"i-abcdef12"})
 
-		assert.Equal(t, "Error retrieving instance volumes: test error", err.Error())
+		assert.Equal(t, "error retrieving instance volumes: test error", err.Error())
 	})
 }
 
@@ -128,7 +128,7 @@ func Test_ecloudInstanceVolumeAttach(t *testing.T) {
 		)
 
 		err := ecloudInstanceVolumeAttach(service, cmd, []string{"i-abcdef12"})
-		assert.Equal(t, "Error waiting for task: Error waiting for command: Failed to retrieve task status: test error", err.Error())
+		assert.Equal(t, "error waiting for task: error waiting for command: failed to retrieve task status: test error", err.Error())
 	})
 
 	t.Run("AttachInstanceVolumeError_OutputsError", func(t *testing.T) {
@@ -140,7 +140,7 @@ func Test_ecloudInstanceVolumeAttach(t *testing.T) {
 		service.EXPECT().AttachInstanceVolume("i-abcdef12", gomock.Any()).Return("", errors.New("test error"))
 
 		err := ecloudInstanceVolumeAttach(service, &cobra.Command{}, []string{"i-abcdef12"})
-		assert.Equal(t, "Error attaching instance volume: test error", err.Error())
+		assert.Equal(t, "error attaching instance volume: test error", err.Error())
 	})
 }
 
@@ -205,7 +205,7 @@ func Test_ecloudInstanceVolumeDetach(t *testing.T) {
 		)
 
 		err := ecloudInstanceVolumeDetach(service, cmd, []string{"i-abcdef12"})
-		assert.Equal(t, "Error waiting for task: Error waiting for command: Failed to retrieve task status: test error", err.Error())
+		assert.Equal(t, "error waiting for task: error waiting for command: failed to retrieve task status: test error", err.Error())
 	})
 
 	t.Run("DetachInstanceVolumeError_OutputsError", func(t *testing.T) {
@@ -217,6 +217,6 @@ func Test_ecloudInstanceVolumeDetach(t *testing.T) {
 		service.EXPECT().DetachInstanceVolume("i-abcdef12", gomock.Any()).Return("", errors.New("test error"))
 
 		err := ecloudInstanceVolumeDetach(service, &cobra.Command{}, []string{"i-abcdef12"})
-		assert.Equal(t, "Error detaching instance volume: test error", err.Error())
+		assert.Equal(t, "error detaching instance volume: test error", err.Error())
 	})
 }

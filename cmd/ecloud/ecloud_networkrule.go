@@ -56,7 +56,7 @@ func ecloudNetworkRuleList(service ecloud.ECloudService, cmd *cobra.Command, arg
 
 	rules, err := service.GetNetworkRules(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving network rules: %s", err)
+		return fmt.Errorf("error retrieving network rules: %s", err)
 	}
 
 	return output.CommandOutput(cmd, NetworkRuleCollection(rules))
@@ -70,7 +70,7 @@ func ecloudNetworkRuleShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud networkrule show nr-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing network rule")
+				return errors.New("missing network rule")
 			}
 
 			return nil
@@ -105,15 +105,15 @@ func ecloudNetworkRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Setup flags
 	cmd.Flags().String("policy", "", "ID of network policy")
-	cmd.MarkFlagRequired("policy")
+	_ = cmd.MarkFlagRequired("policy")
 	cmd.Flags().String("source", "", "Source of rule. IP range/subnet or ANY")
-	cmd.MarkFlagRequired("source")
+	_ = cmd.MarkFlagRequired("source")
 	cmd.Flags().String("destination", "", "Destination of rule. IP range/subnet or ANY")
-	cmd.MarkFlagRequired("destination")
+	_ = cmd.MarkFlagRequired("destination")
 	cmd.Flags().String("direction", "", "Direction of rule. One of: IN/OUT/IN_OUT")
-	cmd.MarkFlagRequired("direction")
+	_ = cmd.MarkFlagRequired("direction")
 	cmd.Flags().String("action", "", "Action of rule. One of: ALLOW/DROP/REJECT")
-	cmd.MarkFlagRequired("action")
+	_ = cmd.MarkFlagRequired("action")
 	cmd.Flags().String("name", "", "Name of rule")
 	cmd.Flags().Int("sequence", 0, "Sequence for rule")
 	cmd.Flags().Bool("enabled", false, "Specifies whether rule is enabled")
@@ -152,20 +152,20 @@ func ecloudNetworkRuleCreate(service ecloud.ECloudService, cmd *cobra.Command, a
 
 	taskRef, err := service.CreateNetworkRule(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating network rule: %s", err)
+		return fmt.Errorf("error creating network rule: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskRef.TaskID, ecloud.TaskStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for network rule task to complete: %s", err)
+			return fmt.Errorf("error waiting for network rule task to complete: %s", err)
 		}
 	}
 
 	rule, err := service.GetNetworkRule(taskRef.ResourceID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new network rule: %s", err)
+		return fmt.Errorf("error retrieving new network rule: %s", err)
 	}
 
 	return output.CommandOutput(cmd, NetworkRuleCollection([]ecloud.NetworkRule{rule}))
@@ -179,7 +179,7 @@ func ecloudNetworkRuleUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud networkrule update np-abcdef12 --name \"my rule\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing network rule")
+				return errors.New("missing network rule")
 			}
 
 			return nil
@@ -280,7 +280,7 @@ func ecloudNetworkRuleDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud networkrule delete nr-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing network rule")
+				return errors.New("missing network rule")
 			}
 
 			return nil

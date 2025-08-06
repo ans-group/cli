@@ -50,7 +50,7 @@ func Test_loadbalancerDeploymentList(t *testing.T) {
 		err := loadbalancerDeploymentList(service, &cobra.Command{}, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error retrieving deployments: test error", err.Error())
+		assert.Equal(t, "error retrieving deployments: test error", err.Error())
 	})
 }
 
@@ -65,7 +65,7 @@ func Test_loadbalancerDeploymentShowCmd_Args(t *testing.T) {
 		err := loadbalancerDeploymentShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing deployment", err.Error())
+		assert.Equal(t, "missing deployment", err.Error())
 	})
 }
 

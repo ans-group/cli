@@ -56,7 +56,7 @@ func ecloudVolumeGroupList(service ecloud.ECloudService, cmd *cobra.Command, arg
 
 	volumegroups, err := service.GetVolumeGroups(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving volume groups: %s", err)
+		return fmt.Errorf("error retrieving volume groups: %s", err)
 	}
 
 	return output.CommandOutput(cmd, VolumeGroupCollection(volumegroups))
@@ -70,7 +70,7 @@ func ecloudVolumeGroupShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud volumegroup show vol-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing volume-group")
+				return errors.New("missing volume-group")
 			}
 
 			return nil
@@ -106,9 +106,9 @@ func ecloudVolumeGroupCreateCmd(f factory.ClientFactory) *cobra.Command {
 	// Setup flags
 	cmd.Flags().String("name", "", "Name of volume-group")
 	cmd.Flags().String("vpc", "", "ID of VPC")
-	cmd.MarkFlagRequired("vpc")
+	_ = cmd.MarkFlagRequired("vpc")
 	cmd.Flags().String("availability-zone", "", "ID of Availability Zone")
-	cmd.MarkFlagRequired("availability-zone")
+	_ = cmd.MarkFlagRequired("availability-zone")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the volume-group has been completely created")
 
 	return cmd
@@ -124,20 +124,20 @@ func ecloudVolumeGroupCreate(service ecloud.ECloudService, cmd *cobra.Command, a
 
 	taskRef, err := service.CreateVolumeGroup(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating volume group: %s", err)
+		return fmt.Errorf("error creating volume group: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskRef.TaskID, ecloud.TaskStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for volume group task to complete: %s", err)
+			return fmt.Errorf("error waiting for volume group task to complete: %s", err)
 		}
 	}
 
 	volumegroup, err := service.GetVolumeGroup(taskRef.ResourceID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new volume group: %s", err)
+		return fmt.Errorf("error retrieving new volume group: %s", err)
 	}
 
 	return output.CommandOutput(cmd, VolumeGroupCollection([]ecloud.VolumeGroup{volumegroup}))
@@ -151,7 +151,7 @@ func ecloudVolumeGroupUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud volumegroup update volgroup-abcdef12 --name \"my volumegroup\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing volume-group")
+				return errors.New("missing volume-group")
 			}
 
 			return nil
@@ -209,7 +209,7 @@ func ecloudVolumeGroupDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud volumegroup delete vol-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing volume-group")
+				return errors.New("missing volume-group")
 			}
 
 			return nil

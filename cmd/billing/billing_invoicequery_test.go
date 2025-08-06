@@ -48,7 +48,7 @@ func Test_billingInvoiceQueryList(t *testing.T) {
 
 		err := billingInvoiceQueryList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving invoice queries: test error", err.Error())
+		assert.Equal(t, "error retrieving invoice queries: test error", err.Error())
 	})
 }
 
@@ -63,7 +63,7 @@ func Test_billingInvoiceQueryShowCmd_Args(t *testing.T) {
 		err := billingInvoiceQueryShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing invoice query", err.Error())
+		assert.Equal(t, "missing invoice query", err.Error())
 	})
 }
 
@@ -150,7 +150,7 @@ func Test_billingInvoiceQueryCreate(t *testing.T) {
 
 		err := billingInvoiceQueryCreate(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error creating invoice query: test error", err.Error())
+		assert.Equal(t, "error creating invoice query: test error", err.Error())
 	})
 
 	t.Run("GetInvoiceQueryError_ReturnsError", func(t *testing.T) {
@@ -166,6 +166,6 @@ func Test_billingInvoiceQueryCreate(t *testing.T) {
 
 		err := billingInvoiceQueryCreate(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving new invoice query [123]: test error", err.Error())
+		assert.Equal(t, "error retrieving new invoice query [123]: test error", err.Error())
 	})
 }

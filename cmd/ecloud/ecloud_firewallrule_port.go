@@ -31,7 +31,7 @@ func ecloudFirewallRuleFirewallRulePortListCmd(f factory.ClientFactory) *cobra.C
 		Example: "ans ecloud firewallrule firewallport list fwp-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing firewall rule")
+				return errors.New("missing firewall rule")
 			}
 
 			return nil
@@ -52,7 +52,7 @@ func ecloudFirewallRuleFirewallRulePortList(service ecloud.ECloudService, cmd *c
 
 	ports, err := service.GetFirewallRuleFirewallRulePorts(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving firewall rule ports: %s", err)
+		return fmt.Errorf("error retrieving firewall rule ports: %s", err)
 	}
 
 	return output.CommandOutput(cmd, FirewallRulePortCollection(ports))

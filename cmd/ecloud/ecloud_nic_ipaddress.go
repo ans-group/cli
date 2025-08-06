@@ -33,7 +33,7 @@ func ecloudNICIPAddressListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud nic ipaddress list ip-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing NIC")
+				return errors.New("missing NIC")
 			}
 
 			return nil
@@ -54,7 +54,7 @@ func ecloudNICIPAddressList(service ecloud.ECloudService, cmd *cobra.Command, ar
 
 	ips, err := service.GetNICIPAddresses(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving NIC IP addresses: %s", err)
+		return fmt.Errorf("error retrieving NIC IP addresses: %s", err)
 	}
 
 	return output.CommandOutput(cmd, IPAddressCollection(ips))
@@ -68,7 +68,7 @@ func ecloudNICIPAddressAssignCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud nic ipaddress assign nic-abcdef12 --ip-address ip-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing NIC")
+				return errors.New("missing NIC")
 			}
 
 			return nil
@@ -77,7 +77,7 @@ func ecloudNICIPAddressAssignCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("ip-address", "", "IP address ID to assign")
-	cmd.MarkFlagRequired("ip-address")
+	_ = cmd.MarkFlagRequired("ip-address")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the IP address has been completely assigned")
 
 	return cmd
@@ -115,7 +115,7 @@ func ecloudNICIPAddressUnassignCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud nic ipaddress unassign nic-abcdef12 --ip-address ip-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing NIC")
+				return errors.New("missing NIC")
 			}
 
 			return nil
@@ -124,7 +124,7 @@ func ecloudNICIPAddressUnassignCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("ip-address", "", "IP address ID to unassign")
-	cmd.MarkFlagRequired("ip-address")
+	_ = cmd.MarkFlagRequired("ip-address")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the IP address has been completely unassigned")
 
 	return cmd

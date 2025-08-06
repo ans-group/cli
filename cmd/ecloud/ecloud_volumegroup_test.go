@@ -49,7 +49,7 @@ func Test_ecloudVolumeGroupList(t *testing.T) {
 
 		err := ecloudVolumeGroupList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving volume groups: test error", err.Error())
+		assert.Equal(t, "error retrieving volume groups: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudVolumeGroupShowCmd_Args(t *testing.T) {
 		err := ecloudVolumeGroupShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing volume-group", err.Error())
+		assert.Equal(t, "missing volume-group", err.Error())
 	})
 }
 
@@ -206,7 +206,7 @@ func Test_ecloudVolumeGroupCreate(t *testing.T) {
 
 		err := ecloudVolumeGroupCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error creating volume group: test error", err.Error())
+		assert.Equal(t, "error creating volume group: test error", err.Error())
 	})
 
 	t.Run("GetVolumeGroupError_ReturnsError", func(t *testing.T) {
@@ -230,7 +230,7 @@ func Test_ecloudVolumeGroupCreate(t *testing.T) {
 		err := ecloudVolumeGroupCreate(service, cmd, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error retrieving new volume group: test error", err.Error())
+		assert.Equal(t, "error retrieving new volume group: test error", err.Error())
 	})
 }
 
@@ -245,7 +245,7 @@ func Test_ecloudVolumeGroupUpdateCmd_Args(t *testing.T) {
 		err := ecloudVolumeGroupUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing volume-group", err.Error())
+		assert.Equal(t, "missing volume-group", err.Error())
 	})
 }
 
@@ -324,7 +324,7 @@ func Test_ecloudVolumeGroupUpdate(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for volume group [volgroup-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for volume group [volgroup-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudVolumeGroupUpdate(service, cmd, []string{"volgroup-abcdef12"})
 		})
 	})
@@ -375,7 +375,7 @@ func Test_ecloudVolumeGroupDeleteCmd_Args(t *testing.T) {
 		err := ecloudVolumeGroupDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing volume-group", err.Error())
+		assert.Equal(t, "missing volume-group", err.Error())
 	})
 }
 
@@ -416,7 +416,7 @@ func Test_ecloudVolumeGroupDelete(t *testing.T) {
 		service.EXPECT().DeleteVolumeGroup("volgroup-abcdef12").Return("task-abcdef12", nil)
 		service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{}, errors.New("test error"))
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for volume group [volgroup-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for volume group [volgroup-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudVolumeGroupDelete(service, cmd, []string{"volgroup-abcdef12"})
 		})
 	})

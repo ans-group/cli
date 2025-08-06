@@ -55,7 +55,7 @@ func ecloudVPCList(service ecloud.ECloudService, cmd *cobra.Command, args []stri
 
 	vpcs, err := service.GetVPCs(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving VPCs: %s", err)
+		return fmt.Errorf("error retrieving VPCs: %s", err)
 	}
 
 	return output.CommandOutput(cmd, VPCCollection(vpcs))
@@ -69,7 +69,7 @@ func ecloudVPCShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vpc show vpc-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing vpc")
+				return errors.New("missing vpc")
 			}
 
 			return nil
@@ -105,7 +105,7 @@ func ecloudVPCCreateCmd(f factory.ClientFactory) *cobra.Command {
 	// Setup flags
 	cmd.Flags().String("name", "", "Name of VPC")
 	cmd.Flags().String("region", "", "ID of region")
-	cmd.MarkFlagRequired("region")
+	_ = cmd.MarkFlagRequired("region")
 	cmd.Flags().Int("client-id", 0, "ID of client")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the VPC has been completely created")
 
@@ -126,20 +126,20 @@ func ecloudVPCCreate(service ecloud.ECloudService, cmd *cobra.Command, args []st
 
 	vpcID, err := service.CreateVPC(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating VPC: %s", err)
+		return fmt.Errorf("error creating VPC: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := helper.WaitForCommand(VPCResourceSyncStatusWaitFunc(service, vpcID, ecloud.SyncStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for VPC sync: %s", err)
+			return fmt.Errorf("error waiting for VPC sync: %s", err)
 		}
 	}
 
 	vpc, err := service.GetVPC(vpcID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new VPC: %s", err)
+		return fmt.Errorf("error retrieving new VPC: %s", err)
 	}
 
 	return output.CommandOutput(cmd, VPCCollection([]ecloud.VPC{vpc}))
@@ -153,7 +153,7 @@ func ecloudVPCUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vpc update vpc-abcdef12 --name \"my vpc\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing vpc")
+				return errors.New("missing vpc")
 			}
 
 			return nil
@@ -212,7 +212,7 @@ func ecloudVPCDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vpc delete vpc-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing vpc")
+				return errors.New("missing vpc")
 			}
 
 			return nil
@@ -293,7 +293,7 @@ func ecloudVPCDeployDefaultsCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vpc deploydefaults vpc-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing vpc")
+				return errors.New("missing vpc")
 			}
 
 			return nil
@@ -332,7 +332,7 @@ func VPCNotFoundWaitFunc(service ecloud.ECloudService, vpcID string) helper.Wait
 			case *ecloud.VPCNotFoundError:
 				return true, nil
 			default:
-				return false, fmt.Errorf("Failed to retrieve VPC [%s]: %s", vpcID, err)
+				return false, fmt.Errorf("failed to retrieve VPC [%s]: %s", vpcID, err)
 			}
 		}
 

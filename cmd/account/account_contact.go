@@ -50,7 +50,7 @@ func accountContactList(service account.AccountService, cmd *cobra.Command, args
 
 	contacts, err := service.GetContacts(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving contacts: %s", err)
+		return fmt.Errorf("error retrieving contacts: %s", err)
 	}
 
 	return output.CommandOutput(cmd, ContactCollection(contacts))
@@ -64,7 +64,7 @@ func accountContactShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans account contact show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing contact")
+				return errors.New("missing contact")
 			}
 
 			return nil

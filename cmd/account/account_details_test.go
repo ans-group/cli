@@ -33,6 +33,6 @@ func Test_accountDetailShow(t *testing.T) {
 
 		err := accountDetailsShow(service, &cobra.Command{}, []string{""})
 
-		assert.Equal(t, "Error retrieving details: test error", err.Error())
+		assert.Equal(t, "error retrieving details: test error", err.Error())
 	})
 }

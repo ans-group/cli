@@ -49,7 +49,7 @@ func Test_ecloudAvailabilityZoneList(t *testing.T) {
 
 		err := ecloudAvailabilityZoneList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving availability zones: test error", err.Error())
+		assert.Equal(t, "error retrieving availability zones: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudAvailabilityZoneShowCmd_Args(t *testing.T) {
 		err := ecloudAvailabilityZoneShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing availability zone", err.Error())
+		assert.Equal(t, "missing availability zone", err.Error())
 	})
 }
 

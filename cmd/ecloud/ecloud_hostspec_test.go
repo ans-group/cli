@@ -49,7 +49,7 @@ func Test_ecloudHostSpecList(t *testing.T) {
 
 		err := ecloudHostSpecList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving host specs: test error", err.Error())
+		assert.Equal(t, "error retrieving host specs: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudHostSpecShowCmd_Args(t *testing.T) {
 		err := ecloudHostSpecShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing host spec", err.Error())
+		assert.Equal(t, "missing host spec", err.Error())
 	})
 }
 

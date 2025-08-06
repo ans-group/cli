@@ -53,7 +53,7 @@ func ecloudVIPList(service ecloud.ECloudService, cmd *cobra.Command, args []stri
 
 	vips, err := service.GetVIPs(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving VIPs: %s", err)
+		return fmt.Errorf("error retrieving VIPs: %s", err)
 	}
 
 	return output.CommandOutput(cmd, VIPCollection(vips))
@@ -67,7 +67,7 @@ func ecloudVIPShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vip show vip-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing VIP")
+				return errors.New("missing VIP")
 			}
 
 			return nil
@@ -103,7 +103,7 @@ func ecloudVIPCreateCmd(f factory.ClientFactory) *cobra.Command {
 	// Setup flags
 	cmd.Flags().String("name", "", "Name of VIP")
 	cmd.Flags().String("load-balancer", "", "ID of load balancer")
-	cmd.MarkFlagRequired("load-balancer")
+	_ = cmd.MarkFlagRequired("load-balancer")
 	cmd.Flags().Bool("allocate-floating-ip", false, "Specifies a floating IP should be assigned to the VIP")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the VIP has been completely created")
 
@@ -118,20 +118,20 @@ func ecloudVIPCreate(service ecloud.ECloudService, cmd *cobra.Command, args []st
 
 	taskRef, err := service.CreateVIP(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating VIP: %s", err)
+		return fmt.Errorf("error creating VIP: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskRef.TaskID, ecloud.TaskStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for VIP task to complete: %s", err)
+			return fmt.Errorf("error waiting for VIP task to complete: %s", err)
 		}
 	}
 
 	vip, err := service.GetVIP(taskRef.ResourceID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new VIP: %s", err)
+		return fmt.Errorf("error retrieving new VIP: %s", err)
 	}
 
 	return output.CommandOutput(cmd, VIPCollection([]ecloud.VIP{vip}))
@@ -145,7 +145,7 @@ func ecloudVIPUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vip update vip-abcdef12 --name \"my vip\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing VIP")
+				return errors.New("missing VIP")
 			}
 
 			return nil
@@ -203,7 +203,7 @@ func ecloudVIPDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vip delete vip-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing VIP")
+				return errors.New("missing VIP")
 			}
 
 			return nil

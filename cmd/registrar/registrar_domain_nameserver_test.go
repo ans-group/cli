@@ -22,7 +22,7 @@ func Test_registrarDomainNameserverListCmd_Args(t *testing.T) {
 		err := registrarDomainNameserverListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 }
 
@@ -49,6 +49,6 @@ func Test_registrarDomainNameserverList(t *testing.T) {
 
 		err := registrarDomainNameserverList(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 
-		assert.Equal(t, "Error retrieving domain nameservers: test error", err.Error())
+		assert.Equal(t, "error retrieving domain nameservers: test error", err.Error())
 	})
 }

@@ -23,7 +23,7 @@ func Test_ecloudFirewallRuleFirewallRulePortListCmd_Args(t *testing.T) {
 		err := ecloudFirewallRuleFirewallRulePortListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing firewall rule", err.Error())
+		assert.Equal(t, "missing firewall rule", err.Error())
 	})
 }
 
@@ -63,6 +63,6 @@ func Test_ecloudFirewallRuleFirewallRulePortList(t *testing.T) {
 
 		err := ecloudFirewallRuleFirewallRulePortList(service, &cobra.Command{}, []string{"fwp-abcdef12"})
 
-		assert.Equal(t, "Error retrieving firewall rule ports: test error", err.Error())
+		assert.Equal(t, "error retrieving firewall rule ports: test error", err.Error())
 	})
 }

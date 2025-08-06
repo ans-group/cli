@@ -31,7 +31,7 @@ func ecloudNetworkRuleNetworkRulePortListCmd(f factory.ClientFactory) *cobra.Com
 		Example: "ans ecloud networkrule networkport list np-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing network rule")
+				return errors.New("missing network rule")
 			}
 
 			return nil
@@ -52,7 +52,7 @@ func ecloudNetworkRuleNetworkRulePortList(service ecloud.ECloudService, cmd *cob
 
 	ports, err := service.GetNetworkRuleNetworkRulePorts(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving network rule ports: %s", err)
+		return fmt.Errorf("error retrieving network rule ports: %s", err)
 	}
 
 	return output.CommandOutput(cmd, NetworkRulePortCollection(ports))

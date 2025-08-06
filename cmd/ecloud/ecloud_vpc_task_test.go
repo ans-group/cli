@@ -23,7 +23,7 @@ func Test_ecloudVPCTaskListCmd_Args(t *testing.T) {
 		err := ecloudVPCTaskListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing VPC", err.Error())
+		assert.Equal(t, "missing VPC", err.Error())
 	})
 }
 
@@ -63,6 +63,6 @@ func Test_ecloudVPCTaskList(t *testing.T) {
 
 		err := ecloudVPCTaskList(service, &cobra.Command{}, []string{"vpc-abcdef12"})
 
-		assert.Equal(t, "Error retrieving VPC tasks: test error", err.Error())
+		assert.Equal(t, "error retrieving VPC tasks: test error", err.Error())
 	})
 }

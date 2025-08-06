@@ -74,7 +74,7 @@ func sslValidate(service ssl.SSLService, fs afero.Fs, cmd *cobra.Command, args [
 
 	validation, err := service.ValidateCertificate(validateRequest)
 	if err != nil {
-		return fmt.Errorf("Error validating certificate: %s", err)
+		return fmt.Errorf("error validating certificate: %s", err)
 	}
 
 	return output.CommandOutput(cmd, CertificateValidationCollection([]ssl.CertificateValidation{validation}))

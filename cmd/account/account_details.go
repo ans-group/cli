@@ -41,7 +41,7 @@ func accountDetailsShowCmd(f factory.ClientFactory) *cobra.Command {
 func accountDetailsShow(service account.AccountService, cmd *cobra.Command, args []string) error {
 	details, err := service.GetDetails()
 	if err != nil {
-		return fmt.Errorf("Error retrieving details: %s", err)
+		return fmt.Errorf("error retrieving details: %s", err)
 	}
 
 	return output.CommandOutput(cmd, DetailsCollection([]account.Details{details}))

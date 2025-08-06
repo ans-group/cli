@@ -40,7 +40,7 @@ func loadbalancerVipsList(service loadbalancer.LoadBalancerService, cmd *cobra.C
 
 	vips, err := service.GetVIPs(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving VIPs: %s", err)
+		return fmt.Errorf("error retrieving VIPs: %s", err)
 	}
 
 	return output.CommandOutput(cmd, VIPCollection(vips))

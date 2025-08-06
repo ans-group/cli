@@ -35,7 +35,7 @@ func ddosxDomainRecordListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain record list example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 
 			return nil
@@ -59,7 +59,7 @@ func ddosxDomainRecordList(service ddosx.DDoSXService, cmd *cobra.Command, args 
 
 	records, err := service.GetDomainRecords(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving domain records: %s", err)
+		return fmt.Errorf("error retrieving domain records: %s", err)
 	}
 
 	return output.CommandOutput(cmd, RecordCollection(records))
@@ -73,10 +73,10 @@ func ddosxDomainRecordShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain record show example.com 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing record")
+				return errors.New("missing record")
 			}
 
 			return nil
@@ -117,7 +117,7 @@ func ddosxDomainRecordCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain record create example.com --name sub.example.com --type A",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 
 			return nil
@@ -134,7 +134,7 @@ func ddosxDomainRecordCreateCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Setup flags
 	cmd.Flags().String("name", "", "Name of record")
-	cmd.MarkFlagRequired("name")
+	_ = cmd.MarkFlagRequired("name")
 	cmd.Flags().String("type", "", "Type of record")
 	cmd.Flags().String("content", "", "Content of record")
 	cmd.Flags().String("ssl-id", "", "ID of SSL to use for record")
@@ -160,12 +160,12 @@ func ddosxDomainRecordCreate(service ddosx.DDoSXService, cmd *cobra.Command, arg
 
 	id, err := service.CreateDomainRecord(args[0], createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating domain record: %s", err)
+		return fmt.Errorf("error creating domain record: %s", err)
 	}
 
 	record, err := service.GetDomainRecord(args[0], id)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new domain record [%s]: %s", id, err)
+		return fmt.Errorf("error retrieving new domain record [%s]: %s", id, err)
 	}
 
 	return output.CommandOutput(cmd, RecordCollection([]ddosx.Record{record}))
@@ -179,10 +179,10 @@ func ddosxDomainRecordUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain record update example.com 00000000-0000-0000-0000-000000000000 --content 1.2.3.4",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing record")
+				return errors.New("missing record")
 			}
 
 			return nil
@@ -255,10 +255,10 @@ func ddosxDomainRecordDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain record delete example.com 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing record")
+				return errors.New("missing record")
 			}
 
 			return nil

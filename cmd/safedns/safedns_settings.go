@@ -41,7 +41,7 @@ func safednsSettingsShowCmd(f factory.ClientFactory) *cobra.Command {
 func safednsSettingsShow(service safedns.SafeDNSService, cmd *cobra.Command, args []string) error {
 	settings, err := service.GetSettings()
 	if err != nil {
-		return fmt.Errorf("Error retrieving settings: %s", err)
+		return fmt.Errorf("error retrieving settings: %s", err)
 	}
 
 	return output.CommandOutput(cmd, SettingsCollection([]safedns.Settings{settings}))

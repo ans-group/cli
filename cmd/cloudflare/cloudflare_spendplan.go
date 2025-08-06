@@ -40,7 +40,7 @@ func cloudflareSpendPlanList(service cloudflare.CloudflareService, cmd *cobra.Co
 
 	plans, err := service.GetSpendPlans(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving spend plans: %s", err)
+		return fmt.Errorf("error retrieving spend plans: %s", err)
 	}
 
 	return output.CommandOutput(cmd, SpendPlanCollection(plans))

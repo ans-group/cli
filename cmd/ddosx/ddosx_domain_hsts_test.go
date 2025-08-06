@@ -23,7 +23,7 @@ func Test_ddosxDomainHSTSEnableCmd_Args(t *testing.T) {
 		err := ddosxDomainHSTSEnableCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 }
 
@@ -79,7 +79,7 @@ func Test_ddosxDomainHSTSDisableCmd_Args(t *testing.T) {
 		err := ddosxDomainHSTSDisableCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 }
 

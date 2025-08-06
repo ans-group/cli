@@ -49,7 +49,7 @@ func Test_draasBillingTypeList(t *testing.T) {
 
 		err := draasBillingTypeList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving billing types: test error", err.Error())
+		assert.Equal(t, "error retrieving billing types: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_draasBillingTypeShowCmd_Args(t *testing.T) {
 		err := draasBillingTypeShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing billing type", err.Error())
+		assert.Equal(t, "missing billing type", err.Error())
 	})
 }
 

@@ -49,7 +49,7 @@ func Test_ecloudVPNSessionList(t *testing.T) {
 
 		err := ecloudVPNSessionList(session, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving VPN sessions: test error", err.Error())
+		assert.Equal(t, "error retrieving VPN sessions: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudVPNSessionShowCmd_Args(t *testing.T) {
 		err := ecloudVPNSessionShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing VPN session", err.Error())
+		assert.Equal(t, "missing VPN session", err.Error())
 	})
 }
 
@@ -183,7 +183,7 @@ func Test_ecloudVPNSessionCreate(t *testing.T) {
 		)
 
 		err := ecloudVPNSessionCreate(session, cmd, []string{})
-		assert.Equal(t, "Error waiting for VPN session task to complete: Error waiting for command: Failed to retrieve task status: test error", err.Error())
+		assert.Equal(t, "error waiting for VPN session task to complete: error waiting for command: failed to retrieve task status: test error", err.Error())
 	})
 
 	t.Run("CreateVPNSessionError_ReturnsError", func(t *testing.T) {
@@ -198,7 +198,7 @@ func Test_ecloudVPNSessionCreate(t *testing.T) {
 
 		err := ecloudVPNSessionCreate(session, cmd, []string{})
 
-		assert.Equal(t, "Error creating VPN session: test error", err.Error())
+		assert.Equal(t, "error creating VPN session: test error", err.Error())
 	})
 
 	t.Run("GetVPNSessionError_ReturnsError", func(t *testing.T) {
@@ -216,7 +216,7 @@ func Test_ecloudVPNSessionCreate(t *testing.T) {
 
 		err := ecloudVPNSessionCreate(session, cmd, []string{})
 
-		assert.Equal(t, "Error retrieving new VPN session: test error", err.Error())
+		assert.Equal(t, "error retrieving new VPN session: test error", err.Error())
 	})
 }
 
@@ -231,7 +231,7 @@ func Test_ecloudVPNSessionUpdateCmd_Args(t *testing.T) {
 		err := ecloudVPNSessionUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing VPN session", err.Error())
+		assert.Equal(t, "missing VPN session", err.Error())
 	})
 }
 
@@ -312,7 +312,7 @@ func Test_ecloudVPNSessionUpdate(t *testing.T) {
 			session.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for VPN session [vpns-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for VPN session [vpns-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudVPNSessionUpdate(session, cmd, []string{"vpns-abcdef12"})
 		})
 	})
@@ -363,7 +363,7 @@ func Test_ecloudVPNSessionDeleteCmd_Args(t *testing.T) {
 		err := ecloudVPNSessionDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing VPN session", err.Error())
+		assert.Equal(t, "missing VPN session", err.Error())
 	})
 }
 
@@ -410,7 +410,7 @@ func Test_ecloudVPNSessionDelete(t *testing.T) {
 			session.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for VPN session [vpns-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for VPN session [vpns-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudVPNSessionDelete(session, cmd, []string{"vpns-abcdef12"})
 		})
 	})

@@ -33,7 +33,7 @@ func pssCaseUpdateListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans pss case update list CHG123456 --description 'test update'",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing case")
+				return errors.New("missing case")
 			}
 
 			return nil
@@ -50,7 +50,7 @@ func pssCaseUpdateList(service pss.PSSService, cmd *cobra.Command, args []string
 
 	updates, err := service.GetCaseUpdates(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving case updates: %s", err)
+		return fmt.Errorf("error retrieving case updates: %s", err)
 	}
 
 	return output.CommandOutput(cmd, CaseUpdateCollection(updates))
@@ -64,10 +64,10 @@ func pssCaseUpdateShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans pss case update show CHG123456 9ddf3546-1d14-4604-acfa-aebcb6a32ec9",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing case")
+				return errors.New("missing case")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing case update")
+				return errors.New("missing case update")
 			}
 
 			return nil
@@ -99,7 +99,7 @@ func pssCaseUpdateCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans pss case update create CHG123456 ",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing case")
+				return errors.New("missing case")
 			}
 
 			return nil
@@ -108,7 +108,7 @@ func pssCaseUpdateCreateCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("description", "", "Specifies the description for case update")
-	cmd.MarkFlagRequired("description")
+	_ = cmd.MarkFlagRequired("description")
 	cmd.Flags().Int("contact", 0, "Specifies the contact ID for case update")
 
 	return cmd
@@ -122,12 +122,12 @@ func pssCaseUpdateCreate(service pss.PSSService, cmd *cobra.Command, args []stri
 
 	updateID, err := service.CreateCaseUpdate(args[0], createUpdateReq)
 	if err != nil {
-		return fmt.Errorf("Error creating change: %s", err)
+		return fmt.Errorf("error creating change: %s", err)
 	}
 
 	update, err := service.GetCaseUpdate(args[0], updateID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new change: %s", err)
+		return fmt.Errorf("error retrieving new change: %s", err)
 	}
 
 	return output.CommandOutput(cmd, CaseUpdateCollection([]pss.CaseUpdate{update}))

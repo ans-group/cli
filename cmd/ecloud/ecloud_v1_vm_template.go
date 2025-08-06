@@ -33,7 +33,7 @@ func ecloudVirtualMachineTemplateCreateCmd(f factory.ClientFactory) *cobra.Comma
 		Example: "ans ecloud vm template create 123 --name \"foo\" --type \"solution\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing virtual machine")
+				return errors.New("missing virtual machine")
 			}
 
 			return nil
@@ -49,9 +49,9 @@ func ecloudVirtualMachineTemplateCreateCmd(f factory.ClientFactory) *cobra.Comma
 	}
 
 	cmd.Flags().String("name", "", "Name for new template")
-	cmd.MarkFlagRequired("name")
+	_ = cmd.MarkFlagRequired("name")
 	cmd.Flags().String("type", "", "Type of template (pod/solution)")
-	cmd.MarkFlagRequired("type")
+	_ = cmd.MarkFlagRequired("type")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the template has been completely created before continuing on")
 
 	return cmd
@@ -60,7 +60,7 @@ func ecloudVirtualMachineTemplateCreateCmd(f factory.ClientFactory) *cobra.Comma
 func ecloudVirtualMachineTemplateCreate(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
 	vmID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid virtual machine ID [%s]", args[0])
+		return fmt.Errorf("invalid virtual machine ID [%s]", args[0])
 	}
 
 	templateType, _ := cmd.Flags().GetString("type")
@@ -77,7 +77,7 @@ func ecloudVirtualMachineTemplateCreate(service ecloud.ECloudService, cmd *cobra
 
 	err = service.CreateVirtualMachineTemplate(vmID, createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating virtual machine template: %s", err)
+		return fmt.Errorf("error creating virtual machine template: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
@@ -91,10 +91,10 @@ func ecloudVirtualMachineTemplateCreate(service ecloud.ECloudService, cmd *cobra
 	template, err := getVMTemplate(service, vmID, templateName, parsedTemplateType)
 	if err != nil {
 		if _, ok := err.(*ecloud.TemplateNotFoundError); ok {
-			return fmt.Errorf("Error creating virtual machine template (unknown failure)")
+			return fmt.Errorf("error creating virtual machine template (unknown failure)")
 		}
 
-		return fmt.Errorf("Error retrieving new virtual machine template: %s", err)
+		return fmt.Errorf("error retrieving new virtual machine template: %s", err)
 	}
 
 	return output.CommandOutput(cmd, TemplateCollection([]ecloud.Template{template}))
@@ -114,12 +114,12 @@ func getVMTemplate(service ecloud.ECloudService, vmID int, templateName string, 
 func getPodVMTemplate(service ecloud.ECloudService, vmID int, templateName string) (ecloud.Template, error) {
 	vm, err := service.GetVirtualMachine(vmID)
 	if err != nil {
-		return ecloud.Template{}, fmt.Errorf("Error retrieving virtual machine: %s", err)
+		return ecloud.Template{}, fmt.Errorf("error retrieving virtual machine: %s", err)
 	}
 
 	solution, err := service.GetSolution(vm.SolutionID)
 	if err != nil {
-		return ecloud.Template{}, fmt.Errorf("Error retrieving solution: %s", err)
+		return ecloud.Template{}, fmt.Errorf("error retrieving solution: %s", err)
 	}
 
 	return service.GetPodTemplate(solution.PodID, templateName)
@@ -128,7 +128,7 @@ func getPodVMTemplate(service ecloud.ECloudService, vmID int, templateName strin
 func getSolutionVMTemplate(service ecloud.ECloudService, vmID int, templateName string) (ecloud.Template, error) {
 	vm, err := service.GetVirtualMachine(vmID)
 	if err != nil {
-		return ecloud.Template{}, fmt.Errorf("Error retrieving virtual machine: %s", err)
+		return ecloud.Template{}, fmt.Errorf("error retrieving virtual machine: %s", err)
 	}
 
 	return service.GetSolutionTemplate(vm.SolutionID, templateName)

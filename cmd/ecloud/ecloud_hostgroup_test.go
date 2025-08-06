@@ -49,7 +49,7 @@ func Test_ecloudHostGroupList(t *testing.T) {
 
 		err := ecloudHostGroupList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving host groups: test error", err.Error())
+		assert.Equal(t, "error retrieving host groups: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudHostGroupShowCmd_Args(t *testing.T) {
 		err := ecloudHostGroupShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing host group", err.Error())
+		assert.Equal(t, "missing host group", err.Error())
 	})
 }
 
@@ -186,7 +186,7 @@ func Test_ecloudHostGroupCreate(t *testing.T) {
 		)
 
 		err := ecloudHostGroupCreate(service, cmd, []string{})
-		assert.Equal(t, "Error waiting for host group task to complete: Error waiting for command: Failed to retrieve task status: test error", err.Error())
+		assert.Equal(t, "error waiting for host group task to complete: error waiting for command: failed to retrieve task status: test error", err.Error())
 	})
 
 	t.Run("CreateHostGroupError_ReturnsError", func(t *testing.T) {
@@ -201,7 +201,7 @@ func Test_ecloudHostGroupCreate(t *testing.T) {
 
 		err := ecloudHostGroupCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error creating host group: test error", err.Error())
+		assert.Equal(t, "error creating host group: test error", err.Error())
 	})
 
 	t.Run("GetHostGroupError_ReturnsError", func(t *testing.T) {
@@ -219,7 +219,7 @@ func Test_ecloudHostGroupCreate(t *testing.T) {
 
 		err := ecloudHostGroupCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error retrieving new host group: test error", err.Error())
+		assert.Equal(t, "error retrieving new host group: test error", err.Error())
 	})
 }
 
@@ -234,7 +234,7 @@ func Test_ecloudHostGroupUpdateCmd_Args(t *testing.T) {
 		err := ecloudHostGroupUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing host group", err.Error())
+		assert.Equal(t, "missing host group", err.Error())
 	})
 }
 
@@ -341,7 +341,7 @@ func Test_ecloudHostGroupUpdate(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for host group [hg-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for host group [hg-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudHostGroupUpdate(service, cmd, []string{"hg-abcdef12"})
 		})
 	})
@@ -392,7 +392,7 @@ func Test_ecloudHostGroupDeleteCmd_Args(t *testing.T) {
 		err := ecloudHostGroupDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing host group", err.Error())
+		assert.Equal(t, "missing host group", err.Error())
 	})
 }
 
@@ -453,7 +453,7 @@ func Test_ecloudHostGroupDelete(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for host group [hg-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for host group [hg-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudHostGroupDelete(service, cmd, []string{"hg-abcdef12"})
 		})
 	})

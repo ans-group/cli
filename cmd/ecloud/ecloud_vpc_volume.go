@@ -31,7 +31,7 @@ func ecloudVPCVolumeListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vpc volume list vpc-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing VPC")
+				return errors.New("missing VPC")
 			}
 
 			return nil
@@ -52,7 +52,7 @@ func ecloudVPCVolumeList(service ecloud.ECloudService, cmd *cobra.Command, args 
 
 	volumes, err := service.GetVPCVolumes(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving VPC volumes: %s", err)
+		return fmt.Errorf("error retrieving VPC volumes: %s", err)
 	}
 
 	return output.CommandOutput(cmd, VolumeCollection(volumes))

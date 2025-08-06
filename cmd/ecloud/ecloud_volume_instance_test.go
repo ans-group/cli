@@ -23,7 +23,7 @@ func Test_ecloudVolumeInstanceListCmd_Args(t *testing.T) {
 		err := ecloudVolumeInstanceListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing volume", err.Error())
+		assert.Equal(t, "missing volume", err.Error())
 	})
 }
 
@@ -63,6 +63,6 @@ func Test_ecloudVolumeInstanceList(t *testing.T) {
 
 		err := ecloudVolumeInstanceList(service, &cobra.Command{}, []string{"rtr-abcdef12"})
 
-		assert.Equal(t, "Error retrieving volume instances: test error", err.Error())
+		assert.Equal(t, "error retrieving volume instances: test error", err.Error())
 	})
 }

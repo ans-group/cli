@@ -32,7 +32,7 @@ func loadbalancerTargetGroupACLListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans loadbalancer targetgroup acl list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing target group")
+				return errors.New("missing target group")
 			}
 
 			return nil
@@ -49,12 +49,12 @@ func loadbalancerTargetGroupACLList(service loadbalancer.LoadBalancerService, cm
 
 	groupID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid target group ID")
+		return fmt.Errorf("invalid target group ID")
 	}
 
 	acls, err := service.GetTargetGroupACLs(groupID, params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving ACLs: %s", err)
+		return fmt.Errorf("error retrieving ACLs: %s", err)
 	}
 
 	return output.CommandOutput(cmd, ACLCollection(acls))

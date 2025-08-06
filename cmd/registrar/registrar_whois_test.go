@@ -23,7 +23,7 @@ func Test_registrarWhoisShowCmd_Args(t *testing.T) {
 		err := registrarWhoisShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 }
 

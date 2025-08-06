@@ -32,7 +32,7 @@ func ecloudVPNSessionPreSharedKeyShowCmd(f factory.ClientFactory) *cobra.Command
 		Example: "ans ecloud vpnsession presharedkey show vpns-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing VPN session")
+				return errors.New("missing VPN session")
 			}
 
 			return nil
@@ -64,7 +64,7 @@ func ecloudVPNSessionPreSharedKeyUpdateCmd(f factory.ClientFactory) *cobra.Comma
 		Example: "ans ecloud vpnsession presharedkey update vpns-abcdef12 --psk \"s3curePSK\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing VPN session")
+				return errors.New("missing VPN session")
 			}
 
 			return nil
@@ -73,7 +73,7 @@ func ecloudVPNSessionPreSharedKeyUpdateCmd(f factory.ClientFactory) *cobra.Comma
 	}
 
 	cmd.Flags().String("psk", "", "Pre-shared key")
-	cmd.MarkFlagRequired("psk")
+	_ = cmd.MarkFlagRequired("psk")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the pre-shared key has been completely updated")
 
 	return cmd
@@ -85,14 +85,14 @@ func ecloudVPNSessionPreSharedKeyUpdate(service ecloud.ECloudService, cmd *cobra
 
 	task, err := service.UpdateVPNSessionPreSharedKey(args[0], updateRequest)
 	if err != nil {
-		return fmt.Errorf("Error updating VPN session pre-shared key: %s", err)
+		return fmt.Errorf("error updating VPN session pre-shared key: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := helper.WaitForCommand(TaskStatusWaitFunc(service, task.TaskID, ecloud.TaskStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for task to complete for VPN session: %s", err)
+			return fmt.Errorf("error waiting for task to complete for VPN session: %s", err)
 		}
 	}
 

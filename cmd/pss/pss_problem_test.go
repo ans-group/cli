@@ -62,7 +62,7 @@ func Test_pssProblemShowCmd_Args(t *testing.T) {
 		err := pssProblemShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing problem", err.Error())
+		assert.Equal(t, "missing problem", err.Error())
 	})
 }
 

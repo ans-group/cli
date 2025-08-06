@@ -57,7 +57,7 @@ func ecloudFirewallPolicyList(service ecloud.ECloudService, cmd *cobra.Command, 
 
 	policies, err := service.GetFirewallPolicies(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving firewall policies: %s", err)
+		return fmt.Errorf("error retrieving firewall policies: %s", err)
 	}
 
 	return output.CommandOutput(cmd, FirewallPolicyCollection(policies))
@@ -71,7 +71,7 @@ func ecloudFirewallPolicyShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud firewallpolicy show fwp-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing firewall policy")
+				return errors.New("missing firewall policy")
 			}
 
 			return nil
@@ -106,9 +106,9 @@ func ecloudFirewallPolicyCreateCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Setup flags
 	cmd.Flags().String("router", "", "ID of router")
-	cmd.MarkFlagRequired("router")
+	_ = cmd.MarkFlagRequired("router")
 	cmd.Flags().Int("sequence", 0, "Sequence for policy")
-	cmd.MarkFlagRequired("sequence")
+	_ = cmd.MarkFlagRequired("sequence")
 	cmd.Flags().String("name", "", "Name of policy")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the firewall policy has been completely created")
 
@@ -127,20 +127,20 @@ func ecloudFirewallPolicyCreate(service ecloud.ECloudService, cmd *cobra.Command
 
 	taskRef, err := service.CreateFirewallPolicy(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating firewall policy: %s", err)
+		return fmt.Errorf("error creating firewall policy: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskRef.TaskID, ecloud.TaskStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for firewall policy task to complete: %s", err)
+			return fmt.Errorf("error waiting for firewall policy task to complete: %s", err)
 		}
 	}
 
 	policy, err := service.GetFirewallPolicy(taskRef.ResourceID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new firewall policy: %s", err)
+		return fmt.Errorf("error retrieving new firewall policy: %s", err)
 	}
 
 	return output.CommandOutput(cmd, FirewallPolicyCollection([]ecloud.FirewallPolicy{policy}))
@@ -154,7 +154,7 @@ func ecloudFirewallPolicyUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud firewallpolicy update fwp-abcdef12 --name \"my policy\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing firewall policy")
+				return errors.New("missing firewall policy")
 			}
 
 			return nil
@@ -212,7 +212,7 @@ func ecloudFirewallPolicyDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud firewallpolicy delete fwp-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing firewall policy")
+				return errors.New("missing firewall policy")
 			}
 
 			return nil

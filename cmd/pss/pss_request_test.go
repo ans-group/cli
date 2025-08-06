@@ -62,7 +62,7 @@ func Test_pssRequestShowCmd_Args(t *testing.T) {
 		err := pssRequestShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing request", err.Error())
+		assert.Equal(t, "missing request", err.Error())
 	})
 }
 
@@ -164,7 +164,7 @@ func Test_pssRequestCreate(t *testing.T) {
 		service.EXPECT().CreateRequest(gomock.Any()).Return(0, errors.New("test error")).Times(1)
 
 		err := pssRequestCreate(service, cmd, []string{})
-		assert.Equal(t, "Error creating request: test error", err.Error())
+		assert.Equal(t, "error creating request: test error", err.Error())
 	})
 
 	t.Run("GetRequestError_ReturnsError", func(t *testing.T) {
@@ -180,7 +180,7 @@ func Test_pssRequestCreate(t *testing.T) {
 		)
 
 		err := pssRequestCreate(service, cmd, []string{})
-		assert.Equal(t, "Error retrieving new request: test error", err.Error())
+		assert.Equal(t, "error retrieving new request: test error", err.Error())
 	})
 }
 
@@ -195,7 +195,7 @@ func Test_pssRequestUpdateCmd_Args(t *testing.T) {
 		err := pssRequestUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing request", err.Error())
+		assert.Equal(t, "missing request", err.Error())
 	})
 }
 
@@ -294,7 +294,7 @@ func Test_pssRequestCloseCmd_Args(t *testing.T) {
 		err := pssRequestCloseCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing request", err.Error())
+		assert.Equal(t, "missing request", err.Error())
 	})
 }
 

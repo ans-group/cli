@@ -50,7 +50,7 @@ func billingInvoiceList(service billing.BillingService, cmd *cobra.Command, args
 
 	invoices, err := service.GetInvoices(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving invoices: %s", err)
+		return fmt.Errorf("error retrieving invoices: %s", err)
 	}
 
 	return output.CommandOutput(cmd, InvoiceCollection(invoices))
@@ -64,7 +64,7 @@ func billingInvoiceShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans billing invoice show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing invoice")
+				return errors.New("missing invoice")
 			}
 
 			return nil

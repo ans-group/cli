@@ -50,7 +50,7 @@ func Test_ecloudTaskList(t *testing.T) {
 
 		err := ecloudTaskList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving tasks: test error", err.Error())
+		assert.Equal(t, "error retrieving tasks: test error", err.Error())
 	})
 }
 
@@ -65,7 +65,7 @@ func Test_ecloudTaskShowCmd_Args(t *testing.T) {
 		err := ecloudTaskShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing task", err.Error())
+		assert.Equal(t, "missing task", err.Error())
 	})
 }
 
@@ -120,7 +120,7 @@ func Test_ecloudTaskWaitCmd_Args(t *testing.T) {
 		err := ecloudTaskWaitCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing task", err.Error())
+		assert.Equal(t, "missing task", err.Error())
 	})
 }
 
@@ -147,7 +147,7 @@ func Test_ecloudTaskWait(t *testing.T) {
 
 		err := ecloudTaskWait(service, cmd, []string{"task-abcdef12"})
 
-		assert.Equal(t, "Failed to parse status: Invalid ecloud.TaskStatus. Valid values: complete, failed, in-progress", err.Error())
+		assert.Equal(t, "failed to parse status: Invalid ecloud.TaskStatus. Valid values: complete, failed, in-progress", err.Error())
 	})
 
 	t.Run("GetTaskError_ReturnsError", func(t *testing.T) {
@@ -159,7 +159,7 @@ func Test_ecloudTaskWait(t *testing.T) {
 
 		service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{}, errors.New("test error")).Times(1)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task [task-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task [task-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudTaskWait(service, &cobra.Command{}, []string{"task-abcdef12"})
 		})
 	})

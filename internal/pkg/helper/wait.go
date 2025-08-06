@@ -24,12 +24,12 @@ func WaitForCommand(f WaitFunc) error {
 
 	for {
 		if time.Since(timeStart).Seconds() > float64(waitTimeout) {
-			return errors.New("Timed out waiting for command")
+			return errors.New("timed out waiting for command")
 		}
 
 		finished, err := f()
 		if err != nil {
-			return fmt.Errorf("Error waiting for command: %s", err)
+			return fmt.Errorf("error waiting for command: %s", err)
 		}
 		if finished {
 			break

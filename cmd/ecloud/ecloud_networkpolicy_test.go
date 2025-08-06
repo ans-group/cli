@@ -49,7 +49,7 @@ func Test_ecloudNetworkPolicyList(t *testing.T) {
 
 		err := ecloudNetworkPolicyList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving network policies: test error", err.Error())
+		assert.Equal(t, "error retrieving network policies: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudNetworkPolicyShowCmd_Args(t *testing.T) {
 		err := ecloudNetworkPolicyShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing network policy", err.Error())
+		assert.Equal(t, "missing network policy", err.Error())
 	})
 }
 
@@ -183,7 +183,7 @@ func Test_ecloudNetworkPolicyCreate(t *testing.T) {
 		)
 
 		err := ecloudNetworkPolicyCreate(service, cmd, []string{})
-		assert.Equal(t, "Error waiting for network policy task to complete: Error waiting for command: Failed to retrieve task status: test error", err.Error())
+		assert.Equal(t, "error waiting for network policy task to complete: error waiting for command: failed to retrieve task status: test error", err.Error())
 	})
 
 	t.Run("CreateNetworkPolicyError_ReturnsError", func(t *testing.T) {
@@ -198,7 +198,7 @@ func Test_ecloudNetworkPolicyCreate(t *testing.T) {
 
 		err := ecloudNetworkPolicyCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error creating network policy: test error", err.Error())
+		assert.Equal(t, "error creating network policy: test error", err.Error())
 	})
 
 	t.Run("GetNetworkPolicyError_ReturnsError", func(t *testing.T) {
@@ -216,7 +216,7 @@ func Test_ecloudNetworkPolicyCreate(t *testing.T) {
 
 		err := ecloudNetworkPolicyCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error retrieving new network policy: test error", err.Error())
+		assert.Equal(t, "error retrieving new network policy: test error", err.Error())
 	})
 }
 
@@ -231,7 +231,7 @@ func Test_ecloudNetworkPolicyUpdateCmd_Args(t *testing.T) {
 		err := ecloudNetworkPolicyUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing network policy", err.Error())
+		assert.Equal(t, "missing network policy", err.Error())
 	})
 }
 
@@ -312,7 +312,7 @@ func Test_ecloudNetworkPolicyUpdate(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for network policy [np-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for network policy [np-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudNetworkPolicyUpdate(service, cmd, []string{"np-abcdef12"})
 		})
 	})
@@ -363,7 +363,7 @@ func Test_ecloudNetworkPolicyDeleteCmd_Args(t *testing.T) {
 		err := ecloudNetworkPolicyDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing network policy", err.Error())
+		assert.Equal(t, "missing network policy", err.Error())
 	})
 }
 
@@ -410,7 +410,7 @@ func Test_ecloudNetworkPolicyDelete(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for network policy [np-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for network policy [np-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudNetworkPolicyDelete(service, cmd, []string{"np-abcdef12"})
 		})
 	})

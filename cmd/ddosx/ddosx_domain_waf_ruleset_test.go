@@ -27,7 +27,7 @@ func Test_ddosxDomainWAFRuleSetListCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 }
 
@@ -67,7 +67,7 @@ func Test_ddosxDomainWAFRuleSetList(t *testing.T) {
 
 		err := ddosxDomainWAFRuleSetList(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 
-		assert.Equal(t, "Error retrieving domain waf rule sets: test error", err.Error())
+		assert.Equal(t, "error retrieving domain waf rule sets: test error", err.Error())
 	})
 }
 
@@ -84,7 +84,7 @@ func Test_ddosxDomainWAFRuleSetShowCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 
 	t.Run("MissingRuleSet_Error", func(t *testing.T) {
@@ -92,7 +92,7 @@ func Test_ddosxDomainWAFRuleSetShowCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{"testdomain1.co.uk"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing rule set", err.Error())
+		assert.Equal(t, "missing rule set", err.Error())
 	})
 }
 
@@ -135,7 +135,7 @@ func Test_ddosxDomainWAFRuleSetUpdateCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 
 	t.Run("MissingRuleSet_Error", func(t *testing.T) {
@@ -143,7 +143,7 @@ func Test_ddosxDomainWAFRuleSetUpdateCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{"testdomain1.co.uk"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing rule set", err.Error())
+		assert.Equal(t, "missing rule set", err.Error())
 	})
 }
 

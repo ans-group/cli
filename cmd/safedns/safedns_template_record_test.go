@@ -28,7 +28,7 @@ func Test_safednsTemplateRecordListCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing template", err.Error())
+		assert.Equal(t, "missing template", err.Error())
 	})
 }
 
@@ -127,7 +127,7 @@ func Test_safednsTemplateRecordList(t *testing.T) {
 
 		err := safednsTemplateRecordList(service, &cobra.Command{}, []string{"test template 1"})
 
-		assert.Equal(t, "Error locating template [test template 1]: Error retrieving items: test error", err.Error())
+		assert.Equal(t, "error locating template [test template 1]: error retrieving items: test error", err.Error())
 	})
 
 	t.Run("GetTemplateRecordsError_ReturnsError", func(t *testing.T) {
@@ -141,7 +141,7 @@ func Test_safednsTemplateRecordList(t *testing.T) {
 
 		err := safednsTemplateRecordList(service, &cobra.Command{}, []string{"123"})
 
-		assert.Equal(t, "Error retrieving records for template: test error", err.Error())
+		assert.Equal(t, "error retrieving records for template: test error", err.Error())
 	})
 }
 
@@ -158,7 +158,7 @@ func Test_safednsTemplateRecordShowCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing template", err.Error())
+		assert.Equal(t, "missing template", err.Error())
 	})
 
 	t.Run("MissingRecord_Error", func(t *testing.T) {
@@ -166,7 +166,7 @@ func Test_safednsTemplateRecordShowCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing record", err.Error())
+		assert.Equal(t, "missing record", err.Error())
 	})
 }
 
@@ -231,7 +231,7 @@ func Test_safednsTemplateRecordShow(t *testing.T) {
 
 		err := safednsTemplateRecordShow(service, &cobra.Command{}, []string{"test template 1"})
 
-		assert.Equal(t, "Error locating template [test template 1]: Error retrieving items: test error", err.Error())
+		assert.Equal(t, "error locating template [test template 1]: error retrieving items: test error", err.Error())
 	})
 
 	t.Run("InvalidRecordID_OutputsError", func(t *testing.T) {
@@ -272,7 +272,7 @@ func Test_safednsTemplateRecordCreateCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing template", err.Error())
+		assert.Equal(t, "missing template", err.Error())
 	})
 }
 
@@ -349,7 +349,7 @@ func Test_safednsTemplateRecordCreate(t *testing.T) {
 
 		err := safednsTemplateRecordCreate(service, &cobra.Command{}, []string{"test template 1"})
 
-		assert.Equal(t, "Error locating template [test template 1]: Error retrieving items: test error", err.Error())
+		assert.Equal(t, "error locating template [test template 1]: error retrieving items: test error", err.Error())
 	})
 
 	t.Run("CreateTemplateRecordError_ReturnsError", func(t *testing.T) {
@@ -365,7 +365,7 @@ func Test_safednsTemplateRecordCreate(t *testing.T) {
 
 		err := safednsTemplateRecordCreate(service, &cobra.Command{}, []string{"123"})
 
-		assert.Equal(t, "Error creating record: test error", err.Error())
+		assert.Equal(t, "error creating record: test error", err.Error())
 	})
 
 	t.Run("GetTemplateRecordError_ReturnsError", func(t *testing.T) {
@@ -382,7 +382,7 @@ func Test_safednsTemplateRecordCreate(t *testing.T) {
 
 		err := safednsTemplateRecordCreate(service, &cobra.Command{}, []string{"123"})
 
-		assert.Equal(t, "Error retrieving new record: test error", err.Error())
+		assert.Equal(t, "error retrieving new record: test error", err.Error())
 	})
 }
 
@@ -399,7 +399,7 @@ func Test_safednsTemplateRecordUpdateCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing template", err.Error())
+		assert.Equal(t, "missing template", err.Error())
 	})
 
 	t.Run("MissingRecord_Error", func(t *testing.T) {
@@ -407,7 +407,7 @@ func Test_safednsTemplateRecordUpdateCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing record", err.Error())
+		assert.Equal(t, "missing record", err.Error())
 	})
 }
 
@@ -501,7 +501,7 @@ func Test_safednsTemplateRecordUpdate(t *testing.T) {
 
 		err := safednsTemplateRecordUpdate(service, &cobra.Command{}, []string{"test template 1"})
 
-		assert.Equal(t, "Error locating template [test template 1]: Error retrieving items: test error", err.Error())
+		assert.Equal(t, "error locating template [test template 1]: error retrieving items: test error", err.Error())
 	})
 
 	t.Run("InvalidRecordID_OutputsError", func(t *testing.T) {
@@ -558,7 +558,7 @@ func Test_safednsTemplateRecordDeleteCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing template", err.Error())
+		assert.Equal(t, "missing template", err.Error())
 	})
 
 	t.Run("MissingRecord_Error", func(t *testing.T) {
@@ -566,7 +566,7 @@ func Test_safednsTemplateRecordDeleteCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing record", err.Error())
+		assert.Equal(t, "missing record", err.Error())
 	})
 }
 
@@ -631,6 +631,6 @@ func Test_safednsTemplateRecordDelete(t *testing.T) {
 
 		err := safednsTemplateRecordDelete(service, &cobra.Command{}, []string{"test template 1"})
 
-		assert.Equal(t, "Error locating template [test template 1]: Error retrieving items: test error", err.Error())
+		assert.Equal(t, "error locating template [test template 1]: error retrieving items: test error", err.Error())
 	})
 }

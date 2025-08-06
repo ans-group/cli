@@ -52,7 +52,7 @@ func registrarDomainList(service registrar.RegistrarService, cmd *cobra.Command,
 
 	domains, err := service.GetDomains(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving domains: %s", err)
+		return fmt.Errorf("error retrieving domains: %s", err)
 	}
 
 	return output.CommandOutput(cmd, DomainCollection(domains))
@@ -66,7 +66,7 @@ func registrarDomainShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans registrar domain show example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 
 			return nil

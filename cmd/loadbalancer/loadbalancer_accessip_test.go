@@ -23,7 +23,7 @@ func Test_loadbalancerAccessIPShowCmd_Args(t *testing.T) {
 		err := loadbalancerAccessIPShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing access IP", err.Error())
+		assert.Equal(t, "missing access IP", err.Error())
 	})
 }
 
@@ -89,7 +89,7 @@ func Test_loadbalancerAccessIPUpdateCmd_Args(t *testing.T) {
 		err := loadbalancerAccessIPUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing access IP", err.Error())
+		assert.Equal(t, "missing access IP", err.Error())
 	})
 }
 
@@ -172,7 +172,7 @@ func Test_loadbalancerAccessIPDeleteCmd_Args(t *testing.T) {
 		err := loadbalancerAccessIPDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing access IP", err.Error())
+		assert.Equal(t, "missing access IP", err.Error())
 	})
 }
 

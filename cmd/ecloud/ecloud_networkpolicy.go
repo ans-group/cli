@@ -57,7 +57,7 @@ func ecloudNetworkPolicyList(service ecloud.ECloudService, cmd *cobra.Command, a
 
 	policies, err := service.GetNetworkPolicies(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving network policies: %s", err)
+		return fmt.Errorf("error retrieving network policies: %s", err)
 	}
 
 	return output.CommandOutput(cmd, NetworkPolicyCollection(policies))
@@ -71,7 +71,7 @@ func ecloudNetworkPolicyShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud networkpolicy show np-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing network policy")
+				return errors.New("missing network policy")
 			}
 
 			return nil
@@ -106,7 +106,7 @@ func ecloudNetworkPolicyCreateCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Setup flags
 	cmd.Flags().String("network", "", "ID of network")
-	cmd.MarkFlagRequired("network")
+	_ = cmd.MarkFlagRequired("network")
 	cmd.Flags().String("name", "", "Name of policy")
 	cmd.Flags().String("catchall-rule-action", "", "Action of catchall rule. One of: ALLOW/DROP/REJECT")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the network policy has been completely created")
@@ -131,20 +131,20 @@ func ecloudNetworkPolicyCreate(service ecloud.ECloudService, cmd *cobra.Command,
 
 	taskRef, err := service.CreateNetworkPolicy(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating network policy: %s", err)
+		return fmt.Errorf("error creating network policy: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskRef.TaskID, ecloud.TaskStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for network policy task to complete: %s", err)
+			return fmt.Errorf("error waiting for network policy task to complete: %s", err)
 		}
 	}
 
 	policy, err := service.GetNetworkPolicy(taskRef.ResourceID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new network policy: %s", err)
+		return fmt.Errorf("error retrieving new network policy: %s", err)
 	}
 
 	return output.CommandOutput(cmd, NetworkPolicyCollection([]ecloud.NetworkPolicy{policy}))
@@ -158,7 +158,7 @@ func ecloudNetworkPolicyUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud networkpolicy update np-abcdef12 --name \"my policy\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing network policy")
+				return errors.New("missing network policy")
 			}
 
 			return nil
@@ -225,7 +225,7 @@ func ecloudNetworkPolicyDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud networkpolicy delete np-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing network policy")
+				return errors.New("missing network policy")
 			}
 
 			return nil

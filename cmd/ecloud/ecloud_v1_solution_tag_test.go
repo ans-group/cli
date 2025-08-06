@@ -24,7 +24,7 @@ func Test_ecloudSolutionTagListCmd_Args(t *testing.T) {
 		err := ecloudSolutionTagListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing solution", err.Error())
+		assert.Equal(t, "missing solution", err.Error())
 	})
 }
 
@@ -49,7 +49,7 @@ func Test_ecloudSolutionTagList(t *testing.T) {
 
 		err := ecloudSolutionTagList(service, &cobra.Command{}, []string{"abc"})
 
-		assert.Equal(t, "Invalid solution ID [abc]", err.Error())
+		assert.Equal(t, "invalid solution ID [abc]", err.Error())
 	})
 
 	t.Run("MalformedFlag_ReturnsError", func(t *testing.T) {
@@ -76,7 +76,7 @@ func Test_ecloudSolutionTagList(t *testing.T) {
 
 		err := ecloudSolutionTagList(service, &cobra.Command{}, []string{"123"})
 
-		assert.Equal(t, "Error retrieving solution tags: test error 1", err.Error())
+		assert.Equal(t, "error retrieving solution tags: test error 1", err.Error())
 	})
 }
 
@@ -91,14 +91,14 @@ func Test_ecloudSolutionTagShowCmd_Args(t *testing.T) {
 		err := ecloudSolutionTagShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing solution", err.Error())
+		assert.Equal(t, "missing solution", err.Error())
 	})
 
 	t.Run("MissingTag_Error", func(t *testing.T) {
 		err := ecloudSolutionTagShowCmd(nil).Args(nil, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing tag", err.Error())
+		assert.Equal(t, "missing tag", err.Error())
 	})
 }
 
@@ -137,7 +137,7 @@ func Test_ecloudSolutionTagShow(t *testing.T) {
 
 		err := ecloudSolutionTagShow(service, &cobra.Command{}, []string{"abc", "testkey1"})
 
-		assert.Equal(t, "Invalid solution ID [abc]", err.Error())
+		assert.Equal(t, "invalid solution ID [abc]", err.Error())
 	})
 
 	t.Run("GetSolutionTagError_OutputsError", func(t *testing.T) {
@@ -165,7 +165,7 @@ func Test_ecloudSolutionTagCreateCmd_Args(t *testing.T) {
 		err := ecloudSolutionTagCreateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing solution", err.Error())
+		assert.Equal(t, "missing solution", err.Error())
 	})
 }
 
@@ -201,7 +201,7 @@ func Test_ecloudSolutionTagCreate(t *testing.T) {
 
 		err := ecloudSolutionTagCreate(service, &cobra.Command{}, []string{"abc"})
 
-		assert.Equal(t, "Invalid solution ID [abc]", err.Error())
+		assert.Equal(t, "invalid solution ID [abc]", err.Error())
 	})
 
 	t.Run("CreateSolutionTagError_ReturnsError", func(t *testing.T) {
@@ -215,7 +215,7 @@ func Test_ecloudSolutionTagCreate(t *testing.T) {
 
 		err := ecloudSolutionTagCreate(service, &cobra.Command{}, []string{"123"})
 
-		assert.Equal(t, "Error creating solution tag: test error 1", err.Error())
+		assert.Equal(t, "error creating solution tag: test error 1", err.Error())
 	})
 
 	t.Run("GetSolutionTagError_ReturnsError", func(t *testing.T) {
@@ -235,7 +235,7 @@ func Test_ecloudSolutionTagCreate(t *testing.T) {
 
 		err := ecloudSolutionTagCreate(service, cmd, []string{"123"})
 
-		assert.Equal(t, "Error retrieving new solution tag: test error 1", err.Error())
+		assert.Equal(t, "error retrieving new solution tag: test error 1", err.Error())
 	})
 }
 
@@ -250,14 +250,14 @@ func Test_ecloudSolutionTagUpdateCmd_Args(t *testing.T) {
 		err := ecloudSolutionTagUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing solution", err.Error())
+		assert.Equal(t, "missing solution", err.Error())
 	})
 
 	t.Run("MissingTag_Error", func(t *testing.T) {
 		err := ecloudSolutionTagUpdateCmd(nil).Args(nil, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing tag", err.Error())
+		assert.Equal(t, "missing tag", err.Error())
 	})
 }
 
@@ -313,7 +313,7 @@ func Test_ecloudSolutionTagUpdate(t *testing.T) {
 
 		err := ecloudSolutionTagUpdate(service, &cobra.Command{}, []string{"abc"})
 
-		assert.Equal(t, "Invalid solution ID [abc]", err.Error())
+		assert.Equal(t, "invalid solution ID [abc]", err.Error())
 	})
 
 	t.Run("PatchSolutionTag_OutputsError", func(t *testing.T) {
@@ -361,14 +361,14 @@ func Test_ecloudSolutionTagDeleteCmd_Args(t *testing.T) {
 		err := ecloudSolutionTagDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing solution", err.Error())
+		assert.Equal(t, "missing solution", err.Error())
 	})
 
 	t.Run("MissingTag_Error", func(t *testing.T) {
 		err := ecloudSolutionTagDeleteCmd(nil).Args(nil, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing tag", err.Error())
+		assert.Equal(t, "missing tag", err.Error())
 	})
 }
 
@@ -407,7 +407,7 @@ func Test_ecloudSolutionTagDelete(t *testing.T) {
 
 		err := ecloudSolutionTagDelete(service, &cobra.Command{}, []string{"abc", "testkey1"})
 
-		assert.Equal(t, "Invalid solution ID [abc]", err.Error())
+		assert.Equal(t, "invalid solution ID [abc]", err.Error())
 	})
 
 	t.Run("DeleteSolutionTagError_OutputsError", func(t *testing.T) {

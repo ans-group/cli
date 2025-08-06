@@ -31,7 +31,7 @@ func ecloudInstanceImageCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud instance image create i-abcdef12 --name \"someimage\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing instance")
+				return errors.New("missing instance")
 			}
 
 			return nil
@@ -51,20 +51,20 @@ func ecloudInstanceImageCreate(service ecloud.ECloudService, cmd *cobra.Command,
 
 	taskRef, err := service.CreateInstanceImage(args[0], createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating instance image: %s", err)
+		return fmt.Errorf("error creating instance image: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskRef.TaskID, ecloud.TaskStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for task to complete: %s", err)
+			return fmt.Errorf("error waiting for task to complete: %s", err)
 		}
 	}
 
 	image, err := service.GetImage(taskRef.ResourceID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new instance image: %s", err)
+		return fmt.Errorf("error retrieving new instance image: %s", err)
 	}
 
 	return output.CommandOutput(cmd, ImageCollection([]ecloud.Image{image}))

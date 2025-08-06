@@ -33,6 +33,6 @@ func Test_cloudflareTotalSpendeShow(t *testing.T) {
 
 		err := cloudflareTotalSpendShow(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving total spend: test error", err.Error())
+		assert.Equal(t, "error retrieving total spend: test error", err.Error())
 	})
 }

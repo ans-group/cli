@@ -50,7 +50,7 @@ func Test_accountContactList(t *testing.T) {
 		err := accountContactList(service, &cobra.Command{}, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error retrieving contacts: test error", err.Error())
+		assert.Equal(t, "error retrieving contacts: test error", err.Error())
 	})
 }
 
@@ -65,7 +65,7 @@ func Test_accountContactShowCmd_Args(t *testing.T) {
 		err := accountContactShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing contact", err.Error())
+		assert.Equal(t, "missing contact", err.Error())
 	})
 }
 

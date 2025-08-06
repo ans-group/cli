@@ -74,7 +74,7 @@ func ecloudInstanceList(service ecloud.ECloudService, cmd *cobra.Command, args [
 
 	instances, err := service.GetInstances(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving instances: %s", err)
+		return fmt.Errorf("error retrieving instances: %s", err)
 	}
 
 	return output.CommandOutput(cmd, InstanceCollection(instances))
@@ -88,7 +88,7 @@ func ecloudInstanceShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud instance show i-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing instance")
+				return errors.New("missing instance")
 			}
 
 			return nil
@@ -124,19 +124,19 @@ func ecloudInstanceCreateCmd(f factory.ClientFactory) *cobra.Command {
 	// Setup flags
 	cmd.Flags().String("name", "", "Name of instance")
 	cmd.Flags().String("vpc", "", "ID of VPC")
-	cmd.MarkFlagRequired("vpc")
+	_ = cmd.MarkFlagRequired("vpc")
 	cmd.Flags().Int("vcpu", 0, "Number of vCPU sockets to allocate")
-	cmd.Flags().MarkDeprecated("vcpu", "use --vcpu-sockets / --vcpu-cores-per-socket flags instead")
+	_ = cmd.Flags().MarkDeprecated("vcpu", "use --vcpu-sockets / --vcpu-cores-per-socket flags instead")
 	cmd.Flags().Int("vcpu-sockets", 1, "Number of vCPU sockets to allocate")
 	cmd.Flags().Int("vcpu-cores-per-socket", 1, "Number of vCPU cores to allocate per socket")
 	cmd.Flags().Int("ram", 0, "Amount of RAM (in MB) to allocate")
-	cmd.MarkFlagRequired("ram")
+	_ = cmd.MarkFlagRequired("ram")
 	cmd.Flags().Int("volume", 0, "Size of volume to allocate")
-	cmd.MarkFlagRequired("volume")
+	_ = cmd.MarkFlagRequired("volume")
 	cmd.Flags().String("network", "", "ID of network to use for instance")
-	cmd.MarkFlagRequired("network")
+	_ = cmd.MarkFlagRequired("network")
 	cmd.Flags().String("image", "", "ID or name of image to deploy from")
-	cmd.MarkFlagRequired("image")
+	_ = cmd.MarkFlagRequired("image")
 	cmd.Flags().StringSlice("ssh-key-pair", []string{}, "ID of SSH key pair, can be repeated")
 	cmd.Flags().String("host-group", "", "ID of host group to deploy to")
 	cmd.Flags().String("resource-tier", "", "ID of resource tier to deploy to. A default tier is chosen if not specified")
@@ -167,7 +167,7 @@ func ecloudInstanceCreate(service ecloud.ECloudService, cmd *cobra.Command, args
 
 	if cmd.Flags().Changed("vcpu") {
 		if cmd.Flags().Changed("vcpu-sockets") || cmd.Flags().Changed("vcpu-cores-per-socket") {
-			return fmt.Errorf("Flag --vcpu is mutually exclusive with --vcpu-sockets and --vcpu-cores-per-socket")
+			return fmt.Errorf("flag --vcpu is mutually exclusive with --vcpu-sockets and --vcpu-cores-per-socket")
 		}
 		createRequest.VCPUCores, _ = cmd.Flags().GetInt("vcpu")
 	} else {
@@ -212,15 +212,15 @@ func ecloudInstanceCreate(service ecloud.ECloudService, cmd *cobra.Command, args
 			},
 		})
 		if err != nil {
-			return fmt.Errorf("Error retrieving images: %s", err)
+			return fmt.Errorf("error retrieving images: %s", err)
 		}
 
 		if len(images) == 0 {
-			return fmt.Errorf("Image not found with name '%s'", imageFlag)
+			return fmt.Errorf("image not found with name '%s'", imageFlag)
 		}
 
 		if len(images) > 1 {
-			return fmt.Errorf("Expected 1 image, got %d images", len(images))
+			return fmt.Errorf("expected 1 image, got %d images", len(images))
 		}
 
 		createRequest.ImageID = images[0].ID
@@ -231,20 +231,20 @@ func ecloudInstanceCreate(service ecloud.ECloudService, cmd *cobra.Command, args
 
 	instanceID, err := service.CreateInstance(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating instance: %s", err)
+		return fmt.Errorf("error creating instance: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := helper.WaitForCommand(InstanceResourceSyncStatusWaitFunc(service, instanceID, ecloud.SyncStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for instance sync: %s", err)
+			return fmt.Errorf("error waiting for instance sync: %s", err)
 		}
 	}
 
 	instance, err := service.GetInstance(instanceID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new instance: %s", err)
+		return fmt.Errorf("error retrieving new instance: %s", err)
 	}
 
 	return output.CommandOutput(cmd, InstanceCollection([]ecloud.Instance{instance}))
@@ -258,7 +258,7 @@ func ecloudInstanceUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud instance update i-abcdef12 --name \"my instance\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing instance")
+				return errors.New("missing instance")
 			}
 
 			return nil
@@ -268,7 +268,7 @@ func ecloudInstanceUpdateCmd(f factory.ClientFactory) *cobra.Command {
 
 	cmd.Flags().String("name", "", "Name of instance")
 	cmd.Flags().Int("vcpu", 0, "Number of vCPU sockets to allocate")
-	cmd.Flags().MarkDeprecated("vcpu", "use --vcpu-sockets / --vcpu-cores-per-socket flags instead")
+	_ = cmd.Flags().MarkDeprecated("vcpu", "use --vcpu-sockets / --vcpu-cores-per-socket flags instead")
 	cmd.Flags().Int("vcpu-sockets", 0, "Number of vCPU sockets to allocate")
 	cmd.Flags().Int("vcpu-cores-per-socket", 0, "Number of vCPU cores to allocate per socket")
 	cmd.Flags().Int("ram", 0, "Amount of RAM (in MB) to allocate")
@@ -290,7 +290,7 @@ func ecloudInstanceUpdate(service ecloud.ECloudService, cmd *cobra.Command, args
 
 	if cmd.Flags().Changed("vcpu") {
 		if cmd.Flags().Changed("vcpu-sockets") || cmd.Flags().Changed("vcpu-cores-per-socket") {
-			return fmt.Errorf("Flag --vcpu is mutually exclusive with --vcpu-sockets and --vcpu-cores-per-socket")
+			return fmt.Errorf("flag --vcpu is mutually exclusive with --vcpu-sockets and --vcpu-cores-per-socket")
 		}
 		patchRequest.VCPUCores, _ = cmd.Flags().GetInt("vcpu")
 	} else {
@@ -388,7 +388,7 @@ func ecloudInstanceDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud instance delete i-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing instance")
+				return errors.New("missing instance")
 			}
 
 			return nil
@@ -429,7 +429,7 @@ func ecloudInstanceLockCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud instance lock i-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing instance")
+				return errors.New("missing instance")
 			}
 
 			return nil
@@ -456,7 +456,7 @@ func ecloudInstanceUnlockCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud instance unlock i-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing instance")
+				return errors.New("missing instance")
 			}
 
 			return nil
@@ -483,7 +483,7 @@ func ecloudInstanceStartCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud instance start i-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing instance")
+				return errors.New("missing instance")
 			}
 
 			return nil
@@ -524,7 +524,7 @@ func ecloudInstanceStopCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud instance stop i-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing instance")
+				return errors.New("missing instance")
 			}
 
 			return nil
@@ -578,7 +578,7 @@ func ecloudInstanceRestartCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud instance restart i-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing instance")
+				return errors.New("missing instance")
 			}
 
 			return nil
@@ -632,7 +632,7 @@ func ecloudInstanceSSHCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud instance ssh i-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing instance")
+				return errors.New("missing instance")
 			}
 
 			return nil
@@ -654,22 +654,22 @@ func ecloudInstanceSSH(service ecloud.ECloudService, cmd *cobra.Command, args []
 	if internal {
 		nics, err := service.GetInstanceNICs(args[0], connection.APIRequestParameters{})
 		if err != nil {
-			return fmt.Errorf("Error retrieving instance NICs: %s", err)
+			return fmt.Errorf("error retrieving instance NICs: %s", err)
 		}
 
 		if len(nics) < 1 {
-			return fmt.Errorf("No floating IPs found for instance")
+			return fmt.Errorf("no floating IPs found for instance")
 		}
 
 		ipAddress = nics[0].IPAddress
 	} else {
 		fips, err := service.GetInstanceFloatingIPs(args[0], connection.APIRequestParameters{})
 		if err != nil {
-			return fmt.Errorf("Error retrieving instance floating IPs: %s", err)
+			return fmt.Errorf("error retrieving instance floating IPs: %s", err)
 		}
 
 		if len(fips) < 1 {
-			return fmt.Errorf("No floating IPs found for instance")
+			return fmt.Errorf("no floating IPs found for instance")
 		}
 
 		ipAddress = fips[0].IPAddress
@@ -684,7 +684,7 @@ func ecloudInstanceSSH(service ecloud.ECloudService, cmd *cobra.Command, args []
 	sshCmd.Stdin = os.Stdin
 	sshCmd.Stderr = os.Stderr
 
-	sshCmd.Start()
+	_ = sshCmd.Start()
 	return sshCmd.Wait()
 }
 
@@ -696,7 +696,7 @@ func ecloudInstanceMigrateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud instance migrate i-abcdef12 --resource-tier rt-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing instance")
+				return errors.New("missing instance")
 			}
 
 			return nil
@@ -704,7 +704,7 @@ func ecloudInstanceMigrateCmd(f factory.ClientFactory) *cobra.Command {
 		PreRun: func(cmd *cobra.Command, args []string) {
 			hostgroup, _ := cmd.Flags().GetString("host-group")
 			if hostgroup == "" {
-				cmd.MarkFlagRequired("resource-tier")
+				_ = cmd.MarkFlagRequired("resource-tier")
 			}
 		},
 		RunE: ecloudCobraRunEFunc(f, ecloudInstanceMigrate),
@@ -754,7 +754,7 @@ func ecloudInstanceEncryptCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud instance encrypt i-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing instance")
+				return errors.New("missing instance")
 			}
 
 			return nil
@@ -794,7 +794,7 @@ func ecloudInstanceDecryptCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud instance decrypt i-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing instance")
+				return errors.New("missing instance")
 			}
 
 			return nil
@@ -844,7 +844,7 @@ func InstanceNotFoundWaitFunc(service ecloud.ECloudService, instanceID string) h
 			case *ecloud.InstanceNotFoundError:
 				return true, nil
 			default:
-				return false, fmt.Errorf("Failed to retrieve instance [%s]: %s", instanceID, err)
+				return false, fmt.Errorf("failed to retrieve instance [%s]: %s", instanceID, err)
 			}
 		}
 
@@ -854,7 +854,7 @@ func InstanceNotFoundWaitFunc(service ecloud.ECloudService, instanceID string) h
 
 func tagLookup(service ecloud.ECloudService, tag string) (string, error) {
 	if tag == "" {
-		return "", fmt.Errorf("Cannot lookup tag with empty value")
+		return "", fmt.Errorf("cannot lookup tag with empty value")
 	}
 
 	if strings.HasPrefix(tag, "tag-") {
@@ -865,7 +865,7 @@ func tagLookup(service ecloud.ECloudService, tag string) (string, error) {
 	if strings.Contains(tag, ":") {
 		parts := strings.Split(tag, ":")
 		if len(parts) != 2 {
-			return "", fmt.Errorf("Invalid tag format '%s', expected '<scope>:<name>'", tag)
+			return "", fmt.Errorf("invalid tag format '%s', expected '<scope>:<name>'", tag)
 		}
 		filter = []connection.APIRequestFiltering{
 			{
@@ -893,11 +893,11 @@ func tagLookup(service ecloud.ECloudService, tag string) (string, error) {
 		Filtering: filter,
 	})
 	if err != nil {
-		return "", fmt.Errorf("Error retrieving tags: %s", err)
+		return "", fmt.Errorf("error retrieving tags: %s", err)
 	}
 
 	if len(tags) == 0 {
-		return "", fmt.Errorf("Tag '%s' not found, create the tag first", tag)
+		return "", fmt.Errorf("tag '%s' not found, create the tag first", tag)
 	}
 
 	if len(tags) > 1 {
@@ -905,7 +905,7 @@ func tagLookup(service ecloud.ECloudService, tag string) (string, error) {
 		for _, t := range tags {
 			foundTags = append(foundTags, fmt.Sprintf("%s (%s:%s)", t.ID, t.Scope, t.Name))
 		}
-		return "", fmt.Errorf("Expected 1 tag, got %d tags with matching scope/name: %s", len(tags), strings.Join(foundTags, ", "))
+		return "", fmt.Errorf("expected 1 tag, got %d tags with matching scope/name: %s", len(tags), strings.Join(foundTags, ", "))
 	}
 
 	return tags[0].ID, nil
@@ -920,7 +920,7 @@ func addRemoveTags(service ecloud.ECloudService, request *ecloud.PatchInstanceRe
 	} else {
 		instance, err := service.GetInstance(instanceID)
 		if err != nil {
-			return fmt.Errorf("Error retrieving instance tags [%s]: %s", instanceID, err)
+			return fmt.Errorf("error retrieving instance tags [%s]: %s", instanceID, err)
 		}
 		for _, tag := range instance.Tags {
 			currentTags[tag.ID] = true

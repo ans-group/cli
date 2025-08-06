@@ -23,7 +23,7 @@ func Test_ecloudInstanceFloatingIPListCmd_Args(t *testing.T) {
 		err := ecloudInstanceFloatingIPListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing instance", err.Error())
+		assert.Equal(t, "missing instance", err.Error())
 	})
 }
 
@@ -63,6 +63,6 @@ func Test_ecloudInstanceFloatingIPList(t *testing.T) {
 
 		err := ecloudInstanceFloatingIPList(service, &cobra.Command{}, []string{"i-abcdef12"})
 
-		assert.Equal(t, "Error retrieving instance floating IPs: test error", err.Error())
+		assert.Equal(t, "error retrieving instance floating IPs: test error", err.Error())
 	})
 }

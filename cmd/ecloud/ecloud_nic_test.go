@@ -49,7 +49,7 @@ func Test_ecloudNICList(t *testing.T) {
 
 		err := ecloudNICList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving NICs: test error", err.Error())
+		assert.Equal(t, "error retrieving NICs: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudNICShowCmd_Args(t *testing.T) {
 		err := ecloudNICShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing nic", err.Error())
+		assert.Equal(t, "missing nic", err.Error())
 	})
 }
 

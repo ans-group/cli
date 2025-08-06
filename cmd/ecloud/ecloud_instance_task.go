@@ -31,7 +31,7 @@ func ecloudInstanceTaskListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud instance task list i-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing instance")
+				return errors.New("missing instance")
 			}
 
 			return nil
@@ -56,7 +56,7 @@ func ecloudInstanceTaskList(service ecloud.ECloudService, cmd *cobra.Command, ar
 
 	tasks, err := service.GetInstanceTasks(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving instance tasks: %s", err)
+		return fmt.Errorf("error retrieving instance tasks: %s", err)
 	}
 
 	return output.CommandOutput(cmd, TaskCollection(tasks))

@@ -49,7 +49,7 @@ func Test_ecloudNATOverloadRuleList(t *testing.T) {
 
 		err := ecloudNATOverloadRuleList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving NAT overload rules: test error", err.Error())
+		assert.Equal(t, "error retrieving NAT overload rules: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudNATOverloadRuleShowCmd_Args(t *testing.T) {
 		err := ecloudNATOverloadRuleShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing NAT overload rule", err.Error())
+		assert.Equal(t, "missing NAT overload rule", err.Error())
 	})
 }
 
@@ -201,7 +201,7 @@ func Test_ecloudNATOverloadRuleCreate(t *testing.T) {
 		)
 
 		err := ecloudNATOverloadRuleCreate(service, cmd, []string{})
-		assert.Equal(t, "Error waiting for NAT overload rule task to complete: Error waiting for command: Failed to retrieve task status: test error", err.Error())
+		assert.Equal(t, "error waiting for NAT overload rule task to complete: error waiting for command: failed to retrieve task status: test error", err.Error())
 	})
 
 	t.Run("CreateNATOverloadRuleError_ReturnsError", func(t *testing.T) {
@@ -220,7 +220,7 @@ func Test_ecloudNATOverloadRuleCreate(t *testing.T) {
 
 		err := ecloudNATOverloadRuleCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error creating NAT overload rule: test error", err.Error())
+		assert.Equal(t, "error creating NAT overload rule: test error", err.Error())
 	})
 
 	t.Run("GetNATOverloadRuleError_ReturnsError", func(t *testing.T) {
@@ -242,7 +242,7 @@ func Test_ecloudNATOverloadRuleCreate(t *testing.T) {
 
 		err := ecloudNATOverloadRuleCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error retrieving new NAT overload rule: test error", err.Error())
+		assert.Equal(t, "error retrieving new NAT overload rule: test error", err.Error())
 	})
 }
 
@@ -257,7 +257,7 @@ func Test_ecloudNATOverloadRuleUpdateCmd_Args(t *testing.T) {
 		err := ecloudNATOverloadRuleUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing NAT overload rule", err.Error())
+		assert.Equal(t, "missing NAT overload rule", err.Error())
 	})
 }
 
@@ -336,7 +336,7 @@ func Test_ecloudNATOverloadRuleUpdate(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for NAT overload rule [nor-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for NAT overload rule [nor-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudNATOverloadRuleUpdate(service, cmd, []string{"nor-abcdef12"})
 		})
 	})
@@ -416,7 +416,7 @@ func Test_ecloudNATOverloadRuleDeleteCmd_Args(t *testing.T) {
 		err := ecloudNATOverloadRuleDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing NAT overload rule", err.Error())
+		assert.Equal(t, "missing NAT overload rule", err.Error())
 	})
 }
 
@@ -477,7 +477,7 @@ func Test_ecloudNATOverloadRuleDelete(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for NAT overload rule [nor-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for NAT overload rule [nor-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudNATOverloadRuleDelete(service, cmd, []string{"nor-abcdef12"})
 		})
 	})

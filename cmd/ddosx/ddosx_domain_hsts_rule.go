@@ -36,7 +36,7 @@ func ddosxDomainHSTSRuleListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain hsts rule list",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 
 			return nil
@@ -60,7 +60,7 @@ func ddosxDomainHSTSRuleList(service ddosx.DDoSXService, cmd *cobra.Command, arg
 
 	domains, err := service.GetDomainHSTSRules(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving HSTS rules: %s", err)
+		return fmt.Errorf("error retrieving HSTS rules: %s", err)
 	}
 
 	return output.CommandOutput(cmd, HSTSRuleCollection(domains))
@@ -74,10 +74,10 @@ func ddosxDomainHSTSRuleShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain hsts rule show example.com 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing rule")
+				return errors.New("missing rule")
 			}
 
 			return nil
@@ -116,7 +116,7 @@ func ddosxDomainHSTSRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain hsts rule create example.com --uri example.html --cache-control custom --mime-type image/* --type global",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 
 			return nil
@@ -135,7 +135,7 @@ func ddosxDomainHSTSRuleCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().Bool("preload", false, "Specifies preload should be enabled")
 	cmd.Flags().Bool("include-subdomains", false, "Specifies subdomains should be included")
 	cmd.Flags().String("type", "", "Type of rule")
-	cmd.MarkFlagRequired("type")
+	_ = cmd.MarkFlagRequired("type")
 	cmd.Flags().String("record-name", "", "Specifies name of record")
 
 	return cmd
@@ -161,12 +161,12 @@ func ddosxDomainHSTSRuleCreate(service ddosx.DDoSXService, cmd *cobra.Command, a
 
 	id, err := service.CreateDomainHSTSRule(args[0], createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating HSTS rule: %s", err)
+		return fmt.Errorf("error creating HSTS rule: %s", err)
 	}
 
 	rule, err := service.GetDomainHSTSRule(args[0], id)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new HSTS rule [%s]: %s", id, err.Error())
+		return fmt.Errorf("error retrieving new HSTS rule [%s]: %s", id, err.Error())
 	}
 
 	return output.CommandOutput(cmd, HSTSRuleCollection([]ddosx.HSTSRule{rule}))
@@ -180,10 +180,10 @@ func ddosxDomainHSTSRuleUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain hsts rule update example.com 00000000-0000-0000-0000-000000000000 --mime-type image/*",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing rule")
+				return errors.New("missing rule")
 			}
 
 			return nil
@@ -251,10 +251,10 @@ func ddosxDomainHSTSRuleDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain hsts rule delete example.com 00000000-0000-0000-0000-000000000000",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing rule")
+				return errors.New("missing rule")
 			}
 
 			return nil

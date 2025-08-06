@@ -48,7 +48,7 @@ func Test_accountClientList(t *testing.T) {
 
 		err := accountClientList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving clients: test error", err.Error())
+		assert.Equal(t, "error retrieving clients: test error", err.Error())
 	})
 }
 
@@ -63,7 +63,7 @@ func Test_accountClientShowCmd_Args(t *testing.T) {
 		err := accountClientShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing client", err.Error())
+		assert.Equal(t, "missing client", err.Error())
 	})
 }
 
@@ -149,7 +149,7 @@ func Test_accountClientCreate(t *testing.T) {
 
 		err := accountClientCreate(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error creating client: test error", err.Error())
+		assert.Equal(t, "error creating client: test error", err.Error())
 	})
 
 	t.Run("GetClientError_ReturnsError", func(t *testing.T) {
@@ -165,7 +165,7 @@ func Test_accountClientCreate(t *testing.T) {
 
 		err := accountClientCreate(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving new client: test error", err.Error())
+		assert.Equal(t, "error retrieving new client: test error", err.Error())
 	})
 }
 
@@ -180,7 +180,7 @@ func Test_accountClientUpdateCmd_Args(t *testing.T) {
 		err := accountClientUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing client", err.Error())
+		assert.Equal(t, "missing client", err.Error())
 	})
 }
 
@@ -279,7 +279,7 @@ func Test_accountClientDeleteCmd_Args(t *testing.T) {
 		err := accountClientDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing client", err.Error())
+		assert.Equal(t, "missing client", err.Error())
 	})
 }
 

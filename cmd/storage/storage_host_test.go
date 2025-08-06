@@ -49,7 +49,7 @@ func Test_storageHostList(t *testing.T) {
 
 		err := storageHostList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving hosts: test error", err.Error())
+		assert.Equal(t, "error retrieving hosts: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_storageHostShowCmd_Args(t *testing.T) {
 		err := storageHostShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing host", err.Error())
+		assert.Equal(t, "missing host", err.Error())
 	})
 }
 

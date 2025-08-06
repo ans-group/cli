@@ -15,11 +15,11 @@ func updateCmd() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			currentVersion, err := semver.ParseTolerant(appVersion)
 			if err != nil {
-				return fmt.Errorf("Unable to parse version: %s", err.Error())
+				return fmt.Errorf("unable to parse version: %s", err.Error())
 			}
 			newRelease, err := selfupdate.UpdateSelf(currentVersion, "ans-group/cli")
 			if err != nil {
-				return fmt.Errorf("Failed to update ANS CLI: %s", err.Error())
+				return fmt.Errorf("failed to update ANS CLI: %s", err.Error())
 			}
 
 			if currentVersion.Equals(newRelease.Version) {

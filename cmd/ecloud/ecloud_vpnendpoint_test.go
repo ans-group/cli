@@ -49,7 +49,7 @@ func Test_ecloudVPNEndpointList(t *testing.T) {
 
 		err := ecloudVPNEndpointList(endpoint, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving VPN endpoints: test error", err.Error())
+		assert.Equal(t, "error retrieving VPN endpoints: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudVPNEndpointShowCmd_Args(t *testing.T) {
 		err := ecloudVPNEndpointShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing VPN endpoint", err.Error())
+		assert.Equal(t, "missing VPN endpoint", err.Error())
 	})
 }
 
@@ -183,7 +183,7 @@ func Test_ecloudVPNEndpointCreate(t *testing.T) {
 		)
 
 		err := ecloudVPNEndpointCreate(endpoint, cmd, []string{})
-		assert.Equal(t, "Error waiting for VPN endpoint task to complete: Error waiting for command: Failed to retrieve task status: test error", err.Error())
+		assert.Equal(t, "error waiting for VPN endpoint task to complete: error waiting for command: failed to retrieve task status: test error", err.Error())
 	})
 
 	t.Run("CreateVPNEndpointError_ReturnsError", func(t *testing.T) {
@@ -198,7 +198,7 @@ func Test_ecloudVPNEndpointCreate(t *testing.T) {
 
 		err := ecloudVPNEndpointCreate(endpoint, cmd, []string{})
 
-		assert.Equal(t, "Error creating VPN endpoint: test error", err.Error())
+		assert.Equal(t, "error creating VPN endpoint: test error", err.Error())
 	})
 
 	t.Run("GetVPNEndpointError_ReturnsError", func(t *testing.T) {
@@ -216,7 +216,7 @@ func Test_ecloudVPNEndpointCreate(t *testing.T) {
 
 		err := ecloudVPNEndpointCreate(endpoint, cmd, []string{})
 
-		assert.Equal(t, "Error retrieving new VPN endpoint: test error", err.Error())
+		assert.Equal(t, "error retrieving new VPN endpoint: test error", err.Error())
 	})
 }
 
@@ -231,7 +231,7 @@ func Test_ecloudVPNEndpointUpdateCmd_Args(t *testing.T) {
 		err := ecloudVPNEndpointUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing VPN endpoint", err.Error())
+		assert.Equal(t, "missing VPN endpoint", err.Error())
 	})
 }
 
@@ -312,7 +312,7 @@ func Test_ecloudVPNEndpointUpdate(t *testing.T) {
 			endpoint.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for VPN endpoint [vpne-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for VPN endpoint [vpne-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudVPNEndpointUpdate(endpoint, cmd, []string{"vpne-abcdef12"})
 		})
 	})
@@ -363,7 +363,7 @@ func Test_ecloudVPNEndpointDeleteCmd_Args(t *testing.T) {
 		err := ecloudVPNEndpointDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing VPN endpoint", err.Error())
+		assert.Equal(t, "missing VPN endpoint", err.Error())
 	})
 }
 
@@ -410,7 +410,7 @@ func Test_ecloudVPNEndpointDelete(t *testing.T) {
 			endpoint.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for VPN endpoint [vpne-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for VPN endpoint [vpne-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudVPNEndpointDelete(endpoint, cmd, []string{"vpne-abcdef12"})
 		})
 	})

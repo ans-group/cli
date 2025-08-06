@@ -34,7 +34,7 @@ func loadbalancerListenerAccessIPListCmd(f factory.ClientFactory) *cobra.Command
 		Example: "ans loadbalancer listener accessip list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing listener")
+				return errors.New("missing listener")
 			}
 
 			return nil
@@ -51,12 +51,12 @@ func loadbalancerListenerAccessIPList(service loadbalancer.LoadBalancerService, 
 
 	listenerID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid listener ID")
+		return fmt.Errorf("invalid listener ID")
 	}
 
 	accessips, err := service.GetListenerAccessIPs(listenerID, params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving access IPs: %s", err)
+		return fmt.Errorf("error retrieving access IPs: %s", err)
 	}
 
 	return output.CommandOutput(cmd, AccessIPCollection(accessips))
@@ -70,7 +70,7 @@ func loadbalancerListenerAccessIPCreateCmd(f factory.ClientFactory) *cobra.Comma
 		Example: "ans loadbalancer listener accessip create 123 --ip 1.2.3.4",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing listener")
+				return errors.New("missing listener")
 			}
 
 			return nil
@@ -79,7 +79,7 @@ func loadbalancerListenerAccessIPCreateCmd(f factory.ClientFactory) *cobra.Comma
 	}
 
 	cmd.Flags().String("ip", "", "IP address for access IP")
-	cmd.MarkFlagRequired("ip")
+	_ = cmd.MarkFlagRequired("ip")
 
 	return cmd
 }
@@ -87,7 +87,7 @@ func loadbalancerListenerAccessIPCreateCmd(f factory.ClientFactory) *cobra.Comma
 func loadbalancerListenerAccessIPCreate(service loadbalancer.LoadBalancerService, cmd *cobra.Command, args []string) error {
 	listenerID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid listener ID")
+		return fmt.Errorf("invalid listener ID")
 	}
 
 	ip, _ := cmd.Flags().GetString("ip")
@@ -97,12 +97,12 @@ func loadbalancerListenerAccessIPCreate(service loadbalancer.LoadBalancerService
 
 	accessipID, err := service.CreateListenerAccessIP(listenerID, createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating access IP: %s", err)
+		return fmt.Errorf("error creating access IP: %s", err)
 	}
 
 	accessip, err := service.GetAccessIP(accessipID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new access IP: %s", err)
+		return fmt.Errorf("error retrieving new access IP: %s", err)
 	}
 
 	return output.CommandOutput(cmd, AccessIPCollection([]loadbalancer.AccessIP{accessip}))

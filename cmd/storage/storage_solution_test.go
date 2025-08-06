@@ -49,7 +49,7 @@ func Test_storageSolutionList(t *testing.T) {
 
 		err := storageSolutionList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving solutions: test error", err.Error())
+		assert.Equal(t, "error retrieving solutions: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_storageSolutionShowCmd_Args(t *testing.T) {
 		err := storageSolutionShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing solution", err.Error())
+		assert.Equal(t, "missing solution", err.Error())
 	})
 }
 

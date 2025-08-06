@@ -51,7 +51,7 @@ func loadbalancerTargetGroupList(service loadbalancer.LoadBalancerService, cmd *
 
 	groups, err := service.GetTargetGroups(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving target groups: %s", err)
+		return fmt.Errorf("error retrieving target groups: %s", err)
 	}
 
 	return output.CommandOutput(cmd, TargetGroupCollection(groups))
@@ -65,7 +65,7 @@ func loadbalancerTargetGroupShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans loadbalancer targetgroup show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing target group")
+				return errors.New("missing target group")
 			}
 
 			return nil
@@ -105,13 +105,13 @@ func loadbalancerTargetGroupCreateCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("name", "", "Name of target group")
-	cmd.MarkFlagRequired("name")
+	_ = cmd.MarkFlagRequired("name")
 	cmd.Flags().Int("cluster", 0, "ID of cluster")
-	cmd.MarkFlagRequired("cluster")
+	_ = cmd.MarkFlagRequired("cluster")
 	cmd.Flags().String("balance", "", "Balance configuration for target group")
-	cmd.MarkFlagRequired("balance")
+	_ = cmd.MarkFlagRequired("balance")
 	cmd.Flags().String("mode", "", "Specifies mode for target group")
-	cmd.MarkFlagRequired("mode")
+	_ = cmd.MarkFlagRequired("mode")
 	cmd.Flags().Bool("close", false, "Specifies close should be enabled for target group")
 	cmd.Flags().Bool("sticky", false, "Specifies sticky should be enabled for target group")
 	cmd.Flags().String("cookie-opts", "", "Specifies cookie options for target group")
@@ -193,12 +193,12 @@ func loadbalancerTargetGroupCreate(service loadbalancer.LoadBalancerService, cmd
 
 	groupID, err := service.CreateTargetGroup(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating target group: %s", err)
+		return fmt.Errorf("error creating target group: %s", err)
 	}
 
 	group, err := service.GetTargetGroup(groupID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new target group: %s", err)
+		return fmt.Errorf("error retrieving new target group: %s", err)
 	}
 
 	return output.CommandOutput(cmd, TargetGroupCollection([]loadbalancer.TargetGroup{group}))
@@ -212,7 +212,7 @@ func loadbalancerTargetGroupUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans loadbalancer targetgroup update 123 --name mytargetgroup",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing target group")
+				return errors.New("missing target group")
 			}
 
 			return nil
@@ -338,7 +338,7 @@ func loadbalancerTargetGroupDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans loadbalancer targetgroup delete 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing target group")
+				return errors.New("missing target group")
 			}
 
 			return nil

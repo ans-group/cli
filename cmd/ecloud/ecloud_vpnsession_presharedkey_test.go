@@ -23,7 +23,7 @@ func Test_ecloudVPNSessionPreSharedKeyShowCmd_Args(t *testing.T) {
 		err := ecloudVPNSessionPreSharedKeyShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing VPN session", err.Error())
+		assert.Equal(t, "missing VPN session", err.Error())
 	})
 }
 
@@ -78,7 +78,7 @@ func Test_ecloudVPNSessionPreSharedKeyUpdateCmd_Args(t *testing.T) {
 		err := ecloudVPNSessionPreSharedKeyUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing VPN session", err.Error())
+		assert.Equal(t, "missing VPN session", err.Error())
 	})
 }
 
@@ -162,7 +162,7 @@ func Test_ecloudVPNSessionPreSharedKeyUpdate(t *testing.T) {
 		err := ecloudVPNSessionPreSharedKeyUpdate(service, cmd, []string{"vpns-abcdef12"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error waiting for task to complete for VPN session: Error waiting for command: Failed to retrieve task status: test error", err.Error())
+		assert.Equal(t, "error waiting for task to complete for VPN session: error waiting for command: failed to retrieve task status: test error", err.Error())
 	})
 
 	t.Run("UpdateVPNSessionPreSharedKeyError_OutputsError", func(t *testing.T) {
@@ -176,6 +176,6 @@ func Test_ecloudVPNSessionPreSharedKeyUpdate(t *testing.T) {
 		err := ecloudVPNSessionPreSharedKeyUpdate(service, &cobra.Command{}, []string{"vpns-abcdef12"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error updating VPN session pre-shared key: test error", err.Error())
+		assert.Equal(t, "error updating VPN session pre-shared key: test error", err.Error())
 	})
 }

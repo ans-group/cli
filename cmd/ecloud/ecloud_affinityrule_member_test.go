@@ -23,7 +23,7 @@ func Test_ecloudAffinityRuleAffinityMemberListCmd_Args(t *testing.T) {
 		err := ecloudAffinityRuleAffinityMemberListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing affinity rule", err.Error())
+		assert.Equal(t, "missing affinity rule", err.Error())
 	})
 }
 
@@ -63,6 +63,6 @@ func Test_ecloudAffinityRuleAffinityMemberList(t *testing.T) {
 
 		err := ecloudAffinityRuleAffinityMemberList(service, &cobra.Command{}, []string{"ar-abcdef12"})
 
-		assert.Equal(t, "Error retrieving affinity rule members: test error", err.Error())
+		assert.Equal(t, "error retrieving affinity rule members: test error", err.Error())
 	})
 }

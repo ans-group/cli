@@ -47,6 +47,6 @@ func Test_ecloudCreditList(t *testing.T) {
 
 		err := ecloudCreditList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving credits: test error", err.Error())
+		assert.Equal(t, "error retrieving credits: test error", err.Error())
 	})
 }

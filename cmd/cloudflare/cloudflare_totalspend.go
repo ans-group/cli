@@ -34,7 +34,7 @@ func cloudflareTotalSpendShowCmd(f factory.ClientFactory) *cobra.Command {
 func cloudflareTotalSpendShow(service cloudflare.CloudflareService, cmd *cobra.Command, args []string) error {
 	spend, err := service.GetTotalSpendMonthToDate()
 	if err != nil {
-		return fmt.Errorf("Error retrieving total spend: %s", err)
+		return fmt.Errorf("error retrieving total spend: %s", err)
 	}
 
 	return output.CommandOutput(cmd, TotalSpendCollection([]cloudflare.TotalSpend{spend}))

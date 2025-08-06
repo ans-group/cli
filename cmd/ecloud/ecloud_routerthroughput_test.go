@@ -49,7 +49,7 @@ func Test_ecloudRouterThroughputList(t *testing.T) {
 
 		err := ecloudRouterThroughputList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving router throughputs: test error", err.Error())
+		assert.Equal(t, "error retrieving router throughputs: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudRouterThroughputShowCmd_Args(t *testing.T) {
 		err := ecloudRouterThroughputShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing router throughput", err.Error())
+		assert.Equal(t, "missing router throughput", err.Error())
 	})
 }
 

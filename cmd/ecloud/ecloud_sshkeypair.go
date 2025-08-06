@@ -52,7 +52,7 @@ func ecloudSSHKeyPairList(service ecloud.ECloudService, cmd *cobra.Command, args
 
 	keypairs, err := service.GetSSHKeyPairs(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving SSH key pairs: %s", err)
+		return fmt.Errorf("error retrieving SSH key pairs: %s", err)
 	}
 
 	return output.CommandOutput(cmd, SSHKeyPairCollection(keypairs))
@@ -66,7 +66,7 @@ func ecloudSSHKeyPairShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud sshkeypair show ssh-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing SSH key pair")
+				return errors.New("missing SSH key pair")
 			}
 
 			return nil
@@ -128,12 +128,12 @@ func ecloudSSHKeyPairCreate(service ecloud.ECloudService, fs afero.Fs, cmd *cobr
 
 	keypairID, err := service.CreateSSHKeyPair(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating SSH key pair: %s", err)
+		return fmt.Errorf("error creating SSH key pair: %s", err)
 	}
 
 	keypair, err := service.GetSSHKeyPair(keypairID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new SSH key pair: %s", err)
+		return fmt.Errorf("error retrieving new SSH key pair: %s", err)
 	}
 
 	return output.CommandOutput(cmd, SSHKeyPairCollection([]ecloud.SSHKeyPair{keypair}))
@@ -147,7 +147,7 @@ func ecloudSSHKeyPairUpdateCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Comm
 		Example: "ans ecloud sshkeypair update ssh-abcdef12 --name \"my keypair\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing SSH key pair")
+				return errors.New("missing SSH key pair")
 			}
 
 			return nil
@@ -213,7 +213,7 @@ func ecloudSSHKeyPairDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud sshkeypair delete ssh-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing SSH key pair")
+				return errors.New("missing SSH key pair")
 			}
 
 			return nil

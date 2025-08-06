@@ -31,7 +31,7 @@ func ecloudVolumeInstanceListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud volume instance list vol-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing volume")
+				return errors.New("missing volume")
 			}
 
 			return nil
@@ -52,7 +52,7 @@ func ecloudVolumeInstanceList(service ecloud.ECloudService, cmd *cobra.Command, 
 
 	instances, err := service.GetVolumeInstances(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving volume instances: %s", err)
+		return fmt.Errorf("error retrieving volume instances: %s", err)
 	}
 
 	return output.CommandOutput(cmd, InstanceCollection(instances))

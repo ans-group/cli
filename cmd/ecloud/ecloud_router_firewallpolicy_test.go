@@ -23,7 +23,7 @@ func Test_ecloudRouterFirewallPolicyListCmd_Args(t *testing.T) {
 		err := ecloudRouterFirewallPolicyListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing router", err.Error())
+		assert.Equal(t, "missing router", err.Error())
 	})
 }
 
@@ -63,6 +63,6 @@ func Test_ecloudRouterFirewallPolicyList(t *testing.T) {
 
 		err := ecloudRouterFirewallPolicyList(service, &cobra.Command{}, []string{"rtr-abcdef12"})
 
-		assert.Equal(t, "Error retrieving router firewall policies: test error", err.Error())
+		assert.Equal(t, "error retrieving router firewall policies: test error", err.Error())
 	})
 }

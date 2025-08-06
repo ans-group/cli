@@ -36,10 +36,10 @@ func pssReplyAttachmentDownloadCmd(f factory.ClientFactory, fs afero.Fs) *cobra.
 		Example: "ans pss reply attachment download 123 file.txt --path /path/to/file",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing reply")
+				return errors.New("missing reply")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing attachment")
+				return errors.New("missing attachment")
 			}
 
 			return nil
@@ -62,23 +62,23 @@ func pssReplyAttachmentDownloadCmd(f factory.ClientFactory, fs afero.Fs) *cobra.
 func pssReplyAttachmentDownload(service pss.PSSService, fs afero.Fs, cmd *cobra.Command, args []string) error {
 	attachmentStream, err := service.DownloadReplyAttachmentStream(args[0], args[1])
 	if err != nil {
-		return fmt.Errorf("Error downloading reply attachment: %s", err)
+		return fmt.Errorf("error downloading reply attachment: %s", err)
 	}
 
 	path, _ := cmd.Flags().GetString("path")
 	targetFilePath, err := helper.GetDestinationFilePath(fs, args[1], path)
 	if err != nil {
-		return fmt.Errorf("Error determining destination file path: %s", err)
+		return fmt.Errorf("error determining destination file path: %s", err)
 	}
 
 	_, err = fs.Stat(targetFilePath)
 	if err == nil || !os.IsNotExist(err) {
-		return fmt.Errorf("Destination file [%s] exists", targetFilePath)
+		return fmt.Errorf("destination file [%s] exists", targetFilePath)
 	}
 
 	err = afero.SafeWriteReader(fs, targetFilePath, attachmentStream)
 	if err != nil {
-		return fmt.Errorf("Error writing attachment to [%s]: %s", targetFilePath, err.Error())
+		return fmt.Errorf("error writing attachment to [%s]: %s", targetFilePath, err.Error())
 	}
 
 	return nil
@@ -92,7 +92,7 @@ func pssReplyAttachmentUploadCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Co
 		Example: "ans pss reply attachment upload 123 --path /path/to/file",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing reply")
+				return errors.New("missing reply")
 			}
 
 			return nil
@@ -108,7 +108,7 @@ func pssReplyAttachmentUploadCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Co
 	}
 
 	cmd.Flags().String("path", "", "Specifies path for file to upload")
-	cmd.MarkFlagRequired("path")
+	_ = cmd.MarkFlagRequired("path")
 
 	return cmd
 }
@@ -118,12 +118,12 @@ func pssReplyAttachmentUpload(service pss.PSSService, fs afero.Fs, cmd *cobra.Co
 
 	fileStream, err := fs.Open(path)
 	if err != nil {
-		return fmt.Errorf("Failed to open file [%s]: %s", path, err)
+		return fmt.Errorf("failed to open file [%s]: %s", path, err)
 	}
 
 	err = service.UploadReplyAttachmentStream(args[0], filepath.Base(path), fileStream)
 	if err != nil {
-		return fmt.Errorf("Failed to upload attachment: %s", err)
+		return fmt.Errorf("failed to upload attachment: %s", err)
 	}
 
 	return nil
@@ -137,10 +137,10 @@ func pssReplyAttachmentDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans pss reply attachment delete 123 file.txt",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing reply")
+				return errors.New("missing reply")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing attachment")
+				return errors.New("missing attachment")
 			}
 
 			return nil

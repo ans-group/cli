@@ -26,7 +26,7 @@ func Test_ddosxDomainRecordListCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 }
 
@@ -66,7 +66,7 @@ func Test_ddosxDomainRecordList(t *testing.T) {
 
 		err := ddosxDomainRecordList(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 
-		assert.Equal(t, "Error retrieving domain records: test error", err.Error())
+		assert.Equal(t, "error retrieving domain records: test error", err.Error())
 	})
 }
 
@@ -83,7 +83,7 @@ func Test_ddosxDomainRecordShowCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 
 	t.Run("MissingRecord_Error", func(t *testing.T) {
@@ -91,7 +91,7 @@ func Test_ddosxDomainRecordShowCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{"testdomain1.co.uk"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing record", err.Error())
+		assert.Equal(t, "missing record", err.Error())
 	})
 }
 
@@ -134,7 +134,7 @@ func Test_ddosxDomainRecordCreateCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 }
 
@@ -170,7 +170,7 @@ func Test_ddosxDomainRecordCreate(t *testing.T) {
 
 		err := ddosxDomainRecordCreate(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 
-		assert.Equal(t, "Error creating domain record: test error", err.Error())
+		assert.Equal(t, "error creating domain record: test error", err.Error())
 	})
 
 	t.Run("GetDomainRecordError_ReturnsError", func(t *testing.T) {
@@ -187,7 +187,7 @@ func Test_ddosxDomainRecordCreate(t *testing.T) {
 
 		err := ddosxDomainRecordCreate(service, &cobra.Command{}, []string{"testdomain1.co.uk"})
 
-		assert.Equal(t, "Error retrieving new domain record [00000000-0000-0000-0000-000000000000]: test error", err.Error())
+		assert.Equal(t, "error retrieving new domain record [00000000-0000-0000-0000-000000000000]: test error", err.Error())
 	})
 }
 
@@ -204,7 +204,7 @@ func Test_ddosxDomainRecordUpdateCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 
 	t.Run("MissingRecord_Error", func(t *testing.T) {
@@ -212,7 +212,7 @@ func Test_ddosxDomainRecordUpdateCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{"testdomain1.co.uk"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing record", err.Error())
+		assert.Equal(t, "missing record", err.Error())
 	})
 }
 
@@ -308,7 +308,7 @@ func Test_ddosxDomainRecordDeleteCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing domain", err.Error())
+		assert.Equal(t, "missing domain", err.Error())
 	})
 
 	t.Run("MissingRecord_Error", func(t *testing.T) {
@@ -316,7 +316,7 @@ func Test_ddosxDomainRecordDeleteCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{"testdomain1.co.uk"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing record", err.Error())
+		assert.Equal(t, "missing record", err.Error())
 	})
 }
 

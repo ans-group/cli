@@ -34,7 +34,7 @@ func loadbalancerACLActionListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans loadbalancer acl action list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing ACL")
+				return errors.New("missing ACL")
 			}
 
 			return nil
@@ -46,12 +46,12 @@ func loadbalancerACLActionListCmd(f factory.ClientFactory) *cobra.Command {
 func loadbalancerACLActionList(service loadbalancer.LoadBalancerService, cmd *cobra.Command, args []string) error {
 	aclID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid ACL ID [%s]", args[0])
+		return fmt.Errorf("invalid ACL ID [%s]", args[0])
 	}
 
 	acl, err := service.GetACL(aclID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving ACL [%d]: %s", aclID, err)
+		return fmt.Errorf("error retrieving ACL [%d]: %s", aclID, err)
 	}
 
 	return output.CommandOutput(cmd, ACLActionCollection(mapACLActions(acl.Actions)))
@@ -65,10 +65,10 @@ func loadbalancerACLActionShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans loadbalancer acl action show 123 0",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing ACL")
+				return errors.New("missing ACL")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing ACL action index")
+				return errors.New("missing ACL action index")
 			}
 
 			return nil
@@ -81,12 +81,12 @@ func loadbalancerACLActionShow(service loadbalancer.LoadBalancerService, cmd *co
 	var actions []ACLAction
 	aclID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid ACL ID [%s]", args[0])
+		return fmt.Errorf("invalid ACL ID [%s]", args[0])
 	}
 
 	acl, err := service.GetACL(aclID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving ACL [%d]: %s", aclID, err)
+		return fmt.Errorf("error retrieving ACL [%d]: %s", aclID, err)
 	}
 
 	for _, arg := range args[1:] {
@@ -115,7 +115,7 @@ func loadbalancerACLActionCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans loadbalancer acl action create 123 --name \"header_matches\" --argument \"host=ans.co.uk\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing ACL")
+				return errors.New("missing ACL")
 			}
 
 			return nil
@@ -124,7 +124,7 @@ func loadbalancerACLActionCreateCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("name", "", "Name of ACL action")
-	cmd.MarkFlagRequired("name")
+	_ = cmd.MarkFlagRequired("name")
 	cmd.Flags().StringArray("argument", []string{}, "ACL action argument. Can be repeated")
 
 	return cmd
@@ -133,12 +133,12 @@ func loadbalancerACLActionCreateCmd(f factory.ClientFactory) *cobra.Command {
 func loadbalancerACLActionCreate(service loadbalancer.LoadBalancerService, cmd *cobra.Command, args []string) error {
 	aclID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid ACL ID [%s]", args[0])
+		return fmt.Errorf("invalid ACL ID [%s]", args[0])
 	}
 
 	acl, err := service.GetACL(aclID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving ACL: %s", err)
+		return fmt.Errorf("error retrieving ACL: %s", err)
 	}
 
 	action := loadbalancer.ACLAction{}
@@ -148,7 +148,7 @@ func loadbalancerACLActionCreate(service loadbalancer.LoadBalancerService, cmd *
 		actionArguments, _ := cmd.Flags().GetStringArray("argument")
 		actionArgumentsParsed, err := parseACLArguments(actionArguments)
 		if err != nil {
-			return fmt.Errorf("Failed to parse arguments: %s", err)
+			return fmt.Errorf("failed to parse arguments: %s", err)
 		}
 
 		action.Arguments = actionArgumentsParsed
@@ -160,12 +160,12 @@ func loadbalancerACLActionCreate(service loadbalancer.LoadBalancerService, cmd *
 
 	err = service.PatchACL(aclID, updateRequest)
 	if err != nil {
-		return fmt.Errorf("Error updating ACL: %s", err)
+		return fmt.Errorf("error updating ACL: %s", err)
 	}
 
 	acl, err = service.GetACL(aclID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving updated ACL [%d]: %s", aclID, err)
+		return fmt.Errorf("error retrieving updated ACL [%d]: %s", aclID, err)
 	}
 
 	return output.CommandOutput(cmd, ACLActionCollection(mapACLActions(acl.Actions)))
@@ -179,10 +179,10 @@ func loadbalancerACLActionUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans loadbalancer acl action update 123 0 --name \"header_matches\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing ACL")
+				return errors.New("missing ACL")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing ACL action index")
+				return errors.New("missing ACL action index")
 			}
 
 			return nil
@@ -199,21 +199,21 @@ func loadbalancerACLActionUpdateCmd(f factory.ClientFactory) *cobra.Command {
 func loadbalancerACLActionUpdate(service loadbalancer.LoadBalancerService, cmd *cobra.Command, args []string) error {
 	aclID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid ACL ID [%s]", args[0])
+		return fmt.Errorf("invalid ACL ID [%s]", args[0])
 	}
 
 	acl, err := service.GetACL(aclID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving ACL: %s", err)
+		return fmt.Errorf("error retrieving ACL: %s", err)
 	}
 
 	actionIndex, err := strconv.Atoi(args[1])
 	if err != nil {
-		return fmt.Errorf("Invalid ACL action index [%s]", args[1])
+		return fmt.Errorf("invalid ACL action index [%s]", args[1])
 	}
 
 	if len(acl.Actions) < actionIndex+1 {
-		return fmt.Errorf("ACL action index [%d] out of bounds", actionIndex)
+		return fmt.Errorf("aCL action index [%d] out of bounds", actionIndex)
 	}
 
 	changed := false
@@ -226,7 +226,7 @@ func loadbalancerACLActionUpdate(service loadbalancer.LoadBalancerService, cmd *
 		actionArguments, _ := cmd.Flags().GetStringArray("argument")
 		actionArgumentsParsed, err := parseACLArguments(actionArguments)
 		if err != nil {
-			return fmt.Errorf("Failed to parse arguments: %s", err)
+			return fmt.Errorf("failed to parse arguments: %s", err)
 		}
 
 		acl.Actions[actionIndex].Arguments = actionArgumentsParsed
@@ -240,13 +240,13 @@ func loadbalancerACLActionUpdate(service loadbalancer.LoadBalancerService, cmd *
 
 		err = service.PatchACL(aclID, updateRequest)
 		if err != nil {
-			return fmt.Errorf("Error updating ACL: %s", err)
+			return fmt.Errorf("error updating ACL: %s", err)
 		}
 	}
 
 	acl, err = service.GetACL(aclID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving updated ACL [%d]: %s", aclID, err)
+		return fmt.Errorf("error retrieving updated ACL [%d]: %s", aclID, err)
 	}
 
 	return output.CommandOutput(cmd, ACLActionCollection(mapACLActions(acl.Actions)))
@@ -260,10 +260,10 @@ func loadbalancerACLActionDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans loadbalancer acl delete 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing ACL")
+				return errors.New("missing ACL")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing ACL action index")
+				return errors.New("missing ACL action index")
 			}
 
 			return nil
@@ -275,21 +275,21 @@ func loadbalancerACLActionDeleteCmd(f factory.ClientFactory) *cobra.Command {
 func loadbalancerACLActionDelete(service loadbalancer.LoadBalancerService, cmd *cobra.Command, args []string) error {
 	aclID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid ACL ID [%s]", args[0])
+		return fmt.Errorf("invalid ACL ID [%s]", args[0])
 	}
 
 	acl, err := service.GetACL(aclID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving ACL: %s", err)
+		return fmt.Errorf("error retrieving ACL: %s", err)
 	}
 
 	actionIndex, err := strconv.Atoi(args[1])
 	if err != nil {
-		return fmt.Errorf("Invalid ACL action index [%s]", args[1])
+		return fmt.Errorf("invalid ACL action index [%s]", args[1])
 	}
 
 	if len(acl.Actions) < actionIndex+1 {
-		return fmt.Errorf("ACL action index [%d] out of bounds", actionIndex)
+		return fmt.Errorf("aCL action index [%d] out of bounds", actionIndex)
 	}
 
 	actions := make([]loadbalancer.ACLAction, 0)
@@ -302,12 +302,12 @@ func loadbalancerACLActionDelete(service loadbalancer.LoadBalancerService, cmd *
 
 	err = service.PatchACL(aclID, updateRequest)
 	if err != nil {
-		return fmt.Errorf("Error updating ACL: %s", err)
+		return fmt.Errorf("error updating ACL: %s", err)
 	}
 
 	acl, err = service.GetACL(aclID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving updated ACL [%d]: %s", aclID, err)
+		return fmt.Errorf("error retrieving updated ACL [%d]: %s", aclID, err)
 	}
 
 	return output.CommandOutput(cmd, ACLActionCollection(mapACLActions(acl.Actions)))

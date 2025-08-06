@@ -23,7 +23,7 @@ func Test_ecloudApplianceParameterListCmd_Args(t *testing.T) {
 		err := ecloudApplianceParameterListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing appliance", err.Error())
+		assert.Equal(t, "missing appliance", err.Error())
 	})
 }
 
@@ -63,6 +63,6 @@ func Test_ecloudApplianceParameterList(t *testing.T) {
 
 		err := ecloudApplianceParameterList(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000"})
 
-		assert.Equal(t, "Error retrieving appliance parameters: test error 1", err.Error())
+		assert.Equal(t, "error retrieving appliance parameters: test error 1", err.Error())
 	})
 }

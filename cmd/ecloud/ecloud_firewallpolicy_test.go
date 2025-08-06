@@ -49,7 +49,7 @@ func Test_ecloudFirewallPolicyList(t *testing.T) {
 
 		err := ecloudFirewallPolicyList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving firewall policies: test error", err.Error())
+		assert.Equal(t, "error retrieving firewall policies: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudFirewallPolicyShowCmd_Args(t *testing.T) {
 		err := ecloudFirewallPolicyShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing firewall policy", err.Error())
+		assert.Equal(t, "missing firewall policy", err.Error())
 	})
 }
 
@@ -183,7 +183,7 @@ func Test_ecloudFirewallPolicyCreate(t *testing.T) {
 		)
 
 		err := ecloudFirewallPolicyCreate(service, cmd, []string{})
-		assert.Equal(t, "Error waiting for firewall policy task to complete: Error waiting for command: Failed to retrieve task status: test error", err.Error())
+		assert.Equal(t, "error waiting for firewall policy task to complete: error waiting for command: failed to retrieve task status: test error", err.Error())
 	})
 
 	t.Run("CreateFirewallPolicyError_ReturnsError", func(t *testing.T) {
@@ -198,7 +198,7 @@ func Test_ecloudFirewallPolicyCreate(t *testing.T) {
 
 		err := ecloudFirewallPolicyCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error creating firewall policy: test error", err.Error())
+		assert.Equal(t, "error creating firewall policy: test error", err.Error())
 	})
 
 	t.Run("GetFirewallPolicyError_ReturnsError", func(t *testing.T) {
@@ -216,7 +216,7 @@ func Test_ecloudFirewallPolicyCreate(t *testing.T) {
 
 		err := ecloudFirewallPolicyCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error retrieving new firewall policy: test error", err.Error())
+		assert.Equal(t, "error retrieving new firewall policy: test error", err.Error())
 	})
 }
 
@@ -231,7 +231,7 @@ func Test_ecloudFirewallPolicyUpdateCmd_Args(t *testing.T) {
 		err := ecloudFirewallPolicyUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing firewall policy", err.Error())
+		assert.Equal(t, "missing firewall policy", err.Error())
 	})
 }
 
@@ -312,7 +312,7 @@ func Test_ecloudFirewallPolicyUpdate(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for firewall policy [fwp-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for firewall policy [fwp-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudFirewallPolicyUpdate(service, cmd, []string{"fwp-abcdef12"})
 		})
 	})
@@ -363,7 +363,7 @@ func Test_ecloudFirewallPolicyDeleteCmd_Args(t *testing.T) {
 		err := ecloudFirewallPolicyDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing firewall policy", err.Error())
+		assert.Equal(t, "missing firewall policy", err.Error())
 	})
 }
 
@@ -410,7 +410,7 @@ func Test_ecloudFirewallPolicyDelete(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for firewall policy [fwp-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for firewall policy [fwp-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudFirewallPolicyDelete(service, cmd, []string{"fwp-abcdef12"})
 		})
 	})

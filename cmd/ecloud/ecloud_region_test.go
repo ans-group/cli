@@ -49,7 +49,7 @@ func Test_ecloudRegionList(t *testing.T) {
 
 		err := ecloudRegionList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving regions: test error", err.Error())
+		assert.Equal(t, "error retrieving regions: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudRegionShowCmd_Args(t *testing.T) {
 		err := ecloudRegionShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing region", err.Error())
+		assert.Equal(t, "missing region", err.Error())
 	})
 }
 

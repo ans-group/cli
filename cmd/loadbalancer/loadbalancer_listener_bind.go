@@ -12,7 +12,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func loadbalancerListenerBindRootCmd(f factory.ClientFactory) *cobra.Command {
+func loadbalancerListenerBindRootCmd(f factory.ClientFactory) *cobra.Command { //nolint:unused
 	cmd := &cobra.Command{
 		Use:   "bind",
 		Short: "sub-commands relating to binds",
@@ -36,7 +36,7 @@ func loadbalancerListenerBindListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans loadbalancer listener bind list 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing listener")
+				return errors.New("missing listener")
 			}
 
 			return nil
@@ -53,12 +53,12 @@ func loadbalancerListenerBindList(service loadbalancer.LoadBalancerService, cmd 
 
 	listenerID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid listener ID")
+		return fmt.Errorf("invalid listener ID")
 	}
 
 	binds, err := service.GetListenerBinds(listenerID, params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving binds: %s", err)
+		return fmt.Errorf("error retrieving binds: %s", err)
 	}
 
 	return output.CommandOutput(cmd, BindCollection(binds))
@@ -72,10 +72,10 @@ func loadbalancerListenerBindShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans loadbalancer listener bind show 123 345",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing listener")
+				return errors.New("missing listener")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing bind")
+				return errors.New("missing bind")
 			}
 
 			return nil
@@ -87,7 +87,7 @@ func loadbalancerListenerBindShowCmd(f factory.ClientFactory) *cobra.Command {
 func loadbalancerListenerBindShow(service loadbalancer.LoadBalancerService, cmd *cobra.Command, args []string) error {
 	listenerID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid listener ID")
+		return fmt.Errorf("invalid listener ID")
 	}
 
 	var binds []loadbalancer.Bind
@@ -119,7 +119,7 @@ func loadbalancerListenerBindCreateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans loadbalancer listener bind create 123 --vip 456 --port 443",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing listener")
+				return errors.New("missing listener")
 			}
 
 			return nil
@@ -128,9 +128,9 @@ func loadbalancerListenerBindCreateCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().Int("vip", 0, "ID of VIP")
-	cmd.MarkFlagRequired("vip")
+	_ = cmd.MarkFlagRequired("vip")
 	cmd.Flags().Int("port", 0, "Port number for bind")
-	cmd.MarkFlagRequired("port")
+	_ = cmd.MarkFlagRequired("port")
 
 	return cmd
 }
@@ -138,7 +138,7 @@ func loadbalancerListenerBindCreateCmd(f factory.ClientFactory) *cobra.Command {
 func loadbalancerListenerBindCreate(service loadbalancer.LoadBalancerService, cmd *cobra.Command, args []string) error {
 	listenerID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid listener ID")
+		return fmt.Errorf("invalid listener ID")
 	}
 
 	createRequest := loadbalancer.CreateBindRequest{}
@@ -147,12 +147,12 @@ func loadbalancerListenerBindCreate(service loadbalancer.LoadBalancerService, cm
 
 	bindID, err := service.CreateListenerBind(listenerID, createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating bind: %s", err)
+		return fmt.Errorf("error creating bind: %s", err)
 	}
 
 	bind, err := service.GetListenerBind(listenerID, bindID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new bind: %s", err)
+		return fmt.Errorf("error retrieving new bind: %s", err)
 	}
 
 	return output.CommandOutput(cmd, BindCollection([]loadbalancer.Bind{bind}))
@@ -166,10 +166,10 @@ func loadbalancerListenerBindUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans loadbalancer listener bind update 123 456 --port 443",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing listener")
+				return errors.New("missing listener")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing bind")
+				return errors.New("missing bind")
 			}
 
 			return nil
@@ -186,7 +186,7 @@ func loadbalancerListenerBindUpdateCmd(f factory.ClientFactory) *cobra.Command {
 func loadbalancerListenerBindUpdate(service loadbalancer.LoadBalancerService, cmd *cobra.Command, args []string) error {
 	listenerID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid listener ID")
+		return fmt.Errorf("invalid listener ID")
 	}
 
 	patchRequest := loadbalancer.PatchBindRequest{}
@@ -227,10 +227,10 @@ func loadbalancerListenerBindDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans loadbalancer listener bind delete 123 456",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing listener")
+				return errors.New("missing listener")
 			}
 			if len(args) < 2 {
-				return errors.New("Missing bind")
+				return errors.New("missing bind")
 			}
 
 			return nil
@@ -242,7 +242,7 @@ func loadbalancerListenerBindDeleteCmd(f factory.ClientFactory) *cobra.Command {
 func loadbalancerListenerBindDelete(service loadbalancer.LoadBalancerService, cmd *cobra.Command, args []string) error {
 	listenerID, err := strconv.Atoi(args[0])
 	if err != nil {
-		return fmt.Errorf("Invalid listener ID")
+		return fmt.Errorf("invalid listener ID")
 	}
 
 	for _, arg := range args[1:] {

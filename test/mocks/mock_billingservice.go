@@ -5,10 +5,11 @@
 package mocks
 
 import (
+	reflect "reflect"
+
 	connection "github.com/ans-group/sdk-go/pkg/connection"
 	billing "github.com/ans-group/sdk-go/pkg/service/billing"
 	gomock "github.com/golang/mock/gomock"
-	reflect "reflect"
 )
 
 // MockBillingService is a mock of BillingService interface.

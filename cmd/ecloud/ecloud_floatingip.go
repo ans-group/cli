@@ -47,7 +47,7 @@ func ecloudFloatingIPList(service ecloud.ECloudService, cmd *cobra.Command, args
 
 	fips, err := service.GetFloatingIPs(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving floating IPs: %s", err)
+		return fmt.Errorf("error retrieving floating IPs: %s", err)
 	}
 
 	return output.CommandOutput(cmd, FloatingIPCollection(fips))
@@ -61,7 +61,7 @@ func ecloudFloatingIPShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud floatingip show fip-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing floating IP")
+				return errors.New("missing floating IP")
 			}
 
 			return nil
@@ -97,9 +97,9 @@ func ecloudFloatingIPCreateCmd(f factory.ClientFactory) *cobra.Command {
 	// Setup flags
 	cmd.Flags().String("name", "", "Name of floating IP")
 	cmd.Flags().String("vpc", "", "ID of VPC")
-	cmd.MarkFlagRequired("vpc")
+	_ = cmd.MarkFlagRequired("vpc")
 	cmd.Flags().String("availability-zone", "", "ID of availability zone")
-	cmd.MarkFlagRequired("availability-zone")
+	_ = cmd.MarkFlagRequired("availability-zone")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the floating IP has been completely created")
 
 	return cmd
@@ -115,20 +115,20 @@ func ecloudFloatingIPCreate(service ecloud.ECloudService, cmd *cobra.Command, ar
 
 	taskRef, err := service.CreateFloatingIP(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating floating IP: %s", err)
+		return fmt.Errorf("error creating floating IP: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskRef.TaskID, ecloud.TaskStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for floating IP task to complete: %s", err)
+			return fmt.Errorf("error waiting for floating IP task to complete: %s", err)
 		}
 	}
 
 	fip, err := service.GetFloatingIP(taskRef.ResourceID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new floating IP: %s", err)
+		return fmt.Errorf("error retrieving new floating IP: %s", err)
 	}
 
 	return output.CommandOutput(cmd, FloatingIPCollection([]ecloud.FloatingIP{fip}))
@@ -142,7 +142,7 @@ func ecloudFloatingIPUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud floatingip update fip-abcdef12 --name \"my fip\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing floating IP")
+				return errors.New("missing floating IP")
 			}
 
 			return nil
@@ -200,7 +200,7 @@ func ecloudFloatingIPDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud floatingip delete fip-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing floating IP")
+				return errors.New("missing floating IP")
 			}
 
 			return nil
@@ -241,7 +241,7 @@ func ecloudFloatingIPAssignCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud floatingip assign fip-abcdef12 --resource i-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing floating IP")
+				return errors.New("missing floating IP")
 			}
 
 			return nil
@@ -250,7 +250,7 @@ func ecloudFloatingIPAssignCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("resource", "", "ID of resource to assign")
-	cmd.MarkFlagRequired("resource")
+	_ = cmd.MarkFlagRequired("resource")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the floating IP has been completely assigned")
 
 	return cmd
@@ -265,20 +265,20 @@ func ecloudFloatingIPAssign(service ecloud.ECloudService, cmd *cobra.Command, ar
 
 	taskID, err := service.AssignFloatingIP(fipID, req)
 	if err != nil {
-		return fmt.Errorf("Error assigning floating IP to resource: %s", err)
+		return fmt.Errorf("error assigning floating IP to resource: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
 	if waitFlag {
 		err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskID, ecloud.TaskStatusComplete))
 		if err != nil {
-			return fmt.Errorf("Error waiting for floating IP [%s] to be assigned: %s", fipID, err)
+			return fmt.Errorf("error waiting for floating IP [%s] to be assigned: %s", fipID, err)
 		}
 	}
 
 	fip, err := service.GetFloatingIP(fipID)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new floating IP: %s", err)
+		return fmt.Errorf("error retrieving new floating IP: %s", err)
 	}
 
 	return output.CommandOutput(cmd, FloatingIPCollection([]ecloud.FloatingIP{fip}))
@@ -292,7 +292,7 @@ func ecloudFloatingIPUnassignCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud floatingip unassign fip-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing floating IP")
+				return errors.New("missing floating IP")
 			}
 
 			return nil

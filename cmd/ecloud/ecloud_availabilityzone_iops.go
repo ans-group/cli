@@ -34,7 +34,7 @@ func ecloudAvailabilityZoneIOPSTierListCmd(f factory.ClientFactory) *cobra.Comma
 		Example: "ans ecloud availabilityzone iops list",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing availability zone")
+				return errors.New("missing availability zone")
 			}
 
 			return nil
@@ -57,7 +57,7 @@ func ecloudAvailabilityZoneIOPSTierList(service ecloud.ECloudService, cmd *cobra
 
 	zones, err := service.GetAvailabilityZoneIOPSTiers(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving availability zone IOPS tiers: %s", err)
+		return fmt.Errorf("error retrieving availability zone IOPS tiers: %s", err)
 	}
 
 	return output.CommandOutput(cmd, IOPSTierCollection(zones))

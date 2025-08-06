@@ -31,7 +31,7 @@ func ecloudRouterNetworkListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud router network list rtr-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing router")
+				return errors.New("missing router")
 			}
 
 			return nil
@@ -52,7 +52,7 @@ func ecloudRouterNetworkList(service ecloud.ECloudService, cmd *cobra.Command, a
 
 	networks, err := service.GetRouterNetworks(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving router networks: %s", err)
+		return fmt.Errorf("error retrieving router networks: %s", err)
 	}
 
 	return output.CommandOutput(cmd, NetworkCollection(networks))

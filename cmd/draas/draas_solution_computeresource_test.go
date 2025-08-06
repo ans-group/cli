@@ -26,7 +26,7 @@ func Test_draasSolutionComputeResourceListCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing solution", err.Error())
+		assert.Equal(t, "missing solution", err.Error())
 	})
 }
 
@@ -66,7 +66,7 @@ func Test_draasSolutionComputeResourceList(t *testing.T) {
 
 		err := draasSolutionComputeResourceList(service, &cobra.Command{}, []string{"00000000-0000-0000-0000-000000000000"})
 
-		assert.Equal(t, "Error retrieving solution compute resources: test error", err.Error())
+		assert.Equal(t, "error retrieving solution compute resources: test error", err.Error())
 	})
 }
 
@@ -83,7 +83,7 @@ func Test_draasSolutionComputeResourceShowCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing solution", err.Error())
+		assert.Equal(t, "missing solution", err.Error())
 	})
 
 	t.Run("MissingComputeResource_Error", func(t *testing.T) {
@@ -91,7 +91,7 @@ func Test_draasSolutionComputeResourceShowCmd_Args(t *testing.T) {
 		err := cmd.Args(nil, []string{"00000000-0000-0000-0000-000000000000"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing compute resource", err.Error())
+		assert.Equal(t, "missing compute resource", err.Error())
 	})
 }
 

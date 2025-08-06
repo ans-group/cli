@@ -1,0 +1,14 @@
+version: "2"
+run:
+  timeout: 1m
+linters:
+  default: standard
+  exclusions:
+    rules:
+    # Exclude some linters from running on tests files.
+    - path: _test\.go
+      linters:
+        - gocyclo
+        - errcheck
+        - dupl
+        - gosec

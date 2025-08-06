@@ -49,7 +49,7 @@ func Test_ecloudFirewallList(t *testing.T) {
 
 		err := ecloudFirewallList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving firewalls: test error", err.Error())
+		assert.Equal(t, "error retrieving firewalls: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudFirewallShowCmd_Args(t *testing.T) {
 		err := ecloudFirewallShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing firewall", err.Error())
+		assert.Equal(t, "missing firewall", err.Error())
 	})
 }
 

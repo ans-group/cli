@@ -19,7 +19,7 @@ func ReadInput(name string) (string, error) {
 	buf := bytes.Buffer{}
 
 	scanner := bufio.NewScanner(InputReader())
-	output.Errorf("Enter %s (single dot '.' on new line indicates EOF):", name)
+	output.Errorf("enter %s (single dot '.' on new line indicates EOF):", name)
 	for scanner.Scan() {
 		if scanner.Text() == "." {
 			break
@@ -29,7 +29,7 @@ func ReadInput(name string) (string, error) {
 
 	err := scanner.Err()
 	if err != nil {
-		return "", fmt.Errorf("Error reading %s from stdin input: %s", name, err)
+		return "", fmt.Errorf("error reading %s from stdin input: %s", name, err)
 	}
 
 	return strings.TrimSuffix(buf.String(), "\n"), nil

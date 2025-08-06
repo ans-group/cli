@@ -49,7 +49,7 @@ func Test_ecloudImageList(t *testing.T) {
 
 		err := ecloudImageList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving images: test error", err.Error())
+		assert.Equal(t, "error retrieving images: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudImageShowCmd_Args(t *testing.T) {
 		err := ecloudImageShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing image", err.Error())
+		assert.Equal(t, "missing image", err.Error())
 	})
 }
 

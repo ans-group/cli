@@ -35,7 +35,7 @@ func ddosxDomainCDNEnableCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain cdn enable example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 
 			return nil
@@ -81,7 +81,7 @@ func ddosxDomainCDNDisableCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain cdn disable example.com",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 
 			return nil
@@ -127,7 +127,7 @@ func ddosxDomainCDNPurgeCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ddosx domain cdn purge example.com --record-name something.example.com --uri /test",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing domain")
+				return errors.New("missing domain")
 			}
 
 			return nil
@@ -143,9 +143,9 @@ func ddosxDomainCDNPurgeCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("record-name", "", "Record name for purging")
-	cmd.MarkFlagRequired("record-name")
+	_ = cmd.MarkFlagRequired("record-name")
 	cmd.Flags().String("uri", "", "URI for purging")
-	cmd.MarkFlagRequired("uri")
+	_ = cmd.MarkFlagRequired("uri")
 
 	return cmd
 }
@@ -157,7 +157,7 @@ func ddosxDomainCDNPurge(service ddosx.DDoSXService, cmd *cobra.Command, args []
 
 	err := service.PurgeDomainCDN(args[0], purgeRequest)
 	if err != nil {
-		return fmt.Errorf("Error purging CDN content for domain: %s", err.Error())
+		return fmt.Errorf("error purging CDN content for domain: %s", err.Error())
 	}
 
 	return nil

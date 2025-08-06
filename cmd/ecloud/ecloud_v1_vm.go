@@ -67,7 +67,7 @@ func ecloudVirtualMachineList(service ecloud.ECloudService, cmd *cobra.Command, 
 
 	vms, err := service.GetVirtualMachines(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving virtual machines: %s", err)
+		return fmt.Errorf("error retrieving virtual machines: %s", err)
 	}
 
 	return output.CommandOutput(cmd, VirtualMachineCollection(vms))
@@ -81,7 +81,7 @@ func ecloudVirtualMachineShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vm show 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing virtual machine")
+				return errors.New("missing virtual machine")
 			}
 
 			return nil
@@ -136,15 +136,15 @@ func ecloudVirtualMachineCreateCmd(f factory.ClientFactory) *cobra.Command {
 
 	// Setup flags
 	cmd.Flags().String("environment", "", "Environment for virtual machine (Public, Hybrid, Private)")
-	cmd.MarkFlagRequired("environment")
+	_ = cmd.MarkFlagRequired("environment")
 	cmd.Flags().String("template", "", "Template to use for virtual machine. Must be specified if appliance-id is omitted")
 	cmd.Flags().String("appliance", "", "Appliance ID to use for virtual machine. Must be specified if template is omitted")
 	cmd.Flags().Int("cpu", 0, "Amount of CPU cores for virtual machine")
-	cmd.MarkFlagRequired("cpu")
+	_ = cmd.MarkFlagRequired("cpu")
 	cmd.Flags().Int("ram", 0, "Amount of RAM (GB) for virtual machine")
-	cmd.MarkFlagRequired("ram")
+	_ = cmd.MarkFlagRequired("ram")
 	cmd.Flags().Int("hdd", 0, "Primary disk size (GB) for virtual machine")
-	cmd.MarkFlagRequired("hdd")
+	_ = cmd.MarkFlagRequired("hdd")
 	cmd.Flags().String("name", "", "Name of virtual machine")
 	cmd.Flags().String("computername", "", "Computer name of virtual machine")
 	cmd.Flags().Bool("backup", false, "Specifies backup should be applied for virtual machine")
@@ -195,7 +195,7 @@ func ecloudVirtualMachineCreate(service ecloud.ECloudService, cmd *cobra.Command
 		tagsFlag, _ := cmd.Flags().GetStringSlice("tag")
 		tagsReq, err := GetCreateTagRequestFromStringArrayFlag(tagsFlag)
 		if err != nil {
-			return fmt.Errorf("Invalid tag data: %s", err)
+			return fmt.Errorf("invalid tag data: %s", err)
 		}
 
 		createRequest.Tags = tagsReq
@@ -205,7 +205,7 @@ func ecloudVirtualMachineCreate(service ecloud.ECloudService, cmd *cobra.Command
 		parametersFlag, _ := cmd.Flags().GetStringSlice("parameter")
 		parametersReq, err := GetCreateVirtualMachineRequestParameterFromStringArrayFlag(parametersFlag)
 		if err != nil {
-			return fmt.Errorf("Invalid parameter data: %s", err)
+			return fmt.Errorf("invalid parameter data: %s", err)
 		}
 
 		createRequest.Parameters = parametersReq
@@ -224,7 +224,7 @@ func ecloudVirtualMachineCreate(service ecloud.ECloudService, cmd *cobra.Command
 
 	id, err := service.CreateVirtualMachine(createRequest)
 	if err != nil {
-		return fmt.Errorf("Error creating virtual machine: %s", err)
+		return fmt.Errorf("error creating virtual machine: %s", err)
 	}
 
 	waitFlag, _ := cmd.Flags().GetBool("wait")
@@ -237,7 +237,7 @@ func ecloudVirtualMachineCreate(service ecloud.ECloudService, cmd *cobra.Command
 
 	vm, err := service.GetVirtualMachine(id)
 	if err != nil {
-		return fmt.Errorf("Error retrieving new virtual machine: %s", err)
+		return fmt.Errorf("error retrieving new virtual machine: %s", err)
 	}
 
 	return output.CommandOutput(cmd, VirtualMachineCollection([]ecloud.VirtualMachine{vm}))
@@ -251,7 +251,7 @@ func ecloudVirtualMachineUpdateCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vm update 123 --name \"test vm 1\"",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing virtual machine")
+				return errors.New("missing virtual machine")
 			}
 
 			return nil
@@ -332,7 +332,7 @@ func ecloudVirtualMachineStartCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vm start 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing virtual machine")
+				return errors.New("missing virtual machine")
 			}
 
 			return nil
@@ -373,7 +373,7 @@ func ecloudVirtualMachineStopCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vm stop 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing virtual machine")
+				return errors.New("missing virtual machine")
 			}
 
 			return nil
@@ -428,7 +428,7 @@ func ecloudVirtualMachineRestartCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vm restart 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing virtual machine")
+				return errors.New("missing virtual machine")
 			}
 
 			return nil
@@ -483,7 +483,7 @@ func ecloudVirtualMachineDeleteCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud vm delete 123",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing virtual machine")
+				return errors.New("missing virtual machine")
 			}
 
 			return nil
@@ -537,12 +537,12 @@ func VirtualMachineNotFoundWaitFunc(service ecloud.ECloudService, vmID int) help
 			case *ecloud.VirtualMachineNotFoundError:
 				return true, nil
 			default:
-				return false, fmt.Errorf("Failed to retrieve virtual machine [%d]: %s", vmID, err)
+				return false, fmt.Errorf("failed to retrieve virtual machine [%d]: %s", vmID, err)
 			}
 		}
 
 		if vm.Status == ecloud.VirtualMachineStatusFailed {
-			return false, fmt.Errorf("Virtual machine [%d] in [%s] state", vmID, ecloud.VirtualMachineStatusFailed)
+			return false, fmt.Errorf("virtual machine [%d] in [%s] state", vmID, ecloud.VirtualMachineStatusFailed)
 		}
 
 		return false, nil
@@ -553,10 +553,10 @@ func VirtualMachineStatusWaitFunc(service ecloud.ECloudService, vmID int, status
 	return func() (finished bool, err error) {
 		vm, err := service.GetVirtualMachine(vmID)
 		if err != nil {
-			return false, fmt.Errorf("Failed to retrieve virtual machine [%d]: %s", vmID, err)
+			return false, fmt.Errorf("failed to retrieve virtual machine [%d]: %s", vmID, err)
 		}
 		if vm.Status == ecloud.VirtualMachineStatusFailed {
-			return false, fmt.Errorf("Virtual machine [%d] in [%s] state", vmID, ecloud.VirtualMachineStatusFailed)
+			return false, fmt.Errorf("virtual machine [%d] in [%s] state", vmID, ecloud.VirtualMachineStatusFailed)
 		}
 		if vm.Status == status {
 			return true, nil

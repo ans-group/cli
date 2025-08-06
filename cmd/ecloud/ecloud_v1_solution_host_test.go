@@ -23,7 +23,7 @@ func Test_ecloudSolutionHostListCmd_Args(t *testing.T) {
 		err := ecloudSolutionHostListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing solution", err.Error())
+		assert.Equal(t, "missing solution", err.Error())
 	})
 }
 
@@ -48,7 +48,7 @@ func Test_ecloudSolutionHostList(t *testing.T) {
 
 		err := ecloudSolutionHostList(service, &cobra.Command{}, []string{"abc"})
 
-		assert.Equal(t, "Invalid solution ID [abc]", err.Error())
+		assert.Equal(t, "invalid solution ID [abc]", err.Error())
 	})
 
 	t.Run("MalformedFlag_ReturnsError", func(t *testing.T) {
@@ -75,6 +75,6 @@ func Test_ecloudSolutionHostList(t *testing.T) {
 
 		err := ecloudSolutionHostList(service, &cobra.Command{}, []string{"123"})
 
-		assert.Equal(t, "Error retrieving solution hosts: test error 1", err.Error())
+		assert.Equal(t, "error retrieving solution hosts: test error 1", err.Error())
 	})
 }

@@ -50,7 +50,7 @@ func Test_loadbalancerListenerList(t *testing.T) {
 		err := loadbalancerListenerList(service, &cobra.Command{}, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error retrieving listeners: test error", err.Error())
+		assert.Equal(t, "error retrieving listeners: test error", err.Error())
 	})
 }
 
@@ -65,7 +65,7 @@ func Test_loadbalancerListenerShowCmd_Args(t *testing.T) {
 		err := loadbalancerListenerShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing listener", err.Error())
+		assert.Equal(t, "missing listener", err.Error())
 	})
 }
 
@@ -154,7 +154,7 @@ func Test_loadbalancerListenerCreate(t *testing.T) {
 
 		err := loadbalancerListenerCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error creating listener: test error", err.Error())
+		assert.Equal(t, "error creating listener: test error", err.Error())
 	})
 
 	t.Run("GetListenerError_ReturnsError", func(t *testing.T) {
@@ -172,7 +172,7 @@ func Test_loadbalancerListenerCreate(t *testing.T) {
 
 		err := loadbalancerListenerCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error retrieving new listener: test error", err.Error())
+		assert.Equal(t, "error retrieving new listener: test error", err.Error())
 	})
 }
 
@@ -187,7 +187,7 @@ func Test_loadbalancerListenerUpdateCmd_Args(t *testing.T) {
 		err := loadbalancerListenerUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing listener", err.Error())
+		assert.Equal(t, "missing listener", err.Error())
 	})
 }
 
@@ -270,7 +270,7 @@ func Test_loadbalancerListenerDeleteCmd_Args(t *testing.T) {
 		err := loadbalancerListenerDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing listener", err.Error())
+		assert.Equal(t, "missing listener", err.Error())
 	})
 }
 

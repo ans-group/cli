@@ -49,7 +49,7 @@ func Test_ecloudLoadBalancerList(t *testing.T) {
 
 		err := ecloudLoadBalancerList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving load balancers: test error", err.Error())
+		assert.Equal(t, "error retrieving load balancers: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudLoadBalancerShowCmd_Args(t *testing.T) {
 		err := ecloudLoadBalancerShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing load balancer", err.Error())
+		assert.Equal(t, "missing load balancer", err.Error())
 	})
 }
 
@@ -183,7 +183,7 @@ func Test_ecloudLoadBalancerCreate(t *testing.T) {
 		)
 
 		err := ecloudLoadBalancerCreate(service, cmd, []string{})
-		assert.Equal(t, "Error waiting for load balancer task to complete: Error waiting for command: Failed to retrieve task status: test error", err.Error())
+		assert.Equal(t, "error waiting for load balancer task to complete: error waiting for command: failed to retrieve task status: test error", err.Error())
 	})
 
 	t.Run("CreateLoadBalancerError_ReturnsError", func(t *testing.T) {
@@ -198,7 +198,7 @@ func Test_ecloudLoadBalancerCreate(t *testing.T) {
 
 		err := ecloudLoadBalancerCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error creating load balancer: test error", err.Error())
+		assert.Equal(t, "error creating load balancer: test error", err.Error())
 	})
 
 	t.Run("GetLoadBalancerError_ReturnsError", func(t *testing.T) {
@@ -216,7 +216,7 @@ func Test_ecloudLoadBalancerCreate(t *testing.T) {
 
 		err := ecloudLoadBalancerCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error retrieving new load balancer: test error", err.Error())
+		assert.Equal(t, "error retrieving new load balancer: test error", err.Error())
 	})
 }
 
@@ -231,7 +231,7 @@ func Test_ecloudLoadBalancerUpdateCmd_Args(t *testing.T) {
 		err := ecloudLoadBalancerUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing load balancer", err.Error())
+		assert.Equal(t, "missing load balancer", err.Error())
 	})
 }
 
@@ -338,7 +338,7 @@ func Test_ecloudLoadBalancerUpdate(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for load balancer [lb-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for load balancer [lb-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudLoadBalancerUpdate(service, cmd, []string{"lb-abcdef12"})
 		})
 	})
@@ -389,7 +389,7 @@ func Test_ecloudLoadBalancerDeleteCmd_Args(t *testing.T) {
 		err := ecloudLoadBalancerDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing load balancer", err.Error())
+		assert.Equal(t, "missing load balancer", err.Error())
 	})
 }
 
@@ -450,7 +450,7 @@ func Test_ecloudLoadBalancerDelete(t *testing.T) {
 			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, errors.New("test error")),
 		)
 
-		test_output.AssertErrorOutput(t, "Error waiting for task to complete for load balancer [lb-abcdef12]: Error waiting for command: Failed to retrieve task status: test error\n", func() {
+		test_output.AssertErrorOutput(t, "Error waiting for task to complete for load balancer [lb-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
 			ecloudLoadBalancerDelete(service, cmd, []string{"lb-abcdef12"})
 		})
 	})

@@ -31,7 +31,7 @@ func ecloudFirewallPolicyTaskListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud firewall policy task list i-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing firewall policy")
+				return errors.New("missing firewall policy")
 			}
 
 			return nil
@@ -56,7 +56,7 @@ func ecloudFirewallPolicyTaskList(service ecloud.ECloudService, cmd *cobra.Comma
 
 	tasks, err := service.GetFirewallPolicyTasks(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving firewall policy tasks: %s", err)
+		return fmt.Errorf("error retrieving firewall policy tasks: %s", err)
 	}
 
 	return output.CommandOutput(cmd, TaskCollection(tasks))

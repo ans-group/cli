@@ -24,7 +24,7 @@ func Test_pssCaseUpdateListCmd_Args(t *testing.T) {
 		err := pssCaseUpdateListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing case", err.Error())
+		assert.Equal(t, "missing case", err.Error())
 	})
 }
 
@@ -62,7 +62,7 @@ func Test_pssCaseUpdateList(t *testing.T) {
 		service.EXPECT().GetCaseUpdates("CHG123456", gomock.Any()).Return([]pss.CaseUpdate{}, errors.New("test error")).Times(1)
 
 		err := pssCaseUpdateList(service, &cobra.Command{}, []string{"CHG123456"})
-		assert.Equal(t, "Error retrieving case updates: test error", err.Error())
+		assert.Equal(t, "error retrieving case updates: test error", err.Error())
 	})
 }
 
@@ -77,14 +77,14 @@ func Test_pssCaseUpdateShowCmd_Args(t *testing.T) {
 		err := pssCaseUpdateShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing case", err.Error())
+		assert.Equal(t, "missing case", err.Error())
 	})
 
 	t.Run("NoCaseUpdateID_Error", func(t *testing.T) {
 		err := pssCaseUpdateShowCmd(nil).Args(nil, []string{"INC123456"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing case update", err.Error())
+		assert.Equal(t, "missing case update", err.Error())
 	})
 }
 

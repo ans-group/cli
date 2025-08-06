@@ -23,7 +23,7 @@ func Test_sslCertificateContentShowCmd_Args(t *testing.T) {
 		err := sslCertificateContentShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing certificate", err.Error())
+		assert.Equal(t, "missing certificate", err.Error())
 	})
 }
 

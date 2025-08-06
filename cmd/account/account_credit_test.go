@@ -45,6 +45,6 @@ func Test_accountCreditList(t *testing.T) {
 		service.EXPECT().GetCredits(gomock.Any()).Return([]account.Credit{}, errors.New("test error")).Times(1)
 
 		err := accountCreditList(service, &cobra.Command{}, []string{})
-		assert.Equal(t, "Error retrieving credits: test error", err.Error())
+		assert.Equal(t, "error retrieving credits: test error", err.Error())
 	})
 }

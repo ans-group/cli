@@ -49,7 +49,7 @@ func Test_ecloudNetworkList(t *testing.T) {
 
 		err := ecloudNetworkList(service, &cobra.Command{}, []string{})
 
-		assert.Equal(t, "Error retrieving networks: test error", err.Error())
+		assert.Equal(t, "error retrieving networks: test error", err.Error())
 	})
 }
 
@@ -64,7 +64,7 @@ func Test_ecloudNetworkShowCmd_Args(t *testing.T) {
 		err := ecloudNetworkShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing network", err.Error())
+		assert.Equal(t, "missing network", err.Error())
 	})
 }
 
@@ -141,7 +141,7 @@ func Test_ecloudNetworkCreate(t *testing.T) {
 
 		err := ecloudNetworkCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error creating network: test error", err.Error())
+		assert.Equal(t, "error creating network: test error", err.Error())
 	})
 
 	t.Run("GetNetworkError_ReturnsError", func(t *testing.T) {
@@ -159,7 +159,7 @@ func Test_ecloudNetworkCreate(t *testing.T) {
 
 		err := ecloudNetworkCreate(service, cmd, []string{})
 
-		assert.Equal(t, "Error retrieving new network: test error", err.Error())
+		assert.Equal(t, "error retrieving new network: test error", err.Error())
 	})
 }
 
@@ -174,7 +174,7 @@ func Test_ecloudNetworkUpdateCmd_Args(t *testing.T) {
 		err := ecloudNetworkUpdateCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing network", err.Error())
+		assert.Equal(t, "missing network", err.Error())
 	})
 }
 
@@ -257,7 +257,7 @@ func Test_ecloudNetworkDeleteCmd_Args(t *testing.T) {
 		err := ecloudNetworkDeleteCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing network", err.Error())
+		assert.Equal(t, "missing network", err.Error())
 	})
 }
 

@@ -31,7 +31,7 @@ func ecloudImageMetadataListCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud image metadata list img-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing image")
+				return errors.New("missing image")
 			}
 
 			return nil
@@ -48,7 +48,7 @@ func ecloudImageMetadataList(service ecloud.ECloudService, cmd *cobra.Command, a
 
 	metadata, err := service.GetImageMetadata(args[0], params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving image metadata: %s", err)
+		return fmt.Errorf("error retrieving image metadata: %s", err)
 	}
 
 	return output.CommandOutput(cmd, ImageMetadataCollection(metadata))

@@ -2,7 +2,7 @@ package helper
 
 import (
 	"errors"
-	"io/ioutil"
+	"io"
 	"strconv"
 	"strings"
 
@@ -85,7 +85,7 @@ func GetFilteringFromStringFlagValue(filter string) (connection.APIRequestFilter
 	// V at index 1 represents the value
 	filteringKVParts := strings.Split(filter, "=")
 	if len(filteringKVParts) != 2 || filteringKVParts[1] == "" {
-		return filtering, errors.New("Missing value for filtering")
+		return filtering, errors.New("missing value for filtering")
 	}
 
 	// Obtain PropertyOperator parts from K above. Example: propertyname:operator
@@ -93,7 +93,7 @@ func GetFilteringFromStringFlagValue(filter string) (connection.APIRequestFilter
 	// Operator at index 1 represents the operator
 	filteringPropertyOperatorParts := strings.Split(filteringKVParts[0], ":")
 	if filteringPropertyOperatorParts[0] == "" {
-		return filtering, errors.New("Missing property for filtering")
+		return filtering, errors.New("missing property for filtering")
 	}
 
 	var operator connection.APIRequestFilteringOperator
@@ -101,13 +101,13 @@ func GetFilteringFromStringFlagValue(filter string) (connection.APIRequestFilter
 		operator = inferOperatorFromValue(filteringKVParts[1])
 	} else {
 		if len(filteringPropertyOperatorParts) != 2 || filteringPropertyOperatorParts[1] == "" {
-			return filtering, errors.New("Missing operator for filtering")
+			return filtering, errors.New("missing operator for filtering")
 		}
 
 		// Parse the operator, returning parse error if any
 		parsedOperator, err := connection.APIRequestFilteringOperatorEnum.Parse(filteringPropertyOperatorParts[1])
 		if err != nil {
-			return filtering, errors.New("Invalid filtering operator")
+			return filtering, errors.New("invalid filtering operator")
 		}
 
 		operator = parsedOperator
@@ -203,7 +203,7 @@ func GetContentsFromFilePathFlag(cmd *cobra.Command, fs afero.Fs, filePathFlag s
 		return "", err
 	}
 
-	contentBytes, err := ioutil.ReadAll(file)
+	contentBytes, err := io.ReadAll(file)
 	if err != nil {
 		return "", err
 	}

@@ -23,7 +23,7 @@ func Test_loadbalancerListenerACLListCmd_Args(t *testing.T) {
 		err := loadbalancerListenerACLListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing listener", err.Error())
+		assert.Equal(t, "missing listener", err.Error())
 	})
 }
 
@@ -62,7 +62,7 @@ func Test_loadbalancerListenerACLList(t *testing.T) {
 		err := loadbalancerListenerACLList(service, loadbalancerListenerACLListCmd(nil), []string{"invalid"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Invalid listener ID", err.Error())
+		assert.Equal(t, "invalid listener ID", err.Error())
 	})
 
 	t.Run("GetListenerACLsError_ReturnsError", func(t *testing.T) {
@@ -76,6 +76,6 @@ func Test_loadbalancerListenerACLList(t *testing.T) {
 		err := loadbalancerListenerACLList(service, &cobra.Command{}, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error retrieving ACLs: test error", err.Error())
+		assert.Equal(t, "error retrieving ACLs: test error", err.Error())
 	})
 }

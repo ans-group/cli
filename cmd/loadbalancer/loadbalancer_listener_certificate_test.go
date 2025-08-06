@@ -24,7 +24,7 @@ func Test_loadbalancerListenerCertificateListCmd_Args(t *testing.T) {
 		err := loadbalancerListenerCertificateListCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing listener", err.Error())
+		assert.Equal(t, "missing listener", err.Error())
 	})
 }
 
@@ -65,7 +65,7 @@ func Test_loadbalancerListenerCertificateList(t *testing.T) {
 		err := loadbalancerListenerCertificateList(service, &cobra.Command{}, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Error retrieving certificates: test error", err.Error())
+		assert.Equal(t, "error retrieving certificates: test error", err.Error())
 	})
 }
 
@@ -80,14 +80,14 @@ func Test_loadbalancerListenerCertificateShowCmd_Args(t *testing.T) {
 		err := loadbalancerListenerCertificateShowCmd(nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing listener", err.Error())
+		assert.Equal(t, "missing listener", err.Error())
 	})
 
 	t.Run("InvalidArgs_Error", func(t *testing.T) {
 		err := loadbalancerListenerCertificateShowCmd(nil).Args(nil, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing certificate", err.Error())
+		assert.Equal(t, "missing certificate", err.Error())
 	})
 }
 
@@ -125,7 +125,7 @@ func Test_loadbalancerListenerCertificateShow(t *testing.T) {
 
 		err := loadbalancerListenerCertificateShow(service, &cobra.Command{}, []string{"abc", "456"})
 
-		assert.Equal(t, "Invalid listener ID", err.Error())
+		assert.Equal(t, "invalid listener ID", err.Error())
 	})
 
 	t.Run("GetCertificateID_OutputsError", func(t *testing.T) {
@@ -164,7 +164,7 @@ func Test_loadbalancerListenerCertificateCreateCmd_Args(t *testing.T) {
 		err := loadbalancerListenerCertificateCreateCmd(nil, nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing listener", err.Error())
+		assert.Equal(t, "missing listener", err.Error())
 	})
 }
 
@@ -201,7 +201,7 @@ func Test_loadbalancerListenerCertificateCreate(t *testing.T) {
 
 		err := loadbalancerListenerCertificateCreate(service, cmd, nil, []string{"123"})
 
-		assert.Equal(t, "Error creating certificate: test error", err.Error())
+		assert.Equal(t, "error creating certificate: test error", err.Error())
 	})
 
 	t.Run("GetListenerError_ReturnsError", func(t *testing.T) {
@@ -219,7 +219,7 @@ func Test_loadbalancerListenerCertificateCreate(t *testing.T) {
 
 		err := loadbalancerListenerCertificateCreate(service, cmd, nil, []string{"123"})
 
-		assert.Equal(t, "Error retrieving new certificate: test error", err.Error())
+		assert.Equal(t, "error retrieving new certificate: test error", err.Error())
 	})
 }
 
@@ -234,14 +234,14 @@ func Test_loadbalancerListenerCertificateUpdateCmd_Args(t *testing.T) {
 		err := loadbalancerListenerCertificateUpdateCmd(nil, nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing listener", err.Error())
+		assert.Equal(t, "missing listener", err.Error())
 	})
 
 	t.Run("InvalidArgs_Error", func(t *testing.T) {
 		err := loadbalancerListenerCertificateUpdateCmd(nil, nil).Args(nil, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing certificate", err.Error())
+		assert.Equal(t, "missing certificate", err.Error())
 	})
 }
 
@@ -308,14 +308,14 @@ func Test_loadbalancerListenerCertificateDeleteCmd_Args(t *testing.T) {
 		err := loadbalancerListenerCertificateUpdateCmd(nil, nil).Args(nil, []string{})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing listener", err.Error())
+		assert.Equal(t, "missing listener", err.Error())
 	})
 
 	t.Run("InvalidArgs_Error", func(t *testing.T) {
 		err := loadbalancerListenerCertificateUpdateCmd(nil, nil).Args(nil, []string{"123"})
 
 		assert.NotNil(t, err)
-		assert.Equal(t, "Missing certificate", err.Error())
+		assert.Equal(t, "missing certificate", err.Error())
 	})
 }
 

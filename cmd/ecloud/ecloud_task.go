@@ -49,7 +49,7 @@ func ecloudTaskList(service ecloud.ECloudService, cmd *cobra.Command, args []str
 
 	paginatedTasks, err := service.GetTasksPaginated(params)
 	if err != nil {
-		return fmt.Errorf("Error retrieving tasks: %s", err)
+		return fmt.Errorf("error retrieving tasks: %s", err)
 	}
 
 	return output.CommandOutputPaginated(cmd, TaskCollection(paginatedTasks.Items()), paginatedTasks)
@@ -63,7 +63,7 @@ func ecloudTaskShowCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud task show vol-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing task")
+				return errors.New("missing task")
 			}
 
 			return nil
@@ -95,7 +95,7 @@ func ecloudTaskWaitCmd(f factory.ClientFactory) *cobra.Command {
 		Example: "ans ecloud task wait task-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
-				return errors.New("Missing task")
+				return errors.New("missing task")
 			}
 
 			return nil
@@ -109,12 +109,12 @@ func ecloudTaskWaitCmd(f factory.ClientFactory) *cobra.Command {
 }
 
 func ecloudTaskWait(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
-	var expectedStatus ecloud.TaskStatus = ecloud.TaskStatusComplete
+	expectedStatus := ecloud.TaskStatusComplete
 	if cmd.Flags().Changed("status") {
 		status, _ := cmd.Flags().GetString("status")
 		parsedStatus, err := ecloud.TaskStatusEnum.Parse(status)
 		if err != nil {
-			return fmt.Errorf("Failed to parse status: %s", err)
+			return fmt.Errorf("failed to parse status: %s", err)
 		}
 		expectedStatus = parsedStatus
 	}
