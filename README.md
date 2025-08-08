@@ -92,6 +92,13 @@ The configuration file can be manipulated using the `config` subcommand, for exa
 The output of all commands is determined by a single global flag `--output` / `-o`.
 In addition to output, there are several output modifier flags which are explained below.
 
+The default output format can be set in the configuration file using the `output.default` field, e.g.
+
+```yaml
+output:
+  default: json
+```
+
 ### Table (Default)
 
 The default output format for the CLI is `Table`, which will be used when the value of the `--output` flag
