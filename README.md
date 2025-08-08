@@ -152,6 +152,24 @@ Results can be output in JSON using the `json` format:
 [{"id":3337874,"template_id":0,"name":"test.example.co.uk","type":"A","content":"1.2.3.4","updated_at":"2019-03-19T16:33:55+00:00","ttl":0,"priority":0}]
 ```
 
+You can also the use the `json-pretty` format to output pretty-printed JSON:
+
+```
+> ans safedns zone record show example.co.uk 3337874 --output json-pretty
+[
+  {
+    "id": 3337874,
+    "template_id": 0,
+    "name": "test.example.co.uk",
+    "type": "A",
+    "content": "1.2.3.4",
+    "updated_at": "2019-03-19T16:33:55+00:00",
+    "ttl": 0,
+    "priority": 0
+  }
+]
+```
+
 ### YAML
 
 Results can be output in YAML using the `yaml` format:
