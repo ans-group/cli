@@ -8,7 +8,6 @@ import (
 	"html/template"
 	"os"
 	"reflect"
-	"slices"
 	"strconv"
 	"strings"
 
@@ -271,11 +270,11 @@ func (o *OutputHandler) getData(cmd *cobra.Command, d interface{}) (filteredColu
 		filteredColumnNames, _ = cmd.Flags().GetStringSlice("property")
 	} else if d, ok := d.(DefaultColumnable); ok && len(d.DefaultColumns()) > 0 {
 		filteredColumnNames = d.DefaultColumns()
+	}
 
-		// Merge additional columns from options
-		if len(o.additionalColumns) > 0 {
-			filteredColumnNames = o.mergeAdditionalColumns(filteredColumnNames, o.additionalColumns)
-		}
+	// Always add additional columns from options
+	if len(o.additionalColumns) > 0 {
+		filteredColumnNames = append(filteredColumnNames, o.additionalColumns...)
 	}
 
 	if len(filteredColumnNames) > 0 {
@@ -403,24 +402,4 @@ func getMaxPropertyLength(properties []string) int {
 		}
 	}
 	return maxLength
-}
-
-// mergeAdditionalColumns inserts additional columns into the default columns at appropriate positions
-func (o *OutputHandler) mergeAdditionalColumns(defaultColumns, additionalColumns []string) []string {
-	var result []string
-
-	for _, col := range defaultColumns {
-		// Insert additional columns before "sync_status" which is typically the last column
-		if col == "sync_status" {
-			result = append(result, additionalColumns...)
-		}
-		result = append(result, col)
-	}
-
-	// If "sync_status" wasn't found, append additional columns at the end
-	if !slices.Contains(defaultColumns, "sync_status") {
-		result = append(result, additionalColumns...)
-	}
-
-	return result
 }
