@@ -120,14 +120,69 @@ func TestOutputHandler_Table(t *testing.T) {
 }
 
 func TestOutputHandler_List(t *testing.T) {
-	o := NewOutputHandler()
+	t.Run("SingleRowDefaultFields_ExpectedStdout", func(t *testing.T) {
+		o := NewOutputHandler()
 
-	output := test.CatchStdOut(t, func() {
-		err := o.List(&cobra.Command{}, collectionSingleRow)
-		assert.NoError(t, err)
+		output := test.CatchStdOut(t, func() {
+			err := o.List(&cobra.Command{}, collectionSingleRow)
+			assert.NoError(t, err)
+		})
+
+		assert.Equal(t, "testproperty1 : Row1TestValue1\ntestproperty2 : Row1TestValue2\ntestproperty3 : Row1TestValue3\n", output)
+	})
+	t.Run("MultipleRowsDefaultFields_ExpectedStdout", func(t *testing.T) {
+		o := NewOutputHandler()
+
+		output := test.CatchStdOut(t, func() {
+			err := o.List(&cobra.Command{}, collectionMultipleRows)
+			assert.NoError(t, err)
+		})
+
+		assert.Equal(t, "testproperty1 : Row1TestValue1\n"+
+			"testproperty2 : Row1TestValue2\n"+
+			"testproperty3 : Row1TestValue3\n\n"+
+			"testproperty1 : Row2TestValue1\n"+
+			"testproperty2 : Row2TestValue2\n"+
+			"testproperty3 : Row2TestValue3\n", output)
+	})
+	t.Run("NewLinesInValues_ExpectedStdout", func(t *testing.T) {
+		o := NewOutputHandler()
+
+		// Create a collection with new lines in the values
+		collectionWithNewLines := testModelCollection([]testModel{
+			{"Row1TestValue1\nLine2", "Row1TestValue2", "Row1TestValue3"},
+			{"Row2TestValue1", "Row2TestValue2\nLine2", "Row2TestValue3"},
+		})
+
+		output := test.CatchStdOut(t, func() {
+			err := o.List(&cobra.Command{}, collectionWithNewLines)
+			assert.NoError(t, err)
+		})
+
+		assert.Equal(t, "testproperty1 : Row1TestValue1\n                Line2\ntestproperty2 : Row1TestValue2\ntestproperty3 : Row1TestValue3\n\n"+
+			"testproperty1 : Row2TestValue1\ntestproperty2 : Row2TestValue2\n                Line2\ntestproperty3 : Row2TestValue3\n", output)
 	})
 
-	assert.Equal(t, "testproperty1 : Row1TestValue1\ntestproperty2 : Row1TestValue2\ntestproperty3 : Row1TestValue3\n", output)
+	t.Run("EmptyCollection_ExpectedStdout", func(t *testing.T) {
+		o := NewOutputHandler()
+
+		output := test.CatchStdOut(t, func() {
+			err := o.List(&cobra.Command{}, testModelCollection{})
+			assert.NoError(t, err)
+		})
+
+		assert.Equal(t, "", output)
+	})
+	t.Run("NullCollection_ExpectedStdout", func(t *testing.T) {
+		o := NewOutputHandler()
+
+		output := test.CatchStdOut(t, func() {
+			err := o.List(&cobra.Command{}, nil)
+			assert.NoError(t, err)
+		})
+
+		assert.Equal(t, "", output)
+	})
 }
 
 func TestOutputHandler_Template(t *testing.T) {

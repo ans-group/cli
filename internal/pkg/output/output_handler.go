@@ -139,8 +139,10 @@ func (o *OutputHandler) List(cmd *cobra.Command, d interface{}) error {
 		}
 
 		for columnIndex, column := range columns {
-			_, _ = fmt.Fprintf(f, "%s : %s\n", padProperty(column, maxPropertyLength), row[columnIndex])
+			formatted := formatListPropertyValue(column, row[columnIndex], maxPropertyLength)
+			_, _ = fmt.Fprint(f, formatted)
 		}
+
 	}
 
 	return nil
@@ -385,12 +387,19 @@ func (o *OutputHandler) convertField(d interface{}, v *OrderedFields, fieldName 
 	return v
 }
 
-func padProperty(property string, maxLength int) string {
-	diff := maxLength - len(property)
-	if diff > 0 {
-		return property + strings.Repeat(" ", diff)
+func formatListPropertyValue(property string, value string, maxPropertyLength int) string {
+	paddedProperty := property + strings.Repeat(" ", maxPropertyLength-len(property))
+	valueLines := strings.Split(value, "\n")
+
+	var result strings.Builder
+	for i, line := range valueLines {
+		if i == 0 {
+			result.WriteString(fmt.Sprintf("%s : %s\n", paddedProperty, line))
+		} else {
+			result.WriteString(fmt.Sprintf("%s   %s\n", strings.Repeat(" ", maxPropertyLength), line))
+		}
 	}
-	return property
+	return result.String()
 }
 
 func getMaxPropertyLength(properties []string) int {
