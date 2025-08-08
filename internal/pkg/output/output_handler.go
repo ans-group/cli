@@ -57,25 +57,19 @@ func NewOutputHandler(opts ...OutputHandlerOption) *OutputHandler {
 func (o *OutputHandler) Output(cmd *cobra.Command, d interface{}) error {
 	var flag string
 
-	outputDefault := config.GetString("output.default")
-	if len(outputDefault) > 0 {
-		flag = outputDefault
-	}
-
-	if cmd.Flags().Changed("format") {
-		flag, _ = cmd.Flags().GetString("format")
-	} else {
+	if cmd.Flags().Changed("output") {
 		flag, _ = cmd.Flags().GetString("output")
 	}
 
 	if len(flag) == 0 {
 		flag = "table"
+		outputDefault := config.GetString("output.default")
+		if len(outputDefault) > 0 {
+			flag = outputDefault
+		}
 	}
 
 	format, arg := ParseOutputFlag(flag)
-	if format == "template" && cmd.Flags().Changed("outputtemplate") {
-		arg, _ = cmd.Flags().GetString("outputtemplate")
-	}
 
 	switch format {
 	case "json":
