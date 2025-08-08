@@ -130,6 +130,11 @@ func (o *OutputHandler) Table(cmd *cobra.Command, d interface{}) error {
 		symbols = tw.NewSymbols(tw.StyleASCII)
 	}
 
+	colMaxWidth := config.GetInt("output.table.column_max_width")
+	if colMaxWidth <= 0 {
+		colMaxWidth = 50
+	}
+
 	table := tablewriter.NewTable(os.Stdout,
 		tablewriter.WithHeaderAlignment(tw.AlignCenter),
 		tablewriter.WithRowAlignment(tw.AlignLeft),
@@ -137,11 +142,11 @@ func (o *OutputHandler) Table(cmd *cobra.Command, d interface{}) error {
 		tablewriter.WithConfig(tablewriter.Config{
 			Row: tw.CellConfig{
 				Formatting:   tw.CellFormatting{AutoWrap: tw.WrapNormal},
-				ColMaxWidths: tw.CellWidth{Global: 30},
+				ColMaxWidths: tw.CellWidth{Global: colMaxWidth},
 			},
 			Header: tw.CellConfig{
 				Formatting:   tw.CellFormatting{AutoWrap: tw.WrapNormal},
-				ColMaxWidths: tw.CellWidth{Global: 30},
+				ColMaxWidths: tw.CellWidth{Global: colMaxWidth},
 			},
 		}))
 
