@@ -111,6 +111,14 @@ is `table` or unspecified:
 
 The [Property Modifier](#property) is available for this format
 
+The table output style can be customised using the `output.table.style` field in your configuration file. This directive accepts either `ascii` (default) or `unicode`, which will change the table output to use unicode characters for borders and lines.
+
+```yaml
+output:
+  table:
+    style: unicode
+```
+
 ### List
 
 Results can be output as a list using the `list` format:

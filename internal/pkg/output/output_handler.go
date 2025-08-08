@@ -11,8 +11,10 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/ans-group/sdk-go/pkg/config"
 	"github.com/iancoleman/strcase"
 	"github.com/olekukonko/tablewriter"
+	"github.com/olekukonko/tablewriter/renderer"
 	"github.com/olekukonko/tablewriter/tw"
 	"github.com/ryanuber/go-glob"
 	"github.com/spf13/cobra"
@@ -110,9 +112,30 @@ func (o *OutputHandler) Table(cmd *cobra.Command, d interface{}) error {
 		return nil
 	}
 
+	// Get output style from configuration, default to "ascii"
+	var symbols tw.Symbols
+	outputStyle := config.GetString("output.table.style")
+	switch outputStyle {
+	case "unicode":
+		symbols = tw.NewSymbols(tw.StyleDefault)
+	default:
+		symbols = tw.NewSymbols(tw.StyleASCII)
+	}
+
 	table := tablewriter.NewTable(os.Stdout,
 		tablewriter.WithHeaderAlignment(tw.AlignCenter),
-		tablewriter.WithRowAlignment(tw.AlignLeft))
+		tablewriter.WithRowAlignment(tw.AlignLeft),
+		tablewriter.WithRenderer(renderer.NewBlueprint(tw.Rendition{Symbols: symbols})),
+		tablewriter.WithConfig(tablewriter.Config{
+			Row: tw.CellConfig{
+				Formatting:   tw.CellFormatting{AutoWrap: tw.WrapNormal},
+				ColMaxWidths: tw.CellWidth{Global: 30},
+			},
+			Header: tw.CellConfig{
+				Formatting:   tw.CellFormatting{AutoWrap: tw.WrapNormal},
+				ColMaxWidths: tw.CellWidth{Global: 30},
+			},
+		}))
 
 	table.Header(columns)
 	_ = table.Bulk(rows)
