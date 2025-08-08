@@ -359,7 +359,7 @@ func (m InstanceCollection) FieldValueHandlers() map[string]output.FieldValueHan
 			for _, tag := range tags {
 				tagStrings = append(tagStrings, tag.Scope+":"+tag.Name)
 			}
-			return strings.Join(tagStrings, "\n")
+			return strings.Join(tagStrings, ", ")
 		},
 	}
 }
