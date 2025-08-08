@@ -56,6 +56,12 @@ func NewOutputHandler(opts ...OutputHandlerOption) *OutputHandler {
 
 func (o *OutputHandler) Output(cmd *cobra.Command, d interface{}) error {
 	var flag string
+
+	outputDefault := config.GetString("output.default")
+	if len(outputDefault) > 0 {
+		flag = outputDefault
+	}
+
 	if cmd.Flags().Changed("format") {
 		flag, _ = cmd.Flags().GetString("format")
 	} else {
