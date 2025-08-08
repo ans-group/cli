@@ -116,7 +116,7 @@ func TestOutputHandler_Table(t *testing.T) {
 		assert.NoError(t, err)
 	})
 
-	assert.Equal(t, "┌────────────────┬────────────────┬────────────────┐\n│ TESTPROPERTY 1 │ TESTPROPERTY 2 │ TESTPROPERTY 3 │\n├────────────────┼────────────────┼────────────────┤\n│ Row1TestValue1 │ Row1TestValue2 │ Row1TestValue3 │\n└────────────────┴────────────────┴────────────────┘\n", output)
+	assert.Equal(t, "+----------------+----------------+----------------+\n| TESTPROPERTY 1 | TESTPROPERTY 2 | TESTPROPERTY 3 |\n+----------------+----------------+----------------+\n| Row1TestValue1 | Row1TestValue2 | Row1TestValue3 |\n+----------------+----------------+----------------+\n", output)
 }
 
 func TestOutputHandler_List(t *testing.T) {
@@ -220,7 +220,7 @@ func TestOutputHandler_AdditionalColumnsInTable(t *testing.T) {
 			assert.NoError(t, err)
 		})
 
-		expected := "┌────────────────┬────────────────┐\n│ TESTPROPERTY 1 │ TESTPROPERTY 3 │\n├────────────────┼────────────────┤\n│ Row1TestValue1 │ Row1TestValue3 │\n└────────────────┴────────────────┘\n"
+		expected := "+----------------+----------------+\n| TESTPROPERTY 1 | TESTPROPERTY 3 |\n+----------------+----------------+\n| Row1TestValue1 | Row1TestValue3 |\n+----------------+----------------+\n"
 		assert.Equal(t, expected, output)
 	})
 
@@ -232,7 +232,7 @@ func TestOutputHandler_AdditionalColumnsInTable(t *testing.T) {
 			assert.NoError(t, err)
 		})
 
-		expected := "┌────────────────┬────────────────┬────────────────┐\n│ TESTPROPERTY 1 │ TESTPROPERTY 2 │ TESTPROPERTY 3 │\n├────────────────┼────────────────┼────────────────┤\n│ Row1TestValue1 │ Row1TestValue2 │ Row1TestValue3 │\n└────────────────┴────────────────┴────────────────┘\n"
+		expected := "+----------------+----------------+----------------+\n| TESTPROPERTY 1 | TESTPROPERTY 2 | TESTPROPERTY 3 |\n+----------------+----------------+----------------+\n| Row1TestValue1 | Row1TestValue2 | Row1TestValue3 |\n+----------------+----------------+----------------+\n"
 		assert.Equal(t, expected, output)
 	})
 }
@@ -309,7 +309,7 @@ func TestOutputHandler_AdditionalColumnsWithDefaultColumns(t *testing.T) {
 		})
 
 		// With DefaultColumns interface, should only show the default column (testproperty1)
-		expected := "┌────────────────┐\n│ TESTPROPERTY 1 │\n├────────────────┤\n│ Row1TestValue1 │\n└────────────────┘\n"
+		expected := "+----------------+\n| TESTPROPERTY 1 |\n+----------------+\n| Row1TestValue1 |\n+----------------+\n"
 		assert.Equal(t, expected, output)
 	})
 
@@ -323,7 +323,7 @@ func TestOutputHandler_AdditionalColumnsWithDefaultColumns(t *testing.T) {
 		})
 
 		// With additional columns, should show default columns + additional columns
-		expected := "┌────────────────┬────────────────┬────────────────┐\n│ TESTPROPERTY 1 │ TESTPROPERTY 2 │ TESTPROPERTY 3 │\n├────────────────┼────────────────┼────────────────┤\n│ Row1TestValue1 │ Row1TestValue2 │ Row1TestValue3 │\n└────────────────┴────────────────┴────────────────┘\n"
+		expected := "+----------------+----------------+----------------+\n| TESTPROPERTY 1 | TESTPROPERTY 2 | TESTPROPERTY 3 |\n+----------------+----------------+----------------+\n| Row1TestValue1 | Row1TestValue2 | Row1TestValue3 |\n+----------------+----------------+----------------+\n"
 		assert.Equal(t, expected, output)
 	})
 
@@ -338,7 +338,7 @@ func TestOutputHandler_AdditionalColumnsWithDefaultColumns(t *testing.T) {
 		})
 
 		// When passing a slice, DefaultColumns interface doesn't work, only additional columns show
-		expected := "┌────────────────┬────────────────┐\n│ TESTPROPERTY 2 │ TESTPROPERTY 3 │\n├────────────────┼────────────────┤\n│ Row1TestValue2 │ Row1TestValue3 │\n└────────────────┴────────────────┘\n"
+		expected := "+----------------+----------------+\n| TESTPROPERTY 2 | TESTPROPERTY 3 |\n+----------------+----------------+\n| Row1TestValue2 | Row1TestValue3 |\n+----------------+----------------+\n"
 		assert.Equal(t, expected, output)
 	})
 }
@@ -358,7 +358,7 @@ func TestOutputHandler_AdditionalColumnsWithPropertyFilter(t *testing.T) {
 
 		// When property flag is set, additional columns are still added to the filter
 		// The order follows the original column order in the struct: testproperty1, testproperty2, testproperty3
-		expected := "┌────────────────┬────────────────┬────────────────┐\n│ TESTPROPERTY 1 │ TESTPROPERTY 2 │ TESTPROPERTY 3 │\n├────────────────┼────────────────┼────────────────┤\n│ Row1TestValue1 │ Row1TestValue2 │ Row1TestValue3 │\n└────────────────┴────────────────┴────────────────┘\n"
+		expected := "+----------------+----------------+----------------+\n| TESTPROPERTY 1 | TESTPROPERTY 2 | TESTPROPERTY 3 |\n+----------------+----------------+----------------+\n| Row1TestValue1 | Row1TestValue2 | Row1TestValue3 |\n+----------------+----------------+----------------+\n"
 		assert.Equal(t, expected, output)
 	})
 }
