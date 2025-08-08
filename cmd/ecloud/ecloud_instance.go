@@ -62,6 +62,7 @@ func ecloudInstanceListCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("name", "", "Instance name for filtering")
+	cmd.Flags().Bool("with-tags", false, "Include tags column in output")
 
 	return cmd
 }
@@ -77,11 +78,15 @@ func ecloudInstanceList(service ecloud.ECloudService, cmd *cobra.Command, args [
 		return fmt.Errorf("error retrieving instances: %s", err)
 	}
 
+	if withTags, _ := cmd.Flags().GetBool("with-tags"); withTags {
+		return output.CommandOutput(cmd, InstanceCollection(instances), output.WithAdditionalColumns("tags"))
+	}
+
 	return output.CommandOutput(cmd, InstanceCollection(instances))
 }
 
 func ecloudInstanceShowCmd(f factory.ClientFactory) *cobra.Command {
-	return &cobra.Command{
+	cmd := &cobra.Command{
 		Use:     "show <instance: id>...",
 		Short:   "Shows a instance",
 		Long:    "This command shows one or more instances",
@@ -95,6 +100,10 @@ func ecloudInstanceShowCmd(f factory.ClientFactory) *cobra.Command {
 		},
 		RunE: ecloudCobraRunEFunc(f, ecloudInstanceShow),
 	}
+
+	cmd.Flags().Bool("with-tags", false, "Include tags column in output")
+
+	return cmd
 }
 
 func ecloudInstanceShow(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
@@ -107,6 +116,11 @@ func ecloudInstanceShow(service ecloud.ECloudService, cmd *cobra.Command, args [
 		}
 
 		instances = append(instances, instance)
+	}
+
+	// Use new options pattern for conditional tags display
+	if withTags, _ := cmd.Flags().GetBool("with-tags"); withTags {
+		return output.CommandOutput(cmd, InstanceCollection(instances), output.WithAdditionalColumns("tags"))
 	}
 
 	return output.CommandOutput(cmd, InstanceCollection(instances))

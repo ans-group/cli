@@ -40,10 +40,16 @@ type ProvidesFields interface {
 
 type OutputHandlerOpts map[string]interface{}
 
-type OutputHandler struct{}
+type OutputHandler struct {
+	additionalColumns []string
+}
 
-func NewOutputHandler() *OutputHandler {
-	return &OutputHandler{}
+func NewOutputHandler(opts ...OutputHandlerOption) *OutputHandler {
+	h := &OutputHandler{}
+	for _, opt := range opts {
+		opt(h)
+	}
+	return h
 }
 
 func (o *OutputHandler) Output(cmd *cobra.Command, d interface{}) error {
@@ -264,6 +270,11 @@ func (o *OutputHandler) getData(cmd *cobra.Command, d interface{}) (filteredColu
 		filteredColumnNames, _ = cmd.Flags().GetStringSlice("property")
 	} else if d, ok := d.(DefaultColumnable); ok && len(d.DefaultColumns()) > 0 {
 		filteredColumnNames = d.DefaultColumns()
+	}
+
+	// Always add additional columns from options
+	if len(o.additionalColumns) > 0 {
+		filteredColumnNames = append(filteredColumnNames, o.additionalColumns...)
 	}
 
 	if len(filteredColumnNames) > 0 {
