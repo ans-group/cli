@@ -73,7 +73,9 @@ func (o *OutputHandler) Output(cmd *cobra.Command, d interface{}) error {
 
 	switch format {
 	case "json":
-		return o.JSON(d)
+		return o.JSON(d, false)
+	case "json-pretty":
+		return o.JSON(d, true)
 	case "list":
 		return o.List(cmd, d)
 	case "value":
@@ -94,8 +96,14 @@ func (o *OutputHandler) Output(cmd *cobra.Command, d interface{}) error {
 	}
 }
 
-func (o *OutputHandler) JSON(d interface{}) error {
-	out, err := json.Marshal(d)
+func (o *OutputHandler) JSON(d interface{}, pretty bool) error {
+	var out []byte
+	var err error
+	if pretty {
+		out, err = json.MarshalIndent(d, "", "  ")
+	} else {
+		out, err = json.Marshal(d)
+	}
 	if err != nil {
 		return fmt.Errorf("failed to marshal json: %s", err)
 	}
