@@ -49,6 +49,7 @@ func Execute(build build.BuildInfo) {
 	rootCmd.PersistentFlags().StringSlice("property", []string{}, "property to output (used with several formats), can be repeated")
 	rootCmd.PersistentFlags().StringArray("filter", []string{}, "filter for list commands, can be repeated, e.g. 'property=somevalue', 'property:gt=3', 'property=valu*'")
 	rootCmd.PersistentFlags().Int("page", 0, "page to retrieve for paginated requests")
+	rootCmd.PersistentFlags().BoolP("verbose", "v", false, "Enables verbose output")
 
 	cobra.OnInitialize(initConfig)
 
@@ -101,7 +102,7 @@ func initConfig() {
 		}
 	}
 
-	if config.GetBool("api_debug") {
+	if config.GetBool("api_debug") || rootCmd.Flags().Changed("verbose") {
 		logging.SetLogger(&output.DebugLogger{})
 	}
 }
