@@ -44,3 +44,4 @@
 * Implement context cancellation handling for long operations
 * Add proper docstring comments for exported functions and types
 * Avoid using deprecated functionality, e.g. do not use the `ioutil` package, instead prefer the implementations from `io` or `os`
+* Use the `strings` and `slices` standard library packages where appropriate rather than creating new helper functions
