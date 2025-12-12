@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"runtime"
 	"sort"
 	"strconv"
 	"strings"
@@ -639,11 +640,16 @@ func ecloudInstanceRestart(service ecloud.ECloudService, cmd *cobra.Command, arg
 }
 
 func ecloudInstanceSSHCmd(f factory.ClientFactory) *cobra.Command {
+	example := "ans ecloud instance ssh i-abcdef12"
+	if runtime.GOOS != "windows" {
+		example += "\nans ecloud instance ssh i-abcdef12 --auto\nans ecloud instance ssh i-abcdef12 --auto --credential-name \"production\""
+	}
+
 	cmd := &cobra.Command{
 		Use:     "ssh <instance: id>",
 		Short:   "Invokes SSH for an instance",
 		Long:    "This command invokes SSH for an instance",
-		Example: "ans ecloud instance ssh i-abcdef12",
+		Example: example,
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("missing instance")
@@ -658,6 +664,12 @@ func ecloudInstanceSSHCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().Bool("internal", false, "Specifies internal IP should be used")
 	cmd.Flags().String("user", "root", "Specifies user to connect with")
 	cmd.Flags().String("args", "", "Specifies additional arguments to pass to SSH")
+
+	// Auto-auth flags only available on non-Windows platforms
+	if runtime.GOOS != "windows" {
+		cmd.Flags().Bool("auto", false, "Automatically authenticate using instance credentials (requires sshpass)")
+		cmd.Flags().String("credential-name", "", "Credential name to use with --auto (uses first available if not specified)")
+	}
 
 	return cmd
 }
@@ -689,6 +701,13 @@ func ecloudInstanceSSH(service ecloud.ECloudService, cmd *cobra.Command, args []
 		ipAddress = fips[0].IPAddress
 	}
 
+	// Check if auto-auth is enabled
+	autoAuth, _ := cmd.Flags().GetBool("auto")
+	if autoAuth {
+		return ecloudInstanceSSHWithAuth(service, cmd, args[0], ipAddress)
+	}
+
+	// Standard SSH exec path (existing behavior)
 	user, _ := cmd.Flags().GetString("user")
 	port, _ := cmd.Flags().GetInt("port")
 	sshArgs, _ := cmd.Flags().GetString("args")
