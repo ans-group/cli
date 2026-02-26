@@ -71,7 +71,8 @@ current_context: testcontext1
 		config.Init("/tmp/testconfig.yml")
 
 		cmd := configContextListCmd()
-		cmd.Flags().String("output", "value", "")
+		cmd.Flags().String("output", "", "")
+		cmd.Flags().Set("output", "value")
 
 		test_output.AssertCombinedOutput(t, "testcontext1 true\ntestcontext2 false\n", "", func() {
 			configContextList(cmd)
@@ -95,7 +96,8 @@ current_context: testcontext1
 		config.Init("/tmp/testconfig.yml")
 
 		cmd := configContextShowCmd()
-		cmd.Flags().String("output", "value", "")
+		cmd.Flags().String("output", "", "")
+		cmd.Flags().Set("output", "value")
 
 		test_output.AssertCombinedOutput(t, "testcontext1 true\n", "", func() {
 			configContextShow(cmd)

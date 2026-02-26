@@ -6,7 +6,7 @@ import (
 )
 
 type ResourceLocatorProvider interface {
-	Locate(property string, value string) (interface{}, error)
+	Locate(property string, value string) (any, error)
 	SupportedProperties() []string
 }
 
@@ -18,7 +18,7 @@ func NewResourceLocator(provider ResourceLocatorProvider) *ResourceLocator {
 	return &ResourceLocator{Provider: provider}
 }
 
-func (f *ResourceLocator) Invoke(filter string) (interface{}, error) {
+func (f *ResourceLocator) Invoke(filter string) (any, error) {
 	for _, property := range f.Provider.SupportedProperties() {
 		items, err := f.Provider.Locate(property, filter)
 		if err != nil {
