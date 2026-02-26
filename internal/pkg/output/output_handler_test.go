@@ -367,11 +367,13 @@ func TestOutputHandler_LocalFilter_Table(t *testing.T) {
 	t.Run("FiltersRows", func(t *testing.T) {
 		cmd := &cobra.Command{}
 		cmd.Flags().StringArray("localfilter", nil, "")
+		cmd.Flags().String("output", "", "")
 		cmd.Flags().Set("localfilter", "testproperty1=Row1TestValue1")
+		cmd.Flags().Set("output", "table")
 
 		o := NewOutputHandler()
 		output := test.CatchStdOut(t, func() {
-			err := o.Table(cmd, collectionMultipleRows)
+			err := o.Output(cmd, collectionMultipleRows)
 			assert.NoError(t, err)
 		})
 
@@ -382,11 +384,13 @@ func TestOutputHandler_LocalFilter_Table(t *testing.T) {
 	t.Run("NoMatchReturnsEmpty", func(t *testing.T) {
 		cmd := &cobra.Command{}
 		cmd.Flags().StringArray("localfilter", nil, "")
+		cmd.Flags().String("output", "", "")
 		cmd.Flags().Set("localfilter", "testproperty1=nonexistent")
+		cmd.Flags().Set("output", "table")
 
 		o := NewOutputHandler()
 		output := test.CatchStdOut(t, func() {
-			err := o.Table(cmd, collectionMultipleRows)
+			err := o.Output(cmd, collectionMultipleRows)
 			assert.NoError(t, err)
 		})
 
@@ -397,11 +401,13 @@ func TestOutputHandler_LocalFilter_Table(t *testing.T) {
 func TestOutputHandler_LocalFilter_CSV(t *testing.T) {
 	cmd := &cobra.Command{}
 	cmd.Flags().StringArray("localfilter", nil, "")
+	cmd.Flags().String("output", "", "")
 	cmd.Flags().Set("localfilter", "testproperty1=Row2TestValue1")
+	cmd.Flags().Set("output", "csv")
 
 	o := NewOutputHandler()
 	output := test.CatchStdOut(t, func() {
-		err := o.CSV(cmd, collectionMultipleRows)
+		err := o.Output(cmd, collectionMultipleRows)
 		assert.NoError(t, err)
 	})
 

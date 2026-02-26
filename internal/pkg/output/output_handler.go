@@ -73,12 +73,12 @@ func (o *OutputHandler) Output(cmd *cobra.Command, d any) error {
 
 	format, arg := ParseOutputFlag(flag)
 
+	d = o.applyLocalFilter(cmd, d)
+
 	switch format {
 	case "json":
-		d = o.applyLocalFilter(cmd, d)
 		return o.JSON(d, false)
 	case "json-pretty":
-		d = o.applyLocalFilter(cmd, d)
 		return o.JSON(d, true)
 	case "list":
 		return o.List(cmd, d)
@@ -87,13 +87,10 @@ func (o *OutputHandler) Output(cmd *cobra.Command, d any) error {
 	case "csv":
 		return o.CSV(cmd, d)
 	case "yaml":
-		d = o.applyLocalFilter(cmd, d)
 		return o.YAML(d)
 	case "jsonpath":
-		d = o.applyLocalFilter(cmd, d)
 		return o.JSONPath(arg, d)
 	case "template":
-		d = o.applyLocalFilter(cmd, d)
 		return o.Template(arg, d)
 	default:
 		Errorf("invalid output format [%s], defaulting to 'table'", format)
@@ -310,11 +307,6 @@ func (o *OutputHandler) getData(cmd *cobra.Command, d any) (filteredColumns []st
 		return
 	}
 
-	rows = o.filterRowsLocally(cmd, rows)
-	if len(rows) == 0 {
-		return
-	}
-
 	var filteredColumnNames []string
 	if cmd.Flags().Changed("property") {
 		filteredColumnNames, _ = cmd.Flags().GetStringSlice("property")
@@ -451,23 +443,7 @@ func getLocalFilters(cmd *cobra.Command) []connection.APIRequestFiltering {
 	return filters
 }
 
-// filterRowsLocally applies local filters to converted OrderedFields rows.
-func (o *OutputHandler) filterRowsLocally(cmd *cobra.Command, rows []*OrderedFields) []*OrderedFields {
-	filters := getLocalFilters(cmd)
-	if len(filters) == 0 {
-		return rows
-	}
-
-	var filtered []*OrderedFields
-	for _, row := range rows {
-		if matchesFilters(row, filters) {
-			filtered = append(filtered, row)
-		}
-	}
-	return filtered
-}
-
-// applyLocalFilter filters the original data for non-tabular output formats.
+// applyLocalFilter filters the original data using local filters.
 func (o *OutputHandler) applyLocalFilter(cmd *cobra.Command, d interface{}) interface{} {
 	filters := getLocalFilters(cmd)
 	if len(filters) == 0 {
