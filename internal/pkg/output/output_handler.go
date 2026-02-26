@@ -11,7 +11,9 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/ans-group/cli/internal/pkg/helper"
 	"github.com/ans-group/sdk-go/pkg/config"
+	"github.com/ans-group/sdk-go/pkg/connection"
 	"github.com/iancoleman/strcase"
 	"github.com/olekukonko/tablewriter"
 	"github.com/olekukonko/tablewriter/renderer"
@@ -73,8 +75,10 @@ func (o *OutputHandler) Output(cmd *cobra.Command, d interface{}) error {
 
 	switch format {
 	case "json":
+		d = o.applyLocalFilter(cmd, d)
 		return o.JSON(d, false)
 	case "json-pretty":
+		d = o.applyLocalFilter(cmd, d)
 		return o.JSON(d, true)
 	case "list":
 		return o.List(cmd, d)
@@ -83,10 +87,13 @@ func (o *OutputHandler) Output(cmd *cobra.Command, d interface{}) error {
 	case "csv":
 		return o.CSV(cmd, d)
 	case "yaml":
+		d = o.applyLocalFilter(cmd, d)
 		return o.YAML(d)
 	case "jsonpath":
+		d = o.applyLocalFilter(cmd, d)
 		return o.JSONPath(arg, d)
 	case "template":
+		d = o.applyLocalFilter(cmd, d)
 		return o.Template(arg, d)
 	default:
 		Errorf("invalid output format [%s], defaulting to 'table'", format)
@@ -303,6 +310,11 @@ func (o *OutputHandler) getData(cmd *cobra.Command, d interface{}) (filteredColu
 		return
 	}
 
+	rows = o.filterRowsLocally(cmd, rows)
+	if len(rows) == 0 {
+		return
+	}
+
 	var filteredColumnNames []string
 	if cmd.Flags().Changed("property") {
 		filteredColumnNames, _ = cmd.Flags().GetStringSlice("property")
@@ -421,6 +433,69 @@ func (o *OutputHandler) convertField(d interface{}, v *OrderedFields, fieldName 
 
 	v.Set(fieldName, fmt.Sprintf("%v", reflectedValue.Interface()))
 	return v
+}
+
+// getLocalFilters parses the --localfilter flag values into APIRequestFiltering structs.
+func getLocalFilters(cmd *cobra.Command) []connection.APIRequestFiltering {
+	if cmd.Flags().Lookup("localfilter") == nil || !cmd.Flags().Changed("localfilter") {
+		return nil
+	}
+
+	flagValues, _ := cmd.Flags().GetStringArray("localfilter")
+	filters, err := helper.GetFilteringArrayFromStringArrayFlagValue(flagValues)
+	if err != nil {
+		Errorf("invalid local filter: %s", err)
+		return nil
+	}
+
+	return filters
+}
+
+// filterRowsLocally applies local filters to converted OrderedFields rows.
+func (o *OutputHandler) filterRowsLocally(cmd *cobra.Command, rows []*OrderedFields) []*OrderedFields {
+	filters := getLocalFilters(cmd)
+	if len(filters) == 0 {
+		return rows
+	}
+
+	var filtered []*OrderedFields
+	for _, row := range rows {
+		if matchesFilters(row, filters) {
+			filtered = append(filtered, row)
+		}
+	}
+	return filtered
+}
+
+// applyLocalFilter filters the original data for non-tabular output formats.
+func (o *OutputHandler) applyLocalFilter(cmd *cobra.Command, d interface{}) interface{} {
+	filters := getLocalFilters(cmd)
+	if len(filters) == 0 {
+		return d
+	}
+
+	rows := o.convert(d, reflect.ValueOf(d))
+	if len(rows) == 0 {
+		return d
+	}
+
+	reflectedValue := reflect.ValueOf(d)
+	if reflectedValue.Kind() != reflect.Slice {
+		// For non-slice data, return as-is if it matches, otherwise return nil
+		if len(rows) == 1 && matchesFilters(rows[0], filters) {
+			return d
+		}
+		return reflect.MakeSlice(reflect.SliceOf(reflectedValue.Type()), 0, 0).Interface()
+	}
+
+	// Build a filtered slice keeping only items whose rows match
+	resultSlice := reflect.MakeSlice(reflectedValue.Type(), 0, reflectedValue.Len())
+	for i := 0; i < reflectedValue.Len(); i++ {
+		if i < len(rows) && matchesFilters(rows[i], filters) {
+			resultSlice = reflect.Append(resultSlice, reflectedValue.Index(i))
+		}
+	}
+	return resultSlice.Interface()
 }
 
 func formatListPropertyValue(property string, value string, maxPropertyLength int) string {

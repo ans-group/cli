@@ -24,7 +24,7 @@ func TestOutputHandler_JSON(t *testing.T) {
 		o := NewOutputHandler()
 
 		output := test.CatchStdOut(t, func() {
-			err := o.JSON("test")
+			err := o.JSON("test", false)
 			assert.NoError(t, err)
 		})
 
@@ -34,7 +34,7 @@ func TestOutputHandler_JSON(t *testing.T) {
 	t.Run("MarshalError", func(t *testing.T) {
 		o := NewOutputHandler()
 
-		err := o.JSON(func() {})
+		err := o.JSON(func() {}, false)
 
 		assert.Error(t, err)
 		assert.Contains(t, err.Error(), "failed to marshal json")
@@ -361,4 +361,84 @@ func TestOutputHandler_AdditionalColumnsWithPropertyFilter(t *testing.T) {
 		expected := "+----------------+----------------+----------------+\n| TESTPROPERTY 1 | TESTPROPERTY 2 | TESTPROPERTY 3 |\n+----------------+----------------+----------------+\n| Row1TestValue1 | Row1TestValue2 | Row1TestValue3 |\n+----------------+----------------+----------------+\n"
 		assert.Equal(t, expected, output)
 	})
+}
+
+func TestOutputHandler_LocalFilter_Table(t *testing.T) {
+	t.Run("FiltersRows", func(t *testing.T) {
+		cmd := &cobra.Command{}
+		cmd.Flags().StringArray("localfilter", nil, "")
+		cmd.Flags().Set("localfilter", "testproperty1=Row1TestValue1")
+
+		o := NewOutputHandler()
+		output := test.CatchStdOut(t, func() {
+			err := o.Table(cmd, collectionMultipleRows)
+			assert.NoError(t, err)
+		})
+
+		assert.Contains(t, output, "Row1TestValue1")
+		assert.NotContains(t, output, "Row2TestValue1")
+	})
+
+	t.Run("NoMatchReturnsEmpty", func(t *testing.T) {
+		cmd := &cobra.Command{}
+		cmd.Flags().StringArray("localfilter", nil, "")
+		cmd.Flags().Set("localfilter", "testproperty1=nonexistent")
+
+		o := NewOutputHandler()
+		output := test.CatchStdOut(t, func() {
+			err := o.Table(cmd, collectionMultipleRows)
+			assert.NoError(t, err)
+		})
+
+		assert.Equal(t, "", output)
+	})
+}
+
+func TestOutputHandler_LocalFilter_CSV(t *testing.T) {
+	cmd := &cobra.Command{}
+	cmd.Flags().StringArray("localfilter", nil, "")
+	cmd.Flags().Set("localfilter", "testproperty1=Row2TestValue1")
+
+	o := NewOutputHandler()
+	output := test.CatchStdOut(t, func() {
+		err := o.CSV(cmd, collectionMultipleRows)
+		assert.NoError(t, err)
+	})
+
+	assert.Contains(t, output, "Row2TestValue1")
+	assert.NotContains(t, output, "Row1TestValue1")
+}
+
+func TestOutputHandler_LocalFilter_JSON(t *testing.T) {
+	cmd := &cobra.Command{}
+	cmd.Flags().StringArray("localfilter", nil, "")
+	cmd.Flags().String("output", "", "")
+	cmd.Flags().Set("localfilter", "testproperty1=Row1TestValue1")
+	cmd.Flags().Set("output", "json")
+
+	o := NewOutputHandler()
+	output := test.CatchStdOut(t, func() {
+		err := o.Output(cmd, collectionMultipleRows)
+		assert.NoError(t, err)
+	})
+
+	assert.Contains(t, output, "Row1TestValue1")
+	assert.NotContains(t, output, "Row2TestValue1")
+}
+
+func TestOutputHandler_LocalFilter_YAML(t *testing.T) {
+	cmd := &cobra.Command{}
+	cmd.Flags().StringArray("localfilter", nil, "")
+	cmd.Flags().String("output", "", "")
+	cmd.Flags().Set("localfilter", "testproperty1=Row1TestValue1")
+	cmd.Flags().Set("output", "yaml")
+
+	o := NewOutputHandler()
+	output := test.CatchStdOut(t, func() {
+		err := o.Output(cmd, collectionMultipleRows)
+		assert.NoError(t, err)
+	})
+
+	assert.Contains(t, output, "Row1TestValue1")
+	assert.NotContains(t, output, "Row2TestValue1")
 }
