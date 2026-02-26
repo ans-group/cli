@@ -39,7 +39,7 @@ func (p *SafeDNSTemplateLocatorProvider) SupportedProperties() []string {
 	return []string{"name"}
 }
 
-func (p *SafeDNSTemplateLocatorProvider) Locate(property string, value string) (interface{}, error) {
+func (p *SafeDNSTemplateLocatorProvider) Locate(property string, value string) (any, error) {
 	params := connection.APIRequestParameters{}
 	params.WithFilter(connection.APIRequestFiltering{Property: property, Operator: connection.EQOperator, Value: []string{value}})
 

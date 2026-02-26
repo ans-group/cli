@@ -42,7 +42,7 @@ type ProvidesFields interface {
 	Fields() []*OrderedFields
 }
 
-type OutputHandlerOpts map[string]interface{}
+type OutputHandlerOpts map[string]any
 
 type OutputHandler struct {
 	additionalColumns []string
@@ -56,7 +56,7 @@ func NewOutputHandler(opts ...OutputHandlerOption) *OutputHandler {
 	return h
 }
 
-func (o *OutputHandler) Output(cmd *cobra.Command, d interface{}) error {
+func (o *OutputHandler) Output(cmd *cobra.Command, d any) error {
 	var flag string
 
 	if cmd.Flags().Changed("output") {
@@ -103,7 +103,7 @@ func (o *OutputHandler) Output(cmd *cobra.Command, d interface{}) error {
 	}
 }
 
-func (o *OutputHandler) JSON(d interface{}, pretty bool) error {
+func (o *OutputHandler) JSON(d any, pretty bool) error {
 	var out []byte
 	var err error
 	if pretty {
@@ -121,7 +121,7 @@ func (o *OutputHandler) JSON(d interface{}, pretty bool) error {
 }
 
 // Table takes an array of mapped fields (key being lowercased name), and outputs a table
-func (o *OutputHandler) Table(cmd *cobra.Command, d interface{}) error {
+func (o *OutputHandler) Table(cmd *cobra.Command, d any) error {
 	columns, rows := o.getData(cmd, d)
 	if len(rows) < 1 {
 		return nil
@@ -166,7 +166,7 @@ func (o *OutputHandler) Table(cmd *cobra.Command, d interface{}) error {
 
 // List will format specified rows using given includeProperties by extracting fields,
 // and output them to stdout
-func (o *OutputHandler) List(cmd *cobra.Command, d interface{}) error {
+func (o *OutputHandler) List(cmd *cobra.Command, d any) error {
 	columns, rows := o.getData(cmd, d)
 	if len(rows) < 1 {
 		return nil
@@ -193,7 +193,7 @@ func (o *OutputHandler) List(cmd *cobra.Command, d interface{}) error {
 
 // Value will format specified rows using given includeProperties by extracting field values,
 // and output them to stdout
-func (o *OutputHandler) Value(cmd *cobra.Command, d interface{}) error {
+func (o *OutputHandler) Value(cmd *cobra.Command, d any) error {
 	columns, rows := o.getData(cmd, d)
 	if len(rows) < 1 {
 		return nil
@@ -211,7 +211,7 @@ func (o *OutputHandler) Value(cmd *cobra.Command, d interface{}) error {
 }
 
 // YAML marshals and outputs value v to stdout
-func (o *OutputHandler) YAML(d interface{}) error {
+func (o *OutputHandler) YAML(d any) error {
 	out, err := yaml.Marshal(d)
 	if err != nil {
 		return fmt.Errorf("failed to marshal yaml: %s", err)
@@ -223,7 +223,7 @@ func (o *OutputHandler) YAML(d interface{}) error {
 }
 
 // JSONPath marshals and outputs value v to stdout
-func (o *OutputHandler) JSONPath(query string, d interface{}) error {
+func (o *OutputHandler) JSONPath(query string, d any) error {
 	j := jsonpath.New("clioutput")
 	err := j.Parse(query)
 	if err != nil {
@@ -239,7 +239,7 @@ func (o *OutputHandler) JSONPath(query string, d interface{}) error {
 }
 
 // CSV outputs provided rows as CSV to stdout
-func (o *OutputHandler) CSV(cmd *cobra.Command, d interface{}) error {
+func (o *OutputHandler) CSV(cmd *cobra.Command, d any) error {
 	columns, rows := o.getData(cmd, d)
 	if len(rows) < 1 {
 		return nil
@@ -277,7 +277,7 @@ func (o *OutputHandler) CSV(cmd *cobra.Command, d interface{}) error {
 
 // Template will format i with given Golang template t, and output resulting string
 // to stdout
-func (o *OutputHandler) Template(t string, d interface{}) error {
+func (o *OutputHandler) Template(t string, d any) error {
 	tmpl, err := template.New("output").Parse(t)
 	if err != nil {
 		return fmt.Errorf("failed to create template: %s", err.Error())
@@ -304,7 +304,7 @@ func (o *OutputHandler) Template(t string, d interface{}) error {
 	return nil
 }
 
-func (o *OutputHandler) getData(cmd *cobra.Command, d interface{}) (filteredColumns []string, filteredRows [][]string) {
+func (o *OutputHandler) getData(cmd *cobra.Command, d any) (filteredColumns []string, filteredRows [][]string) {
 	rows := o.convert(d, reflect.ValueOf(d))
 	if len(rows) == 0 {
 		return
@@ -350,7 +350,7 @@ func (o *OutputHandler) getData(cmd *cobra.Command, d interface{}) (filteredColu
 	return filteredColumns, filteredRows
 }
 
-func (o *OutputHandler) convert(d interface{}, reflectedValue reflect.Value) []*OrderedFields {
+func (o *OutputHandler) convert(d any, reflectedValue reflect.Value) []*OrderedFields {
 	if dProvidesFields, ok := d.(ProvidesFields); ok {
 		return dProvidesFields.Fields()
 	}
@@ -369,7 +369,7 @@ func (o *OutputHandler) convert(d interface{}, reflectedValue reflect.Value) []*
 	return fields
 }
 
-func (o *OutputHandler) convertField(d interface{}, v *OrderedFields, fieldName string, reflectedValue reflect.Value) *OrderedFields {
+func (o *OutputHandler) convertField(d any, v *OrderedFields, fieldName string, reflectedValue reflect.Value) *OrderedFields {
 	if dHandlesFields, ok := d.(HandlesFields); ok {
 		fieldHandlers := dHandlesFields.FieldValueHandlers()
 		if fieldHandlers != nil && fieldHandlers[fieldName] != nil {
@@ -423,7 +423,7 @@ func (o *OutputHandler) convertField(d interface{}, v *OrderedFields, fieldName 
 	case reflect.Float32, reflect.Float64:
 		v.Set(fieldName, fmt.Sprintf("%f", reflectedValue.Float()))
 		return v
-	case reflect.Ptr:
+	case reflect.Pointer:
 		if !reflectedValue.IsNil() {
 			return o.convertField(d, v, fieldName, reflectedValue.Elem())
 		}

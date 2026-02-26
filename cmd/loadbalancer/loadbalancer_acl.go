@@ -242,7 +242,7 @@ func loadbalancerACLDelete(service loadbalancer.LoadBalancerService, cmd *cobra.
 
 type aclArgument struct {
 	Name  string
-	Value interface{}
+	Value any
 	Array bool
 }
 
@@ -258,8 +258,8 @@ func parseACLArguments(args []string) (map[string]loadbalancer.ACLArgument, erro
 		argValue := parts[1]
 		existingArg := false
 
-		if strings.HasSuffix(argName, "[]") {
-			argNameTrimmed := strings.TrimSuffix(argName, "[]")
+		if before, ok := strings.CutSuffix(argName, "[]"); ok {
+			argNameTrimmed := before
 
 			for _, searchArg := range tmpArguments {
 				if searchArg.Name == argNameTrimmed && searchArg.Array {

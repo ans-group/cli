@@ -14,7 +14,7 @@ import (
 )
 
 // InferTypeFromStringFlagValue will return a int, bool or string, based on value of flag
-func InferTypeFromStringFlagValue(flag string) interface{} {
+func InferTypeFromStringFlagValue(flag string) any {
 	intValue, err := strconv.Atoi(flag)
 	if err == nil {
 		return intValue
@@ -115,8 +115,8 @@ func GetFilteringFromStringFlagValue(filter string) (connection.APIRequestFilter
 
 	// Sanitize comma-separated value by trimming spaces following split
 	var sanitizedValues []string
-	values := strings.Split(filteringKVParts[1], ",")
-	for _, value := range values {
+	values := strings.SplitSeq(filteringKVParts[1], ",")
+	for value := range values {
 		sanitizedValues = append(sanitizedValues, strings.TrimSpace(value))
 	}
 
