@@ -55,7 +55,7 @@ func configContextUpdate(fs afero.Fs, cmd *cobra.Command, args []string) error {
 
 	updateCurrentContext, _ := cmd.Flags().GetBool("current")
 
-	set := func(name string, flagName string, value interface{}) {
+	set := func(name string, flagName string, value any) {
 		if cmd.Flags().Changed(flagName) {
 			if updateCurrentContext {
 				err := config.SetCurrentContext(name, value)

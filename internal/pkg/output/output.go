@@ -56,7 +56,7 @@ func Error(str string) {
 }
 
 // Errorf writes specified string with formatting to stderr
-func Errorf(format string, a ...interface{}) {
+func Errorf(format string, a ...any) {
 	Error(fmt.Sprintf(format, a...))
 }
 
@@ -69,7 +69,7 @@ func Fatal(str string) {
 
 // Fatalf writes specified string with formatting to stderr and calls
 // outputExit to exit with 1
-func Fatalf(format string, a ...interface{}) {
+func Fatalf(format string, a ...any) {
 	Fatal(fmt.Sprintf(format, a...))
 }
 
@@ -82,13 +82,13 @@ func OutputWithCustomErrorLevel(level int, str string) {
 
 // OutputWithCustomErrorLevelf is a wrapper for OutputWithCustomErrorLevel, which sets global
 // var errorLevel with provided level
-func OutputWithCustomErrorLevelf(level int, format string, a ...interface{}) {
+func OutputWithCustomErrorLevelf(level int, format string, a ...any) {
 	OutputWithCustomErrorLevel(level, fmt.Sprintf(format, a...))
 }
 
 // OutputWithErrorLevelf is a wrapper for OutputWithCustomErrorLevelf, which sets global
 // var errorLevel to 1
-func OutputWithErrorLevelf(format string, a ...interface{}) {
+func OutputWithErrorLevelf(format string, a ...any) {
 	OutputWithCustomErrorLevelf(1, format, a...)
 }
 
@@ -102,7 +102,7 @@ func ExitWithErrorLevel() {
 	outputExit(errorLevel)
 }
 
-func CommandOutputPaginated[T any](cmd *cobra.Command, d interface{}, paginated *connection.Paginated[T]) error {
+func CommandOutputPaginated[T any](cmd *cobra.Command, d any, paginated *connection.Paginated[T]) error {
 	err := CommandOutput(cmd, d)
 	if err != nil {
 		return err
@@ -112,6 +112,6 @@ func CommandOutputPaginated[T any](cmd *cobra.Command, d interface{}, paginated 
 	return nil
 }
 
-func CommandOutput(cmd *cobra.Command, d interface{}, opts ...OutputHandlerOption) error {
+func CommandOutput(cmd *cobra.Command, d any, opts ...OutputHandlerOption) error {
 	return NewOutputHandler(opts...).Output(cmd, d)
 }

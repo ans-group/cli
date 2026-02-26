@@ -24,7 +24,7 @@ func TestOutputHandler_JSON(t *testing.T) {
 		o := NewOutputHandler()
 
 		output := test.CatchStdOut(t, func() {
-			err := o.JSON("test")
+			err := o.JSON("test", false)
 			assert.NoError(t, err)
 		})
 
@@ -34,7 +34,7 @@ func TestOutputHandler_JSON(t *testing.T) {
 	t.Run("MarshalError", func(t *testing.T) {
 		o := NewOutputHandler()
 
-		err := o.JSON(func() {})
+		err := o.JSON(func() {}, false)
 
 		assert.Error(t, err)
 		assert.Contains(t, err.Error(), "failed to marshal json")
