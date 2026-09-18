@@ -247,6 +247,33 @@ func Test_safednsZoneRecordCreate(t *testing.T) {
 		safednsZoneRecordCreate(service, cmd, []string{"testdomain1.com"})
 	})
 
+	t.Run("DefaultCreate_WithTTL", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+		cmd := safednsZoneRecordCreateCmd(nil)
+		cmd.Flags().Set("name", "www.testdomain1.com")
+		cmd.Flags().Set("type", "A")
+		cmd.Flags().Set("content", "1.2.3.4")
+		cmd.Flags().Set("ttl", "3600")
+
+		expectedTTL := safedns.RecordTTL(3600)
+		expectedRequest := safedns.CreateRecordRequest{
+			Name:    "www.testdomain1.com",
+			Type:    "A",
+			Content: "1.2.3.4",
+			TTL:     &expectedTTL,
+		}
+
+		gomock.InOrder(
+			service.EXPECT().CreateZoneRecord("testdomain1.com", expectedRequest).Return(123, nil),
+			service.EXPECT().GetZoneRecord("testdomain1.com", 123).Return(safedns.Record{}, nil),
+		)
+
+		safednsZoneRecordCreate(service, cmd, []string{"testdomain1.com"})
+	})
+
 	t.Run("CreateZoneRecordError_ReturnsError", func(t *testing.T) {
 
 		mockCtrl := gomock.NewController(t)
@@ -366,6 +393,26 @@ func Test_safednsZoneRecordUpdate(t *testing.T) {
 			service.EXPECT().PatchZoneRecord("testdomain1.com", 123, gomock.Any()).Return(123, nil).Do(func(zoneName string, recordID int, req safedns.PatchRecordRequest) {
 				if req.Priority == nil || *req.Priority != 0 {
 					t.Fatal("Unexpected record priority")
+				}
+			}),
+			service.EXPECT().GetZoneRecord("testdomain1.com", 123).Return(safedns.Record{}, nil),
+		)
+
+		safednsZoneRecordUpdate(service, cmd, []string{"testdomain1.com", "123"})
+	})
+
+	t.Run("Update_WithTTL", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockSafeDNSService(mockCtrl)
+		cmd := safednsZoneRecordUpdateCmd(nil)
+		cmd.Flags().Set("ttl", "3600")
+
+		gomock.InOrder(
+			service.EXPECT().PatchZoneRecord("testdomain1.com", 123, gomock.Any()).Return(123, nil).Do(func(zoneName string, recordID int, req safedns.PatchRecordRequest) {
+				if req.TTL == nil || *req.TTL != safedns.RecordTTL(3600) {
+					t.Fatal("Unexpected record ttl")
 				}
 			}),
 			service.EXPECT().GetZoneRecord("testdomain1.com", 123).Return(safedns.Record{}, nil),
