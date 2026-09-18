@@ -158,6 +158,7 @@ func safednsZoneRecordCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().String("content", "", "Record content")
 	_ = cmd.MarkFlagRequired("content")
 	cmd.Flags().Int("priority", 0, "Record priority. Only applicable with MX and SRV type records")
+	cmd.Flags().Int("ttl", 0, "Record TTL")
 
 	return cmd
 }
@@ -180,6 +181,12 @@ func safednsZoneRecordCreate(service safedns.SafeDNSService, cmd *cobra.Command,
 	if cmd.Flags().Changed("priority") {
 		recordPriority, _ := cmd.Flags().GetInt("priority")
 		createRequest.Priority = ptr.Int(recordPriority)
+	}
+
+	if cmd.Flags().Changed("ttl") {
+		recordTTLRaw, _ := cmd.Flags().GetInt("ttl")
+		recordTTL := safedns.RecordTTL(recordTTLRaw)
+		createRequest.TTL = &recordTTL
 	}
 
 	id, err := service.CreateZoneRecord(args[0], createRequest)
@@ -224,6 +231,7 @@ func safednsZoneRecordUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().String("type", "", "Type of record")
 	cmd.Flags().String("content", "", "Record content")
 	cmd.Flags().Int("priority", 0, "Record priority. Only applicable with MX type records")
+	cmd.Flags().Int("ttl", 0, "Record TTL")
 
 	return cmd
 }
@@ -246,6 +254,12 @@ func safednsZoneRecordUpdate(service safedns.SafeDNSService, cmd *cobra.Command,
 	if cmd.Flags().Changed("priority") {
 		recordPriority, _ := cmd.Flags().GetInt("priority")
 		patchRequest.Priority = ptr.Int(recordPriority)
+	}
+
+	if cmd.Flags().Changed("ttl") {
+		recordTTLRaw, _ := cmd.Flags().GetInt("ttl")
+		recordTTL := safedns.RecordTTL(recordTTLRaw)
+		patchRequest.TTL = &recordTTL
 	}
 
 	var zoneRecords []safedns.Record
