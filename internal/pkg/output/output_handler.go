@@ -8,6 +8,7 @@ import (
 	"html/template"
 	"os"
 	"reflect"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -54,6 +55,28 @@ func NewOutputHandler(opts ...OutputHandlerOption) *OutputHandler {
 		opt(h)
 	}
 	return h
+}
+
+// ValidFormats contains the output format names understood by OutputHandler.Output.
+// Must be kept in step with the switch within that method - any other format falls back
+// to 'table'
+var ValidFormats = []string{
+	"table",
+	"json",
+	"json-pretty",
+	"yaml",
+	"csv",
+	"value",
+	"list",
+	"template",
+	"jsonpath",
+}
+
+// IsValidFormat returns true when the provided format name is understood by
+// OutputHandler.Output. The name must be parsed from any flag value first, as formats
+// may carry an argument, e.g. 'jsonpath={.id}'
+func IsValidFormat(format string) bool {
+	return slices.Contains(ValidFormats, format)
 }
 
 func (o *OutputHandler) Output(cmd *cobra.Command, d any) error {

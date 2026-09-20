@@ -62,6 +62,7 @@ func Execute(build build.BuildInfo) {
 
 	// Child commands
 	rootCmd.AddCommand(updateCmd())
+	rootCmd.AddCommand(doctorCmd(clientFactory))
 
 	// Child root commands
 	rootCmd.AddCommand(configcmd.ConfigRootCmd(fs))
