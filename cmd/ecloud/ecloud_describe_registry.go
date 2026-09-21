@@ -91,12 +91,12 @@ var ecloudDescribeDescriptors = []describeDescriptor{
 		},
 	},
 	{
-		Prefix: "bkupgs",
+		Prefix: "bgws",
 		Name:   "Backup gateway specification",
 		Fetch:  describeFetch(ecloud.ECloudService.GetBackupGatewaySpecification),
 	},
 	{
-		Prefix: "bkupgw",
+		Prefix: "bgw",
 		Name:   "Backup gateway",
 		Fetch:  describeFetch(ecloud.ECloudService.GetBackupGateway),
 	},
@@ -339,7 +339,7 @@ var ecloudDescribeDescriptors = []describeDescriptor{
 		Fetch:  describeFetch(ecloud.ECloudService.GetVPNEndpoint),
 	},
 	{
-		Prefix: "vpng",
+		Prefix: "vgw",
 		Name:   "VPN gateway",
 		Fetch:  describeFetch(ecloud.ECloudService.GetVPNGateway),
 		Children: []describeChild{
@@ -347,7 +347,7 @@ var ecloudDescribeDescriptors = []describeDescriptor{
 		},
 	},
 	{
-		Prefix: "vpngs",
+		Prefix: "vgws",
 		Name:   "VPN gateway specification",
 		Fetch:  describeFetch(ecloud.ECloudService.GetVPNGatewaySpecification),
 		Children: []describeChild{
@@ -355,7 +355,7 @@ var ecloudDescribeDescriptors = []describeDescriptor{
 		},
 	},
 	{
-		Prefix: "vpngu",
+		Prefix: "vgwu",
 		Name:   "VPN gateway user",
 		Fetch:  describeFetch(ecloud.ECloudService.GetVPNGatewayUser),
 	},
