@@ -300,6 +300,37 @@ This command in-place updates the CLI, with the old binary moved to `ans.old` (`
 
 If you are upgrading from the old `ukfast` client, you will need to install this client from scratch. You will need to rename `~/.ukfast.yml` to `~/.ans.yml` and ensure any environment variables are updated to use the new `ANS_` prefix, e.g. `UKF_ECLOUD_VPC=true` becomes `ANS_ECLOUD_VPC=true`.
 
+## Diagnostics
+
+The `doctor` command performs a read-only set of checks against your configuration and the ANS API, reporting whether the CLI is correctly configured and which services your API key can reach:
+
+```
+> ans doctor
+CHECK                    STATUS  DETAIL
+config file              ok      /home/someuser/.ans.yml
+current context          ok      somecontext
+api key                  ok      set (32 chars)
+config: output.default   ok      not set (defaults to table)
+config: contexts         ok      2 context(s) configured, all with an api key
+api connectivity         ok      342ms
+api authentication       ok      authenticated
+service: account         ok      reachable
+service: ecloud          ok      reachable
+service: safedns         warn    403 - api key lacks the required role for this service
+cli version              warn    v1.9.0 (latest is v1.10.2)
+```
+
+Service reachability is established empirically, by issuing a single cheap read against each service. The API key is never printed. The command exits non-zero if any check fails, so it can be used in CI and setup scripts - warnings do not affect the exit code.
+
+The following flags are available:
+
+| Flag | Description |
+| --- | --- |
+| `--all-contexts` | Runs the credential and connectivity checks for every configured context |
+| `--application` | Reports the declared service scopes and IP restrictions for the given API application ID. These cannot be determined for the key currently in use, as the API provides no endpoint for describing the caller |
+| `--skip-services` | Skips the per-service probes, for a faster configuration-only check |
+| `--skip-version-check` | Skips the CLI version check, the only check which contacts a non-ANS host |
+
 ## Shell autocompletions
 
 The CLI supports generating shell completions for the following shells:
