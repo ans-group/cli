@@ -13,7 +13,6 @@ import (
 	registrarcmd "github.com/ans-group/cli/cmd/registrar"
 	safednscmd "github.com/ans-group/cli/cmd/safedns"
 	sslcmd "github.com/ans-group/cli/cmd/ssl"
-	storagecmd "github.com/ans-group/cli/cmd/storage"
 	"github.com/ans-group/cli/internal/pkg/build"
 	"github.com/ans-group/cli/internal/pkg/factory"
 	"github.com/ans-group/cli/internal/pkg/output"
@@ -78,7 +77,6 @@ func Execute(build build.BuildInfo) {
 	rootCmd.AddCommand(registrarcmd.RegistrarRootCmd(clientFactory))
 	rootCmd.AddCommand(safednscmd.SafeDNSRootCmd(clientFactory))
 	rootCmd.AddCommand(sslcmd.SSLRootCmd(clientFactory, fs))
-	rootCmd.AddCommand(storagecmd.StorageRootCmd(clientFactory))
 
 	if err := rootCmd.Execute(); err != nil {
 		output.Fatal(err.Error())
