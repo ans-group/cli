@@ -3,7 +3,7 @@ module github.com/ans-group/cli
 go 1.26.0
 
 require (
-	github.com/ans-group/sdk-go v1.27.0
+	github.com/ans-group/sdk-go v1.28.0
 	github.com/blang/semver v3.5.1+incompatible
 	github.com/golang/mock v1.6.0
 	github.com/iancoleman/strcase v0.3.0
@@ -28,7 +28,7 @@ require (
 	github.com/fatih/color v1.19.0 // indirect
 	github.com/fsnotify/fsnotify v1.10.1 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
-	github.com/go-playground/universal-translator v0.18.1 // indirect
+	github.com/go-playground/universal-translator v0.18.2 // indirect
 	github.com/go-viper/mapstructure/v2 v2.5.0 // indirect
 	github.com/goccy/go-json v0.10.6 // indirect
 	github.com/google/go-github/v30 v30.1.0 // indirect
@@ -51,7 +51,7 @@ require (
 	github.com/spf13/viper v1.21.0 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
 	github.com/tcnksm/go-gitconfig v0.1.2 // indirect
-	github.com/ulikunitz/xz v0.5.16 // indirect
+	github.com/ulikunitz/xz v0.5.17 // indirect
 	go.yaml.in/yaml/v3 v3.0.5 // indirect
 	golang.org/x/crypto v0.57.0 // indirect
 	golang.org/x/oauth2 v0.37.0 // indirect
