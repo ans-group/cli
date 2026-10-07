@@ -98,6 +98,12 @@ func OutputWithErrorLevel(str string) {
 	OutputWithCustomErrorLevel(1, str)
 }
 
+// SetErrorLevel sets global var errorLevel to the provided level, without writing any
+// output. Useful for commands which report their own failures within their output
+func SetErrorLevel(level int) {
+	errorLevel = level
+}
+
 func ExitWithErrorLevel() {
 	outputExit(errorLevel)
 }
