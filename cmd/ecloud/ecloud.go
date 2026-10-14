@@ -36,6 +36,7 @@ func ECloudRootCmd(f factory.ClientFactory, fs afero.Fs) *cobra.Command {
 	}
 	// -- eCloud VPC
 	if vpcEnvSet || !v1envset {
+		cmd.AddCommand(ecloudDescribeCmd(f))
 		cmd.AddCommand(ecloudAvailabilityZoneRootCmd(f))
 		cmd.AddCommand(ecloudDHCPRootCmd(f))
 		cmd.AddCommand(ecloudFirewallPolicyRootCmd(f))
