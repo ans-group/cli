@@ -339,13 +339,13 @@ func (m ConsoleSessionCollection) Fields() []*output.OrderedFields {
 type VPCCollection []ecloud.VPC
 
 func (m VPCCollection) DefaultColumns() []string {
-	return []string{"id", "name", "region_id", "sync_status"}
+	return []string{"id", "name", "region_id", "sync.status"}
 }
 
 type InstanceCollection []ecloud.Instance
 
 func (m InstanceCollection) DefaultColumns() []string {
-	return []string{"id", "name", "vpc_id", "vcpu_sockets", "vcpu_cores_per_socket", "ram_capacity", "sync_status"}
+	return []string{"id", "name", "vpc_id", "vcpu_sockets", "vcpu_cores_per_socket", "ram_capacity", "sync.status"}
 }
 
 // HiddenFields hides the legacy backup_enabled field, which is computed as
@@ -378,13 +378,13 @@ func (m InstanceCollection) FieldValueHandlers() map[string]output.FieldValueHan
 type FloatingIPCollection []ecloud.FloatingIP
 
 func (m FloatingIPCollection) DefaultColumns() []string {
-	return []string{"id", "name", "ip_address", "sync_status"}
+	return []string{"id", "name", "ip_address", "sync.status"}
 }
 
 type FirewallPolicyCollection []ecloud.FirewallPolicy
 
 func (m FirewallPolicyCollection) DefaultColumns() []string {
-	return []string{"id", "name", "router_id", "sync_status"}
+	return []string{"id", "name", "router_id", "sync.status"}
 }
 
 type FirewallRuleCollection []ecloud.FirewallRule
@@ -408,7 +408,7 @@ func (m RegionCollection) DefaultColumns() []string {
 type VolumeCollection []ecloud.Volume
 
 func (m VolumeCollection) DefaultColumns() []string {
-	return []string{"id", "name", "type", "capacity", "sync_status"}
+	return []string{"id", "name", "type", "capacity", "sync.status"}
 }
 
 type CredentialCollection []ecloud.Credential
@@ -426,19 +426,19 @@ func (m NICCollection) DefaultColumns() []string {
 type RouterCollection []ecloud.Router
 
 func (m RouterCollection) DefaultColumns() []string {
-	return []string{"id", "name", "vpc_id", "availability_zone_id", "sync_status"}
+	return []string{"id", "name", "vpc_id", "availability_zone_id", "sync.status"}
 }
 
 type NetworkCollection []ecloud.Network
 
 func (m NetworkCollection) DefaultColumns() []string {
-	return []string{"id", "name", "router_id", "subnet", "sync_status"}
+	return []string{"id", "name", "router_id", "subnet", "sync.status"}
 }
 
 type DHCPCollection []ecloud.DHCP
 
 func (m DHCPCollection) DefaultColumns() []string {
-	return []string{"id", "vpc_id", "availability_zone_id", "sync_status"}
+	return []string{"id", "vpc_id", "availability_zone_id", "sync.status"}
 }
 
 type RouterThroughputCollection []ecloud.RouterThroughput
@@ -480,7 +480,7 @@ func (m TaskCollection) DefaultColumns() []string {
 type NetworkPolicyCollection []ecloud.NetworkPolicy
 
 func (m NetworkPolicyCollection) DefaultColumns() []string {
-	return []string{"id", "name", "router_id", "sync_status"}
+	return []string{"id", "name", "router_id", "sync.status"}
 }
 
 type NetworkRuleCollection []ecloud.NetworkRule
@@ -498,13 +498,13 @@ func (m NetworkRulePortCollection) DefaultColumns() []string {
 type HostGroupCollection []ecloud.HostGroup
 
 func (m HostGroupCollection) DefaultColumns() []string {
-	return []string{"id", "name", "vpc_id", "sync_status"}
+	return []string{"id", "name", "vpc_id", "sync.status"}
 }
 
 type HostCollection []ecloud.Host
 
 func (m HostCollection) DefaultColumns() []string {
-	return []string{"id", "name", "host_group_id", "sync_status"}
+	return []string{"id", "name", "host_group_id", "sync.status"}
 }
 
 type HostSpecCollection []ecloud.HostSpec
@@ -522,19 +522,19 @@ func (m AvailabilityZoneCollection) DefaultColumns() []string {
 type VPNServiceCollection []ecloud.VPNService
 
 func (m VPNServiceCollection) DefaultColumns() []string {
-	return []string{"id", "name", "router_id", "vpc_id", "sync_status"}
+	return []string{"id", "name", "router_id", "vpc_id", "sync.status"}
 }
 
 type VPNEndpointCollection []ecloud.VPNEndpoint
 
 func (m VPNEndpointCollection) DefaultColumns() []string {
-	return []string{"id", "name", "vpn_service_id", "floating_ip_id", "sync_status"}
+	return []string{"id", "name", "vpn_service_id", "floating_ip_id", "sync.status"}
 }
 
 type VPNSessionCollection []ecloud.VPNSession
 
 func (m VPNSessionCollection) DefaultColumns() []string {
-	return []string{"id", "name", "vpn_service_id", "vpn_endpoint_id", "remote_ip", "sync_status", "tunnel_details_session_state"}
+	return []string{"id", "name", "vpn_service_id", "vpn_endpoint_id", "remote_ip", "sync.status", "tunnel_details_session_state"}
 }
 
 type VPNProfileGroupCollection []ecloud.VPNProfileGroup
@@ -552,13 +552,13 @@ func (m VPNSessionPreSharedKeyCollection) DefaultColumns() []string {
 type VolumeGroupCollection []ecloud.VolumeGroup
 
 func (m VolumeGroupCollection) DefaultColumns() []string {
-	return []string{"id", "name", "vpc_id", "availability_zone_id", "sync_status"}
+	return []string{"id", "name", "vpc_id", "availability_zone_id", "sync.status"}
 }
 
 type LoadBalancerCollection []ecloud.LoadBalancer
 
 func (m LoadBalancerCollection) DefaultColumns() []string {
-	return []string{"id", "name", "vpc_id", "availability_zone_id", "sync_status"}
+	return []string{"id", "name", "vpc_id", "availability_zone_id", "sync.status"}
 }
 
 type LoadBalancerSpecCollection []ecloud.LoadBalancerSpec
@@ -570,25 +570,25 @@ func (m LoadBalancerSpecCollection) DefaultColumns() []string {
 type VIPCollection []ecloud.VIP
 
 func (m VIPCollection) DefaultColumns() []string {
-	return []string{"id", "name", "load_balancer_id", "ip_address_id", "config_id", "sync_status"}
+	return []string{"id", "name", "load_balancer_id", "ip_address_id", "config_id", "sync.status"}
 }
 
 type IPAddressCollection []ecloud.IPAddress
 
 func (m IPAddressCollection) DefaultColumns() []string {
-	return []string{"id", "name", "ip_address", "sync_status"}
+	return []string{"id", "name", "ip_address", "sync.status"}
 }
 
 type AffinityRuleCollection []ecloud.AffinityRule
 
 func (m AffinityRuleCollection) DefaultColumns() []string {
-	return []string{"id", "name", "vpc_id", "availability_zone_id", "type", "sync_status"}
+	return []string{"id", "name", "vpc_id", "availability_zone_id", "type", "sync.status"}
 }
 
 type AffinityRuleMemberCollection []ecloud.AffinityRuleMember
 
 func (m AffinityRuleMemberCollection) DefaultColumns() []string {
-	return []string{"id", "instance_id", "affinity_rule_id", "sync_status"}
+	return []string{"id", "instance_id", "affinity_rule_id", "sync.status"}
 }
 
 type ResourceTierCollection []ecloud.ResourceTier
@@ -612,7 +612,7 @@ func (m IOPSTierCollection) DefaultColumns() []string {
 type VPNGatewayCollection []ecloud.VPNGateway
 
 func (m VPNGatewayCollection) DefaultColumns() []string {
-	return []string{"id", "name", "fqdn", "router_id", "specification_id", "sync_status"}
+	return []string{"id", "name", "fqdn", "router_id", "specification_id", "sync.status"}
 }
 
 type VPNGatewaySpecificationCollection []ecloud.VPNGatewaySpecification
@@ -624,7 +624,7 @@ func (m VPNGatewaySpecificationCollection) DefaultColumns() []string {
 type VPNGatewayUserCollection []ecloud.VPNGatewayUser
 
 func (m VPNGatewayUserCollection) DefaultColumns() []string {
-	return []string{"id", "name", "username", "vpn_gateway_id", "sync_status"}
+	return []string{"id", "name", "username", "vpn_gateway_id", "sync.status"}
 }
 
 type BackupGatewaySpecificationCollection []ecloud.BackupGatewaySpecification
@@ -636,13 +636,13 @@ func (m BackupGatewaySpecificationCollection) DefaultColumns() []string {
 type MonitoringGatewayCollection []ecloud.MonitoringGateway
 
 func (m MonitoringGatewayCollection) DefaultColumns() []string {
-	return []string{"id", "name", "vpc_id", "router_id", "specification_id", "sync_status"}
+	return []string{"id", "name", "vpc_id", "router_id", "specification_id", "sync.status"}
 }
 
 type BackupGatewayCollection []ecloud.BackupGateway
 
 func (m BackupGatewayCollection) DefaultColumns() []string {
-	return []string{"id", "name", "vpc_id", "availability_zone", "gateway_spec_id", "sync_status"}
+	return []string{"id", "name", "vpc_id", "availability_zone", "gateway_spec_id", "sync.status"}
 }
 
 type TagCollection []ecloud.Tag

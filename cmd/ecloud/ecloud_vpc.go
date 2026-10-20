@@ -286,11 +286,11 @@ func ecloudVPCDelete(service ecloud.ECloudService, cmd *cobra.Command, args []st
 }
 
 func ecloudVPCDeployDefaultsCmd(f factory.ClientFactory) *cobra.Command {
-	return &cobra.Command{
+	cmd := &cobra.Command{
 		Use:     "deploydefaults <vpc: id>...",
 		Short:   "Deploys default resources for a VPC",
 		Long:    "This command deploys default resources for one or more VPCs",
-		Example: "ans ecloud vpc deploydefaults vpc-abcdef12",
+		Example: "ans ecloud vpc deploydefaults vpc-abcdef12 --availability-zone az-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("missing vpc")
@@ -300,14 +300,32 @@ func ecloudVPCDeployDefaultsCmd(f factory.ClientFactory) *cobra.Command {
 		},
 		RunE: ecloudCobraRunEFunc(f, ecloudVPCDeployDefaults),
 	}
+
+	cmd.Flags().String("availability-zone", "", "ID of availability zone to deploy default resources to")
+	_ = cmd.MarkFlagRequired("availability-zone")
+	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the default resources have been completely deployed")
+
+	return cmd
 }
 
 func ecloudVPCDeployDefaults(service ecloud.ECloudService, cmd *cobra.Command, args []string) error {
+	req := ecloud.DeployVPCDefaultsRequest{}
+	req.AvailabilityZoneID, _ = cmd.Flags().GetString("availability-zone")
+	waitFlag, _ := cmd.Flags().GetBool("wait")
+
 	for _, arg := range args {
-		err := service.DeployVPCDefaults(arg)
+		taskID, err := service.DeployVPCDefaults(arg, req)
 		if err != nil {
 			output.OutputWithErrorLevelf("Error deploying default resources for VPC [%s]: %s", arg, err)
 			continue
+		}
+
+		if waitFlag {
+			err := helper.WaitForCommand(TaskStatusWaitFunc(service, taskID, ecloud.TaskStatusComplete))
+			if err != nil {
+				output.OutputWithErrorLevelf("Error waiting for default resources to deploy for VPC [%s]: %s", arg, err)
+				continue
+			}
 		}
 	}
 

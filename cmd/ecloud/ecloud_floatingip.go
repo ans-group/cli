@@ -238,7 +238,7 @@ func ecloudFloatingIPAssignCmd(f factory.ClientFactory) *cobra.Command {
 		Use:     "assign <fip: id>",
 		Short:   "Assigns a floating IP to a resource",
 		Long:    "This command assigns a floating IP to a resource",
-		Example: "ans ecloud floatingip assign fip-abcdef12 --resource i-abcdef12",
+		Example: "ans ecloud floatingip assign fip-abcdef12 --resource ip-abcdef12",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("missing floating IP")
@@ -249,7 +249,7 @@ func ecloudFloatingIPAssignCmd(f factory.ClientFactory) *cobra.Command {
 		RunE: ecloudCobraRunEFunc(f, ecloudFloatingIPAssign),
 	}
 
-	cmd.Flags().String("resource", "", "ID of resource to assign")
+	cmd.Flags().String("resource", "", "ID of resource to assign, e.g. an instance NIC IP address ID (ip-). Available IP addresses for a NIC can be listed with 'ans ecloud nic ipaddress list'")
 	_ = cmd.MarkFlagRequired("resource")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the floating IP has been completely assigned")
 

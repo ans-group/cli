@@ -486,11 +486,11 @@ func Test_ecloudFloatingIPAssign(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		req := ecloud.AssignFloatingIPRequest{
-			ResourceID: "i-abcdef12",
+			ResourceID: "ip-abcdef12",
 		}
 
 		cmd := ecloudFloatingIPAssignCmd(nil)
-		cmd.ParseFlags([]string{"--resource=i-abcdef12"})
+		cmd.ParseFlags([]string{"--resource=ip-abcdef12"})
 
 		service := mocks.NewMockECloudService(mockCtrl)
 		service.EXPECT().AssignFloatingIP("fip-abcdef12", gomock.Eq(req)).Return("task-abcdef12", nil)
@@ -506,12 +506,12 @@ func Test_ecloudFloatingIPAssign(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		cmd := ecloudFloatingIPAssignCmd(nil)
-		cmd.ParseFlags([]string{"--resource=i-abcdef12", "--wait"})
+		cmd.ParseFlags([]string{"--resource=ip-abcdef12", "--wait"})
 
 		service := mocks.NewMockECloudService(mockCtrl)
 
 		req := ecloud.AssignFloatingIPRequest{
-			ResourceID: "i-abcdef12",
+			ResourceID: "ip-abcdef12",
 		}
 
 		gomock.InOrder(
@@ -530,7 +530,7 @@ func Test_ecloudFloatingIPAssign(t *testing.T) {
 		service := mocks.NewMockECloudService(mockCtrl)
 
 		cmd := ecloudFloatingIPAssignCmd(nil)
-		cmd.ParseFlags([]string{"--resource=i-abcdef12", "--wait"})
+		cmd.ParseFlags([]string{"--resource=ip-abcdef12", "--wait"})
 
 		gomock.InOrder(
 			service.EXPECT().AssignFloatingIP("fip-abcdef12", gomock.Any()).Return("task-abcdef12", nil),
