@@ -57,13 +57,13 @@ func ecloudInstanceListCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "list",
 		Short:   "Lists instances",
-		Long:    "This command lists instances",
-		Example: "ans ecloud instance list",
+		Long:    "This command lists instances\n" + instanceOutputHelp,
+		Example: "ans ecloud instance list\nans ecloud instance list --with-backup\nans ecloud instance list --property id,name,backup_gateway_id",
 		RunE:    ecloudCobraRunEFunc(f, ecloudInstanceList),
 	}
 
 	cmd.Flags().String("name", "", "Instance name for filtering")
-	cmd.Flags().Bool("with-tags", false, "Include tags column in output")
+	addInstanceOutputFlags(cmd)
 
 	return cmd
 }
@@ -79,19 +79,15 @@ func ecloudInstanceList(service ecloud.ECloudService, cmd *cobra.Command, args [
 		return fmt.Errorf("error retrieving instances: %s", err)
 	}
 
-	if withTags, _ := cmd.Flags().GetBool("with-tags"); withTags {
-		return output.CommandOutput(cmd, InstanceCollection(instances), output.WithAdditionalColumns("tags"))
-	}
-
-	return output.CommandOutput(cmd, InstanceCollection(instances))
+	return output.CommandOutput(cmd, InstanceCollection(instances), instanceOutputOptions(cmd)...)
 }
 
 func ecloudInstanceShowCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "show <instance: id>...",
 		Short:   "Shows a instance",
-		Long:    "This command shows one or more instances",
-		Example: "ans ecloud instance show i-abcdef12",
+		Long:    "This command shows one or more instances\n" + instanceOutputHelp,
+		Example: "ans ecloud instance show i-abcdef12\nans ecloud instance show i-abcdef12 --with-backup",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("missing instance")
@@ -102,7 +98,7 @@ func ecloudInstanceShowCmd(f factory.ClientFactory) *cobra.Command {
 		RunE: ecloudCobraRunEFunc(f, ecloudInstanceShow),
 	}
 
-	cmd.Flags().Bool("with-tags", false, "Include tags column in output")
+	addInstanceOutputFlags(cmd)
 
 	return cmd
 }
@@ -119,12 +115,7 @@ func ecloudInstanceShow(service ecloud.ECloudService, cmd *cobra.Command, args [
 		instances = append(instances, instance)
 	}
 
-	// Use new options pattern for conditional tags display
-	if withTags, _ := cmd.Flags().GetBool("with-tags"); withTags {
-		return output.CommandOutput(cmd, InstanceCollection(instances), output.WithAdditionalColumns("tags"))
-	}
-
-	return output.CommandOutput(cmd, InstanceCollection(instances))
+	return output.CommandOutput(cmd, InstanceCollection(instances), instanceOutputOptions(cmd)...)
 }
 
 func ecloudInstanceCreateCmd(f factory.ClientFactory) *cobra.Command {
@@ -157,9 +148,9 @@ func ecloudInstanceCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().String("resource-tier", "", "ID of resource tier to deploy to. A default tier is chosen if not specified")
 	cmd.Flags().String("ip-address", "", "IP address to allocate for DHCP")
 	cmd.Flags().Bool("enable-vm-backups", false, "Enable VM-level backups")
-	cmd.Flags().String("backup-gateway-id", "", "Backup gateway ID, enables agent-level backups")
+	cmd.Flags().String("backup-gateway-id", "", "Backup gateway ID, enables agent-level backups. Available gateways can be listed with 'ans ecloud backupgateway list'")
 	cmd.Flags().Bool("enable-monitoring", false, "Enable monitoring")
-	cmd.Flags().String("monitoring-gateway-id", "", "Monitoring gateway ID")
+	cmd.Flags().String("monitoring-gateway-id", "", "Monitoring gateway ID. Available gateways can be listed with 'ans ecloud monitoringgateway list'")
 	cmd.Flags().StringSlice("tag", []string{}, "Tag in form '<scope>:<name>', '<name>' or tag ID to apply to the instance, can be repeated")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the instance has been completely created")
 

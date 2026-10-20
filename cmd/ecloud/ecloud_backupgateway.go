@@ -92,6 +92,7 @@ func ecloudBackupGatewayCreateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "create",
 		Short:   "Creates a backup gateway",
+		Long:    "This command creates a backup gateway. Available backup gateway specifications can be listed with 'ans ecloud backupgateway spec list'",
 		Example: "ans ecloud backupgateway create --router rtr-abcdef12 --vpc vpc-abcd1234 --specification bgws-abcdef12",
 		RunE:    ecloudCobraRunEFunc(f, ecloudBackupGatewayCreate),
 	}
@@ -102,7 +103,7 @@ func ecloudBackupGatewayCreateCmd(f factory.ClientFactory) *cobra.Command {
 	_ = cmd.MarkFlagRequired("vpc")
 	cmd.Flags().String("router", "", "ID of router")
 	_ = cmd.MarkFlagRequired("router")
-	cmd.Flags().String("specification", "", "ID of backup gateway specification")
+	cmd.Flags().String("specification", "", "ID of backup gateway specification. Available specifications can be listed with 'ans ecloud backupgateway spec list'")
 	_ = cmd.MarkFlagRequired("specification")
 	cmd.Flags().Bool("wait", false, "Specifies that the command should wait until the backup gateway has been completely created")
 

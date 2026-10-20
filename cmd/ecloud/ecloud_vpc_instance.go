@@ -27,8 +27,8 @@ func ecloudVPCInstanceListCmd(f factory.ClientFactory) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "list",
 		Short:   "Lists VPC instances",
-		Long:    "This command lists VPC instances",
-		Example: "ans ecloud vpc instance list net-abcdef12",
+		Long:    "This command lists VPC instances\n" + instanceOutputHelp,
+		Example: "ans ecloud vpc instance list vpc-abcdef12\nans ecloud vpc instance list vpc-abcdef12 --with-backup",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
 				return errors.New("missing VPC")
@@ -40,6 +40,7 @@ func ecloudVPCInstanceListCmd(f factory.ClientFactory) *cobra.Command {
 	}
 
 	cmd.Flags().String("name", "", "Instance name for filtering")
+	addInstanceOutputFlags(cmd)
 
 	return cmd
 }
@@ -55,5 +56,5 @@ func ecloudVPCInstanceList(service ecloud.ECloudService, cmd *cobra.Command, arg
 		return fmt.Errorf("error retrieving VPC instances: %s", err)
 	}
 
-	return output.CommandOutput(cmd, InstanceCollection(instances))
+	return output.CommandOutput(cmd, InstanceCollection(instances), instanceOutputOptions(cmd)...)
 }
