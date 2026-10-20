@@ -348,6 +348,17 @@ func (m InstanceCollection) DefaultColumns() []string {
 	return []string{"id", "name", "vpc_id", "vcpu_sockets", "vcpu_cores_per_socket", "ram_capacity", "sync_status"}
 }
 
+// HiddenFields hides the legacy backup_enabled field, which is computed as
+// backup_vm_enabled || backup_agent_enabled
+func (m InstanceCollection) HiddenFields() []string {
+	return []string{"backup_enabled"}
+}
+
+// FieldNameOverrides renames secure_backup, which indicates whether the backup agent has been installed
+func (m InstanceCollection) FieldNameOverrides() map[string]string {
+	return map[string]string{"secure_backup": "backup_agent_installed"}
+}
+
 func (m InstanceCollection) FieldValueHandlers() map[string]output.FieldValueHandlerFunc {
 	return map[string]output.FieldValueHandlerFunc{
 		"tags": func(reflectedValue reflect.Value) string {

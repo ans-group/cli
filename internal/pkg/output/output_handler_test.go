@@ -448,3 +448,78 @@ func TestOutputHandler_LocalFilter_YAML(t *testing.T) {
 	assert.Contains(t, output, "Row1TestValue1")
 	assert.NotContains(t, output, "Row2TestValue1")
 }
+
+type testModelHiddenRenamedCollection []testModel
+
+func (m testModelHiddenRenamedCollection) HiddenFields() []string {
+	return []string{"testproperty2"}
+}
+
+func (m testModelHiddenRenamedCollection) FieldNameOverrides() map[string]string {
+	return map[string]string{"testproperty3": "renamedproperty"}
+}
+
+func TestOutputHandler_HiddenAndRenamedFields(t *testing.T) {
+	collection := testModelHiddenRenamedCollection{{"Row1TestValue1", "Row1TestValue2", "Row1TestValue3"}, {"Row2TestValue1", "Row2TestValue2", "Row2TestValue3"}}
+
+	t.Run("CSV_HidesAndRenames", func(t *testing.T) {
+		o := NewOutputHandler()
+
+		output := test.CatchStdOut(t, func() {
+			o.CSV(&cobra.Command{}, collection)
+		})
+
+		assert.Equal(t, "testproperty1,renamedproperty\nRow1TestValue1,Row1TestValue3\nRow2TestValue1,Row2TestValue3\n", output)
+	})
+
+	t.Run("Property_UsesRenamedName", func(t *testing.T) {
+		cmd := &cobra.Command{}
+		cmd.Flags().StringSlice("property", nil, "")
+		cmd.Flags().Set("property", "renamedproperty")
+
+		o := NewOutputHandler()
+		output := test.CatchStdOut(t, func() {
+			o.CSV(cmd, collection)
+		})
+
+		assert.Equal(t, "renamedproperty\nRow1TestValue3\nRow2TestValue3\n", output)
+	})
+
+	t.Run("Property_HiddenFieldNotOutput", func(t *testing.T) {
+		cmd := &cobra.Command{}
+		cmd.Flags().StringSlice("property", nil, "")
+		cmd.Flags().Set("property", "testproperty1,testproperty2")
+
+		o := NewOutputHandler()
+		output := test.CatchStdOut(t, func() {
+			o.CSV(cmd, collection)
+		})
+
+		assert.Equal(t, "testproperty1\nRow1TestValue1\nRow2TestValue1\n", output)
+	})
+
+	t.Run("LocalFilter_UsesRenamedName", func(t *testing.T) {
+		cmd := &cobra.Command{}
+		cmd.Flags().StringArray("localfilter", nil, "")
+		cmd.Flags().String("output", "", "")
+		cmd.Flags().Set("localfilter", "renamedproperty=Row2TestValue3")
+		cmd.Flags().Set("output", "csv")
+
+		o := NewOutputHandler()
+		output := test.CatchStdOut(t, func() {
+			assert.NoError(t, o.Output(cmd, collection))
+		})
+
+		assert.Equal(t, "testproperty1,renamedproperty\nRow2TestValue1,Row2TestValue3\n", output)
+	})
+
+	t.Run("JSON_Unaffected", func(t *testing.T) {
+		o := NewOutputHandler()
+
+		output := test.CatchStdOut(t, func() {
+			assert.NoError(t, o.JSON(collection[:1], false))
+		})
+
+		assert.Equal(t, "[{\"testproperty1\":\"Row1TestValue1\",\"testproperty2\":\"Row1TestValue2\",\"testproperty3\":\"Row1TestValue3\"}]", output)
+	})
+}

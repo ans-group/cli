@@ -8,6 +8,7 @@ import (
 	"html/template"
 	"os"
 	"reflect"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -40,6 +41,19 @@ var MonetaryFieldValueHandler = func(reflectedValue reflect.Value) string {
 
 type ProvidesFields interface {
 	Fields() []*OrderedFields
+}
+
+// HidesFields can be implemented to omit fields from field-based output formats (e.g. table, list, csv, value).
+// Field names are the default (JSON tag based) field names. JSON, YAML and template output are unaffected.
+type HidesFields interface {
+	HiddenFields() []string
+}
+
+// RenamesFields can be implemented to rename fields in field-based output formats (e.g. table, list, csv, value).
+// Map keys are the default (JSON tag based) field names, and values are the output field names. Renamed names
+// are also used for --property, --localfilter and FieldValueHandlers. JSON, YAML and template output are unaffected.
+type RenamesFields interface {
+	FieldNameOverrides() map[string]string
 }
 
 type OutputHandlerOpts map[string]any
@@ -362,6 +376,17 @@ func (o *OutputHandler) convert(d any, reflectedValue reflect.Value) []*OrderedF
 }
 
 func (o *OutputHandler) convertField(d any, v *OrderedFields, fieldName string, reflectedValue reflect.Value) *OrderedFields {
+	if len(fieldName) > 0 {
+		if dHidesFields, ok := d.(HidesFields); ok && slices.Contains(dHidesFields.HiddenFields(), fieldName) {
+			return v
+		}
+		if dRenamesFields, ok := d.(RenamesFields); ok {
+			if renamed, ok := dRenamesFields.FieldNameOverrides()[fieldName]; ok && len(renamed) > 0 {
+				fieldName = renamed
+			}
+		}
+	}
+
 	if dHandlesFields, ok := d.(HandlesFields); ok {
 		fieldHandlers := dHandlesFields.FieldValueHandlers()
 		if fieldHandlers != nil && fieldHandlers[fieldName] != nil {

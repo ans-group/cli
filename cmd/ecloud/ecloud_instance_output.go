@@ -7,7 +7,7 @@ import (
 
 var (
 	instanceTagColumns        = []string{"tags"}
-	instanceBackupColumns     = []string{"backup_enabled", "backup_agent_enabled", "backup_gateway_id"}
+	instanceBackupColumns     = []string{"backup_vm_enabled", "backup_agent_enabled", "backup_agent_installed", "backup_gateway_id"}
 	instanceMonitoringColumns = []string{"monitoring_enabled", "monitoring_gateway_id"}
 )
 
@@ -15,17 +15,17 @@ var (
 const instanceOutputHelp = `
 Additional columns can be included in table output with the following flags:
   --with-tags        tags
-  --with-backup      backup_enabled, backup_agent_enabled, backup_gateway_id
+  --with-backup      backup_vm_enabled, backup_agent_enabled, backup_agent_installed, backup_gateway_id
   --with-monitoring  monitoring_enabled, monitoring_gateway_id
   --with-all         all of the above
 
 These properties can also be selected directly with the --property flag, e.g.
-  --property id,name,backup_enabled,backup_agent_enabled,backup_gateway_id`
+  --property id,name,backup_vm_enabled,backup_agent_enabled,backup_agent_installed,backup_gateway_id`
 
 // addInstanceOutputFlags registers flags for including optional columns in instance output
 func addInstanceOutputFlags(cmd *cobra.Command) {
 	cmd.Flags().Bool("with-tags", false, "Include tags column in output")
-	cmd.Flags().Bool("with-backup", false, "Include backup columns (backup_enabled, backup_agent_enabled, backup_gateway_id) in output")
+	cmd.Flags().Bool("with-backup", false, "Include backup columns (backup_vm_enabled, backup_agent_enabled, backup_agent_installed, backup_gateway_id) in output")
 	cmd.Flags().Bool("with-monitoring", false, "Include monitoring columns (monitoring_enabled, monitoring_gateway_id) in output")
 	cmd.Flags().Bool("with-all", false, "Include tags, backup and monitoring columns in output")
 }
