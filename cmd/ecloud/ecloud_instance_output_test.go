@@ -3,10 +3,12 @@ package ecloud
 import (
 	"testing"
 
+	"github.com/ans-group/cli/internal/pkg/output"
 	"github.com/ans-group/cli/test"
 	"github.com/ans-group/cli/test/mocks"
 	"github.com/ans-group/sdk-go/pkg/service/ecloud"
 	gomock "github.com/golang/mock/gomock"
+	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -29,7 +31,7 @@ func Test_instanceAdditionalColumns(t *testing.T) {
 		{
 			name:     "WithBackup",
 			flags:    []string{"--with-backup"},
-			expected: []string{"backup_enabled", "backup_agent_enabled", "backup_gateway_id"},
+			expected: []string{"backup_vm_enabled", "backup_agent_enabled", "backup_agent_installed", "backup_gateway_id"},
 		},
 		{
 			name:     "WithMonitoring",
@@ -39,18 +41,18 @@ func Test_instanceAdditionalColumns(t *testing.T) {
 		{
 			name:     "WithBackupAndMonitoring",
 			flags:    []string{"--with-monitoring", "--with-backup"},
-			expected: []string{"backup_enabled", "backup_agent_enabled", "backup_gateway_id", "monitoring_enabled", "monitoring_gateway_id"},
+			expected: []string{"backup_vm_enabled", "backup_agent_enabled", "backup_agent_installed", "backup_gateway_id", "monitoring_enabled", "monitoring_gateway_id"},
 		},
 		{
 			name:     "WithAll",
 			flags:    []string{"--with-all"},
-			expected: []string{"tags", "backup_enabled", "backup_agent_enabled", "backup_gateway_id", "monitoring_enabled", "monitoring_gateway_id"},
+			expected: []string{"tags", "backup_vm_enabled", "backup_agent_enabled", "backup_agent_installed", "backup_gateway_id", "monitoring_enabled", "monitoring_gateway_id"},
 		},
 		{
 			// Combining --with-all with individual flags should not duplicate columns
 			name:     "WithAllAndBackup",
 			flags:    []string{"--with-all", "--with-backup"},
-			expected: []string{"tags", "backup_enabled", "backup_agent_enabled", "backup_gateway_id", "monitoring_enabled", "monitoring_gateway_id"},
+			expected: []string{"tags", "backup_vm_enabled", "backup_agent_enabled", "backup_agent_installed", "backup_gateway_id", "monitoring_enabled", "monitoring_gateway_id"},
 		},
 	}
 
@@ -83,7 +85,10 @@ func Test_instanceOutputFlags_TableOutput(t *testing.T) {
 	instance := ecloud.Instance{
 		ID:                  "i-abcdef12",
 		Name:                "testinstance",
+		BackupEnabled:       true,
+		BackupVMEnabled:     true,
 		BackupAgentEnabled:  true,
+		SecureBackup:        true,
 		BackupGatewayID:     "bgw-abcdef12",
 		MonitoringEnabled:   true,
 		MonitoringGatewayID: "mgw-abcdef12",
@@ -99,13 +104,13 @@ func Test_instanceOutputFlags_TableOutput(t *testing.T) {
 			name:        "NoFlags_ExcludesBackupAndMonitoring",
 			flags:       []string{},
 			contains:    []string{"i-abcdef12"},
-			notContains: []string{"BACKUP GATEWAY ID", "bgw-abcdef12", "MONITORING GATEWAY ID", "mgw-abcdef12"},
+			notContains: []string{"BACKUP VM ENABLED", "BACKUP AGENT INSTALLED", "BACKUP GATEWAY ID", "bgw-abcdef12", "MONITORING GATEWAY ID", "mgw-abcdef12"},
 		},
 		{
 			name:        "WithBackup_IncludesBackup",
 			flags:       []string{"--with-backup"},
-			contains:    []string{"BACKUP ENABLED", "BACKUP AGENT ENABLED", "BACKUP GATEWAY ID", "bgw-abcdef12"},
-			notContains: []string{"MONITORING GATEWAY ID", "mgw-abcdef12"},
+			contains:    []string{"BACKUP VM ENABLED", "BACKUP AGENT ENABLED", "BACKUP AGENT INSTALLED", "BACKUP GATEWAY ID", "bgw-abcdef12"},
+			notContains: []string{"| BACKUP ENABLED", "SECURE BACKUP", "MONITORING GATEWAY ID", "mgw-abcdef12"},
 		},
 		{
 			name:        "WithMonitoring_IncludesMonitoring",
@@ -114,9 +119,10 @@ func Test_instanceOutputFlags_TableOutput(t *testing.T) {
 			notContains: []string{"BACKUP GATEWAY ID", "bgw-abcdef12"},
 		},
 		{
-			name:     "WithAll_IncludesAll",
-			flags:    []string{"--with-all"},
-			contains: []string{"TAGS", "BACKUP GATEWAY ID", "bgw-abcdef12", "MONITORING GATEWAY ID", "mgw-abcdef12"},
+			name:        "WithAll_IncludesAll",
+			flags:       []string{"--with-all"},
+			contains:    []string{"TAGS", "BACKUP VM ENABLED", "BACKUP AGENT INSTALLED", "BACKUP GATEWAY ID", "bgw-abcdef12", "MONITORING GATEWAY ID", "mgw-abcdef12"},
+			notContains: []string{"| BACKUP ENABLED", "SECURE BACKUP"},
 		},
 	}
 
@@ -182,5 +188,49 @@ func assertOutput(t *testing.T, out string, contains []string, notContains []str
 	}
 	for _, s := range notContains {
 		assert.NotContains(t, out, s)
+	}
+}
+
+func Test_InstanceCollection_BackupFieldProperties(t *testing.T) {
+	instances := InstanceCollection{{ID: "i-abcdef12", BackupEnabled: true, SecureBackup: true}}
+
+	tests := []struct {
+		name     string
+		property string
+		expected string
+	}{
+		{
+			// secure_backup is renamed to backup_agent_installed
+			name:     "BackupAgentInstalled_ReturnsSecureBackupValue",
+			property: "backup_agent_installed",
+			expected: "true\n",
+		},
+		{
+			name:     "SecureBackup_NotOutput",
+			property: "secure_backup",
+			expected: "\n",
+		},
+		{
+			// backup_enabled is a legacy field and is hidden
+			name:     "BackupEnabled_NotOutput",
+			property: "backup_enabled",
+			expected: "\n",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			cmd := &cobra.Command{}
+			cmd.Flags().String("output", "", "")
+			cmd.Flags().StringSlice("property", nil, "")
+			assert.Nil(t, cmd.Flags().Set("output", "value"))
+			assert.Nil(t, cmd.Flags().Set("property", tt.property))
+
+			out := test.CatchStdOut(t, func() {
+				assert.Nil(t, output.CommandOutput(cmd, instances))
+			})
+
+			assert.Equal(t, tt.expected, out)
+		})
 	}
 }

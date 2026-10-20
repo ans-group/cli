@@ -1,7 +1,7 @@
 github.com/ans-group/go-durationstring v1.2.0 h1:UJIuQATkp0t1rBvZsHRwki33YHV9E+Ulro+3NbMB7MM=
 github.com/ans-group/go-durationstring v1.2.0/go.mod h1:QGF9Mdpq9058QXaut8r55QWu6lcHX6i/GvF1PZVkV6o=
-github.com/ans-group/sdk-go v1.28.0 h1:IKoYPwLxSo+sWUgD18cG3UUAzRwlYp1XC6fPrB1Qnhc=
-github.com/ans-group/sdk-go v1.28.0/go.mod h1:ehzQcTrAZzJ30S4CO34XLJFxOmU0N1h7E57xwdmQhUk=
+github.com/ans-group/sdk-go v1.30.0 h1:g4fIPi+6LseYi8F2JHX4SzBKy+boeS3dPTC7E5jksnE=
+github.com/ans-group/sdk-go v1.30.0/go.mod h1:ehzQcTrAZzJ30S4CO34XLJFxOmU0N1h7E57xwdmQhUk=
 github.com/blang/semver v3.5.1+incompatible h1:cQNTCjp13qL8KC3Nbxr/y2Bqb63oX6wdnnjpJbkM4JQ=
 github.com/blang/semver v3.5.1+incompatible/go.mod h1:kRBLl5iJ+tD4TcOOxsy/0fnwebNt5EWlYSAyrTnjyyk=
 github.com/cespare/xxhash/v2 v2.3.0 h1:UL815xU9SqsFlibzuggzjXhog7bL6oX9BbNZnL2UFvs=
