@@ -167,6 +167,7 @@ func ecloudInstanceCreate(service ecloud.ECloudService, cmd *cobra.Command, args
 	createRequest.ResourceTierID, _ = cmd.Flags().GetString("resource-tier")
 	createRequest.BackupEnabled, _ = cmd.Flags().GetBool("enable-vm-backups")
 	createRequest.BackupGatewayID, _ = cmd.Flags().GetString("backup-gateway-id")
+	createRequest.BackupAgentEnabled = createRequest.BackupGatewayID != ""
 	createRequest.MonitoringEnabled, _ = cmd.Flags().GetBool("enable-monitoring")
 	createRequest.MonitoringGatewayID, _ = cmd.Flags().GetString("monitoring-gateway-id")
 	createRequest.Name, _ = cmd.Flags().GetString("name")
@@ -279,6 +280,8 @@ func ecloudInstanceUpdateCmd(f factory.ClientFactory) *cobra.Command {
 	cmd.Flags().Int("vcpu-cores-per-socket", 0, "Number of vCPU cores to allocate per socket")
 	cmd.Flags().Int("ram", 0, "Amount of RAM (in MB) to allocate")
 	cmd.Flags().String("volume-group", "", "ID of volume-group to use for instance")
+	cmd.Flags().String("backup-gateway-id", "", "Backup gateway ID, enables agent-level backups. Cannot be changed once set. Available gateways can be listed with 'ans ecloud backupgateway list'")
+	cmd.Flags().Bool("enable-agent-backups", false, "Enable agent-level backups. Requires a backup gateway to be set on the instance or with --backup-gateway-id")
 	cmd.Flags().StringSlice("set-tag", []string{}, "Tag in the form of '<scope>:<name>', '<name>' or a tag ID to apply to the instance, use an empty string to clear all existing tags - overwrites existing tags")
 	cmd.Flags().StringSlice("add-tag", []string{}, "Tag (like --set-tag) to add to the instance, keeping existing tags intact, can be repeated")
 	cmd.Flags().StringSlice("remove-tag", []string{}, "Tag (like --set-tag) to remove from the instance, without removing other tags, can be repeated")
@@ -316,6 +319,16 @@ func ecloudInstanceUpdate(service ecloud.ECloudService, cmd *cobra.Command, args
 	if cmd.Flags().Changed("volume-group") {
 		volGroup, _ := cmd.Flags().GetString("volume-group")
 		patchRequest.VolumeGroupID = ptr.String(volGroup)
+	}
+
+	if cmd.Flags().Changed("backup-gateway-id") {
+		patchRequest.BackupGatewayID, _ = cmd.Flags().GetString("backup-gateway-id")
+		patchRequest.BackupAgentEnabled = ptr.Bool(true)
+	}
+
+	if cmd.Flags().Changed("enable-agent-backups") {
+		enableAgentBackups, _ := cmd.Flags().GetBool("enable-agent-backups")
+		patchRequest.BackupAgentEnabled = ptr.Bool(enableAgentBackups)
 	}
 
 	if cmd.Flags().Changed("set-tag") {

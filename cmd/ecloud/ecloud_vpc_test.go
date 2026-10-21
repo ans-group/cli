@@ -317,15 +317,21 @@ func Test_ecloudVPCDeployDefaultsCmd_Args(t *testing.T) {
 }
 
 func Test_ecloudVPCDeployDefaults(t *testing.T) {
+	req := ecloud.DeployVPCDefaultsRequest{
+		AvailabilityZoneID: "az-abcdef12",
+	}
+
 	t.Run("SingleVPC", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudVPCDeployDefaultsCmd(nil)
+		cmd.ParseFlags([]string{"--availability-zone=az-abcdef12"})
 
-		service.EXPECT().DeployVPCDefaults("vpc-abcdef12").Return(nil)
+		service.EXPECT().DeployVPCDefaults("vpc-abcdef12", gomock.Eq(req)).Return("task-abcdef12", nil)
 
-		ecloudVPCDeployDefaults(service, &cobra.Command{}, []string{"vpc-abcdef12"})
+		ecloudVPCDeployDefaults(service, cmd, []string{"vpc-abcdef12"})
 	})
 
 	t.Run("MultipleVPCs", func(t *testing.T) {
@@ -333,13 +339,49 @@ func Test_ecloudVPCDeployDefaults(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudVPCDeployDefaultsCmd(nil)
+		cmd.ParseFlags([]string{"--availability-zone=az-abcdef12"})
 
 		gomock.InOrder(
-			service.EXPECT().DeployVPCDefaults("vpc-abcdef12").Return(nil),
-			service.EXPECT().DeployVPCDefaults("vpc-abcdef23").Return(nil),
+			service.EXPECT().DeployVPCDefaults("vpc-abcdef12", gomock.Eq(req)).Return("task-abcdef12", nil),
+			service.EXPECT().DeployVPCDefaults("vpc-abcdef23", gomock.Eq(req)).Return("task-abcdef23", nil),
 		)
 
-		ecloudVPCDeployDefaults(service, &cobra.Command{}, []string{"vpc-abcdef12", "vpc-abcdef23"})
+		ecloudVPCDeployDefaults(service, cmd, []string{"vpc-abcdef12", "vpc-abcdef23"})
+	})
+
+	t.Run("WithWaitFlag_NoError_Succeeds", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudVPCDeployDefaultsCmd(nil)
+		cmd.ParseFlags([]string{"--availability-zone=az-abcdef12", "--wait"})
+
+		gomock.InOrder(
+			service.EXPECT().DeployVPCDefaults("vpc-abcdef12", gomock.Eq(req)).Return("task-abcdef12", nil),
+			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{Status: ecloud.TaskStatusComplete}, nil),
+		)
+
+		ecloudVPCDeployDefaults(service, cmd, []string{"vpc-abcdef12"})
+	})
+
+	t.Run("WithWaitFlag_GetTaskError_OutputsError", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudVPCDeployDefaultsCmd(nil)
+		cmd.ParseFlags([]string{"--availability-zone=az-abcdef12", "--wait"})
+
+		gomock.InOrder(
+			service.EXPECT().DeployVPCDefaults("vpc-abcdef12", gomock.Eq(req)).Return("task-abcdef12", nil),
+			service.EXPECT().GetTask("task-abcdef12").Return(ecloud.Task{}, errors.New("test error")),
+		)
+
+		test_output.AssertErrorOutput(t, "Error waiting for default resources to deploy for VPC [vpc-abcdef12]: error waiting for command: failed to retrieve task status: test error\n", func() {
+			ecloudVPCDeployDefaults(service, cmd, []string{"vpc-abcdef12"})
+		})
 	})
 
 	t.Run("DeployVPCDefaultsError_OutputsError", func(t *testing.T) {
@@ -347,11 +389,13 @@ func Test_ecloudVPCDeployDefaults(t *testing.T) {
 		defer mockCtrl.Finish()
 
 		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudVPCDeployDefaultsCmd(nil)
+		cmd.ParseFlags([]string{"--availability-zone=az-abcdef12"})
 
-		service.EXPECT().DeployVPCDefaults("vpc-abcdef12").Return(errors.New("test error"))
+		service.EXPECT().DeployVPCDefaults("vpc-abcdef12", gomock.Eq(req)).Return("", errors.New("test error"))
 
 		test_output.AssertErrorOutput(t, "Error deploying default resources for VPC [vpc-abcdef12]: test error\n", func() {
-			ecloudVPCDeployDefaults(service, &cobra.Command{}, []string{"vpc-abcdef12"})
+			ecloudVPCDeployDefaults(service, cmd, []string{"vpc-abcdef12"})
 		})
 	})
 }

@@ -347,6 +347,9 @@ goreleaser --rm-dist
 
 eCloud VPC resource commands are available by default under the `ecloud` subcommand.
 
+For a walkthrough of building and managing VPC resources from scripts and pipelines, see
+[Automating eCloud VPC with the ANS CLI](https://www.ans.co.uk/docs/ecloud/vpc/automation/).
+
 To display only VPC commands, the following environment variable can be set:
 
 ```

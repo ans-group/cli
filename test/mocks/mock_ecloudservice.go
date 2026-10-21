@@ -1237,17 +1237,18 @@ func (mr *MockECloudServiceMockRecorder) DeployRouterDefaultFirewallPolicies(arg
 }
 
 // DeployVPCDefaults mocks base method.
-func (m *MockECloudService) DeployVPCDefaults(arg0 string) error {
+func (m *MockECloudService) DeployVPCDefaults(arg0 string, arg1 ecloud.DeployVPCDefaultsRequest) (string, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeployVPCDefaults", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret := m.ctrl.Call(m, "DeployVPCDefaults", arg0, arg1)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // DeployVPCDefaults indicates an expected call of DeployVPCDefaults.
-func (mr *MockECloudServiceMockRecorder) DeployVPCDefaults(arg0 interface{}) *gomock.Call {
+func (mr *MockECloudServiceMockRecorder) DeployVPCDefaults(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeployVPCDefaults", reflect.TypeOf((*MockECloudService)(nil).DeployVPCDefaults), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeployVPCDefaults", reflect.TypeOf((*MockECloudService)(nil).DeployVPCDefaults), arg0, arg1)
 }
 
 // DetachInstanceVolume mocks base method.

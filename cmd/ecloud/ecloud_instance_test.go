@@ -133,6 +133,30 @@ func Test_ecloudInstanceCreate(t *testing.T) {
 		assert.Nil(t, err)
 	})
 
+	t.Run("CreateWithBackupGateway_EnablesBackupAgent", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+		cmd := ecloudInstanceCreateCmd(nil)
+		cmd.ParseFlags([]string{"--name=testinstance", "--image=img-abcdef12", "--backup-gateway-id=bgw-abcdef12"})
+
+		req := ecloud.CreateInstanceRequest{
+			Name:               "testinstance",
+			ImageID:            "img-abcdef12",
+			VCPUSockets:        1,
+			VCPUCoresPerSocket: 1,
+			BackupGatewayID:    "bgw-abcdef12",
+			BackupAgentEnabled: true,
+		}
+
+		service.EXPECT().CreateInstance(req).Return("i-abcdef12", nil)
+		service.EXPECT().GetInstance("i-abcdef12").Return(ecloud.Instance{}, nil)
+
+		err := ecloudInstanceCreate(service, cmd, []string{})
+		assert.Nil(t, err)
+	})
+
 	t.Run("CreateWithImageName_NoError", func(t *testing.T) {
 		mockCtrl := gomock.NewController(t)
 		defer mockCtrl.Finish()
@@ -322,6 +346,49 @@ func Test_ecloudInstanceUpdate(t *testing.T) {
 			Name:        "testinstance",
 			VCPUCores:   2,
 			RAMCapacity: 2,
+		}
+
+		gomock.InOrder(
+			service.EXPECT().PatchInstance("i-abcdef12", req).Return(nil),
+			service.EXPECT().GetInstance("i-abcdef12").Return(ecloud.Instance{}, nil),
+		)
+
+		ecloudInstanceUpdate(service, cmd, []string{"i-abcdef12"})
+	})
+
+	t.Run("SingleInstanceWithBackupGateway_EnablesBackupAgent", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		cmd := ecloudInstanceUpdateCmd(nil)
+		cmd.ParseFlags([]string{"--backup-gateway-id=bgw-abcdef12"})
+
+		req := ecloud.PatchInstanceRequest{
+			BackupGatewayID:    "bgw-abcdef12",
+			BackupAgentEnabled: ptr.Bool(true),
+		}
+
+		gomock.InOrder(
+			service.EXPECT().PatchInstance("i-abcdef12", req).Return(nil),
+			service.EXPECT().GetInstance("i-abcdef12").Return(ecloud.Instance{}, nil),
+		)
+
+		ecloudInstanceUpdate(service, cmd, []string{"i-abcdef12"})
+	})
+
+	t.Run("SingleInstanceWithEnableAgentBackups", func(t *testing.T) {
+		mockCtrl := gomock.NewController(t)
+		defer mockCtrl.Finish()
+
+		service := mocks.NewMockECloudService(mockCtrl)
+
+		cmd := ecloudInstanceUpdateCmd(nil)
+		cmd.ParseFlags([]string{"--enable-agent-backups"})
+
+		req := ecloud.PatchInstanceRequest{
+			BackupAgentEnabled: ptr.Bool(true),
 		}
 
 		gomock.InOrder(
