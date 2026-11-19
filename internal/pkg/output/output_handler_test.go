@@ -19,6 +19,26 @@ type testModelCollection []testModel
 var collectionSingleRow = testModelCollection([]testModel{{"Row1TestValue1", "Row1TestValue2", "Row1TestValue3"}})
 var collectionMultipleRows = testModelCollection([]testModel{{"Row1TestValue1", "Row1TestValue2", "Row1TestValue3"}, {"Row2TestValue1", "Row2TestValue2", "Row2TestValue3"}})
 
+func TestIsValidFormat(t *testing.T) {
+	t.Run("KnownFormat_ReturnsTrue", func(t *testing.T) {
+		assert.True(t, IsValidFormat("json-pretty"))
+	})
+
+	t.Run("UnknownFormat_ReturnsFalse", func(t *testing.T) {
+		assert.False(t, IsValidFormat("nonsense"))
+	})
+
+	t.Run("EmptyFormat_ReturnsFalse", func(t *testing.T) {
+		assert.False(t, IsValidFormat(""))
+	})
+
+	// The format name must be parsed out of the flag value first, as formats may carry
+	// an argument
+	t.Run("FormatWithArgument_ReturnsFalse", func(t *testing.T) {
+		assert.False(t, IsValidFormat("jsonpath={.id}"))
+	})
+}
+
 func TestOutputHandler_JSON(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		o := NewOutputHandler()

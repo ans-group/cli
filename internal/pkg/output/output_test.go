@@ -161,6 +161,17 @@ func TestOutputWithErrorLevel_ExpectedExitCode(t *testing.T) {
 	assert.Equal(t, 1, errorLevel)
 }
 
+func TestSetErrorLevel_SetsErrorLevelWithoutOutput(t *testing.T) {
+	defer func() { errorLevel = 0 }()
+
+	stdErr := test.CatchStdErr(t, func() {
+		SetErrorLevel(5)
+	})
+
+	assert.Empty(t, stdErr)
+	assert.Equal(t, 5, errorLevel)
+}
+
 func TestExitWithErrorLevel_ExpectedExitCode(t *testing.T) {
 	errorLevel = 5
 	code := 0
