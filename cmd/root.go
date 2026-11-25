@@ -5,7 +5,6 @@ import (
 	billingcmd "github.com/ans-group/cli/cmd/billing"
 	cloudflarecmd "github.com/ans-group/cli/cmd/cloudflare"
 	configcmd "github.com/ans-group/cli/cmd/config"
-	ddosxcmd "github.com/ans-group/cli/cmd/ddosx"
 	draascmd "github.com/ans-group/cli/cmd/draas"
 	ecloudcmd "github.com/ans-group/cli/cmd/ecloud"
 	loadbalancercmd "github.com/ans-group/cli/cmd/loadbalancer"
@@ -68,7 +67,6 @@ func Execute(build build.BuildInfo) {
 	rootCmd.AddCommand(rawCmd(connectionFactory))
 	rootCmd.AddCommand(accountcmd.AccountRootCmd(clientFactory))
 	rootCmd.AddCommand(billingcmd.BillingRootCmd(clientFactory))
-	rootCmd.AddCommand(ddosxcmd.DDoSXRootCmd(clientFactory, fs))
 	rootCmd.AddCommand(draascmd.DRaaSRootCmd(clientFactory))
 	rootCmd.AddCommand(ecloudcmd.ECloudRootCmd(clientFactory, fs))
 	rootCmd.AddCommand(loadbalancercmd.LoadBalancerRootCmd(clientFactory, fs))
